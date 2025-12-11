@@ -1,0 +1,72 @@
+<!-- practice/practice.html -->
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>코드추적실 StepCode - 연습장</title>
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/practice.css" />
+
+      <!-- Prism 하이라이트 테마 -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css"
+  />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="top-bar">
+        <div class="top-title">
+          <span id="set-title">연습장</span>
+        </div>
+        <div class="top-controls">
+          <label>
+            언어:
+            <select id="lang-select">
+              <!-- practice.js에서 세트 정보 기반으로 채움 -->
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <main id="problem-container">
+        <!-- practice.js에서 문제 렌더 -->
+      </main>
+
+      <footer class="footer">
+  <button id="grade-btn">채점하기</button>
+  <div id="score" class="score"></div>
+</footer>
+
+
+
+  <!-- HUD: 문제 이동 / 스크롤 컨트롤 -->
+  <div class="nav-hud">
+    <button id="btn-prev">
+      <span class="icon">▲</span><span>이전 문제</span>
+    </button>
+    <button id="btn-next">
+      <span class="icon">▼</span><span>다음 문제</span>
+    </button>
+    <button id="btn-top">
+      <span class="icon">⬆</span><span>TOP</span>
+    </button>
+    <button id="btn-bottom">
+      <span class="icon">⬇</span><span>BOTTOM</span>
+    </button>
+  </div>
+
+    </div>
+
+<!-- JS들 로드하기 직전에 넣는 것을 추천 -->
+    <!-- ▼ Prism Core + 언어별 컴포넌트 ▼ -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-java.min.js"></script>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/services/problemService.local.js"></script>
+    <script src="assets/js/practice.js"></script>
+  </body>
+</html>

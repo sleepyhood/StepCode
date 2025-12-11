@@ -1,0 +1,106 @@
+/* ===== 공통 기본 스타일 ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #f5f7fb;
+  color: #111827;
+}
+
+/* 공통 컨테이너 */
+.app-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* 상단 헤더 (index.html, practice.html 공통 사용) */
+.app-header {
+  margin-bottom: 20px;
+}
+
+.app-header h1 {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+}
+
+.app-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+/* 작은 뱃지들 (필요하면 index/practice 둘 다에서 사용 가능) */
+.badge-row {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.75rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+/* ====== index.html 전용: 카테고리/세트 목록 ====== */
+
+.category-section {
+  margin-bottom: 24px;
+}
+
+.category-section h2 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.set-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.set-item + .set-item {
+  margin-top: 6px;
+}
+
+.set-item a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #111827;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+  font-size: 0.95rem;
+}
+
+.set-item a::before {
+  content: "▶";
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+.set-item a:hover {
+  border-color: #2563eb;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.18);
+}
+
+/* 반응형: 모바일에서 여백 살짝 줄이기 */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 16px 12px 28px;
+  }
+}

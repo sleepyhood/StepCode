@@ -1,0 +1,22 @@
+practice/
+├─ index.html           # 문제 목록 페이지 (카테고리/회차 선택)
+├─ practice.html        # 실제 연습장(문제 푸는 화면) - ?set=c_if_ap_lite 이런 식
+├─ assets/
+│  ├─ css/
+│  │  ├─ main.css       # 공통 레이아웃, 목록 페이지 스타일
+│  │  └─ practice.css   # 문제/코드 보기, 라디오 버튼 등 연습장 전용 스타일
+│  └─ js/
+│     ├─ index.js       # index.html용: 카테고리/회차 목록 렌더
+│     ├─ practice.js    # practice.html용: 문제 렌더, 채점, 언어 선택
+│     ├─ config.js      # 데이터 경로, 모드(local/api) 등 공통 설정
+│     └─ services/
+│        ├─ problemService.local.js  # 지금용: data/*.json 직접 읽기
+│        └─ problemService.api.js    # 나중용: /api/... 서버에서 가져오기
+└─ data/
+   ├─ categories.json   # 카테고리 목록
+   ├─ sets.index.json   # “회차/세트” 목록 (메타데이터)
+   └─ sets/
+      ├─ c_if_ap_lite.json
+      ├─ c_if_ap_challenge.json
+      ├─ c_loop_basic_01.json
+      └─ ...            # 각 세트별 실제 문제 데이터
