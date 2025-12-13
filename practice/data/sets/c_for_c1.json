@@ -1,0 +1,126 @@
+{
+  "id": "c_for_c1",
+  "title": "C for문 챌린지 1회차",
+  "categoryId": "c_for",
+  "availableLanguages": ["c"],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. 거꾸로 출력 (홀수만)",
+      "description": "아래 프로그램에서 입력이 7일 때, 출력으로 알맞은 것을 고르세요.",
+      "code": "int n;\nscanf(\"%d\", &n);\nfor (int i = n; i > 0; i -= 2) {\n    printf(\"%d\\n\", i);\n}",
+      "options": [
+        "7\n6\n5\n4\n3\n2\n1",
+        "7\n5\n3\n1",
+        "6\n4\n2",
+        "7\n5\n3"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. break와 continue 함께 쓰기",
+      "description": "아래 프로그램에서 입력이 10일 때, 출력되는 값을 고르세요.",
+      "code": "int n;\nint s = 0;\nscanf(\"%d\", &n);\nfor (int i = 1; i <= n; i++) {\n    if (i % 3 == 0) {\n        continue;\n    }\n    if (i > 7) {\n        break;\n    }\n    s = s + i;\n}\nprintf(\"%d\\n\", s);",
+      "options": [
+        "12",
+        "15",
+        "19",
+        "21"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. n개의 입력 중 양수 개수",
+      "description": "아래 프로그램에서 입력이 순서대로 5, -1, 3, 0, 2, -4일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "int n;\nint cnt = 0;\nscanf(\"%d\", &n);\nfor (int i = 0; i < n; i++) {\n    int x;\n    scanf(\"%d\", &x);\n    if (x > 0) {\n        cnt = cnt + 1;\n    }\n}\nprintf(\"%d\\n\", cnt);",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 4. n개의 입력 중 최솟값과 최댓값",
+      "description": "아래 프로그램에서 입력이 순서대로 5, 3, 7, -2, 7, -5일 때,\n마지막 줄에 출력되는 \"min max\" 값으로 알맞은 것을 고르세요.",
+      "code": "int n;\nscanf(\"%d\", &n);\nint first;\nscanf(\"%d\", &first);\nint min_v = first;\nint max_v = first;\nfor (int i = 0; i < n - 1; i++) {\n    int x;\n    scanf(\"%d\", &x);\n    if (x < min_v) {\n        min_v = x;\n    }\n    if (x > max_v) {\n        max_v = x;\n    }\n}\nprintf(\"%d %d\\n\", min_v, max_v);",
+      "options": [
+        "-5 7",
+        "3 7",
+        "-5 -2",
+        "7 -5"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 5. 홀수만 출력하는 코드 고르기",
+      "description": "정수 n을 입력받아 1부터 n까지의 홀수만 한 줄에 하나씩 출력하려고 합니다.\n알맞은 코드를 고르세요.",
+      "code": null,
+      "options": [
+        "int n;\nscanf(\"%d\", &n);\nfor (int i = 1; i <= n; i++) {\n    if (i % 2 == 0) {\n        printf(\"%d\\n\", i);\n    }\n}",
+        "int n;\nscanf(\"%d\", &n);\nfor (int i = 1; i <= n; i++) {\n    if (i % 2 == 1) {\n        printf(\"%d\\n\", i);\n    }\n}",
+        "int n;\nscanf(\"%d\", &n);\nfor (int i = 1; i <= n; i += 2) {\n    printf(\"%d\\n\", i + 1);\n}",
+        "int n;\nscanf(\"%d\", &n);\nfor (int i = 2; i <= n; i += 2) {\n    printf(\"%d\\n\", i);\n}"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "챌린지",
+      "title": "Short 1. for (i = 2; i < 10; i += 3)의 출력",
+      "description": "아래 프로그램에서 출력되는 숫자들을 작은 것부터 큰 것 순서로,\n공백으로 구분해 한 줄에 쓰세요.\n(예: 1 2 3)",
+      "code": "int i;\nfor (i = 2; i < 10; i += 3) {\n    printf(\"%d\\n\", i);\n}",
+      "expectedText": "2 5 8"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "챌린지",
+      "title": "Short 2. n개의 입력 절댓값 합",
+      "description": "아래 프로그램에서 입력이 순서대로 4, -1, 3, -2, 0일 때,\n마지막에 출력되는 값을 쓰세요.",
+      "code": "int n;\nint s = 0;\nscanf(\"%d\", &n);\nfor (int i = 0; i < n; i++) {\n    int x;\n    scanf(\"%d\", &x);\n    if (x < 0) {\n        x = -x;\n    }\n    s = s + x;\n}\nprintf(\"%d\\n\", s);",
+      "expectedText": "6"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "챌린지",
+      "title": "Code 1. 3의 배수만 더하기",
+      "description": "정수 n을 입력받아, 1부터 n까지의 정수 중 3의 배수만 모두 더한 값을 출력하려고 합니다.\nif문의 조건식만 작성하세요.",
+      "code": "int n;\nint s = 0;\nscanf(\"%d\", &n);\nfor (int i = 1; i <= n; i++) {\n    // TODO: i가 3의 배수일 때만 s에 더하도록 조건식을 작성하시오.\n    if ( /* 여기에 조건식 작성 */ ) {\n        s = s + i;\n    }\n}\nprintf(\"%d\\n\", s);",
+      "expectedCode": "i % 3 == 0",
+      "hint": ""
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "챌린지",
+      "title": "Code 2. n부터 1까지 거꾸로 출력",
+      "description": "정수 n을 입력받아, n부터 1까지를 거꾸로 한 줄에 하나씩 출력하는 for문 한 줄을 작성하세요.\n아래 코드에서 주석 위치에 들어갈 for문만 작성하면 됩니다.",
+      "code": "int n;\nscanf(\"%d\", &n);\n// TODO: n부터 1까지 거꾸로 내려가면서 i를 출력하는 for문을 작성하시오.\n    printf(\"%d\\n\", i);",
+      "expectedCode": "for (int i = n; i >= 1; i--)",
+      "hint": "for (int i = ?; ? >= ?; ?) 형태를 사용해 보세요."
+    }
+  ]
+}

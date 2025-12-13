@@ -237,7 +237,6 @@
   }
 }
 
-
 /* ===== HUD (이전/다음/TOP/BOTTOM) ===== */
 
 .nav-hud {
@@ -248,7 +247,9 @@
   flex-direction: column;
   gap: 8px;
   z-index: 1000;
+  align-items: stretch; /* 버튼/패널 폭을 맞추기 위해 추가 */
 }
+
 
 .nav-hud button {
   border: none;
@@ -290,4 +291,68 @@
     font-size: 0.75rem;
   }
 }
-/* ===== 공통 요소 ===== */
+
+/* 목차: 문제 목록 패널 */
+.hud-index-panel {
+  display: none;
+  margin-top: 4px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.96);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.6);
+  max-height: 240px;
+  overflow-y: auto;
+  font-size: 0.78rem;
+}
+
+.hud-index-panel.open {
+  display: block;
+}
+
+.hud-index-item {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: #e5e7eb;
+  padding: 4px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.hud-index-item:hover {
+  background: rgba(37, 99, 235, 0.8);
+}
+
+/* 목차 메인 버튼은 살짝 강조 */
+.nav-hud .hud-main {
+  font-weight: 600;
+}
+.nav-hud .hud-main:hover {
+  background: rgba(37, 99, 235, 1);
+}
+
+/* 문제 영역 텍스트 선택 방지 (입력창 제외) */
+#problem-container,
+#problem-container *:not(textarea):not(input) {
+  -webkit-user-select: none; /* Chrome / Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge 구버전 */
+  user-select: none;
+} 
+#problem-container textarea,
+#problem-container input {
+  -webkit-user-select: text; /* Chrome / Safari */
+  -moz-user-select: text;    /* Firefox */
+  -ms-user-select: text;     /* IE/Edge 구버전 */
+  user-select: text;
+}
+
+/* Prism 줄번호 여백 살짝 조정 (선택) */
+pre.line-numbers {
+  padding-left: 3.2em; /* 필요하면 3.0 ~ 3.8em 사이로 조정 */
+  box-sizing: border-box;
+}
+pre.line-numbers code {
+  white-space: pre-wrap; /* 줄바꿈 허용 */
+}

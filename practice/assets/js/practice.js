@@ -3,6 +3,46 @@
 let currentSetData = null;
 let currentLang = "c"; // 지금은 C만, 나중에 언어별 코드 확장
 
+
+// ▼ 아래 세 줄 추가 ▼
+let currentSetId = null;
+let currentAnswers = {};
+const ANSWER_STORAGE_PREFIX = "stepcode:answers:";
+
+function getAnswerStorageKey(setId) {
+  return `${ANSWER_STORAGE_PREFIX}${setId}`;
+}
+
+function loadStoredAnswers(setId) {
+  if (!window.localStorage) return {};
+  try {
+    const raw = localStorage.getItem(getAnswerStorageKey(setId));
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    console.warn("failed to load stored answers", e);
+    return {};
+  }
+}
+
+function saveStoredAnswers(setId, answers) {
+  if (!window.localStorage) return;
+  try {
+    localStorage.setItem(
+      getAnswerStorageKey(setId),
+      JSON.stringify(answers)
+    );
+  } catch (e) {
+    console.warn("failed to save answers", e);
+  }
+}
+
+function recordAnswer(questionId, value) {
+  if (!currentSetId) return;
+  currentAnswers[questionId] = value;
+  saveStoredAnswers(currentSetId, currentAnswers);
+}
+// ▲ 여기까지 추가 ▲
+
 document.addEventListener("DOMContentLoaded", initPractice);
 
 // ====== 초기화 ======
@@ -21,6 +61,9 @@ async function initPractice() {
   try {
     // 세트 JSON 불러오기
     currentSetData = await ProblemService.loadSet(setId);
+    // 세트 정보 + 로컬 저장된 답안 불러오기
+    currentSetId = setId;
+    currentAnswers = loadStoredAnswers(setId);
 
     // 제목 표시
     titleSpan.textContent = currentSetData.title || "연습장";
@@ -125,7 +168,7 @@ function renderSet() {
     // --- 코드 블록 (있으면) ---
 if (q.code) {
   const pre = document.createElement("pre");
-  pre.className = "code-block";
+  pre.className = "code-block line-numbers";
 
   const codeEl = document.createElement("code");
   // 현재 선택된 언어 기준으로 Prism 클래스 부여
@@ -164,18 +207,32 @@ function renderMcqOptions(card, q) {
   const optionsWrap = document.createElement("div");
   optionsWrap.className = "options";
 
+  const saved = currentAnswers && currentAnswers[q.id];
+
   (q.options || []).forEach((opt, i) => {
     const optDiv = document.createElement("div");
     optDiv.className = "option-item";
+
+    const inputId = `${q.id}_opt${i}`;
 
     const input = document.createElement("input");
     input.type = "radio";
     input.name = q.id;
     input.value = String(i);
+    input.id = inputId;
     input.setAttribute("data-question", q.id);
 
-    const inputId = `${q.id}_opt${i}`;
-    input.id = inputId;
+    // 저장된 값이 있으면 체크 복원
+    if (saved !== undefined && String(saved) === String(i)) {
+      input.checked = true;
+    }
+
+    // 선택이 바뀔 때마다 자동 저장
+    input.addEventListener("change", () => {
+      if (input.checked) {
+        recordAnswer(q.id, input.value);
+      }
+    });
 
     const label = document.createElement("label");
     label.className = "option-label";
@@ -186,16 +243,12 @@ function renderMcqOptions(card, q) {
     const labels = q.optionLabels || [];
     letter.textContent = (labels[i] || String.fromCharCode(65 + i)) + ".";
 
-    // ▼ 여기부터 수정 ▼
     const codePre = document.createElement("pre");
     codePre.className = "option-code";
-
     const codeEl = document.createElement("code");
     codeEl.className = `language-${currentLang}`;
     codeEl.textContent = opt;
-
     codePre.appendChild(codeEl);
-    // ▲ 여기까지 수정 ▲
 
     label.appendChild(letter);
     label.appendChild(codePre);
@@ -223,6 +276,17 @@ function renderTextArea(card, q) {
     input.placeholder = "여기에 코드를 작성하세요.";
   }
 
+  // 저장된 답안 복원
+  const saved = currentAnswers && currentAnswers[q.id];
+  if (typeof saved === "string") {
+    input.value = saved;
+  }
+
+  // 입력할 때마다 자동 저장
+  input.addEventListener("input", () => {
+    recordAnswer(q.id, input.value);
+  });
+
   card.appendChild(input);
 
   if (q.hint) {
@@ -232,6 +296,7 @@ function renderTextArea(card, q) {
     card.appendChild(hint);
   }
 }
+
 
 // ====== 채점 버튼 로직 ======
 function setupGrading() {
@@ -277,14 +342,31 @@ function setupGrading() {
           isCorrect = normUser === normExp;
         }
       } else if (q.type === "code") {
-        const inputEl = document.querySelector(
-          `[data-question="${q.id}"]`
-        );
-        const userCode = (inputEl && inputEl.value) || "";
-        const normUser = normalizeCode(userCode);
-        const normExp = normalizeCode(q.expectedCode);
-        isCorrect = normUser === normExp;
-      }
+  const inputEl = document.querySelector(
+    `[data-question="${q.id}"]`
+  );
+  const userCode = (inputEl && inputEl.value) || "";
+  const normUser = normalizeCode(userCode);
+
+  // expectedCode가 문자열 하나일 수도, 배열일 수도 있게 처리
+  let candidates = [];
+
+  if (Array.isArray(q.expectedCode)) {
+    candidates = q.expectedCode;
+  } else if (typeof q.expectedCode === "string") {
+    candidates = [q.expectedCode];
+  }
+
+  // (선택) expectedCodes라는 별도 배열도 허용하고 싶으면:
+  if (Array.isArray(q.expectedCodes)) {
+    candidates = candidates.concat(q.expectedCodes);
+  }
+
+  isCorrect = candidates
+    .filter(Boolean)
+    .some((code) => normalizeCode(code) === normUser);
+}
+
 
       if (feedbackEl) {
         if (isCorrect) {
@@ -304,15 +386,15 @@ function setupGrading() {
   });
 }
 
-// ====== HUD: 이전/다음/TOP/BOTTOM ======
+// ====== HUD: 목차(목록/위치) + 위/아래 ======
 function setupHud() {
-  const btnPrev = document.getElementById("btn-prev");
-  const btnNext = document.getElementById("btn-next");
+  const btnIndex = document.getElementById("btn-index");
   const btnTop = document.getElementById("btn-top");
   const btnBottom = document.getElementById("btn-bottom");
+  const panel = document.getElementById("hud-index-panel");
 
-  // HUD가 없는 페이지면 무시
-  if (!btnPrev || !btnNext || !btnTop || !btnBottom) return;
+  // HUD 요소가 없으면 아무 것도 하지 않음
+  if (!btnIndex || !btnTop || !btnBottom || !panel) return;
 
   const getCards = () =>
     Array.from(document.querySelectorAll(".question-card"));
@@ -329,43 +411,43 @@ function setupHud() {
     });
   };
 
-  const getCurrentIndex = () => {
-    const cards = getCards();
-    if (!cards.length) return -1;
+  // --- 문제 목록 패널 구성 ---
+  panel.innerHTML = "";
+  const cards = getCards();
 
-    const scrollY = window.scrollY;
-    const viewportHeight = window.innerHeight;
-    const targetY = scrollY + viewportHeight * 0.25; // 화면 위에서 1/4 지점 기준
+  cards.forEach((card, idx) => {
+    const titleEl = card.querySelector("h2");
+    const text = titleEl ? titleEl.textContent : `문제 ${idx + 1}`;
 
-    let bestIdx = 0;
-    let bestDist = Infinity;
+    const itemBtn = document.createElement("button");
+    itemBtn.type = "button";
+    itemBtn.className = "hud-index-item";
+    itemBtn.textContent = text;
 
-    cards.forEach((card, idx) => {
-      const top = card.offsetTop;
-      const height = card.offsetHeight;
-      const mid = top + height / 2;
-      const dist = Math.abs(mid - targetY);
-      if (dist < bestDist) {
-        bestDist = dist;
-        bestIdx = idx;
-      }
+    itemBtn.addEventListener("click", () => {
+      scrollToCard(idx);
+      panel.classList.remove("open");
     });
 
-    return bestIdx;
-  };
-
-  btnPrev.addEventListener("click", () => {
-    const idx = getCurrentIndex();
-    if (idx === -1) return;
-    scrollToCard(idx - 1);
+    panel.appendChild(itemBtn);
   });
 
-  btnNext.addEventListener("click", () => {
-    const idx = getCurrentIndex();
-    if (idx === -1) return;
-    scrollToCard(idx + 1);
+  // --- 목차 버튼: 목록 패널 열기/닫기 ---
+  btnIndex.addEventListener("click", (e) => {
+    e.stopPropagation();
+    panel.classList.toggle("open");
   });
 
+  // HUD 밖을 클릭하면 패널 닫기
+  document.addEventListener("click", (e) => {
+    if (!panel.classList.contains("open")) return;
+    const hud = document.querySelector(".nav-hud");
+    if (hud && !hud.contains(e.target)) {
+      panel.classList.remove("open");
+    }
+  });
+
+  // --- 위로 / 아래로 이동 (페이지 최상단 / 최하단) ---
   btnTop.addEventListener("click", () => {
     window.scrollTo({
       top: 0,
@@ -380,5 +462,6 @@ function setupHud() {
     });
   });
 }
+
 
 // ====== 여기까지 practice.js ======

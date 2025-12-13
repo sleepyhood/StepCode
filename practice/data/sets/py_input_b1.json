@@ -1,0 +1,133 @@
+{
+  "id": "py_input_b1",
+  "title": "Python 입력 기초 1회차",
+  "categoryId": "py_input",
+  "availableLanguages": ["python"],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 두 수의 합 출력 프로그램",
+      "description": "다음 요구사항을 만족하는 Python 코드를 고르세요.\n\n- 정수 a, b를 한 줄에서 공백으로 구분해 입력받는다.\n- \"a + b = (a+b)\" 형식으로 출력한다.\n  예) 입력이 3 5라면, 출력은 \"3 + 5 = 8\"이다.\n- 출력에는 서식문자를 사용한다.",
+      "code": null,
+      "options": [
+        "a = input()\nb = input()\nprint('%d + %d = %d' % (a, b, a + b))",
+        "a, b = map(int, input().split())\nprint('%d + %d = %d' % (a, b, a + b))",
+        "a, b = int(input().split())\nprint('%d + %d = %d' % (a, b, a + b))",
+        "a, b = map(int, input().split())\nprint(a + b)"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 입력 두 번, 출력 한 번",
+      "description": "아래 프로그램에서 입력이 차례대로 3, 5일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "a = int(input())\nb = int(input())\nprint('%d %d' % (b, a))",
+      "options": [
+        "3 5",
+        "5 3",
+        "3 3",
+        "5 5"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 세 수의 합",
+      "description": "세 정수 a, b, c를 한 줄에서 입력받고, 합을 출력하는 코드로 알맞은 것을 고르세요.\n\n출력 형식 예시: 입력이 1 2 3이면 \"합: 6\"을 출력한다.",
+      "code": null,
+      "options": [
+        "a, b, c = map(int, input().split())\nprint('합: %d' % (a + b + c))",
+        "a, b, c = int(input().split())\nprint('합: %d' % (a + b + c))",
+        "a = int(input())\nb = int(input())\nc = int(input())\nprint('%d %d %d' % (a + b + c))",
+        "a, b, c = map(int, input())\nprint('합: %d' % (a + b + c))"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 서식문자 개수 맞추기",
+      "description": "다음 프로그램의 문제점에 대한 설명으로 가장 알맞은 것을 고르세요.",
+      "code": "a, b = map(int, input().split())\nprint('%d - %d = %d %d' % (a, b, a - b))",
+      "options": [
+        "입력에서 int로 바꾸지 않아서 문자열 덧셈이 일어난다.",
+        "print에서 서식 지정자(%d)의 개수와 값의 개수가 맞지 않는다.",
+        "a - b 대신 a + b를 사용해야 한다.",
+        "input().split()은 항상 오류를 일으킨다."
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. input과 int 변환",
+      "description": "다음 프로그램에 대한 설명으로 옳은 것을 고르세요.",
+      "code": "a = input()\nb = input()\nprint('%d + %d = %d' % (a, b, a + b))",
+      "options": [
+        "항상 정상적으로 \"a + b = (a+b)\"를 출력한다.",
+        "a와 b가 문자열이라서, %d 서식에 넣을 수 없어 오류가 발생한다.",
+        "int(input())를 사용하면 안 되기 때문에 이렇게 작성해야 한다.",
+        "print에서 % 대신 +를 사용해야만 올바르게 출력된다."
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 두 수의 합 출력 결과",
+      "description": "아래 프로그램에서 입력이 \"3 5\"(한 줄, 공백으로 구분)일 때,\n출력되는 한 줄을 그대로 쓰세요. (따옴표는 쓰지 마시오)",
+      "code": "a, b = map(int, input().split())\nprint('%d + %d = %d' % (a, b, a + b))",
+      "expectedText": "3 + 5 = 8"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 나이 출력",
+      "description": "아래 프로그램에서 입력이 15일 때, 출력되는 한 줄을 그대로 쓰세요.\n(띄어쓰기까지 정확히)",
+      "code": "age = int(input())\nprint('나이는 %d살입니다.' % age)",
+      "expectedText": "나이는 15살입니다."
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 두 정수 한 줄 입력",
+      "description": "정수 변수 a, b에 값을 한 줄에서 공백으로 구분해 입력받으려고 합니다.\n아래 주석 위치에 들어갈 코드를 한 줄 작성하세요.",
+      "code": "a = 0\nb = 0\n# TODO: a와 b에 정수를 한 줄에서 입력받으시오.",
+      "expectedCode": "a, b = map(int, input().split())",
+      "expectedCodes": [
+        "a,b=map(int,input().split())"
+      ],
+      "hint": "?, ? = map(?, input().?) 형태를 사용해 보세요."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 합을 서식문자로 출력",
+      "description": "변수 a와 b에 이미 정수가 저장되어 있다고 가정합니다.\n\"a + b = (a+b)\" 형식으로 출력하는 print 문을 한 줄 작성하세요.\n(예: a가 2, b가 8이면 \"2 + 8 = 10\"을 출력)",
+      "code": "a = 2\nb = 8\n# TODO: a와 b의 합을 서식문자로 출력하시오.",
+      "expectedCode": "print('%d + %d = %d' % (a, b, a + b))",
+      "expectedCodes": [
+        "print('%d + %d = %d'%(a,b,a+b))"
+        
+      ],
+      "hint": "print('? + ? = ?' % (?,?,?)) 형태를 사용해 보세요."
+    }
+  ]
+}

@@ -1,91 +1,112 @@
-# StepCode
+# StepCode – 실행추적 · MCQ · 코드수정 연습
 
-**StepCode**는 프로그래밍 학원용 **실행 추적 · 객관식(MCQ) · 코드 작성/수정 연습** 플랫폼입니다.  
-지금은 **로컬에서 정적 파일만으로** 돌리지만,  
-나중에 학원 사이트(Flask 등)와 쉽게 연동할 수 있도록 구조를 나눠두었습니다.
+로컬에서 가볍게 돌릴 수 있는 **실행추적/MCQ/코드 작성 연습장**입니다.  
+이 문서는 특히 **새로운 문제 세트를 JSON으로 추가할 때 따라야 할 규칙**에 초점을 맞춥니다.
 
 ---
 
 ## 1. 폴더 구조
 
+`practice/` 폴더 기준 구조는 다음과 같습니다.
+
 ```text
-StepCode/
-└─ practice/
-   ├─ index.html              # 문제 목록 페이지 (카테고리/회차 리스트)
-   ├─ practice.html           # 실제 문제 푸는 연습장 화면
-   ├─ assets/
-   │  ├─ css/
-   │  │  ├─ main.css          # 공통 레이아웃 + 목록(index.html) 스타일
-   │  │  └─ practice.css      # 연습장(practice.html) 문제 카드/채점 스타일
-   │  └─ js/
-   │     ├─ config.js         # APP_CONFIG(mode, data 경로 등 공통 설정)
-   │     ├─ index.js          # index.html용 JS (카테고리/세트 목록 렌더)
-   │     ├─ practice.js       # practice.html용 JS (문제 렌더 + 채점)
-   │     └─ services/
-   │        └─ problemService.local.js  # JSON에서 문제 읽는 서비스
-   └─ data/
-      ├─ categories.json      # 카테고리 목록 (C-조건문, Python-조건문 등)
-      ├─ sets.index.json      # 세트(회차) 메타데이터 목록
-      └─ sets/
-         ├─ c_if_b1.json      # C 조건문 기초 1회차 세트
-         ├─ c_if_c1.json      # C 조건문 챌린지 1회차 세트
-         ├─ py_if_b1.json     # Python 조건문 기초 1회차 세트
-         └─ java_if_b1.json   # Java 조건문 기초 1회차 세트
+practice/
+  index.html            # 메인 목록 페이지
+  practice.html         # 실제 문제 풀이 페이지
+  index.js
+  practice.js
+  main.css
+  practice.css
+
+  data/
+    categories.json     # 카테고리 목록 (C-조건문, Python-for 등)
+    sets.index.json     # 세트(회차) 메타데이터 목록
+    sets/
+      c_if_b1.json      # C 조건문 기초 1회차
+      c_if_c1.json      # C 조건문 챌린지 1회차
+      c_for_b1.json     # C for문 기초 1회차
+      c_for_c1.json     # C for문 챌린지 1회차
+      py_input_b1.json  # Python 입력 기초 1회차
+      py_if_b1.json     # Python 조건문 기초 1회차
+      py_for_b1.json    # Python for문 기초 1회차
+      py_for_c1.json    # Python for문 챌린지 1회차
+      py_while_b1.json  # Python while문 기초 1회차
+      java_if_b1.json   # Java 조건문 기초 1회차
 ```
+
+> **실전에서 자주 수정하는 파일**
+>
+> * 카테고리/세트 추가 : `data/categories.json`, `data/sets.index.json`
+> * 실제 문제 내용 : `data/sets/*.json`
 
 ---
 
-## 2. 실행 방법 (로컬 서버)
+## 2. 실행 방법 (로컬 테스트)
 
-브라우저 보안 정책 때문에, `file://` 로 직접 열면 JSON을 `fetch()` 할 수 없습니다.
-반드시 **간단한 HTTP 서버**를 띄운 다음, `http://` 로 접속해야 합니다.
+브라우저의 보안 정책 때문에 **파일을 그냥 더블클릭해서** 열면 JSON을 못 불러옵니다.
+반드시 간단한 로컬 서버를 띄운 뒤 접속합니다.
 
-1. `practice` 폴더로 이동
-   (예: `C:\...\StepCode\practice`)
+### 2.1 Python 내장 서버 사용
 
-2. 해당 폴더에서 터미널(cmd/PowerShell) 열기 후:
+```bash
+cd practice
+python -m http.server 8000
+```
 
-   ```bash
-   python -m http.server 8000
-   ```
+그 다음 브라우저에서:
 
-3. 브라우저에서 접속:
+* 메인: `http://localhost:8000/index.html`
+* 문제풀이: 세트 선택 후 자동 이동 (`practice.html?set=...`)
 
-   ```text
-   http://localhost:8000/index.html
-   ```
-
-이제:
-
-* `index.html`: 카테고리/세트 목록 화면
-* 각 세트 링크 클릭 → `practice.html?set=세트ID` 로 연습장 화면 이동
+VSCode Live Server, Web Server for Chrome 등 다른 정적 서버를 써도 됩니다.
 
 ---
 
 ## 3. 데이터 구조
 
-### 3.1 카테고리 목록: `data/categories.json`
+### 3.1 `categories.json` – 카테고리 목록
 
-카테고리(언어+주제)를 정의합니다.
+각 카테고리(과목/단원)에 대한 메타데이터입니다.
+
+필드:
+
+* `id` : 내부용 고유 ID (영문 소문자 + `_`)
+* `name` : 메인 화면에 보여줄 이름
+* `order` : 정렬 순서 (작을수록 위에 표시)
+
+현재 예시:
 
 ```json
 [
-  { "id": "c_if",    "name": "C - 조건문",        "order": 10 },
-  { "id": "c_loop",  "name": "C - 반복문",        "order": 20 },
-  { "id": "py_if",   "name": "Python - 조건문",   "order": 30 },
-  { "id": "java_if", "name": "Java - 조건문",     "order": 40 }
+  { "id": "c_if",      "name": "C - 조건문",               "order": 10 },
+  { "id": "c_for",     "name": "C - Lv7 반복1(for)",       "order": 20 },
+  { "id": "py_input",  "name": "Python - Lv3 입력",        "order": 30 },
+  { "id": "py_if",     "name": "Python - Lv6 조건",        "order": 40 },
+  { "id": "py_for",    "name": "Python - Lv7 반복1(for)",  "order": 50 },
+  { "id": "py_while",  "name": "Python - Lv8 반복2(while)","order": 60 },
+  { "id": "java_if",   "name": "Java - 조건문",            "order": 70 }
 ]
 ```
 
-* `id`      : 카테고리 고유 ID (세트에서 `categoryId`로 참조)
-* `name`    : index 화면에 표시되는 이름
-* `order`   : 카테고리 표시 순서 (작을수록 위에 배치)
+> 새 단원을 만들 때는 여기에 항목을 하나 추가하고, `id`를 이후 세트/문제에서 `categoryId`로 사용합니다.
 
 ---
 
-### 3.2 세트 목록: `data/sets.index.json`
+### 3.2 `sets.index.json` – 세트(회차) 목록
 
-각 세트(회차)에 대한 메타데이터입니다.
+한 줄이 “연습장 1회차”에 해당합니다. 메인 페이지에서 이 파일을 읽어 **카테고리별 세트 버튼**을 만듭니다.
+
+필드:
+
+* `id` : 세트 고유 ID (파일명, practice.html 쿼리스트링에 모두 사용)
+* `categoryId` : 위 `categories.json` 중 하나의 `id`
+* `title` : 버튼에 표시할 전체 제목
+* `round` : 회차 번호 (1, 2, 3…)
+* `difficulty` : 난이도. **현재는 `basic` / `challenge` 두 종류만 사용**
+* `numProblems` : 해당 세트 JSON에 들어 있는 문제 개수
+* `file` : 실제 세트 JSON 파일 이름 (`data/sets/` 기준)
+
+현재 예시:
 
 ```json
 [
@@ -124,48 +145,145 @@ StepCode/
     "difficulty": "basic",
     "numProblems": 9,
     "file": "java_if_b1.json"
+  },
+  {
+    "id": "py_input_b1",
+    "categoryId": "py_input",
+    "title": "Python 입력 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_input_b1.json"
+  },
+  {
+    "id": "py_for_b1",
+    "categoryId": "py_for",
+    "title": "Python for문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_for_b1.json"
+  },
+  {
+    "id": "py_for_c1",
+    "categoryId": "py_for",
+    "title": "Python for문 챌린지 1회차",
+    "round": 2,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_for_c1.json"
+  },
+  {
+    "id": "c_for_b1",
+    "categoryId": "c_for",
+    "title": "C for문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_for_b1.json"
+  },
+  {
+    "id": "c_for_c1",
+    "categoryId": "c_for",
+    "title": "C for문 챌린지 1회차",
+    "round": 2,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "c_for_c1.json"
+  },
+  {
+    "id": "py_while_b1",
+    "categoryId": "py_while",
+    "title": "Python while문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_while_b1.json"
   }
 ]
 ```
 
-* `id`          : 세트 ID (`?set=id` 로 사용)
-* `categoryId`  : `categories.json`의 `id` 와 연결
-* `title`       : 세트 제목 (학생이 보는 이름)
-* `round`       : 회차 번호 (카테고리 안에서 정렬 기준)
-* `difficulty`  : 난이도 태그 (예: `basic`, `challenge`)
-* `numProblems` : 문제 개수 (표시용)
-* `file`        : 실제 세트 JSON 파일명 (`data/sets/{file}`)
-
 ---
 
-### 3.3 세트 JSON: `data/sets/*.json`
+### 3.3 `data/sets/*.json` – 실제 문제 세트
 
-각 세트 파일은 공통 구조를 갖습니다.
+각 세트 파일은 다음과 같은 공통 구조를 가집니다.
+
+필수 필드:
+
+* `id` : 세트 ID (반드시 `sets.index.json`의 `id`와 동일)
+* `title` : 세트 제목 (화면 상단에 표시)
+* `categoryId` : 속한 카테고리 ID (`categories.json` 참고)
+* `availableLanguages` : 이 세트에 사용되는 언어 목록 (예: `["c"]`, `["python"]`)
+* `problems` : 문제 배열
+
+예시 (Python while문 기초 세트 축약):
 
 ```json
 {
-  "id": "c_if_b1",
-  "title": "C 조건문 기초 1회차",
-  "categoryId": "c_if",
-  "availableLanguages": ["c"],
+  "id": "py_while_b1",
+  "title": "Python while문 기초 1회차",
+  "categoryId": "py_while",
+  "availableLanguages": ["python"],
   "problems": [
-    { /* problem 1 */ },
-    { /* problem 2 */ }
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 1부터 n까지의 합",
+      "description": "…",
+      "code": "…",
+      "options": [ "…", "…", "…", "…" ],
+      "optionLabels": ["A","B","C","D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. …",
+      "description": "…",
+      "code": "…",
+      "expectedCode": "print('%d x %d = %d' % (n, i, n * i))",
+      "hint": "print('%d x %d = %d' % (?, ?, ?)) 형태를 사용하세요."
+    }
   ]
 }
 ```
-
-* `id`, `title`, `categoryId` : `sets.index.json`과 일관성 유지
-* `availableLanguages`        : 이 세트에서 사용하는 언어 목록 (현재는 단일 언어)
-* `problems`                  : 문제 배열
 
 ---
 
 ## 4. 문제 형식(Problem Schema)
 
-`problems` 배열 안의 각 문제는 `type`에 따라 구조가 조금씩 다릅니다.
+### 4.1 공통 필드
 
-### 4.1 MCQ (객관식)
+모든 문제는 다음 공통 필드를 가집니다.
+
+* `id` : 세트 내에서 고유한 ID (`"mcq1"`, `"short2"`, `"code1"` 등)
+* `type` : `"mcq"`, `"short"`, `"code"` 중 하나
+* `level` : 화면에 보여줄 난이도 라벨
+
+  * 예시: `"기초"`, `"조금 응용"`, `"챌린지"`, `"단답형"`, `"코드 작성"`
+  * 실질적인 정렬/채점에는 사용하지 않고 **설명용 텍스트**입니다.
+* `title` : 문제 제목 (`"MCQ 1. Pass / Fail 프로그램"` 등)
+* `description` : 문제 설명 (여러 줄일 경우 `\n`으로 줄바꿈)
+* `code` : 문제 위에 보여줄 코드. 필요 없으면 `null` 사용.
+
+이후 필드는 `type`에 따라 달라집니다.
+
+---
+
+### 4.2 `type: "mcq"` – 객관식
+
+추가 필드:
+
+* `options` : 보기 문자열 배열
+
+  * 코드가 들어가는 보기라도 그대로 문자열로 작성합니다(`\n`으로 줄바꿈).
+* `optionLabels` : 보기 라벨 배열 (보통 `["A", "B", "C", "D"]`)
+* `correctIndex` : 정답 인덱스 (0부터 시작, 예: A=0, B=1, …)
+
+예시:
 
 ```json
 {
@@ -173,274 +291,324 @@ StepCode/
   "type": "mcq",
   "level": "기초",
   "title": "MCQ 1. Pass / Fail 프로그램",
-  "description": "요구사항 설명...",
-  "code": "int n;\nscanf(\"%d\", &n);\nif (n >= 60) { ... }",
+  "description": "다음 설명에 맞는 C 코드를 고르세요.\n\n- 정수 score를 하나 입력받는다.\n- score가 60 이상이면 \"Pass\"를 출력하고,\n  그렇지 않으면 \"Fail\"을 출력한다.",
+  "code": null,
   "options": [
-    "보기 A 코드 또는 텍스트",
-    "보기 B ...",
-    "보기 C ...",
-    "보기 D ..."
+    "int score;\nscanf(\"%d\", score);\nif (score >= 60) {\n    printf(\"Pass\\n\");\n} else {\n    printf(\"Fail\\n\");\n}",
+    "int score;\nscanf(\"%d\", &score);\nif (score > 60) {\n    printf(\"Pass\\n\");\n}\nif (score <= 60) {\n    printf(\"Fail\\n\");\n}",
+    "int score;\nscanf(\"%d\", &score);\nif (score >= 60) {\n    printf(\"Pass\\n\");\n} else {\n    printf(\"Fail\\n\");\n}",
+    "int score;\nscanf(\"%d\", &score);\nif (score = 60) {\n    printf(\"Pass\\n\");\n} else {\n    printf(\"Fail\\n\");\n}"
   ],
   "optionLabels": ["A", "B", "C", "D"],
   "correctIndex": 2
 }
 ```
 
-* `code`         : 공통 코드 (보기 위에 보여줄 원본 코드), 없으면 `null` 가능
-* `options`      : 각 보기 문자열 (코드/출력/설명 등)
-* `optionLabels` : 보기에 표시할 라벨 (A/B/C/D)
-* `correctIndex` : 정답 보기 인덱스 (0부터 시작)
-
-렌더링 시:
-
-* 라디오 버튼 + 보기 카드 형태로 표시
-* `correctIndex`를 기준으로 채점
-
 ---
 
-### 4.2 short (단답형)
+### 4.3 `type: "short"` – 단답형
 
-#### 단일 정답:
+추가 필드:
+
+* `expectedText` : 정답 문자열 1개
+* 또는 `expectedAnyOf` : 여러 정답 후보 문자열 배열
+
+**채점 규칙(요약)**
+
+* 앞뒤 공백 제거
+* 중간의 공백 여러 개는 한 칸으로 처리
+* 영문은 소문자/대문자 구분 없음 (필요시)
+
+예시 1 – 한 개의 정답:
 
 ```json
 {
   "id": "short1",
   "type": "short",
   "level": "단답형",
-  "title": "Short 1. 출력 결과 쓰기",
-  "description": "입력이 7일 때 출력 한 줄을 쓰세요.",
-  "code": "int n;\nscanf(\"%d\", &n);\nif (n >= 5 && n <= 10) { ... }",
+  "title": "Short 1. 범위 + if-else 결과",
+  "description": "아래 프로그램에서 입력이 7일 때, 출력되는 내용을 그대로 쓰세요.\n(줄바꿈 없이 한 줄입니다.)",
+  "code": "int n;\nscanf(\"%d\", &n);\nif (n >= 5 && n <= 10) {\n    printf(\"OK\\n\");\n} else {\n    printf(\"NG\\n\");\n}",
   "expectedText": "OK"
 }
 ```
 
-#### 여러 정답 중 하나 허용:
+예시 2 – 여러 정답 중 하나:
 
 ```json
 {
   "id": "short2",
   "type": "short",
   "level": "단답형",
-  "title": "Short 2. 조건을 만족하는 n",
-  "description": "1 <= n && n <= 5 를 참으로 만드는 n의 값 하나를 쓰세요.",
+  "title": "Short 2. 어떤 값을 넣으면 참이 될까?",
+  "description": "다음 조건식이 참(true)이 되도록 n의 값을 하나만 쓰세요.\n(여러 개 중 아무거나 하나 맞으면 정답입니다.)",
   "code": "1 <= n && n <= 5",
   "expectedAnyOf": ["1", "2", "3", "4", "5"]
 }
 ```
 
-채점:
-
-* 공백/대소문자를 정규화하여 비교
-* `expectedAnyOf`가 있으면 그 배열 안의 어떤 값과 일치해도 정답
-* 없으면 `expectedText`와 비교
-
 ---
 
-### 4.3 code (코드 작성/수정)
+### 4.4 `type: "code"` – 코드 작성/수정
+
+추가 필드:
+
+* `expectedCode` : 정답 코드 문자열 (학생이 작성해야 하는 부분)
+* `hint` : 선택 사항. 힌트 문자열 (없으면 `""` 또는 생략)
+
+**채점 규칙(요약)**
+
+`expectedCode`와 학생 입력을 `normalizeCode()`로 정규화한 뒤, 문자열 비교합니다.
+
+정규화에서 하는 일 (요약):
+
+* 줄바꿈 통일 (`\r\n` → `\n`)
+* 한 줄/여러 줄 주석 제거
+* 연속된 공백을 한 칸으로 축소
+* `(`, `)`, `;`, `,`, 연산자 주변의 불필요한 공백 제거
+
+→ 즉,
+
+* 들여쓰기, 탭/스페이스 차이
+* 연산자 주변 공백 (`n*i` vs `n * i`)
+* 줄 나누는 위치
+* 주석 유무
+
+정도는 **모두 허용**됩니다.
+단, **토큰(변수명/연산자/순서)**이 바뀌면 오답입니다.
+
+예시:
 
 ```json
 {
-  "id": "code1",
+  "id": "code2",
   "type": "code",
   "level": "코드 작성",
-  "title": "Code 1. 1 이상 10 이하 조건식 작성",
-  "description": "/* 여기에 조건식 작성 */ 부분에 들어갈 코드를 쓰세요.",
-  "code": "int n;\nscanf(\"%d\", &n);\nif ( /* 여기에 작성 */ ) {\n    printf(\"InRange\\n\");\n}",
-  "expectedCode": "n >= 1 && n <= 10",
-  "hint": "공백은 크게 상관 없습니다. && 연산자를 사용하세요."
+  "title": "Code 2. 두 정수 입력 받기",
+  "description": "정수 변수 a, b에 값을 각각 입력받는 scanf 문을 한 줄로 작성하세요.\n(두 수는 공백으로 구분해서 들어옵니다.)",
+  "code": "int a, b;\n// 여기에 scanf 한 줄을 작성하세요.",
+  "expectedCode": "scanf(\"%d %d\", &a, &b);",
+  "hint": "서로 다른 두 변수를 &a, &b 순서로 넣어야 합니다."
 }
 ```
 
-채점:
+---
 
-* `normalizeCode`로 사용자 입력과 `expectedCode`를 모두 정규화
-  (개행, 공백, 주석, 연산자 주변 공백 제거 등)
-* 구조가 동일하면 정답 처리 (공백/줄 바뀜에 덜 민감함)
+## 5. 동작 흐름(요약)
+
+1. **index.html**
+
+   * `categories.json` → 카테고리 목록 렌더링
+   * `sets.index.json` → 세트 목록 렌더링
+   * 세트 버튼 클릭 시 `practice.html?set=세트ID` 로 이동
+
+2. **practice.html + practice.js**
+
+   * 쿼리스트링의 `set` 값으로 해당 세트 JSON(`data/sets/…`) 로드
+   * 문제 리스트 렌더링, HUD(타이머/네비게이션 등) 초기화
+   * 사용자가 푼 답안을 `localStorage`에 저장하여, **뒤로 갔다가 다시 들어와도 이전 답안을 복원** (개발 내용 기준)
+
+3. **채점**
+
+   * MCQ : `correctIndex` 비교
+   * Short : `expectedText` 또는 `expectedAnyOf`와 정규화 비교
+   * Code : `expectedCode`와 `normalizeCode()` 비교
 
 ---
 
-## 5. 동작 흐름 요약
+## 6. 새 문제 / 새 세트 / 새 카테고리 추가 가이드
 
-### 5.1 index.html
+### 6.1 기존 세트에 “문제 하나 더” 추가
 
-* `assets/js/index.js` 에서:
+1. `data/sets/<세트ID>.json` 파일을 연다.
+2. `problems` 배열 맨 끝 또는 원하는 위치에 새 문제 객체를 추가한다.
+3. **`sets.index.json`에서 해당 세트의 `numProblems` 값을 1 증가**시킨다.
 
-  ```js
-  const [categories, sets] = await Promise.all([
-    ProblemService.listCategories(),
-    ProblemService.listSets()
-  ]);
-  ```
-
-* `categories`를 `order` 기준으로 정렬 후,
-
-* `sets`를 `categoryId`별로 묶어서,
-
-* 각 세트는 `practice.html?set=세트ID` 링크로 렌더링
+> 문제 ID는 `"mcq6"`, `"short3"`, `"code3"`처럼 간단히 번호를 이어가면 됩니다.
 
 ---
 
-### 5.2 practice.html
+### 6.2 새 세트 추가 (예: Python while문 챌린지 1회차)
 
-* URL에서 `set` 파라미터 읽기:
+1. **세트 JSON 파일 만들기**
 
-  ```js
-  const setId = new URLSearchParams(location.search).get("set");
-  currentSetData = await ProblemService.loadSet(setId);
-  ```
-
-* `currentSetData.problems` 를 순회하며 문제 카드 렌더:
-
-  * `type === "mcq"` → 라디오 + 보기 카드
-  * `type === "short"` → 단답형 textarea
-  * `type === "code"` → 코드 입력 textarea
-
-* `채점하기` 버튼 클릭 시:
-
-  * 각 문제 유형별로 정답 비교
-  * 카드 하단 `feedback` 영역에 ✅/❌ 보여주고
-  * 상단 `score` 영역에 전체 정답 개수 표시
-
----
-
-### 5.3 ProblemService 레이어 (local 버전)
-
-`assets/js/config.js`:
-
-```js
-const APP_CONFIG = {
-  mode: "local",
-  dataBasePath: "./data"
-};
-```
-
-`assets/js/services/problemService.local.js`:
-
-```js
-const ProblemService = {
-  async listCategories() {
-    const res = await fetch(`${APP_CONFIG.dataBasePath}/categories.json`);
-    if (!res.ok) throw new Error("failed to load categories");
-    return res.json();
-  },
-
-  async listSets() {
-    const res = await fetch(`${APP_CONFIG.dataBasePath}/sets.index.json`);
-    if (!res.ok) throw new Error("failed to load sets index");
-    return res.json();
-  },
-
-  async loadSet(setId) {
-    const sets = await this.listSets();
-    const meta = sets.find((s) => s.id === setId);
-    if (!meta) {
-      throw new Error(`Unknown setId: ${setId}`);
-    }
-
-    const res = await fetch(
-      `${APP_CONFIG.dataBasePath}/sets/${meta.file}`
-    );
-    if (!res.ok) throw new Error(`failed to load set: ${meta.file}`);
-    return res.json();
-  }
-};
-```
-
-나중에 학원 서버 API로 연동할 때는,
-이 인터페이스를 유지한 채 `fetch("/api/...")`를 사용하는 `problemService.api.js`로 교체하면 됨.
-
----
-
-## 6. 새 문제 / 새 세트 추가 가이드
-
-### 6.1 기존 세트에 문제 추가
-
-1. `data/sets/{세트ID}.json` 파일 열기
-   (예: `data/sets/c_if_b1.json`)
-2. `problems` 배열 끝에 새로운 문제 객체 추가
-
-   * `id`는 세트 내에서 고유하게
-   * `type`에 맞춰 `mcq` / `short` / `code` 템플릿 사용
-3. (선택) `sets.index.json`에서 해당 세트의 `numProblems` 업데이트
-
----
-
-### 6.2 새 세트(회차) 추가
-
-예: `C 조건문 챌린지 1회차` → `c_if_c1`
-
-1. `data/sets/c_if_c1.json` 생성:
+   * `data/sets/py_while_c1.json` 같은 이름으로 새 파일 생성.
+   * 최소 구조:
 
    ```json
    {
-     "id": "c_if_c1",
-     "title": "C 조건문 챌린지 1회차",
-     "categoryId": "c_if",
-     "availableLanguages": ["c"],
+     "id": "py_while_c1",
+     "title": "Python while문 챌린지 1회차",
+     "categoryId": "py_while",
+     "availableLanguages": ["python"],
      "problems": [
-       /* 문제들... */
+       {
+         "id": "mcq1",
+         "type": "mcq",
+         "level": "챌린지",
+         "title": "…",
+         "description": "…",
+         "code": "…",
+         "options": [ "…", "…", "…", "…" ],
+         "optionLabels": ["A","B","C","D"],
+         "correctIndex": 1
+       }
+       // 나머지 문제들 …
      ]
    }
    ```
 
-2. `data/sets.index.json` 에 메타데이터 추가:
+2. **`sets.index.json`에 메타데이터 추가**
 
    ```json
    {
-     "id": "c_if_c1",
-     "categoryId": "c_if",
-     "title": "C 조건문 챌린지 1회차",
+     "id": "py_while_c1",
+     "categoryId": "py_while",
+     "title": "Python while문 챌린지 1회차",
      "round": 2,
      "difficulty": "challenge",
-     "numProblems": 8,
-     "file": "c_if_c1.json"
+     "numProblems": 9,
+     "file": "py_while_c1.json"
    }
    ```
 
-3. 서버 실행 후 `index.html` 에서 C - 조건문 아래에 2회차 세트가 보이는지 확인
+3. 브라우저에서 새로고침 후 메인 화면에서 카테고리/세트가 잘 보이는지 확인.
 
 ---
 
-### 6.3 새 언어/카테고리 추가 (예: Python, Java)
+### 6.3 새 카테고리 추가 (예: Python - Lv9 함수)
 
-1. `data/categories.json` 에 새 카테고리 추가:
+1. **`categories.json`에 항목 추가**
 
    ```json
-   { "id": "py_if", "name": "Python - 조건문", "order": 30 }
+   { "id": "py_func", "name": "Python - Lv9 함수", "order": 90 }
    ```
 
-2. `data/sets/py_if_b1.json` 등 세트 파일 추가
-
-3. `data/sets.index.json` 에 세트 메타데이터 추가:
+2. **`sets.index.json`에 이 카테고리를 사용하는 세트 정보 추가**
 
    ```json
    {
-     "id": "py_if_b1",
-     "categoryId": "py_if",
-     "title": "Python 조건문 기초 1회차",
+     "id": "py_func_b1",
+     "categoryId": "py_func",
+     "title": "Python 함수 기초 1회차",
      "round": 1,
      "difficulty": "basic",
-     "numProblems": 9,
-     "file": "py_if_b1.json"
+     "numProblems": 8,
+     "file": "py_func_b1.json"
    }
    ```
 
+3. `data/sets/py_func_b1.json` 파일을 만들어 문제들을 채운다.
+
 ---
 
-## 7. 향후 확장 방향 (초기 설계 의도)
+## 7. 언어별 출제 스타일 규칙
 
-* **제출/점수 저장**
+### 7.1 C 언어
 
-  * 로그인된 학생 정보와 함께 `POST /api/.../submit` 형태로 점수 기록
-  * DB에 `user_id`, `quiz_id`, `score`, `detail_json` 등을 저장
-* **1회 제출 제한**
+* 입력 : `scanf("%d", &n);` 형식 사용
 
-  * 서버에서 `UNIQUE (user_id, quiz_id)` 제약 또는 `attempt` 카운트
-* **언어별 코드 통합**
+* 출력 : 항상 `printf("...\n");` 형태로 개행 포함
 
-  * 현재는 세트 단위로 언어를 분리했지만,
-  * 나중에는 문제 단위에 `codeByLang` 구조를 도입해
-    같은 개념을 언어별로 스위칭하는 연습도 가능
+* 전체 프로그램이 필요한 경우:
 
-현재 구조(HTML/JS/JSON 분리 + ProblemService 레이어)는
-이런 확장을 고려한 초석 역할을 합니다.
+  ```c
+  #include <stdio.h>
+
+  int main(void) {
+      int n;
+      scanf("%d", &n);
+      ...
+      return 0;
+  }
+  ```
+
+* 부분 코드만 필요하면 `#include` / `main`은 생략하고 필요한 부분만 `code`/`options`에 넣는다.
+
+### 7.2 Python
+
+* 입력 : `n = int(input())` / `a, b = map(int, input().split())` 형태 사용
+
+* **출력은 통일성 때문에 모두 C 스타일 서식문자 사용**:
+
+  * 한 값: `print('%d' % n)`
+  * 두 값: `print('%d %d' % (a, b))`
+  * 식 표현: `print('%d + %d = %d' % (a, b, a + b))`
+  * 반복문 예: `print('%d x %d = %d' % (n, i, n * i))`
+
+* 힌트는 다음 문구를 기본 형식으로 사용:
+
+  * `print('%d x %d = %d' % (?, ?, ?)) 형태를 사용하세요.`
+
+> 이렇게 맞춰두면 학생들이 **입력/출력 패턴을 그대로 연습**할 수 있고, 코드 채점도 안정적입니다.
+
+### 7.3 Java
+
+* 입력 : `Scanner sc = new Scanner(System.in);`
+* 출력 : `System.out.println()` 또는 `System.out.printf()` 사용
+* 예시:
+
+  ```java
+  import java.util.Scanner;
+
+  public class Main {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          int n = sc.nextInt();
+          if (n >= 60) {
+              System.out.println("Pass");
+          } else {
+              System.out.println("Fail");
+          }
+      }
+  }
+  ```
+
+---
+
+## 8. 난이도 규칙
+
+세트 단위 난이도(`sets.index.json`의 `difficulty`)는 **두 가지**만 사용합니다.
+
+* `"basic"` : 처음 배우는 학생용.
+
+  * 단순한 조건/반복, 실행 추적, 기본 입출력 위주
+* `"challenge"` : 어느 정도 익숙한 학생용.
+
+  * 실수하기 좋은 부분, 복합 조건, 약간의 응용 로직 포함
+
+문제 객체의 `level` 필드는 세트 안에서 **설명용 레이블**이므로 자유롭게 써도 되지만,
+가능하면 다음 정도로 통일합니다.
+
+* `"기초"` / `"조금 응용"` / `"챌린지"` / `"단답형"` / `"코드 작성"`
+
+---
+
+## 9. 앞으로 문제를 만들 때 최소 체크리스트
+
+1. **어느 카테고리에 넣을지 결정**
+
+   * 기존 카테고리 사용 or `categories.json`에 새 카테고리 추가
+
+2. **세트 ID와 파일명 정하기**
+
+   * 규칙: `<언어>_<파트>_<난이도><회차>`
+
+     * 예: `py_if_b1`, `c_for_c1`, `py_while_b1`
+
+3. **`data/sets/<id>.json` 작성**
+
+   * 루트 필드: `id`, `title`, `categoryId`, `availableLanguages`, `problems`
+   * 각 문제는 `type`에 맞게 필드 세팅
+
+4. **`sets.index.json`에 세트 정보 한 줄 추가**
+
+   * `id`, `categoryId`, `title`, `round`, `difficulty`, `numProblems`, `file`
+
+5. **로컬 서버에서 테스트**
+
+   * 메인 목록에 잘 뜨는지
+   * 모든 문제 렌더링/채점이 정상 동작하는지 확인
+
+이 규칙만 지키면, 나중에 서버로 옮겨도 **JSON 구조는 그대로 재사용**할 수 있습니다.
+

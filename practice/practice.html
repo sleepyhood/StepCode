@@ -12,6 +12,11 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css"
   />
+  <!-- Prism line-numbers 플러그인 -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css"
+/>
   </head>
   <body>
     <div class="app-container">
@@ -40,21 +45,25 @@
 
 
 
-  <!-- HUD: 문제 이동 / 스크롤 컨트롤 -->
+  <!-- HUD: 목차(목록/위치) + 위/아래 -->
   <div class="nav-hud">
-    <button id="btn-prev">
-      <span class="icon">▲</span><span>이전 문제</span>
+    <!-- 1. 목차 버튼 (목록/위치 토글) -->
+    <button id="btn-index" class="hud-main">
+      <span class="icon">≡</span><span>목차</span>
     </button>
-    <button id="btn-next">
-      <span class="icon">▼</span><span>다음 문제</span>
-    </button>
+
+    <!-- 문제 목록 패널 (초기에는 숨김) -->
+    <div id="hud-index-panel" class="hud-index-panel"></div>
+
+    <!-- 2. 위로 / 아래로 버튼 -->
     <button id="btn-top">
-      <span class="icon">⬆</span><span>TOP</span>
+      <span class="icon">⬆</span><span>위로</span>
     </button>
     <button id="btn-bottom">
-      <span class="icon">⬇</span><span>BOTTOM</span>
+      <span class="icon">⬇</span><span>아래로</span>
     </button>
   </div>
+
 
     </div>
 
@@ -64,6 +73,8 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
 
     <script src="assets/js/config.js"></script>
     <script src="assets/js/services/problemService.local.js"></script>

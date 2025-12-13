@@ -72,17 +72,17 @@
       "id": "mcq5",
       "type": "mcq",
       "level": "기초",
-      "title": "MCQ 5. 변수 설계",
-      "description": "다음 요구사항을 만족하려고 합니다.\n- 국어 점수와 영어 점수를 입력받는다.\n- 두 점수의 평균(정수 나눗셈)을 출력한다.\n\n필요한 변수 설계로 가장 적절한 것은?",
+      "title": "MCQ 5. 학점 조건식",
+      "description": "다음은 점수에 따라 학점을 출력하려는 프로그램입니다.\n- 90 이상이면 \"A\"\n- 80 이상 90 미만이면 \"B\"\n- 나머지는 \"C\"를 출력하려고 합니다.\n올바른 코드 한 개를 고르세요.",
       "code": null,
       "options": [
-        "kor = eng = avg = 0",
-        "kor = eng = avg = 0.0",
-        "score = 0",
-        "kor = eng = avg = \"\""
+        "score = int(input())\nif score >= 90:\n    print(\"A\")\nif score >= 80:\n    print(\"B\")\nelse:\n    print(\"C\")",
+        "score = int(input())\nif score >= 80:\n    print(\"B\")\nelif score >= 90:\n    print(\"A\")\nelse:\n    print(\"C\")",
+        "score = int(input())\nif score >= 90:\n    print(\"A\")\nelif score >= 80:\n    print(\"B\")\nelse:\n    print(\"C\")",
+        "score = int(input())\nif score > 90:\n    print(\"A\")\nelif score > 80:\n    print(\"B\")\nelse:\n    print(\"C\")"
       ],
       "optionLabels": ["A", "B", "C", "D"],
-      "correctIndex": 0
+      "correctIndex": 2
     },
     {
       "id": "short1",
@@ -110,17 +110,17 @@
       "description": "변수 n이 1 이상 10 이하일 때만 if 안이 실행되도록, 괄호 안의 조건식을 작성하세요.\n\nif 뒤에 들어갈 조건식을 한 줄로 쓰세요.\n(연속 비교: 1 <= n <= 10 형태를 사용하세요.)",
       "code": "n = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print(\"InRange\")",
       "expectedCode": "1 <= n <= 10",
-      "hint": "Python에서는 1 <= n <= 10 처럼 연속 비교를 쓸 수 있습니다."
+      "hint": "Python에서는 ? <= n <= ? 처럼 연속 비교를 쓸 수 있습니다."
     },
     {
       "id": "code2",
       "type": "code",
       "level": "코드 작성",
-      "title": "Code 2. 두 정수 입력 받기",
-      "description": "두 정수 a, b를 한 줄에서 공백으로 구분하여 입력받는 코드를 한 줄로 작성하세요.\nmap과 split을 사용해 보세요.",
-      "code": "a, b = 0, 0\n# 여기에 입력을 받는 한 줄을 작성하세요.",
-      "expectedCode": "a, b = map(int, input().split())",
-      "hint": "a, b = map(int, input().split()) 형태를 사용합니다."
+      "title": "Code 2. 두 조건을 모두 만족해야 Pass",
+      "description": "정수 score와 absent를 입력받았을 때,\n- score가 60 이상이고\n- absent(결석 횟수)가 5 미만일 때만 \"Pass\"를 출력하고,\n그렇지 않으면 \"Fail\"을 출력하는 조건식을 작성하세요.\n\nif 뒤 괄호 안에 들어갈 조건식만 한 줄로 쓰면 됩니다.",
+      "code": "score = int(input())\nabsent = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print(\"Pass\")\nelse:\n    print(\"Fail\")",
+      "expectedCode": "score >= 60 and absent < 5",
+      "hint": "두 조건을 and 로 묶어서 사용할 수 있습니다."
     }
   ]
 }
