@@ -237,6 +237,20 @@
   }
 }
 
+
+.grade-meta {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+#grade-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
 /* ===== HUD (이전/다음/TOP/BOTTOM) ===== */
 
 .nav-hud {

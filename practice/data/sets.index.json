@@ -30,10 +30,19 @@
     "id": "py_if_b2",
     "categoryId": "py_if",
     "title": "Python 조건문 기초 2회차",
-    "round": 3,
+    "round": 2,
     "difficulty": "basic",
     "numProblems": 9,
     "file": "py_if_b2.json"
+  },
+        {
+    "id": "py_if_b3",
+    "categoryId": "py_if",
+    "title": "Python 조건문 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_if_b3.json"
   },
   {
     "id": "java_if_b1",
@@ -100,13 +109,31 @@
   "file": "py_while_b1.json"
 },
 {
+  "id": "py_if_b4",
+  "title": "Python 조건문 기초 4회차",
+  "categoryId": "py_if",
+  "round": 4,
+  "difficulty": "basic",
+  "numProblems": 9,
+      "file": "py_if_b4.json"
+},
+{
     "id": "py_if_c1",
     "categoryId": "py_if",
     "title": "Python 조건문 챌린지 1회차",
-    "round": 2,
+    "round": 5,
     "difficulty": "challenge",
     "numProblems": 9,
     "file": "py_if_c1.json"
+  },
+  {
+    "id": "py_if_c2",
+    "categoryId": "py_if",
+    "title": "Python 조건문 챌린지 1회차",
+    "round": 6,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_if_c2.json"
   }
 
 

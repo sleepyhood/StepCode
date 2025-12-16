@@ -43,6 +43,58 @@ function recordAnswer(questionId, value) {
 }
 // ▲ 여기까지 추가 ▲
 
+// ====== 채점 메타(제출 횟수/쿨다운) ======
+const GRADE_META_PREFIX = "stepcode:gradeMeta:";
+const GRADE_COOLDOWN_MS = 20000; // 20초 (원하면 숫자만 바꾸면 됨)
+
+function getGradeMetaKey(setId) {
+  return `${GRADE_META_PREFIX}${setId}`;
+}
+
+function getTodayYmd() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+function loadGradeMeta(setId) {
+  const today = getTodayYmd();
+
+  if (!window.localStorage) {
+    return { date: today, attempts: 0, lastGradeAt: 0 };
+  }
+
+  try {
+    const raw = localStorage.getItem(getGradeMetaKey(setId));
+    if (!raw) return { date: today, attempts: 0, lastGradeAt: 0 };
+
+    const parsed = JSON.parse(raw);
+    if (!parsed || parsed.date !== today) {
+      return { date: today, attempts: 0, lastGradeAt: 0 };
+    }
+
+    return {
+      date: today,
+      attempts: Number(parsed.attempts) || 0,
+      lastGradeAt: Number(parsed.lastGradeAt) || 0
+    };
+  } catch (e) {
+    return { date: today, attempts: 0, lastGradeAt: 0 };
+  }
+}
+
+function saveGradeMeta(setId, meta) {
+  if (!window.localStorage) return;
+  try {
+    localStorage.setItem(getGradeMetaKey(setId), JSON.stringify(meta));
+  } catch (e) {
+    console.warn("failed to save grade meta", e);
+  }
+}
+
+
 document.addEventListener("DOMContentLoaded", initPractice);
 
 // ====== 초기화 ======
@@ -302,71 +354,109 @@ function renderTextArea(card, q) {
 function setupGrading() {
   const gradeButton = document.getElementById("grade-btn");
   const scoreEl = document.getElementById("score");
+  const metaEl = document.getElementById("grade-meta");
 
   if (!gradeButton) return;
 
+  let meta = loadGradeMeta(currentSetId);
+  let ticker = null;
+
+  const remainingMs = () => {
+    const last = meta.lastGradeAt || 0;
+    const elapsed = Date.now() - last;
+    return Math.max(0, GRADE_COOLDOWN_MS - elapsed);
+  };
+
+  const updateUi = () => {
+    // 날짜 바뀌면 자동 리셋
+    const today = getTodayYmd();
+    if (meta.date !== today) {
+      meta = { date: today, attempts: 0, lastGradeAt: 0 };
+      saveGradeMeta(currentSetId, meta);
+    }
+
+    const rem = remainingMs();
+    const sec = Math.ceil(rem / 1000);
+
+    if (rem > 0) {
+      gradeButton.disabled = true;
+      gradeButton.textContent = `채점 대기 ${sec}초 (오늘 ${meta.attempts}회)`;
+      if (metaEl) metaEl.textContent = `오늘 채점 ${meta.attempts}회 · 다음 채점까지 ${sec}초`;
+    } else {
+      gradeButton.disabled = false;
+      gradeButton.textContent = `채점하기 (오늘 ${meta.attempts}회)`;
+      if (metaEl) metaEl.textContent = `오늘 채점 ${meta.attempts}회`;
+    }
+  };
+
+  const startTickerIfNeeded = () => {
+    const rem = remainingMs();
+    if (rem <= 0) {
+      if (ticker) {
+        clearInterval(ticker);
+        ticker = null;
+      }
+      updateUi();
+      return;
+    }
+
+    if (ticker) return;
+    updateUi();
+
+    ticker = setInterval(() => {
+      const left = remainingMs();
+      if (left <= 0) {
+        clearInterval(ticker);
+        ticker = null;
+      }
+      updateUi();
+    }, 250);
+  };
+
+  // 초기 상태 반영
+  updateUi();
+  startTickerIfNeeded();
+
   gradeButton.addEventListener("click", () => {
+    meta = loadGradeMeta(currentSetId);
+
+    if (remainingMs() > 0) {
+      startTickerIfNeeded();
+      return;
+    }
+
     const questions = currentSetData.problems || [];
     let correctCount = 0;
 
     questions.forEach((q) => {
-      const feedbackEl = document.querySelector(
-        `[data-feedback="${q.id}"]`
-      );
+      const feedbackEl = document.querySelector(`[data-feedback="${q.id}"]`);
       let isCorrect = false;
 
       if (q.type === "mcq") {
-        const selected = document.querySelector(
-          `input[name="${q.id}"]:checked`
-        );
-        if (selected) {
-          const chosenIndex = parseInt(selected.value, 10);
-          isCorrect = chosenIndex === q.correctIndex;
-        } else {
-          isCorrect = false;
-        }
+        const selected = currentAnswers[q.id];
+        isCorrect = String(selected) === String(q.correctIndex);
       } else if (q.type === "short") {
-        const inputEl = document.querySelector(
-          `[data-question="${q.id}"]`
-        );
+        const inputEl = document.querySelector(`[data-question="${q.id}"]`);
         const val = (inputEl && inputEl.value) || "";
 
         if (q.expectedAnyOf) {
           const norm = normalizeText(val);
-          isCorrect = q.expectedAnyOf.some(
-            (ans) => normalizeText(ans) === norm
-          );
+          isCorrect = q.expectedAnyOf.some((ans) => normalizeText(ans) === norm);
         } else if (q.expectedText) {
-          const normUser = normalizeText(val);
-          const normExp = normalizeText(q.expectedText);
-          isCorrect = normUser === normExp;
+          isCorrect = normalizeText(val) === normalizeText(q.expectedText);
         }
       } else if (q.type === "code") {
-  const inputEl = document.querySelector(
-    `[data-question="${q.id}"]`
-  );
-  const userCode = (inputEl && inputEl.value) || "";
-  const normUser = normalizeCode(userCode);
+        const inputEl = document.querySelector(`[data-question="${q.id}"]`);
+        const userCode = (inputEl && inputEl.value) || "";
+        const normUser = normalizeCode(userCode);
 
-  // expectedCode가 문자열 하나일 수도, 배열일 수도 있게 처리
-  let candidates = [];
+        let candidates = [];
+        if (Array.isArray(q.expectedCode)) candidates = q.expectedCode;
+        else if (typeof q.expectedCode === "string") candidates = [q.expectedCode];
+        if (Array.isArray(q.expectedCodes)) candidates = candidates.concat(q.expectedCodes);
 
-  if (Array.isArray(q.expectedCode)) {
-    candidates = q.expectedCode;
-  } else if (typeof q.expectedCode === "string") {
-    candidates = [q.expectedCode];
-  }
-
-  // (선택) expectedCodes라는 별도 배열도 허용하고 싶으면:
-  if (Array.isArray(q.expectedCodes)) {
-    candidates = candidates.concat(q.expectedCodes);
-  }
-
-  isCorrect = candidates
-    .filter(Boolean)
-    .some((code) => normalizeCode(code) === normUser);
-}
-
+        isCorrect = candidates.filter(Boolean).some((code) => normalizeCode(code) === normUser);
+      }
 
       if (feedbackEl) {
         if (isCorrect) {
@@ -382,9 +472,21 @@ function setupGrading() {
       }
     });
 
-    scoreEl.textContent = `총 ${currentSetData.problems.length}문제 중 ${correctCount}문제 정답`;
+    if (scoreEl) {
+      scoreEl.textContent = `총 ${currentSetData.problems.length}문제 중 ${correctCount}문제 정답`;
+    }
+
+    // ✅ 채점 메타 갱신 (횟수 + 쿨다운 시작)
+    meta.attempts += 1;
+    meta.lastGradeAt = Date.now();
+    meta.date = getTodayYmd();
+    saveGradeMeta(currentSetId, meta);
+
+    updateUi();
+    startTickerIfNeeded();
   });
 }
+
 
 // ====== HUD: 목차(목록/위치) + 위/아래 ======
 function setupHud() {
