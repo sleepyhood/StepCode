@@ -38,6 +38,27 @@
   gap: 12px;
 }
 
+
+/* ===== 교사용 로그 다운로드 버튼 ===== */
+.export-log-btn {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.export-log-btn:hover {
+  background: #f3f4f6;
+}
+
+.export-log-btn:active {
+  transform: translateY(1px);
+}
+
 /* 풀이 타이머 UI */
 .solve-timer {
   display: inline-flex;
@@ -201,6 +222,62 @@
   box-shadow: 0 0 0 1px #2563eb33;
   background: #f9fafb;
 }
+
+/* ===== Code/Output 배지 + 경고 ===== */
+.answer-field {
+  margin-top: 6px;
+}
+
+.answer-field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.answer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #374151;
+  user-select: none;
+}
+
+.answer-badge.badge-code {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  color: #3730a3;
+}
+
+.answer-badge.badge-output {
+  background: #ecfeff;
+  border-color: #a5f3fc;
+  color: #155e75;
+}
+
+.answer-warning {
+  display: none;
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: #b91c1c;
+}
+
+.answer-field.has-warning .answer-warning {
+  display: block;
+}
+
+.answer-field.has-warning .answer-input {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef444433;
+}
+
 
 /* ===== 피드백 / 힌트 ===== */
 
@@ -433,6 +510,8 @@ pre.line-numbers code {
   -moz-user-select: text !important;
   -ms-user-select: text !important;
   user-select: text !important;
+    font-family: Consolas, "Cascadia Mono", "JetBrains Mono", Menlo, Monaco, "Courier New", monospace !important;
+  font-weight: 500 !important;
 }
 
 /* CodeMirror 외형을 기존 .answer-input 느낌으로 맞추기 */
@@ -441,6 +520,8 @@ pre.line-numbers code {
   border-radius: 8px;
   font-size: 0.86rem;
   background: #ffffff;
+  line-height: 1.45;
+
 }
 
 /* 기본 높이가 너무 커지는 것 방지 */
