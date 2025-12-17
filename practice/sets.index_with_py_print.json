@@ -1,0 +1,146 @@
+[
+  {
+    "id": "c_if_b1",
+    "categoryId": "c_if",
+    "title": "C 조건문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_if_b1.json"
+  },
+  {
+    "id": "c_if_c1",
+    "categoryId": "c_if",
+    "title": "C 조건문 챌린지 1회차",
+    "round": 2,
+    "difficulty": "challenge",
+    "numProblems": 8,
+    "file": "c_if_c1.json"
+  },
+  {
+    "id": "py_if_b1",
+    "categoryId": "py_if",
+    "title": "Python 조건문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_if_b1.json"
+  },
+  {
+    "id": "py_if_b2",
+    "categoryId": "py_if",
+    "title": "Python 조건문 기초 2회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_if_b2.json"
+  },
+  {
+    "id": "java_if_b1",
+    "categoryId": "java_if",
+    "title": "Java 조건문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "java_if_b1.json"
+  },
+  {
+    "id": "py_input_b1",
+    "categoryId": "py_input",
+    "title": "Python 입력 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_input_b1.json"
+  },
+  {
+    "id": "py_for_b1",
+    "categoryId": "py_for",
+    "title": "Python for문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_for_b1.json"
+  },
+  {
+    "id": "py_for_c1",
+    "categoryId": "py_for",
+    "title": "Python for문 챌린지 1회차",
+    "round": 2,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_for_c1.json"
+  },
+  {
+    "id": "c_for_b1",
+    "categoryId": "c_for",
+    "title": "C for문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_for_b1.json"
+  },
+  {
+    "id": "c_for_c1",
+    "categoryId": "c_for",
+    "title": "C for문 챌린지 1회차",
+    "round": 2,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "c_for_c1.json"
+  },
+  {
+    "id": "py_while_b1",
+    "categoryId": "py_while",
+    "title": "Python while문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_while_b1.json"
+  },
+  {
+    "id": "py_if_c1",
+    "categoryId": "py_if",
+    "title": "Python 조건문 챌린지 1회차",
+    "round": 2,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_if_c1.json"
+  },
+  {
+    "id": "py_print_b1",
+    "categoryId": "py_print",
+    "title": "Python 출력 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_print_b1.json"
+  },
+  {
+    "id": "py_print_b2",
+    "categoryId": "py_print",
+    "title": "Python 출력 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_print_b2.json"
+  },
+  {
+    "id": "py_print_b3",
+    "categoryId": "py_print",
+    "title": "Python 출력 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_print_b3.json"
+  },
+  {
+    "id": "py_print_c1",
+    "categoryId": "py_print",
+    "title": "Python 출력 챌린지 1회차",
+    "round": 4,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_print_c1.json"
+  }
+]

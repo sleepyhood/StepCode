@@ -1,0 +1,161 @@
+{
+  "id": "py_var_b1",
+  "title": "Python 변수 기초 1회차",
+  "categoryId": "py_var",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 대입(=)은 값을 저장한다",
+      "description": "다음 중 변수 a에 10을 저장하는 문장은 무엇인가요?",
+      "code": null,
+      "options": [
+        "a = 10",
+        "a == 10",
+        "10 = a",
+        "a = '10'"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 값이 언제 바뀌는지",
+      "description": "아래 코드의 출력으로 알맞은 것을 고르세요.",
+      "code": "a = 3\nb = a\na = 5\nprint('%d %d' % (a, b))",
+      "options": [
+        "5 3",
+        "3 5",
+        "5 5",
+        "3 3"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 변수 이름 규칙",
+      "description": "다음 중 Python 변수 이름으로 사용할 수 있는 것은?",
+      "code": null,
+      "options": [
+        "2nd",
+        "my-score",
+        "my score",
+        "my_score"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 서식문자(%) 출력",
+      "description": "변수 x가 7일 때, 숫자 7을 출력하는 코드로 알맞은 것은?",
+      "code": null,
+      "options": [
+        "print('%d' % x)",
+        "print('%s' % x)",
+        "print('%d' % 'x')",
+        "print('%d' % '7')"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. 계산 결과를 변수에 저장",
+      "description": "아래 코드의 출력으로 알맞은 것을 고르세요.",
+      "code": "a = 2\na = a + 3\nprint('%d' % a)",
+      "options": [
+        "5",
+        "3",
+        "2",
+        "오류"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 실행 결과 예측",
+      "description": "아래 프로그램에서 입력이 4일 때, 출력되는 한 줄을 그대로 쓰세요.",
+      "code": "n = int(input())\nans = n + 1\nprint('%d' % ans)",
+      "expectedText": "5"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 덮어쓰기 실수 예측",
+      "description": "아래 프로그램에서 출력되는 한 줄을 그대로 쓰세요.",
+      "code": "a = 4\nb = 1\na = b\nb = a\nprint('%d %d' % (a, b))",
+      "expectedText": "1 1"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 변수에 값 저장",
+      "description": "아래 코드에서 TODO 한 줄에 들어갈 코드를 작성하세요.\n(한 줄만 제출)",
+      "code": "x = 0\n# TODO: x에 7을 저장하세요.\nprint('%d' % x)",
+      "expectedCode": "x = 7",
+      "expectedCodes": [
+        "x=7"
+      ],
+      "hint": "대입(=)은 값을 변수에 저장합니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 합을 변수에 저장",
+      "description": "아래 코드에서 TODO 한 줄에 들어갈 코드를 작성하세요.\n(한 줄만 제출)",
+      "code": "a = 3\nb = 5\ns = 0\n# TODO: s에 a+b를 저장하세요.\nprint('%d' % s)",
+      "expectedCode": "s = a + b",
+      "expectedCodes": [
+        "s=a+b",
+        "s=a +b",
+        "s=a+b"
+      ],
+      "hint": "계산 결과를 먼저 변수에 저장한 뒤 출력합니다."
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "id": "py_input_c1",
+  "title": "Python 입력 챌린지 1회차",
+  "categoryId": "py_input",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. split(\" \") 버그를 드러내는 입력",
+      "description": "아래 코드는 두 정수를 입력받아 더하려고 합니다.\n다음 중 이 코드의 버그를 확실히 드러내는 입력을 고르세요.",
+      "code": "a, b = map(int, input().split(\" \"))\nprint('%d' % (a + b))",
+      "options": [
+        "3 5",
+        "3    5",
+        "0 0",
+        "-1 2"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. 서식문자 개수 불일치(디버깅)",
+      "description": "다음 프로그램의 문제점에 대한 설명으로 가장 알맞은 것을 고르세요.",
+      "code": "a, b = map(int, input().split())\nprint('%d %d %d' % (a, b))",
+      "options": [
+        "입력에서 int로 바꾸지 않아서 문자열 덧셈이 일어난다.",
+        "서식 지정자(%d) 개수(3개)와 값의 개수(2개)가 맞지 않는다.",
+        "a와 b의 순서가 바뀌어야 한다.",
+        "input().split()은 항상 오류를 일으킨다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. int 변환을 안 하면 생기는 문제",
+      "description": "아래 코드에서 입력이 \"3 5\"일 때 결과로 알맞은 것을 고르세요.",
+      "code": "a, b = input().split()\nprint('%d' % (a + b))",
+      "options": [
+        "8이 출력된다.",
+        "35가 출력된다.",
+        "a+b는 문자열이 되어 %d에 넣을 수 없어 오류가 발생한다.",
+        "ValueError가 발생한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 4. int(input().split())는 왜 틀릴까?",
+      "description": "다음 코드가 틀린 이유로 가장 알맞은 것을 고르세요.",
+      "code": "a, b = int(input().split())",
+      "options": [
+        "split()은 문자열에만 사용할 수 있으므로 항상 실패한다.",
+        "int()는 문자열 한 개만 받을 수 있는데, split() 결과는 여러 조각이라서 실패한다.",
+        "a, b는 정수 변수라서 입력을 받을 수 없다.",
+        "input()은 두 값을 반환하지 않아서 실패한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 5. 한 줄만 고쳐서 통과시키기",
+      "description": "아래 코드는 공백이 여러 개여도 두 정수를 입력받아 합을 출력해야 합니다.\nTODO 한 줄을 고친 코드로 올바른 것을 고르세요.",
+      "code": "a = 0\nb = 0\n# TODO: 여기 한 줄을 고치세요.\na, b = map(int, input().split(' '))\nprint('%d' % (a + b))",
+      "options": [
+        "a, b = map(int, input().split())",
+        "a, b = int(input().split())",
+        "a, b = input().split(); a = int(a); b = int(b)  # split(' ') 그대로 둬야 한다",
+        "a, b = map(int, input())"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 공백이 여러 개인 입력도 처리",
+      "description": "아래 프로그램에서 입력이 \"3    5\"(공백이 여러 개)일 때,\n출력되는 한 줄을 그대로 쓰세요. (따옴표는 쓰지 마시오)",
+      "code": "a, b = map(int, input().split())\nprint('%d' % (a + b))",
+      "expectedText": "8"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 이름:나이 출력",
+      "description": "아래 프로그램에서 입력이 \"Tom 15\"일 때,\n출력되는 한 줄을 그대로 쓰세요. (따옴표는 쓰지 마시오)",
+      "code": "name, age = input().split()\nprint('%s:%d' % (name, int(age)))",
+      "expectedText": "Tom:15"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. split(\" \")을 split()으로 고치기",
+      "description": "공백이 여러 개여도 두 정수를 안전하게 입력받으려 합니다.\n아래 TODO에 들어갈 코드를 한 줄 작성하세요. (출력은 이미 작성되어 있음)",
+      "code": "a = 0\nb = 0\n# TODO: 아래 한 줄을 올바르게 작성하세요.\na, b = map(int, input().split(' '))\nprint('%d' % (a + b))",
+      "expectedCode": "a, b = map(int, input().split())",
+      "expectedCodes": [
+        "a,b=map(int,input().split())"
+      ],
+      "hint": "split()은 공백이 여러 개여도 안전합니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 이름과 나이 출력(나이만 int, % 사용)",
+      "description": "입력 한 줄에 \"이름 나이\"가 들어옵니다.\n아래 TODO에 들어갈 print 한 줄을 작성하세요.\n- name은 문자열\n- age는 정수로 변환해서 %d 자리에 넣기",
+      "code": "name, age = input().split()\n# TODO: print 한 줄을 작성하세요.",
+      "expectedCode": "print('%s %d' % (name, int(age)))",
+      "expectedCodes": [
+        "print('%s %d'%(name,int(age)))",
+        "print(\"%s %d\"%(name,int(age)))"
+      ],
+      "hint": "age는 문자열이므로 int(age)로 바꿔서 %d에 넣어야 합니다."
+    }
+  ]
+}

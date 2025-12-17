@@ -12,7 +12,7 @@
       "level": "기초",
       "title": "MCQ 1. else는 어느 if에 붙을까? (중첩 if)",
       "description": "아래 코드에서 입력이\nx = 1, y = -1 일 때 출력으로 알맞은 것을 고르세요.",
-      "code": "x = int(input())\ny = int(input())\n\nif x > 0:\n    if y > 0:\n        print(\"A\")\n    else:\n        print(\"B\")\nelse:\n    print(\"C\")",
+      "code": "x = int(input())\ny = int(input())\n\nif x > 0:\n    if y > 0:\n        print('%s' % 'A')\n    else:\n        print('%s' % 'B')\nelse:\n    print('%s' % 'C')",
       "options": [
         "A",
         "B",
@@ -33,7 +33,7 @@
       "level": "기초",
       "title": "MCQ 2. if가 두 개면 else는 어디에 붙을까?",
       "description": "아래 코드에서 입력이 1일 때 출력으로 알맞은 것을 고르세요.",
-      "code": "n = int(input())\n\nif n > 0:\n    print(\"P\")\nif n == 0:\n    print(\"Z\")\nelse:\n    print(\"N\")",
+      "code": "n = int(input())\n\nif n > 0:\n    print('%s' % 'P')\nif n == 0:\n    print('%s' % 'Z')\nelse:\n    print('%s' % 'N')",
       "options": [
         "P",
         "P\nZ",
@@ -54,7 +54,7 @@
       "level": "기초",
       "title": "MCQ 3. 자주 하는 실수: a == 1 or 2",
       "description": "아래 코드에서 입력이 0일 때 출력으로 알맞은 것을 고르세요.",
-      "code": "a = int(input())\n\nif a == 1 or 2:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
+      "code": "a = int(input())\n\nif a == 1 or 2:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
       "options": [
         "YES",
         "NO",
@@ -117,7 +117,7 @@
       "level": "단답형",
       "title": "Short 1. 출력 예측: and/or 우선순위",
       "description": "아래 코드에서 입력이 `0 1 0`일 때 출력되는 한 줄을 그대로 쓰세요.\n(따옴표는 쓰지 마시오)",
-      "code": "a, b, c = map(int, input().split())\n\nif a > 0 and b > 0 or c == 0:\n    print(\"OK\")\nelse:\n    print(\"NO\")",
+      "code": "a, b, c = map(int, input().split())\n\nif a > 0 and b > 0 or c == 0:\n    print('%s' % 'OK')\nelse:\n    print('%s' % 'NO')",
       "expectedText": "OK"
     },
     {
@@ -126,7 +126,7 @@
       "level": "단답형",
       "title": "Short 2. 출력 예측: else가 붙는 위치",
       "description": "아래 코드에서 입력이\nx = 1, y = -1 일 때 출력되는 한 줄을 그대로 쓰세요.\n(따옴표는 쓰지 마시오)",
-      "code": "x = int(input())\ny = int(input())\n\nif x > 0:\n    if y > 0:\n        print(\"A\")\n    else:\n        print(\"B\")\nelse:\n    print(\"C\")",
+      "code": "x = int(input())\ny = int(input())\n\nif x > 0:\n    if y > 0:\n        print('%s' % 'A')\n    else:\n        print('%s' % 'B')\nelse:\n    print('%s' % 'C')",
       "expectedText": "B"
     },
     {
@@ -135,7 +135,7 @@
       "level": "코드 작성",
       "title": "Code 1. not 없이 같은 의미로 바꾸기 (드모르간)",
       "description": "정수 n이 1 이상 9 이하가 아닐 때만 \"OUT\"이 출력되도록 하려 합니다.\n아래 코드에서 if 뒤의 조건식을 not 없이 한 줄로 작성하세요.\n(반드시 or를 사용하세요.)",
-      "code": "n = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print(\"OUT\")\nelse:\n    print(\"IN\")",
+      "code": "n = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print('%s' % 'OUT')\nelse:\n    print('%s' % 'IN')",
       "expectedCodes": [
         "n < 1 or n > 9",
         "n > 9 or n < 1"
@@ -148,7 +148,7 @@
       "level": "코드 작성",
       "title": "Code 2. a가 1 또는 2일 때만 YES",
       "description": "정수 a가 1 또는 2일 때만 \"YES\"가 출력되도록 하려 합니다.\n아래 코드에서 if 뒤의 조건식을 올바르게 한 줄로 작성하세요.\n(주의: `a == 1 or 2` 는 올바른 조건이 아닙니다.)",
-      "code": "a = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
+      "code": "a = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
       "expectedCodes": [
         "a == 1 or a == 2",
         "a == 2 or a == 1"

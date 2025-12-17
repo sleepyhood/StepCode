@@ -134,8 +134,115 @@
     "difficulty": "challenge",
     "numProblems": 9,
     "file": "py_if_c2.json"
+  },
+   {
+    "id": "py_input_b2",
+    "categoryId": "py_input",
+    "title": "Python 입력 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_input_b2.json"
+  },
+  {
+    "id": "py_input_b3",
+    "categoryId": "py_input",
+    "title": "Python 입력 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_input_b3.json"
+  },
+  {
+    "id": "py_input_c1",
+    "categoryId": "py_input",
+    "title": "Python 입력 챌린지 1회차",
+    "round": 4,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_input_c1.json"
+  },
+  {
+  "id": "py_var_b1",
+  "categoryId": "py_var",
+  "title": "Python 변수 기초 1회차",
+  "round": 1,
+  "difficulty": "basic",
+  "numProblems": 9,
+  "file": "py_var_b1.json"
+},
+{
+  "id": "py_var_b2",
+  "categoryId": "py_var",
+  "title": "Python 변수 기초 2회차",
+  "round": 2,
+  "difficulty": "basic",
+  "numProblems": 9,
+  "file": "py_var_b2.json"
+},
+{
+  "id": "py_var_b3",
+  "categoryId": "py_var",
+  "title": "Python 변수 기초 3회차",
+  "round": 3,
+  "difficulty": "basic",
+  "numProblems": 9,
+  "file": "py_var_b3.json"
+},
+{
+  "id": "py_var_b4",
+  "categoryId": "py_var",
+  "title": "Python 변수 기초 4회차",
+  "round": 4,
+  "difficulty": "basic",
+  "numProblems": 9,
+  "file": "py_var_b4.json"
+},
+{
+  "id": "py_var_c1",
+  "categoryId": "py_var",
+  "title": "Python 변수 챌린지 1회차",
+  "round": 1,
+  "difficulty": "challenge",
+  "numProblems": 9,
+  "file": "py_var_c1.json"
+},
+  {
+    "id": "py_print_b1",
+    "categoryId": "py_print",
+    "title": "Python 출력 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_print_b1.json"
+  },
+  {
+    "id": "py_print_b2",
+    "categoryId": "py_print",
+    "title": "Python 출력 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_print_b2.json"
+  },
+  {
+    "id": "py_print_b3",
+    "categoryId": "py_print",
+    "title": "Python 출력 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_print_b3.json"
+  },
+  {
+    "id": "py_print_c1",
+    "categoryId": "py_print",
+    "title": "Python 출력 챌린지 1회차",
+    "round": 4,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_print_c1.json"
   }
-
 
 
 

@@ -17,6 +17,8 @@
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css"
 />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+
   </head>
   <body>
     <div class="app-container">
@@ -31,6 +33,13 @@
               <!-- practice.js에서 세트 정보 기반으로 채움 -->
             </select>
           </label>
+
+          <div class="solve-timer" title="누적 풀이시간 (탭을 벗어나면 자동 일시정지)">
+  <span class="solve-timer-label">⏱</span>
+  <span id="solve-timer">00:00</span>
+  <span id="solve-timer-state" class="solve-timer-state"></span>
+</div>
+
         </div>
       </header>
 
@@ -76,6 +85,9 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-java.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
 
     <script src="assets/js/config.js"></script>
     <script src="assets/js/services/problemService.local.js"></script>

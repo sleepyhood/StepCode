@@ -1,6 +1,16 @@
 [
   { "id": "c_if",   "name": "C - 조건문", "order": 106 },
   { "id": "c_for", "name": "C - Lv7 반복1(for)", "order": 107 },
+    {
+    "id": "py_print",
+    "name": "Python - Lv1 출력",
+    "order": 201
+  },
+  {
+    "id": "py_var",
+    "name": "Python - Lv2 변수",
+    "order": 202
+  },
   { "id": "py_input",  "name": "Python - Lv3 입력", "order": 203 },
   { "id": "py_if",  "name": "Python - Lv6 조건", "order": 206 },
   

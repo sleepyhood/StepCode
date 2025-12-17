@@ -14,10 +14,10 @@
       "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n입력: price(정수), is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")\n\n출력: 배송비(정수)\n- VIP(is_vip==\"Y\")는 항상 배송비 0\n- VIP가 아니고, 도서산간(is_remote==\"Y\")이면 배송비 5000\n- VIP가 아니고, 도서산간이 아니며(price>=50000)이면 배송비 0\n- 그 외에는 배송비 3000",
       "code": null,
       "options": [
-        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\":\n    print(0)\nelif is_remote == \"Y\":\n    print(5000)\nelif price >= 50000:\n    print(0)\nelse:\n    print(3000)",
-        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif price >= 50000:\n    print(0)\nelif is_remote == \"Y\":\n    print(5000)\nelif is_vip == \"Y\":\n    print(0)\nelse:\n    print(3000)",
-        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_remote == \"Y\":\n    print(5000)\nelif is_vip == \"Y\":\n    print(0)\nelif price >= 50000:\n    print(0)\nelse:\n    print(3000)",
-        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\" or price >= 50000:\n    print(0)\nelif is_remote == \"Y\":\n    print(5000)\nelse:\n    print(3000)"
+        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\":\n    print('%d' % 0)\nelif is_remote == \"Y\":\n    print('%d' % 5000)\nelif price >= 50000:\n    print('%d' % 0)\nelse:\n    print('%d' % 3000)",
+        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif price >= 50000:\n    print('%d' % 0)\nelif is_remote == \"Y\":\n    print('%d' % 5000)\nelif is_vip == \"Y\":\n    print('%d' % 0)\nelse:\n    print('%d' % 3000)",
+        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_remote == \"Y\":\n    print('%d' % 5000)\nelif is_vip == \"Y\":\n    print('%d' % 0)\nelif price >= 50000:\n    print('%d' % 0)\nelse:\n    print('%d' % 3000)",
+        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\" or price >= 50000:\n    print('%d' % 0)\nelif is_remote == \"Y\":\n    print('%d' % 5000)\nelse:\n    print('%d' % 3000)"
       ],
       "optionLabels": [
         "A",
@@ -35,10 +35,10 @@
       "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n입력: grade(\"G\"/\"S\"/\"B\"), coupon(\"Y\"/\"N\"), first(\"Y\"/\"N\")\n\n출력: 최종 할인율(정수, %) \n- 등급 할인: G=15, S=10, B=5\n- coupon이 Y면 +5\n- first가 Y면 +5\n- 최종 할인율은 최대 20%",
       "code": null,
       "options": [
-        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nrate = min(rate, 20)\nprint(rate)",
-        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nrate = min(rate, 20)\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nprint(rate)",
-        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelif grade == \"B\":\n    rate = 5\n\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nprint(rate)",
-        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif coupon == \"Y\" or first == \"Y\":\n    rate += 5\n\nrate = min(rate, 20)\nprint(rate)"
+        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nif rate > 20:\n    rate = 20\nprint('%d' % (rate))",
+        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif rate > 20:\n    rate = 20\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nprint('%d' % (rate))",
+        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelif grade == \"B\":\n    rate = 5\n\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nprint('%d' % (rate))",
+        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif coupon == \"Y\" or first == \"Y\":\n    rate += 5\n\nif rate > 20:\n    rate = 20\nprint('%d' % (rate))"
       ],
       "optionLabels": [
         "A",
@@ -54,7 +54,7 @@
       "level": "챌린지",
       "title": "MCQ 3. 버그를 잡는 테스트케이스",
       "description": "아래 코드는 배송비 정책을 구현하려고 했지만 버그가 있습니다.\n\n(정답 기준 정책)\n- VIP면 0\n- VIP가 아니고 도서산간이면 5000\n- VIP가 아니고 도서산간이 아니며 price>=50000이면 0\n- 그 외 3000\n\n다음 중 **이 코드의 버그를 확실히 드러내는 입력**을 고르세요.",
-      "code": "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\":\n    print(0)\nelif price >= 50000:\n    print(0)\nelif is_remote == \"Y\":\n    print(5000)\nelse:\n    print(3000)",
+      "code": "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\":\n    print('%d' % 0)\nelif price >= 50000:\n    print('%d' % 0)\nelif is_remote == \"Y\":\n    print('%d' % 5000)\nelse:\n    print('%d' % 3000)",
       "options": [
         "price=60000, is_remote=N, is_vip=N",
         "price=60000, is_remote=Y, is_vip=N",
@@ -135,7 +135,7 @@
       "level": "코드 작성",
       "title": "Code 1. 무료배송 조건식 한 줄",
       "description": "다음 정책에서 배송비가 0이 되는 조건식을 if 뒤에 한 줄로 작성하세요.\n\n- VIP면 항상 0\n- VIP가 아니면, 도서산간이 아니고(price>=50000)일 때만 0\n\n변수: price, is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")",
-      "code": "if  # 여기에 조건식을 작성하세요:\n    print(0)\nelse:\n    print(1)  # (여기는 의미 없음)",
+      "code": "if  # 여기에 조건식을 작성하세요:\n    print('%d' % 0)\nelse:\n    print('%d' % (1)  # (여기는 의미 없음))",
       "expectedCodes": [
         "is_vip == \"Y\" or (is_remote == \"N\" and price >= 50000)",
         "(is_remote == \"N\" and price >= 50000) or is_vip == \"Y\"",
@@ -150,7 +150,7 @@
       "level": "코드 작성",
       "title": "Code 2. 쿠폰 적용 가능 조건식 (등급/금액/예외)",
       "description": "쿠폰 사용 가능 조건은 다음과 같습니다.\n\n- VIP(is_vip==\"Y\")면 언제나 쿠폰 사용 가능\n- VIP가 아니면, price가 30000 이상이고 grade가 \"G\" 또는 \"S\"일 때만 쿠폰 사용 가능\n\n변수: price(정수), grade(\"G\"/\"S\"/\"B\"), is_vip(\"Y\"/\"N\")\nif 뒤의 조건식을 한 줄로 작성하세요.",
-      "code": "if  # 여기에 조건식을 작성하세요:\n    print(\"COUPON\")\nelse:\n    print(\"NO\")",
+      "code": "if  # 여기에 조건식을 작성하세요:\n    print('%s' % 'COUPON')\nelse:\n    print('%s' % 'NO')",
       "expectedCodes": [
         "is_vip == \"Y\" or (price >= 30000 and (grade == \"G\" or grade == \"S\"))",
         "is_vip == \"Y\" or (price >= 30000 and (grade == \"S\" or grade == \"G\"))",

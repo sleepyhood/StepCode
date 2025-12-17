@@ -31,6 +31,38 @@
   font-size: 0.9rem;
 }
 
+/* 상단 컨트롤 영역: 언어 + 타이머를 가로로 배치 */
+.top-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 풀이 타이머 UI */
+.solve-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: #f9fafb;
+  font-size: 0.9rem;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.solve-timer-state {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+.solve-timer.paused {
+  opacity: 0.75;
+}
+
+
 /* 메인 문제 영역 */
 #problem-container {
   padding: 0;
@@ -369,4 +401,53 @@ pre.line-numbers {
 }
 pre.line-numbers code {
   white-space: pre-wrap; /* 줄바꿈 허용 */
+}
+
+.code-blank-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 10px;
+  flex-wrap: wrap;
+}
+
+.code-blank-chip {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.86rem;
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #1f2937;
+}
+
+.code-blank-input {
+  flex: 1;
+  min-width: 240px;
+}
+
+/* CodeMirror는 선택 가능해야 함 (user-select 예외) */
+#problem-container .CodeMirror,
+#problem-container .CodeMirror * {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
+/* CodeMirror 외형을 기존 .answer-input 느낌으로 맞추기 */
+#problem-container .CodeMirror {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  background: #ffffff;
+}
+
+/* 기본 높이가 너무 커지는 것 방지 */
+#problem-container .CodeMirror {
+  height: auto;
+  min-height: 40px;
+}
+#problem-container .CodeMirror-scroll {
+  min-height: 40px;
 }

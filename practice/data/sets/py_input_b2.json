@@ -1,0 +1,160 @@
+{
+  "id": "py_input_b2",
+  "title": "Python 입력 기초 2회차",
+  "categoryId": "py_input",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. %d에 문자열을 넣으면?",
+      "description": "다음 프로그램의 문제점에 대한 설명으로 가장 알맞은 것을 고르세요.",
+      "code": "name, age = input().split()\nprint('%s %d' % (name, age))",
+      "options": [
+        "split()은 사용할 수 없는 함수라서 오류가 난다.",
+        "age가 문자열인데 %d(정수) 자리에 넣어서 오류가 난다.",
+        "print는 문자열만 출력할 수 있으므로 오류가 난다.",
+        "input()은 항상 두 값을 반환하므로 오류가 난다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 토큰 개수 불일치(너무 많음)",
+      "description": "아래 코드에서 입력이 \"1 2 3\"(한 줄, 공백으로 구분)일 때 일어나는 결과로 알맞은 것을 고르세요.",
+      "code": "x, y = input().split()",
+      "options": [
+        "x=1, y=2가 저장되고 3은 자동으로 버려진다.",
+        "x=1, y=2, z=3이 저장된다.",
+        "값이 너무 많아서(3개) 언패킹 오류(ValueError)가 발생한다.",
+        "아무 일도 일어나지 않는다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. split(\" \")의 함정 (여러 공백)",
+      "description": "아래 코드에서 입력이 \"3   5\"(공백이 여러 개)일 때, 가장 알맞은 설명을 고르세요.",
+      "code": "a, b = map(int, input().split(\" \"))\nprint('%d' % (a + b))",
+      "options": [
+        "정상 동작한다. 출력은 8이다.",
+        "split(\" \") 때문에 빈 문자열(\" \") 토큰이 생겨 int 변환에서 오류가 날 수 있다.",
+        "map(int, ...)는 공백이 여러 개면 항상 0으로 처리한다.",
+        "print(a + b)는 문자열 덧셈이라서 \"35\"가 출력된다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. strip()의 역할",
+      "description": "아래 코드에서 입력이 \"   hi   \"(앞뒤 공백 포함)일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "s = input()\nprint('[%s]' % s.strip())",
+      "options": [
+        "[   hi   ]",
+        "[hi]",
+        "hi",
+        "오류가 발생한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. 문자열+정수 혼합 입력 받기",
+      "description": "입력 한 줄에 \"이름(문자열) 나이(정수)\"가 들어옵니다. name은 문자열로, age는 정수로 저장하려고 합니다.\n다음 중 가장 알맞은 코드를 고르세요.",
+      "code": null,
+      "options": [
+        "name, age = input().split()\nage = int(age)",
+        "name, age = map(int, input().split())",
+        "name = int(input())\nage = input()",
+        "name, age = input().split()\nname = int(name)"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 혼합 타입 출력 결과",
+      "description": "아래 프로그램에서 입력이 \"Tom 15\"(한 줄, 공백으로 구분)일 때,\n출력되는 한 줄을 그대로 쓰세요. (따옴표는 쓰지 마시오)",
+      "code": "name, age = input().split()\nage = int(age)\nprint('%s next=%d' % (name, age + 1))",
+      "expectedText": "Tom next=16"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 여러 공백 입력도 split()은 된다",
+      "description": "아래 프로그램에서 입력이 \"3    5\"(공백이 여러 개)일 때,\n출력되는 한 줄을 그대로 쓰세요. (따옴표는 쓰지 마시오)",
+      "code": "a, b = map(int, input().split())\nprint('%d+%d=%d' % (a, b, a + b))",
+      "expectedText": "3+5=8"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 이름과 나이를 한 줄에서 입력 (나이는 int)",
+      "description": "입력 한 줄에 \"이름 나이\"가 들어옵니다.\n아래 주석 위치에 들어갈 코드를 작성하세요.\n- name에는 문자열\n- age에는 정수\n가 저장되어야 합니다.",
+      "code": "name = \"\"\nage = 0\n# TODO: name과 age를 한 줄에서 입력받고, age는 int로 바꾸시오.\nprint('%s is %d' % (name, age))",
+      "expectedCode": "name, age = input().split(); age = int(age)",
+      "expectedCodes": [
+        "name,age=input().split();age=int(age)",
+        "name,age=input().split()\nage=int(age)"
+      ],
+      "hint": "먼저 split()으로 두 값을 받고, 나이(age)만 int로 바꾸면 됩니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 여러 공백도 안전하게 두 정수 입력",
+      "description": "입력 한 줄에 두 정수가 공백으로 구분되어 들어옵니다.\n공백이 여러 개여도 동작해야 합니다.\n아래 주석 위치에 들어갈 코드를 한 줄 작성하세요.",
+      "code": "a = 0\nb = 0\n# TODO: 여러 공백도 처리되도록 a와 b에 정수를 입력받으시오.\nprint('%d %d' % (a, b))",
+      "expectedCode": "a, b = map(int, input().split())",
+      "expectedCodes": [
+        "a,b=map(int,input().split())"
+      ],
+      "hint": "split(\" \") 대신 split()을 쓰면 공백이 여러 개여도 안전합니다."
+    }
+  ]
+}

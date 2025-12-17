@@ -1,0 +1,161 @@
+{
+  "id": "py_print_c1",
+  "title": "Python 출력 챌린지 1회차",
+  "categoryId": "py_print",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. 폭 지정 %2d",
+      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
+      "code": "print('|%2d|' % 3)",
+      "options": [
+        "|3|",
+        "| 3|",
+        "|  3|",
+        "오류가 발생한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. 폭 지정 %5d",
+      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
+      "code": "print('|%5d|' % 3)",
+      "options": [
+        "|    3|",
+        "|   3|",
+        "| 3|",
+        "오류가 발생한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. 0 채우기 %03d",
+      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
+      "code": "print('|%03d|' % 7)",
+      "options": [
+        "|7|",
+        "|  7|",
+        "|007|",
+        "|0007|"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 4. 왼쪽 정렬 %-5s",
+      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
+      "code": "print('|%-5s|' % 'Hi')",
+      "options": [
+        "|Hi|",
+        "|   Hi|",
+        "|Hi   |",
+        "오류가 발생한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 5. 폭은 잘라내지 않는다",
+      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요. (힌트: 폭이 작아도 숫자가 잘리지는 않습니다)",
+      "code": "print('|%2d|' % 123)",
+      "options": [
+        "|23|",
+        "|123|",
+        "| 123|",
+        "오류가 발생한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 두 칸 정렬 출력",
+      "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요.",
+      "code": "a = 1\nb = 23\nprint('|%2d %2d|' % (a, b))",
+      "expectedText": "| 1 23|"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 문자열 정렬 출력",
+      "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요. (공백 포함)",
+      "code": "w = 'A'\nprint('|%-3s|%3s|' % (w, w))",
+      "expectedText": "|A  |  A|"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 0 채우기 출력",
+      "description": "정수 n이 있습니다. n을 3자리로 0을 채워서 |...| 형태로 출력하는 print 한 줄을 작성하세요.\n예) n=7이면 |007|",
+      "code": "n = 7\n# TODO: print 한 줄 작성",
+      "expectedCode": "print('|%03d|' % n)",
+      "expectedCodes": [
+        "print('|%03d|'%n)",
+        "print(\"|%03d|\"%n)"
+      ],
+      "hint": "%03d 는 폭 3, 0 채우기입니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 왼쪽 정렬 문자열 출력",
+      "description": "문자열 s를 폭 5로 왼쪽 정렬하여 |...| 형태로 출력하는 print 한 줄을 작성하세요.\n예) s='Hi'이면 |Hi   |",
+      "code": "s = 'Hi'\n# TODO: print 한 줄 작성",
+      "expectedCode": "print('|%-5s|' % s)",
+      "expectedCodes": [
+        "print('|%-5s|'%s)",
+        "print(\"|%-5s|\"%s)"
+      ],
+      "hint": "%-5s 는 폭 5, 왼쪽 정렬입니다."
+    }
+  ]
+}

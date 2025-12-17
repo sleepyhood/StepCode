@@ -14,10 +14,10 @@
       "description": "다음 설명에 맞는 Python 코드를 고르세요.\n\n- 정수 n을 하나 입력받는다.\n- n이 7이면 \"Lucky\"를 출력한다.\n- n이 7이 아니면 아무 것도 출력하지 않는다. (else 없음)",
       "code": null,
       "options": [
-        "n = int(input())\nif n == 7:\n    print(\"Lucky\")",
-        "n = int(input())\nif n == 7:\n    print(\"Lucky\")\nelse:\n    print(\"Lucky\")",
-        "n = int(input())\nif n != 7:\n    print(\"Lucky\")",
-        "n = int(input())\nif n == 7:\n    print(\"Lucky\")\nelse:\n    print(\"NotLucky\")"
+        "n = int(input())\nif n == 7:\n    print('%s' % 'Lucky')",
+        "n = int(input())\nif n == 7:\n    print('%s' % 'Lucky')\nelse:\n    print('%s' % 'Lucky')",
+        "n = int(input())\nif n != 7:\n    print('%s' % 'Lucky')",
+        "n = int(input())\nif n == 7:\n    print('%s' % 'Lucky')\nelse:\n    print('%s' % 'NotLucky')"
       ],
       "optionLabels": [
         "A",
@@ -35,10 +35,10 @@
       "description": "다음 설명에 맞는 Python 코드를 고르세요.\n\n- 정수 n을 하나 입력받는다.\n- n이 1 이상 9 이하가 아니면 \"OUT\"을 출력한다.\n- 그렇지 않으면 \"IN\"을 출력한다.",
       "code": null,
       "options": [
-        "n = int(input())\nif not (1 <= n <= 9):\n    print(\"OUT\")\nelse:\n    print(\"IN\")",
-        "n = int(input())\nif n < 1 and n > 9:\n    print(\"OUT\")\nelse:\n    print(\"IN\")",
-        "n = int(input())\nif not (1 < n < 9):\n    print(\"OUT\")\nelse:\n    print(\"IN\")",
-        "n = int(input())\nif not n < 1 or n > 9:\n    print(\"OUT\")\nelse:\n    print(\"IN\")"
+        "n = int(input())\nif not (1 <= n <= 9):\n    print('%s' % 'OUT')\nelse:\n    print('%s' % 'IN')",
+        "n = int(input())\nif n < 1 and n > 9:\n    print('%s' % 'OUT')\nelse:\n    print('%s' % 'IN')",
+        "n = int(input())\nif not (1 < n < 9):\n    print('%s' % 'OUT')\nelse:\n    print('%s' % 'IN')",
+        "n = int(input())\nif not n < 1 or n > 9:\n    print('%s' % 'OUT')\nelse:\n    print('%s' % 'IN')"
       ],
       "optionLabels": [
         "A",
@@ -56,10 +56,10 @@
       "description": "다음 설명에 맞는 Python 코드를 고르세요.\n\n- 정수 a, b를 입력받는다. (a 먼저, b 다음)\n- b가 0이 아니고, a가 b의 배수이면 \"YES\"를 출력한다.\n- 그 외에는 \"NO\"를 출력한다.\n- b가 0일 때도 오류가 나지 않아야 한다.",
       "code": null,
       "options": [
-        "a = int(input())\nb = int(input())\nif b != 0 and a % b == 0:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
-        "a = int(input())\nb = int(input())\nif a % b == 0 and b != 0:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
-        "a = int(input())\nb = int(input())\nif b == 0 and a % b == 0:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
-        "a = int(input())\nb = int(input())\nif b != 0 or a % b == 0:\n    print(\"YES\")\nelse:\n    print(\"NO\")"
+        "a = int(input())\nb = int(input())\nif b != 0 and a % b == 0:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
+        "a = int(input())\nb = int(input())\nif a % b == 0 and b != 0:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
+        "a = int(input())\nb = int(input())\nif b == 0 and a % b == 0:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
+        "a = int(input())\nb = int(input())\nif b != 0 or a % b == 0:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')"
       ],
       "optionLabels": [
         "A",
@@ -77,10 +77,10 @@
       "description": "다음 설명에 맞는 Python 코드를 고르세요.\n\n- 정수 n을 하나 입력받는다.\n- n이 3의 배수 또는 5의 배수이면 \"YES\"를 출력한다.\n- 그렇지 않으면 \"NO\"를 출력한다.",
       "code": null,
       "options": [
-        "n = int(input())\nif n % 3 == 0 or n % 5 == 0:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
-        "n = int(input())\nif n % 3 == 0 and n % 5 == 0:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
-        "n = int(input())\nif n % 3 == 0 or n % 5:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
-        "n = int(input())\nif n % 3 == 0 or n % 5 == 0:\n    print(\"NO\")\nelse:\n    print(\"YES\")"
+        "n = int(input())\nif n % 3 == 0 or n % 5 == 0:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
+        "n = int(input())\nif n % 3 == 0 and n % 5 == 0:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
+        "n = int(input())\nif n % 3 == 0 or n % 5:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
+        "n = int(input())\nif n % 3 == 0 or n % 5 == 0:\n    print('%s' % 'NO')\nelse:\n    print('%s' % 'YES')"
       ],
       "optionLabels": [
         "A",
@@ -98,10 +98,10 @@
       "description": "다음 설명에 맞는 Python 코드를 고르세요.\n\n- 정수 t를 하나 입력받는다.\n- t가 0 이하이면 \"ICE\"를 출력한다.\n- 그렇지 않으면 \"WATER\"를 출력한다.",
       "code": null,
       "options": [
-        "t = int(input())\nif t <= 0:\n    print(\"ICE\")\nelse:\n    print(\"WATER\")",
-        "t = int(input())\nif t < 0:\n    print(\"ICE\")\nelse:\n    print(\"WATER\")",
-        "t = int(input())\nif t >= 0:\n    print(\"ICE\")\nelse:\n    print(\"WATER\")",
-        "t = int(input())\nif t <= 0:\n    print(\"WATER\")\nelse:\n    print(\"ICE\")"
+        "t = int(input())\nif t <= 0:\n    print('%s' % 'ICE')\nelse:\n    print('%s' % 'WATER')",
+        "t = int(input())\nif t < 0:\n    print('%s' % 'ICE')\nelse:\n    print('%s' % 'WATER')",
+        "t = int(input())\nif t >= 0:\n    print('%s' % 'ICE')\nelse:\n    print('%s' % 'WATER')",
+        "t = int(input())\nif t <= 0:\n    print('%s' % 'WATER')\nelse:\n    print('%s' % 'ICE')"
       ],
       "optionLabels": [
         "A",
@@ -117,7 +117,7 @@
       "level": "단답형",
       "title": "Short 1. not으로 홀짝 판별",
       "description": "아래 프로그램에서 입력이 9일 때, 출력되는 한 줄을 그대로 쓰세요.\n(따옴표는 쓰지 마시오)",
-      "code": "n = int(input())\nif not (n % 2 == 0):\n    print(\"odd\")\nelse:\n    print(\"even\")",
+      "code": "n = int(input())\nif not (n % 2 == 0):\n    print('%s' % 'odd')\nelse:\n    print('%s' % 'even')",
       "expectedText": "odd"
     },
     {
@@ -142,7 +142,7 @@
       "level": "코드 작성",
       "title": "Code 1. 3의 배수 또는 5의 배수 조건식",
       "description": "정수 n이 3의 배수 또는 5의 배수일 때만 \"YES\"가 출력되도록, if 뒤의 조건식을 작성하세요.\n\nif 뒤에 들어갈 조건식을 한 줄로 쓰세요.\n(반드시 or를 사용하세요.)",
-      "code": "n = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
+      "code": "n = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
       "expectedCode": "n % 3 == 0 or n % 5 == 0",
       "hint": "n % 3 == 0과 n % 5 == 0을 or로 묶어 보세요."
     },
@@ -152,7 +152,7 @@
       "level": "코드 작성",
       "title": "Code 2. 1~9가 아니면 OUT 조건식",
       "description": "정수 n이 1 이상 9 이하가 아닐 때만 \"OUT\"이 출력되도록, if 뒤의 조건식을 작성하세요.\n\nif 뒤에 들어갈 조건식을 한 줄로 쓰세요.\n(반드시 not (1 <= n <= 9) 형태를 사용하세요.)",
-      "code": "n = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print(\"OUT\")\nelse:\n    print(\"IN\")",
+      "code": "n = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print('%s' % 'OUT')\nelse:\n    print('%s' % 'IN')",
       "expectedCode": "not (1 <= n <= 9)",
       "hint": "연속 비교(1 <= n <= 9)를 괄호로 묶고 not을 붙이세요."
     }

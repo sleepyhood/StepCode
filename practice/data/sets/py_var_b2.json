@@ -1,0 +1,160 @@
+{
+  "id": "py_var_b2",
+  "title": "Python 변수 기초 2회차",
+  "categoryId": "py_var",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 변수 값 갱신",
+      "description": "변수 x의 값을 1 증가시키는 코드로 알맞은 것은?",
+      "code": null,
+      "options": [
+        "x = x + 1",
+        "x + 1",
+        "x == x + 1",
+        "x =+ 1"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. += 의미",
+      "description": "아래 코드의 출력으로 알맞은 것을 고르세요.",
+      "code": "x = 7\nx += 3\nprint('%d' % x)",
+      "options": [
+        "10",
+        "7",
+        "6",
+        "오류"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 교환(swap) 결과",
+      "description": "아래 코드의 출력으로 알맞은 것을 고르세요.",
+      "code": "a = 2\nb = 9\ntmp = a\na = b\nb = tmp\nprint('%d %d' % (a, b))",
+      "options": [
+        "9 2",
+        "2 9",
+        "9 9",
+        "2 2"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 잘못된 swap",
+      "description": "아래 코드는 a와 b를 바꾸려는 코드입니다.\n출력으로 알맞은 것을 고르세요.",
+      "code": "a = 2\nb = 9\na = b\nb = a\nprint('%d %d' % (a, b))",
+      "options": [
+        "9 2",
+        "2 9",
+        "9 9",
+        "오류"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. 같은 의미 찾기",
+      "description": "다음 중 `x += 5`와 같은 의미인 것은?",
+      "code": null,
+      "options": [
+        "x = x + 5",
+        "x = 5",
+        "x == x + 5",
+        "x =+ 5"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 갱신 결과 예측",
+      "description": "아래 프로그램에서 입력이 4일 때, 출력되는 한 줄을 그대로 쓰세요.",
+      "code": "n = int(input())\nn *= 2\nprint('%d' % n)",
+      "expectedText": "8"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 두 값 교환 결과 예측",
+      "description": "아래 프로그램에서 입력이 \"3 7\"일 때, 출력되는 한 줄을 그대로 쓰세요.",
+      "code": "a, b = map(int, input().split())\ntmp = a\na = b\nb = tmp\nprint('%d %d' % (a, b))",
+      "expectedText": "7 3"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 1 증가시키기",
+      "description": "아래 코드에서 TODO 한 줄에 들어갈 코드를 작성하세요.\n(한 줄만 제출)",
+      "code": "x = 10\n# TODO: x를 1 증가시키세요.\nprint('%d' % x)",
+      "expectedCode": "x = x + 1",
+      "expectedCodes": [
+        "x=x+1",
+        "x+=1"
+      ],
+      "hint": "가장 기본은 x = x + 1 입니다. (x += 1도 가능)"
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. swap의 첫 단계",
+      "description": "임시변수 tmp를 이용해 a와 b를 교환하려고 합니다.\n아래 코드에서 TODO 한 줄에 들어갈 코드를 작성하세요.\n(한 줄만 제출)",
+      "code": "a = 2\nb = 9\ntmp = 0\n# TODO: tmp에 a를 저장하세요.\na = b\nb = tmp\nprint('%d %d' % (a, b))",
+      "expectedCode": "tmp = a",
+      "expectedCodes": [
+        "tmp=a"
+      ],
+      "hint": "swap은 'a의 옛값'을 tmp에 먼저 저장해야 합니다."
+    }
+  ]
+}

@@ -4,6 +4,58 @@ let currentSetData = null;
 let currentLang = "c"; // 지금은 C만, 나중에 언어별 코드 확장
 
 
+// ===== CodeMirror (code 입력만 하이라이트) =====
+const CODEMIRROR_EDITORS = new Map();
+
+function getCodeMirrorMode(lang) {
+  if (lang === "python") return "python";
+  if (lang === "java") return "text/x-java";
+  return "text/x-csrc"; // c
+}
+
+function destroyCodeMirrorEditors() {
+  for (const ed of CODEMIRROR_EDITORS.values()) {
+    try {
+      ed.toTextArea();
+    } catch (_) {}
+  }
+  CODEMIRROR_EDITORS.clear();
+}
+
+function upgradeCodeInputsToCodeMirror(rootEl) {
+  if (!rootEl || !window.CodeMirror) return;
+
+  const mode = getCodeMirrorMode(currentLang);
+
+  const textareas = rootEl.querySelectorAll(
+    'textarea.answer-input[data-qtype="code"][data-question]'
+  );
+
+  textareas.forEach((ta) => {
+    const qid = ta.getAttribute("data-question");
+    if (!qid || CODEMIRROR_EDITORS.has(qid)) return;
+
+    const editor = CodeMirror.fromTextArea(ta, {
+      mode,
+      lineNumbers: false,
+      indentUnit: 2,
+      tabSize: 2,
+      viewportMargin: Infinity,
+    });
+
+    // 저장된 답 복원
+    const saved = currentAnswers && currentAnswers[qid];
+    if (typeof saved === "string") editor.setValue(saved);
+
+    editor.on("change", () => {
+      recordAnswer(qid, editor.getValue());
+    });
+
+    CODEMIRROR_EDITORS.set(qid, editor);
+  });
+}
+
+
 // ▼ 아래 세 줄 추가 ▼
 let currentSetId = null;
 let currentAnswers = {};
@@ -94,6 +146,147 @@ function saveGradeMeta(setId, meta) {
   }
 }
 
+// ====== 풀이 타이머(스톱워치) ======
+const SOLVE_TIMER_PREFIX = "stepcode:solveTime:";
+const SOLVE_TICK_MS = 250;
+const SOLVE_SAVE_EVERY_MS = 2000;
+
+let solveElapsedMs = 0;      // 누적(저장되는) 시간
+let solveStartAt = 0;        // running 시작 시각(Date.now)
+let solveRunning = false;
+let solveTicker = null;
+let solveLastSavedAt = 0;
+let solveTimerInitialized = false;
+
+function getSolveTimerKey(setId) {
+  return `${SOLVE_TIMER_PREFIX}${setId}`;
+}
+
+function loadSolveElapsed(setId) {
+  if (!window.localStorage) return 0;
+  try {
+    const raw = localStorage.getItem(getSolveTimerKey(setId));
+    const n = raw ? Number(raw) : 0;
+    return Number.isFinite(n) ? n : 0;
+  } catch (e) {
+    return 0;
+  }
+}
+
+function saveSolveElapsed(setId, ms) {
+  if (!window.localStorage) return;
+  try {
+    localStorage.setItem(getSolveTimerKey(setId), String(Math.max(0, Math.floor(ms))));
+  } catch (e) {
+    // ignore
+  }
+}
+
+function getSolveElapsedNow() {
+  if (!solveRunning) return solveElapsedMs;
+  return solveElapsedMs + (Date.now() - solveStartAt);
+}
+
+function formatElapsed(ms) {
+  const totalSec = Math.floor(ms / 1000);
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+
+  if (h > 0) {
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
+function renderSolveTimerUi(paused) {
+  const wrap = document.querySelector(".solve-timer");
+  const timerEl = document.getElementById("solve-timer");
+  const stateEl = document.getElementById("solve-timer-state");
+  if (!timerEl) return;
+
+  timerEl.textContent = formatElapsed(getSolveElapsedNow());
+
+  if (wrap) wrap.classList.toggle("paused", !!paused);
+  if (stateEl) stateEl.textContent = paused ? "일시정지" : "";
+}
+
+function tickSolveTimer() {
+  renderSolveTimerUi(false);
+
+  const now = Date.now();
+  if (now - solveLastSavedAt >= SOLVE_SAVE_EVERY_MS) {
+    solveLastSavedAt = now;
+    saveSolveElapsed(currentSetId, getSolveElapsedNow());
+  }
+}
+
+function startSolveTimer() {
+  if (!currentSetId) return;
+  if (solveRunning) return;
+
+  solveRunning = true;
+  solveStartAt = Date.now();
+  solveLastSavedAt = Date.now();
+
+  // 즉시 UI 반영
+  renderSolveTimerUi(false);
+
+  if (solveTicker) clearInterval(solveTicker);
+  solveTicker = setInterval(tickSolveTimer, SOLVE_TICK_MS);
+}
+
+function pauseSolveTimer(save = true) {
+  if (!currentSetId) return;
+
+  if (solveRunning) {
+    solveElapsedMs = solveElapsedMs + (Date.now() - solveStartAt);
+    solveRunning = false;
+    solveStartAt = 0;
+  }
+
+  if (solveTicker) {
+    clearInterval(solveTicker);
+    solveTicker = null;
+  }
+
+  renderSolveTimerUi(true);
+  if (save) saveSolveElapsed(currentSetId, solveElapsedMs);
+}
+
+function initSolveTimerOnce() {
+  if (solveTimerInitialized) return;
+  solveTimerInitialized = true;
+
+  // 탭 숨김/복귀 시 자동 일시정지/재개
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) pauseSolveTimer(true);
+    else startSolveTimer();
+  });
+
+  // 페이지 이탈 시 저장
+  window.addEventListener("pagehide", () => pauseSolveTimer(true));
+  window.addEventListener("beforeunload", () => pauseSolveTimer(true));
+}
+
+function setupSolveTimerForCurrentSet() {
+  if (!currentSetId) return;
+
+  initSolveTimerOnce();
+
+  // 이전 기록 로드
+  solveElapsedMs = loadSolveElapsed(currentSetId);
+  solveRunning = false;
+  solveStartAt = 0;
+
+  // 초기 표시
+  renderSolveTimerUi(document.hidden);
+
+  // 보이는 상태면 바로 시작
+  if (!document.hidden) startSolveTimer();
+}
+
+
 
 document.addEventListener("DOMContentLoaded", initPractice);
 
@@ -117,6 +310,8 @@ async function initPractice() {
     currentSetId = setId;
     currentAnswers = loadStoredAnswers(setId);
 
+    setupSolveTimerForCurrentSet();
+
     // 제목 표시
     titleSpan.textContent = currentSetData.title || "연습장";
 
@@ -125,6 +320,8 @@ async function initPractice() {
 
     // 문제 렌더
     renderSet();
+
+    
 
     // HUD 세팅
     setupHud();
@@ -186,6 +383,8 @@ function normalizeText(str) {
 // ====== 문제 전체 렌더 ======
 function renderSet() {
   const container = document.getElementById("problem-container");
+  destroyCodeMirrorEditors();
+
   container.innerHTML = "";
 
   const questions = currentSetData.problems || [];
@@ -251,6 +450,8 @@ if (q.code) {
     // ▼ 렌더가 다 끝난 뒤에 하이라이트 호출 ▼
   if (window.Prism) {
     Prism.highlightAllUnder(container);
+    upgradeCodeInputsToCodeMirror(container);
+
   }
 }
 
@@ -313,12 +514,20 @@ function renderMcqOptions(card, q) {
   card.appendChild(optionsWrap);
 }
 
-
-// ====== 단답형/코드 textarea 렌더링 ======
+// ====== 단답형/코드 입력 렌더링 ======
 function renderTextArea(card, q) {
+  // ✅ (추가) Python if Code: "if  # ..." 형태면 조건식 빈칸 입력 UI로 렌더
+  if (q.type === "code" && isIfConditionBlankQuestion(q)) {
+    renderIfConditionBlank(card, q);
+    return;
+  }
+
+  // (기존) short/code 기본 textarea
   const input = document.createElement("textarea");
   input.className = "answer-input";
   input.setAttribute("data-question", q.id);
+  input.setAttribute("data-qtype", q.type);
+
   input.spellcheck = false;
   input.rows = q.type === "code" ? 2 : 1;
 
@@ -349,6 +558,86 @@ function renderTextArea(card, q) {
   }
 }
 
+// ===== LanguageAdapter (헬퍼 하드코딩 제거) =====
+const LanguageAdapter = {
+  python: {
+    condBlank: {
+      left: (kw) => kw,     // if / elif
+      right: ":",
+      placeholder: "조건식만 입력 (예: 1 <= n <= 10)",
+    },
+  },
+  c: {
+    condBlank: {
+      left: () => "if (",
+      right: ")",
+      placeholder: "조건식만 입력 (예: n >= 1 && n <= 10)",
+    },
+  },
+  java: {
+    condBlank: {
+      left: () => "if (",
+      right: ")",
+      placeholder: "조건식만 입력 (예: n >= 1 && n <= 10)",
+    },
+  },
+};
+
+function getAdapter() {
+  return LanguageAdapter[currentLang] || LanguageAdapter.c;
+}
+
+function extractIfKeyword(q) {
+  const code = (q && q.code) || "";
+  const m = /(^|\n)\s*(if|elif)\s*#\s*__COND_BLANK__/m.exec(code);
+  return m ? m[2] : null; // "if" | "elif" | null
+}
+
+
+// ====== Python if 조건식 빈칸 입력 UI 렌더링 ======
+// function isIfConditionBlankQuestion(q) {
+//   if (!q || q.type !== "code") return false;
+//   if (typeof q.code !== "string") return false;
+//   // "if  # ..." 또는 "elif  # ..." 패턴 감지
+//   return /(^|\n)\s*(if|elif)\s*#/m.test(q.code);
+// }
+function isIfConditionBlankQuestion(q) {
+  return !!extractIfKeyword(q);
+}
+
+function renderIfConditionBlank(card, q) {
+  const row = document.createElement("div");
+  row.className = "code-blank-row";
+
+  const left = document.createElement("span");
+  left.className = "code-blank-chip";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "answer-input code-blank-input";
+  input.setAttribute("data-question", q.id);
+  input.setAttribute("data-qtype", q.type);
+
+  const right = document.createElement("span");
+  right.className = "code-blank-chip";
+
+  const kw = extractIfKeyword(q) || "if";
+  const adapter = getAdapter();
+
+  left.textContent = adapter.condBlank.left(kw);
+  right.textContent = adapter.condBlank.right;
+  input.placeholder = adapter.condBlank.placeholder;
+
+  input.value = currentAnswers[q.id] || "";
+  input.addEventListener("input", (e) => recordAnswer(q.id, e.target.value));
+
+  row.appendChild(left);
+  row.appendChild(input);
+  row.appendChild(right);
+  card.appendChild(row);
+}
+
+
 
 // ====== 채점 버튼 로직 ======
 function setupGrading() {
@@ -377,16 +666,20 @@ function setupGrading() {
 
     const rem = remainingMs();
     const sec = Math.ceil(rem / 1000);
+const solveText =
+  (typeof getSolveElapsedNow === "function" && typeof formatElapsed === "function")
+    ? formatElapsed(getSolveElapsedNow())
+    : (document.getElementById("solve-timer")?.textContent || "");
 
-    if (rem > 0) {
-      gradeButton.disabled = true;
-      gradeButton.textContent = `채점 대기 ${sec}초 (오늘 ${meta.attempts}회)`;
-      if (metaEl) metaEl.textContent = `오늘 채점 ${meta.attempts}회 · 다음 채점까지 ${sec}초`;
-    } else {
-      gradeButton.disabled = false;
-      gradeButton.textContent = `채점하기 (오늘 ${meta.attempts}회)`;
-      if (metaEl) metaEl.textContent = `오늘 채점 ${meta.attempts}회`;
-    }
+if (rem > 0) {
+  gradeButton.disabled = true;
+  gradeButton.textContent = `채점 대기 ${sec}초 (오늘 ${meta.attempts}회)`;
+  if (metaEl) metaEl.textContent = `오늘 채점 ${meta.attempts}회 · 풀이 ${solveText} · 다음 채점까지 ${sec}초`;
+} else {
+  gradeButton.disabled = false;
+  gradeButton.textContent = `채점하기 (오늘 ${meta.attempts}회)`;
+  if (metaEl) metaEl.textContent = `오늘 채점 ${meta.attempts}회 · 풀이 ${solveText}`;
+}
   };
 
   const startTickerIfNeeded = () => {
@@ -436,8 +729,9 @@ function setupGrading() {
         const selected = currentAnswers[q.id];
         isCorrect = String(selected) === String(q.correctIndex);
       } else if (q.type === "short") {
-        const inputEl = document.querySelector(`[data-question="${q.id}"]`);
-        const val = (inputEl && inputEl.value) || "";
+        // const inputEl = document.querySelector(`[data-question="${q.id}"]`);
+        // const val = (inputEl && inputEl.value) || "";
+        const val = String((currentAnswers && currentAnswers[q.id]) ?? "");
 
         if (q.expectedAnyOf) {
           const norm = normalizeText(val);
@@ -446,8 +740,10 @@ function setupGrading() {
           isCorrect = normalizeText(val) === normalizeText(q.expectedText);
         }
       } else if (q.type === "code") {
-        const inputEl = document.querySelector(`[data-question="${q.id}"]`);
-        const userCode = (inputEl && inputEl.value) || "";
+        // const inputEl = document.querySelector(`[data-question="${q.id}"]`);
+        // const userCode = (inputEl && inputEl.value) || "";
+        const userCode = String((currentAnswers && currentAnswers[q.id]) ?? "");
+
         const normUser = normalizeCode(userCode);
 
         let candidates = [];

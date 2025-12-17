@@ -1,0 +1,161 @@
+{
+  "id": "py_print_b3",
+  "title": "Python 출력 기초 3회차",
+  "categoryId": "py_print",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 퍼센트(%) 문자 출력",
+      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
+      "code": "rate = 50\nprint('rate=%d%%' % rate)",
+      "options": [
+        "rate=50%",
+        "rate=50%%",
+        "rate=%d%",
+        "오류가 발생한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 서식문자 개수 불일치",
+      "description": "다음 프로그램의 결과로 알맞은 것을 고르세요.",
+      "code": "a = 1\nb = 2\nprint('%d %d %d' % (a, b))",
+      "options": [
+        "1 2 0이 출력된다.",
+        "1 2 3이 출력된다.",
+        "서식문자 개수와 값 개수가 맞지 않아 오류가 발생한다.",
+        "b가 자동으로 두 번 들어간다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 타입 불일치(%d에 문자열)",
+      "description": "다음 프로그램의 결과로 알맞은 것을 고르세요.",
+      "code": "x = '3'\nprint('%d' % x)",
+      "options": [
+        "3",
+        "'3'",
+        "x",
+        "오류가 발생한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 혼합 서식(%s, %d)",
+      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
+      "code": "name = 'Tom'\nage = 15\nprint('name=%s age=%d' % (name, age))",
+      "options": [
+        "name=Tom age=15",
+        "name=%s age=%d",
+        "name='Tom' age='15'",
+        "오류가 발생한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. 올바른 서식문자 선택",
+      "description": "정수 a, b의 합을 \"sum=합\" 형태로 출력하려고 합니다. 가장 알맞은 코드를 고르세요.",
+      "code": "a = 3\nb = 5",
+      "options": [
+        "print('sum=%d' % (a + b))",
+        "print('sum=%s' % (a + b))",
+        "print('sum=%d' % a + b)",
+        "print('sum=%d' % (a, b))"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 출력 예측",
+      "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요.",
+      "code": "a = 10\nb = 20\nprint('sum=%d' % (a + b))",
+      "expectedText": "sum=30"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. %% 포함 출력 예측",
+      "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요.",
+      "code": "p = 7\nprint('%d%%' % p)",
+      "expectedText": "7%"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 값 3개 출력",
+      "description": "정수 a, b, c가 있습니다. \"a b c\" 형태로 한 줄 출력하는 print 한 줄을 작성하세요.",
+      "code": "a = 1\nb = 2\nc = 3\n# TODO: print 한 줄 작성",
+      "expectedCode": "print('%d %d %d' % (a, b, c))",
+      "expectedCodes": [
+        "print('%d %d %d'%(a,b,c))",
+        "print(\"%d %d %d\"%(a,b,c))"
+      ],
+      "hint": "%d 3개, 값 3개를 맞추세요."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 퍼센트 포함 문장",
+      "description": "정수 x를 이용해 다음과 같이 출력하려 합니다: done=값%\nprint 한 줄을 작성하세요.",
+      "code": "x = 42\n# TODO: print 한 줄 작성",
+      "expectedCode": "print('done=%d%%' % x)",
+      "expectedCodes": [
+        "print('done=%d%%'%x)",
+        "print(\"done=%d%%\"%x)"
+      ],
+      "hint": "% 기호 자체를 출력하려면 %% 를 사용합니다."
+    }
+  ]
+}

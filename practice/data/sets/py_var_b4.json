@@ -1,0 +1,159 @@
+{
+  "id": "py_var_b4",
+  "title": "Python 변수 기초 4회차",
+  "categoryId": "py_var",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. input()의 결과 타입",
+      "description": "아래 코드가 실행될 때 생기는 문제로 알맞은 것을 고르세요.",
+      "code": "n = input()\nprint('%d' % (n + 1))",
+      "options": [
+        "정상 출력된다.",
+        "문자열이라 +1이 불가능해 오류가 난다.",
+        "n이 자동으로 정수로 바뀐다.",
+        "%d가 문자열을 자동으로 처리한다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 정수로 입력받기",
+      "description": "사용자가 입력한 값을 정수로 저장하는 코드로 알맞은 것은?",
+      "code": null,
+      "options": [
+        "n = input()",
+        "n = int(input())",
+        "n = str(input())",
+        "n = map(int, input())"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. %d 에 들어갈 값",
+      "description": "다음 중 `%d` 자리에 넣기 위해 필요한 처리로 알맞은 것은?",
+      "code": "name, age = input().split()\nprint('%s:%d' % (name, ???))",
+      "options": [
+        "age를 그대로 넣는다(문자열이어도 됨).",
+        "age를 int(age)로 바꿔 넣는다.",
+        "age를 '%d'로 바꾼다.",
+        "age를 str(age)로 바꿔 넣는다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 두 정수 한 줄 입력",
+      "description": "입력 한 줄에 정수 a, b가 공백으로 구분되어 들어옵니다.\na, b에 정수를 저장하는 코드로 가장 알맞은 것은?",
+      "code": null,
+      "options": [
+        "a, b = input().split()",
+        "a, b = map(int, input().split())",
+        "a = int(input().split())\nb = int(input().split())",
+        "a, b = map(int, input())"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. 문자열 + 정수 출력",
+      "description": "다음 중 이름(name)과 점수(score)를 \"name=Tom score=15\" 형식으로 출력하는 코드로 알맞은 것은?",
+      "code": null,
+      "options": [
+        "print('name=%s score=%d' % (name, score))",
+        "print('name=%d score=%s' % (name, score))",
+        "print('name=%s score=%d' % (name, int(score)))",
+        "print('name=%s score=%d' % name, score)"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 정수 변환 후 계산",
+      "description": "아래 프로그램에서 입력이 3일 때, 출력되는 한 줄을 그대로 쓰세요.",
+      "code": "n = int(input())\nprint('%d' % (n * 10))",
+      "expectedText": "30"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 문자열+정수 출력 예측",
+      "description": "아래 프로그램에서 입력이 \"Tom 15\"일 때, 출력되는 한 줄을 그대로 쓰세요.",
+      "code": "name, age = input().split()\nprint('%s:%d' % (name, int(age)))",
+      "expectedText": "Tom:15"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 문자열을 정수로 변환",
+      "description": "아래 코드에서 TODO 한 줄에 들어갈 코드를 작성하세요.\n(한 줄만 제출)",
+      "code": "n = input()\n# TODO: n을 정수로 변환해서 다시 n에 저장하세요.\nprint('%d' % (n + 1))",
+      "expectedCode": "n = int(n)",
+      "expectedCodes": [
+        "n=int(n)"
+      ],
+      "hint": "input() 결과는 문자열입니다. int(...)로 바꿔야 합니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 합을 변수에 저장(정수 입력)",
+      "description": "아래 코드에서 TODO 한 줄에 들어갈 코드를 작성하세요.\n(한 줄만 제출)",
+      "code": "a, b = map(int, input().split())\ns = 0\n# TODO: s에 a+b를 저장하세요.\nprint('%d' % s)",
+      "expectedCode": "s = a + b",
+      "expectedCodes": [
+        "s=a+b"
+      ],
+      "hint": "입력은 이미 정수(a,b)입니다. 합을 s에 저장하세요."
+    }
+  ]
+}
