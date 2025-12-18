@@ -59,6 +59,61 @@ let currentSetId = null;
 let currentAnswers = {};
 const ANSWER_STORAGE_PREFIX = "stepcode:answers:";
 
+// ===== 수업모드(코칭) =====
+const MODE_STORAGE_KEY = "stepcode:practiceMode"; // "normal" | "class"
+const COACH_STATE_PREFIX = "stepcode:coachState:";
+
+let practiceMode = "normal";
+let activeBucket = "core"; // "core" | "supp"
+let coachState = {}; // { [qid]: { touchedAt, stage, wrongGrades, explainUnlocked, solved, explainOpen } }
+let coachTicker = null;
+let coachSaveTimer = null;
+
+function isClassMode() {
+  return practiceMode === "class";
+}
+
+function getCoachKey(setId) {
+  return `${COACH_STATE_PREFIX}${setId}`;
+}
+
+function loadCoachState(setId) {
+  try {
+    const raw = localStorage.getItem(getCoachKey(setId));
+    return raw ? JSON.parse(raw) : {};
+  } catch (_) {
+    return {};
+  }
+}
+
+function scheduleSaveCoachState() {
+  if (!currentSetId) return;
+  if (coachSaveTimer) return;
+  coachSaveTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(
+        getCoachKey(currentSetId),
+        JSON.stringify(coachState)
+      );
+    } catch (_) {}
+    coachSaveTimer = null;
+  }, 300);
+}
+
+function ensureCoachRow(qid) {
+  if (!coachState[qid]) {
+    coachState[qid] = {
+      touchedAt: null,
+      stage: 0, // 0:none, 1:hint1, 2:hint2
+      wrongGrades: 0, // 문항당 채점 실패 횟수
+      explainUnlocked: false,
+      solved: false,
+      explainOpen: false,
+    };
+  }
+  return coachState[qid];
+}
+
 function getAnswerStorageKey(setId) {
   return `${ANSWER_STORAGE_PREFIX}${setId}`;
 }
@@ -85,9 +140,20 @@ function saveStoredAnswers(setId, answers) {
 
 function recordAnswer(questionId, value) {
   if (!currentSetId) return;
+
+  // (추가) 수업모드면 이 문항 '시작 시간' 기록
+  if (isClassMode() && typeof getSolveElapsedNow === "function") {
+    const row = ensureCoachRow(questionId);
+    if (row.touchedAt == null) {
+      row.touchedAt = getSolveElapsedNow(); // 누적 풀이시간 기준
+      scheduleSaveCoachState();
+    }
+  }
+
   currentAnswers[questionId] = value;
   saveStoredAnswers(currentSetId, currentAnswers);
 }
+
 // ▲ 여기까지 추가 ▲
 
 // ====== 채점 메타(제출 횟수/쿨다운) ======
@@ -514,6 +580,14 @@ async function initPractice() {
     currentSetId = setId;
     currentAnswers = loadStoredAnswers(setId);
 
+    // (추가) 모드 로드 + UI 반영
+    practiceMode =
+      localStorage.getItem(MODE_STORAGE_KEY) === "class" ? "class" : "normal";
+    document.body.classList.toggle("mode-class", isClassMode());
+
+    // (추가) 코칭 상태 로드
+    coachState = isClassMode() ? loadCoachState(currentSetId) : {};
+
     setupSolveTimerForCurrentSet();
 
     // 제목 표시
@@ -524,6 +598,11 @@ async function initPractice() {
 
     // 문제 렌더
     renderSet();
+
+    setupClassModeControls(); // 상단 버튼들
+    if (isClassMode()) {
+      startCoachTicker();
+    }
 
     // HUD 세팅
     setupHud();
@@ -560,6 +639,19 @@ function setupLangSelect(availableLanguages) {
 
   currentLang = availableLanguages[0] || "c";
   select.value = currentLang;
+
+  const single = document.getElementById("lang-single");
+
+  if (availableLanguages.length <= 1) {
+    select.hidden = true;
+    if (single) {
+      single.hidden = false;
+      single.textContent = select.options[0]?.textContent || currentLang;
+    }
+  } else {
+    select.hidden = false;
+    if (single) single.hidden = true;
+  }
 
   select.addEventListener("change", (e) => {
     currentLang = e.target.value;
@@ -655,10 +747,63 @@ function renderSet() {
   container.innerHTML = "";
 
   const questions = currentSetData.problems || [];
+  const coreCount = Number(currentSetData.coreCount ?? 6);
+
+  let coreWrap = container;
+  let suppWrap = null;
+
+  if (isClassMode()) {
+    // 탭
+    const tabs = document.createElement("div");
+    tabs.className = "set-tabs";
+    tabs.innerHTML = `
+    <button type="button" class="tab active" data-tab="core">핵심</button>
+    <button type="button" class="tab" data-tab="supp">보강/숙제</button>
+    <span class="tab-note">기본 ${Math.min(
+      coreCount,
+      questions.length
+    )}문항 노출</span>
+  `;
+    container.appendChild(tabs);
+
+    coreWrap = document.createElement("div");
+    coreWrap.id = "core-wrap";
+    suppWrap = document.createElement("div");
+    suppWrap.id = "supp-wrap";
+    suppWrap.hidden = true;
+
+    container.appendChild(coreWrap);
+    container.appendChild(suppWrap);
+
+    tabs.addEventListener("click", (e) => {
+      const btn = e.target?.closest?.("[data-tab]");
+      if (!btn) return;
+      activeBucket = btn.dataset.tab;
+
+      tabs
+        .querySelectorAll(".tab")
+        .forEach((b) => b.classList.toggle("active", b === btn));
+      coreWrap.hidden = activeBucket !== "core";
+      suppWrap.hidden = activeBucket !== "supp";
+    });
+  }
+
+  if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
 
   questions.forEach((q, idx) => {
     const card = document.createElement("section");
     card.className = "question-card";
+
+    card.dataset.qid = q.id;
+
+    // 버킷(core/supp) 결정: q.bucket 우선, 없으면 앞 6개를 core
+    const bucket =
+      q.bucket === "supp" || q.bucket === "core"
+        ? q.bucket
+        : idx < coreCount
+        ? "core"
+        : "supp";
+    card.dataset.bucket = bucket;
 
     // --- 헤더 (문제 번호 + 제목 + 타입 태그) ---
     const header = document.createElement("div");
@@ -704,13 +849,19 @@ function renderSet() {
       renderTextArea(card, q);
     }
 
+    appendCoachPanel(card, q, idx, bucket);
+
     // --- 피드백 영역 ---
     const feedback = document.createElement("div");
     feedback.className = "feedback";
     feedback.setAttribute("data-feedback", q.id);
     card.appendChild(feedback);
 
-    container.appendChild(card);
+    if (isClassMode() && suppWrap) {
+      (bucket === "core" ? coreWrap : suppWrap).appendChild(card);
+    } else {
+      container.appendChild(card);
+    }
   });
 
   // ▼ 렌더가 다 끝난 뒤에 하이라이트 호출 ▼
@@ -718,6 +869,260 @@ function renderSet() {
     Prism.highlightAllUnder(container);
     upgradeCodeInputsToCodeMirror(container);
   }
+
+  if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
+}
+
+function getHints(q) {
+  if (Array.isArray(q.hints) && q.hints.length) return q.hints.filter(Boolean);
+  if (q.hint) return [q.hint];
+  return [];
+}
+
+function formatMs(ms) {
+  const sec = Math.max(0, Math.floor(ms / 1000));
+  const m = String(Math.floor(sec / 60)).padStart(2, "0");
+  const s = String(sec % 60).padStart(2, "0");
+  return `${m}:${s}`;
+}
+
+function getSetRecommendedMs() {
+  const m = Number(currentSetData?.recommendedMinutes ?? 15);
+  return m * 60 * 1000;
+}
+
+function getQuestionRecommendedMs(q, idx) {
+  if (q && Number.isFinite(Number(q.recommendedSec))) {
+    return Number(q.recommendedSec) * 1000;
+  }
+  // 기본: 세트 권장시간 / coreCount
+  const coreCount = Number(currentSetData?.coreCount ?? 6);
+  const per = Math.floor(
+    getSetRecommendedMs() /
+      Math.max(1, Math.min(coreCount, (currentSetData?.problems || []).length))
+  );
+  return Math.max(90_000, per); // 최소 1분30초
+}
+
+function appendCoachPanel(card, q, idx, bucket) {
+  // 일반모드: 기존처럼 hint(있으면)만 노출
+  if (!isClassMode()) {
+    if (q.hint) {
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent = q.hint;
+      card.appendChild(hint);
+    }
+    return;
+  }
+
+  const panel = document.createElement("div");
+  panel.className = "coach-panel";
+  panel.setAttribute("data-coach", q.id);
+
+  const status = document.createElement("div");
+  status.className = "coach-status";
+  status.setAttribute("data-coach-status", q.id);
+  panel.appendChild(status);
+
+  const hints = getHints(q);
+
+  const h1 = document.createElement("div");
+  h1.className = "coach-block hint";
+  h1.setAttribute("data-coach-hint", "1");
+  h1.hidden = true;
+  h1.textContent = hints[0] ? `힌트1) ${hints[0]}` : "";
+  panel.appendChild(h1);
+
+  const h2 = document.createElement("div");
+  h2.className = "coach-block hint";
+  h2.setAttribute("data-coach-hint", "2");
+  h2.hidden = true;
+  h2.textContent = hints[1] ? `힌트2) ${hints[1]}` : "";
+  panel.appendChild(h2);
+
+  const explainBtn = document.createElement("button");
+  explainBtn.type = "button";
+  explainBtn.className = "coach-explain-btn";
+  explainBtn.setAttribute("data-coach-explain-btn", q.id);
+  explainBtn.hidden = true;
+  explainBtn.textContent = "해설 보기";
+  panel.appendChild(explainBtn);
+
+  const explain = document.createElement("div");
+  explain.className = "coach-block";
+  explain.setAttribute("data-coach-explain", q.id);
+  explain.hidden = true;
+  explain.textContent = q.explanation || "";
+  panel.appendChild(explain);
+
+  const nudge = document.createElement("div");
+  nudge.className = "coach-nudge";
+  nudge.setAttribute("data-coach-nudge", q.id);
+  nudge.hidden = true;
+  nudge.textContent =
+    "권장시간을 넘겼어요. 힌트를 보고도 어렵다면 다음 문제로 넘어가세요.";
+  panel.appendChild(nudge);
+
+  explainBtn.addEventListener("click", () => {
+    const row = ensureCoachRow(q.id);
+    row.explainOpen = !row.explainOpen;
+    explain.hidden = !row.explainOpen;
+    scheduleSaveCoachState();
+  });
+
+  // '읽기/클릭'만으로도 문항 시작 처리(타이핑 전에 얼어붙는 케이스 완화)
+  card.addEventListener(
+    "pointerdown",
+    () => {
+      if (typeof getSolveElapsedNow !== "function") return;
+      const row = ensureCoachRow(q.id);
+      if (row.touchedAt == null) {
+        row.touchedAt = getSolveElapsedNow();
+        scheduleSaveCoachState();
+      }
+    },
+    { once: true }
+  );
+
+  card.appendChild(panel);
+
+  // 최초 UI 반영
+  renderCoachUiForQuestion(q, idx);
+}
+
+function renderCoachUiForQuestion(q, idx) {
+  if (!isClassMode()) return;
+
+  const row = ensureCoachRow(q.id);
+  const recMs = getQuestionRecommendedMs(q, idx);
+  const now =
+    typeof getSolveElapsedNow === "function" ? getSolveElapsedNow() : 0;
+  const spent = row.touchedAt == null ? 0 : Math.max(0, now - row.touchedAt);
+
+  const statusEl = document.querySelector(`[data-coach-status="${q.id}"]`);
+  if (statusEl) {
+    const over = row.touchedAt != null && spent >= recMs;
+    statusEl.innerHTML = `
+      <span>권장 ${formatMs(recMs)}</span>
+      <span>${
+        row.touchedAt == null ? "시작 전" : `진행 ${formatMs(spent)}`
+      }</span>
+      <span>채점 ${Math.min(row.wrongGrades, 2)}/2</span>
+      ${over ? `<span class="over">초과!</span>` : ""}
+    `;
+  }
+
+  const hints = getHints(q);
+  const panel = document.querySelector(`[data-coach="${q.id}"]`);
+  if (!panel) return;
+
+  const h1 = panel.querySelector(`[data-coach-hint="1"]`);
+  const h2 = panel.querySelector(`[data-coach-hint="2"]`);
+  const explainBtn = panel.querySelector(`[data-coach-explain-btn="${q.id}"]`);
+  const explain = panel.querySelector(`[data-coach-explain="${q.id}"]`);
+  const nudge = panel.querySelector(`[data-coach-nudge="${q.id}"]`);
+
+  if (h1 && hints[0]) h1.hidden = !(row.stage >= 1);
+  if (h2 && hints[1]) h2.hidden = !(row.stage >= 2);
+
+  const canExplain = !!q.explanation && row.explainUnlocked;
+  if (explainBtn) explainBtn.hidden = !canExplain;
+  if (explain) explain.hidden = !(canExplain && row.explainOpen);
+
+  const shouldNudge = row.touchedAt != null && spent >= recMs + 4 * 60 * 1000;
+  if (nudge) nudge.hidden = !shouldNudge;
+}
+
+function startCoachTicker() {
+  if (coachTicker) clearInterval(coachTicker);
+
+  // 상단 권장시간 표시
+  const rec = document.getElementById("rec-timer");
+  if (rec) rec.textContent = `권장 ${formatMs(getSetRecommendedMs())}`;
+
+  coachTicker = setInterval(() => {
+    const questions = currentSetData?.problems || [];
+    const coreCount = Number(currentSetData?.coreCount ?? 6);
+
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+      const row = ensureCoachRow(q.id);
+
+      // 맞춘 문항은 코칭 중지
+      if (row.solved) {
+        renderCoachUiForQuestion(q, i);
+        continue;
+      }
+
+      // 시작 전이면 패스
+      if (row.touchedAt == null || typeof getSolveElapsedNow !== "function") {
+        renderCoachUiForQuestion(q, i);
+        continue;
+      }
+
+      const recMs = getQuestionRecommendedMs(q, i);
+      const spent = Math.max(0, getSolveElapsedNow() - row.touchedAt);
+
+      const hints = getHints(q);
+
+      // 권장시간 초과 → 힌트1 자동
+      if (hints[0] && spent >= recMs) row.stage = Math.max(row.stage, 1);
+
+      // +2분 → 힌트2 자동
+      if (hints[1] && spent >= recMs + 2 * 60 * 1000)
+        row.stage = Math.max(row.stage, 2);
+
+      // +4분 → 해설 버튼 활성
+      if (q.explanation && spent >= recMs + 4 * 60 * 1000)
+        row.explainUnlocked = true;
+
+      renderCoachUiForQuestion(q, i);
+    }
+
+    scheduleSaveCoachState();
+  }, 1000);
+}
+
+function setupClassModeControls() {
+  const modeBtn = document.getElementById("mode-toggle-btn");
+  const fsBtn = document.getElementById("fullscreen-btn");
+  const popBtn = document.getElementById("popout-btn");
+
+  if (modeBtn) {
+    modeBtn.textContent = isClassMode() ? "수업모드 ON" : "수업모드 OFF";
+    modeBtn.onclick = () => {
+      const next = isClassMode() ? "normal" : "class";
+      localStorage.setItem(MODE_STORAGE_KEY, next);
+      location.reload(); // 렌더/이벤트 중복 방지
+    };
+  }
+
+  if (fsBtn) {
+    fsBtn.onclick = async () => {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+          fsBtn.textContent = "전체화면 종료";
+        } else {
+          await document.exitFullscreen();
+          fsBtn.textContent = "전체화면";
+        }
+      } catch (_) {}
+    };
+  }
+
+  if (popBtn) {
+    popBtn.onclick = () => {
+      window.open(location.href, "_blank", "noopener,noreferrer");
+    };
+  }
+
+  const rec = document.getElementById("rec-timer");
+  if (rec)
+    rec.textContent = isClassMode()
+      ? `권장 ${formatMs(getSetRecommendedMs())}`
+      : "";
 }
 
 // ====== MCQ 렌더링 ======
@@ -837,12 +1242,12 @@ function renderTextArea(card, q) {
   const initialMsg = getFormatWarning(q, input.value);
   setInlineWarning(q.id, initialMsg);
 
-  if (q.hint) {
-    const hint = document.createElement("div");
-    hint.className = "hint";
-    hint.textContent = q.hint;
-    card.appendChild(hint);
-  }
+  // if (q.hint) {
+  //   const hint = document.createElement("div");
+  //   hint.className = "hint";
+  //   hint.textContent = q.hint;
+  //   card.appendChild(hint);
+  // }
 }
 
 // ===== LanguageAdapter (헬퍼 하드코딩 제거) =====
@@ -1024,7 +1429,20 @@ function setupGrading() {
       if (!ok) return;
     }
 
-    const questions = currentSetData.problems || [];
+    const all = currentSetData.problems || [];
+    const coreCount = Number(currentSetData.coreCount ?? 6);
+
+    const questions = !isClassMode()
+      ? all
+      : all.filter((q, idx) => {
+          const bucket =
+            q.bucket === "supp" || q.bucket === "core"
+              ? q.bucket
+              : idx < coreCount
+              ? "core"
+              : "supp";
+          return bucket === activeBucket;
+        });
     let correctCount = 0;
 
     questions.forEach((q) => {
@@ -1066,6 +1484,29 @@ function setupGrading() {
           .some((code) => normalizeCode(code) === normUser);
       }
 
+      if (isClassMode()) {
+        const idx = (currentSetData.problems || []).findIndex(
+          (x) => x.id === q.id
+        );
+        const row = ensureCoachRow(q.id);
+
+        if (isCorrect) {
+          row.solved = true;
+        } else {
+          row.wrongGrades = Math.min(2, (row.wrongGrades || 0) + 1);
+
+          // 2회 실패 → 해설 버튼 즉시 해금
+          if (row.wrongGrades >= 2) row.explainUnlocked = true;
+
+          // 실패 시에도 힌트는 최소 1단계는 열어주는 운영(선택)
+          const hints = getHints(q);
+          if (hints[0]) row.stage = Math.max(row.stage, 1);
+        }
+
+        renderCoachUiForQuestion(q, idx);
+        scheduleSaveCoachState();
+      }
+
       if (feedbackEl) {
         if (isCorrect) {
           correctCount++;
@@ -1081,7 +1522,12 @@ function setupGrading() {
     });
 
     if (scoreEl) {
-      scoreEl.textContent = `총 ${currentSetData.problems.length}문제 중 ${correctCount}문제 정답`;
+      const label = isClassMode()
+        ? activeBucket === "core"
+          ? "핵심"
+          : "보강/숙제"
+        : "전체";
+      scoreEl.textContent = `${label} ${questions.length}문제 중 ${correctCount}문제 정답`;
     }
 
     // ✅ 채점 메타 갱신 (횟수 + 쿨다운 시작)
@@ -1105,41 +1551,77 @@ function setupHud() {
   // HUD 요소가 없으면 아무 것도 하지 않음
   if (!btnIndex || !btnTop || !btnBottom || !panel) return;
 
+  // const getCards = () =>
+  //   Array.from(document.querySelectorAll(".question-card")).filter(
+  //     (card) => card.offsetParent !== null
+  //   ); // hidden(보강 탭) 제외
+
+  // const scrollToCard = (index) => {
+  //   const cards = getCards();
+  //   if (!cards.length) return;
+  //   if (index < 0) index = 0;
+  //   if (index >= cards.length) index = cards.length - 1;
+
+  //   cards[index].scrollIntoView({
+  //     behavior: "smooth",
+  //     block: "start",
+  //   });
+  // };
+
+  // // --- 문제 목록 패널 구성 ---
+  // panel.innerHTML = "";
+  // const cards = getCards();
+
+  // cards.forEach((card, idx) => {
+  //   const titleEl = card.querySelector("h2");
+  //   const text = titleEl ? titleEl.textContent : `문제 ${idx + 1}`;
+
+  //   const itemBtn = document.createElement("button");
+  //   itemBtn.type = "button";
+  //   itemBtn.className = "hud-index-item";
+  //   itemBtn.textContent = text;
+
+  //   itemBtn.addEventListener("click", () => {
+  //     scrollToCard(idx);
+  //     panel.classList.remove("open");
+  //   });
+
+  //   panel.appendChild(itemBtn);
+  // });
+
   const getCards = () =>
-    Array.from(document.querySelectorAll(".question-card"));
+    Array.from(document.querySelectorAll(".question-card")).filter(
+      (card) => card.offsetParent !== null
+    );
 
-  const scrollToCard = (index) => {
+  const buildIndexPanel = () => {
+    panel.innerHTML = "";
     const cards = getCards();
-    if (!cards.length) return;
-    if (index < 0) index = 0;
-    if (index >= cards.length) index = cards.length - 1;
 
-    cards[index].scrollIntoView({
-      behavior: "smooth",
-      block: "start",
+    cards.forEach((card, idx) => {
+      const titleEl = card.querySelector("h2");
+      const text = titleEl ? titleEl.textContent : `문제 ${idx + 1}`;
+
+      const itemBtn = document.createElement("button");
+      itemBtn.type = "button";
+      itemBtn.className = "hud-index-item";
+      itemBtn.textContent = text;
+
+      itemBtn.addEventListener("click", () => {
+        const liveCards = getCards();
+        liveCards[idx]?.scrollIntoView({ behavior: "smooth", block: "start" });
+        panel.classList.remove("open");
+      });
+
+      panel.appendChild(itemBtn);
     });
   };
 
-  // --- 문제 목록 패널 구성 ---
-  panel.innerHTML = "";
-  const cards = getCards();
+  // 최초 빌드
+  buildIndexPanel();
 
-  cards.forEach((card, idx) => {
-    const titleEl = card.querySelector("h2");
-    const text = titleEl ? titleEl.textContent : `문제 ${idx + 1}`;
-
-    const itemBtn = document.createElement("button");
-    itemBtn.type = "button";
-    itemBtn.className = "hud-index-item";
-    itemBtn.textContent = text;
-
-    itemBtn.addEventListener("click", () => {
-      scrollToCard(idx);
-      panel.classList.remove("open");
-    });
-
-    panel.appendChild(itemBtn);
-  });
+  // 전역 갱신 함수로 노출 (재렌더 후에도 호출 가능)
+  window.refreshHudIndexPanel = buildIndexPanel;
 
   // --- 목차 버튼: 목록 패널 열기/닫기 ---
   btnIndex.addEventListener("click", (e) => {

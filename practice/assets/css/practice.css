@@ -16,26 +16,49 @@
   font-weight: 600;
   font-size: 1rem;
 }
-
-.top-controls label {
-  font-size: 0.9rem;
-  color: #4b5563;
+/* 상단 컨트롤: 무조건 가로 한 줄 */
+.top-controls {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap !important;   /* 줄바꿈 금지 */
+  overflow-x: auto;               /* 좁으면 가로 스크롤 */
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 }
 
-.top-controls select {
-  margin-left: 4px;
-  padding: 3px 6px;
-  border-radius: 6px;
+.top-controls > * {
+  flex: 0 0 auto;
+}
+
+/* 언어 컨트롤을 인라인 칩처럼 */
+.lang-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.lang-single {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
   border: 1px solid #d1d5db;
+  border-radius: 999px;
   background: #f9fafb;
   font-size: 0.9rem;
+  font-weight: 700;
+  color: #374151;
 }
 
-/* 상단 컨트롤 영역: 언어 + 타이머를 가로로 배치 */
-.top-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* rec-timer는 normal 모드에서 빈값이면 공간도 차지하지 않게 */
+.rec-timer:empty {
+  display: none;
 }
 
 
@@ -531,4 +554,124 @@ pre.line-numbers code {
 }
 #problem-container .CodeMirror-scroll {
   min-height: 40px;
+}
+
+
+/* ===== 수업모드 상단 UI ===== */
+.rec-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.mode-toggle-btn,
+.fullscreen-btn,
+.popout-btn {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+body.mode-class .mode-toggle-btn {
+  border-color: #2563eb;
+  color: #1d4ed8;
+  font-weight: 800;
+}
+
+/* ===== 수업모드 탭 ===== */
+.set-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 10px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+}
+
+.set-tabs .tab {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.set-tabs .tab.active {
+  border-color: #2563eb;
+  color: #1d4ed8;
+  font-weight: 800;
+}
+
+.set-tabs .tab-note {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* ===== 수업모드 코칭 패널 ===== */
+.coach-panel {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.coach-status {
+  font-size: 0.85rem;
+  color: #374151;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.coach-status .over {
+  color: #b91c1c;
+  font-weight: 800;
+}
+
+.coach-block {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+.coach-block.hint {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.coach-explain-btn {
+  margin-top: 8px;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+}
+
+.coach-nudge {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #6b7280;
 }

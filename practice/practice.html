@@ -27,18 +27,32 @@
           <span id="set-title">연습장</span>
         </div>
         <div class="top-controls">
-          <label>
-            언어:
-            <select id="lang-select">
-              <!-- practice.js에서 세트 정보 기반으로 채움 -->
-            </select>
-          </label>
+          <div class="lang-control">
+  <span class="lang-label">언어</span>
+  <span id="lang-single" class="lang-single" hidden></span>
+  <select id="lang-select"></select>
+</div>
 
           <div class="solve-timer" title="누적 풀이시간 (탭을 벗어나면 자동 일시정지)">
   <span class="solve-timer-label">⏱</span>
   <span id="solve-timer">00:00</span>
   <span id="solve-timer-state" class="solve-timer-state"></span>
 </div>
+
+<!-- (추가) 권장시간/수업모드/전체화면 -->
+<span id="rec-timer" class="rec-timer" title="권장 시간"></span>
+
+<button id="mode-toggle-btn" class="mode-toggle-btn" type="button">
+  수업모드 OFF
+</button>
+
+<button id="fullscreen-btn" class="fullscreen-btn" type="button">
+  전체화면
+</button>
+
+<button id="popout-btn" class="popout-btn" type="button" title="새 창으로 열기">
+  새창
+</button>
 
 
           <button
