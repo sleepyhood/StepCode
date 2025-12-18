@@ -1,0 +1,142 @@
+{
+  "id": "py_lv15_array2d_b02",
+  "title": "Python 2차원 배열 LV15 기초 2회차",
+  "categoryId": "py_array2d",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 입력 저장 위치",
+      "description": "다음 중 `input()`으로 입력받은 값을 2차원 배열에 저장하는 올바른 한 줄을 고르세요.\n(중첩 반복문 안에서 i, j가 유효하다고 가정)",
+      "code": "",
+      "options": [
+        "x = int(input())",
+        "a[i] = int(input())",
+        "a[i][j] = int(input())",
+        "a[j][i] = int(input())"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. R×C 배열 입력 받기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **입력 한 줄**을 작성하세요.\n(R행 C열의 모든 값을 입력 받아 `a`에 저장해야 합니다.)",
+      "code": "R, C = map(int, input().split())\na = [[0] * C for _ in range(R)]\n\nfor i in range(R):\n    for j in range(C):\n        # TODO: 입력을 받아 a[i][j]에 저장",
+      "expectedCode": "a[i][j] = int(input())",
+      "hint": "값 하나를 입력받아 저장: a[i][j] = int(input())"
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답",
+      "title": "Short 1. 행 합 출력",
+      "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (줄바꿈 포함)",
+      "code": "a = [\n    [1, 2, 3],\n    [4, 5, 6]\n]\nfor i in range(len(a)):\n    s = 0\n    for j in range(len(a[0])):\n        s += a[i][j]\n    print('%d' % s)",
+      "expectedText": "6\n15"
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 평균의 나눗셈",
+      "description": "다음 중 전체 평균을 **실수**로 올바르게 계산하는 코드를 고르세요. (`sum_`은 정수)",
+      "code": "",
+      "options": [
+        "avg = sum_ // (R * C)",
+        "avg = float(sum_ // (R * C))",
+        "avg = sum_ / (R * C)",
+        "avg = sum_ / float(R) * C"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 최댓값과 좌표 찾기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n`max_v`와 그 위치 `(mr, mc)`를 갱신해야 합니다. (동점이면 먼저 나온 좌표 유지)",
+      "code": "a = [\n    [3, 9, 1],\n    [8, 9, 2]\n]\nmax_v = a[0][0]\nmr, mc = 0, 0\n\nfor i in range(len(a)):\n    for j in range(len(a[0])):\n        if a[i][j] > max_v:\n            # TODO: max_v와 mr, mc 갱신\nprint('%d %d %d' % (max_v, mr, mc))",
+      "expectedCode": "max_v, mr, mc = a[i][j], i, j",
+      "hint": "조건이 참일 때 값/좌표를 함께 갱신"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답",
+      "title": "Short 2. 최댓값 동점 처리",
+      "description": "아래 코드는 최댓값의 좌표를 찾습니다. 출력 결과를 쓰세요. (한 줄)\n(동점이면 더 먼저 나온 좌표를 유지합니다.)",
+      "code": "a = [\n    [5, 7],\n    [7, 1]\n]\nmax_v = a[0][0]\nmr, mc = 0, 0\nfor i in range(len(a)):\n    for j in range(len(a[0])):\n        if a[i][j] > max_v:\n            max_v, mr, mc = a[i][j], i, j\nprint('%d %d' % (mr, mc))",
+      "expectedText": "0 1"
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 열 합 구하기 반복문",
+      "description": "다음 중 각 열의 합을 구해 한 줄씩 출력하는 코드로 올바른 것은 무엇인가요?",
+      "code": "",
+      "options": [
+        "for i in range(R):\n    s = 0\n    for j in range(C):\n        s += a[i][j]\n    print('%d' % s)  # 행 합",
+        "for j in range(C):\n    s = 0\n    for i in range(R):\n        s += a[i][j]\n    print('%d' % s)  # 열 합",
+        "for i in range(R):\n    for j in range(C):\n        print('%d' % a[i][j])  # 원소 출력",
+        "for j in range(R):\n    s = 0\n    for i in range(C):\n        s += a[i][j]\n    print('%d' % s)  # 잘못된 범위"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. 특정 값 개수(열 기준)",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(각 열에서 **짝수의 개수**를 세어 `evenCnt`에 저장합니다.)",
+      "code": "a = [\n    [2, 3, 4],\n    [6, 7, 8]\n]\nC = len(a[0])\n\nfor j in range(C):\n    evenCnt = 0\n    for i in range(len(a)):\n        # TODO: a[i][j]가 짝수면 evenCnt 증가\n    print('%d' % evenCnt)",
+      "expectedCode": "if a[i][j] % 2 == 0: evenCnt += 1",
+      "hint": "짝수 조건: x % 2 == 0"
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 최댓값 tie-break(행/열 작은 순)",
+      "description": "다음 중 최댓값을 찾되, **동점이면 (행이 작은 것 → 열이 작은 것)**을 선택하는 조건으로 올바른 것은 무엇인가요?",
+      "code": "",
+      "options": [
+        "(a[i][j] >= max_v) and (i <= mr) and (j <= mc)",
+        "a[i][j] > max_v or (a[i][j] == max_v and (i < mr or (i == mr and j < mc)))",
+        "a[i][j] > max_v and (i < mr or j < mc)",
+        "a[i][j] == max_v and i < mr and j < mc"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

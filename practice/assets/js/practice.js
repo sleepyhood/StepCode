@@ -59,6 +59,40 @@ let currentSetId = null;
 let currentAnswers = {};
 const ANSWER_STORAGE_PREFIX = "stepcode:answers:";
 
+
+// ===== Markdown(지문) 렌더링 =====
+let MD = null;
+
+function getMarkdownRenderer() {
+  if (MD) return MD;
+  // 두 라이브러리가 모두 있어야 안전하게 HTML 렌더
+  if (!window.markdownit || !window.DOMPurify) return null;
+
+  MD = window.markdownit({
+    html: false,     // md 안의 raw HTML 금지(보안)
+    linkify: true,
+    breaks: true
+  });
+
+  return MD;
+}
+
+function renderMarkdownInto(targetEl, mdText) {
+  const raw = String(mdText ?? "");
+  const md = getMarkdownRenderer();
+
+  if (!md) {
+    // 라이브러리가 없으면 안전하게 평문으로
+    targetEl.textContent = raw;
+    return;
+  }
+
+  const html = md.render(raw);
+  const safe = window.DOMPurify.sanitize(html);
+  targetEl.innerHTML = safe;
+}
+
+
 // ===== 수업모드(코칭) =====
 const MODE_STORAGE_KEY = "stepcode:practiceMode"; // "normal" | "class"
 const COACH_STATE_PREFIX = "stepcode:coachState:";
@@ -753,42 +787,48 @@ function renderSet() {
   let suppWrap = null;
 
   if (isClassMode()) {
+    if (activeBucket !== "core" && activeBucket !== "supp") activeBucket = "core";
+
     // 탭
     const tabs = document.createElement("div");
     tabs.className = "set-tabs";
     tabs.innerHTML = `
-    <button type="button" class="tab active" data-tab="core">핵심</button>
-    <button type="button" class="tab" data-tab="supp">보강/숙제</button>
-    <span class="tab-note">기본 ${Math.min(
-      coreCount,
-      questions.length
-    )}문항 노출</span>
-  `;
+  <button type="button" class="tab ${activeBucket === "core" ? "active" : ""}" data-tab="core">핵심</button>
+  <button type="button" class="tab ${activeBucket === "supp" ? "active" : ""}" data-tab="supp">보강/숙제</button>
+  <span class="tab-note">기본 ${Math.min(coreCount, questions.length)}문항 노출</span>
+`;
+
     container.appendChild(tabs);
 
     coreWrap = document.createElement("div");
     coreWrap.id = "core-wrap";
     suppWrap = document.createElement("div");
     suppWrap.id = "supp-wrap";
-    suppWrap.hidden = true;
+suppWrap.hidden = activeBucket !== "supp";
+coreWrap.hidden = activeBucket !== "core";
+
 
     container.appendChild(coreWrap);
     container.appendChild(suppWrap);
 
-    tabs.addEventListener("click", (e) => {
-      const btn = e.target?.closest?.("[data-tab]");
-      if (!btn) return;
-      activeBucket = btn.dataset.tab;
+tabs.addEventListener("click", (e) => {
+  const btn = e.target?.closest?.("[data-tab]");
+  if (!btn) return;
+  activeBucket = btn.dataset.tab;
 
-      tabs
-        .querySelectorAll(".tab")
-        .forEach((b) => b.classList.toggle("active", b === btn));
-      coreWrap.hidden = activeBucket !== "core";
-      suppWrap.hidden = activeBucket !== "supp";
-    });
+  tabs.querySelectorAll(".tab")
+    .forEach((b) => b.classList.toggle("active", b === btn));
+
+  coreWrap.hidden = activeBucket !== "core";
+  suppWrap.hidden = activeBucket !== "supp";
+
+  // ✅ 추가: 탭 전환 후 HUD 재생성
+  if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
+});
+
   }
 
-  if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
+  // if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
 
   questions.forEach((q, idx) => {
     const card = document.createElement("section");
@@ -823,10 +863,11 @@ function renderSet() {
     card.appendChild(header);
 
     // --- 설명 ---
-    const desc = document.createElement("p");
-    desc.className = "description";
-    desc.textContent = q.description || "";
+    const desc = document.createElement("div");
+    desc.className = "description md";
+    renderMarkdownInto(desc, q.description || "");
     card.appendChild(desc);
+
 
     // --- 코드 블록 (있으면) ---
     if (q.code) {
@@ -910,7 +951,8 @@ function appendCoachPanel(card, q, idx, bucket) {
     if (q.hint) {
       const hint = document.createElement("div");
       hint.className = "hint";
-      hint.textContent = q.hint;
+      hint.classList.add("md");
+      renderMarkdownInto(hint, q.hint);
       card.appendChild(hint);
     }
     return;
@@ -953,7 +995,9 @@ function appendCoachPanel(card, q, idx, bucket) {
   explain.className = "coach-block";
   explain.setAttribute("data-coach-explain", q.id);
   explain.hidden = true;
-  explain.textContent = q.explanation || "";
+  explain.classList.add("md");
+  renderMarkdownInto(explain, q.explanation || "");
+
   panel.appendChild(explain);
 
   const nudge = document.createElement("div");
@@ -1017,7 +1061,11 @@ function renderCoachUiForQuestion(q, idx) {
   const panel = document.querySelector(`[data-coach="${q.id}"]`);
   if (!panel) return;
 
-  const h1 = panel.querySelector(`[data-coach-hint="1"]`);
+  // const h1 = panel.querySelector(`[data-coach-hint="1"]`);
+  const h1 = document.querySelector(
+  `[data-coach="${q.id}"] [data-coach-hint="1"]`
+);
+
   const h2 = panel.querySelector(`[data-coach-hint="2"]`);
   const explainBtn = panel.querySelector(`[data-coach-explain-btn="${q.id}"]`);
   const explain = panel.querySelector(`[data-coach-explain="${q.id}"]`);

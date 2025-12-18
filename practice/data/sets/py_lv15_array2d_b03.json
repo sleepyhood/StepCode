@@ -1,0 +1,142 @@
+{
+  "id": "py_lv15_array2d_b03",
+  "title": "Python 2차원 배열 LV15 기초 3회차",
+  "categoryId": "py_array2d",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 전치(Transpose) 인덱스",
+      "description": "다음 중 전치(Transpose)를 올바르게 저장하는 한 줄을 고르세요.\n(`t`의 크기는 C×R, `a`의 크기는 R×C 라고 가정)",
+      "code": "",
+      "options": [
+        "t[i][j] = a[i][j]",
+        "t[i][j] = a[j][i]",
+        "t[j][i] = a[j][i]",
+        "t[j][i] = a[i][j]"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 전치 배열 만들기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(전치 배열 `t`에 값을 저장해야 합니다.)",
+      "code": "a = [\n    [1, 2, 3],\n    [4, 5, 6]\n]\nR, C = len(a), len(a[0])\nt = [[0] * R for _ in range(C)]\n\nfor i in range(R):\n    for j in range(C):\n        # TODO: t에 전치값 저장",
+      "expectedCode": "t[j][i] = a[i][j]",
+      "hint": "인덱스를 바꿔 저장: t[j][i] = a[i][j]"
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답",
+      "title": "Short 1. 대각선 합",
+      "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (한 줄)\n(주대각선 원소의 합)",
+      "code": "a = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\nsum_ = 0\nfor i in range(len(a)):\n    sum_ += a[i][i]\nprint('%d' % sum_)",
+      "expectedText": "15"
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 주대각선 조건",
+      "description": "다음 중 정사각형 N×N 배열에서 **주대각선**(main diagonal) 원소의 조건으로 올바른 것은 무엇인가요?",
+      "code": "",
+      "options": [
+        "i + j == N - 1",
+        "i == j",
+        "i < j",
+        "i > j"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 테두리 합",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(테두리(가장 바깥쪽) 원소만 `sum_`에 더합니다.)",
+      "code": "a = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\nR, C = len(a), len(a[0])\nsum_ = 0\nfor i in range(R):\n    for j in range(C):\n        # TODO: 테두리면 sum_에 더하기\nprint('%d' % sum_)",
+      "expectedCode": "if i == 0 or i == R-1 or j == 0 or j == C-1: sum_ += a[i][j]",
+      "hint": "테두리 조건: i==0, i==R-1, j==0, j==C-1"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답",
+      "title": "Short 2. 상삼각 원소 개수",
+      "description": "정사각형 N×N 배열에서 `i < j`인 칸(주대각선 위쪽) 원소의 개수는 N=4일 때 몇 개인가요?",
+      "code": "",
+      "expectedText": "6"
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 전치의 제자리(in-place) 가능 조건",
+      "description": "정사각형이 아닌 R×C 배열을 전치할 때, **추가 배열 없이 제자리(in-place)**로 항상 가능한가요?",
+      "code": "",
+      "options": [
+        "항상 가능하다",
+        "R == C(정사각형)인 경우에만 가능하다",
+        "R > C인 경우에만 가능하다",
+        "C > R인 경우에만 가능하다"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. 행 뒤집기(가로 반전)",
+      "description": "아래 코드에서 주석 위치에 들어갈 **swap 한 줄**을 작성하세요.\n(리스트 row를 좌우로 뒤집어야 합니다.)",
+      "code": "row = [1, 2, 3, 4, 5]\nl, r = 0, len(row) - 1\nwhile l < r:\n    # TODO: row[l]과 row[r]을 교환\n    l += 1\n    r -= 1\nprint('%d %d' % (row[0], row[len(row)-1]))",
+      "expectedCode": "row[l], row[r] = row[r], row[l]",
+      "hint": "파이썬 스왑: a, b = b, a"
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 부대각선 조건",
+      "description": "정사각형 N×N 배열에서 **부대각선**(anti diagonal) 원소의 조건으로 올바른 것은 무엇인가요? (0-index 기준)",
+      "code": "",
+      "options": [
+        "i == j",
+        "i + j == N",
+        "i + j == N - 1",
+        "i - j == N - 1"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "id": "java_array_lv10_c02",
+  "title": "Java 배열 Lv10 챌린지 2회차",
+  "categoryId": "java_array",
+  "availableLanguages": [
+    "java"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. 빈도 배열 크기",
+      "description": "0부터 9까지의 숫자가 입력으로 들어올 때, 각 숫자의 등장 횟수를 세기 위한 빈도 배열 cnt의 올바른 크기를 고르세요.",
+      "code": null,
+      "options": [
+        "int[] cnt = new int[9];",
+        "int[] cnt = new int[10];",
+        "int[] cnt = new int[11];",
+        "int[] cnt = new int[0];"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 빈도 증가",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n입력 x(0~9)의 등장 횟수를 cnt에 누적해야 합니다.",
+      "code": "int[] cnt = new int[10];\nfor (int i = 0; i < n; i++) {\n    int x = sc.nextInt();\n    // TODO: x의 빈도를 1 증가시키는 한 줄을 작성하시오.\n}",
+      "expectedCode": "cnt[x]++;",
+      "hint": "배열 인덱스를 그대로 사용합니다."
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 빈도 실행 결과",
+      "description": "아래 코드가 실행된 뒤, cnt[0]의 값은 무엇인가요?",
+      "code": "int[] cnt = new int[10];\nint[] data = {0, 2, 0, 9, 0};\nfor (int i = 0; i < data.length; i++) {\n    int x = data[i];\n    cnt[x]++;\n}\n// 여기서 cnt[0]의 값은?",
+      "expectedText": "3"
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. 최빈값 tie-break",
+      "description": "다음 중 최빈값을 찾을 때, 빈도가 같으면 **더 작은 숫자**를 선택하는 조건식으로 올바른 것을 고르세요.\n(bestCnt, bestNum, cnt[i]가 이미 정의되어 있다고 가정합니다.)",
+      "code": null,
+      "options": [
+        "cnt[i] > bestCnt && i < bestNum",
+        "cnt[i] >= bestCnt && i < bestNum",
+        "cnt[i] > bestCnt || (cnt[i] == bestCnt && i < bestNum)",
+        "cnt[i] == bestCnt || i < bestNum"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 최빈값 갱신(2줄)",
+      "description": "아래 코드에서 주석 위치에 들어갈 내용을 작성하세요.\n조건을 만족하면 bestCnt와 bestNum을 갱신해야 합니다.\n(주석 위치에 **두 줄**로 작성하세요.)",
+      "code": "int bestNum = 0;\nint bestCnt = -1;\nfor (int i = 0; i < 10; i++) {\n    if (cnt[i] > bestCnt || (cnt[i] == bestCnt && i < bestNum)) {\n        // TODO: bestCnt와 bestNum을 갱신하는 두 줄을 작성하시오.\n    }\n}\nSystem.out.println(bestNum);",
+      "expectedCode": "bestCnt = cnt[i];\nbestNum = i;",
+      "hint": "첫 줄은 bestCnt, 둘째 줄은 bestNum 갱신이 안전합니다."
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. 누적합(prefix) 점화식",
+      "description": "prefix[0] = 0이고, prefix[i+1]에 arr[0]부터 arr[i]까지의 합을 저장하려고 합니다.\n다음 중 올바른 한 줄을 고르세요. (i는 0부터 시작)",
+      "code": null,
+      "options": [
+        "prefix[i] = prefix[i] + arr[i];",
+        "prefix[i + 1] = prefix[i] + arr[i];",
+        "prefix[i] = prefix[i + 1] + arr[i];",
+        "prefix[i + 1] = prefix[i] + arr[i + 1];"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. prefix 채우기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(prefix 배열은 길이가 n+1이고 prefix[0]=0입니다.)",
+      "code": "int[] prefix = new int[n + 1];\nprefix[0] = 0;\nfor (int i = 0; i < n; i++) {\n    // TODO: prefix[i+1]을 채우는 한 줄을 작성하시오.\n}",
+      "expectedCode": "prefix[i + 1] = prefix[i] + arr[i];",
+      "hint": "prefix는 한 칸 앞 값에 현재 값을 더합니다."
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. prefix로 구간합",
+      "description": "prefix 배열이 아래와 같을 때, l=1, r=2 (0-index) 구간의 합은 얼마인가요?\n(구간합 공식: sum = prefix[r+1] - prefix[l])",
+      "code": "int[] prefix = {0, 2, 5, 9, 10};\nint l = 1;\nint r = 2;",
+      "expectedText": "7"
+    },
+    {
+      "id": "code4",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 4. prefix로 구간합 한 줄",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(0-index, l~r 구간합을 계산해야 합니다.)",
+      "code": "int sum;\n// TODO: prefix를 이용해 l~r 구간합을 sum에 저장하는 한 줄을 작성하시오.",
+      "expectedCode": "sum = prefix[r + 1] - prefix[l];",
+      "hint": "prefix는 n+1 길이이며, 오른쪽은 r+1입니다."
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "id": "py_lv15_array2d_b01",
+  "title": "Python 2차원 배열 LV15 기초 1회차",
+  "categoryId": "py_array2d",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 2차원 리스트 선언/초기화",
+      "description": "다음 중 2행 3열짜리 2차원 리스트를 **올바르게 초기화**한 코드를 고르세요.",
+      "code": "",
+      "options": [
+        "a = [[1, 2, 3], [4, 5]]",
+        "a = [[1, 2, 3], [4, 5, 6]]",
+        "a = [[1, 2, 3]] * 2",
+        "a = [[1, 2, 3] * 2]"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 마지막 원소 출력(2차원)",
+      "description": "아래 코드에서 주석 위치에 들어갈 **출력 한 줄**을 작성하세요.\n(가장 마지막 원소 `a[행-1][열-1]`을 출력해야 합니다.)",
+      "code": "a = [\n    [1, 2, 3],\n    [4, 5, 6]\n]\n# TODO: 마지막 원소를 출력하는 한 줄을 작성하시오.",
+      "expectedCode": "print('%d' % a[len(a)-1][len(a[0])-1])",
+      "hint": "len(a), len(a[0])를 이용하세요. (또는 -1 인덱싱)"
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답",
+      "title": "Short 1. length 확인",
+      "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (공백 포함, 한 줄입니다.)",
+      "code": "a = [\n    [10, 20, 30],\n    [40, 50, 60]\n]\nprint('%d %d' % (len(a), len(a[0])))",
+      "expectedText": "2 3"
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 행/열 길이",
+      "description": "다음 중 **열의 개수**를 의미하는 표현으로 올바른 것은 무엇인가요? (모든 행의 길이가 같다고 가정)",
+      "code": "",
+      "options": [
+        "len(a)",
+        "len(a[0])",
+        "len(a[1]) - 1",
+        "len(a) - 1"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 전체 합 구하기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(2차원 배열 `a`의 모든 원소의 합을 `sum_`에 누적해야 합니다.)",
+      "code": "a = [\n    [1, 2, 3],\n    [4, 5, 6]\n]\nsum_ = 0\nfor i in range(len(a)):\n    for j in range(len(a[0])):\n        # TODO: a의 모든 원소를 sum_에 더하는 한 줄\nprint('%d' % sum_)",
+      "expectedCode": "sum_ += a[i][j]",
+      "hint": "누적합 패턴: sum_ += ..."
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답",
+      "title": "Short 2. 실행 결과(인덱싱)",
+      "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (한 줄)",
+      "code": "a = [\n    [1, 2, 3],\n    [4, 5, 6]\n]\nprint('%d' % (a[0][2] + a[1][0]))",
+      "expectedText": "7"
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 인덱스 범위",
+      "description": "다음 중 2차원 리스트 `a`에 대해 **항상 안전한**(IndexError가 나지 않는) 반복 조건을 고르세요.\n(리스트는 `a = [[0]*cols for _ in range(rows)]`로 생성되었다고 가정)",
+      "code": "",
+      "options": [
+        "for i in range(len(a) + 1):",
+        "for j in range(len(a[0]) + 1):",
+        "for i in range(len(a)):",
+        "for j in range(len(a)):"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. 특정 값 개수 세기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(`a[i][j]`가 0보다 크면 `cnt`를 1 증가)",
+      "code": "a = [\n    [0, -1, 2],\n    [3, 0, -4]\n]\ncnt = 0\nfor i in range(len(a)):\n    for j in range(len(a[0])):\n        # TODO: a[i][j]가 0보다 크면 cnt를 1 증가\nprint('%d' % cnt)",
+      "expectedCode": "if a[i][j] > 0: cnt += 1",
+      "hint": "조건을 만족할 때만 카운트 증가"
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 중첩 반복문 실행 횟수",
+      "description": "다음 코드에서 `print('%s' % '*', end='')`는 총 몇 번 실행되나요?\n\n```python\na = [[0]*3 for _ in range(2)]\nfor i in range(len(a)):\n    for j in range(len(a[0])):\n        print('%s' % '*', end='')\n```",
+      "code": "",
+      "options": [
+        "4번",
+        "6번",
+        "8번",
+        "12번"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

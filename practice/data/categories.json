@@ -16,7 +16,11 @@
   
   { "id": "py_for",  "name": "Python - Lv7 반복1(for)","order": 207 },
   { "id": "py_while",  "name": "Python - Lv8 반복2(while)","order": 208 },
-  
-  { "id": "java_if","name": "Java - 조건문",   "order": 401 }
+  { "id": "py_array2d", "name": "Python - LV15 2차원 배열", "order": 215 },
+
+  { "id": "java_if","name": "Java - 조건문",   "order": 401 },
+  { "id": "java_array", "name": "Java - LV10 배열", "order": 410 },
+  { "id": "java_array2d", "name": "Java - LV15 2차원 배열", "order": 415 }
+
 
 ]

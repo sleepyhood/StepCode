@@ -1,0 +1,142 @@
+{
+  "id": "java_array2d_lv15_b03",
+  "title": "Java 2차원 배열 LV15 기초 3회차",
+  "categoryId": "java_array2d",
+  "availableLanguages": [
+    "java"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 전치(Transpose) 인덱스",
+      "description": "2차원 배열 `a`(R×C)를 전치한 배열 `t`(C×R)에 값을 옮길 때 올바른 대입문은 무엇인가요?",
+      "code": null,
+      "options": [
+        "t[i][j] = a[i][j];",
+        "t[i][j] = a[j][i];",
+        "t[j][i] = a[j][i];",
+        "t[j][i] = a[i][j];"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 전치 배열 만들기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **대입 한 줄**을 작성하세요.\n(전치 배열 `t`를 만들어야 합니다.)",
+      "code": "int[][] a = {\n    {1, 2, 3},\n    {4, 5, 6}\n}; // 2x3\nint R = a.length;\nint C = a[0].length;\nint[][] t = new int[C][R];\n\nfor (int i = 0; i < R; i++) {\n    for (int j = 0; j < C; j++) {\n        // TODO: t에 전치값 저장\n    }\n}",
+      "expectedCode": "t[j][i] = a[i][j];",
+      "hint": "`t`는 열과 행이 뒤바뀝니다: (j,i)에 (i,j) 값을 넣습니다."
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 대각선 합",
+      "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (한 줄)\n(주대각선 원소의 합)",
+      "code": "int[][] a = {\n    {1, 2, 3},\n    {4, 5, 6},\n    {7, 8, 9}\n};\nint sum = 0;\nfor (int i = 0; i < a.length; i++) sum += a[i][i];\nSystem.out.println(sum);",
+      "expectedText": "15"
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 주대각선 조건",
+      "description": "정사각형 배열 `a`에서 주대각선(왼쪽 위 → 오른쪽 아래) 위치를 의미하는 조건으로 올바른 것은 무엇인가요?",
+      "code": null,
+      "options": [
+        "i + j == a.length - 1",
+        "i == j",
+        "i < j",
+        "i > j"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 테두리 합",
+      "description": "아래 코드에서 주석 위치에 들어갈 **조건+누적 한 줄**을 작성하세요.\n(배열의 테두리(바깥쪽) 원소만 합산)",
+      "code": "int[][] a = {\n    {1, 1, 1, 1},\n    {1, 2, 2, 1},\n    {1, 2, 2, 1},\n    {1, 1, 1, 1}\n};\nint R = a.length, C = a[0].length;\nint sum = 0;\n\nfor (int i = 0; i < R; i++) {\n    for (int j = 0; j < C; j++) {\n        // TODO: 테두리면 sum에 더하기\n    }\n}\nSystem.out.println(sum);",
+      "expectedCode": "if (i == 0 || j == 0 || i == R - 1 || j == C - 1) sum += a[i][j];",
+      "hint": "테두리는 첫/마지막 행 또는 첫/마지막 열입니다."
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 상삼각 원소 개수",
+      "description": "정사각형 N×N 배열에서 `i < j`인 칸(주대각선 위쪽) 원소의 개수는 N=4일 때 몇 개인가요?",
+      "code": null,
+      "expectedText": "6"
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 전치의 제자리(in-place) 가능 조건",
+      "description": "정사각형이 아닌 R×C 배열을 **추가 배열 없이** 전치(in-place)하려고 하면 일반적으로 불가능합니다.\n다음 중 in-place 전치가 가능한 경우를 고르세요.",
+      "code": null,
+      "options": [
+        "항상 가능하다",
+        "R == C(정사각형)인 경우에만 가능하다",
+        "R > C인 경우에만 가능하다",
+        "C > R인 경우에만 가능하다"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. 행 뒤집기(가로 반전)",
+      "description": "아래 코드에서 주석 위치에 들어갈 **swap 3줄**을 작성하세요.\n(배열 row를 좌우로 뒤집어야 합니다.)",
+      "code": "int[] row = {1, 2, 3, 4, 5};\nint l = 0, r = row.length - 1;\nwhile (l < r) {\n    // TODO: row[l]과 row[r]을 교환하는 3줄\n    l++; r--;\n}\nSystem.out.println(row[0] + \" \" + row[row.length-1]);",
+      "expectedCode": "int tmp = row[l];\nrow[l] = row[r];\nrow[r] = tmp;",
+      "hint": "임시 변수 tmp를 사용해 교환하세요."
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 부대각선 조건",
+      "description": "정사각형 배열에서 부대각선(오른쪽 위 → 왼쪽 아래) 위치 조건으로 올바른 것은 무엇인가요?\n(N은 한 변 길이)",
+      "code": null,
+      "options": [
+        "i == j",
+        "i + j == N",
+        "i + j == N - 1",
+        "i - j == N - 1"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    }
+  ]
+}

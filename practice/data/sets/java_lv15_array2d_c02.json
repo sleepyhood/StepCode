@@ -1,0 +1,131 @@
+{
+  "id": "java_array2d_lv15_c02",
+  "title": "Java 2차원 배열 LV15 챌린지 2회차",
+  "categoryId": "java_array2d",
+  "availableLanguages": [
+    "java"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. 2차원 누적합 점화식",
+      "description": "1-indexed 누적합 배열 `ps`를 만들 때, 아래 중 올바른 점화식을 고르세요.\n(배열 `a`는 1..R, 1..C 범위를 사용)",
+      "code": null,
+      "options": [
+        "ps[i][j] = a[i][j] + ps[i-1][j-1]",
+        "ps[i][j] = a[i][j] + ps[i-1][j] + ps[i][j-1] + ps[i-1][j-1]",
+        "ps[i][j] = a[i][j] + ps[i-1][j] + ps[i][j-1] - ps[i-1][j-1]",
+        "ps[i][j] = ps[i-1][j] - ps[i][j-1] + a[i][j]"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. ps 채우기(한 줄)",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(1-indexed 2차원 누적합 ps를 계산)",
+      "code": "int R = 3, C = 4;\nint[][] a = new int[R+1][C+1];\n// (a에 값이 채워져 있다고 가정)\nint[][] ps = new int[R+1][C+1];\n\nfor (int i = 1; i <= R; i++) {\n    for (int j = 1; j <= C; j++) {\n        // TODO: ps[i][j]를 계산하는 한 줄\n    }\n}",
+      "expectedCode": "ps[i][j] = a[i][j] + ps[i-1][j] + ps[i][j-1] - ps[i-1][j-1];",
+      "hint": "겹친 영역(ps[i-1][j-1])을 한 번 빼야 합니다."
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 구간합 공식",
+      "description": "1-indexed 누적합 `ps`가 있을 때, (r1,c1)~(r2,c2) 직사각형 합을 구하는 올바른 식을 쓰세요.\n(변수는 r1,c1,r2,c2로 표기)",
+      "code": null,
+      "expectedText": "ps[r2][c2] - ps[r1-1][c2] - ps[r2][c1-1] + ps[r1-1][c1-1]"
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. 구간합 인덱스 실수",
+      "description": "다음 중 1-indexed 누적합에서 가장 흔한 실수로 올바른 것을 고르세요.",
+      "code": null,
+      "options": [
+        "ps 배열을 (R+1)x(C+1)로 만들지 않는다",
+        "ps를 만들 때 i와 j를 0부터 시작한다",
+        "구간합에서 r1-1 또는 c1-1을 사용하는 것을 빼먹는다",
+        "위 모두가 흔한 실수다"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 구간합 한 줄",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(누적합 ps를 이용해 구간합을 s에 저장)",
+      "code": "int r1 = 2, c1 = 2, r2 = 3, c2 = 4;\nint s = 0;\n// TODO: ps로 구간합 계산\nSystem.out.println(s);",
+      "expectedCode": "s = ps[r2][c2] - ps[r1-1][c2] - ps[r2][c1-1] + ps[r1-1][c1-1];",
+      "hint": "포함-배제 원리를 그대로 쓰면 됩니다."
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. k×k 부분합 반복 범위",
+      "description": "R×C 배열에서 모든 k×k 부분합을 보려면, (i,j)를 k×k의 **오른쪽 아래 꼭짓점**으로 둘 때 i와 j 범위는?",
+      "code": null,
+      "options": [
+        "i: 0..R-1, j: 0..C-1",
+        "i: k..R, j: k..C (1-indexed 기준)",
+        "i: 1..R-k+1, j: 1..C-k+1",
+        "i: 1..R, j: 1..C"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. k×k 부분합 최댓값",
+      "description": "아래 코드에서 주석 2곳에 각각 한 줄씩 작성하세요.\n(1) k×k 부분합을 s에 저장  (2) best 갱신",
+      "code": "int R = 5, C = 6;\nint k = 3;\n// ps는 (R+1)x(C+1) 크기의 1-indexed 누적합이라고 가정\nint best = Integer.MIN_VALUE;\n\nfor (int i = k; i <= R; i++) {\n    for (int j = k; j <= C; j++) {\n        // TODO1: (i-k+1, j-k+1) ~ (i, j) 구간합을 s에 저장\n        // TODO2: best 갱신\n    }\n}\nSystem.out.println(best);",
+      "expectedCode": "int s = ps[i][j] - ps[i-k][j] - ps[i][j-k] + ps[i-k][j-k];\nbest = Math.max(best, s);",
+      "hint": "오른쪽 아래가 (i,j)인 k×k는 위/왼쪽으로 k만큼 확장합니다."
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. k×k 최댓값(예시)",
+      "description": "아래 3×3 배열에서 k=2일 때, 2×2 부분합의 최댓값은 얼마인가요?\n\n```\n1 2 3\n4 5 6\n7 8 9\n```\n",
+      "code": null,
+      "expectedText": "28"
+    },
+    {
+      "id": "code4",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 4. 다중 질의 처리(한 줄)",
+      "description": "여러 개의 구간합 질의를 처리하려고 합니다.\n아래 코드에서 주석 위치에 들어갈 **출력 한 줄**을 작성하세요.\n(질의마다 구간합을 계산해 출력)",
+      "code": "for (int q = 0; q < Q; q++) {\n    int r1 = sc.nextInt();\n    int c1 = sc.nextInt();\n    int r2 = sc.nextInt();\n    int c2 = sc.nextInt();\n    int s = ps[r2][c2] - ps[r1-1][c2] - ps[r2][c1-1] + ps[r1-1][c1-1];\n    // TODO: s 출력\n}",
+      "expectedCode": "System.out.println(s);",
+      "hint": "질의마다 한 줄씩 출력하면 됩니다."
+    }
+  ]
+}

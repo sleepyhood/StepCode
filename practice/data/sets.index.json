@@ -61,7 +61,7 @@
     "round": 1,
     "difficulty": "basic",
     "numProblems": 9,
-    "file": "py_if_b1.json"
+    "file": "py_lv06_if_b01.json"
   },
       {
     "id": "py_if_b2",
@@ -70,7 +70,7 @@
     "round": 2,
     "difficulty": "basic",
     "numProblems": 9,
-    "file": "py_if_b2.json"
+    "file": "py_lv06_if_b02.json"
   },
         {
     "id": "py_if_b3",
@@ -79,7 +79,7 @@
     "round": 3,
     "difficulty": "basic",
     "numProblems": 9,
-    "file": "py_if_b3.json"
+    "file": "py_lv06_if_b03.json"
   },
   {
     "id": "java_if_b1",
@@ -98,7 +98,7 @@
   "round": 1,
   "difficulty": "basic",
   "numProblems": 9,
-  "file": "py_input_b1.json"
+  "file": "py_lv03_input_b01.json"
 },
 {
   "id": "py_for_b1",
@@ -107,7 +107,7 @@
   "round": 1,
   "difficulty": "basic",
   "numProblems": 9,
-  "file": "py_for_b1.json"
+  "file": "py_lv07_for_b01.json"
 },
  {
     "id": "py_for_c1",
@@ -116,7 +116,7 @@
     "round": 2,
     "difficulty": "challenge",
     "numProblems": 9,
-    "file": "py_for_c1.json"
+    "file": "py_lv07_for_c01.json"
   },
   {
   "id": "c_for_b1",
@@ -143,7 +143,7 @@
   "round": 1,
   "difficulty": "basic",
   "numProblems": 9,
-  "file": "py_while_b1.json"
+  "file": "py_lv08_while_b01.json"
 },
 {
   "id": "py_if_b4",
@@ -152,7 +152,7 @@
   "round": 4,
   "difficulty": "basic",
   "numProblems": 9,
-      "file": "py_if_b4.json"
+      "file": "py_lv06_if_b04.json"
 },
 {
     "id": "py_if_c1",
@@ -161,7 +161,7 @@
     "round": 5,
     "difficulty": "challenge",
     "numProblems": 9,
-    "file": "py_if_c1.json"
+    "file": "py_lv06_if_c01.json"
   },
   {
     "id": "py_if_c2",
@@ -170,7 +170,7 @@
     "round": 6,
     "difficulty": "challenge",
     "numProblems": 9,
-    "file": "py_if_c2.json"
+    "file": "py_lv06_if_c02.json"
   },
    {
     "id": "py_input_b2",
@@ -179,7 +179,7 @@
     "round": 2,
     "difficulty": "basic",
     "numProblems": 9,
-    "file": "py_input_b2.json"
+    "file": "py_lv03_input_b02.json"
   },
   {
     "id": "py_input_b3",
@@ -188,7 +188,7 @@
     "round": 3,
     "difficulty": "basic",
     "numProblems": 9,
-    "file": "py_input_b3.json"
+    "file": "py_lv03_input_b03.json"
   },
   {
     "id": "py_input_c1",
@@ -197,7 +197,7 @@
     "round": 4,
     "difficulty": "challenge",
     "numProblems": 9,
-    "file": "py_input_c1.json"
+    "file": "py_lv03_input_c01.json"
   },
   {
   "id": "py_var_b1",
@@ -206,7 +206,7 @@
   "round": 1,
   "difficulty": "basic",
   "numProblems": 9,
-  "file": "py_var_b1.json"
+  "file": "py_lv02_var_b01.json"
 },
 {
   "id": "py_var_b2",
@@ -215,7 +215,7 @@
   "round": 2,
   "difficulty": "basic",
   "numProblems": 9,
-  "file": "py_var_b2.json"
+  "file": "py_lv02_var_b02.json"
 },
 {
   "id": "py_var_b3",
@@ -224,7 +224,7 @@
   "round": 3,
   "difficulty": "basic",
   "numProblems": 9,
-  "file": "py_var_b3.json"
+  "file": "py_lv02_var_b03.json"
 },
 {
   "id": "py_var_b4",
@@ -233,7 +233,7 @@
   "round": 4,
   "difficulty": "basic",
   "numProblems": 9,
-  "file": "py_var_b4.json"
+  "file": "py_lv02_var_b04.json"
 },
 {
   "id": "py_var_c1",
@@ -242,9 +242,64 @@
   "round": 1,
   "difficulty": "challenge",
   "numProblems": 9,
-  "file": "py_var_c1.json"
-}
+  "file": "py_lv02_var_c01.json"
+},
 
 
+  { "id":"java_array_b01", "categoryId":"java_array", "title":"Java 배열 Lv10 기초 1회차", "round":1, "difficulty":"basic", "numProblems":9, "file":"java_lv10_array_b01.json" },
+  { "id":"java_array_b02", "categoryId":"java_array", "title":"Java 배열 Lv10 기초 2회차", "round":2, "difficulty":"basic", "numProblems":9, "file":"java_lv10_array_b02.json" },
+  { "id":"java_array_b03", "categoryId":"java_array", "title":"Java 배열 Lv10 기초 3회차", "round":3, "difficulty":"basic", "numProblems":9, "file":"java_lv10_array_b03.json" },
+  { "id":"java_array_c01", "categoryId":"java_array", "title":"Java 배열 Lv10 챌린지 1회차", "round":4, "difficulty":"challenge", "numProblems":9, "file":"java_lv10_array_c01.json" },
+  { "id":"java_array_c02", "categoryId":"java_array", "title":"Java 배열 Lv10 챌린지 2회차", "round":5, "difficulty":"challenge", "numProblems":9, "file":"java_lv10_array_c02.json" },
 
+    { "id":"java_array2d_b01", "categoryId":"java_array2d", "title":"Java 2차원 배열 Lv15 기초 1회차", "round":1, "difficulty":"basic", "numProblems":9, "file":"java_lv15_array2d_b01.json" },
+  { "id":"java_array2d_b02", "categoryId":"java_array2d", "title":"Java 2차원 배열 Lv15 기초 2회차", "round":2, "difficulty":"basic", "numProblems":9, "file":"java_lv15_array2d_b02.json" },
+  { "id":"java_array2d_b03", "categoryId":"java_array2d", "title":"Java 2차원 배열 Lv15 기초 3회차", "round":3, "difficulty":"basic", "numProblems":9, "file":"java_lv15_array2d_b03.json" },
+  { "id":"java_array2d_c01", "categoryId":"java_array2d", "title":"Java 2차원 배열 Lv15 챌린지 1회차", "round":4, "difficulty":"challenge", "numProblems":9, "file":"java_lv15_array2d_c01.json" },
+  { "id":"java_array2d_c02", "categoryId":"java_array2d", "title":"Java 2차원 배열 Lv15 챌린지 2회차", "round":5, "difficulty":"challenge", "numProblems":9, "file":"java_lv15_array2d_c02.json" },
+    {
+    "id": "py_lv15_array2d_b01",
+    "categoryId": "py_array2d",
+    "title": "Python 2차원 배열 LV15 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv15_array2d_b01.json"
+  },
+  {
+    "id": "py_lv15_array2d_b02",
+    "categoryId": "py_array2d",
+    "title": "Python 2차원 배열 LV15 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv15_array2d_b02.json"
+  },
+  {
+    "id": "py_lv15_array2d_b03",
+    "categoryId": "py_array2d",
+    "title": "Python 2차원 배열 LV15 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv15_array2d_b03.json"
+  },
+  {
+    "id": "py_lv15_array2d_c01",
+    "categoryId": "py_array2d",
+    "title": "Python 2차원 배열 LV15 챌린지 1회차",
+    "round": 4,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_lv15_array2d_c01.json"
+  },
+  {
+    "id": "py_lv15_array2d_c02",
+    "categoryId": "py_array2d",
+    "title": "Python 2차원 배열 LV15 챌린지 2회차",
+    "round": 5,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_lv15_array2d_c02.json"
+  }
 ]
