@@ -1,0 +1,128 @@
+{
+  "id": "py_lv05_cast_b02",
+  "title": "Python 자료형 변환 LV05 기초 2회차",
+  "categoryId": "py_cast",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 실수 입력과 소수점 2자리 출력",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 실수 x를 입력받아 `x*2`를 소수점 둘째 자리까지 출력한다.\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "x = float(input())\nprint('%d' % (x * 2))",
+        "x = float(input())\nprint('%.2f' % (x * 2))",
+        "x = input()\nprint('%.2f' % (x * 2))",
+        "x = float(input())\nprint('%.2f' % x * 2)"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 평균을 실수로 출력",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 정수 a, b를 입력받아 평균을 소수점 둘째 자리까지 출력한다.\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "a = int(input())\nb = int(input())\nprint('%.2f' % ((a + b) // 2))",
+        "a = int(input())\nb = int(input())\nprint('%.2f' % ((a + b) / 2))",
+        "a = input()\nb = input()\nprint('%.2f' % ((a + b) / 2))",
+        "a = int(input())\nb = int(input())\nprint('%d' % ((a + b) / 2))"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 서식문자와 괄호",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- `1/2`의 결과를 소수점 첫째 자리까지 출력한다.\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "print('%.1f' % (1/2))",
+        "print('%.1f' % 1/2)",
+        "print('%.1f' % (1//2))",
+        "print('%.1f' % (1%2))"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. float 변환 후 덧셈",
+      "description": "다음 프로그램에서 출력되는 값(한 줄)을 쓰시오.",
+      "code": "x = float('3')\ny = float('2.5')\nprint('%.1f' % (x + y))",
+      "expectedText": "5.5"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 나눗셈 결과 출력",
+      "description": "다음 프로그램에서 출력되는 값(한 줄)을 쓰시오.",
+      "code": "a = 3\nb = 2\nprint('%.2f' % (a / b))",
+      "expectedText": "1.50"
+    },
+    {
+      "id": "short3",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 3. 소수점 둘째 자리 반올림",
+      "description": "다음 프로그램에서 출력되는 값(한 줄)을 쓰시오.",
+      "code": "n = 10\nprint('%.2f' % (n / 3))",
+      "expectedText": "3.33"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 할인된 가격",
+      "description": "정수 price(가격)와 실수 rate(할인율, %)를 입력받아 할인된 가격을 소수점 둘째 자리까지 출력하세요.\n\n- 할인된 가격 = price * (1 - rate/100)\n- 출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "price = int(input())\nrate = float(input())\n# TODO: 할인된 가격을 소수점 둘째 자리까지 출력하시오.",
+      "expectedCode": "print('%.2f' % (price * (1 - rate / 100)))",
+      "hint": "서식은 print('%.2f' % (...)) 형태를 사용하세요."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 섭씨 → 화씨",
+      "description": "실수 c(섭씨)를 입력받아 화씨 f를 소수점 첫째 자리까지 출력하세요.\n\n- f = c * 9/5 + 32\n- 출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "c = float(input())\n# TODO: 화씨 온도를 소수점 첫째 자리까지 출력하시오.",
+      "expectedCode": "print('%.1f' % (c * 9 / 5 + 32))"
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. 나눗셈 몫을 소수 3자리로",
+      "description": "정수 a, b를 입력받아 `a/b`를 소수점 셋째 자리까지 출력하세요.\n\n출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "a = int(input())\nb = int(input())\n# TODO: a/b를 소수점 셋째 자리까지 출력하시오.",
+      "expectedCode": "print('%.3f' % (a / b))"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "id": "py_for_b2",
+  "title": "Python for문 기초 2회차",
+  "categoryId": "py_for",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. range 방향이 잘못되면?",
+      "description": "다음 프로그램에서 출력으로 알맞은 것을 고르세요.",
+      "code": "for i in range(5, 0, 1):\n    print('%d' % i)",
+      "options": [
+        "5\n4\n3\n2\n1",
+        "아무것도 출력되지 않는다",
+        "4\n3\n2\n1",
+        "5\n4\n3\n2"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 1부터 n까지(끝 포함) 출력",
+      "description": "다음 중 입력으로 정수 n을 받았을 때, 1부터 n까지를 한 줄에 하나씩 출력하는 코드로 올바른 것을 고르세요.\n(출력은 서식문자를 사용한다.)",
+      "code": null,
+      "options": [
+        "for i in range(1, n):\n    print('%d' % i)",
+        "for i in range(1, n + 1):\n    print('%d' % i)",
+        "for i in range(n):\n    print('%d' % i)",
+        "for i in range(0, n + 1):\n    print('%d' % i)"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 첫 번째 7의 배수 찾기",
+      "description": "아래 프로그램에서 입력이 20일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "n = int(input())\nans = 0\nfor i in range(1, n + 1):\n    if i % 7 == 0:\n        ans = i\n        break\nprint('%d' % ans)",
+      "options": [
+        "0",
+        "7",
+        "14",
+        "21"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 1부터 n까지 3의 배수 개수",
+      "description": "아래 프로그램에서 입력이 10일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "n = int(input())\ncnt = 0\nfor i in range(1, n + 1):\n    if i % 3 == 0:\n        cnt = cnt + 1\nprint('%d' % cnt)",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. 홀수만 더하기",
+      "description": "아래 프로그램에서 입력이 7일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "n = int(input())\ns = 0\nfor i in range(1, n + 1):\n    if i % 2 == 0:\n        continue\n    s = s + i\nprint('%d' % s)",
+      "options": [
+        "12",
+        "16",
+        "25",
+        "28"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 출력이 없는 경우",
+      "description": "아래 프로그램에서 출력되는 내용이 없다면 **'출력 없음'** 이라고 쓰시오.\n\n그 외에는 출력되는 숫자들을 작은 것부터 큰 것 순서로, 공백으로 구분해 한 줄에 쓰시오.\n(예: 1 2 3)",
+      "code": "for i in range(2, 2):\n    print('%d' % i)",
+      "expectedText": "출력 없음"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. step이 -2인 range",
+      "description": "아래 프로그램에서 출력되는 숫자들을 작은 것부터 큰 것 순서로, 공백으로 구분해 한 줄에 쓰시오.\n(예: 1 2 3)",
+      "code": "for i in range(9, 0, -2):\n    print('%d' % i)",
+      "expectedText": "1 3 5 7 9"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 1부터 n까지 중 첫 7의 배수",
+      "description": "정수 n을 입력받아, 1부터 n까지 중 **가장 작은 7의 배수**를 출력하세요.\n만약 7의 배수가 없다면 0을 출력합니다.\n\n아래 코드에서 주석 위치에 들어갈 조건식 한 줄만 작성하면 됩니다.",
+      "code": "n = int(input())\nans = 0\nfor i in range(1, n + 1):\n    if  # TODO: i가 7의 배수인지 검사하는 조건식을 작성하시오.\n        ans = i\n        break\nprint('%d' % ans)",
+      "expectedCode": "i % 7 == 0",
+      "hint": ""
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. a부터 b까지 k의 배수 합",
+      "description": "정수 a, b, k를 입력받아, a부터 b까지(끝 포함) 중 k의 배수만 합한 값을 출력하세요.\n\n아래 코드에서 주석 위치에 들어갈 for문 한 줄만 작성하면 됩니다.",
+      "code": "a = int(input())\nb = int(input())\nk = int(input())\ns = 0\n# TODO: a부터 b까지(끝 포함) i가 변하도록 for문을 작성하시오.\n    if i % k == 0:\n        s = s + i\nprint('%d' % s)",
+      "expectedCode": "for i in range(a, b + 1):",
+      "hint": ""
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "id": "py_while_c1",
+  "title": "Python while문 챌린지 1회차",
+  "categoryId": "py_while",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. 무한 루프가 되는 이유(갱신 누락)",
+      "description": "아래 코드가 무한 루프가 되는 이유로 가장 알맞은 것을 고르세요.",
+      "code": "n = int(input())\nwhile n > 0:\n    print('%d' % n)\n    # n을 변화시키는 코드가 없다",
+      "options": [
+        "조건식이 항상 거짓이다",
+        "n이 0이 될 수 없기 때문에 무한 루프가 된다",
+        "반복문 안에서 n이 변하지 않아 n > 0이 계속 참이 된다",
+        "print에 서식문자를 사용했기 때문에 무한 루프가 된다"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. off-by-one (n개 입력)",
+      "description": "아래 코드의 목적은 '정수 n을 입력받고, n개의 정수를 더해 합을 출력'하는 것입니다.\n\n입력이 n개일 때 이 코드는 몇 개를 더하려고 시도하나요?",
+      "code": "n = int(input())\ni = 1\ns = 0\nwhile i <= n + 1:\n    x = int(input())\n    s = s + x\n    i = i + 1\nprint('%d' % s)",
+      "options": [
+        "n-1개",
+        "n개",
+        "n+1개",
+        "무한히"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. 센티넬 루프 디버깅(갱신 위치)",
+      "description": "아래 코드는 '0이 나올 때까지 입력받아 합을 출력'하려고 합니다.\n\n이 코드가 정상 동작하도록 하려면 반복문 안에 어떤 한 줄을 추가해야 하나요?",
+      "code": "s = 0\nx = int(input())\nwhile x != 0:\n    s = s + x\nprint('%d' % s)",
+      "options": [
+        "x = 0",
+        "x = int(input())",
+        "s = 0",
+        "break"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 4. 찾으면 종료, 없으면 -1",
+      "description": "다음 중 정수 n을 입력받고, 이어서 n개의 정수를 입력받아 **처음으로 음수가 나온 위치(1부터 시작)**를 출력하는 코드로 올바른 것을 고르세요.\n음수가 한 번도 없다면 -1을 출력합니다.\n(출력은 서식문자를 사용한다.)",
+      "code": null,
+      "options": [
+        "n = int(input())\npos = -1\ni = 1\nwhile i <= n:\n    x = int(input())\n    if x < 0 and pos == -1:\n        pos = i\n        break\n    i = i + 1\nprint('%d' % pos)",
+        "n = int(input())\npos = -1\ni = 1\nwhile i <= n:\n    x = int(input())\n    if x < 0:\n        pos = i\n    i = i + 1\nprint('%d' % pos)",
+        "n = int(input())\npos = -1\ni = 1\nwhile i <= n:\n    x = int(input())\n    if x < 0:\n        break\n    i = i + 1\nprint('%d' % pos)",
+        "n = int(input())\npos = -1\ni = 0\nwhile i < n:\n    x = int(input())\n    if x < 0 and pos == -1:\n        pos = i\n        break\n    i = i + 1\nprint('%d' % pos)"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 5. continue와 갱신 순서",
+      "description": "아래 프로그램에서 입력이 4일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "n = int(input())\ni = 0\ns = 0\nwhile i < n:\n    i = i + 1\n    if i % 2 == 0:\n        continue\n    s = s + i\nprint('%d' % s)",
+      "options": [
+        "4",
+        "6",
+        "8",
+        "10"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. continue가 있을 때 출력",
+      "description": "아래 프로그램에서 입력이 5일 때 출력되는 값을 쓰시오.",
+      "code": "n = int(input())\ni = 0\ns = 0\nwhile i < n:\n    i = i + 1\n    if i == 3:\n        continue\n    s = s + i\nprint('%d' % s)",
+      "expectedText": "12"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. n이 1이 될 때까지 나누기",
+      "description": "아래 프로그램에서 입력이 20일 때 출력되는 값을 쓰시오.",
+      "code": "n = int(input())\ncnt = 0\nwhile n > 1:\n    n = n // 2\n    cnt = cnt + 1\nprint('%d' % cnt)",
+      "expectedText": "4"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 첫 양수의 위치 (조건식 채우기)",
+      "description": "정수 n을 입력받고, 이어서 n개의 정수를 입력받습니다.\n그 중 **처음으로 양수가 나온 위치(1부터 시작)**를 출력하세요.\n양수가 한 번도 없다면 -1을 출력합니다.\n\n아래 코드에서 주석 위치에 들어갈 조건식 한 줄만 작성하면 됩니다.",
+      "code": "n = int(input())\npos = -1\ni = 1\nwhile i <= n:\n    x = int(input())\n    if  # TODO: x가 양수이고 아직 pos가 -1일 때만 실행되도록 조건식을 작성하시오.\n        pos = i\n        break\n    i = i + 1\nprint('%d' % pos)",
+      "expectedCode": "x > 0 and pos == -1",
+      "hint": ""
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 2로 나누는 횟수 (조건식 채우기)",
+      "description": "정수 n을 입력받아, n이 1이 될 때까지 2로 나누었습니다. (정수 나눗셈 사용)\n몇 번 나누었는지 출력하세요.\n\n아래 코드에서 주석 위치에 들어갈 while 조건식 한 줄만 작성하면 됩니다.",
+      "code": "n = int(input())\ncnt = 0\nwhile  # TODO: n이 1보다 큰 동안만 반복하도록 조건식을 작성하시오.\n    n = n // 2\n    cnt = cnt + 1\nprint('%d' % cnt)",
+      "expectedCode": "n > 1",
+      "hint": ""
+    }
+  ]
+}

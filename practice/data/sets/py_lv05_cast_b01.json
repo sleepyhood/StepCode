@@ -1,0 +1,129 @@
+{
+  "id": "py_lv05_cast_b01",
+  "title": "Python 자료형 변환 LV05 기초 1회차",
+  "categoryId": "py_cast",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 입력을 정수로 변환",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 정수 n을 입력받아 `n+10`을 출력한다.\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "n = input()\nprint('%d' % (n + 10))",
+        "n = int(input())\nprint('%d' % (n + 10))",
+        "n = int(input())\nprint('%d' % n + 10)",
+        "n = float(input())\nprint('%d' % (n + 10))"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 몫과 나머지",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 정수 a, b를 입력받는다.\n- 1번째 줄에 `a//b`(몫), 2번째 줄에 `a%b`(나머지)를 출력한다.\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "a = int(input())\nb = int(input())\nprint('%d' % (a / b))\nprint('%d' % (a % b))",
+        "a = int(input())\nb = int(input())\nprint('%d' % (a // b))\nprint('%d' % (a % b))",
+        "a = input()\nb = input()\nprint('%d' % (a // b))\nprint('%d' % (a % b))",
+        "a = int(input())\nb = int(input())\nprint('%d' % (b // a))\nprint('%d' % (b % a))"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 마지막 자리 출력",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 정수 n(0 이상)을 입력받아 마지막 자리(일의 자리)를 출력한다.\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "n = int(input())\nprint('%d' % (n // 10))",
+        "n = int(input())\nprint('%d' % (n % 10))",
+        "n = input()\nprint('%d' % (n % 10))",
+        "n = int(input())\nprint(n % 10)"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 문자열을 정수로 변환",
+      "description": "다음 프로그램에서 출력되는 값(한 줄)을 쓰시오.",
+      "code": "a = '7'\nb = int(a)\nprint('%d' % (b + 3))",
+      "expectedText": "10"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. int(양수 실수)",
+      "description": "다음 프로그램에서 출력되는 값(한 줄)을 쓰시오.",
+      "code": "x = 3.9\nprint('%d' % int(x))",
+      "expectedText": "3"
+    },
+    {
+      "id": "short3",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 3. int(음수 실수)",
+      "description": "다음 프로그램에서 출력되는 값(한 줄)을 쓰시오.",
+      "code": "x = -3.9\nprint('%d' % int(x))",
+      "expectedText": "-3"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 십의 자리와 일의 자리",
+      "description": "정수 n(0 이상)을 입력받아 아래 형식대로 출력하세요.\n\n- 1번째 줄: `n//10` (십의 자리 이상)\n- 2번째 줄: `n%10` (일의 자리)\n\n출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "n = int(input())\n# TODO: 십의 자리 이상과 일의 자리를 각각 한 줄씩 출력하시오.",
+      "expectedCode": "print('%d' % (n // 10))\nprint('%d' % (n % 10))",
+      "hint": "print('%d' % (...)) 형태를 사용하세요."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. (a+b)*(a-b)",
+      "description": "정수 a, b를 입력받아 `(a+b)*(a-b)`의 값을 출력하세요.\n\n출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "a = int(input())\nb = int(input())\n# TODO: (a+b)*(a-b)를 출력하시오.",
+      "expectedCode": "print('%d' % ((a + b) * (a - b)))",
+      "hint": "괄호로 계산 순서를 고정하세요."
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. 초를 분/초로 변환",
+      "description": "정수 s(초)를 입력받아 아래 형식대로 출력하세요.\n\n- 1번째 줄: 분(= s//60)\n- 2번째 줄: 남은 초(= s%60)\n\n출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "s = int(input())\n# TODO: 분과 남은 초를 각각 한 줄씩 출력하시오.",
+      "expectedCode": "print('%d' % (s // 60))\nprint('%d' % (s % 60))"
+    }
+  ]
+}

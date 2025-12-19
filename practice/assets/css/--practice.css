@@ -558,38 +558,6 @@ pre.line-numbers code {
 
 
 /* ===== 수업모드 상단 UI ===== */
-.mode-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: #2563eb;
-  color: #ffffff;
-  font-size: 0.82rem;
-  font-weight: 900;
-  letter-spacing: -0.2px;
-}
-
-/* 수업모드는 배경/라인으로도 확실히 티 나게 */
-body.mode-class .top-bar {
-  background: #eff6ff;
-  border-bottom: 2px solid #2563eb;
-}
-
-.mode-policy {
-  display: none;
-  padding: 8px 14px;
-  border-bottom: 1px solid #dbeafe;
-  background: #eff6ff;
-  color: #1f2937;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-body.mode-class .mode-policy {
-  display: block;
-}
-
 .rec-timer {
   display: inline-flex;
   align-items: center;
@@ -739,63 +707,38 @@ body.mode-class .mode-toggle-btn {
 }
 
 
-/* ===== 문항별 채점횟수 배지 (추가) ===== */
-.q-grade-tag {
-  font-size: 0.75rem;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #f3f4f6;
-  color: #374151;
+/* ====== (추가) HUD 통합 상태 버튼/패널 (최소 포맷: ● Room · Name) ====== */
+#btn-status.hud-status {
+  justify-content: flex-start;
+}
+
+#btn-status .hud-status-mini {
   white-space: nowrap;
-}
-.q-grade-tag.correct { background: #ecfdf5; color: #065f46; }
-.q-grade-tag.incorrect { background: #fef2f2; color: #991b1b; }
-
-/* ===== 진행/정답 프로그레스 (추가) ===== */
-.progress-wrap {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 6px;
-}
-
-.progress-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 260px;
-}
-
-.progress-label {
-  font-size: 0.82rem;
-  color: #6b7280;
-  width: 72px;
-  flex: 0 0 auto;
-}
-
-.progress-bar {
-  height: 10px;
-  border-radius: 999px;
-  background: #e5e7eb;
   overflow: hidden;
-  flex: 1 1 auto;
+  text-overflow: ellipsis;
 }
 
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  border-radius: 999px;
-  background: #2563eb;
-  transition: width 0.2s ease;
+#btn-status .hud-status-mark {
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
-/* ====== (추가) 학생용 연결 상태 위젯 ====== */
+#btn-status[data-state="connected"] .hud-status-mark { color: #10b981; }   /* green */
+#btn-status[data-state="connecting"] .hud-status-mark { color: #f59e0b; } /* amber */
+#btn-status[data-state="disconnected"] .hud-status-mark { color: #ef4444; }/* red */
+#btn-status.help .hud-status-mark { color: #60a5fa; } /* help = blue */
+
+.hud-status-panel {
+  display: none;
+  margin-top: 4px;
+}
+
+.hud-status-panel.open {
+  display: block;
+}
+
+/* ====== (추가) 입장정보 패널(dash-widget) - 기존 디자인 유지, 단 fixed 제거 ====== */
 .dash-widget {
-  position: fixed;
-  right: 12px;
-  bottom: 12px;
-  z-index: 9999;
   width: 260px;
   background: rgba(255,255,255,0.98);
   border: 1px solid #e5e7eb;
@@ -806,36 +749,25 @@ body.mode-class .mode-toggle-btn {
   color: #111827;
 }
 
-.dash-widget .dash-top {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-
+.dash-top { display:flex; gap:10px; align-items:flex-start; }
 .dash-dot {
   width: 10px;
   height: 10px;
   border-radius: 999px;
   margin-top: 4px;
-  background: #9ca3af; /* disconnected */
+  background: #9ca3af;
   flex: 0 0 auto;
 }
+.dash-dot[data-state="connecting"] { background: #f59e0b; }
+.dash-dot[data-state="connected"]  { background: #10b981; }
+.dash-dot[data-state="disconnected"] { background: #ef4444; }
 
-.dash-widget[data-state="connecting"] .dash-dot { background: #f59e0b; }
-.dash-widget[data-state="connected"]  .dash-dot { background: #10b981; }
-.dash-widget[data-state="disconnected"] .dash-dot { background: #ef4444; }
-
-.dash-lines { min-width: 0; flex: 1; }
-.dash-line1 { display: flex; justify-content: space-between; gap: 8px; }
+.dash-lines { min-width:0; flex:1; }
+.dash-line1 { display:flex; justify-content:space-between; gap:8px; }
 .dash-kv { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
-.dash-muted { color: #6b7280; }
+.dash-muted { color:#6b7280; }
 
-.dash-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
+.dash-actions { display:flex; gap:8px; margin-top:10px; }
 .dash-actions button {
   flex: 1 1 auto;
   border-radius: 10px;
@@ -845,8 +777,8 @@ body.mode-class .mode-toggle-btn {
   cursor: pointer;
   font-size: 12px;
 }
-
 .dash-actions button:hover { background: #e5e7eb; }
+
 .dash-actions button.dash-danger {
   border-color: #ef4444;
   color: #ef4444;
@@ -854,17 +786,12 @@ body.mode-class .mode-toggle-btn {
 }
 .dash-actions button.dash-danger:hover { background: #fef2f2; }
 
-/* ====== (추가) 도움 요청 버튼 스타일 ====== */
 .dash-actions button.dash-help {
   border-color: #2563eb;
   color: #2563eb;
   background: #fff;
 }
-
-.dash-actions button.dash-help:hover {
-  background: #eff6ff;
-}
-
+.dash-actions button.dash-help:hover { background: #eff6ff; }
 .dash-actions button.dash-help.active {
   background: #2563eb;
   border-color: #2563eb;

@@ -20,7 +20,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
 
   </head>
-  <body>
+  <!-- ✅ 이 페이지는 연습모드를 "강제"합니다 (수업은 lesson.html 사용) -->
+  <body data-mode="normal">
     <div class="app-container">
       <header class="top-bar">
         <div class="top-title">
@@ -77,6 +78,20 @@
   <button id="grade-btn">채점하기</button>
   <div id="score" class="score"></div>
     <div id="grade-meta" class="grade-meta"></div>
+
+    <!-- 진행/정답 프로그레스 (추가) -->
+<div id="progress-wrap" class="progress-wrap" aria-label="진행도">
+  <div class="progress-row">
+    <span id="progress-label-solve" class="progress-label">풀이 0/0</span>
+    <div class="progress-bar"><div id="progress-fill-solve" class="progress-fill"></div></div>
+  </div>
+
+  <div class="progress-row">
+    <span id="progress-label-correct" class="progress-label">정답 0/0</span>
+    <div class="progress-bar"><div id="progress-fill-correct" class="progress-fill"></div></div>
+  </div>
+</div>
+
 </footer>
 
 

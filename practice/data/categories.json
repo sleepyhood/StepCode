@@ -1,6 +1,6 @@
 [
-  { "id": "c_if",   "name": "C - 조건문", "order": 106 },
-  { "id": "c_for", "name": "C - Lv7 반복1(for)", "order": 107 },
+  { "id": "c_if",   "name": "C - LV6 조건문", "order": 1 },
+  { "id": "c_for", "name": "C - Lv7 반복1(for)", "order": 7 },
     {
     "id": "py_print",
     "name": "Python - Lv1 출력",
@@ -12,10 +12,16 @@
     "order": 202
   },
   { "id": "py_input",  "name": "Python - Lv3 입력", "order": 203 },
+    { "id": "py_operator",  "name": "Python - Lv4 연산자", "order": 204 },
+    { "id": "py_cast",  "name": "Python - Lv5 자료형 변환", "order": 205 },
+
   { "id": "py_if",  "name": "Python - Lv6 조건", "order": 206 },
   
   { "id": "py_for",  "name": "Python - Lv7 반복1(for)","order": 207 },
   { "id": "py_while",  "name": "Python - Lv8 반복2(while)","order": 208 },
+  { "id": "py_nfor",  "name": "Python - Lv9 중첩 for","order": 209 },
+  { "id": "py_array",  "name": "Python - Lv10 배열","order": 210 },
+
   { "id": "py_array2d", "name": "Python - LV15 2차원 배열", "order": 215 },
 
   { "id": "java_if","name": "Java - 조건문",   "order": 401 },

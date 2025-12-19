@@ -1,0 +1,163 @@
+{
+  "id": "c_if_c2",
+  "title": "C 조건문 챌린지 2회차",
+  "categoryId": "c_if",
+  "availableLanguages": [
+    "c"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. 정책형 분기: 배송비 계산 (예외 우선)",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n입력: price(정수), is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")\n\n출력: 배송비(정수)\n- VIP(is_vip==\"Y\")는 항상 배송비 0\n- VIP가 아니고, 도서산간(is_remote==\"Y\")이면 배송비 5000\n- VIP가 아니고, 도서산간이 아니며(price>=50000)이면 배송비 0\n- 그 외에는 배송비 3000",
+      "code": null,
+      "options": [
+        "int price;\nscanf(\"%d\", &price);\nchar is_remote;\nscanf(\" %c\", &is_remote);\nchar is_vip;\nscanf(\" %c\", &is_vip);\nif (is_vip == 'Y') {\n    printf(\"%d\\n\", 0);\n}\nelse if (is_remote == 'Y') {\n    printf(\"%d\\n\", 5000);\n}\nelse if (price >= 50000) {\n    printf(\"%d\\n\", 0);\n}\nelse {\n    printf(\"%d\\n\", 3000);\n}",
+        "int price;\nscanf(\"%d\", &price);\nchar is_remote;\nscanf(\" %c\", &is_remote);\nchar is_vip;\nscanf(\" %c\", &is_vip);\nif (price >= 50000) {\n    printf(\"%d\\n\", 0);\n}\nelse if (is_remote == 'Y') {\n    printf(\"%d\\n\", 5000);\n}\nelse if (is_vip == 'Y') {\n    printf(\"%d\\n\", 0);\n}\nelse {\n    printf(\"%d\\n\", 3000);\n}",
+        "int price;\nscanf(\"%d\", &price);\nchar is_remote;\nscanf(\" %c\", &is_remote);\nchar is_vip;\nscanf(\" %c\", &is_vip);\nif (is_remote == 'Y') {\n    printf(\"%d\\n\", 5000);\n}\nelse if (is_vip == 'Y') {\n    printf(\"%d\\n\", 0);\n}\nelse if (price >= 50000) {\n    printf(\"%d\\n\", 0);\n}\nelse {\n    printf(\"%d\\n\", 3000);\n}",
+        "int price;\nscanf(\"%d\", &price);\nchar is_remote;\nscanf(\" %c\", &is_remote);\nchar is_vip;\nscanf(\" %c\", &is_vip);\nif (is_vip == 'Y' || price >= 50000) {\n    printf(\"%d\\n\", 0);\n}\nelse if (is_remote == 'Y') {\n    printf(\"%d\\n\", 5000);\n}\nelse {\n    printf(\"%d\\n\", 3000);\n}"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. 정책형 분기: 할인율 + 상한(최대 20%)",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n입력: grade(\"G\"/\"S\"/\"B\"), coupon(\"Y\"/\"N\"), first(\"Y\"/\"N\")\n\n출력: 최종 할인율(정수, %) \n- 등급 할인: G=15, S=10, B=5\n- coupon이 Y면 +5\n- first가 Y면 +5\n- 최종 할인율은 최대 20%",
+      "code": null,
+      "options": [
+        "char grade;\nscanf(\" %c\", &grade);\nchar coupon;\nscanf(\" %c\", &coupon);\nchar first;\nscanf(\" %c\", &first);\nint rate;\nrate = 0;\nif (grade == 'G') {\n    rate = 15;\n}\nelse if (grade == 'S') {\n    rate = 10;\n}\nelse {\n    rate = 5;\n}\nif (coupon == 'Y') {\n    rate += 5;\n}\nif (first == 'Y') {\n    rate += 5;\n}\nif (rate > 20) {\n    rate = 20;\n}\nprintf(\"%d\\n\", rate);",
+        "char grade;\nscanf(\" %c\", &grade);\nchar coupon;\nscanf(\" %c\", &coupon);\nchar first;\nscanf(\" %c\", &first);\nint rate;\nrate = 0;\nif (grade == 'G') {\n    rate = 15;\n}\nelse if (grade == 'S') {\n    rate = 10;\n}\nelse {\n    rate = 5;\n}\nif (rate > 20) {\n    rate = 20;\n}\nif (coupon == 'Y') {\n    rate += 5;\n}\nif (first == 'Y') {\n    rate += 5;\n}\nprintf(\"%d\\n\", rate);",
+        "char grade;\nscanf(\" %c\", &grade);\nchar coupon;\nscanf(\" %c\", &coupon);\nchar first;\nscanf(\" %c\", &first);\nint rate;\nrate = 0;\nif (grade == 'G') {\n    rate = 15;\n}\nelse if (grade == 'S') {\n    rate = 10;\n}\nelse if (grade == 'B') {\n    rate = 5;\n}\nif (coupon == 'Y') {\n    rate += 5;\n}\nif (first == 'Y') {\n    rate += 5;\n}\nprintf(\"%d\\n\", rate);",
+        "char grade;\nscanf(\" %c\", &grade);\nchar coupon;\nscanf(\" %c\", &coupon);\nchar first;\nscanf(\" %c\", &first);\nint rate;\nrate = 0;\nif (grade == 'G') {\n    rate = 15;\n}\nelse if (grade == 'S') {\n    rate = 10;\n}\nelse {\n    rate = 5;\n}\nif (coupon == 'Y' || first == 'Y') {\n    rate += 5;\n}\nif (rate > 20) {\n    rate = 20;\n}\nprintf(\"%d\\n\", rate);"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. 버그를 잡는 테스트케이스",
+      "description": "아래 코드는 배송비 정책을 구현하려고 했지만 버그가 있습니다.\n\n(정답 기준 정책)\n- VIP면 0\n- VIP가 아니고 도서산간이면 5000\n- VIP가 아니고 도서산간이 아니며 price>=50000이면 0\n- 그 외 3000\n\n다음 중 **이 코드의 버그를 확실히 드러내는 입력**을 고르세요.",
+      "code": "int price;\nscanf(\"%d\", &price);\nchar is_remote;\nscanf(\" %c\", &is_remote);\nchar is_vip;\nscanf(\" %c\", &is_vip);\nif (is_vip == 'Y') {\n    printf(\"%d\\n\", 0);\n}\nelse if (price >= 50000) {\n    printf(\"%d\\n\", 0);\n}\nelse if (is_remote == 'Y') {\n    printf(\"%d\\n\", 5000);\n}\nelse {\n    printf(\"%d\\n\", 3000);\n}",
+      "options": [
+        "price=60000, is_remote=N, is_vip=N",
+        "price=60000, is_remote=Y, is_vip=N",
+        "price=40000, is_remote=N, is_vip=Y",
+        "price=40000, is_remote=N, is_vip=N"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 4. 무료배송 조건식 고르기",
+      "description": "다음 정책에서 배송비가 0이 되는 조건식으로 알맞은 것을 고르세요.\n\n- VIP면 항상 0\n- VIP가 아니면, 도서산간이 아니고(price>=50000)일 때만 0\n\n변수: price(정수), is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")",
+      "code": null,
+      "options": [
+        "is_vip == 'Y' || (is_remote == 'N' && price >= 50000)",
+        "(is_vip == 'Y' || is_remote == 'N') && price >= 50000",
+        "is_vip == 'Y' && (is_remote == 'N' || price >= 50000)",
+        "is_vip == 'Y' || is_remote == 'N' || price >= 50000"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 5. 케이스 누락 방지: 최소 테스트 3개",
+      "description": "배송비 정책( VIP / 도서산간 / 5만원 이상 무료 / 그 외 )을 검증하려고 합니다.\n아래 보기 중, **모든 분기(모든 출력)**를 최소한으로 확인할 수 있는 테스트 3개 묶음으로 가장 적절한 것은?\n\n(각 테스트는 price, is_remote, is_vip 순서)",
+      "code": null,
+      "options": [
+        "(50000, N, N), (60000, N, N), (40000, N, N)",
+        "(40000, N, Y), (60000, Y, N), (50000, N, N)",
+        "(40000, Y, N), (60000, Y, N), (50000, N, N)",
+        "(40000, N, Y), (40000, N, N), (40000, Y, N)"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 경계값: VIP가 아니고 도서산간이 아닐 때 무료배송 최소 금액",
+      "description": "정책이 다음과 같을 때,\n- VIP가 아니고(is_vip=\"N\")\n- 도서산간이 아니며(is_remote=\"N\")\n무료배송(배송비 0)이 되기 위한 price의 최소값을 쓰세요.",
+      "code": null,
+      "expectedText": "50000"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 출력 예측: 예외 케이스(도서산간)",
+      "description": "아래 정책(배송비 계산)에서 입력이\nprice=60000, is_remote=Y, is_vip=N 일 때 출력되는 배송비를 쓰세요.",
+      "code": null,
+      "expectedText": "5000"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 무료배송 조건식 한 줄",
+      "description": "다음 정책에서 배송비가 0이 되는 조건식을 if 뒤에 한 줄로 작성하세요.\n\n- VIP면 항상 0\n- VIP가 아니면, 도서산간이 아니고(price>=50000)일 때만 0\n\n변수: price, is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")",
+      "code": "if (/* 여기에 조건식을 작성하세요 */) {\n    printf(\"%d\\n\", 0);\n}\nelse {\n    printf(\"%d\\n\", 1); /* (여기는 의미 없음)) */\n}",
+      "expectedCodes": [
+        "is_vip == 'Y' || (is_remote == 'N' && price >= 50000)",
+        "(is_remote == 'N' && price >= 50000) || is_vip == 'Y'",
+        "is_vip== 'Y' || (is_remote== 'N' && price>=50000)",
+        "(is_remote== 'N' && price>=50000) || is_vip== 'Y'"
+      ],
+      "hint": "VIP는 무조건 무료배송입니다. VIP가 아니라면, '도서산간이 아니고 + 5만원 이상'이어야 합니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 쿠폰 적용 가능 조건식 (등급/금액/예외)",
+      "description": "쿠폰 사용 가능 조건은 다음과 같습니다.\n\n- VIP(is_vip==\"Y\")면 언제나 쿠폰 사용 가능\n- VIP가 아니면, price가 30000 이상이고 grade가 \"G\" 또는 \"S\"일 때만 쿠폰 사용 가능\n\n변수: price(정수), grade(\"G\"/\"S\"/\"B\"), is_vip(\"Y\"/\"N\")\nif 뒤의 조건식을 한 줄로 작성하세요.",
+      "code": "if (/* 여기에 조건식을 작성하세요 */) {\n    printf(\"COUPON\\n\");\n}\nelse {\n    printf(\"NO\\n\");\n}",
+      "expectedCodes": [
+        "is_vip == 'Y' || (price >= 30000 && (grade == 'G' || grade == 'S'))",
+        "is_vip == 'Y' || (price >= 30000 && (grade == 'S' || grade == 'G'))",
+        "is_vip== 'Y' || (price>=30000 && (grade== 'G' || grade== 'S'))",
+        "is_vip== 'Y' || (price>=30000 && (grade== 'S' || grade== 'G'))"
+      ],
+      "hint": "VIP는 예외(항상 가능)입니다. VIP가 아니면 '3만원 이상 AND (G 또는 S)'를 만족해야 합니다."
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "id": "py_lv05_cast_c01",
+  "title": "Python 자료형 변환 LV05 챌린지 1회차",
+  "categoryId": "py_cast",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. int(float(...)) 순서",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 문자열로 입력된 실수 s를 입력받는다. (예: 3.99)\n- s의 정수 부분만 출력한다. (예: 3)\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "s = input()\nprint('%d' % int(float(s)))",
+        "s = input()\nprint('%d' % int(s))",
+        "s = input()\nprint('%.0f' % int(float(s)))",
+        "s = input()\nprint('%d' % float(int(s)))"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. 음수에서 정수 부분",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 실수 x를 입력받는다. (음수도 가능)\n- x의 정수 부분을 출력한다. (파이썬의 int()는 0쪽으로 버림)\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "x = float(input())\nprint('%d' % int(x))",
+        "x = float(input())\nprint('%d' % (x // 1))",
+        "x = float(input())\nprint('%.0f' % (x // 1))",
+        "x = float(input())\nprint('%d' % (x / 1))"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. 문자열 더하기 버그 수정",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 정수 a, b를 입력받아 합을 출력한다.\n- 아래의 잘못된 코드를 올바르게 고친 버전을 고르세요.\n\n잘못된 코드:\n```\na = input()\nb = input()\nprint('%d' % (a + b))\n```\n\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "a = input()\nb = input()\nprint('%d' % (int(a) + int(b)))",
+        "a = int(input())\nb = int(input())\nprint('%d' % a + b)",
+        "a = input()\nb = input()\nprint('%d' % (a + b))",
+        "a = int(input())\nb = int(input())\nprint(a + b)"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. int(float('3.99'))",
+      "description": "다음 프로그램에서 출력되는 값(한 줄)을 쓰시오.",
+      "code": "print('%d' % (int(float('3.99'))))",
+      "expectedText": "3"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. int(-2.7)",
+      "description": "다음 프로그램에서 출력되는 값(한 줄)을 쓰시오.",
+      "code": "print('%d' % int(-2.7))",
+      "expectedText": "-2"
+    },
+    {
+      "id": "short3",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 3. float(int(7.9))",
+      "description": "다음 프로그램에서 출력되는 값(한 줄)을 쓰시오.",
+      "code": "print('%.2f' % (float(int(7.9))))",
+      "expectedText": "7.00"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 실수의 정수 부분 출력",
+      "description": "실수 x를 입력받아 x의 정수 부분만 출력하세요.\n\n- 파이썬의 int()는 0쪽으로 버립니다.\n- 출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "x = float(input())\n# TODO: x의 정수 부분을 출력하시오.",
+      "expectedCode": "print('%d' % int(x))",
+      "hint": "int(x)를 사용하세요."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 세 정수의 평균",
+      "description": "정수 a, b, c를 입력받아 평균을 소수점 첫째 자리까지 출력하세요.\n\n- 평균 = (a+b+c)/3\n- 출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "a = int(input())\nb = int(input())\nc = int(input())\n# TODO: 평균을 소수점 첫째 자리까지 출력하시오.",
+      "expectedCode": "print('%.1f' % ((a + b + c) / 3))"
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. 세금 계산(버림)",
+      "description": "정수 price(가격)와 실수 rate(세율, %)를 입력받아 아래를 출력하세요.\n\n- 1번째 줄: 세금 = price * rate / 100 의 결과를 정수로 변환한 값(int로 버림)\n- 2번째 줄: price + 세금\n\n출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "price = int(input())\nrate = float(input())\n# TODO: 세금(정수)과 총액을 각각 한 줄씩 출력하시오.",
+      "expectedCode": "tax = int(price * rate / 100)\nprint('%d' % tax)\nprint('%d' % (price + tax))",
+      "hint": "tax 변수를 만든 뒤 print('%d' % ...) 형태로 출력하세요."
+    }
+  ]
+}

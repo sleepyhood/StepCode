@@ -98,7 +98,6 @@ const MODE_STORAGE_KEY = "stepcode:practiceMode"; // "normal" | "class"
 const COACH_STATE_PREFIX = "stepcode:coachState:";
 
 let practiceMode = "normal";
-let forcedMode = null; // "normal" | "class" | null (페이지가 강제하는 모드)
 let activeBucket = "core"; // "core" | "supp"
 let coachState = {}; // { [qid]: { touchedAt, stage, wrongGrades, explainUnlocked, solved, explainOpen } }
 let coachTicker = null;
@@ -106,41 +105,6 @@ let coachSaveTimer = null;
 
 function isClassMode() {
   return practiceMode === "class";
-}
-
-function getForcedModeFromDom() {
-  const m = document?.body?.dataset?.mode;
-  return m === "class" || m === "normal" ? m : null;
-}
-
-function detectPracticeMode() {
-  // 우선순위: (1) 페이지 강제(data-mode) > (2) query ?mode= > (3) localStorage
-  const forced = getForcedModeFromDom();
-  if (forced) return forced;
-
-  const q = new URLSearchParams(location.search).get("mode");
-  if (q === "class" || q === "normal") return q;
-
-  return localStorage.getItem(MODE_STORAGE_KEY) === "class" ? "class" : "normal";
-}
-
-function updateModeHeaderUi() {
-  // (선택) lesson.html에서만 존재하는 UI들
-  const badge = document.getElementById("mode-badge");
-  if (badge) badge.hidden = !isClassMode();
-
-  const policy = document.getElementById("mode-policy");
-  if (!policy) return;
-
-  if (!isClassMode()) {
-    policy.textContent = "";
-    return;
-  }
-
-  const cooldownSec = Math.round(GRADE_COOLDOWN_MS / 1000);
-  const rec = formatMs(getSetRecommendedMs());
-  // wrongGrades는 현재 로직에서 문항당 최대 2회까지 누적/해설 해금에 사용
-  policy.textContent = `수업모드 · 권장 ${rec} · 채점 쿨다운 ${cooldownSec}초 · 문항당 오답채점 2회 → 해설 해금`;
 }
 
 function getCoachKey(setId) {
@@ -222,160 +186,9 @@ function recordAnswer(questionId, value) {
 
   currentAnswers[questionId] = value;
   saveStoredAnswers(currentSetId, currentAnswers);
-  updateProgressUi();
-
 }
 
 // ▲ 여기까지 추가 ▲
-
-
-// ====== (추가) 문항별 채점 메타 ======
-let qGradeMeta = null; // { date: "YYYY-MM-DD", byQ: { [qid]: { attempts, correct, lastIsCorrect, lastAt } } }
-const Q_GRADE_META_PREFIX = "stepcode:qGradeMeta:";
-
-function getQGradeMetaKey(setId) {
-  return `${Q_GRADE_META_PREFIX}${setId}`;
-}
-
-function loadQGradeMeta(setId) {
-  const today = getTodayYmd();
-  if (!window.localStorage) return { date: today, byQ: {} };
-
-  try {
-    const raw = localStorage.getItem(getQGradeMetaKey(setId));
-    if (!raw) return { date: today, byQ: {} };
-    const parsed = JSON.parse(raw);
-
-    if (!parsed || parsed.date !== today) return { date: today, byQ: {} };
-    if (!parsed.byQ || typeof parsed.byQ !== "object") parsed.byQ = {};
-    return parsed;
-  } catch (_) {
-    return { date: today, byQ: {} };
-  }
-}
-
-function saveQGradeMeta(setId, meta) {
-  if (!window.localStorage) return;
-  try {
-    localStorage.setItem(getQGradeMetaKey(setId), JSON.stringify(meta));
-  } catch (_) {}
-}
-
-function ensureQGradeMetaLoaded() {
-  if (!currentSetId) return;
-  if (!qGradeMeta) qGradeMeta = loadQGradeMeta(currentSetId);
-  // 날짜 바뀌었으면 리셋
-  const today = getTodayYmd();
-  if (qGradeMeta.date !== today) qGradeMeta = { date: today, byQ: {} };
-}
-
-function bumpQGradeAttempt(qid, isCorrect) {
-  ensureQGradeMetaLoaded();
-  const byQ = (qGradeMeta.byQ ||= {});
-  const row = (byQ[qid] ||= {
-    attempts: 0,
-    correct: 0,
-    lastIsCorrect: null,
-    lastAt: 0,
-  });
-
-  row.attempts += 1;
-  if (isCorrect) row.correct += 1;
-  row.lastIsCorrect = !!isCorrect;
-  row.lastAt = Date.now();
-}
-
-function updateQGradeBadge(qid) {
-  const el = document.querySelector(`[data-qgrade="${qid}"]`);
-  if (!el) return;
-
-  ensureQGradeMetaLoaded();
-  const row = qGradeMeta.byQ?.[qid];
-  const n = row ? Number(row.attempts) || 0 : 0;
-
-  el.classList.remove("correct", "incorrect");
-
-  if (!row || n === 0) {
-    el.textContent = `오늘 채점 0회`;
-    return;
-  }
-
-  const mark = row.lastIsCorrect ? "✅" : "❌";
-  el.textContent = `오늘 채점 ${n}회 ${mark}`;
-  el.classList.add(row.lastIsCorrect ? "correct" : "incorrect");
-}
-
-function refreshAllQGradeBadges() {
-  const qs = currentSetData?.problems || [];
-  qs.forEach((q) => updateQGradeBadge(q.id));
-}
-
-// ====== (추가) 진행도(푼/맞은) ======
-function getActiveQuestions() {
-  const all = currentSetData?.problems || [];
-  const coreCount = Number(currentSetData?.coreCount ?? 6);
-
-  if (!isClassMode()) return all;
-
-  return all.filter((q, idx) => {
-    const bucket =
-      q.bucket === "supp" || q.bucket === "core"
-        ? q.bucket
-        : idx < coreCount
-        ? "core"
-        : "supp";
-    return bucket === activeBucket;
-  });
-}
-
-function isAnswered(q) {
-  const v = currentAnswers?.[q.id];
-  if (q.type === "mcq") return v !== undefined && v !== null && String(v) !== "";
-  return String(v ?? "").trim().length > 0;
-}
-
-function updateProgressUi() {
-  const wrap = document.getElementById("progress-wrap");
-  if (!wrap || !currentSetData) return;
-
-  ensureQGradeMetaLoaded();
-  const byQ = qGradeMeta?.byQ || {};
-
-  const qs = getActiveQuestions();
-  const total = qs.length;
-
-  let answered = 0;
-  let correct = 0;
-
-  qs.forEach((q) => {
-    if (isAnswered(q)) answered++;
-    if (byQ[q.id]?.lastIsCorrect === true) correct++;
-  });
-
-  const solveLabel = document.getElementById("progress-label-solve");
-  const solveFill = document.getElementById("progress-fill-solve");
-  const corLabel = document.getElementById("progress-label-correct");
-  const corFill = document.getElementById("progress-fill-correct");
-
-  if (solveLabel) solveLabel.textContent = `풀이 ${answered}/${total}`;
-  if (corLabel) corLabel.textContent = `정답 ${correct}/${total}`;
-
-  const pSolve = total ? (answered / total) * 100 : 0;
-  const pCor = total ? (correct / total) * 100 : 0;
-
-  if (solveFill) solveFill.style.width = `${pSolve}%`;
-  if (corFill) corFill.style.width = `${pCor}%`;
-}
-
-function appendQGradeBadge(headerEl, qid) {
-  const tag = document.createElement("span");
-  tag.className = "q-grade-tag";
-  tag.setAttribute("data-qgrade", qid);
-  tag.textContent = "오늘 채점 0회";
-  headerEl.appendChild(tag);
-  updateQGradeBadge(qid);
-}
-
 
 // ====== 채점 메타(제출 횟수/쿨다운) ======
 const GRADE_META_PREFIX = "stepcode:gradeMeta:";
@@ -800,11 +613,10 @@ async function initPractice() {
     // 세트 정보 + 로컬 저장된 답안 불러오기
     currentSetId = setId;
     currentAnswers = loadStoredAnswers(setId);
-    qGradeMeta = loadQGradeMeta(currentSetId);
 
     // (추가) 모드 로드 + UI 반영
-    forcedMode = getForcedModeFromDom();
-    practiceMode = detectPracticeMode();
+    practiceMode =
+      localStorage.getItem(MODE_STORAGE_KEY) === "class" ? "class" : "normal";
     document.body.classList.toggle("mode-class", isClassMode());
 
     // (추가) 코칭 상태 로드
@@ -812,12 +624,8 @@ async function initPractice() {
 
     setupSolveTimerForCurrentSet();
 
-    // 제목 표시 (수업모드는 화면에서 확실히 티 나게)
-    const baseTitle = currentSetData.title || "연습장";
-    titleSpan.textContent = isClassMode() ? `수업모드 · ${baseTitle}` : baseTitle;
-
-    // (선택) lesson.html 전용 배지/정책 UI 갱신
-    updateModeHeaderUi();
+    // 제목 표시
+    titleSpan.textContent = currentSetData.title || "연습장";
 
     // 언어 셀렉트 (지금은 C만)
     setupLangSelect(currentSetData.availableLanguages || ["c"]);
@@ -833,13 +641,14 @@ async function initPractice() {
     // HUD 세팅
     setupHud();
 
+    // (추가) HUD 입장정보/연결상태(최소 포맷)
+    setupRealtimeDashboardHud();
+
     // 채점 버튼 연결
     setupGrading();
 
     // ✅ 여기(바로 다음)
     setupExportLog();
-    setupRealtimeDashboard(); // ← 추가
-
   } catch (err) {
     console.error(err);
     container.textContent = "문제를 불러오는 중 오류가 발생했습니다.";
@@ -1018,9 +827,6 @@ tabs.addEventListener("click", (e) => {
 
   // ✅ 추가: 탭 전환 후 HUD 재생성
   if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
-updateProgressUi();
-
-
 });
 
   }
@@ -1056,7 +862,6 @@ updateProgressUi();
     else if (q.type === "short") typeTag.textContent = "단답형";
     else if (q.type === "code") typeTag.textContent = "코드 작성";
     header.appendChild(typeTag);
-appendQGradeBadge(header, q.id);
 
     card.appendChild(header);
 
@@ -1110,9 +915,6 @@ appendQGradeBadge(header, q.id);
   }
 
   if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
-
-  updateProgressUi();
-
 }
 
 function getHints(q) {
@@ -1339,20 +1141,12 @@ function setupClassModeControls() {
   const popBtn = document.getElementById("popout-btn");
 
   if (modeBtn) {
-    // 페이지가 모드를 강제하면(lesson.html/practice.html) 토글을 숨김
-    const forced = getForcedModeFromDom();
-    if (forced) {
-      modeBtn.hidden = true;
-      modeBtn.onclick = null;
-    } else {
-      modeBtn.hidden = false;
-      modeBtn.textContent = isClassMode() ? "수업모드 ON" : "수업모드 OFF";
-      modeBtn.onclick = () => {
-        const next = isClassMode() ? "normal" : "class";
-        localStorage.setItem(MODE_STORAGE_KEY, next);
-        location.reload(); // 렌더/이벤트 중복 방지
-      };
-    }
+    modeBtn.textContent = isClassMode() ? "수업모드 ON" : "수업모드 OFF";
+    modeBtn.onclick = () => {
+      const next = isClassMode() ? "normal" : "class";
+      localStorage.setItem(MODE_STORAGE_KEY, next);
+      location.reload(); // 렌더/이벤트 중복 방지
+    };
   }
 
   if (fsBtn) {
@@ -1380,9 +1174,6 @@ function setupClassModeControls() {
     rec.textContent = isClassMode()
       ? `권장 ${formatMs(getSetRecommendedMs())}`
       : "";
-
-  // (선택) lesson.html 전용 배지/정책 UI는 여기서도 최신화
-  updateModeHeaderUi();
 }
 
 // ====== MCQ 렌더링 ======
@@ -1664,7 +1455,6 @@ function setupGrading() {
 
   gradeButton.addEventListener("click", () => {
     meta = loadGradeMeta(currentSetId);
-qGradeMeta = loadQGradeMeta(currentSetId);
 
     if (remainingMs() > 0) {
       startTickerIfNeeded();
@@ -1705,7 +1495,6 @@ qGradeMeta = loadQGradeMeta(currentSetId);
           return bucket === activeBucket;
         });
     let correctCount = 0;
-// bumpQGradeAttempt(q.id, isCorrect);
 
     questions.forEach((q) => {
       const feedbackEl = document.querySelector(`[data-feedback="${q.id}"]`);
@@ -1745,7 +1534,7 @@ qGradeMeta = loadQGradeMeta(currentSetId);
           .filter(Boolean)
           .some((code) => normalizeCode(code) === normUser);
       }
-      bumpQGradeAttempt(q.id, isCorrect);
+
       if (isClassMode()) {
         const idx = (currentSetData.problems || []).findIndex(
           (x) => x.id === q.id
@@ -1782,9 +1571,6 @@ qGradeMeta = loadQGradeMeta(currentSetId);
         }
       }
     });
-saveQGradeMeta(currentSetId, qGradeMeta);
-refreshAllQGradeBadges();
-updateProgressUi();
 
     if (scoreEl) {
       const label = isClassMode()
@@ -1813,8 +1599,32 @@ function setupHud() {
   const btnBottom = document.getElementById("btn-bottom");
   const panel = document.getElementById("hud-index-panel");
 
+  // (추가) 상태 버튼/패널: 연결(Room/이름) + 재연결/초기화/도움요청
+  const hud = document.querySelector(".nav-hud");
+  let btnStatus = document.getElementById("btn-status");
+  let statusPanel = document.getElementById("hud-status-panel");
+
+  // HTML을 수정하지 않아도 되도록, HUD 안에 동적으로 생성(없으면 생성)
+  if (hud && !btnStatus) {
+    btnStatus = document.createElement("button");
+    btnStatus.id = "btn-status";
+    btnStatus.className = "hud-main hud-status";
+    btnStatus.innerHTML = `<span id="hud-status-mark" class="hud-status-mark">●</span><span id="hud-status-mini" class="hud-status-mini">- · -</span>`;
+    hud.insertBefore(btnStatus, hud.firstChild);
+  }
+  if (hud && !statusPanel) {
+    statusPanel = document.createElement("div");
+    statusPanel.id = "hud-status-panel";
+    statusPanel.className = "hud-status-panel";
+    // status 버튼 바로 아래에 위치
+    const after = btnStatus ? btnStatus.nextSibling : hud.firstChild;
+    hud.insertBefore(statusPanel, after);
+  }
+
+
   // HUD 요소가 없으면 아무 것도 하지 않음
   if (!btnIndex || !btnTop || !btnBottom || !panel) return;
+  // 상태 버튼/패널은 없어도 동작하게 유지(없으면 생성됨).
 
   // const getCards = () =>
   //   Array.from(document.querySelectorAll(".question-card")).filter(
@@ -1891,19 +1701,35 @@ function setupHud() {
   // --- 목차 버튼: 목록 패널 열기/닫기 ---
   btnIndex.addEventListener("click", (e) => {
     e.stopPropagation();
+    // 목차를 열면 상태 패널은 닫기
+    if (statusPanel) statusPanel.classList.remove("open");
     panel.classList.toggle("open");
   });
 
-  // HUD 밖을 클릭하면 패널 닫기
-  document.addEventListener("click", (e) => {
-    if (!panel.classList.contains("open")) return;
-    const hud = document.querySelector(".nav-hud");
-    if (hud && !hud.contains(e.target)) {
+  // (추가) 상태 버튼: 상태 패널 열기/닫기
+  if (btnStatus && statusPanel) {
+    btnStatus.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // 상태를 열면 목차 패널은 닫기
       panel.classList.remove("open");
+      statusPanel.classList.toggle("open");
+    });
+  }
+// HUD 밖을 클릭하면 패널 닫기
+  document.addEventListener("click", (e) => {
+    const hudEl = document.querySelector(".nav-hud");
+    if (!hudEl) return;
+
+    const isOpenIndex = panel.classList.contains("open");
+    const isOpenStatus = statusPanel && statusPanel.classList.contains("open");
+    if (!isOpenIndex && !isOpenStatus) return;
+
+    if (!hudEl.contains(e.target)) {
+      panel.classList.remove("open");
+      if (statusPanel) statusPanel.classList.remove("open");
     }
   });
-
-  // --- 위로 / 아래로 이동 (페이지 최상단 / 최하단) ---
+// --- 위로 / 아래로 이동 (페이지 최상단 / 최하단) ---
   btnTop.addEventListener("click", () => {
     window.scrollTo({
       top: 0,
@@ -1919,552 +1745,4 @@ function setupHud() {
   });
 }
 
-
-// ====== (추가) 실시간 교사용 대시보드 업로드 (WebSocket) ======
-const DASH_STUDENT_KEY = "stepcode:dashStudentId";
-const DASH_NAME_KEY = "stepcode:dashDisplayName";
-const DASH_ROOM_KEY = "stepcode:dashRoomId";
-
-const DASH_SEND_EVERY_MS = 10000;         // 10초마다 상태 업로드
-const DASH_ACTIVITY_THROTTLE_MS = 3000;   // 마우스/키보드 활동은 3초에 1번만 반영
-
-let dashWs = null;
-let dashSendTimer = null;
-let dashReconnectTimer = null;
-
-let dashRoomId = "default";
-let dashStudentId = null;
-let dashDisplayName = null;
-
-let dashLastActivityAt = 0;
-let dashLastActivityTouchAt = 0;
-
-function dashQP(name) {
-  try {
-    const p = new URLSearchParams(location.search);
-    return (p.get(name) || "").trim();
-  } catch (_) {
-    return "";
-  }
-}
-
-function dashGetRoomId() {
-  const fromQ = dashQP("room");
-  if (fromQ) {
-    try { localStorage.setItem(DASH_ROOM_KEY, fromQ); } catch (_) {}
-    return fromQ;
-  }
-  try {
-    const saved = (localStorage.getItem(DASH_ROOM_KEY) || "").trim();
-    return saved || "default";
-  } catch (_) {
-    return "default";
-  }
-}
-
-function dashGetStudentIdAndName() {
-  const sidQ = dashQP("student");
-  const nameQ = dashQP("name");
-
-  if (sidQ) {
-    try { localStorage.setItem(DASH_STUDENT_KEY, sidQ); } catch (_) {}
-    dashStudentId = sidQ;
-  } else {
-    try { dashStudentId = (localStorage.getItem(DASH_STUDENT_KEY) || "").trim(); } catch (_) {}
-  }
-
-  if (nameQ) {
-    try { localStorage.setItem(DASH_NAME_KEY, nameQ); } catch (_) {}
-    dashDisplayName = nameQ;
-  } else {
-    try { dashDisplayName = (localStorage.getItem(DASH_NAME_KEY) || "").trim(); } catch (_) {}
-  }
-
-  // 링크에 student가 없으면 1회만 물어보기(원치 않으면 이 블록 삭제해도 됨)
-  if (!dashStudentId) {
-    const v = prompt("대시보드용 학생 식별값(좌석/닉네임)을 입력하세요.\n(예: 1번, A-03, 민수)");
-    if (v && v.trim()) {
-      dashStudentId = v.trim();
-      dashDisplayName = dashDisplayName || dashStudentId;
-      try { localStorage.setItem(DASH_STUDENT_KEY, dashStudentId); } catch (_) {}
-      try { localStorage.setItem(DASH_NAME_KEY, dashDisplayName); } catch (_) {}
-    }
-  }
-
-  if (!dashDisplayName) dashDisplayName = dashStudentId || "unknown";
-}
-
-function dashWsUrl() {
-  const proto = location.protocol === "https:" ? "wss" : "ws";
-  return `${proto}://${location.host}/ws`;
-}
-
-function dashComputeProgress() {
-  const probs = (currentSetData && currentSetData.problems) ? currentSetData.problems : [];
-  const total = probs.length;
-
-  // answered: 답안이 비어있지 않으면 풀이로 간주
-  let answered = 0;
-  for (const q of probs) {
-    const v = currentAnswers ? currentAnswers[q.id] : "";
-    if (v != null && String(v).trim() !== "") answered++;
-  }
-
-  // correct: 마지막 채점 결과(lastIsCorrect)가 true인 문항 수
-  let correct = 0;
-  try {
-    const byQ = qGradeMeta && qGradeMeta.byQ ? qGradeMeta.byQ : {};
-    for (const q of probs) {
-      if (byQ[q.id] && byQ[q.id].lastIsCorrect === true) correct++;
-    }
-  } catch (_) {}
-
-  return { answered, correct, total };
-}
-
-function dashComputeTopTries(limit = 3) {
-  const probs = (currentSetData && currentSetData.problems) ? currentSetData.problems : [];
-  const byQ = (qGradeMeta && qGradeMeta.byQ) ? qGradeMeta.byQ : {};
-  const rows = [];
-
-  for (const q of probs) {
-    const m = byQ[q.id];
-    if (!m) continue;
-    const attempts = Number(m.attempts) || 0;
-    if (attempts <= 0) continue;
-    rows.push({ qid: q.id, attempts, lastIsCorrect: m.lastIsCorrect });
-  }
-
-  rows.sort((a, b) => b.attempts - a.attempts);
-  return rows.slice(0, limit);
-}
-
-function dashBuildPayload() {
-  const setTitle = (currentSetData && currentSetData.title) ? currentSetData.title : "";
-  const mode = (typeof isClassMode === "function" && isClassMode()) ? "class" : "practice";
-  const bucket = (mode === "class" && typeof activeBucket === "string") ? activeBucket : "";
-
-  let solveElapsedMs = 0;
-  try {
-    if (typeof getSolveElapsedNow === "function") solveElapsedMs = Number(getSolveElapsedNow()) || 0;
-  } catch (_) {}
-
-  let gradeAttemptsToday = 0;
-  try {
-    if (typeof loadGradeMeta === "function" && currentSetId) {
-      gradeAttemptsToday = Number(loadGradeMeta(currentSetId).attempts) || 0;
-    }
-  } catch (_) {}
-
-  return {
-    room: dashRoomId,
-    studentId: dashStudentId || "unknown",
-    displayName: dashDisplayName || dashStudentId || "unknown",
-    setId: currentSetId || "",
-    setTitle,
-    mode,
-    bucket,
-    progress: dashComputeProgress(),
-    topTries: dashComputeTopTries(3),
-    solveElapsedMs,
-    gradeAttemptsToday,
-    lastActivityAt: dashLastActivityAt || Date.now(),
-    helpActive: dashHelpActive,
-helpRequestedAt: dashHelpRequestedAt,
-helpQid: dashHelpQid,
-
-  };
-}
-
-function dashSendStatus() {
-  if (!dashWs || dashWs.readyState !== WebSocket.OPEN) return;
-  if (!dashStudentId) return;
-
-  const payload = dashBuildPayload();
-  dashWs.send(JSON.stringify({ type: "status", room: dashRoomId, payload }));
-}
-
-function dashMarkActivity(throttled = true) {
-  const now = Date.now();
-  dashLastActivityAt = now;
-
-  if (!throttled) return;
-
-  if (now - dashLastActivityTouchAt < DASH_ACTIVITY_THROTTLE_MS) return;
-  dashLastActivityTouchAt = now;
-}
-
-function dashConnectWS() {
-  if (!dashStudentId) return;
-
-  if (dashWs) {
-    try { dashWs.close(); } catch (_) {}
-    dashWs = null;
-  }
-  if (dashReconnectTimer) {
-    clearTimeout(dashReconnectTimer);
-    dashReconnectTimer = null;
-  }
-dashUISetState("connecting");
-dashUIUpdateAll();
-
-  dashWs = new WebSocket(dashWsUrl());
-
-  dashWs.addEventListener("open", () => {
-    dashUISetState("connected");
-dashUIUpdateAll();
-
-    dashWs.send(JSON.stringify({
-      type: "hello",
-      role: "student",
-      room: dashRoomId,
-      studentId: dashStudentId,
-      displayName: dashDisplayName,
-    }));
-    dashSendStatus();
-  });
-
-  dashWs.addEventListener("close", () => {
-    dashUISetState("disconnected");
-dashUIUpdateAll();
-
-    // 3초 후 재연결
-    dashReconnectTimer = setTimeout(dashConnectWS, 3000);
-  });
-
-  dashWs.addEventListener("error", () => {
-    // close 이벤트로 이어지므로 여기서는 별도 처리 없음
-  });
-}
-
-function setupRealtimeDashboard() {
-  // set 로딩 이후에만 의미가 있으므로 initPractice 끝에서 호출
-  dashRoomId = dashGetRoomId();
-  dashGetStudentIdAndName();
-  dashLoadHelpState();
-
-dashEnsureControlWidget();
-dashUIUpdateAll();
-
-  if (!dashStudentId) return; // 입력을 취소한 경우
-
-  // 활동 감지(기존 recordAnswer/grade 로직을 안 건드리고도 연결 가능)
-  document.addEventListener("input", (e) => {
-    const t = e.target;
-    if (!t) return;
-    // 답안 입력류만(불필요한 이벤트 폭발 방지)
-    if (t.classList && t.classList.contains("answer-input")) {
-      const qid = t.getAttribute?.("data-question") || "";
-if (qid) dashFocusQid = qid;
-
-      dashMarkActivity(false);
-      dashSendStatus();
-    }
-  }, true);
-
-  document.addEventListener("click", (e) => {
-    const t = e.target;
-    if (!t) return;
-    if (t.id === "grade-btn") {
-      dashMarkActivity(false);
-      dashSendStatus();
-    }
-  }, true);
-
-  document.addEventListener("keydown", () => dashMarkActivity(true), true);
-  document.addEventListener("mousemove", () => dashMarkActivity(true), true);
-
-  dashConnectWS();
-
-  if (dashSendTimer) clearInterval(dashSendTimer);
-  dashSendTimer = setInterval(() => {
-    dashMarkActivity(true);
-    dashSendStatus();
-  }, DASH_SEND_EVERY_MS);
-}
-
-// ====== (추가) 도움 요청(손들기) 상태 ======
-let dashHelpActive = false;
-let dashHelpRequestedAt = 0;
-let dashHelpQid = "";
-let dashFocusQid = ""; // 마지막으로 입력/포커스한 문항 id
-
-// 도움 요청 쿨타임(요청 ON에만 적용)
-const DASH_HELP_COOLDOWN_MS = 20000; // 20초 (원하면 30000 등으로 변경)
-let dashHelpCooldownUntil = 0;
-let dashHelpCooldownTimer = null;
-
-function dashHelpRemainingMs() {
-  return Math.max(0, (dashHelpCooldownUntil || 0) - Date.now());
-}
-
-function dashHelpStartCooldownTicker() {
-  if (dashHelpCooldownTimer) return;
-  dashHelpCooldownTimer = setInterval(() => {
-    // 필요할 때만 갱신
-    if (dashHelpRemainingMs() > 0) dashUIUpdateHelpButton();
-    else {
-      dashUIUpdateHelpButton();
-      clearInterval(dashHelpCooldownTimer);
-      dashHelpCooldownTimer = null;
-    }
-  }, 250);
-}
-
-function dashHelpKey() {
-  // room + studentId 기준으로 저장(PC 공유/재접속에도 유지)
-  return `stepcode:dashHelp:${dashRoomId || "default"}:${dashStudentId || "unknown"}`;
-}
-
-function dashLoadHelpState() {
-  dashHelpActive = false;
-  dashHelpRequestedAt = 0;
-  dashHelpQid = "";
-  dashHelpCooldownUntil = 0;
-
-  try {
-    const raw = localStorage.getItem(dashHelpKey());
-    if (!raw) return;
-
-    const obj = JSON.parse(raw);
-    dashHelpActive = !!obj.active;
-    dashHelpRequestedAt = Number(obj.at || 0) || 0;
-    dashHelpQid = String(obj.qid || "");
-
-    // ✅ cooldown은 obj 파싱 이후에 읽어야 함
-    dashHelpCooldownUntil = Number(obj.cooldownUntil || 0) || 0;
-    if (dashHelpRemainingMs() > 0) dashHelpStartCooldownTicker();
-  } catch (_) {}
-}
-
-
-function dashSaveHelpState() {
-  try {
-    localStorage.setItem(
-      
-      dashHelpKey(),
-      JSON.stringify({ active: dashHelpActive, at: dashHelpRequestedAt, qid: dashHelpQid, cooldownUntil: dashHelpCooldownUntil
- })
-    );
-  } catch (_) {}
-}
-
-function dashSetHelpActive(on) {
-  // ON(도움 요청)만 쿨타임 적용, OFF(취소)는 즉시 허용
-if (on && !dashHelpActive) {
-  const remain = dashHelpRemainingMs();
-  if (remain > 0) {
-    // 쿨타임 중이면 UI만 갱신하고 종료
-    dashHelpStartCooldownTicker();
-    dashUIUpdateHelpButton();
-    return;
-  }
-  // 이번 요청을 성공시키면 즉시 쿨타임 시작
-  dashHelpCooldownUntil = Date.now() + DASH_HELP_COOLDOWN_MS;
-  dashHelpStartCooldownTicker();
-}
-
-
-  dashHelpActive = !!on;
-  if (dashHelpActive) {
-    dashHelpRequestedAt = Date.now();
-    dashHelpQid = dashFocusQid || "";
-  } else {
-    dashHelpRequestedAt = 0;
-    dashHelpQid = "";
-  }
-  dashSaveHelpState();
-  dashUIUpdateHelpButton();
-  dashSendStatus();
-}
-
-function dashToggleHelp() {
-  dashSetHelpActive(!dashHelpActive);
-}
-
-
-// ====== (추가) 학생용 연결 상태 위젯(UI) ======
-let dashWidgetEl = null;
-
-function dashEnsureControlWidget() {
-  if (dashWidgetEl) return dashWidgetEl;
-
-  const w = document.createElement("div");
-  w.id = "dash-widget";
-  w.className = "dash-widget";
-  w.setAttribute("data-state", "disconnected");
-  w.setAttribute("role", "status");
-  w.setAttribute("aria-live", "polite");
-
-  w.innerHTML = `
-    <div class="dash-top">
-      <span class="dash-dot" aria-hidden="true"></span>
-      <div class="dash-lines">
-        <div class="dash-line1">
-          <span>Room: <b id="dash-ui-room" class="dash-kv">-</b></span>
-          <span id="dash-ui-state" class="dash-muted">끊김</span>
-        </div>
-        <div class="dash-muted">
-          <span id="dash-ui-name" class="dash-kv">-</span>
-          <span id="dash-ui-student" class="dash-kv"></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="dash-actions">
-      <button type="button" id="dash-ui-reconnect">재연결</button>
-      <button type="button" id="dash-ui-reset" class="dash-danger">입장정보 초기화</button>
-    </div>
-  `;
-
-  document.body.appendChild(w);
-  dashWidgetEl = w;
-
-  // 버튼 이벤트
-  w.querySelector("#dash-ui-reconnect")?.addEventListener("click", () => {
-    // studentId가 없으면(프롬프트 취소 등) 여기서 다시 물어봄
-    if (!dashStudentId) {
-      dashGetStudentIdAndName();
-      dashUIUpdateAll();
-    }
-    dashReconnectNow();
-  });
-
-    // ====== (추가) 도움 요청 버튼(동적 생성) ======
-  const actions = w.querySelector(".dash-actions");
-  if (actions && !w.querySelector("#dash-ui-help")) {
-    const helpBtn = document.createElement("button");
-    helpBtn.type = "button";
-    helpBtn.id = "dash-ui-help";
-    helpBtn.className = "dash-help";
-    helpBtn.textContent = "도움 요청";
-
-    helpBtn.addEventListener("click", () => {
-      if (!dashStudentId) {
-        dashGetStudentIdAndName();
-        dashUIUpdateAll();
-        // 식별값이 없으면 도움요청 불가
-        if (!dashStudentId) return;
-        // studentId가 새로 생겼으니 help state도 그 키 기준으로 로드
-        dashLoadHelpState();
-      }
-      dashToggleHelp();
-    });
-
-    // 3번째 버튼으로 추가
-    actions.appendChild(helpBtn);
-  }
-
-
-  w.querySelector("#dash-ui-reset")?.addEventListener("click", () => {
-    dashResetEntryInfo();
-  });
-
-  return w;
-}
-
-function dashUISetState(state) {
-  const w = dashEnsureControlWidget();
-  w.setAttribute("data-state", state);
-
-  const t = w.querySelector("#dash-ui-state");
-  if (!t) return;
-
-  if (state === "connected") t.textContent = "연결됨";
-  else if (state === "connecting") t.textContent = "연결중";
-  else t.textContent = "끊김";
-}
-
-function dashUIUpdateAll() {
-  const w = dashEnsureControlWidget();
-  w.querySelector("#dash-ui-room").textContent = dashRoomId || "default";
-
-  const name = dashDisplayName || "-";
-  const sid = dashStudentId ? `(ID:${dashStudentId})` : "(ID:미설정)";
-  w.querySelector("#dash-ui-name").textContent = name;
-  w.querySelector("#dash-ui-student").textContent = ` ${sid}`;
-
-
-  dashUIUpdateHelpButton();
-
-}
-function dashUIUpdateHelpButton() {
-  const w = dashEnsureControlWidget();
-  const btn = w.querySelector("#dash-ui-help");
-  if (!btn) return;
-
-  // 도움 요청 중이면 취소는 항상 가능
-  if (dashHelpActive) {
-    btn.disabled = false;
-    btn.classList.add("active");
-    btn.textContent = "도움 취소";
-    btn.title = "";
-    return;
-  }
-
-  // 요청이 꺼져있으면, 쿨타임 동안 재요청을 막음
-  const remainMs = dashHelpRemainingMs();
-  if (remainMs > 0) {
-    const sec = Math.ceil(remainMs / 1000);
-    btn.disabled = true;
-    btn.classList.remove("active");
-    btn.textContent = `대기 ${sec}s`;
-    btn.title = "연타 방지를 위해 잠시 대기합니다.";
-    return;
-  }
-
-  btn.disabled = false;
-  btn.classList.remove("active");
-  btn.textContent = "도움 요청";
-  btn.title = "";
-}
-
-
-function dashReconnectNow() {
-  // room/student/name이 없으면 여기서 끝(학생이 입력 취소한 경우)
-  if (!dashStudentId) {
-    dashUISetState("disconnected");
-    dashUIUpdateAll();
-    return;
-  }
-
-  dashUISetState("connecting");
-  dashUIUpdateAll();
-  dashConnectWS();
-  // 연결 직후 바로 1회 업로드 시도
-  setTimeout(() => dashSendStatus(), 200);
-}
-
-function dashResetEntryInfo() {
-  const ok = confirm(
-    "입장정보(room / student / name)를 초기화할까요?\n" +
-    "초기화 후 새로고침되며 다시 입력해야 합니다."
-  );
-  if (!ok) return;
-
-  try { localStorage.removeItem(DASH_ROOM_KEY); } catch (_) {}
-  try { localStorage.removeItem(DASH_STUDENT_KEY); } catch (_) {}
-  try { localStorage.removeItem(DASH_NAME_KEY); } catch (_) {}
-try { localStorage.removeItem(dashHelpKey()); } catch (_) {}
-
-  // 런타임 값도 리셋
-  dashRoomId = "default";
-  dashStudentId = null;
-  dashDisplayName = null;
-
-  try { if (dashWs) dashWs.close(); } catch (_) {}
-  dashWs = null;
-  if (dashHelpCooldownTimer) {
-  clearInterval(dashHelpCooldownTimer);
-  dashHelpCooldownTimer = null;
-}
-
-
-  location.reload();
-}
-
-
-
 // ====== 여기까지 practice.js ======
-
-

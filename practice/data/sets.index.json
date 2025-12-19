@@ -36,24 +36,8 @@
     "numProblems": 9,
     "file": "py_lv01_print_c01.json"
   },
-  {
-    "id": "c_if_b1",                 
-    "categoryId": "c_if",
-    "title": "C 조건문 기초 1회차",    
-    "round": 1,
-    "difficulty": "basic",
-    "numProblems": 9,              
-    "file": "c_if_b1.json"         
-  },
-  {
-  "id": "c_if_c1",
-  "categoryId": "c_if",
-  "title": "C 조건문 챌린지 1회차",
-  "round": 2,
-  "difficulty": "challenge",
-  "numProblems": 8,
-  "file": "c_if_c1.json"
-},
+
+
     {
     "id": "py_if_b1",
     "categoryId": "py_if",
@@ -301,5 +285,234 @@
     "difficulty": "challenge",
     "numProblems": 9,
     "file": "py_lv15_array2d_c02.json"
+  },
+
+
+
+  {
+    "id": "c_if_b1",
+    "categoryId": "c_if",
+    "title": "C 조건문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_lv06_if_b01.json"
+  },
+  {
+    "id": "c_if_b2",
+    "categoryId": "c_if",
+    "title": "C 조건문 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_lv06_if_b02.json"
+  },
+  {
+    "id": "c_if_b3",
+    "categoryId": "c_if",
+    "title": "C 조건문 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_lv06_if_b03.json"
+  },
+  {
+    "id": "c_if_b4",
+    "categoryId": "c_if",
+    "title": "C 조건문 기초 4회차",
+    "round": 4,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_lv06_if_b04.json"
+  },
+  {
+    "id": "c_if_c1",
+    "categoryId": "c_if",
+    "title": "C 조건문 챌린지 1회차",
+    "round": 5,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "c_lv06_if_c01.json"
+  },
+  {
+    "id": "c_if_c2",
+    "categoryId": "c_if",
+    "title": "C 조건문 챌린지 2회차",
+    "round": 6,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "c_lv06_if_c02.json"
+  },
+
+
+  {
+    "id": "py_lv04_operator_b01",
+    "categoryId": "py_operator",
+    "title": "Python 연산자 LV04 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv04_operator_b01.json"
+  },
+  {
+    "id": "py_lv04_operator_b02",
+    "categoryId": "py_operator",
+    "title": "Python 연산자 LV04 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv04_operator_b02.json"
+  },
+  {
+    "id": "py_lv04_operator_c01",
+    "categoryId": "py_operator",
+    "title": "Python 연산자 LV04 챌린지 1회차",
+    "round": 3,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_lv04_operator_c01.json"
+  },
+
+  {
+    "id": "py_lv05_cast_b01",
+    "categoryId": "py_cast",
+    "title": "Python 자료형 변환 LV05 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv05_cast_b01.json"
+  },
+  {
+    "id": "py_lv05_cast_b02",
+    "categoryId": "py_cast",
+    "title": "Python 자료형 변환 LV05 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv05_cast_b02.json"
+  },
+  {
+    "id": "py_lv05_cast_c01",
+    "categoryId": "py_cast",
+    "title": "Python 자료형 변환 LV05 챌린지 1회차",
+    "round": 3,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_lv05_cast_c01.json"
+  },
+
+
+  {
+    "id": "py_lv07_for_b02",
+    "categoryId": "py_for",
+    "title": "Python for문 LV07 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv07_for_b02.json"
+  },
+  {
+    "id": "py_lv08_while_b02",
+    "categoryId": "py_while",
+    "title": "Python while문 LV08 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv08_while_b02.json"
+  },
+  {
+    "id": "py_lv08_while_c01",
+    "categoryId": "py_while",
+    "title": "Python while문 LV08 챌린지 1회차",
+    "round": 3,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_lv08_while_c01.json"
+  },
+
+  {
+    "id": "py_lv09_nfor_b01",
+    "categoryId": "py_nfor",
+    "title": "Python 중첩 for문 LV09 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv09_nfor_b01.json"
+  },
+  {
+    "id": "py_lv09_nfor_b02",
+    "categoryId": "py_nfor",
+    "title": "Python 중첩 for문 LV09 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv09_nfor_b02.json"
+  },
+  {
+    "id": "py_lv09_nfor_b03",
+    "categoryId": "py_nfor",
+    "title": "Python 중첩 for문 LV09 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv09_nfor_b03.json"
+  },
+  {
+    "id": "py_lv09_nfor_c01",
+    "categoryId": "py_nfor",
+    "title": "Python 중첩 for문 LV09 챌린지 1회차",
+    "round": 4,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_lv09_nfor_c01.json"
+  },
+
+  {
+    "id": "py_lv10_array_b01",
+    "categoryId": "py_array",
+    "title": "Python 배열 Lv10 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv10_array_b01.json"
+  },
+  {
+    "id": "py_lv10_array_b02",
+    "categoryId": "py_array",
+    "title": "Python 배열 Lv10 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv10_array_b02.json"
+  },
+  {
+    "id": "py_lv10_array_b03",
+    "categoryId": "py_array",
+    "title": "Python 배열 Lv10 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv10_array_b03.json"
+  },
+  {
+    "id": "py_lv10_array_c01",
+    "categoryId": "py_array",
+    "title": "Python 배열 Lv10 챌린지 1회차",
+    "round": 4,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_lv10_array_c01.json"
+  },
+  {
+    "id": "py_lv10_array_c02",
+    "categoryId": "py_array",
+    "title": "Python 배열 Lv10 챌린지 2회차",
+    "round": 5,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "py_lv10_array_c02.json"
   }
+
+
+
 ]

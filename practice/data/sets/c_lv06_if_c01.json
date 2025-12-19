@@ -1,0 +1,166 @@
+{
+  "id": "c_if_c1",
+  "title": "C 조건문 챌린지 1회차",
+  "categoryId": "c_if",
+  "availableLanguages": [
+    "c"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. 성인 / 학생 분류",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 나이 age와 학생 여부 is_student(\"Y\" 또는 \"N\")를 입력받는다.\n- age가 20 이상이고 is_student가 \"Y\"이면 \"성인 학생\"을 출력한다.\n- age가 20 이상이고 is_student가 \"Y\"가 아니면 \"성인\"을 출력한다.\n- 그 외에는 \"미성년자\"를 출력한다.",
+      "code": null,
+      "options": [
+        "int age;\nscanf(\"%d\", &age);\nchar is_student;\nscanf(\" %c\", &is_student);\nif (age >= 20 && is_student == 'Y') {\n    printf(\"성인 학생\\n\");\n}\nelse if (age >= 20) {\n    printf(\"성인\\n\");\n}\nelse {\n    printf(\"미성년자\\n\");\n}",
+        "int age;\nscanf(\"%d\", &age);\nchar is_student;\nscanf(\" %c\", &is_student);\nif (age >= 20 || is_student == 'Y') {\n    printf(\"성인 학생\\n\");\n}\nelse if (age >= 20) {\n    printf(\"성인\\n\");\n}\nelse {\n    printf(\"미성년자\\n\");\n}",
+        "int age;\nscanf(\"%d\", &age);\nchar is_student;\nscanf(\" %c\", &is_student);\nif (age >= 20) {\n    printf(\"성인\\n\");\n}\nelse if (age >= 20 && is_student == 'Y') {\n    printf(\"성인 학생\\n\");\n}\nelse {\n    printf(\"미성년자\\n\");\n}",
+        "int age;\nscanf(\"%d\", &age);\nchar is_student;\nscanf(\" %c\", &is_student);\nif (age >= 20 && is_student == 'Y') {\n    printf(\"성인 학생\\n\");\n}\nelse {\n    printf(\"성인\\n\");\n}\nprintf(\"미성년자\\n\");"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. 조건의 순서",
+      "description": "아래 프로그램에서 입력이 95일 때, 출력으로 알맞은 것을 고르세요.",
+      "code": "int score;\nscanf(\"%d\", &score);\nif (score >= 70) {\n    printf(\"C\\n\");\n}\nelse if (score >= 80) {\n    printf(\"B\\n\");\n}\nelse if (score >= 90) {\n    printf(\"A\\n\");\n}\nelse {\n    printf(\"D\\n\");\n}",
+      "options": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. if와 elif의 차이",
+      "description": "아래 프로그램에서 입력이 6일 때, 출력으로 알맞은 것을 고르세요.",
+      "code": "int n;\nscanf(\"%d\", &n);\nif (n % 2 == 0) {\n    printf(\"Even\\n\");\n}\nif (n % 3 == 0) {\n    printf(\"Three\\n\");\n}\nelse {\n    printf(\"Other\\n\");\n}",
+      "options": [
+        "Even",
+        "Three",
+        "Even;\nThree;",
+        "Even;\nOther;"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 4. and / or 섞어서 쓰기",
+      "description": "아래 프로그램에서 \"OK\"가 출력되는 n만 모아 둔 것을 고르세요.",
+      "code": "int n;\nscanf(\"%d\", &n);\nif ((n % 2 == 0 && n > 0) || n == 1) {\n    printf(\"OK\\n\");\n}\nelse {\n    printf(\"NG\\n\");\n}",
+      "options": [
+        "1, 2",
+        "1, 2, -2",
+        "-2, 0",
+        "0, 1"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 5. 중첩 if의 동작",
+      "description": "아래 프로그램에서 입력이 75일 때, 출력으로 알맞은 것을 고르세요.",
+      "code": "int score;\nscanf(\"%d\", &score);\nif (score >= 60) {\n    if (score >= 90) {\n        printf(\"A\\n\");\n    }\n    else {\n        printf(\"B\\n\");\n    }\n}\nelse {\n    printf(\"F\\n\");\n}",
+      "options": [
+        "A",
+        "B",
+        "F",
+        "아무 것도 출력되지 않는다."
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "챌린지",
+      "title": "Short 1. 여러 조건 분기",
+      "description": "아래 프로그램에서 입력이 6일 때, 출력되는 한 줄을 그대로 쓰세요.\n(따옴표는 쓰지 마시오)",
+      "code": "int n;\nscanf(\"%d\", &n);\nif (n < 0) {\n    printf(\"minus\\n\");\n}\nelse if (n == 0) {\n    printf(\"zero\\n\");\n}\nelse if (n % 2 == 0) {\n    printf(\"plus-even\\n\");\n}\nelse {\n    printf(\"plus-odd\\n\");\n}",
+      "expectedText": "plus-even"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "챌린지",
+      "title": "Short 2. 조건을 만족하는 값 찾기",
+      "description": "다음 조건식이 참(true)이 되도록 n의 값을 하나만 쓰세요.\n(여러 개 중 아무거나 하나 맞으면 정답입니다.)",
+      "code": "n % 2 == 0 && 10 <= n && n <= 20;",
+      "expectedAnyOf": [
+        "10",
+        "12",
+        "14",
+        "16",
+        "18",
+        "20"
+      ]
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 두 자리 양수이면서 짝수",
+      "description": "정수 n이 \"두 자리 양수(10 이상 99 이하)\"이고, 동시에 짝수일 때만 \"YES\"를 출력하려고 합니다.\nif 뒤 괄호 안에 들어갈 조건식을 한 줄로 작성하세요.",
+      "code": "int n;\nscanf(\"%d\", &n);\nif (/* 여기에 조건식을 작성하세요 */) {\n    printf(\"YES\\n\");\n}\nelse {\n    printf(\"NO\\n\");\n}",
+      "expectedCode": "n >= 10 && n <= 99 && n % 2 == 0",
+      "hint": "n >= 10 && n <= 99와 n % 2 == 0을 &&로 묶어 보세요.",
+      "expectedCodes": [
+        "(n>=10 && n<=99) && n%2==0",
+        "n >= 10 && n <= 99 && n % 2 == 0",
+        "10 <= n && n <= 99 && n % 2 == 0",
+        "n%2==0 && n>=10 && n<=99"
+      ]
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 학점 B 구간 조건식",
+      "description": "아래는 학점을 A, B, C로 나누는 코드의 일부입니다.\n- 90 이상이면 A\n- 80 이상 90 미만이면 B\n- 나머지는 C\n\nelse if 줄의 조건식을 완성하세요.",
+      "code": "int score;\nscanf(\"%d\", &score);\nif (score >= 90) {\n    printf(\"A\\n\");\n}\nelse if (/* 여기에 조건식을 작성하세요 */) {\n    printf(\"B\\n\");\n}\nelse {\n    printf(\"C\\n\");\n}",
+      "expectedCode": "score >= 80",
+      "hint": "앞의 if가 거짓일 때만 else if를 검사한다는 점을 생각해 보세요."
+    }
+  ]
+}

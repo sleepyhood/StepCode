@@ -1,0 +1,131 @@
+{
+  "id": "py_lv10_array_c02",
+  "title": "Python 배열 Lv10 챌린지 2회차",
+  "categoryId": "py_array",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. 빈도 배열 크기",
+      "description": "0부터 9까지의 숫자가 입력으로 들어올 때, 각 숫자의 등장 횟수를 세기 위한 빈도 배열 cnt의 올바른 크기를 고르세요.",
+      "code": null,
+      "options": [
+        "cnt = [0] * 9",
+        "cnt = [0] * 10",
+        "cnt = [0] * 11",
+        "cnt = []"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "챌린지",
+      "title": "Code 1. 빈도 증가",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n입력 x(0~9)의 등장 횟수를 cnt에 누적해야 합니다.",
+      "code": "cnt = [0] * 10\nfor i in range(n):\n    x = int(input())\n    # TODO: x의 빈도를 1 증가시키는 한 줄을 작성하시오.",
+      "expectedCode": "cnt[x] += 1",
+      "hint": "인덱스를 이용해 cnt[x]를 증가시키면 됩니다."
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "챌린지",
+      "title": "Short 1. 빈도 실행 결과",
+      "description": "아래 코드가 실행된 뒤, cnt[0]의 값은 무엇인가요?",
+      "code": "cnt = [0] * 10\ndata = [0, 2, 0, 9, 0]\nfor i in range(len(data)):\n    x = data[i]\n    cnt[x] += 1\n# 여기서 cnt[0]의 값은?",
+      "expectedText": "3"
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. 최빈값 tie-break",
+      "description": "다음 중 최빈값을 찾을 때, 빈도가 같으면 **더 작은 숫자**를 선택하는 조건식으로 올바른 것을 고르세요.\n(best_cnt, best_num, cnt[i]가 이미 정의되어 있다고 가정합니다.)",
+      "code": null,
+      "options": [
+        "cnt[i] > best_cnt and i < best_num",
+        "cnt[i] >= best_cnt and i < best_num",
+        "cnt[i] > best_cnt or (cnt[i] == best_cnt and i < best_num)",
+        "cnt[i] == best_cnt or i < best_num"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "챌린지",
+      "title": "Code 2. 최빈값 갱신(2줄)",
+      "description": "아래 코드에서 주석 위치에 들어갈 내용을 작성하세요.\n조건을 만족하면 best_cnt와 best_num을 갱신해야 합니다.\n(주석 위치에 **두 줄**로 작성하세요.)",
+      "code": "best_num = 0\nbest_cnt = -1\nfor i in range(10):\n    if cnt[i] > best_cnt or (cnt[i] == best_cnt and i < best_num):\n        # TODO: best_cnt와 best_num을 갱신하는 두 줄을 작성하시오.\nprint('%d' % best_num)",
+      "expectedCode": "best_cnt = cnt[i]\nbest_num = i",
+      "hint": "먼저 best_cnt를 갱신한 뒤 best_num을 갱신합니다."
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. 누적합(prefix) 점화식",
+      "description": "prefix[0] = 0이고, prefix[i+1]에 arr[0]부터 arr[i]까지의 합을 저장하려고 합니다.\n다음 중 올바른 한 줄을 고르세요. (i는 0부터 시작)",
+      "code": null,
+      "options": [
+        "prefix[i] = prefix[i] + arr[i]",
+        "prefix[i + 1] = prefix[i] + arr[i]",
+        "prefix[i] = prefix[i + 1] + arr[i]",
+        "prefix[i + 1] = prefix[i] + arr[i + 1]"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "챌린지",
+      "title": "Code 3. prefix 채우기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(prefix 배열은 길이가 n+1이고 prefix[0]=0입니다.)",
+      "code": "prefix = [0] * (n + 1)\nprefix[0] = 0\nfor i in range(n):\n    # TODO: prefix[i+1]을 채우는 한 줄을 작성하시오.",
+      "expectedCode": "prefix[i + 1] = prefix[i] + arr[i]",
+      "hint": "바로 전 prefix 값에 arr[i]를 더합니다."
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "챌린지",
+      "title": "Short 2. prefix로 구간합",
+      "description": "prefix 배열이 아래와 같을 때, l=1, r=2 (0-index) 구간의 합은 얼마인가요?\n(구간합 공식: sum = prefix[r+1] - prefix[l])",
+      "code": "prefix = [0, 2, 5, 9, 10]\nl = 1\nr = 2",
+      "expectedText": "7"
+    },
+    {
+      "id": "code4",
+      "type": "code",
+      "level": "챌린지",
+      "title": "Code 4. prefix로 구간합 한 줄",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(0-index, l~r 구간합을 계산해야 합니다.)",
+      "code": "sum_val = 0\n# TODO: prefix를 이용해 l~r 구간합을 sum_val에 저장하는 한 줄을 작성하시오.",
+      "expectedCode": "sum_val = prefix[r + 1] - prefix[l]",
+      "hint": "구간합은 prefix[r+1] - prefix[l] 입니다."
+    }
+  ]
+}

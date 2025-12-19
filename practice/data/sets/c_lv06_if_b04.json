@@ -1,0 +1,159 @@
+{
+  "id": "c_if_b4",
+  "title": "C 조건문 기초 4회차",
+  "categoryId": "c_if",
+  "availableLanguages": [
+    "c"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. else는 어느 if에 붙을까? (중첩 if)",
+      "description": "아래 코드에서 입력이\nx = 1, y = -1 일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "int x;\nscanf(\"%d\", &x);\nint y;\nscanf(\"%d\", &y);\nif (x > 0) {\n    if (y > 0) {\n        printf(\"A\\n\");\n    }\n    else {\n        printf(\"B\\n\");\n    }\n}\nelse {\n    printf(\"C\\n\");\n}",
+      "options": [
+        "A",
+        "B",
+        "C",
+        "아무 것도 출력되지 않는다"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. if가 두 개면 else는 어디에 붙을까?",
+      "description": "아래 코드에서 입력이 1일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "int n;\nscanf(\"%d\", &n);\nif (n > 0) {\n    printf(\"P\\n\");\n}\nif (n == 0) {\n    printf(\"Z\\n\");\n}\nelse {\n    printf(\"N\\n\");\n}",
+      "options": [
+        "P",
+        "P;\nZ;",
+        "P;\nN;",
+        "P;\nZ;\nN;"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 자주 하는 실수: a == 1 or 2",
+      "description": "아래 코드에서 입력이 0일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "int a;\nscanf(\"%d\", &a);\nif (a == 1 || 2) {\n    printf(\"YES\\n\");\n}\nelse {\n    printf(\"NO\\n\");\n}",
+      "options": [
+        "YES",
+        "NO",
+        "에러가 발생한다",
+        "아무 것도 출력되지 않는다"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 드모르간/리팩토링: not (1 <= n <= 9)와 같은 의미",
+      "description": "다음 중 `! (n >= 1 && n <= 9)` 와 같은 의미인 조건식을 고르세요.",
+      "code": null,
+      "options": [
+        "n < 1 || n > 9",
+        "n < 1 && n > 9",
+        "!(n < 1 || n > 9)",
+        "n <= 1 || n >= 9"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. 괄호/우선순위: 의도에 맞는 조건식",
+      "description": "다음 설명을 만족하는 조건식을 고르세요.\n\n- (a와 b가 모두 양수)이면 True\n- 또는 (c가 0)이면 True\n- 그 외에는 False\n\n(의도가 명확하도록 괄호가 포함된 식을 고르세요.)",
+      "code": null,
+      "options": [
+        "(a > 0 && b > 0) || c == 0",
+        "a > 0 && (b > 0 || c == 0)",
+        "a > 0 || (b > 0 && c == 0)",
+        "(a > 0 || b > 0) && c == 0"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 출력 예측: and/or 우선순위",
+      "description": "아래 코드에서 입력이 `0 1 0`일 때 출력되는 한 줄을 그대로 쓰세요.\n(따옴표는 쓰지 마시오)",
+      "code": "int a, b, c;\nscanf(\"%d %d %d\", &a, &b, &c);\nif (a > 0 && b > 0 || c == 0) {\n    printf(\"OK\\n\");\n}\nelse {\n    printf(\"NO\\n\");\n}",
+      "expectedText": "OK"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 출력 예측: else가 붙는 위치",
+      "description": "아래 코드에서 입력이\nx = 1, y = -1 일 때 출력되는 한 줄을 그대로 쓰세요.\n(따옴표는 쓰지 마시오)",
+      "code": "int x;\nscanf(\"%d\", &x);\nint y;\nscanf(\"%d\", &y);\nif (x > 0) {\n    if (y > 0) {\n        printf(\"A\\n\");\n    }\n    else {\n        printf(\"B\\n\");\n    }\n}\nelse {\n    printf(\"C\\n\");\n}",
+      "expectedText": "B"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. not 없이 같은 의미로 바꾸기 (드모르간)",
+      "description": "정수 n이 1 이상 9 이하가 아닐 때만 \"OUT\"이 출력되도록 하려 합니다.\n아래 코드에서 if 뒤의 조건식을 ! 없이 한 줄로 작성하세요.\n(반드시 ||를 사용하세요.)",
+      "code": "int n;\nscanf(\"%d\", &n);\nif (/* 여기에 조건식을 작성하세요 */) {\n    printf(\"OUT\\n\");\n}\nelse {\n    printf(\"IN\\n\");\n}",
+      "expectedCodes": [
+        "n < 1 || n > 9",
+        "n > 9 || n < 1"
+      ],
+      "hint": "! (n >= 1 && n <= 9) 와 같은 의미를, ||로 풀어서 써보세요."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. a가 1 또는 2일 때만 YES",
+      "description": "정수 a가 1 또는 2일 때만 \"YES\"가 출력되도록 하려 합니다.\n아래 코드에서 if 뒤의 조건식을 올바르게 한 줄로 작성하세요.\n(주의: `a == 1 || 2` 는 올바른 조건이 아닙니다.)",
+      "code": "int a;\nscanf(\"%d\", &a);\nif (/* 여기에 조건식을 작성하세요 */) {\n    printf(\"YES\\n\");\n}\nelse {\n    printf(\"NO\\n\");\n}",
+      "expectedCodes": [
+        "a == 1 || a == 2",
+        "a == 2 || a == 1"
+      ],
+      "hint": "||의 양쪽은 각각 '비교식'이어야 합니다."
+    }
+  ]
+}

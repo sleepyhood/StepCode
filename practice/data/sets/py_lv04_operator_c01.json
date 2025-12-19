@@ -1,0 +1,130 @@
+{
+  "id": "py_lv04_operator_c01",
+  "title": "Python 연산자 LV04 챌린지 1회차",
+  "categoryId": "py_operator",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 1. not과 괄호",
+      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 입력받은 a, b가 같지 않으면 True, 같으면 False를 출력한다.\n- 반드시 not 연산자를 사용한다.\n- 출력은 서식문자(%)를 사용한다.",
+      "code": null,
+      "options": [
+        "a = int(input())\nb = int(input())\nprint('%s' % (not (a == b)))",
+        "a = int(input())\nb = int(input())\nprint('%s' % ((not a) == b))",
+        "a = int(input())\nb = int(input())\nprint('%s' % (not (a != b)))",
+        "a = int(input())\nb = int(input())\nprint('%s' % (a != b))"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 2. 우선순위 함정(산술+비교)",
+      "description": "다음 코드의 출력으로 올바른 것을 고르세요.\n\n- 출력은 서식문자(%)를 사용한다.",
+      "code": "a = 5\nb = 2\nprint('%s' % (a + b * 2 == 9))\nprint('%s' % ((a + b) * 2 == 14))",
+      "options": [
+        "True\nTrue",
+        "True\nFalse",
+        "False\nTrue",
+        "False\nFalse"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 3. 음수 나머지(%)",
+      "description": "다음 코드의 출력으로 올바른 것을 고르세요.\n\n- 파이썬에서 `%`는 항상 0 이상 b 미만이 되도록 나머지를 만든다.\n- 출력은 서식문자(%)를 사용한다.",
+      "code": "print('%d' % (-7 % 3))\nprint('%d' % (-(7 % 3)))",
+      "options": [
+        "2\n-1",
+        "-1\n-1",
+        "2\n-2",
+        "-2\n-1"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 논리 연산 우선순위",
+      "description": "아래 프로그램에서 출력되는 값(True/False)을 쓰시오.",
+      "code": "a = 1\nb = 2\nc = 3\nprint('%s' % (a < b and b < c or a == 0))",
+      "expectedText": "True"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 드모르간(De Morgan)",
+      "description": "아래 프로그램에서 출력되는 값(True/False)을 쓰시오.",
+      "code": "a = -1\nb = 5\nprint('%s' % (not (a > 0 and b > 0)))",
+      "expectedText": "True"
+    },
+    {
+      "id": "short3",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 3. 연쇄 비교",
+      "description": "아래 프로그램에서 출력되는 값(True/False)을 쓰시오.",
+      "code": "a = 3\nb = 5\nc = 4\nprint('%s' % (a < b < c))",
+      "expectedText": "False"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 2 또는 3의 배수이지만 둘 다는 아님",
+      "description": "정수 n을 입력받아 다음 조건의 결과(True/False)를 출력하세요.\n\n- n이 2의 배수이거나 3의 배수이다.\n- 하지만 2와 3의 공배수(둘 다 배수)인 경우는 False\n\n힌트: (조건1) != (조건2) 를 사용할 수 있습니다.\n출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 한 줄만 작성하세요.",
+      "code": "n = int(input())\n# TODO: 조건을 만족하는지 출력하시오.",
+      "expectedCode": "print('%s' % ((n % 2 == 0) != (n % 3 == 0)))",
+      "hint": "!= 는 불리언에서도 사용할 수 있어요."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 몫과 나머지로 검증하기",
+      "description": "정수 a, b를 입력받습니다. (b는 0이 아닙니다.)\n다음 값을 한 줄에 하나씩 출력하세요.\n\n- 1번째 줄: a를 b로 나눈 몫 (a//b)\n- 2번째 줄: a를 b로 나눈 나머지 (a%b)\n- 3번째 줄: (a//b)*b + (a%b) 의 값\n\n출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 부분만 작성하세요.",
+      "code": "a = int(input())\nb = int(input())\n# TODO: 몫, 나머지, 검증식을 한 줄씩 출력하시오.",
+      "expectedCode": "q = a // b\nr = a % b\nprint('%d' % q)\nprint('%d' % r)\nprint('%d' % (q * b + r))",
+      "hint": "q, r 변수를 만들어도 됩니다."
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. 정확히 하나만 양수인가?",
+      "description": "정수 a, b, c를 입력받아 정확히 하나만 양수(>0)이면 True, 아니면 False를 출력하세요.\n\n힌트: 파이썬에서 True는 1, False는 0처럼 더할 수 있습니다.\n출력은 서식문자(%)를 사용해야 합니다.\n아래 코드에서 TODO 한 줄만 작성하세요.",
+      "code": "a = int(input())\nb = int(input())\nc = int(input())\n# TODO: 정확히 하나만 양수인지 출력하시오.",
+      "expectedCode": "print('%s' % (((a > 0) + (b > 0) + (c > 0)) == 1))",
+      "hint": "((a>0)+(b>0)+(c>0)) == 1 형태를 생각해보세요."
+    }
+  ]
+}
