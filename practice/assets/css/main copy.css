@@ -3,18 +3,12 @@
   box-sizing: border-box;
 }
 
-:root {
-  --primary: #6366f1;
-  --primary-soft: #eef2ff;
-  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  --glass: rgba(255, 255, 255, 0.7);
-}
-
 body {
-  background: var(--bg-gradient);
-  min-height: 100vh;
-  padding: 40px 20px;
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #f5f7fb;
+  color: #111827;
 }
 
 /* 공통 컨테이너 */
@@ -26,17 +20,12 @@ body {
 
 /* 상단 헤더 (index.html, practice.html 공통 사용) */
 .app-header {
-  text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 20px;
 }
 
 .app-header h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  background: linear-gradient(to right, #1e293b, #6366f1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin: 0 0 6px;
+  font-size: 1.6rem;
 }
 
 .app-subtitle {
@@ -65,77 +54,15 @@ body {
 
 /* ====== index.html 전용: 카테고리/세트 목록 ====== */
 
-/* 1. 최상위 루트는 언어별 섹션 간의 간격만 조절 */
-#list-root {
-  display: flex;
-  flex-direction: column;
-  gap: 48px; /* 언어(C, Python 등) 간의 간격 */
-}
-/* 2. 각 언어 섹션 제목 스타일 (선택 사항) */
-.lang-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 20px;
-  color: var(--primary);
-  border-left: 4px solid var(--primary);
-  padding-left: 12px;
-}
-/* 3. 실제 카드들이 담기는 컨테이너에 2열 그리드 적용 */
-.category-grid {
-  display: grid;
-  /* 화면이 넓으면 2열, 좁으면 1열 */
-  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-  gap: 20px;
-
-    /* ✅ 추가: 같은 줄 다른 카드까지 '늘려서' 맞추지 않게 */
-  align-items: start;
-}
-/* ✅ 추가: 그리드 안 카드들은 내용만큼만 높이를 갖도록 */
-.category-grid .category-section {
-  height: auto;      /* (중요) height:100% 무력화 */
-  align-self: start; /* stretch 방지 */
-  margin: 0;         /* grid gap만 사용 (기존 margin-bottom 영향 제거) */
-}
-/* 모바일 대응 */
-@media (max-width: 900px) {
-  .category-grid {
-    grid-template-columns: 1fr;
-  }
-}
 .category-section {
-  /* 기존 설정에 추가 */
-  display: flex;
-  flex-direction: column;
-  
-  margin: 0;    /* 그리드 gap을 사용하므로 margin 제거 */
-  background: white;
-  border: 1px solid #eef2f7;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.cat-header {
-  padding: 18px 20px;
-  background: #ffffff;
-  /* 헤더와 콘텐츠 구분선 */
-  border-bottom: 1px solid #f8fafc;
+  margin-bottom: 24px;
 }
 
 .category-section h2 {
   margin: 0 0 8px;
   font-size: 1.2rem;
 }
-.category-section:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--card-shadow);
-}
 
-.cat-title-row {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 16px;
-}
 .set-list {
   list-style: none;
   padding: 0;
@@ -187,22 +114,22 @@ body {
   color: #b91c1c;
 }
 
-/* 필터 버튼을 현대적인 '캡슐' 형태로 변경 */
+/* 언어 필터 바 */
 .filter-bar {
+  margin-bottom: 16px;
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .filter-btn {
-  padding: 10px 20px;
-  border-radius: 99px;
-  border: 1px solid #e2e8f0;
-  background: white;
-  color: #64748b;
-  font-weight: 600;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #374151;
 }
 
 .filter-btn:hover {
@@ -210,10 +137,9 @@ body {
 }
 
 .filter-btn.active {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
 }
 
 /* 카테고리 헤더 + 접기 버튼 */
@@ -347,24 +273,21 @@ body {
   gap: 8px;
 }
 
-/* 세트 칩을 더 '클릭하고 싶게' 디자인 */
 .set-chip {
-  background: #ffffff;
-  border: 1px solid #f1f5f9;
-  padding: 12px 16px;
-  border-radius: 14px;
-  font-weight: 500;
-  color: #475569;
-  display: flex;
-  justify-content: space-between;
+  display: inline-flex;
   align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
   text-decoration: none;
+  color: #111827;
+  background: #ffffff;
+  font-size: 0.85rem;
 }
 
 .set-chip:hover {
-  background: var(--primary-soft);
-  color: var(--primary);
-  border-color: var(--primary);
+  background: #f9fafb;
 }
 
 .set-chip-main {

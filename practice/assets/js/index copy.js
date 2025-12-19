@@ -49,8 +49,7 @@ function createSetChip(s) {
 
   const tiny = document.createElement("span");
   tiny.className = "set-chip-tiny";
-  tiny.textContent =
-    typeof s.numProblems === "number" ? `${s.numProblems}문제` : "";
+  tiny.textContent = typeof s.numProblems === "number" ? `${s.numProblems}문제` : "";
 
   a.append(main, sub);
   if (tiny.textContent) a.append(tiny);
@@ -76,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const [categories, sets] = await Promise.all([
       ProblemService.listCategories(),
-      ProblemService.listSets(),
+      ProblemService.listSets()
     ]);
 
     categories.sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -91,9 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const filterBar = document.createElement("div");
     filterBar.className = "filter-bar";
     filterBar.appendChild(createFilterButton("전체", "all", true));
-    langs.forEach((lang) =>
-      filterBar.appendChild(createFilterButton(lang, lang, false))
-    );
+    langs.forEach((lang) => filterBar.appendChild(createFilterButton(lang, lang, false)));
 
     // ===== 2) 상단 컨트롤(검색 + 모두 접기/펼치기) =====
     const topControls = document.createElement("div");
@@ -105,8 +102,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const searchInput = document.createElement("input");
     searchInput.className = "search-input";
     searchInput.type = "search";
-    searchInput.placeholder =
-      "카테고리/세트 제목 검색 (예: 조건문, 2회차, while...)";
+    searchInput.placeholder = "카테고리/세트 제목 검색 (예: 조건문, 2회차, while...)";
 
     const btnCollapseAll = document.createElement("button");
     btnCollapseAll.type = "button";
@@ -135,13 +131,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     function matchesQuery(cat, catSets, q) {
       if (!q) return true;
       const needle = q.toLowerCase();
-      const inCat =
-        (cat.name || "").toLowerCase().includes(needle) ||
-        getShortCategoryName(cat).toLowerCase().includes(needle);
+      const inCat = (cat.name || "").toLowerCase().includes(needle) ||
+                    getShortCategoryName(cat).toLowerCase().includes(needle);
       if (inCat) return true;
-      return catSets.some((s) =>
-        (s.title || "").toLowerCase().includes(needle)
-      );
+      return catSets.some((s) => (s.title || "").toLowerCase().includes(needle));
     }
 
     function buildCategoryCard(cat, catSets) {
@@ -160,12 +153,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       const h3 = document.createElement("h3");
       h3.textContent = getShortCategoryName(cat);
 
-      const basicCount = catSets.filter(
-        (s) => (s.difficulty || "basic") !== "challenge"
-      ).length;
-      const challCount = catSets.filter(
-        (s) => (s.difficulty || "basic") === "challenge"
-      ).length;
+      const basicCount = catSets.filter((s) => (s.difficulty || "basic") !== "challenge").length;
+      const challCount = catSets.filter((s) => (s.difficulty || "basic") === "challenge").length;
 
       const meta = document.createElement("div");
       meta.className = "category-meta";
@@ -186,22 +175,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       setContainer.className = "set-container";
 
       const groups = [
-        {
-          key: "basic",
-          label: "기초",
-          pick: (s) => (s.difficulty || "basic") !== "challenge",
-        },
-        {
-          key: "challenge",
-          label: "챌린지",
-          pick: (s) => (s.difficulty || "basic") === "challenge",
-        },
+        { key: "basic", label: "기초", pick: (s) => (s.difficulty || "basic") !== "challenge" },
+        { key: "challenge", label: "챌린지", pick: (s) => (s.difficulty || "basic") === "challenge" }
       ];
 
       groups.forEach((g) => {
-        const groupSets = catSets
-          .filter(g.pick)
-          .sort((a, b) => (a.round || 0) - (b.round || 0));
+        const groupSets = catSets.filter(g.pick).sort((a, b) => (a.round || 0) - (b.round || 0));
         if (groupSets.length === 0) return;
 
         const group = document.createElement("div");
@@ -235,8 +214,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     function render() {
       listContainer.innerHTML = "";
 
-      const visibleLangs =
-        state.lang === "all" ? langs : langs.filter((l) => l === state.lang);
+      const visibleLangs = state.lang === "all" ? langs : langs.filter((l) => l === state.lang);
 
       visibleLangs.forEach((lang) => {
         const cats = categories.filter((c) => getLangFromCategory(c) === lang);
@@ -247,36 +225,38 @@ document.addEventListener("DOMContentLoaded", async () => {
           const catSets = sets
             .filter((s) => s.categoryId === cat.id)
             .sort((a, b) => (a.round || 0) - (b.round || 0));
-
           if (catSets.length === 0) continue;
           if (!matchesQuery(cat, catSets, state.q)) continue;
-
           picked.push({ cat, catSets });
         }
         if (picked.length === 0) return;
 
-        // === 여기부터가 질문에서 준 "언어 섹션 + 그리드 컨테이너" 구조 ===
-        const langSec = document.createElement("section");
-        langSec.className = "lang-section";
-        langSec.dataset.lang = lang;
+        const langSection = document.createElement("section");
+        langSection.className = "lang-section";
+        langSection.dataset.lang = lang;
 
-        const title = document.createElement("h2");
-        title.className = "lang-title";
-        title.textContent = lang;
-        langSec.appendChild(title);
+        const header = document.createElement("div");
+        header.className = "lang-header";
 
-        // 핵심: CSS에 이미 있는 2열 그리드(.category-grid)를 사용
-        const gridDiv = document.createElement("div");
-        gridDiv.className = "category-grid";
+        const h2 = document.createElement("h2");
+        h2.className = "lang-title";
+        h2.textContent = lang;
+
+        const sub = document.createElement("div");
+        sub.className = "lang-sub";
+        sub.textContent = `${picked.length}개 파트`;
+
+        header.append(h2, sub);
+
+        const grid = document.createElement("div");
+        grid.className = "lang-grid";
 
         picked.forEach(({ cat, catSets }) => {
-          // createCategorySection(cat) 가 아니라, 현재 파일에 존재하는 buildCategoryCard 사용
-          const sec = buildCategoryCard(cat, catSets);
-          gridDiv.appendChild(sec);
+          grid.appendChild(buildCategoryCard(cat, catSets));
         });
 
-        langSec.appendChild(gridDiv);
-        listContainer.appendChild(langSec);
+        langSection.append(header, grid);
+        listContainer.appendChild(langSection);
       });
     }
 
@@ -300,19 +280,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     btnCollapseAll.addEventListener("click", () => {
-      document
-        .querySelectorAll(".category-section")
-        .forEach((sec) => sec.classList.add("collapsed"));
+      document.querySelectorAll(".category-section").forEach((sec) => sec.classList.add("collapsed"));
     });
 
     btnExpandAll.addEventListener("click", () => {
-      document
-        .querySelectorAll(".category-section")
-        .forEach((sec) => sec.classList.remove("collapsed"));
+      document.querySelectorAll(".category-section").forEach((sec) => sec.classList.remove("collapsed"));
     });
 
     // 최초 렌더
     render();
+
   } catch (err) {
     console.error(err);
     root.textContent = "목록을 불러오는 중 오류가 발생했습니다.";
