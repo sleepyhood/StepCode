@@ -59,6 +59,7 @@ let currentSetId = null;
 let currentAnswers = {};
 const ANSWER_STORAGE_PREFIX = "stepcode:answers:";
 
+
 // ===== Markdown(지문) 렌더링 =====
 let MD = null;
 
@@ -68,9 +69,9 @@ function getMarkdownRenderer() {
   if (!window.markdownit || !window.DOMPurify) return null;
 
   MD = window.markdownit({
-    html: false, // md 안의 raw HTML 금지(보안)
+    html: false,     // md 안의 raw HTML 금지(보안)
     linkify: true,
-    breaks: true,
+    breaks: true
   });
 
   return MD;
@@ -90,6 +91,7 @@ function renderMarkdownInto(targetEl, mdText) {
   const safe = window.DOMPurify.sanitize(html);
   targetEl.innerHTML = safe;
 }
+
 
 // ===== 수업모드(코칭) =====
 const MODE_STORAGE_KEY = "stepcode:practiceMode"; // "normal" | "class"
@@ -119,9 +121,7 @@ function detectPracticeMode() {
   const q = new URLSearchParams(location.search).get("mode");
   if (q === "class" || q === "normal") return q;
 
-  return localStorage.getItem(MODE_STORAGE_KEY) === "class"
-    ? "class"
-    : "normal";
+  return localStorage.getItem(MODE_STORAGE_KEY) === "class" ? "class" : "normal";
 }
 
 function updateModeHeaderUi() {
@@ -223,9 +223,11 @@ function recordAnswer(questionId, value) {
   currentAnswers[questionId] = value;
   saveStoredAnswers(currentSetId, currentAnswers);
   updateProgressUi();
+
 }
 
 // ▲ 여기까지 추가 ▲
+
 
 // ====== (추가) 문항별 채점 메타 ======
 let qGradeMeta = null; // { date: "YYYY-MM-DD", byQ: { [qid]: { attempts, correct, lastIsCorrect, lastAt } } }
@@ -328,8 +330,7 @@ function getActiveQuestions() {
 
 function isAnswered(q) {
   const v = currentAnswers?.[q.id];
-  if (q.type === "mcq")
-    return v !== undefined && v !== null && String(v) !== "";
+  if (q.type === "mcq") return v !== undefined && v !== null && String(v) !== "";
   return String(v ?? "").trim().length > 0;
 }
 
@@ -374,6 +375,7 @@ function appendQGradeBadge(headerEl, qid) {
   headerEl.appendChild(tag);
   updateQGradeBadge(qid);
 }
+
 
 // ====== 채점 메타(제출 횟수/쿨다운) ======
 const GRADE_META_PREFIX = "stepcode:gradeMeta:";
@@ -792,25 +794,6 @@ async function initPractice() {
     return;
   }
 
-  // 버튼 클릭 시 햅틱 피드백(진동) 및 부드러운 스크롤 효과
-  document.querySelectorAll("button").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      // 2025 UX: 작은 소리나 진동 효과(모바일 환경)를 고려한 피드백
-      if (navigator.vibrate) navigator.vibrate(5);
-    });
-  });
-
-  // 상단바 스크롤 애니메이션: 스크롤 시 상단바가 더 투명해지거나 작아지는 효과
-  window.addEventListener("scroll", () => {
-    const topBar = document.querySelector(".top-bar");
-    if (window.scrollY > 50) {
-      topBar.style.transform = "scale(0.98)";
-      topBar.style.opacity = "0.9";
-    } else {
-      topBar.style.transform = "scale(1)";
-      topBar.style.opacity = "1";
-    }
-  });
   try {
     // 세트 JSON 불러오기
     currentSetData = await ProblemService.loadSet(setId);
@@ -831,9 +814,7 @@ async function initPractice() {
 
     // 제목 표시 (수업모드는 화면에서 확실히 티 나게)
     const baseTitle = currentSetData.title || "연습장";
-    titleSpan.textContent = isClassMode()
-      ? `수업모드 · ${baseTitle}`
-      : baseTitle;
+    titleSpan.textContent = isClassMode() ? `수업모드 · ${baseTitle}` : baseTitle;
 
     // (선택) lesson.html 전용 배지/정책 UI 갱신
     updateModeHeaderUi();
@@ -858,6 +839,7 @@ async function initPractice() {
     // ✅ 여기(바로 다음)
     setupExportLog();
     setupRealtimeDashboard(); // ← 추가
+
   } catch (err) {
     console.error(err);
     container.textContent = "문제를 불러오는 중 오류가 발생했습니다.";
@@ -999,23 +981,15 @@ function renderSet() {
   let suppWrap = null;
 
   if (isClassMode()) {
-    if (activeBucket !== "core" && activeBucket !== "supp")
-      activeBucket = "core";
+    if (activeBucket !== "core" && activeBucket !== "supp") activeBucket = "core";
 
     // 탭
     const tabs = document.createElement("div");
     tabs.className = "set-tabs";
     tabs.innerHTML = `
-  <button type="button" class="tab ${
-    activeBucket === "core" ? "active" : ""
-  }" data-tab="core">핵심</button>
-  <button type="button" class="tab ${
-    activeBucket === "supp" ? "active" : ""
-  }" data-tab="supp">보강/숙제</button>
-  <span class="tab-note">기본 ${Math.min(
-    coreCount,
-    questions.length
-  )}문항 노출</span>
+  <button type="button" class="tab ${activeBucket === "core" ? "active" : ""}" data-tab="core">핵심</button>
+  <button type="button" class="tab ${activeBucket === "supp" ? "active" : ""}" data-tab="supp">보강/숙제</button>
+  <span class="tab-note">기본 ${Math.min(coreCount, questions.length)}문항 노출</span>
 `;
 
     container.appendChild(tabs);
@@ -1024,28 +998,31 @@ function renderSet() {
     coreWrap.id = "core-wrap";
     suppWrap = document.createElement("div");
     suppWrap.id = "supp-wrap";
-    suppWrap.hidden = activeBucket !== "supp";
-    coreWrap.hidden = activeBucket !== "core";
+suppWrap.hidden = activeBucket !== "supp";
+coreWrap.hidden = activeBucket !== "core";
+
 
     container.appendChild(coreWrap);
     container.appendChild(suppWrap);
 
-    tabs.addEventListener("click", (e) => {
-      const btn = e.target?.closest?.("[data-tab]");
-      if (!btn) return;
-      activeBucket = btn.dataset.tab;
+tabs.addEventListener("click", (e) => {
+  const btn = e.target?.closest?.("[data-tab]");
+  if (!btn) return;
+  activeBucket = btn.dataset.tab;
 
-      tabs
-        .querySelectorAll(".tab")
-        .forEach((b) => b.classList.toggle("active", b === btn));
+  tabs.querySelectorAll(".tab")
+    .forEach((b) => b.classList.toggle("active", b === btn));
 
-      coreWrap.hidden = activeBucket !== "core";
-      suppWrap.hidden = activeBucket !== "supp";
+  coreWrap.hidden = activeBucket !== "core";
+  suppWrap.hidden = activeBucket !== "supp";
 
-      // ✅ 추가: 탭 전환 후 HUD 재생성
-      if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
-      updateProgressUi();
-    });
+  // ✅ 추가: 탭 전환 후 HUD 재생성
+  if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
+updateProgressUi();
+
+
+});
+
   }
 
   // if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
@@ -1079,7 +1056,7 @@ function renderSet() {
     else if (q.type === "short") typeTag.textContent = "단답형";
     else if (q.type === "code") typeTag.textContent = "코드 작성";
     header.appendChild(typeTag);
-    appendQGradeBadge(header, q.id);
+appendQGradeBadge(header, q.id);
 
     card.appendChild(header);
 
@@ -1088,6 +1065,7 @@ function renderSet() {
     desc.className = "description md";
     renderMarkdownInto(desc, q.description || "");
     card.appendChild(desc);
+
 
     // --- 코드 블록 (있으면) ---
     if (q.code) {
@@ -1134,6 +1112,7 @@ function renderSet() {
   if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
 
   updateProgressUi();
+
 }
 
 function getHints(q) {
@@ -1285,8 +1264,8 @@ function renderCoachUiForQuestion(q, idx) {
 
   // const h1 = panel.querySelector(`[data-coach-hint="1"]`);
   const h1 = document.querySelector(
-    `[data-coach="${q.id}"] [data-coach-hint="1"]`
-  );
+  `[data-coach="${q.id}"] [data-coach-hint="1"]`
+);
 
   const h2 = panel.querySelector(`[data-coach-hint="2"]`);
   const explainBtn = panel.querySelector(`[data-coach-explain-btn="${q.id}"]`);
@@ -1685,7 +1664,7 @@ function setupGrading() {
 
   gradeButton.addEventListener("click", () => {
     meta = loadGradeMeta(currentSetId);
-    qGradeMeta = loadQGradeMeta(currentSetId);
+qGradeMeta = loadQGradeMeta(currentSetId);
 
     if (remainingMs() > 0) {
       startTickerIfNeeded();
@@ -1726,7 +1705,7 @@ function setupGrading() {
           return bucket === activeBucket;
         });
     let correctCount = 0;
-    // bumpQGradeAttempt(q.id, isCorrect);
+// bumpQGradeAttempt(q.id, isCorrect);
 
     questions.forEach((q) => {
       const feedbackEl = document.querySelector(`[data-feedback="${q.id}"]`);
@@ -1803,9 +1782,9 @@ function setupGrading() {
         }
       }
     });
-    saveQGradeMeta(currentSetId, qGradeMeta);
-    refreshAllQGradeBadges();
-    updateProgressUi();
+saveQGradeMeta(currentSetId, qGradeMeta);
+refreshAllQGradeBadges();
+updateProgressUi();
 
     if (scoreEl) {
       const label = isClassMode()
@@ -1940,13 +1919,14 @@ function setupHud() {
   });
 }
 
+
 // ====== (추가) 실시간 교사용 대시보드 업로드 (WebSocket) ======
 const DASH_STUDENT_KEY = "stepcode:dashStudentId";
 const DASH_NAME_KEY = "stepcode:dashDisplayName";
 const DASH_ROOM_KEY = "stepcode:dashRoomId";
 
-const DASH_SEND_EVERY_MS = 10000; // 10초마다 상태 업로드
-const DASH_ACTIVITY_THROTTLE_MS = 3000; // 마우스/키보드 활동은 3초에 1번만 반영
+const DASH_SEND_EVERY_MS = 10000;         // 10초마다 상태 업로드
+const DASH_ACTIVITY_THROTTLE_MS = 3000;   // 마우스/키보드 활동은 3초에 1번만 반영
 
 let dashWs = null;
 let dashSendTimer = null;
@@ -1971,9 +1951,7 @@ function dashQP(name) {
 function dashGetRoomId() {
   const fromQ = dashQP("room");
   if (fromQ) {
-    try {
-      localStorage.setItem(DASH_ROOM_KEY, fromQ);
-    } catch (_) {}
+    try { localStorage.setItem(DASH_ROOM_KEY, fromQ); } catch (_) {}
     return fromQ;
   }
   try {
@@ -1989,41 +1967,27 @@ function dashGetStudentIdAndName() {
   const nameQ = dashQP("name");
 
   if (sidQ) {
-    try {
-      localStorage.setItem(DASH_STUDENT_KEY, sidQ);
-    } catch (_) {}
+    try { localStorage.setItem(DASH_STUDENT_KEY, sidQ); } catch (_) {}
     dashStudentId = sidQ;
   } else {
-    try {
-      dashStudentId = (localStorage.getItem(DASH_STUDENT_KEY) || "").trim();
-    } catch (_) {}
+    try { dashStudentId = (localStorage.getItem(DASH_STUDENT_KEY) || "").trim(); } catch (_) {}
   }
 
   if (nameQ) {
-    try {
-      localStorage.setItem(DASH_NAME_KEY, nameQ);
-    } catch (_) {}
+    try { localStorage.setItem(DASH_NAME_KEY, nameQ); } catch (_) {}
     dashDisplayName = nameQ;
   } else {
-    try {
-      dashDisplayName = (localStorage.getItem(DASH_NAME_KEY) || "").trim();
-    } catch (_) {}
+    try { dashDisplayName = (localStorage.getItem(DASH_NAME_KEY) || "").trim(); } catch (_) {}
   }
 
   // 링크에 student가 없으면 1회만 물어보기(원치 않으면 이 블록 삭제해도 됨)
   if (!dashStudentId) {
-    const v = prompt(
-      "대시보드용 학생 식별값(좌석/닉네임)을 입력하세요.\n(예: 1번, A-03, 민수)"
-    );
+    const v = prompt("대시보드용 학생 식별값(좌석/닉네임)을 입력하세요.\n(예: 1번, A-03, 민수)");
     if (v && v.trim()) {
       dashStudentId = v.trim();
       dashDisplayName = dashDisplayName || dashStudentId;
-      try {
-        localStorage.setItem(DASH_STUDENT_KEY, dashStudentId);
-      } catch (_) {}
-      try {
-        localStorage.setItem(DASH_NAME_KEY, dashDisplayName);
-      } catch (_) {}
+      try { localStorage.setItem(DASH_STUDENT_KEY, dashStudentId); } catch (_) {}
+      try { localStorage.setItem(DASH_NAME_KEY, dashDisplayName); } catch (_) {}
     }
   }
 
@@ -2036,8 +2000,7 @@ function dashWsUrl() {
 }
 
 function dashComputeProgress() {
-  const probs =
-    currentSetData && currentSetData.problems ? currentSetData.problems : [];
+  const probs = (currentSetData && currentSetData.problems) ? currentSetData.problems : [];
   const total = probs.length;
 
   // answered: 답안이 비어있지 않으면 풀이로 간주
@@ -2060,9 +2023,8 @@ function dashComputeProgress() {
 }
 
 function dashComputeTopTries(limit = 3) {
-  const probs =
-    currentSetData && currentSetData.problems ? currentSetData.problems : [];
-  const byQ = qGradeMeta && qGradeMeta.byQ ? qGradeMeta.byQ : {};
+  const probs = (currentSetData && currentSetData.problems) ? currentSetData.problems : [];
+  const byQ = (qGradeMeta && qGradeMeta.byQ) ? qGradeMeta.byQ : {};
   const rows = [];
 
   for (const q of probs) {
@@ -2078,17 +2040,13 @@ function dashComputeTopTries(limit = 3) {
 }
 
 function dashBuildPayload() {
-  const setTitle =
-    currentSetData && currentSetData.title ? currentSetData.title : "";
-  const mode =
-    typeof isClassMode === "function" && isClassMode() ? "class" : "practice";
-  const bucket =
-    mode === "class" && typeof activeBucket === "string" ? activeBucket : "";
+  const setTitle = (currentSetData && currentSetData.title) ? currentSetData.title : "";
+  const mode = (typeof isClassMode === "function" && isClassMode()) ? "class" : "practice";
+  const bucket = (mode === "class" && typeof activeBucket === "string") ? activeBucket : "";
 
   let solveElapsedMs = 0;
   try {
-    if (typeof getSolveElapsedNow === "function")
-      solveElapsedMs = Number(getSolveElapsedNow()) || 0;
+    if (typeof getSolveElapsedNow === "function") solveElapsedMs = Number(getSolveElapsedNow()) || 0;
   } catch (_) {}
 
   let gradeAttemptsToday = 0;
@@ -2112,8 +2070,9 @@ function dashBuildPayload() {
     gradeAttemptsToday,
     lastActivityAt: dashLastActivityAt || Date.now(),
     helpActive: dashHelpActive,
-    helpRequestedAt: dashHelpRequestedAt,
-    helpQid: dashHelpQid,
+helpRequestedAt: dashHelpRequestedAt,
+helpQid: dashHelpQid,
+
   };
 }
 
@@ -2139,39 +2098,35 @@ function dashConnectWS() {
   if (!dashStudentId) return;
 
   if (dashWs) {
-    try {
-      dashWs.close();
-    } catch (_) {}
+    try { dashWs.close(); } catch (_) {}
     dashWs = null;
   }
   if (dashReconnectTimer) {
     clearTimeout(dashReconnectTimer);
     dashReconnectTimer = null;
   }
-  dashUISetState("connecting");
-  dashUIUpdateAll();
+dashUISetState("connecting");
+dashUIUpdateAll();
 
   dashWs = new WebSocket(dashWsUrl());
 
   dashWs.addEventListener("open", () => {
     dashUISetState("connected");
-    dashUIUpdateAll();
+dashUIUpdateAll();
 
-    dashWs.send(
-      JSON.stringify({
-        type: "hello",
-        role: "student",
-        room: dashRoomId,
-        studentId: dashStudentId,
-        displayName: dashDisplayName,
-      })
-    );
+    dashWs.send(JSON.stringify({
+      type: "hello",
+      role: "student",
+      room: dashRoomId,
+      studentId: dashStudentId,
+      displayName: dashDisplayName,
+    }));
     dashSendStatus();
   });
 
   dashWs.addEventListener("close", () => {
     dashUISetState("disconnected");
-    dashUIUpdateAll();
+dashUIUpdateAll();
 
     // 3초 후 재연결
     dashReconnectTimer = setTimeout(dashConnectWS, 3000);
@@ -2188,41 +2143,33 @@ function setupRealtimeDashboard() {
   dashGetStudentIdAndName();
   dashLoadHelpState();
 
-  dashEnsureControlWidget();
-  dashUIUpdateAll();
+dashEnsureControlWidget();
+dashUIUpdateAll();
 
   if (!dashStudentId) return; // 입력을 취소한 경우
 
   // 활동 감지(기존 recordAnswer/grade 로직을 안 건드리고도 연결 가능)
-  document.addEventListener(
-    "input",
-    (e) => {
-      const t = e.target;
-      if (!t) return;
-      // 답안 입력류만(불필요한 이벤트 폭발 방지)
-      if (t.classList && t.classList.contains("answer-input")) {
-        const qid = t.getAttribute?.("data-question") || "";
-        if (qid) dashFocusQid = qid;
+  document.addEventListener("input", (e) => {
+    const t = e.target;
+    if (!t) return;
+    // 답안 입력류만(불필요한 이벤트 폭발 방지)
+    if (t.classList && t.classList.contains("answer-input")) {
+      const qid = t.getAttribute?.("data-question") || "";
+if (qid) dashFocusQid = qid;
 
-        dashMarkActivity(false);
-        dashSendStatus();
-      }
-    },
-    true
-  );
+      dashMarkActivity(false);
+      dashSendStatus();
+    }
+  }, true);
 
-  document.addEventListener(
-    "click",
-    (e) => {
-      const t = e.target;
-      if (!t) return;
-      if (t.id === "grade-btn") {
-        dashMarkActivity(false);
-        dashSendStatus();
-      }
-    },
-    true
-  );
+  document.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!t) return;
+    if (t.id === "grade-btn") {
+      dashMarkActivity(false);
+      dashSendStatus();
+    }
+  }, true);
 
   document.addEventListener("keydown", () => dashMarkActivity(true), true);
   document.addEventListener("mousemove", () => dashMarkActivity(true), true);
@@ -2266,9 +2213,7 @@ function dashHelpStartCooldownTicker() {
 
 function dashHelpKey() {
   // room + studentId 기준으로 저장(PC 공유/재접속에도 유지)
-  return `stepcode:dashHelp:${dashRoomId || "default"}:${
-    dashStudentId || "unknown"
-  }`;
+  return `stepcode:dashHelp:${dashRoomId || "default"}:${dashStudentId || "unknown"}`;
 }
 
 function dashLoadHelpState() {
@@ -2292,34 +2237,33 @@ function dashLoadHelpState() {
   } catch (_) {}
 }
 
+
 function dashSaveHelpState() {
   try {
     localStorage.setItem(
+      
       dashHelpKey(),
-      JSON.stringify({
-        active: dashHelpActive,
-        at: dashHelpRequestedAt,
-        qid: dashHelpQid,
-        cooldownUntil: dashHelpCooldownUntil,
-      })
+      JSON.stringify({ active: dashHelpActive, at: dashHelpRequestedAt, qid: dashHelpQid, cooldownUntil: dashHelpCooldownUntil
+ })
     );
   } catch (_) {}
 }
 
 function dashSetHelpActive(on) {
   // ON(도움 요청)만 쿨타임 적용, OFF(취소)는 즉시 허용
-  if (on && !dashHelpActive) {
-    const remain = dashHelpRemainingMs();
-    if (remain > 0) {
-      // 쿨타임 중이면 UI만 갱신하고 종료
-      dashHelpStartCooldownTicker();
-      dashUIUpdateHelpButton();
-      return;
-    }
-    // 이번 요청을 성공시키면 즉시 쿨타임 시작
-    dashHelpCooldownUntil = Date.now() + DASH_HELP_COOLDOWN_MS;
+if (on && !dashHelpActive) {
+  const remain = dashHelpRemainingMs();
+  if (remain > 0) {
+    // 쿨타임 중이면 UI만 갱신하고 종료
     dashHelpStartCooldownTicker();
+    dashUIUpdateHelpButton();
+    return;
   }
+  // 이번 요청을 성공시키면 즉시 쿨타임 시작
+  dashHelpCooldownUntil = Date.now() + DASH_HELP_COOLDOWN_MS;
+  dashHelpStartCooldownTicker();
+}
+
 
   dashHelpActive = !!on;
   if (dashHelpActive) {
@@ -2337,6 +2281,7 @@ function dashSetHelpActive(on) {
 function dashToggleHelp() {
   dashSetHelpActive(!dashHelpActive);
 }
+
 
 // ====== (추가) 학생용 연결 상태 위젯(UI) ======
 let dashWidgetEl = null;
@@ -2385,7 +2330,7 @@ function dashEnsureControlWidget() {
     dashReconnectNow();
   });
 
-  // ====== (추가) 도움 요청 버튼(동적 생성) ======
+    // ====== (추가) 도움 요청 버튼(동적 생성) ======
   const actions = w.querySelector(".dash-actions");
   if (actions && !w.querySelector("#dash-ui-help")) {
     const helpBtn = document.createElement("button");
@@ -2409,6 +2354,7 @@ function dashEnsureControlWidget() {
     // 3번째 버튼으로 추가
     actions.appendChild(helpBtn);
   }
+
 
   w.querySelector("#dash-ui-reset")?.addEventListener("click", () => {
     dashResetEntryInfo();
@@ -2438,7 +2384,9 @@ function dashUIUpdateAll() {
   w.querySelector("#dash-ui-name").textContent = name;
   w.querySelector("#dash-ui-student").textContent = ` ${sid}`;
 
+
   dashUIUpdateHelpButton();
+
 }
 function dashUIUpdateHelpButton() {
   const w = dashEnsureControlWidget();
@@ -2471,6 +2419,7 @@ function dashUIUpdateHelpButton() {
   btn.title = "";
 }
 
+
 function dashReconnectNow() {
   // room/student/name이 없으면 여기서 끝(학생이 입력 취소한 경우)
   if (!dashStudentId) {
@@ -2489,38 +2438,33 @@ function dashReconnectNow() {
 function dashResetEntryInfo() {
   const ok = confirm(
     "입장정보(room / student / name)를 초기화할까요?\n" +
-      "초기화 후 새로고침되며 다시 입력해야 합니다."
+    "초기화 후 새로고침되며 다시 입력해야 합니다."
   );
   if (!ok) return;
 
-  try {
-    localStorage.removeItem(DASH_ROOM_KEY);
-  } catch (_) {}
-  try {
-    localStorage.removeItem(DASH_STUDENT_KEY);
-  } catch (_) {}
-  try {
-    localStorage.removeItem(DASH_NAME_KEY);
-  } catch (_) {}
-  try {
-    localStorage.removeItem(dashHelpKey());
-  } catch (_) {}
+  try { localStorage.removeItem(DASH_ROOM_KEY); } catch (_) {}
+  try { localStorage.removeItem(DASH_STUDENT_KEY); } catch (_) {}
+  try { localStorage.removeItem(DASH_NAME_KEY); } catch (_) {}
+try { localStorage.removeItem(dashHelpKey()); } catch (_) {}
 
   // 런타임 값도 리셋
   dashRoomId = "default";
   dashStudentId = null;
   dashDisplayName = null;
 
-  try {
-    if (dashWs) dashWs.close();
-  } catch (_) {}
+  try { if (dashWs) dashWs.close(); } catch (_) {}
   dashWs = null;
   if (dashHelpCooldownTimer) {
-    clearInterval(dashHelpCooldownTimer);
-    dashHelpCooldownTimer = null;
-  }
+  clearInterval(dashHelpCooldownTimer);
+  dashHelpCooldownTimer = null;
+}
+
 
   location.reload();
 }
 
+
+
 // ====== 여기까지 practice.js ======
+
+

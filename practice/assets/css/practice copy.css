@@ -1,36 +1,16 @@
 /* ===== practice.html 상단 바 ===== */
-:root {
-  /* 2025 Trend Palette: Deep Slate & Electric Blue */
-  --bg-main: #f8fafc;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --accent-primary: #6366f1; /* Indigo */
-  --accent-glow: rgba(99, 102, 241, 0.2);
-  --card-radius: 20px; /* 더 둥근 모서리 */
-  --font-main: 'Pretendard', -apple-system, sans-serif;
-}
-
-body {
-  background: radial-gradient(at top left, #f1f5f9, #e2e8f0);
-  font-family: var(--font-main);
-  color: #1e293b;
-}
 
 .top-bar {
-  position: sticky;
-  top: 16px;
-  z-index: 100;
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  margin: 16px auto 24px;
-  max-width: 1200px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.06);
+  border: 1px solid #e5e7eb;
 }
-
 
 .top-title {
   font-weight: 600;
@@ -103,28 +83,18 @@ body {
 }
 
 /* 풀이 타이머 UI */
-
-/* 1. 풀이 타이머: 더 직관적이고 고급스러운 상태 표시 */
 .solve-timer {
-  background: rgba(99, 102, 241, 0.08); /* 연한 인디고 배경 */
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  backdrop-filter: blur(8px);
-  border-radius: 12px; /* 살짝 각진 둥근 모서리 */
-  padding: 8px 14px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: none; /* 강한 Glow 제거 */
-  transition: all 0.3s ease;
+  gap: 6px;
+  padding: 3px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: #f9fafb;
+  font-size: 0.9rem;
+  color: #374151;
+  white-space: nowrap;
 }
-
-/* 타이머 작동 중일 때 미세한 맥박 효과 */
-.solve-timer:not(.paused) #solve-timer {
-  color: var(--accent-primary);
-  font-weight: 700;
-  text-shadow: 0 0 10px var(--accent-glow);
-}
-
 
 .solve-timer-state {
   font-size: 0.8rem;
@@ -146,17 +116,13 @@ body {
 
 .question-card {
   background: #ffffff;
-  border: 1px solid #f1f5f9;
-  border-radius: var(--card-radius);
-  padding: 24px;
-  margin-bottom: 20px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+  border: 1px solid #e5e7eb;
 }
-.question-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
+
 .question-header {
   display: flex;
   justify-content: space-between;
@@ -170,26 +136,15 @@ body {
   font-size: 1.02rem;
 }
 
-
-/* 2. 문제 유형 태그 (객관식 등): 텍스트 가독성 중심의 소프트 칩 */
 .q-type-tag {
-  background: #eef2ff; /* 매우 연한 파란색 */
-  color: var(--accent-primary);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  padding: 4px 10px;
-  border-radius: 8px;
   font-size: 0.75rem;
-  text-transform: uppercase;
-  font-weight: 700;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.05);
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  white-space: nowrap;
 }
-/* 코드 입력창(CodeMirror)을 감싸는 컨테이너 스타일링 */
-.CodeMirror {
-  border-radius: 12px !important;
-  overflow: hidden;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-}
+
 /* 설명 텍스트 */
 .description {
   margin: 0 0 10px;
@@ -200,27 +155,15 @@ body {
 
 /* 코드 블록 */
 .code-block {
-  position: relative;
-  background: #1e1e2e; /* Mac OS Dark 스타일 */
-  border-radius: 14px;
-  padding: 30px 15px 15px; /* 상단 점(Dot) 공간 확보 */
-  
+  background: #0f172a;
+  color: #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.86rem;
+  overflow: auto;
+  margin: 0 0 10px;
 }
-/* 좌측 상단 윈도우 컨트롤 버튼 효과 */
-.code-block::before {
-  content: '';
-  position: absolute;
-  
-  margin-bottom: 0px;
-  top: 6px;
 
-  left: 15px;
-  width: 8px;
-  height: 8px;
-  background: #ff5f56;
-  border-radius: 50%;
-  box-shadow: 18px 0 0 #ffbd2e, 36px 0 0 #27c93f;
-}
 .code-block code {
   font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
@@ -927,5 +870,3 @@ body.mode-class .mode-toggle-btn {
   border-color: #2563eb;
   color: #fff;
 }
-
-
