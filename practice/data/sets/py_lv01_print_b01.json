@@ -27,135 +27,116 @@
       ],
       "correctIndex": 0
     },
-    {
-      "id": "mcq2",
-      "type": "mcq",
-      "level": "기초",
-      "title": "MCQ 2. 변수 출력 (%d)",
-      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
-      "code": "a = 3\nb = 5\nprint('%d %d' % (a, b))",
-      "options": [
-        "3 5",
-        "a b",
-        "(3, 5)",
-        "오류가 발생한다."
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 0
-    },
-    {
-      "id": "mcq3",
-      "type": "mcq",
-      "level": "기초",
-      "title": "MCQ 3. 문자열+정수 출력",
-      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
-      "code": "name = 'Tom'\nage = 15\nprint('%s %d' % (name, age))",
-      "options": [
-        "Tom 15",
-        "Tom age",
-        "'Tom' 15",
-        "오류가 발생한다."
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 0
-    },
-    {
-      "id": "mcq4",
-      "type": "mcq",
-      "level": "기초",
-      "title": "MCQ 4. 서식문자 개수 맞추기",
-      "description": "다음 중 출력이 \"A=1 B=2\"가 되도록 하는 코드를 고르세요.",
-      "code": null,
-      "options": [
-        "a=1\nb=2\nprint('A=%d B=%d' % (a, b))",
-        "a=1\nb=2\nprint('A=%d B=%d' % a, b)",
-        "a=1\nb=2\nprint('A=%d B=%d' % (a))",
-        "a=1\nb=2\nprint('A=%d B=%d' % (a, b, 3))"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 0
-    },
-    {
-      "id": "mcq5",
-      "type": "mcq",
-      "level": "기초",
-      "title": "MCQ 5. 공백 포함 출력",
-      "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
-      "code": "x = 7\ny = 8\nprint('%d  %d' % (x, y))",
-      "options": [
-        "7 8",
-        "7  8",
-        "78",
-        "오류가 발생한다."
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 1
-    },
-    {
-      "id": "short1",
-      "type": "short",
-      "level": "단답형",
-      "title": "Short 1. 구분자(|)로 출력 확인",
-      "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요. (따옴표는 쓰지 마시오)",
-      "code": "x = 7\nprint('|%d|' % x)",
-      "expectedText": "|7|"
-    },
-    {
-      "id": "short2",
-      "type": "short",
-      "level": "단답형",
-      "title": "Short 2. 여러 값 출력 결과",
-      "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요. (따옴표는 쓰지 마시오)",
-      "code": "a = 1\nb = 2\nc = 3\nprint('%d-%d-%d' % (a, b, c))",
-      "expectedText": "1-2-3"
-    },
-    {
-      "id": "code1",
-      "type": "code",
-      "level": "코드 작성",
-      "title": "Code 1. print 한 줄 완성",
-      "description": "변수 a와 b에 정수가 저장되어 있습니다.\n\"A=값 B=값\" 형태로 출력하는 print 한 줄을 작성하세요. (서식문자 사용)",
-      "code": "a = 10\nb = 20\n# TODO: 아래에 print 한 줄을 작성하세요.",
-      "expectedCode": "print('A=%d B=%d' % (a, b))",
-      "expectedCodes": [
-        "print('A=%d B=%d'%(a,b))",
-        "print(\"A=%d B=%d\"%(a,b))"
-      ],
-      "hint": "%d 두 개와 (a, b) 두 값을 맞춰 주세요."
-    },
-    {
-      "id": "code2",
-      "type": "code",
-      "level": "코드 작성",
-      "title": "Code 2. 문자열 출력",
-      "description": "문자열 msg를 그대로 출력하는 print 한 줄을 작성하세요. (서식문자 사용)",
-      "code": "msg = 'I love Python'\n# TODO: 아래에 print 한 줄을 작성하세요.",
-      "expectedCode": "print('%s' % msg)",
-      "expectedCodes": [
-        "print('%s'%msg)",
-        "print(\"%s\"%msg)"
-      ],
-      "hint": "문자열은 %s를 사용합니다."
-    }
+     {
+    "id": "mcq2",
+    "type": "mcq",
+    "level": "기초",
+    "title": "MCQ 2. 정수 2개 출력 (%d %d)",
+    "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
+    "code": "print('%d %d' % (3, 5))",
+    "options": [
+      "3 5",
+      "3,5",
+      "35",
+      "오류가 발생한다."
+    ],
+    "optionLabels": ["A", "B", "C", "D"],
+    "correctIndex": 0
+  },
+  {
+    "id": "mcq3",
+    "type": "mcq",
+    "level": "기초",
+    "title": "MCQ 3. 문자열과 정수 함께 출력 (%s %d)",
+    "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
+    "code": "print('%s %d' % ('Tom', 15))",
+    "options": [
+      "Tom 15",
+      "('Tom', 15)",
+      "Tom %d",
+      "오류가 발생한다."
+    ],
+    "optionLabels": ["A", "B", "C", "D"],
+    "correctIndex": 0
+  },
+  {
+    "id": "mcq4",
+    "type": "mcq",
+    "level": "기초",
+    "title": "MCQ 4. 서식문자 개수 맞추기",
+    "description": "다음 중 출력이 \"A=1 B=2\"가 되도록 하는 코드를 고르세요.",
+    "code": null,
+    "options": [
+      "print('A=%d B=%d' % (1, 2))",
+      "print('A=%d B=%d' % 1, 2)",
+      "print('A=%d B=%d' % (1))",
+      "print('A=%d B=%d' % (1, 2, 3))"
+    ],
+    "optionLabels": ["A", "B", "C", "D"],
+    "correctIndex": 0
+  },
+  {
+    "id": "mcq5",
+    "type": "mcq",
+    "level": "기초",
+    "title": "MCQ 5. 공백(스페이스) 개수 확인",
+    "description": "다음 프로그램의 출력으로 알맞은 것을 고르세요.",
+    "code": "print('%d  %d' % (7, 8))",
+    "options": [
+      "7 8",
+      "7  8",
+      "78",
+      "오류가 발생한다."
+    ],
+    "optionLabels": ["A", "B", "C", "D"],
+    "correctIndex": 1
+  },
+  {
+    "id": "short1",
+    "type": "short",
+    "level": "단답형",
+    "title": "Short 1. 구분자(|)로 출력 확인",
+    "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요. (따옴표는 쓰지 마시오)",
+    "code": "print('|%d|' % 7)",
+    "expectedText": "|7|"
+  },
+  {
+    "id": "short2",
+    "type": "short",
+    "level": "단답형",
+    "title": "Short 2. 여러 값 출력 결과",
+    "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요. (따옴표는 쓰지 마시오)",
+    "code": "print('%d-%d-%d' % (1, 2, 3))",
+    "expectedText": "1-2-3"
+  },
+  {
+    "id": "code1",
+    "type": "code",
+    "level": "코드 작성",
+    "title": "Code 1. print 한 줄 완성",
+    "description": "아래 TODO에 print 한 줄을 작성하세요.\n출력은 다음과 같아야 합니다:\nA=1 B=2\n(서식문자 사용)",
+    "code": "# TODO: 아래에 print 한 줄을 작성하세요.",
+    "expectedCode": "print('A=%d B=%d' % (1, 2))",
+    "expectedCodes": [
+      "print('A=%d B=%d'%(1,2))",
+      "print(\"A=%d B=%d\"%(1,2))"
+    ],
+    "hint": "%d 두 개와 (1, 2) 두 값을 맞춰 주세요."
+  },
+  {
+    "id": "code2",
+    "type": "code",
+    "level": "코드 작성",
+    "title": "Code 2. 문자열 출력",
+    "description": "아래 TODO에 print 한 줄을 작성하세요.\n출력은 다음과 같아야 합니다:\nI love Python\n(서식문자 %s 사용)",
+    "code": "# TODO: 아래에 print 한 줄을 작성하세요.",
+    "expectedCode": "print('%s' % 'I love Python')",
+    "expectedCodes": [
+      "print('%s'%'I love Python')",
+      "print(\"%s\"%'I love Python')",
+      "print(\"%s\"%\"I love Python\")"
+    ],
+    "hint": "문자열은 %s를 사용합니다."
+  }
   ]
 }

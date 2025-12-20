@@ -111,51 +111,52 @@
       ],
       "correctIndex": 1
     },
-    {
-      "id": "short1",
-      "type": "short",
-      "level": "단답형",
-      "title": "Short 1. 두 칸 정렬 출력",
-      "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요.",
-      "code": "a = 1\nb = 23\nprint('|%2d %2d|' % (a, b))",
-      "expectedText": "| 1 23|"
-    },
-    {
-      "id": "short2",
-      "type": "short",
-      "level": "단답형",
-      "title": "Short 2. 문자열 정렬 출력",
-      "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요. (공백 포함)",
-      "code": "w = 'A'\nprint('|%-3s|%3s|' % (w, w))",
-      "expectedText": "|A  |  A|"
-    },
-    {
-      "id": "code1",
-      "type": "code",
-      "level": "코드 작성",
-      "title": "Code 1. 0 채우기 출력",
-      "description": "정수 n이 있습니다. n을 3자리로 0을 채워서 |...| 형태로 출력하는 print 한 줄을 작성하세요.\n예) n=7이면 |007|",
-      "code": "n = 7\n# TODO: print 한 줄 작성",
-      "expectedCode": "print('|%03d|' % n)",
-      "expectedCodes": [
-        "print('|%03d|'%n)",
-        "print(\"|%03d|\"%n)"
-      ],
-      "hint": "%03d 는 폭 3, 0 채우기입니다."
-    },
-    {
-      "id": "code2",
-      "type": "code",
-      "level": "코드 작성",
-      "title": "Code 2. 왼쪽 정렬 문자열 출력",
-      "description": "문자열 s를 폭 5로 왼쪽 정렬하여 |...| 형태로 출력하는 print 한 줄을 작성하세요.\n예) s='Hi'이면 |Hi   |",
-      "code": "s = 'Hi'\n# TODO: print 한 줄 작성",
-      "expectedCode": "print('|%-5s|' % s)",
-      "expectedCodes": [
-        "print('|%-5s|'%s)",
-        "print(\"|%-5s|\"%s)"
-      ],
-      "hint": "%-5s 는 폭 5, 왼쪽 정렬입니다."
-    }
+      {
+    "id": "short1",
+    "type": "short",
+    "level": "단답형",
+    "title": "Short 1. 두 칸 정렬 출력",
+    "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요.",
+    "code": "print('|%2d %2d|' % (1, 23))",
+    "expectedText": "| 1 23|"
+  },
+  {
+    "id": "short2",
+    "type": "short",
+    "level": "단답형",
+    "title": "Short 2. 문자열 정렬 출력",
+    "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요. (공백 포함)",
+    "code": "print('|%-3s|%3s|' % ('A', 'A'))",
+    "expectedText": "|A  |  A|"
+  },
+  {
+    "id": "code1",
+    "type": "code",
+    "level": "코드 작성",
+    "title": "Code 1. 0 채우기 출력",
+    "description": "아래 TODO에 print 한 줄을 작성하세요.\n출력은 다음과 같아야 합니다:\n|007|\n(힌트: 폭 3, 0 채우기)",
+    "code": "# TODO: print 한 줄 작성",
+    "expectedCode": "print('|%03d|' % 7)",
+    "expectedCodes": [
+      "print('|%03d|'%7)",
+      "print(\"|%03d|\"%7)"
+    ],
+    "hint": "%03d 는 폭 3, 0 채우기입니다."
+  },
+  {
+    "id": "code2",
+    "type": "code",
+    "level": "코드 작성",
+    "title": "Code 2. 왼쪽 정렬 문자열 출력",
+    "description": "아래 TODO에 print 한 줄을 작성하세요.\n출력은 다음과 같아야 합니다:\n|Hi   |\n(힌트: 폭 5, 왼쪽 정렬)",
+    "code": "# TODO: print 한 줄 작성",
+    "expectedCode": "print('|%-5s|' % 'Hi')",
+    "expectedCodes": [
+      "print('|%-5s|'% 'Hi')",
+      "print(\"|%-5s|\"%\"Hi\")",
+      "print(\"|%-5s|\" % 'Hi')"
+    ],
+    "hint": "%-5s 는 폭 5, 왼쪽 정렬입니다."
+  }
   ]
 }

@@ -1,0 +1,110 @@
+{
+  "id": "c_lv10_array_b02",
+  "title": "C 배열 Lv10 기초 2회차",
+  "categoryId": "c_array",
+  "availableLanguages": ["c"],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. n개 입력을 배열에 저장",
+      "description": "다음 중 정수 n을 입력받고, 이어서 n개의 정수를 입력받아 배열 arr에 저장하는 코드로 올바른 것을 고르세요.\n(각 정수는 한 줄에 하나씩 입력된다고 가정합니다.)",
+      "code": null,
+      "options": [
+        "int n;\nscanf(\"%d\", &n);\nint *arr = (int*)calloc(n, sizeof(int));\nfor (int i = 0; i <= n; i++)\n    scanf(\"%d\", &arr[i]);",
+        "int n;\nscanf(\"%d\", &n);\nint *arr = (int*)calloc(n, sizeof(int));\nfor (int i = 0; i < n; i++)\n    scanf(\"%d\", &arr[i]);",
+        "int n;\nscanf(\"%d\", &n);\nint *arr = (int*)calloc(n - 1, sizeof(int));\nfor (int i = 0; i < n; i++)\n    scanf(\"%d\", &arr[i]);",
+        "int n;\nscanf(\"%d\", &n);\nint arr[0];\nfor (int i = 0; i < n; i++)\n    scanf(\"%d\", &arr[i]);"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "기초",
+      "title": "Short 1. 누적합 실행 결과",
+      "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (줄바꿈 없이 한 줄입니다.)",
+      "code": "int arr[4] = {2, 5, 1, 4};\nint sum_val = 0;\nfor (int i = 0; i < 4; i++)\n    sum_val += arr[i];\nprintf(\"%d\", sum_val);",
+      "expectedText": "12"
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 합계 변수 초기화 위치",
+      "description": "다음 중 배열 arr의 모든 원소 합을 정확히 구하는 코드로 올바른 것을 고르세요.\n(arr은 길이가 n인 int 배열입니다.)",
+      "code": null,
+      "options": [
+        "int sum_val = 0;\nfor (int i = 0; i < n; i++) {\n    sum_val = 0;\n    sum_val += arr[i];\n}\nprintf(\"%d\\n\", sum_val);",
+        "int sum_val = 0;\nfor (int i = 0; i < n; i++)\n    sum_val += arr[i];\nprintf(\"%d\\n\", sum_val);",
+        "for (int i = 0; i < n; i++)\n    sum_val += arr[i];\nprintf(\"%d\\n\", sum_val);",
+        "int sum_val = 0;\nfor (int i = 0; i <= n; i++)\n    sum_val += arr[i];\nprintf(\"%d\\n\", sum_val);"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "기초",
+      "title": "Code 1. 짝수 개수 세기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(arr[i]가 짝수일 때 count를 1 증가시켜야 합니다.)",
+      "code": "int count = 0;\nfor (int i = 0; i < n; i++) {\n    // TODO: arr[i]가 짝수일 때 count를 1 증가시키는 한 줄을 작성하시오.\n}",
+      "expectedCode": "if (arr[i] % 2 == 0) count++;",
+      "hint": "짝수는 2로 나눈 나머지가 0입니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "기초",
+      "title": "Code 2. 평균을 실수로 계산",
+      "description": "sum_val(합계)와 n(개수)이 주어졌을 때, 평균을 실수로 저장하는 **한 줄**을 작성하세요.",
+      "code": "int sum_val = 0;\nint n = 0;\n// TODO: 평균을 float avg에 저장하는 한 줄을 작성하시오.",
+      "expectedCode": "float avg = (float)sum_val / n;",
+      "hint": "C에서 실수 평균은 형변환이 필요합니다."
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 정수 나눗셈",
+      "description": "다음 코드가 출력하는 내용을 고르세요.",
+      "code": "int sum_val = 5;\nint n = 2;\nprintf(\"%d\\n\", sum_val / n);",
+      "options": ["2.5", "2", "3", "오류"],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "기초",
+      "title": "Short 2. 최댓값 실행 결과",
+      "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (줄바꿈 없이 한 줄입니다.)",
+      "code": "int arr[4] = {3, 7, 7, 2};\nint max_val = arr[0];\nfor (int i = 1; i < 4; i++) {\n    if (arr[i] > max_val)\n        max_val = arr[i];\n}\nprintf(\"%d\", max_val);",
+      "expectedText": "7"
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 최댓값의 인덱스 갱신",
+      "description": "다음은 최댓값의 인덱스 max_idx를 찾는 코드입니다.\n주석 위치에 들어갈 내용으로 올바른 것을 고르세요.\n(최댓값이 여러 개면 가장 앞 인덱스를 유지합니다.)",
+      "code": "int max_idx = 0;\nfor (int i = 1; i < n; i++) {\n    if (arr[i] > arr[max_idx]) {\n        // TODO\n    }\n}",
+      "options": ["max_idx = 0;", "max_idx = arr[i];", "max_idx = i;", "max_idx += 1;"],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 2
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "기초",
+      "title": "Code 3. 양수만 더하기",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(arr[i]가 양수일 때만 sum_pos에 더해야 합니다.)",
+      "code": "int sum_pos = 0;\nfor (int i = 0; i < n; i++) {\n    // TODO: arr[i]가 양수일 때만 sum_pos에 더하는 한 줄을 작성하시오.\n}",
+      "expectedCode": "if (arr[i] > 0) sum_pos += arr[i];",
+      "hint": "양수 조건은 arr[i] > 0 입니다."
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "exportedAt": "2025-12-20T09:45:36.027Z",
+  "set": {
+    "id": "java_array2d_b01",
+    "title": "Java 2차원 배열 LV15 기초 1회차",
+    "categoryId": "java_array2d"
+  },
+  "lang": "java",
+  "solveElapsedMs": 1482491,
+  "gradeMeta": {
+    "date": "2025-12-20",
+    "attempts": 3,
+    "lastGradeAt": 1766223927592
+  },
+  "score": {
+    "correct": 9,
+    "total": 9
+  },
+  "suspiciousCount": 0,
+  "perQuestion": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "isCorrect": true,
+      "answer": "1"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "isCorrect": true,
+      "answer": "System.out.println(a[a.length - 1][a[0].length - 1]);"
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "isCorrect": true,
+      "answer": "2 3"
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "isCorrect": true,
+      "answer": "1"
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "isCorrect": true,
+      "answer": "sum += a[i][j];"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "isCorrect": true,
+      "answer": "7"
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "isCorrect": true,
+      "answer": "2"
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "isCorrect": true,
+      "answer": "if(a[i][j] > 0) cnt++;"
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "isCorrect": true,
+      "answer": "1"
+    }
+  ]
+}

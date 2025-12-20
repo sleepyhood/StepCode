@@ -511,6 +511,78 @@
     "difficulty": "challenge",
     "numProblems": 9,
     "file": "py_lv10_array_c02.json"
+  },
+    {
+    "id": "c_while_b1",
+    "categoryId": "c_while",
+    "title": "C while문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_while_b1.json"
+  },
+  {
+    "id": "c_while_b2",
+    "categoryId": "c_while",
+    "title": "C while문 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_while_b2.json"
+  },
+  {
+    "id": "c_while_c1",
+    "categoryId": "c_while",
+    "title": "C while문 챌린지 1회차",
+    "round": 3,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "c_while_c1.json"
+  },
+    {
+    "id": "c_lv10_array_b01",
+    "categoryId": "c_array",
+    "title": "C 배열 Lv10 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_lv10_array_b01.json"
+  },
+  {
+    "id": "c_lv10_array_b02",
+    "categoryId": "c_array",
+    "title": "C 배열 Lv10 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_lv10_array_b02.json"
+  },
+  {
+    "id": "c_lv10_array_b03",
+    "categoryId": "c_array",
+    "title": "C 배열 Lv10 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "c_lv10_array_b03.json"
+  },
+  {
+    "id": "c_lv10_array_c01",
+    "categoryId": "c_array",
+    "title": "C 배열 Lv10 챌린지 1회차",
+    "round": 4,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "c_lv10_array_c01.json"
+  },
+  {
+    "id": "c_lv10_array_c02",
+    "categoryId": "c_array",
+    "title": "C 배열 Lv10 챌린지 2회차",
+    "round": 5,
+    "difficulty": "challenge",
+    "numProblems": 9,
+    "file": "c_lv10_array_c02.json"
   }
 
 

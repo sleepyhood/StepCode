@@ -120,15 +120,15 @@
       "code": "print('[%s]' % \"A\\nB\")",
       "expectedText": "[A\nB]"
     },
-    {
-      "id": "short2",
-      "type": "short",
-      "level": "단답형",
-      "title": "Short 2. 따옴표와 백슬래시",
-      "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요. (따옴표는 출력에 포함됩니다)",
-      "code": "s = \"\\\\\\\"\"  # 백슬래시 + 큰따옴표 1개\nprint('%s' % s)",
-      "expectedText": "\\\""
-    },
+   {
+  "id": "short2",
+  "type": "short",
+  "level": "단답형",
+  "title": "Short 2. 따옴표와 백슬래시",
+  "description": "다음 프로그램의 출력 한 줄을 그대로 쓰세요. (큰따옴표는 출력에 포함됩니다)",
+  "code": "print('%s' % '\\\\\"')  # 백슬래시 + 큰따옴표 1개",
+  "expectedText": "\\\""
+},
     {
       "id": "code1",
       "type": "code",

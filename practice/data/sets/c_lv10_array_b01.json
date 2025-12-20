@@ -1,0 +1,115 @@
+{
+  "id": "c_lv10_array_b01",
+  "title": "C 배열 Lv10 기초 1회차",
+  "categoryId": "c_array",
+  "availableLanguages": ["c"],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 배열 만들기",
+      "description": "다음 중 길이가 3이고 값이 10, 20, 30인 int 배열 arr을 올바르게 만드는 코드를 고르세요.",
+      "code": null,
+      "options": [
+        "int arr[3];\narr = {10, 20, 30};",
+        "int arr[3] = {10, 20, 30};",
+        "int arr = {10, 20, 30};",
+        "int arr[3] = [10, 20, 30];"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 마지막 원소 접근",
+      "description": "다음 중 길이가 n인 배열 arr의 **마지막 원소**를 표현한 것으로 올바른 것을 고르세요.",
+      "code": null,
+      "options": [
+        "arr[n]",
+        "arr[n - 1]",
+        "arr[len(arr) - 1]",
+        "arr[arr.length - 1]"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "기초",
+      "title": "Short 1. 실행 결과",
+      "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (줄바꿈 없이 한 줄입니다.)",
+      "code": "int arr[4] = {3, 7, 2, 9};\nprintf(\"%d\", arr[0] + arr[2]);",
+      "expectedText": "5"
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 배열 전체 출력 for문",
+      "description": "다음 중 길이가 n인 배열 arr의 모든 원소를 **앞에서부터** 한 줄에 하나씩 출력하는 코드로 올바른 것을 고르세요.",
+      "code": null,
+      "options": [
+        "for (int i = 1; i < n; i++)\n    printf(\"%d\\n\", arr[i]);",
+        "for (int i = 0; i <= n; i++)\n    printf(\"%d\\n\", arr[i]);",
+        "for (int i = 0; i < n; i++)\n    printf(\"%d\\n\", arr[i]);",
+        "for (int i = 0; i < n - 1; i++)\n    printf(\"%d\\n\", arr[i]);"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 2
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "기초",
+      "title": "Short 2. 마지막 인덱스",
+      "description": "길이가 8인 배열의 마지막 인덱스를 쓰세요. (0-index)",
+      "code": null,
+      "expectedText": "7"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "기초",
+      "title": "Code 1. 마지막 원소 출력",
+      "description": "아래 코드에서 주석 위치에 들어갈 **출력 한 줄**을 작성하세요.\n(마지막 원소를 출력해야 합니다.)",
+      "code": "int arr[] = {4, 8, 15, 16, 23, 42};\nint n = sizeof(arr) / sizeof(arr[0]);\n// TODO: 마지막 원소를 출력하는 한 줄을 작성하시오.",
+      "expectedCode": "printf(\"%d\\n\", arr[n - 1]);",
+      "hint": "마지막 인덱스는 n-1 입니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "기초",
+      "title": "Code 2. 길이가 n인 0 배열 만들기",
+      "description": "정수 n을 입력받았습니다. 주석 위치에 들어갈 **배열 생성 한 줄**을 작성하세요.\n(길이가 n이고 모든 값이 0인 배열 arr를 만드세요.)",
+      "code": "int n;\nscanf(\"%d\", &n);\n// TODO: 길이가 n이고 0으로 채워진 배열 arr를 만드는 한 줄을 작성하시오.",
+      "expectedCode": "int *arr = (int*)calloc(n, sizeof(int));",
+      "hint": "calloc은 0으로 초기화된 메모리를 할당합니다. (stdlib.h 필요)"
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. for문 범위",
+      "description": "아래 코드에서 `???`에 들어갈 내용으로 알맞은 것을 고르세요.\n\n- i가 0부터 시작해서\n- arr의 모든 원소를 정확히 한 번씩 접근해야 합니다.",
+      "code": "for (int i = 0; i < ???; i++)\n    printf(\"%d\\n\", arr[i]);",
+      "options": ["n + 1", "n", "n - 1", "1, n"],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "기초",
+      "title": "Code 3. 입력을 배열에 저장",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(입력 값을 arr[i]에 저장해야 합니다. n개의 정수는 한 줄에 하나씩 입력됩니다.)",
+      "code": "int n;\nscanf(\"%d\", &n);\nint *arr = (int*)calloc(n, sizeof(int));\nfor (int i = 0; i < n; i++) {\n    // TODO: 입력을 받아 arr[i]에 저장하는 한 줄을 작성하시오.\n}",
+      "expectedCode": "scanf(\"%d\", &arr[i]);",
+      "hint": "scanf로 arr[i]의 주소(&arr[i])에 입력받습니다."
+    }
+  ]
+}

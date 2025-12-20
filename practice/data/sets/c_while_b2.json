@@ -1,0 +1,116 @@
+{
+  "id": "c_while_b2",
+  "title": "C while문 기초 2회차",
+  "categoryId": "c_while",
+  "availableLanguages": ["c"],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 센티넬(0 종료) - pre-read 패턴",
+      "description": "다음 중 정수를 계속 입력받다가 0이 입력되면 종료하고, 입력된 수들의 합을 출력하는 코드로 올바른 것을 고르세요.\n(출력은 printf 서식문자를 사용한다.)",
+      "code": null,
+      "options": [
+        "int s = 0;\nint x;\nscanf(\"%d\", &x);\nwhile (x != 0) {\n    s = s + x;\n}\nprintf(\"%d\\n\", s);",
+        "int s = 0;\nint x;\nscanf(\"%d\", &x);\nwhile (x != 0) {\n    s = s + x;\n    scanf(\"%d\", &x);\n}\nprintf(\"%d\\n\", s);",
+        "int s = 0;\nint x;\nwhile (x != 0) {\n    scanf(\"%d\", &x);\n    s = s + x;\n}\nprintf(\"%d\\n\", s);",
+        "int s = 0;\nint x;\nscanf(\"%d\", &x);\nwhile (x == 0) {\n    s = s + x;\n    scanf(\"%d\", &x);\n}\nprintf(\"%d\\n\", s);"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. while(1) + break",
+      "description": "아래 프로그램에서 입력이 순서대로 3, 4, 0 일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "int s = 0;\nwhile (1) {\n    int x;\n    scanf(\"%d\", &x);\n    if (x == 0) {\n        break;\n    }\n    s = s + x;\n}\nprintf(\"%d\\n\", s);",
+      "options": ["0", "3", "4", "7"],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 3
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. 합이 목표 이상이 되는 최소 k",
+      "description": "아래 프로그램에서 입력이 10일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "int t;\nscanf(\"%d\", &t);\nint s = 0;\nint k = 1;\nwhile (s < t) {\n    s = s + k;\n    k = k + 1;\n}\nprintf(\"%d\\n\", k - 1);",
+      "options": ["3", "4", "5", "6"],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 입력을 한 번 더 읽는 실수",
+      "description": "아래 코드의 목적은 '정수 n을 입력받고, 그 다음 줄부터 n개의 정수를 더해 합을 출력'하는 것입니다.\n\n그런데 이 코드는 어떤 문제가 있나요?",
+      "code": "int n;\nscanf(\"%d\", &n);\nint i = 1;\nint s = 0;\nwhile (i <= n) {\n    int x;\n    scanf(\"%d\", &x);\n    s = s + x;\n    i = i + 1;\n}\nint x;\nscanf(\"%d\", &x);\nprintf(\"%d\\n\", s);",
+      "options": [
+        "n개의 수를 더하기 전에 i를 0으로 초기화해야 한다",
+        "마지막에 불필요하게 입력을 한 번 더 받는다",
+        "s가 실수로 계산된다",
+        "while 조건이 항상 거짓이어서 한 번도 반복되지 않는다"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. 감소 while 조건",
+      "description": "다음 중 5부터 1까지를 한 줄에 하나씩 출력하는 코드로 올바른 것을 고르세요.\n(출력은 printf 서식문자를 사용한다.)",
+      "code": null,
+      "options": [
+        "int i = 5;\nwhile (i < 1) {\n    printf(\"%d\\n\", i);\n    i = i - 1;\n}",
+        "int i = 5;\nwhile (i > 1) {\n    printf(\"%d\\n\", i);\n    i = i - 1;\n}\nprintf(\"%d\\n\", i);",
+        "int i = 5;\nwhile (i >= 1) {\n    printf(\"%d\\n\", i);\n    i = i - 1;\n}",
+        "int i = 5;\nwhile (i != 1) {\n    printf(\"%d\\n\", i);\n    i = i - 1;\n}"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 2
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. pre-read 출력 추적",
+      "description": "아래 프로그램에서 입력이 순서대로 2, 5, 0 일 때 출력되는 값을 쓰시오.",
+      "code": "int s = 0;\nint x;\nscanf(\"%d\", &x);\nwhile (x != 0) {\n    s = s + x;\n    scanf(\"%d\", &x);\n}\nprintf(\"%d\\n\", s);",
+      "expectedText": "7"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 최소 k 출력",
+      "description": "아래 프로그램에서 입력이 6일 때 출력되는 값을 쓰시오.",
+      "code": "int t;\nscanf(\"%d\", &t);\nint s = 0;\nint k = 1;\nwhile (s < t) {\n    s = s + k;\n    k = k + 1;\n}\nprintf(\"%d\\n\", k - 1);",
+      "expectedText": "3"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 0이 나올 때까지 합 (조건식 채우기)",
+      "description": "정수를 계속 입력받다가 0이 입력되면 종료하고, 입력된 수들의 합을 출력하는 프로그램을 완성하세요.\n\n아래 코드에서 주석 위치에 들어갈 while 조건식 한 줄만 작성하면 됩니다.",
+      "code": "int x;\nscanf(\"%d\", &x);\nint s = 0;\nwhile (  /* TODO: 0이 아닐 때만 반복하도록 조건식을 작성하시오. */  ) {\n    s = s + x;\n    scanf(\"%d\", &x);\n}\nprintf(\"%d\\n\", s);",
+      "expectedCode": "x != 0",
+      "hint": ""
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 합이 목표 이상이 되는 최소 k (조건식 채우기)",
+      "description": "정수 t를 입력받아, 1부터 더해가며 합이 t 이상이 되는 **최소 k**를 출력하세요.\n\n아래 코드에서 주석 위치에 들어갈 while 조건식 한 줄만 작성하면 됩니다.",
+      "code": "int t;\nscanf(\"%d\", &t);\nint s = 0;\nint k = 1;\nwhile (  /* TODO: 합이 t보다 작은 동안만 반복하도록 조건식을 작성하시오. */  ) {\n    s = s + k;\n    k = k + 1;\n}\nprintf(\"%d\\n\", k - 1);",
+      "expectedCode": "s < t",
+      "hint": ""
+    }
+  ]
+}

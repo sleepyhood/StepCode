@@ -1,6 +1,9 @@
 [
   { "id": "c_if",   "name": "C - LV6 조건문", "order": 1 },
   { "id": "c_for", "name": "C - Lv7 반복1(for)", "order": 7 },
+    { "id": "c_while",  "name": "C - Lv8 반복2(while)","order": 8 },
+      { "id": "c_array",  "name": "C - Lv10 배열","order": 10 },
+
     {
     "id": "py_print",
     "name": "Python - Lv1 출력",
