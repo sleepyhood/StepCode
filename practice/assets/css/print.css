@@ -1,0 +1,272 @@
+/* ===== Print (A4 landscape, 2 columns, 4 problems per page) ===== */
+
+:root{
+  --ink: #0f172a;
+  --muted: #475569;
+  --line: rgba(15,23,42,.18);
+  --box: rgba(15,23,42,.12);
+}
+
+body{
+  background:#fff;
+  color: var(--ink);
+}
+
+/* screen toolbar */
+.print-toolbar{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+}
+
+.toolbar-left{ display:flex; align-items:center; gap: 12px; min-width: 0; }
+.back-link{ text-decoration:none; color:#2563eb; font-weight: 700; }
+.toolbar-title{ min-width:0; }
+.pt-set-title{ font-size: 14px; font-weight: 900; }
+.pt-subtitle{ font-size: 12px; color: var(--muted); white-space: nowrap; overflow:hidden; text-overflow: ellipsis; max-width: 520px; }
+
+.toolbar-right{ display:flex; align-items:flex-end; gap: 10px; flex-wrap: wrap; justify-content:flex-end; }
+.tool{ display:flex; flex-direction:column; gap: 4px; font-size: 11px; color: var(--muted); }
+.tool select{ padding: 6px 10px; border-radius: 10px; border:1px solid #d1d5db; background:#fff; }
+.print-toolbar button{
+  padding: 8px 12px;
+  border-radius: 12px;
+  border:1px solid #d1d5db;
+  background:#fff;
+  cursor:pointer;
+  font-weight: 800;
+}
+.print-toolbar button.primary{
+  background:#111827;
+  border-color:#111827;
+  color:#fff;
+}
+
+/* print root */
+.print-root{
+  padding: 10px;
+}
+
+/* page */
+.print-page{
+  break-after: page;
+  page-break-after: always;
+  padding: 0;
+}
+
+.page-header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 8mm;
+  border-bottom: 1px solid var(--box);
+  padding-bottom: 4mm;
+}
+
+.meta-left{
+  display:flex;
+  flex-direction:column;
+  gap: 3mm;
+  min-width: 0;
+}
+
+.page-title{
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.meta-row{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8mm;
+  align-items:center;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.meta-field{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+}
+
+.meta-input{
+  width: 70px;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  padding: 0 2px 2px 2px;
+  outline: none;
+  font-size: 12px;
+}
+.meta-input.w120{ width: 120px; }
+.meta-input.w160{ width: 160px; }
+
+.meta-right{
+  text-align:right;
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.meta-right .docid{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; color: var(--ink); font-weight: 800; }
+
+/* grid: 2x2 */
+.page-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 7mm;
+}
+
+/* problem card */
+.p-card{
+  border: 1px solid var(--box);
+  border-radius: 10px;
+  padding: 6mm;
+  display:flex;
+  flex-direction:column;
+  min-height: 0;
+}
+
+.p-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap: 8px;
+  margin-bottom: 3mm;
+}
+
+.p-no{
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.p-type{
+  font-size: 10px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border: 1px solid var(--box);
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+.p-title{
+  font-size: 12px;
+  font-weight: 900;
+  margin: 0 0 2mm 0;
+}
+
+.p-desc{
+  font-size: 11px;
+  color: var(--ink);
+  white-space: pre-wrap;
+  line-height: 1.35;
+  margin-bottom: 3mm;
+}
+
+.p-code{
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  padding: 3mm;
+  margin: 0 0 3mm 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  white-space: pre-wrap;
+  line-height: 1.25;
+}
+
+.p-options{
+  display:flex;
+  flex-direction:column;
+  gap: 2mm;
+  margin-bottom: 3mm;
+  font-size: 10.5px;
+}
+.p-opt{
+  display:flex;
+  gap: 6px;
+  align-items:flex-start;
+}
+.p-opt .bullet{
+  width: 16px;
+  flex: 0 0 auto;
+  font-weight: 900;
+}
+.p-opt .text{
+  white-space: pre-wrap;
+  line-height: 1.25;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+}
+
+/* answer areas */
+.answer-block{
+  margin-top:auto;
+  display:flex;
+  flex-direction:column;
+  gap: 2mm;
+}
+
+.answer-label{
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--muted);
+}
+
+.answer-lines{
+  --lineH: 6mm;
+  --n: 4;
+  height: calc(var(--lineH) * var(--n));
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--lineH) - 0.5mm),
+    var(--line) calc(var(--lineH) - 0.5mm),
+    var(--line) var(--lineH)
+  );
+}
+
+.answer-lines.compact{ --n: 2; }
+.answer-lines.codebox{ --lineH: 5.2mm; --n: 10; background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--lineH) - 0.4mm),
+    var(--line) calc(var(--lineH) - 0.4mm),
+    var(--line) var(--lineH)
+  );
+}
+
+.teacher-note{
+  margin-top: 2mm;
+  border-top: 1px dashed var(--box);
+  padding-top: 2mm;
+  font-size: 10px;
+  color: #0f172a;
+}
+.teacher-note .k{
+  color: var(--muted);
+  font-weight: 900;
+}
+
+/* print rules */
+@page {
+  size: A4 landscape;
+  margin: 10mm;
+}
+
+@media print{
+  .no-print{ display:none !important; }
+  body{ background:#fff; }
+  .print-root{ padding: 0; }
+  .print-page{ padding: 0; }
+  input, select{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

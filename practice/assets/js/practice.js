@@ -116,12 +116,12 @@ function detectPracticeMode() {
   const forced = getForcedModeFromDom();
   if (forced) return forced;
 
+  const saved = localStorage.getItem(MODE_STORAGE_KEY);
+  if (saved === "class" || saved === "normal") return saved;
+
   const q = new URLSearchParams(location.search).get("mode");
   if (q === "class" || q === "normal") return q;
-
-  return localStorage.getItem(MODE_STORAGE_KEY) === "class"
-    ? "class"
-    : "normal";
+  return "normal";
 }
 
 function updateModeHeaderUi() {
@@ -276,6 +276,12 @@ function bumpQGradeAttempt(qid, isCorrect) {
     lastIsCorrect: null,
     lastAt: 0,
   });
+
+if (row.lastIsCorrect === true && isCorrect === true) {
+row.lastAt = Date.now();     // (선택) 마지막 채점 시각만 갱신
+row.lastIsCorrect = true;    // 유지
+return;
+}
 
   row.attempts += 1;
   if (isCorrect) row.correct += 1;
@@ -487,15 +493,40 @@ function formatElapsed(ms) {
 
 function renderSolveTimerUi(paused) {
   const wrap = document.querySelector(".solve-timer");
+  const labelEl = wrap ? wrap.querySelector(".solve-timer-label") : null;
   const timerEl = document.getElementById("solve-timer");
   const stateEl = document.getElementById("solve-timer-state");
   if (!timerEl) return;
 
-  timerEl.textContent = formatElapsed(getSolveElapsedNow());
+  // 기본: 스톱워치(누적)
+  let mainText = formatElapsed(getSolveElapsedNow());
+  let stateText = paused ? "일시정지" : "";
 
+  // 수업모드: 타이머(남은 시간)
+  if (isClassMode() && currentSetData) {
+    const remain = getSetRecommendedMs() - getSolveElapsedNow();
+
+    if (labelEl) labelEl.textContent = "⏳";
+    if (wrap) wrap.title = "남은 시간 (권장시간 기준, 탭을 벗어나면 자동 일시정지)";
+
+    if (remain >= 0) {
+      mainText = formatElapsed(remain);
+    } else {
+      // 0초 이후: 00:00 유지 + 초과분은 상태에 +로 표시
+      mainText = "00:00";
+      if (!paused) stateText = `+${formatElapsed(-remain)}`;
+    }
+  } else {
+    // 일반모드: 스톱워치
+    if (labelEl) labelEl.textContent = "⏱";
+    if (wrap) wrap.title = "누적 풀이시간 (탭을 벗어나면 자동 일시정지)";
+  }
+
+  timerEl.textContent = mainText;
   if (wrap) wrap.classList.toggle("paused", !!paused);
-  if (stateEl) stateEl.textContent = paused ? "일시정지" : "";
+  if (stateEl) stateEl.textContent = stateText;
 }
+
 
 function tickSolveTimer() {
   renderSolveTimerUi(false);
@@ -857,6 +888,8 @@ async function initPractice() {
 
     // ✅ 여기(바로 다음)
     setupExportLog();
+    setupWorksheetPrint(); // ✅ 학습지 출력
+
     setupRealtimeDashboard(); // ← 추가
   } catch (err) {
     console.error(err);
@@ -1312,6 +1345,7 @@ function startCoachTicker() {
   if (rec) rec.textContent = `권장 ${formatMs(getSetRecommendedMs())}`;
 
   coachTicker = setInterval(() => {
+    checkClassTimeboxOnce(); // ✅ 수업모드 15분 도달 체크(1회 팝업)
     const questions = currentSetData?.problems || [];
     const coreCount = Number(currentSetData?.coreCount ?? 6);
 
@@ -1370,6 +1404,16 @@ function setupClassModeControls() {
       modeBtn.textContent = isClassMode() ? "수업모드 ON" : "수업모드 OFF";
       modeBtn.onclick = () => {
         const next = isClassMode() ? "normal" : "class";
+
+        
+      // ✅ 수업모드 -> 일반모드 전환 시 답안 전체 삭제
+      if (isClassMode() && next === "normal") {
+        const ok = confirm("수업모드를 끄면 현재 체크한 답안이 모두 지워집니다.\n계속할까요?");
+        if (!ok) return;
+
+        clearAllCurrentAnswers();
+      }
+      
         localStorage.setItem(MODE_STORAGE_KEY, next);
         location.reload(); // 렌더/이벤트 중복 방지
       };
@@ -1621,6 +1665,7 @@ function setupGrading() {
   let ticker = null;
 
   const remainingMs = () => {
+    if (!isClassMode()) return 0; // ✅ 수업모드에서만 쿨다운 적용
     const last = meta.lastGradeAt || 0;
     const elapsed = Date.now() - last;
     return Math.max(0, GRADE_COOLDOWN_MS - elapsed);
@@ -1773,9 +1818,8 @@ function setupGrading() {
         );
         const row = ensureCoachRow(q.id);
 
-        if (isCorrect) {
-          row.solved = true;
-        } else {
+       row.solved = !!isCorrect; // ✅ 현재 정답 여부로 유지
+       if (!isCorrect) {
           row.wrongGrades = Math.min(2, (row.wrongGrades || 0) + 1);
 
           // 2회 실패 → 해설 버튼 즉시 해금
@@ -1818,8 +1862,8 @@ function setupGrading() {
 
     // ✅ 채점 메타 갱신 (횟수 + 쿨다운 시작)
     meta.attempts += 1;
-    meta.lastGradeAt = Date.now();
     meta.date = getTodayYmd();
+    if (isClassMode()) meta.lastGradeAt = Date.now(); // ✅ 수업모드에서만 쿨다운 시작
     saveGradeMeta(currentSetId, meta);
 
     updateUi();
@@ -2523,4 +2567,193 @@ function dashResetEntryInfo() {
   location.reload();
 }
 
+
+
+// ====== (추가) 수업모드 15분 타임박스 ======
+const CLASS_TIMEBOX_PREFIX = "stepcode:classTimebox:";
+
+function getClassTimeboxKey(setId) {
+  return `${CLASS_TIMEBOX_PREFIX}${setId}:${getTodayYmd()}`; // 하루 1회
+}
+
+function hasShownClassTimebox() {
+  if (!currentSetId) return true;
+  try {
+    return localStorage.getItem(getClassTimeboxKey(currentSetId)) === "1";
+  } catch (_) {
+    return true;
+  }
+}
+
+function markShownClassTimebox() {
+  if (!currentSetId) return;
+  try {
+    localStorage.setItem(getClassTimeboxKey(currentSetId), "1");
+  } catch (_) {}
+}
+
+function showClassTimeboxModal() {
+  // 중복 생성 방지
+  if (document.getElementById("class-timebox-overlay")) return;
+
+  // 타이머는 결정 시간 때문에 손해 보지 않게 일시정지
+  if (typeof pauseSolveTimer === "function") pauseSolveTimer(true);
+
+  const overlay = document.createElement("div");
+  overlay.id = "class-timebox-overlay";
+  overlay.style.cssText = `
+    position: fixed; inset: 0; background: rgba(0,0,0,.45);
+    display:flex; align-items:center; justify-content:center;
+    z-index: 9999;
+  `;
+
+  const box = document.createElement("div");
+  box.style.cssText = `
+    width: min(520px, calc(100vw - 32px));
+    background: #fff; border-radius: 14px; padding: 18px 18px 14px 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  `;
+
+  const title = document.createElement("div");
+  title.style.cssText = `font-size: 18px; font-weight: 700; margin-bottom: 8px;`;
+  title.textContent = "권장 시간이 지났어요";
+
+  const desc = document.createElement("div");
+  const rec = typeof formatElapsed === "function" ? formatElapsed(getSetRecommendedMs()) : "15:00";
+  const spent =
+    typeof getSolveElapsedNow === "function" && typeof formatElapsed === "function"
+      ? formatElapsed(getSolveElapsedNow())
+      : "";
+  desc.style.cssText = `color:#374151; line-height:1.5; margin-bottom: 14px;`;
+  desc.textContent = `권장 ${rec}에 도달했습니다. (현재 ${spent}) 계속 진행할까요, 아니면 선생님을 호출할까요?`;
+
+  const actions = document.createElement("div");
+  actions.style.cssText = `display:flex; gap:10px; justify-content:flex-end;`;
+
+  const btnContinue = document.createElement("button");
+  btnContinue.type = "button";
+  btnContinue.textContent = "이어서 할게요";
+  btnContinue.style.cssText = `
+    padding: 10px 12px; border-radius: 10px; border: 1px solid #d1d5db;
+    background:#fff; cursor:pointer;
+  `;
+
+  const btnHelp = document.createElement("button");
+  btnHelp.type = "button";
+  btnHelp.textContent = "선생님 호출";
+  btnHelp.style.cssText = `
+    padding: 10px 12px; border-radius: 10px; border: 0;
+    background:#111827; color:#fff; cursor:pointer;
+  `;
+
+  function close() {
+    overlay.remove();
+    // 다시 시작
+    if (!document.hidden && typeof startSolveTimer === "function") startSolveTimer();
+  }
+
+  btnContinue.addEventListener("click", close);
+
+  btnHelp.addEventListener("click", () => {
+    // 대시보드 손들기(있으면) 자동 ON
+    if (typeof dashSetHelpActive === "function") dashSetHelpActive(true);
+    close();
+  });
+
+  actions.append(btnContinue, btnHelp);
+  box.append(title, desc, actions);
+  overlay.append(box);
+  document.body.appendChild(overlay);
+}
+
+function checkClassTimeboxOnce() {
+  if (!isClassMode()) return;
+  if (!currentSetId) return;
+  if (hasShownClassTimebox()) return;
+
+  const nowMs = typeof getSolveElapsedNow === "function" ? getSolveElapsedNow() : 0;
+  if (nowMs >= getSetRecommendedMs()) {
+    markShownClassTimebox();
+    showClassTimeboxModal();
+  }
+}
+
+function clearAllCurrentAnswers() {
+  if (!currentSetId) return;
+
+  // 1) 메모리 + 저장 답안 초기화
+  currentAnswers = {};
+  saveStoredAnswers(currentSetId, currentAnswers);
+
+  // 2) UI 초기화 (라디오/텍스트/코드)
+  const root = document.getElementById("problem-container") || document;
+
+  // MCQ 라디오 해제
+  root
+    .querySelectorAll('input[type="radio"][data-question]')
+    .forEach((el) => (el.checked = false));
+
+  // short/code 입력값 비우기 (CodeMirror용 textarea 포함)
+  root
+    .querySelectorAll(".answer-input[data-question]")
+    .forEach((el) => {
+      el.value = "";
+      // 입력 이벤트를 통해 내부 로직이 있다면 같이 반영되도록
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+
+  // CodeMirror 에디터 비우기 (있다면)
+  if (typeof CODEMIRROR_EDITORS !== "undefined" && CODEMIRROR_EDITORS?.size) {
+    CODEMIRROR_EDITORS.forEach((ed) => {
+      try {
+        ed.setValue("");
+      } catch (_) {}
+    });
+  }
+
+  updateProgressUi();
+
+  // (선택) "정답 n/n"이 남는 게 싫다면 아래도 같이 초기화 추천
+  try { localStorage.removeItem(getQGradeMetaKey(currentSetId)); } catch (_) {}
+  try { localStorage.removeItem(getGradeMetaKey(currentSetId)); } catch (_) {}
+  saveSolveElapsed(currentSetId, 0); // 타이머도 같이 초기화하고 싶으면
+}
+
 // ====== 여기까지 practice.js ======
+
+
+
+// ====== (추가) 학습지 출력 (A4 가로 2열 · 한 면 4문항) ======
+function setupWorksheetPrint() {
+  const btn = document.getElementById("print-worksheet-btn");
+  if (!btn) return;
+
+  btn.addEventListener("click", (e) => {
+    if (!currentSetId || !currentSetData) {
+      alert("세트가 아직 로드되지 않았습니다.");
+      return;
+    }
+
+    // 기본: 일반모드=전체, 수업모드=현재 탭(core/supp)
+    let bucket = "all";
+    if (typeof isClassMode === "function" && isClassMode()) {
+      bucket = (typeof activeBucket === "string" && activeBucket) ? activeBucket : "core";
+    }
+
+    // Shift: 무조건 전체 문항
+    if (e.shiftKey) bucket = "all";
+
+    // Alt(or Cmd): 선생님용(정답 포함) 프린트
+    const variant = (e.altKey || e.metaKey) ? "teacher" : "student";
+
+    const url =
+      `print.html?set=${encodeURIComponent(currentSetId)}` +
+      `&bucket=${encodeURIComponent(bucket)}` +
+      `&variant=${encodeURIComponent(variant)}` +
+      `&lang=${encodeURIComponent(currentLang || "")}`;
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  });
+}
+// ====== 답안 채점 ======

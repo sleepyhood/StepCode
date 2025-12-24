@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>StepCode - 학습지 출력</title>
+
+    <!-- 기존 스타일(폰트 등) 재사용 -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/print.css" />
+  </head>
+
+  <body>
+    <!-- 화면용 툴바 (인쇄 시 숨김) -->
+    <div class="print-toolbar no-print">
+      <div class="toolbar-left">
+        <a id="back-link" class="back-link" href="practice.html">← 연습장</a>
+        <div class="toolbar-title">
+          <div id="pt-set-title" class="pt-set-title">학습지</div>
+          <div id="pt-subtitle" class="pt-subtitle"></div>
+        </div>
+      </div>
+
+      <div class="toolbar-right">
+        <label class="tool">
+          출력 유형
+          <select id="variant-select">
+            <option value="student">학생용(정답 없음)</option>
+            <option value="teacher">선생님용(정답/기준)</option>
+          </select>
+        </label>
+
+        <label class="tool">
+          문항 범위
+          <select id="bucket-select">
+            <option value="all">전체</option>
+            <option value="core">핵심(core)</option>
+            <option value="supp">보강/숙제(supp)</option>
+          </select>
+        </label>
+
+        <button id="apply-btn" type="button">적용</button>
+        <button id="print-btn" type="button" class="primary">인쇄 / PDF 저장</button>
+      </div>
+    </div>
+
+    <!-- 인쇄 본문 -->
+    <div id="print-root" class="print-root"></div>
+
+
+       <!-- ▼ Prism Core + 언어별 컴포넌트 ▼ -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+    
+    <!-- 기존 데이터 로더 재사용 -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/services/problemService.local.js"></script>
+
+    <!-- (선택) Markdown 렌더링 (추후 필요하면 print.js에서 활성화) -->
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+
+    <script src="assets/js/print.js"></script>
+  </body>
+</html>
