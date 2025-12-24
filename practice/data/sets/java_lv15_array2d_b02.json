@@ -94,10 +94,10 @@
       "description": "열의 합(각 열의 합을 1줄씩 출력)을 구하려고 합니다. 아래 중 올바른 반복문 구조는 무엇인가요?\n(R행 C열, 모든 행 길이 동일)",
       "code": null,
       "options": [
-        "for (int i=0;i<R;i++){ int s=0; for(int j=0;j<C;j++) s+=a[i][j]; System.out.println(s);} // 행 합",
-        "for (int j=0;j<C;j++){ int s=0; for(int i=0;i<R;i++) s+=a[i][j]; System.out.println(s);} // 열 합",
-        "for (int i=0;i<R;i++){ for(int j=0;j<C;j++) System.out.println(a[i][j]);} // 원소 출력",
-        "for (int j=0;j<R;j++){ int s=0; for(int i=0;i<C;i++) s+=a[i][j]; System.out.println(s);} // 잘못된 범위"
+        "for (int i=0;i<R;i++){\n    int s=0;\n    for(int j=0;j<C;j++)\n       s+=a[i][j];\n       System.out.println(s);\n}",
+        "for (int j=0;j<C;j++){\n    int s=0;\n    for(int i=0;i<R;i++)\n       s+=a[i][j];\n       System.out.println(s);\n}",
+        "for (int i=0;i<R;i++){\n    for(int j=0;j<C;j++)\n       System.out.println(a[i][j]);\n}",
+        "for (int j=0;j<R;j++){\n    int s=0;\n    for(int i=0;i<C;i++)\n       s+=a[i][j];\n       System.out.println(s);\n}"
       ],
       "optionLabels": [
         "A",

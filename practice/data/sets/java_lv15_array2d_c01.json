@@ -10,14 +10,14 @@
       "id": "mcq1",
       "type": "mcq",
       "level": "챌린지",
-      "title": "MCQ 1. 열 길이 버그 찾기",
-      "description": "다음 코드의 문제점으로 가장 적절한 것을 고르세요.\n\n```java\nint[][] a = new int[2][3];\nint sum = 0;\nfor (int i = 0; i < a.length; i++) {\n    for (int j = 0; j < a.length; j++) { // <-- 여기\n        sum += a[i][j];\n    }\n}\n```\n",
+      "title": "MCQ 1. Ragged 배열에서 열 길이",
+      "description": "다음 `int[][] a`는 **ragged 배열(행마다 길이가 다름)**입니다.\n\n```java\nint[][] a = {\n    {1, 2, 3},\n    {4, 5},\n    {6, 7, 8, 9}\n};\nint sum = 0;\nfor (int i = 0; i < a.length; i++) {\n    for (int j = 0; j < a[0].length; j++) {\n        sum += a[i][j];\n    }\n}\n```\n위 코드가 런타임 에러가 날 수 있는 이유와, 가장 좋은 수정 방법을 고르세요.",
       "code": null,
       "options": [
-        "행 반복이 필요 없는데 하고 있다",
-        "열 반복에서 `a.length`를 사용해 열 길이가 아닌 행 길이를 사용했다",
-        "sum 초기화가 잘못됐다",
-        "i와 j를 바꿔야 한다"
+        "문제 없음. `a[0].length`는 항상 열 개수이므로 안전하다.",
+        "두 번째 행이 더 짧아서 `a[i][j]`에서 예외가 날 수 있다. 안쪽 반복문 조건을 `j < a[i].length`로 바꾼다.",
+        "`a.length`가 잘못되었다. 바깥 반복문을 `i < a[0].length`로 바꾼다.",
+        "2차원 배열은 항상 직사각형이므로 ragged 배열이 될 수 없다."
       ],
       "optionLabels": [
         "A",
@@ -28,36 +28,17 @@
       "correctIndex": 1
     },
     {
-      "id": "code1",
-      "type": "code",
-      "level": "코드 작성",
-      "title": "Code 1. 경계 조건 고치기",
-      "description": "아래 코드에서 주석 위치의 for문을 **예외가 나지 않도록** 고치세요.\n(딱 한 줄만 수정하면 됩니다.)",
-      "code": "int[][] a = new int[3][4];\nint cnt = 0;\n// TODO: 아래 for문 한 줄을 안전하게 고치세요.\nfor (int i = 0; i <= a.length; i++) {\n    cnt++;\n}\nSystem.out.println(cnt);",
-      "expectedCode": "for (int i = 0; i < a.length; i++) {",
-      "hint": "`<=` 대신 `<` 를 사용하면 마지막 인덱스를 넘지 않습니다."
-    },
-    {
-      "id": "short1",
-      "type": "short",
-      "level": "단답형",
-      "title": "Short 1. 발생하는 예외",
-      "description": "아래 코드를 실행하면 어떤 예외가 발생하나요? (예외 클래스 이름만 쓰세요)",
-      "code": "int[][] a = new int[2][2];\nSystem.out.println(a[2][0]);",
-      "expectedText": "ArrayIndexOutOfBoundsException"
-    },
-    {
       "id": "mcq2",
       "type": "mcq",
       "level": "챌린지",
-      "title": "MCQ 2. 최댓값 tie-break(나중 좌표)",
-      "description": "최댓값을 찾을 때 값이 같으면 **더 나중에 나온 좌표**(행이 크면 우선, 행도 같으면 열이 큰 것)를 선택하려고 합니다.\n올바른 갱신 조건을 고르세요.",
+      "title": "MCQ 2. 얕은 복사 vs 깊은 복사",
+      "description": "다음 중 `a`를 수정해도 `b`가 **영향을 받지 않도록**(각 행까지) 복사하는 코드로 가장 적절한 것을 고르세요.\n\n```java\nint[][] a = {\n    {1, 2},\n    {3, 4}\n};\n```\n",
       "code": null,
       "options": [
-        "a[i][j] > max",
-        "a[i][j] >= max",
-        "a[i][j] > max || (a[i][j] == max && (i > mr || (i == mr && j > mc)))",
-        "a[i][j] >= max && i >= mr && j >= mc"
+        "int[][] b = a;",
+        "int[][] b = a.clone();",
+        "int[][] b = new int[a.length][];\nfor (int i = 0; i < a.length; i++) b[i] = a[i].clone();",
+        "int[][] b = new int[a.length][a[0].length];"
       ],
       "optionLabels": [
         "A",
@@ -68,27 +49,17 @@
       "correctIndex": 2
     },
     {
-      "id": "code2",
-      "type": "code",
-      "level": "코드 작성",
-      "title": "Code 2. 최댓값 갱신 + tie-break(3줄)",
-      "description": "아래 코드에서 주석 위치에 들어갈 내용을 작성하세요.\n조건이 참일 때 `max`, `mr`, `mc`를 갱신해야 합니다. (주석 위치에 **3줄**로 작성)",
-      "code": "int[][] a = {\n    {5, 7},\n    {7, 1}\n};\nint max = a[0][0];\nint mr = 0, mc = 0;\nfor (int i = 0; i < a.length; i++) {\n    for (int j = 0; j < a[0].length; j++) {\n        if (a[i][j] > max || (a[i][j] == max && (i > mr || (i == mr && j > mc)))) {\n            // TODO: max, mr, mc 갱신(3줄)\n        }\n    }\n}\nSystem.out.println(max + \" \" + mr + \" \" + mc);",
-      "expectedCode": "max = a[i][j];\nmr = i;\nmc = j;",
-      "hint": "각각 한 줄씩 갱신하면 실수가 줄어듭니다."
-    },
-    {
       "id": "mcq3",
       "type": "mcq",
       "level": "챌린지",
-      "title": "MCQ 3. 2×2 블록 합 반복 범위",
-      "description": "2차원 배열에서 모든 2×2 블록의 합 중 최댓값을 구하려면, i와 j의 반복 범위는 어떻게 잡는 것이 안전한가요?\n(R행 C열)",
+      "title": "MCQ 3. off-by-one 실수",
+      "description": "다음 코드에서 런타임 에러(ArrayIndexOutOfBoundsException)가 **가장 먼저** 발생하는 줄을 고르세요.\n\n```java\nint[][] a = {\n    {10, 20, 30},\n    {40, 50, 60}\n};\nfor (int i = 0; i <= a.length; i++) {\n    for (int j = 0; j < a[0].length; j++) {\n        System.out.println(a[i][j]);\n    }\n}\n```\n",
       "code": null,
       "options": [
-        "i: 0..R-1, j: 0..C-1",
-        "i: 0..R-2, j: 0..C-2",
-        "i: 1..R-1, j: 1..C-1",
-        "i: 0..R, j: 0..C"
+        "`for (int i = 0; i <= a.length; i++)` 줄",
+        "`for (int j = 0; j < a[0].length; j++)` 줄",
+        "`System.out.println(a[i][j]);` 줄에서 i가 2가 되는 순간",
+        "에러는 발생하지 않는다"
       ],
       "optionLabels": [
         "A",
@@ -96,36 +67,65 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 2
     },
     {
-      "id": "code3",
-      "type": "code",
-      "level": "코드 작성",
-      "title": "Code 3. 2×2 블록 합의 최댓값",
-      "description": "아래 코드에서 주석 2곳에 각각 한 줄씩 작성하세요.\n(1) 2×2 합을 s에 저장  (2) best 갱신",
-      "code": "int[][] a = {\n    {1, 2, 3},\n    {4, 5, 6},\n    {7, 8, 9}\n};\nint R = a.length, C = a[0].length;\nint best = Integer.MIN_VALUE;\n\nfor (int i = 0; i < R - 1; i++) {\n    for (int j = 0; j < C - 1; j++) {\n        // TODO1: 2x2 합을 s에 저장\n        // TODO2: best 갱신\n    }\n}\nSystem.out.println(best);",
-      "expectedCode": "int s = a[i][j] + a[i+1][j] + a[i][j+1] + a[i+1][j+1];\nbest = Math.max(best, s);",
-      "hint": "2×2는 (i,j), (i+1,j), (i,j+1), (i+1,j+1)입니다."
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. ragged length 출력",
+      "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (공백 포함, 한 줄입니다.)",
+      "code": "int[][] a = {\n    {1, 2, 3},\n    {4, 5},\n    {6}\n};\nSystem.out.println(a.length + \" \" + a[1].length + \" \" + a[2].length);",
+      "expectedText": "3 2 1"
     },
     {
       "id": "short2",
       "type": "short",
       "level": "단답형",
-      "title": "Short 2. 2×2 최댓값 결과",
-      "description": "아래 2차원 배열에서 2×2 블록 합의 최댓값은 얼마인가요?\n\n```\n1 2 3\n4 5 6\n7 8 9\n```\n",
-      "code": null,
-      "expectedText": "28"
+      "title": "Short 2. clone의 함정(얕은 복사)",
+      "description": "아래 코드가 출력하는 숫자를 쓰세요. (한 줄, 숫자만)\n\n> 힌트: `clone()`은 2차원에서 어떤 복사일까요?",
+      "code": "int[][] a = {\n    {1, 2},\n    {3, 4}\n};\nint[][] b = a.clone();\nb[0][0] = 99;\nSystem.out.println(a[0][0]);",
+      "expectedText": "99"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 경계 제외 순회(한 줄)",
+      "description": "아래 코드는 상하좌우 이웃을 접근하기 때문에, 가장자리에서 예외가 날 수 있습니다.\n주석이 있는 **한 줄(i 반복문)**을 수정해서 **가장자리(0행/마지막행)는 건너뛰게** 만드세요.",
+      "code": "int[][] a = {\n    {1, 2, 3, 4},\n    {5, 6, 7, 8},\n    {9, 10, 11, 12}\n};\nint cnt = 0;\n\nfor (int i = 0; i < a.length; i++) { // TODO: 이 한 줄을 수정\n    for (int j = 1; j < a[0].length - 1; j++) {\n        int s = a[i-1][j] + a[i+1][j] + a[i][j-1] + a[i][j+1];\n        if (a[i][j] > s) cnt++;\n    }\n}\nSystem.out.println(cnt);",
+      "expectedCode": "for (int i = 1; i < a.length - 1; i++) {",
+      "hint": "i가 0이거나 a.length-1이면 `a[i-1]` 또는 `a[i+1]`에서 예외가 납니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. ragged 안전한 합(한 줄)",
+      "description": "아래 코드는 ragged 배열에서 런타임 에러가 날 수 있습니다.\n주석이 있는 **안쪽 for문 한 줄**을 수정해서, ragged 배열에서도 안전하게 모든 원소의 합을 구하세요.",
+      "code": "int[][] a = {\n    {1, 2, 3},\n    {4, 5},\n    {6, 7, 8, 9}\n};\nint sum = 0;\nfor (int i = 0; i < a.length; i++) {\n    for (int j = 0; j < a[0].length; j++) { // TODO: 이 한 줄을 ragged 안전하게 수정\n        sum += a[i][j];\n    }\n}\nSystem.out.println(sum);",
+      "expectedCode": "for (int j = 0; j < a[i].length; j++) {",
+      "hint": "안쪽 반복문의 조건에서 `a[0].length` 대신, 현재 행의 길이인 `a[i].length`를 사용해야 합니다."
+    },
+    {
+      "id": "code3",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 3. 최댓값 갱신 + tie-break(3줄)",
+      "description": "아래 코드에서 주석 위치에 들어갈 코드를 작성하세요.\n\n- 더 큰 값이면 갱신\n- 값이 같으면 **행 인덱스가 작은 쪽**\n- 행도 같으면 **열 인덱스가 작은 쪽**\n\n(주석 위치에 들어갈 코드는 **if문 포함 3줄**로 작성해도 됩니다.)",
+      "code": "int[][] a = {\n    {5, 7, 7},\n    {7, 7, 1},\n    {6, 7, 7}\n};\n\nint best = a[0][0];\nint br = 0, bc = 0;\n\nfor (int i = 0; i < a.length; i++) {\n    for (int j = 0; j < a[0].length; j++) {\n        // TODO: best, br, bc 갱신\n    }\n}\nSystem.out.println(best + \" @(\" + br + \",\" + bc + \")\");",
+      "expectedCode": "if (a[i][j] > best || (a[i][j] == best && (i < br || (i == br && j < bc)))) {\n    best = a[i][j];\n    br = i; bc = j;\n}",
+      "hint": "tie-break는 조건식 안에 괄호로 묶어서 차근차근 작성하면 실수가 줄어듭니다."
     },
     {
       "id": "code4",
       "type": "code",
       "level": "코드 작성",
-      "title": "Code 4. 대칭 행렬 판별(정사각형)",
-      "description": "정사각형 행렬 `a`가 대칭인지 확인하려고 합니다.\n아래 코드에서 주석 위치에 들어갈 **비교 한 줄**을 작성하세요.\n(대칭이면 true, 아니면 false)",
-      "code": "int[][] a = {\n    {1, 2, 3},\n    {2, 4, 5},\n    {3, 5, 6}\n};\nboolean ok = true;\nfor (int i = 0; i < a.length; i++) {\n    for (int j = i + 1; j < a.length; j++) {\n        // TODO: 대칭 조건 위반이면 ok를 false로\n    }\n}\nSystem.out.println(ok);",
-      "expectedCode": "if (a[i][j] != a[j][i]) ok = false;",
-      "hint": "대칭이면 a[i][j] == a[j][i] 입니다."
+      "title": "Code 4. 2차원 deep copy(한 줄)",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n`a`가 ragged 배열이어도, `b`가 각 행까지 독립적으로 복사되도록 해야 합니다.",
+      "code": "int[][] a = {\n    {1, 2, 3},\n    {4, 5},\n    {6, 7, 8, 9}\n};\nint[][] b = new int[a.length][];\nfor (int i = 0; i < a.length; i++) {\n    // TODO: a[i]를 복사해서 b[i]에 넣기\n}\n\nb[0][0] = 99;\nSystem.out.println(a[0][0]); // a가 바뀌지 않아야 함",
+      "expectedCode": "b[i] = a[i].clone();",
+      "hint": "`a.clone()`은 얕은 복사입니다. 행 배열도 각각 복사해야 합니다."
     }
   ]
 }
