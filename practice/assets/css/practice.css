@@ -252,6 +252,19 @@ body {
   padding-left: 2px;
 }
 
+/* (추가) 짧은 보기일 때 2열 그리드 */
+@media (min-width: 1000px) {
+  .options.options--grid2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .options.options--grid2 .option-item {
+    margin-bottom: 0;
+  }
+}
+
 /* 각 보기 한 줄 */
 .option-item {
   display: flex;

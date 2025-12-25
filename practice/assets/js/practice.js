@@ -59,6 +59,17 @@ let currentSetId = null;
 let currentAnswers = {};
 const ANSWER_STORAGE_PREFIX = "stepcode:answers:";
 
+// ====== 호스트(교사) 전용 UI ======
+// dashboard_server.py가 /practice.html 응답에 주입하는 플래그.
+// (학생에게는 false로 주입되며, 토큰은 노출하지 않음)
+function isHostUiEnabled() {
+  try {
+    return window.__STEPCODE_IS_HOST__ === true;
+  } catch (_) {
+    return false;
+  }
+}
+
 // ===== Markdown(지문) 렌더링 =====
 let MD = null;
 
@@ -777,6 +788,12 @@ function setupExportLog() {
   const btn = document.getElementById("export-log-btn");
   if (!btn) return;
 
+  // ✅ 학생에게는 숨김 (호스트만 사용)
+  if (!isHostUiEnabled()) {
+    btn.style.display = "none";
+    return;
+  }
+
   btn.addEventListener("click", (e) => {
     if (!currentSetId || !currentSetData) {
       alert("세트가 아직 로드되지 않았습니다.");
@@ -1451,9 +1468,52 @@ function setupClassModeControls() {
 }
 
 // ====== MCQ 렌더링 ======
+function shouldMcqOptionsUseTwoColumns(q) {
+  // 2열은 "짧은 보기"에서만:
+  // - 단순 1줄 제한은 너무 빡빡하므로, (대략) 5줄 이내까지 허용
+  // - 대신 "가장 긴 행" 기준으로 판단: 한 행의 최대 글자 수(n)가 작으면 2열에서도 읽기 편함
+  //   (여기서 n은 아래 MAX_ROW_CHARS)
+  const opts = Array.isArray(q?.options) ? q.options : [];
+  if (opts.length < 4) return false; // 2~3지는 굳이 2열 필요 없음
+  if (opts.length > 6) return false; // 보기 수가 많으면 2열에서도 세로가 길어짐
+
+  const MAX_ROWS = 5; // (대략) 5줄 이내면 2열 허용
+  const MAX_ROW_CHARS = 60; // n: 한 행(줄)의 최대 글자 수(경험적으로 조절)
+
+  const normalize = (s) => String(s ?? "").replace(/\r\n/g, "\n").trim();
+
+  return opts.every((o) => {
+    const t = normalize(o);
+    if (!t) return true;
+
+    const physicalLines = t.split("\n");
+    let estimatedRows = 0;
+
+    for (const line of physicalLines) {
+      // 긴 토큰(공백 없는 덩어리)이 너무 길면(예: 긴 식별자/코드) 2열에서 잘리지 않기 쉬움
+      const tokens = line.split(/\s+/).filter(Boolean);
+      const maxTokenLen = tokens.reduce((m, tok) => Math.max(m, tok.length), 0);
+      if (maxTokenLen > MAX_ROW_CHARS) return false;
+
+      // (추정) 한 줄이 MAX_ROW_CHARS를 넘으면 그만큼 래핑되어 여러 줄로 보일 수 있음
+      // - 실제 렌더링은 폭/폰트에 따라 달라지지만, "대략적인" 가드로 충분함
+      const len = line.length;
+      estimatedRows += Math.max(1, Math.ceil(len / MAX_ROW_CHARS));
+      if (estimatedRows > MAX_ROWS) return false;
+    }
+
+    return estimatedRows <= MAX_ROWS;
+  });
+}
+
 function renderMcqOptions(card, q) {
   const optionsWrap = document.createElement("div");
   optionsWrap.className = "options";
+
+  // (추가) 짧은 보기일 때만 2열
+  if (shouldMcqOptionsUseTwoColumns(q)) {
+    optionsWrap.classList.add("options--grid2");
+  }
 
   const saved = currentAnswers && currentAnswers[q.id];
 
@@ -2728,6 +2788,12 @@ function clearAllCurrentAnswers() {
 function setupWorksheetPrint() {
   const btn = document.getElementById("print-worksheet-btn");
   if (!btn) return;
+
+  // ✅ 학생에게는 숨김 (호스트만 사용)
+  if (!isHostUiEnabled()) {
+    btn.style.display = "none";
+    return;
+  }
 
   btn.addEventListener("click", (e) => {
     if (!currentSetId || !currentSetData) {

@@ -66,9 +66,9 @@ body{
   align-items:flex-end;
   justify-content:space-between;
   gap: 10px;
-  margin-bottom: 8mm;
+  margin-bottom: 6mm;
   border-bottom: 1px solid var(--box);
-  padding-bottom: 4mm;
+  padding-bottom: 3mm;
 }
 
 .meta-left{
@@ -122,14 +122,14 @@ body{
   display:grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 7mm;
+  gap: 6mm;
 }
 
 /* problem card */
 .p-card{
   border: 1px solid var(--box);
   border-radius: 10px;
-  padding: 6mm;
+  padding: 5mm;
   display:flex;
   flex-direction:column;
   min-height: 0;
@@ -177,7 +177,7 @@ body{
   padding: 3mm;
   margin: 0 0 3mm 0;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 10px;
+  font-size: 9.5px;
   white-space: pre-wrap;
   line-height: 1.25;
 }
@@ -195,9 +195,11 @@ body{
   align-items:flex-start;
 }
 .p-opt .bullet{
-  width: 16px;
+  min-width: 2.4em;      /* 16px → 글자 기준 폭으로 */
   flex: 0 0 auto;
   font-weight: 900;
+  white-space: nowrap;  /* ◯ 와 A가 절대 줄바꿈 안 되게 */
+  line-height: 1.1;
 }
 .p-opt .text{
   white-space: pre-wrap;
@@ -259,7 +261,9 @@ body{
 
 /* print rules */
 @page {
-  size: A4 landscape;
+  /* size: A4 landscape; */
+    size: A4 portrait;
+
   margin: 10mm;
 }
 
@@ -269,4 +273,65 @@ body{
   .print-root{ padding: 0; }
   .print-page{ padding: 0; }
   input, select{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+
+/* ===== Minimal Markdown styling (print) ===== */
+.md{ white-space: normal; }
+.md .md-p{ margin: 0; }
+.md h1.md-h1, .md h2.md-h2, .md h3.md-h3{ margin: 0 0 1mm 0; font-weight: 900; }
+.md h1.md-h1{ font-size: 12px; }
+.md h2.md-h2{ font-size: 12px; }
+.md h3.md-h3{ font-size: 11.5px; }
+
+.md-ul, .md-ol{
+  margin: 1mm 0 0 0;
+  padding-left: 4mm;
+}
+.md-ul li, .md-ol li{ margin: 0; }
+
+.md-quote{
+  margin: 1mm 0;
+  padding: 1mm 2mm;
+  border-left: 2px solid var(--line);
+  color: var(--muted);
+}
+
+.md code{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.95em;
+  padding: 0 2px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.md pre.md-fence{
+  margin: 1mm 0;
+  padding: 2mm;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(15,23,42,.03);
+  white-space: pre-wrap;
+}
+.md pre.md-fence code{
+  border: none;
+  padding: 0;
+  font-size: 9.5px;
+}
+
+.md strong{ font-weight: 900; }
+.md em{ font-style: italic; }
+.md a.md-link{ color: inherit; text-decoration: underline; }
+
+
+.p-desc.md{ white-space: normal; }
+.p-opt .text.md{ white-space: normal; font-family: inherit; }
+.p-title.md{ white-space: normal; }
+
+.page-header.page-header--compact{
+  margin-bottom: 3mm;
+  padding-bottom: 2mm;
+}
+.page-header.page-header--compact .meta-left{
+  gap: 0;
 }

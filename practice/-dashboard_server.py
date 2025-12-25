@@ -14,44 +14,11 @@ StepCode 실시간 수업 대시보드 서버 (정적 파일 + WebSocket)
 import json
 import time
 import asyncio
-import os
-import secrets
 from pathlib import Path
 
 from aiohttp import web, WSMsgType
 
 BASE_DIR = Path(__file__).resolve().parent  # practice 폴더에서 실행하는 걸 전제로 함
-
-# ---------------- Host-only 기능 토큰 ----------------
-# 학생에게는 노출하지 않고(HTML에 주입하지 않음), 호스트(교사)가 URL로만 접근할 수 있게 하기 위한 토큰.
-# - 환경변수 STEPCODE_HOST_TOKEN 이 있으면 그걸 사용
-# - 없으면 practice 폴더에 .host_token 파일로 1회 생성 후 재사용
-HOST_TOKEN_FILE = BASE_DIR / ".host_token"
-
-
-def load_or_create_host_token() -> str:
-    env = (os.environ.get("STEPCODE_HOST_TOKEN") or "").strip()
-    if env:
-        return env
-
-    try:
-        if HOST_TOKEN_FILE.exists():
-            t = HOST_TOKEN_FILE.read_text(encoding="utf-8").strip()
-            if t:
-                return t
-    except Exception:
-        pass
-
-    t = secrets.token_urlsafe(18)
-    try:
-        HOST_TOKEN_FILE.write_text(t, encoding="utf-8")
-    except Exception:
-        # 파일 저장 실패해도 동작은 해야 하므로 그냥 반환
-        pass
-    return t
-
-
-HOST_TOKEN = load_or_create_host_token()
 
 # room -> { "students": { studentKey: statusDict }, "teachers": set(ws) }
 ROOMS = {}
@@ -202,68 +169,15 @@ async def on_cleanup(app: web.Application):
         task.cancel()
 
 
-def is_host_request(request: web.Request) -> bool:
-    """호스트(교사) 전용 기능 여부 판별.
-
-    - URL에 host=1&token=<HOST_TOKEN> 이 포함되면 호스트로 간주
-    - (옵션) localhost 접속은 토큰 없이도 호스트로 간주하고 싶다면 아래 주석 해제
-    """
-    q = request.rel_url.query
-    if q.get("host") == "1" and q.get("token") == HOST_TOKEN:
-        return True
-
-    # 필요하면 로컬에서 열 때는 토큰 없이도 호스트 기능을 켜고 싶을 수 있음
-    # remote = request.remote
-    # if remote in ("127.0.0.1", "::1"):
-    #     return True
-
-    return False
-
-
-async def practice_html_handler(request: web.Request):
-    """practice.html을 읽어서 host 플래그를 head에 주입해서 반환."""
-    html_path = BASE_DIR / "practice.html"
-    try:
-        text = html_path.read_text(encoding="utf-8")
-    except Exception:
-        raise web.HTTPNotFound()
-
-    is_host = is_host_request(request)
-
-    # 학생에게는 토큰을 절대 주지 않음(노출 금지)
-    injected = (
-        "<script>window.__STEPCODE_IS_HOST__="
-        + ("true" if is_host else "false")
-        + ";</script>\n"
-    )
-
-    # </head> 앞에 주입(없으면 맨 앞)
-    if "</head>" in text:
-        text = text.replace("</head>", injected + "</head>", 1)
-    else:
-        text = injected + text
-
-    return web.Response(text=text, content_type="text/html", charset="utf-8")
-
-
 def main():
     app = web.Application()
     app.router.add_get("/ws", ws_handler)
-
-    # practice.html은 host 플래그를 HTML에 주입해야 하므로 정적 라우팅보다 먼저 별도 처리
-    app.router.add_get("/practice.html", practice_html_handler)
 
     # 정적 파일 제공 (practice 폴더 전체)
     app.router.add_static("/", path=str(BASE_DIR), show_index=True)
 
     app.on_startup.append(on_startup)
     app.on_cleanup.append(on_cleanup)
-
-    # 서버 콘솔에 호스트 토큰을 출력(교사만 확인)
-    # ※ 이 토큰을 URL에 붙여야 practice.html의 교사 전용 버튼(인쇄/로그)이 보입니다.
-    print("[StepCode] HOST_TOKEN:", HOST_TOKEN)
-    print("[StepCode] Host mode URL example:")
-    print("          http://<host>:8000/practice.html?set=...&room=...&host=1&token=<HOST_TOKEN>")
 
     web.run_app(app, host="0.0.0.0", port=8000)
 

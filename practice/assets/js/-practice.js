@@ -59,7 +59,6 @@ let currentSetId = null;
 let currentAnswers = {};
 const ANSWER_STORAGE_PREFIX = "stepcode:answers:";
 
-
 // ===== Markdown(지문) 렌더링 =====
 let MD = null;
 
@@ -69,9 +68,9 @@ function getMarkdownRenderer() {
   if (!window.markdownit || !window.DOMPurify) return null;
 
   MD = window.markdownit({
-    html: false,     // md 안의 raw HTML 금지(보안)
+    html: false, // md 안의 raw HTML 금지(보안)
     linkify: true,
-    breaks: true
+    breaks: true,
   });
 
   return MD;
@@ -91,7 +90,6 @@ function renderMarkdownInto(targetEl, mdText) {
   const safe = window.DOMPurify.sanitize(html);
   targetEl.innerHTML = safe;
 }
-
 
 // ===== 수업모드(코칭) =====
 const MODE_STORAGE_KEY = "stepcode:practiceMode"; // "normal" | "class"
@@ -118,10 +116,12 @@ function detectPracticeMode() {
   const forced = getForcedModeFromDom();
   if (forced) return forced;
 
+  const saved = localStorage.getItem(MODE_STORAGE_KEY);
+  if (saved === "class" || saved === "normal") return saved;
+
   const q = new URLSearchParams(location.search).get("mode");
   if (q === "class" || q === "normal") return q;
-
-  return localStorage.getItem(MODE_STORAGE_KEY) === "class" ? "class" : "normal";
+  return "normal";
 }
 
 function updateModeHeaderUi() {
@@ -223,11 +223,9 @@ function recordAnswer(questionId, value) {
   currentAnswers[questionId] = value;
   saveStoredAnswers(currentSetId, currentAnswers);
   updateProgressUi();
-
 }
 
 // ▲ 여기까지 추가 ▲
-
 
 // ====== (추가) 문항별 채점 메타 ======
 let qGradeMeta = null; // { date: "YYYY-MM-DD", byQ: { [qid]: { attempts, correct, lastIsCorrect, lastAt } } }
@@ -278,6 +276,12 @@ function bumpQGradeAttempt(qid, isCorrect) {
     lastIsCorrect: null,
     lastAt: 0,
   });
+
+  if (row.lastIsCorrect === true && isCorrect === true) {
+    row.lastAt = Date.now(); // (선택) 마지막 채점 시각만 갱신
+    row.lastIsCorrect = true; // 유지
+    return;
+  }
 
   row.attempts += 1;
   if (isCorrect) row.correct += 1;
@@ -330,7 +334,8 @@ function getActiveQuestions() {
 
 function isAnswered(q) {
   const v = currentAnswers?.[q.id];
-  if (q.type === "mcq") return v !== undefined && v !== null && String(v) !== "";
+  if (q.type === "mcq")
+    return v !== undefined && v !== null && String(v) !== "";
   return String(v ?? "").trim().length > 0;
 }
 
@@ -375,7 +380,6 @@ function appendQGradeBadge(headerEl, qid) {
   headerEl.appendChild(tag);
   updateQGradeBadge(qid);
 }
-
 
 // ====== 채점 메타(제출 횟수/쿨다운) ======
 const GRADE_META_PREFIX = "stepcode:gradeMeta:";
@@ -489,14 +493,39 @@ function formatElapsed(ms) {
 
 function renderSolveTimerUi(paused) {
   const wrap = document.querySelector(".solve-timer");
+  const labelEl = wrap ? wrap.querySelector(".solve-timer-label") : null;
   const timerEl = document.getElementById("solve-timer");
   const stateEl = document.getElementById("solve-timer-state");
   if (!timerEl) return;
 
-  timerEl.textContent = formatElapsed(getSolveElapsedNow());
+  // 기본: 스톱워치(누적)
+  let mainText = formatElapsed(getSolveElapsedNow());
+  let stateText = paused ? "일시정지" : "";
 
+  // 수업모드: 타이머(남은 시간)
+  if (isClassMode() && currentSetData) {
+    const remain = getSetRecommendedMs() - getSolveElapsedNow();
+
+    if (labelEl) labelEl.textContent = "⏳";
+    if (wrap)
+      wrap.title = "남은 시간 (권장시간 기준, 탭을 벗어나면 자동 일시정지)";
+
+    if (remain >= 0) {
+      mainText = formatElapsed(remain);
+    } else {
+      // 0초 이후: 00:00 유지 + 초과분은 상태에 +로 표시
+      mainText = "00:00";
+      if (!paused) stateText = `+${formatElapsed(-remain)}`;
+    }
+  } else {
+    // 일반모드: 스톱워치
+    if (labelEl) labelEl.textContent = "⏱";
+    if (wrap) wrap.title = "누적 풀이시간 (탭을 벗어나면 자동 일시정지)";
+  }
+
+  timerEl.textContent = mainText;
   if (wrap) wrap.classList.toggle("paused", !!paused);
-  if (stateEl) stateEl.textContent = paused ? "일시정지" : "";
+  if (stateEl) stateEl.textContent = stateText;
 }
 
 function tickSolveTimer() {
@@ -794,6 +823,25 @@ async function initPractice() {
     return;
   }
 
+  // 버튼 클릭 시 햅틱 피드백(진동) 및 부드러운 스크롤 효과
+  document.querySelectorAll("button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // 2025 UX: 작은 소리나 진동 효과(모바일 환경)를 고려한 피드백
+      if (navigator.vibrate) navigator.vibrate(5);
+    });
+  });
+
+  // 상단바 스크롤 애니메이션: 스크롤 시 상단바가 더 투명해지거나 작아지는 효과
+  window.addEventListener("scroll", () => {
+    const topBar = document.querySelector(".top-bar");
+    if (window.scrollY > 50) {
+      topBar.style.transform = "scale(0.98)";
+      topBar.style.opacity = "0.9";
+    } else {
+      topBar.style.transform = "scale(1)";
+      topBar.style.opacity = "1";
+    }
+  });
   try {
     // 세트 JSON 불러오기
     currentSetData = await ProblemService.loadSet(setId);
@@ -814,7 +862,9 @@ async function initPractice() {
 
     // 제목 표시 (수업모드는 화면에서 확실히 티 나게)
     const baseTitle = currentSetData.title || "연습장";
-    titleSpan.textContent = isClassMode() ? `수업모드 · ${baseTitle}` : baseTitle;
+    titleSpan.textContent = isClassMode()
+      ? `수업모드 · ${baseTitle}`
+      : baseTitle;
 
     // (선택) lesson.html 전용 배지/정책 UI 갱신
     updateModeHeaderUi();
@@ -838,8 +888,9 @@ async function initPractice() {
 
     // ✅ 여기(바로 다음)
     setupExportLog();
-    setupRealtimeDashboard(); // ← 추가
+    setupWorksheetPrint(); // ✅ 학습지 출력
 
+    setupRealtimeDashboard(); // ← 추가
   } catch (err) {
     console.error(err);
     container.textContent = "문제를 불러오는 중 오류가 발생했습니다.";
@@ -981,15 +1032,23 @@ function renderSet() {
   let suppWrap = null;
 
   if (isClassMode()) {
-    if (activeBucket !== "core" && activeBucket !== "supp") activeBucket = "core";
+    if (activeBucket !== "core" && activeBucket !== "supp")
+      activeBucket = "core";
 
     // 탭
     const tabs = document.createElement("div");
     tabs.className = "set-tabs";
     tabs.innerHTML = `
-  <button type="button" class="tab ${activeBucket === "core" ? "active" : ""}" data-tab="core">핵심</button>
-  <button type="button" class="tab ${activeBucket === "supp" ? "active" : ""}" data-tab="supp">보강/숙제</button>
-  <span class="tab-note">기본 ${Math.min(coreCount, questions.length)}문항 노출</span>
+  <button type="button" class="tab ${
+    activeBucket === "core" ? "active" : ""
+  }" data-tab="core">핵심</button>
+  <button type="button" class="tab ${
+    activeBucket === "supp" ? "active" : ""
+  }" data-tab="supp">보강/숙제</button>
+  <span class="tab-note">기본 ${Math.min(
+    coreCount,
+    questions.length
+  )}문항 노출</span>
 `;
 
     container.appendChild(tabs);
@@ -998,31 +1057,28 @@ function renderSet() {
     coreWrap.id = "core-wrap";
     suppWrap = document.createElement("div");
     suppWrap.id = "supp-wrap";
-suppWrap.hidden = activeBucket !== "supp";
-coreWrap.hidden = activeBucket !== "core";
-
+    suppWrap.hidden = activeBucket !== "supp";
+    coreWrap.hidden = activeBucket !== "core";
 
     container.appendChild(coreWrap);
     container.appendChild(suppWrap);
 
-tabs.addEventListener("click", (e) => {
-  const btn = e.target?.closest?.("[data-tab]");
-  if (!btn) return;
-  activeBucket = btn.dataset.tab;
+    tabs.addEventListener("click", (e) => {
+      const btn = e.target?.closest?.("[data-tab]");
+      if (!btn) return;
+      activeBucket = btn.dataset.tab;
 
-  tabs.querySelectorAll(".tab")
-    .forEach((b) => b.classList.toggle("active", b === btn));
+      tabs
+        .querySelectorAll(".tab")
+        .forEach((b) => b.classList.toggle("active", b === btn));
 
-  coreWrap.hidden = activeBucket !== "core";
-  suppWrap.hidden = activeBucket !== "supp";
+      coreWrap.hidden = activeBucket !== "core";
+      suppWrap.hidden = activeBucket !== "supp";
 
-  // ✅ 추가: 탭 전환 후 HUD 재생성
-  if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
-updateProgressUi();
-
-
-});
-
+      // ✅ 추가: 탭 전환 후 HUD 재생성
+      if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
+      updateProgressUi();
+    });
   }
 
   // if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
@@ -1056,7 +1112,7 @@ updateProgressUi();
     else if (q.type === "short") typeTag.textContent = "단답형";
     else if (q.type === "code") typeTag.textContent = "코드 작성";
     header.appendChild(typeTag);
-appendQGradeBadge(header, q.id);
+    appendQGradeBadge(header, q.id);
 
     card.appendChild(header);
 
@@ -1065,7 +1121,6 @@ appendQGradeBadge(header, q.id);
     desc.className = "description md";
     renderMarkdownInto(desc, q.description || "");
     card.appendChild(desc);
-
 
     // --- 코드 블록 (있으면) ---
     if (q.code) {
@@ -1112,7 +1167,6 @@ appendQGradeBadge(header, q.id);
   if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
 
   updateProgressUi();
-
 }
 
 function getHints(q) {
@@ -1264,8 +1318,8 @@ function renderCoachUiForQuestion(q, idx) {
 
   // const h1 = panel.querySelector(`[data-coach-hint="1"]`);
   const h1 = document.querySelector(
-  `[data-coach="${q.id}"] [data-coach-hint="1"]`
-);
+    `[data-coach="${q.id}"] [data-coach-hint="1"]`
+  );
 
   const h2 = panel.querySelector(`[data-coach-hint="2"]`);
   const explainBtn = panel.querySelector(`[data-coach-explain-btn="${q.id}"]`);
@@ -1291,6 +1345,7 @@ function startCoachTicker() {
   if (rec) rec.textContent = `권장 ${formatMs(getSetRecommendedMs())}`;
 
   coachTicker = setInterval(() => {
+    checkClassTimeboxOnce(); // ✅ 수업모드 15분 도달 체크(1회 팝업)
     const questions = currentSetData?.problems || [];
     const coreCount = Number(currentSetData?.coreCount ?? 6);
 
@@ -1349,6 +1404,17 @@ function setupClassModeControls() {
       modeBtn.textContent = isClassMode() ? "수업모드 ON" : "수업모드 OFF";
       modeBtn.onclick = () => {
         const next = isClassMode() ? "normal" : "class";
+
+        // ✅ 수업모드 -> 일반모드 전환 시 답안 전체 삭제
+        if (isClassMode() && next === "normal") {
+          const ok = confirm(
+            "수업모드를 끄면 현재 체크한 답안이 모두 지워집니다.\n계속할까요?"
+          );
+          if (!ok) return;
+
+          clearAllCurrentAnswers();
+        }
+
         localStorage.setItem(MODE_STORAGE_KEY, next);
         location.reload(); // 렌더/이벤트 중복 방지
       };
@@ -1386,9 +1452,53 @@ function setupClassModeControls() {
 }
 
 // ====== MCQ 렌더링 ======
+function shouldMcqOptionsUseTwoColumns(q) {
+  // 2열은 "짧은 보기"에서만:
+  // - 단순 1줄 제한은 너무 빡빡하므로, (대략) 5줄 이내까지 허용
+  // - 대신 "가장 긴 행" 기준으로 판단: 한 행의 최대 글자 수(n)가 작으면 2열에서도 읽기 편함
+  //   (여기서 n은 아래 MAX_ROW_CHARS)
+  const opts = Array.isArray(q?.options) ? q.options : [];
+  if (opts.length < 4) return false;
+  if (opts.length > 6) return false;
+
+  const MAX_ROWS = 5; // ~5줄 이내
+  const MAX_ROW_CHARS = 60; // n (필요하면 조절)
+
+  const normalize = (s) =>
+    String(s ?? "")
+      .replace(/\r\n/g, "\n")
+      .trim();
+
+  return opts.every((o) => {
+    const t = normalize(o);
+    if (!t) return true;
+
+    const physicalLines = t.split("\n");
+    let estimatedRows = 0;
+
+    for (const line of physicalLines) {
+      // 공백 없는 긴 덩어리(토큰)가 너무 길면 2열에서 깨질 확률↑
+      const tokens = line.split(/\s+/).filter(Boolean);
+      const maxTokenLen = tokens.reduce((m, tok) => Math.max(m, tok.length), 0);
+      if (maxTokenLen > MAX_ROW_CHARS) return false;
+
+      // n글자 기준으로 래핑된다고 가정해 줄 수 추정
+      estimatedRows += Math.max(1, Math.ceil(line.length / MAX_ROW_CHARS));
+      if (estimatedRows > MAX_ROWS) return false;
+    }
+
+    return true;
+  });
+}
+
 function renderMcqOptions(card, q) {
   const optionsWrap = document.createElement("div");
   optionsWrap.className = "options";
+
+  // (추가) 짧은 보기일 때만 2열
+  if (shouldMcqOptionsUseTwoColumns(q)) {
+    optionsWrap.classList.add("options--grid2");
+  }
 
   const saved = currentAnswers && currentAnswers[q.id];
 
@@ -1600,6 +1710,7 @@ function setupGrading() {
   let ticker = null;
 
   const remainingMs = () => {
+    if (!isClassMode()) return 0; // ✅ 수업모드에서만 쿨다운 적용
     const last = meta.lastGradeAt || 0;
     const elapsed = Date.now() - last;
     return Math.max(0, GRADE_COOLDOWN_MS - elapsed);
@@ -1664,7 +1775,7 @@ function setupGrading() {
 
   gradeButton.addEventListener("click", () => {
     meta = loadGradeMeta(currentSetId);
-qGradeMeta = loadQGradeMeta(currentSetId);
+    qGradeMeta = loadQGradeMeta(currentSetId);
 
     if (remainingMs() > 0) {
       startTickerIfNeeded();
@@ -1705,7 +1816,7 @@ qGradeMeta = loadQGradeMeta(currentSetId);
           return bucket === activeBucket;
         });
     let correctCount = 0;
-// bumpQGradeAttempt(q.id, isCorrect);
+    // bumpQGradeAttempt(q.id, isCorrect);
 
     questions.forEach((q) => {
       const feedbackEl = document.querySelector(`[data-feedback="${q.id}"]`);
@@ -1752,9 +1863,8 @@ qGradeMeta = loadQGradeMeta(currentSetId);
         );
         const row = ensureCoachRow(q.id);
 
-        if (isCorrect) {
-          row.solved = true;
-        } else {
+        row.solved = !!isCorrect; // ✅ 현재 정답 여부로 유지
+        if (!isCorrect) {
           row.wrongGrades = Math.min(2, (row.wrongGrades || 0) + 1);
 
           // 2회 실패 → 해설 버튼 즉시 해금
@@ -1782,9 +1892,9 @@ qGradeMeta = loadQGradeMeta(currentSetId);
         }
       }
     });
-saveQGradeMeta(currentSetId, qGradeMeta);
-refreshAllQGradeBadges();
-updateProgressUi();
+    saveQGradeMeta(currentSetId, qGradeMeta);
+    refreshAllQGradeBadges();
+    updateProgressUi();
 
     if (scoreEl) {
       const label = isClassMode()
@@ -1797,8 +1907,8 @@ updateProgressUi();
 
     // ✅ 채점 메타 갱신 (횟수 + 쿨다운 시작)
     meta.attempts += 1;
-    meta.lastGradeAt = Date.now();
     meta.date = getTodayYmd();
+    if (isClassMode()) meta.lastGradeAt = Date.now(); // ✅ 수업모드에서만 쿨다운 시작
     saveGradeMeta(currentSetId, meta);
 
     updateUi();
@@ -1919,14 +2029,13 @@ function setupHud() {
   });
 }
 
-
 // ====== (추가) 실시간 교사용 대시보드 업로드 (WebSocket) ======
 const DASH_STUDENT_KEY = "stepcode:dashStudentId";
 const DASH_NAME_KEY = "stepcode:dashDisplayName";
 const DASH_ROOM_KEY = "stepcode:dashRoomId";
 
-const DASH_SEND_EVERY_MS = 10000;         // 10초마다 상태 업로드
-const DASH_ACTIVITY_THROTTLE_MS = 3000;   // 마우스/키보드 활동은 3초에 1번만 반영
+const DASH_SEND_EVERY_MS = 10000; // 10초마다 상태 업로드
+const DASH_ACTIVITY_THROTTLE_MS = 3000; // 마우스/키보드 활동은 3초에 1번만 반영
 
 let dashWs = null;
 let dashSendTimer = null;
@@ -1951,7 +2060,9 @@ function dashQP(name) {
 function dashGetRoomId() {
   const fromQ = dashQP("room");
   if (fromQ) {
-    try { localStorage.setItem(DASH_ROOM_KEY, fromQ); } catch (_) {}
+    try {
+      localStorage.setItem(DASH_ROOM_KEY, fromQ);
+    } catch (_) {}
     return fromQ;
   }
   try {
@@ -1967,27 +2078,41 @@ function dashGetStudentIdAndName() {
   const nameQ = dashQP("name");
 
   if (sidQ) {
-    try { localStorage.setItem(DASH_STUDENT_KEY, sidQ); } catch (_) {}
+    try {
+      localStorage.setItem(DASH_STUDENT_KEY, sidQ);
+    } catch (_) {}
     dashStudentId = sidQ;
   } else {
-    try { dashStudentId = (localStorage.getItem(DASH_STUDENT_KEY) || "").trim(); } catch (_) {}
+    try {
+      dashStudentId = (localStorage.getItem(DASH_STUDENT_KEY) || "").trim();
+    } catch (_) {}
   }
 
   if (nameQ) {
-    try { localStorage.setItem(DASH_NAME_KEY, nameQ); } catch (_) {}
+    try {
+      localStorage.setItem(DASH_NAME_KEY, nameQ);
+    } catch (_) {}
     dashDisplayName = nameQ;
   } else {
-    try { dashDisplayName = (localStorage.getItem(DASH_NAME_KEY) || "").trim(); } catch (_) {}
+    try {
+      dashDisplayName = (localStorage.getItem(DASH_NAME_KEY) || "").trim();
+    } catch (_) {}
   }
 
   // 링크에 student가 없으면 1회만 물어보기(원치 않으면 이 블록 삭제해도 됨)
   if (!dashStudentId) {
-    const v = prompt("대시보드용 학생 식별값(좌석/닉네임)을 입력하세요.\n(예: 1번, A-03, 민수)");
+    const v = prompt(
+      "대시보드용 학생 식별값(좌석/닉네임)을 입력하세요.\n(예: 1번, A-03, 민수)"
+    );
     if (v && v.trim()) {
       dashStudentId = v.trim();
       dashDisplayName = dashDisplayName || dashStudentId;
-      try { localStorage.setItem(DASH_STUDENT_KEY, dashStudentId); } catch (_) {}
-      try { localStorage.setItem(DASH_NAME_KEY, dashDisplayName); } catch (_) {}
+      try {
+        localStorage.setItem(DASH_STUDENT_KEY, dashStudentId);
+      } catch (_) {}
+      try {
+        localStorage.setItem(DASH_NAME_KEY, dashDisplayName);
+      } catch (_) {}
     }
   }
 
@@ -2000,7 +2125,8 @@ function dashWsUrl() {
 }
 
 function dashComputeProgress() {
-  const probs = (currentSetData && currentSetData.problems) ? currentSetData.problems : [];
+  const probs =
+    currentSetData && currentSetData.problems ? currentSetData.problems : [];
   const total = probs.length;
 
   // answered: 답안이 비어있지 않으면 풀이로 간주
@@ -2023,8 +2149,9 @@ function dashComputeProgress() {
 }
 
 function dashComputeTopTries(limit = 3) {
-  const probs = (currentSetData && currentSetData.problems) ? currentSetData.problems : [];
-  const byQ = (qGradeMeta && qGradeMeta.byQ) ? qGradeMeta.byQ : {};
+  const probs =
+    currentSetData && currentSetData.problems ? currentSetData.problems : [];
+  const byQ = qGradeMeta && qGradeMeta.byQ ? qGradeMeta.byQ : {};
   const rows = [];
 
   for (const q of probs) {
@@ -2040,13 +2167,17 @@ function dashComputeTopTries(limit = 3) {
 }
 
 function dashBuildPayload() {
-  const setTitle = (currentSetData && currentSetData.title) ? currentSetData.title : "";
-  const mode = (typeof isClassMode === "function" && isClassMode()) ? "class" : "practice";
-  const bucket = (mode === "class" && typeof activeBucket === "string") ? activeBucket : "";
+  const setTitle =
+    currentSetData && currentSetData.title ? currentSetData.title : "";
+  const mode =
+    typeof isClassMode === "function" && isClassMode() ? "class" : "practice";
+  const bucket =
+    mode === "class" && typeof activeBucket === "string" ? activeBucket : "";
 
   let solveElapsedMs = 0;
   try {
-    if (typeof getSolveElapsedNow === "function") solveElapsedMs = Number(getSolveElapsedNow()) || 0;
+    if (typeof getSolveElapsedNow === "function")
+      solveElapsedMs = Number(getSolveElapsedNow()) || 0;
   } catch (_) {}
 
   let gradeAttemptsToday = 0;
@@ -2070,9 +2201,8 @@ function dashBuildPayload() {
     gradeAttemptsToday,
     lastActivityAt: dashLastActivityAt || Date.now(),
     helpActive: dashHelpActive,
-helpRequestedAt: dashHelpRequestedAt,
-helpQid: dashHelpQid,
-
+    helpRequestedAt: dashHelpRequestedAt,
+    helpQid: dashHelpQid,
   };
 }
 
@@ -2098,35 +2228,39 @@ function dashConnectWS() {
   if (!dashStudentId) return;
 
   if (dashWs) {
-    try { dashWs.close(); } catch (_) {}
+    try {
+      dashWs.close();
+    } catch (_) {}
     dashWs = null;
   }
   if (dashReconnectTimer) {
     clearTimeout(dashReconnectTimer);
     dashReconnectTimer = null;
   }
-dashUISetState("connecting");
-dashUIUpdateAll();
+  dashUISetState("connecting");
+  dashUIUpdateAll();
 
   dashWs = new WebSocket(dashWsUrl());
 
   dashWs.addEventListener("open", () => {
     dashUISetState("connected");
-dashUIUpdateAll();
+    dashUIUpdateAll();
 
-    dashWs.send(JSON.stringify({
-      type: "hello",
-      role: "student",
-      room: dashRoomId,
-      studentId: dashStudentId,
-      displayName: dashDisplayName,
-    }));
+    dashWs.send(
+      JSON.stringify({
+        type: "hello",
+        role: "student",
+        room: dashRoomId,
+        studentId: dashStudentId,
+        displayName: dashDisplayName,
+      })
+    );
     dashSendStatus();
   });
 
   dashWs.addEventListener("close", () => {
     dashUISetState("disconnected");
-dashUIUpdateAll();
+    dashUIUpdateAll();
 
     // 3초 후 재연결
     dashReconnectTimer = setTimeout(dashConnectWS, 3000);
@@ -2143,33 +2277,41 @@ function setupRealtimeDashboard() {
   dashGetStudentIdAndName();
   dashLoadHelpState();
 
-dashEnsureControlWidget();
-dashUIUpdateAll();
+  dashEnsureControlWidget();
+  dashUIUpdateAll();
 
   if (!dashStudentId) return; // 입력을 취소한 경우
 
   // 활동 감지(기존 recordAnswer/grade 로직을 안 건드리고도 연결 가능)
-  document.addEventListener("input", (e) => {
-    const t = e.target;
-    if (!t) return;
-    // 답안 입력류만(불필요한 이벤트 폭발 방지)
-    if (t.classList && t.classList.contains("answer-input")) {
-      const qid = t.getAttribute?.("data-question") || "";
-if (qid) dashFocusQid = qid;
+  document.addEventListener(
+    "input",
+    (e) => {
+      const t = e.target;
+      if (!t) return;
+      // 답안 입력류만(불필요한 이벤트 폭발 방지)
+      if (t.classList && t.classList.contains("answer-input")) {
+        const qid = t.getAttribute?.("data-question") || "";
+        if (qid) dashFocusQid = qid;
 
-      dashMarkActivity(false);
-      dashSendStatus();
-    }
-  }, true);
+        dashMarkActivity(false);
+        dashSendStatus();
+      }
+    },
+    true
+  );
 
-  document.addEventListener("click", (e) => {
-    const t = e.target;
-    if (!t) return;
-    if (t.id === "grade-btn") {
-      dashMarkActivity(false);
-      dashSendStatus();
-    }
-  }, true);
+  document.addEventListener(
+    "click",
+    (e) => {
+      const t = e.target;
+      if (!t) return;
+      if (t.id === "grade-btn") {
+        dashMarkActivity(false);
+        dashSendStatus();
+      }
+    },
+    true
+  );
 
   document.addEventListener("keydown", () => dashMarkActivity(true), true);
   document.addEventListener("mousemove", () => dashMarkActivity(true), true);
@@ -2213,7 +2355,9 @@ function dashHelpStartCooldownTicker() {
 
 function dashHelpKey() {
   // room + studentId 기준으로 저장(PC 공유/재접속에도 유지)
-  return `stepcode:dashHelp:${dashRoomId || "default"}:${dashStudentId || "unknown"}`;
+  return `stepcode:dashHelp:${dashRoomId || "default"}:${
+    dashStudentId || "unknown"
+  }`;
 }
 
 function dashLoadHelpState() {
@@ -2237,33 +2381,34 @@ function dashLoadHelpState() {
   } catch (_) {}
 }
 
-
 function dashSaveHelpState() {
   try {
     localStorage.setItem(
-      
       dashHelpKey(),
-      JSON.stringify({ active: dashHelpActive, at: dashHelpRequestedAt, qid: dashHelpQid, cooldownUntil: dashHelpCooldownUntil
- })
+      JSON.stringify({
+        active: dashHelpActive,
+        at: dashHelpRequestedAt,
+        qid: dashHelpQid,
+        cooldownUntil: dashHelpCooldownUntil,
+      })
     );
   } catch (_) {}
 }
 
 function dashSetHelpActive(on) {
   // ON(도움 요청)만 쿨타임 적용, OFF(취소)는 즉시 허용
-if (on && !dashHelpActive) {
-  const remain = dashHelpRemainingMs();
-  if (remain > 0) {
-    // 쿨타임 중이면 UI만 갱신하고 종료
+  if (on && !dashHelpActive) {
+    const remain = dashHelpRemainingMs();
+    if (remain > 0) {
+      // 쿨타임 중이면 UI만 갱신하고 종료
+      dashHelpStartCooldownTicker();
+      dashUIUpdateHelpButton();
+      return;
+    }
+    // 이번 요청을 성공시키면 즉시 쿨타임 시작
+    dashHelpCooldownUntil = Date.now() + DASH_HELP_COOLDOWN_MS;
     dashHelpStartCooldownTicker();
-    dashUIUpdateHelpButton();
-    return;
   }
-  // 이번 요청을 성공시키면 즉시 쿨타임 시작
-  dashHelpCooldownUntil = Date.now() + DASH_HELP_COOLDOWN_MS;
-  dashHelpStartCooldownTicker();
-}
-
 
   dashHelpActive = !!on;
   if (dashHelpActive) {
@@ -2281,7 +2426,6 @@ if (on && !dashHelpActive) {
 function dashToggleHelp() {
   dashSetHelpActive(!dashHelpActive);
 }
-
 
 // ====== (추가) 학생용 연결 상태 위젯(UI) ======
 let dashWidgetEl = null;
@@ -2330,7 +2474,7 @@ function dashEnsureControlWidget() {
     dashReconnectNow();
   });
 
-    // ====== (추가) 도움 요청 버튼(동적 생성) ======
+  // ====== (추가) 도움 요청 버튼(동적 생성) ======
   const actions = w.querySelector(".dash-actions");
   if (actions && !w.querySelector("#dash-ui-help")) {
     const helpBtn = document.createElement("button");
@@ -2354,7 +2498,6 @@ function dashEnsureControlWidget() {
     // 3번째 버튼으로 추가
     actions.appendChild(helpBtn);
   }
-
 
   w.querySelector("#dash-ui-reset")?.addEventListener("click", () => {
     dashResetEntryInfo();
@@ -2384,9 +2527,7 @@ function dashUIUpdateAll() {
   w.querySelector("#dash-ui-name").textContent = name;
   w.querySelector("#dash-ui-student").textContent = ` ${sid}`;
 
-
   dashUIUpdateHelpButton();
-
 }
 function dashUIUpdateHelpButton() {
   const w = dashEnsureControlWidget();
@@ -2419,7 +2560,6 @@ function dashUIUpdateHelpButton() {
   btn.title = "";
 }
 
-
 function dashReconnectNow() {
   // room/student/name이 없으면 여기서 끝(학생이 입력 취소한 경우)
   if (!dashStudentId) {
@@ -2438,33 +2578,234 @@ function dashReconnectNow() {
 function dashResetEntryInfo() {
   const ok = confirm(
     "입장정보(room / student / name)를 초기화할까요?\n" +
-    "초기화 후 새로고침되며 다시 입력해야 합니다."
+      "초기화 후 새로고침되며 다시 입력해야 합니다."
   );
   if (!ok) return;
 
-  try { localStorage.removeItem(DASH_ROOM_KEY); } catch (_) {}
-  try { localStorage.removeItem(DASH_STUDENT_KEY); } catch (_) {}
-  try { localStorage.removeItem(DASH_NAME_KEY); } catch (_) {}
-try { localStorage.removeItem(dashHelpKey()); } catch (_) {}
+  try {
+    localStorage.removeItem(DASH_ROOM_KEY);
+  } catch (_) {}
+  try {
+    localStorage.removeItem(DASH_STUDENT_KEY);
+  } catch (_) {}
+  try {
+    localStorage.removeItem(DASH_NAME_KEY);
+  } catch (_) {}
+  try {
+    localStorage.removeItem(dashHelpKey());
+  } catch (_) {}
 
   // 런타임 값도 리셋
   dashRoomId = "default";
   dashStudentId = null;
   dashDisplayName = null;
 
-  try { if (dashWs) dashWs.close(); } catch (_) {}
+  try {
+    if (dashWs) dashWs.close();
+  } catch (_) {}
   dashWs = null;
   if (dashHelpCooldownTimer) {
-  clearInterval(dashHelpCooldownTimer);
-  dashHelpCooldownTimer = null;
-}
-
+    clearInterval(dashHelpCooldownTimer);
+    dashHelpCooldownTimer = null;
+  }
 
   location.reload();
 }
 
+// ====== (추가) 수업모드 15분 타임박스 ======
+const CLASS_TIMEBOX_PREFIX = "stepcode:classTimebox:";
 
+function getClassTimeboxKey(setId) {
+  return `${CLASS_TIMEBOX_PREFIX}${setId}:${getTodayYmd()}`; // 하루 1회
+}
+
+function hasShownClassTimebox() {
+  if (!currentSetId) return true;
+  try {
+    return localStorage.getItem(getClassTimeboxKey(currentSetId)) === "1";
+  } catch (_) {
+    return true;
+  }
+}
+
+function markShownClassTimebox() {
+  if (!currentSetId) return;
+  try {
+    localStorage.setItem(getClassTimeboxKey(currentSetId), "1");
+  } catch (_) {}
+}
+
+function showClassTimeboxModal() {
+  // 중복 생성 방지
+  if (document.getElementById("class-timebox-overlay")) return;
+
+  // 타이머는 결정 시간 때문에 손해 보지 않게 일시정지
+  if (typeof pauseSolveTimer === "function") pauseSolveTimer(true);
+
+  const overlay = document.createElement("div");
+  overlay.id = "class-timebox-overlay";
+  overlay.style.cssText = `
+    position: fixed; inset: 0; background: rgba(0,0,0,.45);
+    display:flex; align-items:center; justify-content:center;
+    z-index: 9999;
+  `;
+
+  const box = document.createElement("div");
+  box.style.cssText = `
+    width: min(520px, calc(100vw - 32px));
+    background: #fff; border-radius: 14px; padding: 18px 18px 14px 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  `;
+
+  const title = document.createElement("div");
+  title.style.cssText = `font-size: 18px; font-weight: 700; margin-bottom: 8px;`;
+  title.textContent = "권장 시간이 지났어요";
+
+  const desc = document.createElement("div");
+  const rec =
+    typeof formatElapsed === "function"
+      ? formatElapsed(getSetRecommendedMs())
+      : "15:00";
+  const spent =
+    typeof getSolveElapsedNow === "function" &&
+    typeof formatElapsed === "function"
+      ? formatElapsed(getSolveElapsedNow())
+      : "";
+  desc.style.cssText = `color:#374151; line-height:1.5; margin-bottom: 14px;`;
+  desc.textContent = `권장 ${rec}에 도달했습니다. (현재 ${spent}) 계속 진행할까요, 아니면 선생님을 호출할까요?`;
+
+  const actions = document.createElement("div");
+  actions.style.cssText = `display:flex; gap:10px; justify-content:flex-end;`;
+
+  const btnContinue = document.createElement("button");
+  btnContinue.type = "button";
+  btnContinue.textContent = "이어서 할게요";
+  btnContinue.style.cssText = `
+    padding: 10px 12px; border-radius: 10px; border: 1px solid #d1d5db;
+    background:#fff; cursor:pointer;
+  `;
+
+  const btnHelp = document.createElement("button");
+  btnHelp.type = "button";
+  btnHelp.textContent = "선생님 호출";
+  btnHelp.style.cssText = `
+    padding: 10px 12px; border-radius: 10px; border: 0;
+    background:#111827; color:#fff; cursor:pointer;
+  `;
+
+  function close() {
+    overlay.remove();
+    // 다시 시작
+    if (!document.hidden && typeof startSolveTimer === "function")
+      startSolveTimer();
+  }
+
+  btnContinue.addEventListener("click", close);
+
+  btnHelp.addEventListener("click", () => {
+    // 대시보드 손들기(있으면) 자동 ON
+    if (typeof dashSetHelpActive === "function") dashSetHelpActive(true);
+    close();
+  });
+
+  actions.append(btnContinue, btnHelp);
+  box.append(title, desc, actions);
+  overlay.append(box);
+  document.body.appendChild(overlay);
+}
+
+function checkClassTimeboxOnce() {
+  if (!isClassMode()) return;
+  if (!currentSetId) return;
+  if (hasShownClassTimebox()) return;
+
+  const nowMs =
+    typeof getSolveElapsedNow === "function" ? getSolveElapsedNow() : 0;
+  if (nowMs >= getSetRecommendedMs()) {
+    markShownClassTimebox();
+    showClassTimeboxModal();
+  }
+}
+
+function clearAllCurrentAnswers() {
+  if (!currentSetId) return;
+
+  // 1) 메모리 + 저장 답안 초기화
+  currentAnswers = {};
+  saveStoredAnswers(currentSetId, currentAnswers);
+
+  // 2) UI 초기화 (라디오/텍스트/코드)
+  const root = document.getElementById("problem-container") || document;
+
+  // MCQ 라디오 해제
+  root
+    .querySelectorAll('input[type="radio"][data-question]')
+    .forEach((el) => (el.checked = false));
+
+  // short/code 입력값 비우기 (CodeMirror용 textarea 포함)
+  root.querySelectorAll(".answer-input[data-question]").forEach((el) => {
+    el.value = "";
+    // 입력 이벤트를 통해 내부 로직이 있다면 같이 반영되도록
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+
+  // CodeMirror 에디터 비우기 (있다면)
+  if (typeof CODEMIRROR_EDITORS !== "undefined" && CODEMIRROR_EDITORS?.size) {
+    CODEMIRROR_EDITORS.forEach((ed) => {
+      try {
+        ed.setValue("");
+      } catch (_) {}
+    });
+  }
+
+  updateProgressUi();
+
+  // (선택) "정답 n/n"이 남는 게 싫다면 아래도 같이 초기화 추천
+  try {
+    localStorage.removeItem(getQGradeMetaKey(currentSetId));
+  } catch (_) {}
+  try {
+    localStorage.removeItem(getGradeMetaKey(currentSetId));
+  } catch (_) {}
+  saveSolveElapsed(currentSetId, 0); // 타이머도 같이 초기화하고 싶으면
+}
 
 // ====== 여기까지 practice.js ======
 
+// ====== (추가) 학습지 출력 (A4 가로 2열 · 한 면 4문항) ======
+function setupWorksheetPrint() {
+  const btn = document.getElementById("print-worksheet-btn");
+  if (!btn) return;
 
+  btn.addEventListener("click", (e) => {
+    if (!currentSetId || !currentSetData) {
+      alert("세트가 아직 로드되지 않았습니다.");
+      return;
+    }
+
+    // 기본: 일반모드=전체, 수업모드=현재 탭(core/supp)
+    let bucket = "all";
+    if (typeof isClassMode === "function" && isClassMode()) {
+      bucket =
+        typeof activeBucket === "string" && activeBucket
+          ? activeBucket
+          : "core";
+    }
+
+    // Shift: 무조건 전체 문항
+    if (e.shiftKey) bucket = "all";
+
+    // Alt(or Cmd): 선생님용(정답 포함) 프린트
+    const variant = e.altKey || e.metaKey ? "teacher" : "student";
+
+    const url =
+      `print.html?set=${encodeURIComponent(currentSetId)}` +
+      `&bucket=${encodeURIComponent(bucket)}` +
+      `&variant=${encodeURIComponent(variant)}` +
+      `&lang=${encodeURIComponent(currentLang || "")}`;
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  });
+}
+// ====== 답안 채점 ======
