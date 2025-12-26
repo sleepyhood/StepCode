@@ -22,18 +22,28 @@
   </head>
   <!-- ✅ 이 페이지는 연습모드를 "강제"합니다 (수업은 lesson.html 사용) -->
   <body>
+
     <div class="app-container">
+
       <header class="top-bar">
+          <a id="back-to-list-btn" class="back-to-list-link" href="index.html">← 목록</a>
+
         <div class="top-title">
           <span id="set-title">연습장</span>
         </div>
         <div class="top-controls">
 
-          <div class="lang-control">
+          <!-- <a id="back-to-list-btn" class="back-to-list-link" href="index.html">← 목록</a> -->
+
+
+      <div class="lang-control">
+       
+
   <span class="lang-label">언어</span>
   <span id="lang-single" class="lang-single" hidden></span>
   <select id="lang-select"></select>
 </div>
+
 
           <div class="solve-timer" title="누적 풀이시간 (탭을 벗어나면 자동 일시정지)">
   <span class="solve-timer-label">⏱</span>
@@ -52,10 +62,14 @@
 <button id="fullscreen-btn" class="fullscreen-btn" type="button">
   전체화면
 </button>
+<!-- 
 
-<button id="popout-btn" class="popout-btn" type="button" title="새 창으로 열기">
+ <button id="back-to-list-btn" class="back-to-list-btn" type="button" title="목록으로">
+        목록
+  </button> -->
+<!-- <button id="popout-btn" class="popout-btn" type="button" title="새 창으로 열기">
   새창
-</button>
+</button> -->
 
           <button
   id="print-worksheet-btn"

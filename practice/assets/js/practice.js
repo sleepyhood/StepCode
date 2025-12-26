@@ -288,11 +288,11 @@ function bumpQGradeAttempt(qid, isCorrect) {
     lastAt: 0,
   });
 
-if (row.lastIsCorrect === true && isCorrect === true) {
-row.lastAt = Date.now();     // (선택) 마지막 채점 시각만 갱신
-row.lastIsCorrect = true;    // 유지
-return;
-}
+  if (row.lastIsCorrect === true && isCorrect === true) {
+    row.lastAt = Date.now(); // (선택) 마지막 채점 시각만 갱신
+    row.lastIsCorrect = true; // 유지
+    return;
+  }
 
   row.attempts += 1;
   if (isCorrect) row.correct += 1;
@@ -518,7 +518,8 @@ function renderSolveTimerUi(paused) {
     const remain = getSetRecommendedMs() - getSolveElapsedNow();
 
     if (labelEl) labelEl.textContent = "⏳";
-    if (wrap) wrap.title = "남은 시간 (권장시간 기준, 탭을 벗어나면 자동 일시정지)";
+    if (wrap)
+      wrap.title = "남은 시간 (권장시간 기준, 탭을 벗어나면 자동 일시정지)";
 
     if (remain >= 0) {
       mainText = formatElapsed(remain);
@@ -537,7 +538,6 @@ function renderSolveTimerUi(paused) {
   if (wrap) wrap.classList.toggle("paused", !!paused);
   if (stateEl) stateEl.textContent = stateText;
 }
-
 
 function tickSolveTimer() {
   renderSolveTimerUi(false);
@@ -825,6 +825,33 @@ function setupExportLog() {
   });
 }
 
+function setupBackToListButton() {
+  const el = document.getElementById("back-to-list-btn");
+  if (!el) return;
+
+  el.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const ref = document.referrer || "";
+    let cameFromIndexSameOrigin = false;
+
+    try {
+      const u = new URL(ref);
+      cameFromIndexSameOrigin =
+        u.origin === location.origin &&
+        /\/index\.html(\?|#|$)/.test(u.pathname);
+    } catch (_) {
+      cameFromIndexSameOrigin = false;
+    }
+
+    if (cameFromIndexSameOrigin && history.length > 1) {
+      history.back();
+    } else {
+      location.href = "index.html";
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", initPractice);
 
 // ====== 초기화 ======
@@ -839,6 +866,8 @@ async function initPractice() {
     container.textContent = "잘못된 접근입니다. (set 파라미터가 없습니다)";
     return;
   }
+
+  setupBackToListButton();
 
   // 버튼 클릭 시 햅틱 피드백(진동) 및 부드러운 스크롤 효과
   document.querySelectorAll("button").forEach((btn) => {
@@ -902,6 +931,9 @@ async function initPractice() {
 
     // 채점 버튼 연결
     setupGrading();
+
+    // 뒤로 가기 버튼 연결
+    setupBackToListButton();
 
     // ✅ 여기(바로 다음)
     setupExportLog();
@@ -1422,15 +1454,16 @@ function setupClassModeControls() {
       modeBtn.onclick = () => {
         const next = isClassMode() ? "normal" : "class";
 
-        
-      // ✅ 수업모드 -> 일반모드 전환 시 답안 전체 삭제
-      if (isClassMode() && next === "normal") {
-        const ok = confirm("수업모드를 끄면 현재 체크한 답안이 모두 지워집니다.\n계속할까요?");
-        if (!ok) return;
+        // ✅ 수업모드 -> 일반모드 전환 시 답안 전체 삭제
+        if (isClassMode() && next === "normal") {
+          const ok = confirm(
+            "수업모드를 끄면 현재 체크한 답안이 모두 지워집니다.\n계속할까요?"
+          );
+          if (!ok) return;
 
-        clearAllCurrentAnswers();
-      }
-      
+          clearAllCurrentAnswers();
+        }
+
         localStorage.setItem(MODE_STORAGE_KEY, next);
         location.reload(); // 렌더/이벤트 중복 방지
       };
@@ -1466,6 +1499,34 @@ function setupClassModeControls() {
   // (선택) lesson.html 전용 배지/정책 UI는 여기서도 최신화
   updateModeHeaderUi();
 }
+function setupBackToListButton() {
+  const btn = document.getElementById("back-to-list-btn");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    const ref = document.referrer || "";
+
+    // 같은 오리진의 index.html에서 왔으면 back이 UX가 더 좋음(스크롤/검색 상태 유지)
+    let canGoBackToIndex = false;
+    try {
+      const refUrl = new URL(ref);
+      canGoBackToIndex =
+        refUrl.origin === location.origin &&
+        /\/index\.html(\?|#|$)/.test(refUrl.pathname);
+    } catch (_) {
+      // file:// 등에서 URL 파싱 실패할 수 있음 → 그냥 fallback
+      canGoBackToIndex = false;
+    }
+
+    if (canGoBackToIndex && window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    // fallback: 직접 index로 이동
+    window.location.href = "index.html";
+  });
+}
 
 // ====== MCQ 렌더링 ======
 function shouldMcqOptionsUseTwoColumns(q) {
@@ -1477,10 +1538,13 @@ function shouldMcqOptionsUseTwoColumns(q) {
   if (opts.length < 4) return false; // 2~3지는 굳이 2열 필요 없음
   if (opts.length > 6) return false; // 보기 수가 많으면 2열에서도 세로가 길어짐
 
-  const MAX_ROWS = 5; // (대략) 5줄 이내면 2열 허용
-  const MAX_ROW_CHARS = 60; // n: 한 행(줄)의 최대 글자 수(경험적으로 조절)
+  const MAX_ROWS = 10; // (대략) 5줄 이내면 2열 허용
+  const MAX_ROW_CHARS = 25; // n: 한 행(줄)의 최대 글자 수(경험적으로 조절)
 
-  const normalize = (s) => String(s ?? "").replace(/\r\n/g, "\n").trim();
+  const normalize = (s) =>
+    String(s ?? "")
+      .replace(/\r\n/g, "\n")
+      .trim();
 
   return opts.every((o) => {
     const t = normalize(o);
@@ -1878,8 +1942,8 @@ function setupGrading() {
         );
         const row = ensureCoachRow(q.id);
 
-       row.solved = !!isCorrect; // ✅ 현재 정답 여부로 유지
-       if (!isCorrect) {
+        row.solved = !!isCorrect; // ✅ 현재 정답 여부로 유지
+        if (!isCorrect) {
           row.wrongGrades = Math.min(2, (row.wrongGrades || 0) + 1);
 
           // 2회 실패 → 해설 버튼 즉시 해금
@@ -2627,8 +2691,6 @@ function dashResetEntryInfo() {
   location.reload();
 }
 
-
-
 // ====== (추가) 수업모드 15분 타임박스 ======
 const CLASS_TIMEBOX_PREFIX = "stepcode:classTimebox:";
 
@@ -2679,9 +2741,13 @@ function showClassTimeboxModal() {
   title.textContent = "권장 시간이 지났어요";
 
   const desc = document.createElement("div");
-  const rec = typeof formatElapsed === "function" ? formatElapsed(getSetRecommendedMs()) : "15:00";
+  const rec =
+    typeof formatElapsed === "function"
+      ? formatElapsed(getSetRecommendedMs())
+      : "15:00";
   const spent =
-    typeof getSolveElapsedNow === "function" && typeof formatElapsed === "function"
+    typeof getSolveElapsedNow === "function" &&
+    typeof formatElapsed === "function"
       ? formatElapsed(getSolveElapsedNow())
       : "";
   desc.style.cssText = `color:#374151; line-height:1.5; margin-bottom: 14px;`;
@@ -2709,7 +2775,8 @@ function showClassTimeboxModal() {
   function close() {
     overlay.remove();
     // 다시 시작
-    if (!document.hidden && typeof startSolveTimer === "function") startSolveTimer();
+    if (!document.hidden && typeof startSolveTimer === "function")
+      startSolveTimer();
   }
 
   btnContinue.addEventListener("click", close);
@@ -2731,7 +2798,8 @@ function checkClassTimeboxOnce() {
   if (!currentSetId) return;
   if (hasShownClassTimebox()) return;
 
-  const nowMs = typeof getSolveElapsedNow === "function" ? getSolveElapsedNow() : 0;
+  const nowMs =
+    typeof getSolveElapsedNow === "function" ? getSolveElapsedNow() : 0;
   if (nowMs >= getSetRecommendedMs()) {
     markShownClassTimebox();
     showClassTimeboxModal();
@@ -2754,14 +2822,12 @@ function clearAllCurrentAnswers() {
     .forEach((el) => (el.checked = false));
 
   // short/code 입력값 비우기 (CodeMirror용 textarea 포함)
-  root
-    .querySelectorAll(".answer-input[data-question]")
-    .forEach((el) => {
-      el.value = "";
-      // 입력 이벤트를 통해 내부 로직이 있다면 같이 반영되도록
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    });
+  root.querySelectorAll(".answer-input[data-question]").forEach((el) => {
+    el.value = "";
+    // 입력 이벤트를 통해 내부 로직이 있다면 같이 반영되도록
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  });
 
   // CodeMirror 에디터 비우기 (있다면)
   if (typeof CODEMIRROR_EDITORS !== "undefined" && CODEMIRROR_EDITORS?.size) {
@@ -2775,14 +2841,16 @@ function clearAllCurrentAnswers() {
   updateProgressUi();
 
   // (선택) "정답 n/n"이 남는 게 싫다면 아래도 같이 초기화 추천
-  try { localStorage.removeItem(getQGradeMetaKey(currentSetId)); } catch (_) {}
-  try { localStorage.removeItem(getGradeMetaKey(currentSetId)); } catch (_) {}
+  try {
+    localStorage.removeItem(getQGradeMetaKey(currentSetId));
+  } catch (_) {}
+  try {
+    localStorage.removeItem(getGradeMetaKey(currentSetId));
+  } catch (_) {}
   saveSolveElapsed(currentSetId, 0); // 타이머도 같이 초기화하고 싶으면
 }
 
 // ====== 여기까지 practice.js ======
-
-
 
 // ====== (추가) 학습지 출력 (A4 가로 2열 · 한 면 4문항) ======
 function setupWorksheetPrint() {
@@ -2804,14 +2872,17 @@ function setupWorksheetPrint() {
     // 기본: 일반모드=전체, 수업모드=현재 탭(core/supp)
     let bucket = "all";
     if (typeof isClassMode === "function" && isClassMode()) {
-      bucket = (typeof activeBucket === "string" && activeBucket) ? activeBucket : "core";
+      bucket =
+        typeof activeBucket === "string" && activeBucket
+          ? activeBucket
+          : "core";
     }
 
     // Shift: 무조건 전체 문항
     if (e.shiftKey) bucket = "all";
 
     // Alt(or Cmd): 선생님용(정답 포함) 프린트
-    const variant = (e.altKey || e.metaKey) ? "teacher" : "student";
+    const variant = e.altKey || e.metaKey ? "teacher" : "student";
 
     const url =
       `print.html?set=${encodeURIComponent(currentSetId)}` +

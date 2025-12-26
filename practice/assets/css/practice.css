@@ -29,13 +29,35 @@ body {
   max-width: 1200px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
   padding: 12px 24px;
+
+    display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "back title"
+    ".    controls";
+  column-gap: 16px;
+  row-gap: 8px;
+  align-items: center;
+
 }
 
 
 .top-title {
   font-weight: 600;
   font-size: 1rem;
+    grid-area: title;
+  min-width: 0;               /* 말줄임을 위해 필요 */
+
 }
+.top-title #set-title {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 /* 상단 컨트롤: 무조건 가로 한 줄 */
 .top-controls {
   display: flex !important;
@@ -46,11 +68,51 @@ body {
   overflow-x: auto;               /* 좁으면 가로 스크롤 */
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
+  grid-area: controls; 
 }
 
 .top-controls > * {
   flex: 0 0 auto;
 }
+
+/* ===== 목록(뒤로가기) 링크: print의 '← 연습장'처럼 눈에 띄게 ===== */
+.back-to-list-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  font-weight: 900;
+  color: #2563eb;
+
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(37,99,235,.25);
+  background: rgba(37,99,235,.10);
+  white-space: nowrap;
+}
+.back-to-list-link:hover{ background: rgba(37,99,235,.15); }
+.back-to-list-link:active{ transform: translateY(1px); }
+
+@media (max-width: 720px) {
+  .top-bar {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "back"
+      "title"
+      "controls";
+  }
+}
+
+.back-to-list-link:active{
+  transform: translateY(1px);
+}
+
+.back-to-list-link:focus-visible{
+  outline: 2px solid rgba(37,99,235,.45);
+  outline-offset: 2px;
+}
+
 
 /* 언어 컨트롤을 인라인 칩처럼 */
 .lang-control {
@@ -692,7 +754,9 @@ body.mode-class .mode-policy {
 
 .mode-toggle-btn,
 .fullscreen-btn,
-.popout-btn {
+.popout-btn,
+.back-to-list-btn {
+
   border: 1px solid #d1d5db;
   background: #ffffff;
   border-radius: 999px;
