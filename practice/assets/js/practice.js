@@ -788,11 +788,7 @@ function setupExportLog() {
   const btn = document.getElementById("export-log-btn");
   if (!btn) return;
 
-  // ✅ 학생에게는 숨김 (호스트만 사용)
-  if (!isHostUiEnabled()) {
-    btn.style.display = "none";
-    return;
-  }
+  // ✅ host 여부에 따른 노출/숨김은 applyHostOnlyUi(isHost)에서만 처리한다.
 
   btn.addEventListener("click", (e) => {
     if (!currentSetId || !currentSetData) {
@@ -817,14 +813,11 @@ function setupExportLog() {
 
     if (wantCsv || wantBoth) {
       const rows = teacherLogToCsvRows(log);
-      const csvText = rows
-        .map((r) => r.map(csvEscapeCell).join(","))
-        .join("\n");
+      const csvText = rows.map((r) => r.map(csvEscapeCell).join(",")).join("\n");
       downloadTextFile(`${baseName}.csv`, csvText, "text/csv;charset=utf-8");
     }
   });
 }
-
 function setupBackToListButton() {
   const el = document.getElementById("back-to-list-btn");
   if (!el) return;
@@ -851,6 +844,27 @@ function setupBackToListButton() {
     }
   });
 }
+
+
+async function apiIsHost() {
+  try {
+    const r = await fetch("/api/host/status", { credentials: "same-origin" });
+    if (!r.ok) return false;
+    const j = await r.json();
+    return !!j.isHost;
+  } catch (_) {
+    return false;
+  }
+}
+
+function applyHostOnlyUi(isHost) {
+  const ids = ["print-worksheet-btn", "export-log-btn"];
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.hidden = !isHost;
+  });
+}
+
 
 document.addEventListener("DOMContentLoaded", initPractice);
 
@@ -932,12 +946,22 @@ async function initPractice() {
     // 채점 버튼 연결
     setupGrading();
 
+
+    
     // 뒤로 가기 버튼 연결
     setupBackToListButton();
 
     // ✅ 여기(바로 다음)
-    setupExportLog();
-    setupWorksheetPrint(); // ✅ 학습지 출력
+    applyHostOnlyUi(false); // 기본 숨김(깜빡임 방지)
+
+    const isHost = await apiIsHost();
+    applyHostOnlyUi(isHost);
+
+    if (isHost) {
+      setupExportLog();
+      setupWorksheetPrint();
+    }
+
 
     setupRealtimeDashboard(); // ← 추가
   } catch (err) {
@@ -2857,11 +2881,7 @@ function setupWorksheetPrint() {
   const btn = document.getElementById("print-worksheet-btn");
   if (!btn) return;
 
-  // ✅ 학생에게는 숨김 (호스트만 사용)
-  if (!isHostUiEnabled()) {
-    btn.style.display = "none";
-    return;
-  }
+  // ✅ host 여부에 따른 노출/숨김은 applyHostOnlyUi(isHost)에서만 처리한다.
 
   btn.addEventListener("click", (e) => {
     if (!currentSetId || !currentSetData) {
@@ -2869,19 +2889,12 @@ function setupWorksheetPrint() {
       return;
     }
 
-    // 기본: 일반모드=전체, 수업모드=현재 탭(core/supp)
     let bucket = "all";
     if (typeof isClassMode === "function" && isClassMode()) {
-      bucket =
-        typeof activeBucket === "string" && activeBucket
-          ? activeBucket
-          : "core";
+      bucket = typeof activeBucket === "string" && activeBucket ? activeBucket : "core";
     }
-
-    // Shift: 무조건 전체 문항
     if (e.shiftKey) bucket = "all";
 
-    // Alt(or Cmd): 선생님용(정답 포함) 프린트
     const variant = e.altKey || e.metaKey ? "teacher" : "student";
 
     const url =

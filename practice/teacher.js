@@ -7,6 +7,12 @@
   const btnConnect = $("#connect");
   const btnRefresh = $("#refresh");
 
+  const hostBadge = $("#host-badge");
+  const hostAuth = $("#host-auth");
+  const hostPin = $("#host-pin");
+  const btnHostLogin = $("#host-login");
+  const btnHostLogout = $("#host-logout");
+
   const state = {
     ws: null,
     room: "default",
@@ -14,7 +20,7 @@
     last: new Map(),      // studentKey -> {progressKey, lastProgressAt}
     connectedAt: 0,
     payloads: new Map(),   // studentKey -> payload
-
+    isHost: false
   };
 
   let resortTimer = null;
@@ -63,6 +69,52 @@ function resortRows() {
     const s = sec % 60;
     return `${m}m ${s}s`;
   }
+
+  async function apiHostStatus() {
+  const r = await fetch("/api/host/status", { credentials: "same-origin" });
+  if (!r.ok) return { isHost: false };
+  return await r.json();
+}
+
+async function apiHostLogin(pin) {
+  const r = await fetch("/api/host/login", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify({ pin }),
+  });
+  return { ok: r.ok, data: await r.json().catch(() => ({})) };
+}
+
+async function apiHostLogout() {
+  await fetch("/api/host/logout", { method: "POST", credentials: "same-origin" }).catch(() => {});
+}
+
+function applyHostUi(isHost) {
+  state.isHost = !!isHost;
+
+  if (hostBadge) hostBadge.hidden = !state.isHost;
+  if (hostAuth) hostAuth.hidden = state.isHost;
+
+  if (btnConnect) btnConnect.disabled = !state.isHost;
+  if (btnRefresh) btnRefresh.disabled = !state.isHost;
+
+  if (btnHostLogout) btnHostLogout.hidden = !state.isHost;
+}
+
+async function bootstrapHostAuth() {
+  const s = await apiHostStatus();
+  applyHostUi(!!s.isHost);
+
+  // 잠금 상태면 테이블 안내 표시
+  if (!state.isHost) {
+    if (tbody) tbody.innerHTML = `<tr><td colspan="8" class="small">교사 인증이 필요합니다. (PIN 입력 후 교사모드 ON)</td></tr>`;
+  } else {
+    // host면 기존 편의 기능 유지: room 있으면 자동 연결
+    if (roomInput.value) connect();
+  }
+}
+
 
   function safeText(v) {
     return String(v ?? "").replace(/[<>]/g, "");
@@ -181,6 +233,11 @@ state.payloads.set(studentKey, payload);
   }
 
   function connect() {
+    if (!state.isHost) {
+  alert("교사 인증(PIN)이 필요합니다.");
+  return;
+}
+
     const room = (roomInput.value || "").trim() || "default";
     state.room = room;
 
@@ -239,5 +296,24 @@ state.payloads.set(studentKey, payload);
   if (initialRoom) roomInput.value = initialRoom;
 
   // 바로 연결(편의)
-  if (roomInput.value) connect();
+btnHostLogin?.addEventListener("click", async () => {
+  const pin = (hostPin?.value || "").trim();
+  if (!pin) return;
+
+  const res = await apiHostLogin(pin);
+  if (!res.ok) {
+    alert("PIN이 올바르지 않습니다.");
+    return;
+  }
+
+  // 쿠키 발급 후 상태 재조회 → UI 해제
+  await bootstrapHostAuth();
+});
+
+btnHostLogout?.addEventListener("click", async () => {
+  await apiHostLogout();
+  applyHostUi(false);
+});
+
+bootstrapHostAuth();
 })();

@@ -1,7 +1,6 @@
 /* print.js - A4 landscape worksheet printer (2 columns, 4 problems per page) */
 
 let currentSetData = null;
-const SLOTS_PER_PAGE = 2;
 
 function ymd(d = new Date()) {
   const y = d.getFullYear();
@@ -45,12 +44,14 @@ function correctForTeacher(q) {
   }
   if (q.type === "short") {
     if (q.expectedText) return `정답: ${q.expectedText}`;
-    if (Array.isArray(q.expectedAnyOf)) return `정답(예시): ${q.expectedAnyOf.join(", ")}`;
+    if (Array.isArray(q.expectedAnyOf))
+      return `정답(예시): ${q.expectedAnyOf.join(", ")}`;
     return "";
   }
   if (q.type === "code") {
     if (q.expectedCode) return `기대 코드: ${q.expectedCode}`;
-    if (Array.isArray(q.expectedCodes) && q.expectedCodes.length) return `기대 코드: ${q.expectedCodes[0]}`;
+    if (Array.isArray(q.expectedCodes) && q.expectedCodes.length)
+      return `기대 코드: ${q.expectedCodes[0]}`;
     return "";
   }
   return "";
@@ -68,41 +69,6 @@ function el(tag, cls, text) {
   return x;
 }
 
-function shouldMcqOptionsUseTwoColumns(q) {
-  const opts = Array.isArray(q?.options) ? q.options : [];
-  if (opts.length < 4) return false;
-  if (opts.length > 6) return false;
-
-  const MAX_ROWS = 10;
-  const MAX_ROW_CHARS = 17;
-
-  const normalize = (s) =>
-    String(s ?? "")
-      .replace(/\r\n/g, "\n")
-      .trim();
-
-  return opts.every((o) => {
-    const t = normalize(o);
-    if (!t) return true;
-
-    const physicalLines = t.split("\n");
-    let estimatedRows = 0;
-
-    for (const line of physicalLines) {
-      const tokens = line.split(/\s+/).filter(Boolean);
-      const maxTokenLen = tokens.reduce((m, tok) => Math.max(m, tok.length), 0);
-      if (maxTokenLen > MAX_ROW_CHARS) return false;
-
-      const len = line.length;
-      estimatedRows += Math.max(1, Math.ceil(len / MAX_ROW_CHARS));
-      if (estimatedRows > MAX_ROWS) return false;
-    }
-
-    return estimatedRows <= MAX_ROWS;
-  });
-}
-
-
 // ===== Minimal Markdown renderer (offline-friendly) =====
 // Supports: **bold**, `inline code`, [text](url), bullet/number lists, headings (#..###), blockquotes (>), fenced code blocks (```).
 // Raw HTML is escaped for safety.
@@ -119,8 +85,10 @@ function mdInline(raw) {
   let s = escapeHtml(raw);
 
   // links
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, txt, url) =>
-    `<a class="md-link" href="${url}" target="_blank" rel="noopener">${txt}</a>`
+  s = s.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    (_m, txt, url) =>
+      `<a class="md-link" href="${url}" target="_blank" rel="noopener">${txt}</a>`
   );
 
   // inline code
@@ -137,16 +105,13 @@ function mdInline(raw) {
 
 function mdBlock(raw) {
   const src = String(raw ?? "").replace(/\r\n?/g, "\n");
+  let md = escapeHtml(src);
 
-  // IMPORTANT: Don't pre-escape the whole block.
-  // mdInline() already escapes. If we escape here too, entities like "&quot;" become "&amp;quot;" and show up literally.
-
-  // fence blocks -> placeholders first (on RAW)
+  // fence blocks to placeholders first
   const fences = [];
-  let md = src.replace(/```([a-zA-Z0-9_-]+)?\n([\s\S]*?)```/g, (_m, lang, code) => {
+  md = md.replace(/```([a-zA-Z0-9_-]+)?\n([\s\S]*?)```/g, (_m, lang, code) => {
     const idx = fences.length;
-    const safeLang = String(lang || "").replace(/[^a-zA-Z0-9_-]/g, "");
-    fences.push({ lang: safeLang, code: escapeHtml(code) });
+    fences.push({ lang: lang || "", code });
     return `@@FENCE${idx}@@`;
   });
 
@@ -179,7 +144,10 @@ function mdBlock(raw) {
         i++;
       }
       out.push(
-        `<blockquote class="md-quote">${mdInline(q.join("\n")).replace(/\n/g, "<br>")}</blockquote>`
+        `<blockquote class="md-quote">${mdInline(q.join("\n")).replace(
+          /\n/g,
+          "<br>"
+        )}</blockquote>`
       );
       continue;
     }
@@ -192,7 +160,9 @@ function mdBlock(raw) {
         i++;
       }
       out.push(
-        `<ul class="md-ul">${items.map((it) => `<li>${mdInline(it)}</li>`).join("")}</ul>`
+        `<ul class="md-ul">${items
+          .map((it) => `<li>${mdInline(it)}</li>`)
+          .join("")}</ul>`
       );
       continue;
     }
@@ -205,7 +175,9 @@ function mdBlock(raw) {
         i++;
       }
       out.push(
-        `<ol class="md-ol">${items.map((it) => `<li>${mdInline(it)}</li>`).join("")}</ol>`
+        `<ol class="md-ol">${items
+          .map((it) => `<li>${mdInline(it)}</li>`)
+          .join("")}</ol>`
       );
       continue;
     }
@@ -240,49 +212,9 @@ function mdBlock(raw) {
   return html;
 }
 
-
 function setMD(node, raw, mode = "block") {
   node.innerHTML = mode === "inline" ? mdInline(raw) : mdBlock(raw);
 }
-
-function shouldMcqCodeOptionsUseTwoColumns(q) {
-  const opts = Array.isArray(q?.options) ? q.options : [];
-  if (opts.length < 4) return false;
-  if (opts.length > 6) return false;
-
-  // ✅ 코드박스는 2열에서 폭이 더 좁아지므로 텍스트보다 보수적으로
-  const MAX_ROWS = 10;          // (래핑 포함) 옵션 1개당 허용 "보이는 줄" 총합
-  const MAX_ROW_CHARS = 22;    // 한 줄이 이 길이를 넘으면 래핑된다고 가정
-  const MAX_TOKEN_CHARS = 32;  // 공백 없는 덩어리(긴 식별자/문자열)가 너무 길면 2열 금지
-  const MAX_PHYSICAL_LINES = 10; // 실제 개행 줄 수 하드캡
-
-  const normalize = (s) =>
-    String(s ?? "")
-      .replace(/\r\n/g, "\n")
-      .trim();
-
-  return opts.every((o) => {
-    const t = normalize(o);
-    if (!t) return true;
-
-    const physicalLines = t.split("\n");
-    if (physicalLines.length > MAX_PHYSICAL_LINES) return false;
-
-    let estimatedRows = 0;
-    for (const line of physicalLines) {
-      const tokens = line.split(/\s+/).filter(Boolean);
-      const maxTokenLen = tokens.reduce((m, tok) => Math.max(m, tok.length), 0);
-      if (maxTokenLen > MAX_TOKEN_CHARS) return false;
-
-      const len = line.length;
-      estimatedRows += Math.max(1, Math.ceil(len / MAX_ROW_CHARS));
-      if (estimatedRows > MAX_ROWS) return false;
-    }
-    return true;
-  });
-}
-
-
 function buildProblemCard(set, q, originalIndex, variant) {
   const card = el("section", "p-card");
 
@@ -291,10 +223,9 @@ function buildProblemCard(set, q, originalIndex, variant) {
   head.appendChild(el("div", "p-type", typeLabel(q)));
   card.appendChild(head);
 
-    const title = el("div", "p-title md md-inline");
+  const title = el("div", "p-title md md-inline");
   setMD(title, q.title || "", "inline");
   card.appendChild(title);
-
 
   const desc = el("div", "p-desc md");
   setMD(desc, q.description || "", "block");
@@ -306,44 +237,21 @@ function buildProblemCard(set, q, originalIndex, variant) {
     card.appendChild(pre);
   }
 
-if (q.type === "mcq") {
-  const opts = el("div", "p-options");
+  if (q.type === "mcq") {
+    const opts = el("div", "p-options");
+    (q.options || []).forEach((t, i) => {
+      const row = el("div", "p-opt");
+      const labels = q.optionLabels || [];
+      const letter = labels[i] || String.fromCharCode(65 + i);
+      row.appendChild(el("div", "bullet", `◯ ${letter}`));
+      const tdiv = el("div", "text md md-inline");
+      setMD(tdiv, String(t), "inline");
+      row.appendChild(tdiv);
+      opts.appendChild(row);
+    });
+    card.appendChild(opts);
+  }
 
-  // ✅ 이미 있는 코드: 옵션에 줄바꿈이 하나라도 있으면 코드박스 모드
-  const forceOptCodeBox = (q.options || []).some(v => String(v ?? "").includes("\n"));
-
-  // ✅ (추가) grid2 판단: 텍스트면 기존 룰, 코드박스면 코드박스 전용 룰
-  const useGrid2 = forceOptCodeBox
-    ? shouldMcqCodeOptionsUseTwoColumns(q)
-    : shouldMcqOptionsUseTwoColumns(q);
-
-  if (useGrid2) opts.classList.add("p-options--grid2");
-
-  (q.options || []).forEach((t, i) => {
-    const row = el("div", "p-opt");
-    const labels = q.optionLabels || [];
-    const letter = labels[i] || String.fromCharCode(65 + i);
-
-    row.appendChild(el("div", "bullet", `◯ ${letter}`));
-
-    const tdiv = el("div", "text md");
-    const opt = String(t ?? "");
-
-    if (forceOptCodeBox || opt.includes("\n")) {
-      const pre = el("pre", "p-code opt-code");
-      pre.textContent = opt;
-      tdiv.appendChild(pre);
-    } else {
-      tdiv.classList.add("md-inline");
-      setMD(tdiv, opt, "inline");
-    }
-
-    row.appendChild(tdiv);
-    opts.appendChild(row);
-  });
-
-  card.appendChild(opts);
-}
   const answer = el("div", "answer-block");
 
   if (q.type === "mcq") {
@@ -361,7 +269,7 @@ if (q.type === "mcq") {
     } else {
       answer.appendChild(el("div", "answer-label", "코드:"));
       const box = el("div", "answer-lines codebox");
-      box.style.setProperty("--n", "10");
+      box.style.setProperty("--n", "4");
       answer.appendChild(box);
     }
   }
@@ -403,30 +311,48 @@ function metaField(label, key, extraClass, defaultValue = "") {
   return wrap;
 }
 
-// (2) buildPage() : 메타(학생/반/번호/배부일/제출일) + docid는 1페이지에만
-function buildPage(setId, set, pageIndex, pageCount, problems, indexMap, variant, bucket) {
+function buildPage(
+  setId,
+  set,
+  pageIndex,
+  pageCount,
+  problems,
+  indexMap,
+  variant,
+  bucket
+) {
   const page = el("div", "print-page");
 
   const header = el("div", "page-header");
 
   const left = el("div", "meta-left");
   left.appendChild(
-    el("div", "page-title", `${set.title || "학습지"} · ${variant === "teacher" ? "선생님용" : "학생용"}`)
+    el(
+      "div",
+      "page-title",
+      `${set.title || "학습지"} · ${
+        variant === "teacher" ? "선생님용" : "학생용"
+      }`
+    )
   );
 
+  const row = el("div", "meta-row");
+  // ✅ 1페이지만 상세 메타 출력
   if (pageIndex === 0) {
     const row = el("div", "meta-row");
-    row.appendChild(metaField("학생", "name", "w120"));
-    row.appendChild(metaField("반", "class", ""));
-    row.appendChild(metaField("번호", "no", ""));
+    row.appendChild(metaField("학생", "name", "w80"));
+    // row.appendChild(metaField("반", "class", ""));
+    // row.appendChild(metaField("번호", "no", ""));
     row.appendChild(metaField("배부일", "dist", "", ymd()));
-    row.appendChild(metaField("제출일", "due", "w120"));
+    row.appendChild(metaField("제출일", "due", "w80"));
     left.appendChild(row);
   } else {
-    header.classList.add("page-header--compact"); // (선택) CSS로 헤더 높이 줄일 때
+    header.classList.add("page-header--compact"); // (선택) CSS로 높이 줄이기
   }
 
   const right = el("div", "meta-right");
+
+  // ✅ 2페이지~는 페이지번호만
   if (pageIndex === 0) {
     right.innerHTML = `
       <div>페이지 ${pageIndex + 1} / ${pageCount}</div>
@@ -441,9 +367,12 @@ function buildPage(setId, set, pageIndex, pageCount, problems, indexMap, variant
   page.appendChild(header);
 
   const grid = el("div", "page-grid");
-  for (let i = 0; i < SLOTS_PER_PAGE; i++) {
+  for (let i = 0; i < 4; i++) {
     const q = problems[i];
-    if (!q) { grid.appendChild(el("div", "p-card")); continue; }
+    if (!q) {
+      grid.appendChild(el("div", "p-card"));
+      continue;
+    }
     const originalIndex = indexMap.get(q.id) ?? i;
     grid.appendChild(buildProblemCard(set, q, originalIndex, variant));
   }
@@ -451,7 +380,6 @@ function buildPage(setId, set, pageIndex, pageCount, problems, indexMap, variant
 
   return page;
 }
-
 
 function updateToolbarTitle(set, bucket, variant) {
   const t = document.getElementById("pt-set-title");
@@ -472,15 +400,28 @@ async function renderAll({ setId, bucket, variant }) {
 
   let selected = (currentSetData.problems || []).slice();
   if (bucket === "core" || bucket === "supp") {
-    selected = selected.filter((q, idx) => bucketOfQuestion(currentSetData, q, idx) === bucket);
+    selected = selected.filter(
+      (q, idx) => bucketOfQuestion(currentSetData, q, idx) === bucket
+    );
   }
 
-  const pages = chunk(selected, SLOTS_PER_PAGE);
+  const pages = chunk(selected, 4);
   const pageCount = Math.max(1, pages.length);
 
   root.innerHTML = "";
   pages.forEach((probs, i) => {
-    root.appendChild(buildPage(setId, currentSetData, i, pageCount, probs, indexMap, variant, bucket));
+    root.appendChild(
+      buildPage(
+        setId,
+        currentSetData,
+        i,
+        pageCount,
+        probs,
+        indexMap,
+        variant,
+        bucket
+      )
+    );
   });
 
   updateToolbarTitle(currentSetData, bucket, variant);
@@ -499,7 +440,8 @@ function setQp(name, value) {
 document.addEventListener("DOMContentLoaded", async () => {
   const setId = qp("set");
   if (!setId) {
-    document.getElementById("print-root").textContent = "잘못된 접근입니다. (set 파라미터가 없습니다)";
+    document.getElementById("print-root").textContent =
+      "잘못된 접근입니다. (set 파라미터가 없습니다)";
     return;
   }
 
@@ -509,8 +451,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const initVariant = qp("variant") || "student";
   const initBucket = qp("bucket") || "all";
 
-  if (variantSel) variantSel.value = (initVariant === "teacher" ? "teacher" : "student");
-  if (bucketSel) bucketSel.value = (initBucket === "core" || initBucket === "supp") ? initBucket : "all";
+  if (variantSel)
+    variantSel.value = initVariant === "teacher" ? "teacher" : "student";
+  if (bucketSel)
+    bucketSel.value =
+      initBucket === "core" || initBucket === "supp" ? initBucket : "all";
 
   const applyBtn = document.getElementById("apply-btn");
   if (applyBtn) {
@@ -529,5 +474,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const back = document.getElementById("back-link");
   if (back) back.href = `practice.html?set=${encodeURIComponent(setId)}`;
 
-  await renderAll({ setId, bucket: (bucketSel ? bucketSel.value : "all"), variant: (variantSel ? variantSel.value : "student") });
+  await renderAll({
+    setId,
+    bucket: bucketSel ? bucketSel.value : "all",
+    variant: variantSel ? variantSel.value : "student",
+  });
 });

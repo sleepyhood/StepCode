@@ -121,7 +121,7 @@ body{
 .page-grid{
   display:grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr;
   gap: 6mm;
 }
 
@@ -168,7 +168,7 @@ body{
   color: var(--ink);
   white-space: pre-wrap;
   line-height: 1.35;
-  margin-bottom: 3mm;
+  margin-bottom: 4mm;
 }
 
 .p-code{
@@ -187,6 +187,7 @@ body{
   flex-direction:column;
   gap: 2mm;
   margin-bottom: 3mm;
+  margin-top: 2mm; 
   font-size: 10.5px;
 }
 .p-opt{
@@ -194,6 +195,17 @@ body{
   gap: 6px;
   align-items:flex-start;
 }
+
+
+/* [print.markdown.css] grid2 옵션이 코드박스일 때 공간 절약(잉크/높이 둘 다) */
+.p-options.p-options--grid2 .p-code.opt-code{
+  padding: 2mm;     /* 기본 3mm → 2mm */
+  font-size: 9px;   /* 기본 9.5~10px → 9px */
+  line-height: 1.2;
+  margin: 0;        /* opt 내부에서는 바깥 여백 최소화 */
+}
+
+
 .p-opt .bullet{
   min-width: 2.4em;      /* 16px → 글자 기준 폭으로 */
   flex: 0 0 auto;
@@ -261,8 +273,8 @@ body{
 
 /* print rules */
 @page {
-  /* size: A4 landscape; */
-    size: A4 portrait;
+  size: A4 landscape;
+    /* size: A4 portrait; */
 
   margin: 10mm;
 }
@@ -329,9 +341,100 @@ body{
 .p-title.md{ white-space: normal; }
 
 .page-header.page-header--compact{
+  margin-top: 5mm;
+
   margin-bottom: 3mm;
   padding-bottom: 2mm;
 }
 .page-header.page-header--compact .meta-left{
   gap: 0;
+}
+
+
+
+/* =========================================================
+   B/W print-friendly code blocks (low-ink)
+   - Applies to: problem code (.p-code) and option code (.opt-code)
+   - Goal: clear separation WITHOUT heavy gray fills
+   ========================================================= */
+
+/* Base: keep code readable + stable wrapping */
+.p-code,
+.opt-code,
+pre.p-code,
+pre.opt-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 9.5px;          /* tweak 9.0~10.0 as needed */
+  line-height: 1.25;
+  white-space: pre-wrap;     /* keep \n + allow wrap on long lines */
+  overflow-wrap: anywhere;   /* prevent overflow in narrow columns */
+  tab-size: 2;
+}
+
+/* Low-ink container styling: thin border, no background fill */
+.p-code,
+.opt-code {
+  border: 0.5px solid #cfcfcf;  /* light gray = low ink */
+  border-radius: 6px;
+  padding: 3mm 3.5mm;
+  margin: 2mm 0;
+  background: transparent;      /* IMPORTANT: no gray fill */
+}
+
+/* If you used <pre class="p-code"> without <code> inside */
+.p-code code,
+.opt-code code {
+  background: transparent;
+  padding: 0;
+}
+
+
+
+/* Slightly tighter inside MCQ options (often shorter boxes) */
+.p-options .opt-code,
+.p-options pre.opt-code {
+  padding: 2.5mm 3mm;
+  margin: 1.5mm 0 0;
+}
+
+/* Inline code in markdown (also low-ink) */
+.md code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.95em;
+  border: 0.5px solid #d8d8d8;
+  border-radius: 4px;
+  padding: 0 0.25em;
+  background: transparent;
+}
+
+/* Avoid printing heavy shadows anywhere near code blocks */
+.p-code,
+.opt-code {
+  box-shadow: none !important;
+}
+
+/* Print-specific: ensure borders remain thin and backgrounds stay off */
+@media print {
+  .p-code,
+  .opt-code,
+  .md code {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: transparent !important;
+  }
+}
+
+
+/* [print.markdown.css] 위치: .p-options 관련 스타일 근처에 추가 */
+/* ✅ 2행 2열(짧은 보기일 때만 JS가 붙임) */
+.p-options.p-options--grid2{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 6mm;
+  row-gap: 2.5mm;
+}
+
+/* grid2일 때 각 보기 행이 그리드 셀에 자연스럽게 들어가도록 */
+.p-options.p-options--grid2 .p-opt{
+  margin: 0;           /* 기존 margin 있으면 줄여서 높이 절약 */
 }

@@ -12,10 +12,10 @@
       "description": "다음 설명에 맞는 Java 코드를 고르세요.\n\n- 정수 score를 하나 입력받는다.\n- score가 60 이상이면 \"Pass\"를 출력하고,\n  그렇지 않으면 \"Fail\"을 출력한다.",
       "code": null,
       "options": [
-        "java.util.Scanner sc = new java.util.Scanner(System.in);\nint score = sc.nextInt();\nif (score > 60) {\n    System.out.println(\"Pass\");\n} else {\n    System.out.println(\"Fail\");\n}",
-        "java.util.Scanner sc = new java.util.Scanner(System.in);\nint score = sc.nextInt();\nif (score >= 60) {\n    System.out.println(\"Pass\");\n}",
-        "java.util.Scanner sc = new java.util.Scanner(System.in);\nint score = sc.nextInt();\nif (score >= 60) {\n    System.out.println(\"Pass\");\n} else {\n    System.out.println(\"Fail\");\n}",
-        "java.util.Scanner sc = new java.util.Scanner(System.in);\nint score = sc.nextInt();\nif (score = 60) {\n    System.out.println(\"Pass\");\n} else {\n    System.out.println(\"Fail\");\n}"
+        "int score = sc.nextInt();\nif (score > 60) {\n    System.out.println(\"Pass\");\n} else {\n    System.out.println(\"Fail\");\n}",
+        "int score = sc.nextInt();\nif (score >= 60) {\n    System.out.println(\"Pass\");\n}",
+        "int score = sc.nextInt();\nif (score >= 60) {\n    System.out.println(\"Pass\");\n} else {\n    System.out.println(\"Fail\");\n}",
+        "int score = sc.nextInt();\nif (score = 60) {\n    System.out.println(\"Pass\");\n} else {\n    System.out.println(\"Fail\");\n}"
       ],
       "optionLabels": ["A", "B", "C", "D"],
       "correctIndex": 2

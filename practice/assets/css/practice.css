@@ -35,7 +35,7 @@ body {
   grid-template-rows: auto auto;
   grid-template-areas:
     "back title"
-    ".    controls";
+    "back controls"; /* ← 여기! back이 2행까지 차지 */
   column-gap: 16px;
   row-gap: 8px;
   align-items: center;
@@ -77,6 +77,10 @@ body {
 
 /* ===== 목록(뒤로가기) 링크: print의 '← 연습장'처럼 눈에 띄게 ===== */
 .back-to-list-link{
+  grid-area: back;
+  align-self: center;   /* 1열(두 행 높이) 기준 세로 중앙 */
+  justify-self: start;  /* 왼쪽 정렬 유지 */
+
   display: inline-flex;
   align-items: center;
   gap: 6px;

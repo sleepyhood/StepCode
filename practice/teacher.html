@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>StepCode · 교사용 대시보드</title>
-  <link rel="stylesheet" href="./main.css" />
+  <!-- <link rel="stylesheet" href="./main.css" /> -->
   <style>
     body { padding: 16px; }
     header { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom: 12px; }
@@ -27,6 +27,8 @@
     .tag.practice { border-color:#c4c4c4; }
     .tag.class { border-color:#7cffb0; }
     .right { text-align:right; }
+    .pill input.pin { width: 110px; }
+
   </style>
 </head>
 <body>
@@ -37,6 +39,16 @@
       <span class="small">room</span>
       <input id="room" placeholder="예: A" />
     </div>
+
+    <span id="host-badge" class="tag class" hidden>HOST</span>
+
+<div id="host-auth" class="pill">
+  <span class="small">PIN</span>
+  <input id="host-pin" class="pin" type="password" placeholder="교사 PIN" />
+  <button id="host-login" class="btn">교사모드 ON</button>
+  <button id="host-logout" class="btn ghost" hidden>OFF</button>
+</div>
+
 
     <button id="connect" class="btn">연결</button>
     <button id="refresh" class="btn ghost">스냅샷</button>
