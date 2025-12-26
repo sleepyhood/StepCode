@@ -35,8 +35,17 @@
             <option value="all">전체</option>
             <option value="core">핵심(core)</option>
             <option value="supp">보강/숙제(supp)</option>
+            <option value="custom">커스텀</option> <!-- ✅ 추가 -->
+
           </select>
         </label>
+
+        <!-- ✅ 추가: 커스텀 범위 입력 (bucket=custom일 때만 보이게) -->
+<label class="tool tool-range is-hidden" id="range-wrap">
+  커스텀 범위(번호)
+  <input id="range-input" type="text" placeholder="예: 1-8,10,12-14" />
+  <div id="range-hint" class="tool-hint"></div>
+</label>
 
         <button id="apply-btn" type="button">적용</button>
         <button id="print-btn" type="button" class="primary">인쇄 / PDF 저장</button>

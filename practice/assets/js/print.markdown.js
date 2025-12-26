@@ -104,7 +104,7 @@ function shouldMcqOptionsUseTwoColumns(q) {
   if (opts.length > 6) return false;
 
   const MAX_ROWS = 10;
-  const MAX_ROW_CHARS = 17;
+  const MAX_ROW_CHARS = 12;
 
   const normalize = (s) =>
     String(s ?? "")
@@ -281,10 +281,10 @@ function shouldMcqCodeOptionsUseTwoColumns(q) {
   if (opts.length > 6) return false;
 
   // ✅ 코드박스는 2열에서 폭이 더 좁아지므로 텍스트보다 보수적으로
-  const MAX_ROWS = 10;          // (래핑 포함) 옵션 1개당 허용 "보이는 줄" 총합
-  const MAX_ROW_CHARS = 22;    // 한 줄이 이 길이를 넘으면 래핑된다고 가정
-  const MAX_TOKEN_CHARS = 22;  // 공백 없는 덩어리(긴 식별자/문자열)가 너무 길면 2열 금지
-  const MAX_PHYSICAL_LINES = 10; // 실제 개행 줄 수 하드캡
+  const MAX_ROWS = 15;          // (래핑 포함) 옵션 1개당 허용 "보이는 줄" 총합
+  const MAX_ROW_CHARS = 28;    // 한 줄이 이 길이를 넘으면 래핑된다고 가정
+  const MAX_TOKEN_CHARS = 28;  // 공백 없는 덩어리(긴 식별자/문자열)가 너무 길면 2열 금지
+  const MAX_PHYSICAL_LINES = 15; // 실제 개행 줄 수 하드캡
 
   const normalize = (s) =>
     String(s ?? "")
@@ -376,25 +376,31 @@ if (q.type === "mcq") {
 }
   const answer = el("div", "answer-block");
 
-  if (q.type === "mcq") {
-    answer.appendChild(el("div", "answer-label", "이유(간단히):"));
-    answer.appendChild(el("div", "answer-lines compact"));
-  } else if (q.type === "short") {
-    answer.appendChild(el("div", "answer-label", "답:"));
+if (q.type === "mcq") {
+  answer.appendChild(el("div", "answer-label", "이유(간단히):"));
+  const lines = el("div", "answer-lines");
+  lines.style.setProperty("--n", "1.5");
+  answer.appendChild(lines);
+
+} else if (q.type === "short") {
+  answer.appendChild(el("div", "answer-label", "답:"));
+  const lines = el("div", "answer-lines");
+  lines.style.setProperty("--n", "1.5");
+  answer.appendChild(lines);
+
+} else if (q.type === "code") {
+  if (isCondBlankQuestion(q)) {
+    answer.appendChild(el("div", "answer-label", "조건식(한 줄):"));
     const lines = el("div", "answer-lines");
-    lines.style.setProperty("--n", "2");
+    lines.style.setProperty("--n", "1.5");
     answer.appendChild(lines);
-  } else if (q.type === "code") {
-    if (isCondBlankQuestion(q)) {
-      answer.appendChild(el("div", "answer-label", "조건식(한 줄):"));
-      answer.appendChild(el("div", "answer-lines compact"));
-    } else {
-      answer.appendChild(el("div", "answer-label", "코드:"));
-      const box = el("div", "answer-lines codebox");
-      box.style.setProperty("--n", "3");
-      answer.appendChild(box);
-    }
+  } else {
+    answer.appendChild(el("div", "answer-label", "코드:"));
+    const box = el("div", "answer-lines codebox");
+    box.style.setProperty("--n", "3");
+    answer.appendChild(box);
   }
+}
 
   if (variant === "teacher") {
     const note = el("div", "teacher-note");
@@ -458,11 +464,16 @@ function buildPage(setId, set, pageIndex, pageCount, problems, indexMap, variant
     header.classList.add("page-header--compact"); // (선택) CSS로 높이 줄이기
   }
 
+  // [print.markdown.js] buildPage() 안에서 right.innerHTML 부분만 교체 (docid는 1페이지만)
   const right = el("div", "meta-right");
-  right.innerHTML = `
-    <div>페이지 ${pageIndex + 1} / ${pageCount}</div>
-    <div class="docid">${makeDocId(setId, bucket, variant)}</div>
-  `;
+  if (pageIndex === 0) {
+    right.innerHTML = `
+      <div>페이지 ${pageIndex + 1} / ${pageCount}</div>
+      <div class="docid">${makeDocId(setId, bucket, variant)}</div>
+    `;
+  } else {
+    right.innerHTML = `<div>페이지 ${pageIndex + 1} / ${pageCount}</div>`;
+  }
 
   header.appendChild(left);
   header.appendChild(right);
@@ -512,7 +523,34 @@ async function renderAll({ setId, bucket, variant }) {
     selected = selected.filter((q, idx) => bucketOfQuestion(currentSetData, q, idx) === bucket);
   }
 
+  else if (bucket === "custom") {
+  const spec = qp("range"); // apply가 setQp로 넣어줌
+  const parsed = parseRangeSpec(spec, (currentSetData.problems || []).length);
+
+  if (!parsed.ok) {
+    // 화면 힌트만 표시하고(인쇄물은 영향 없음), 안전하게 전체로 fallback
+    const hint = document.getElementById("range-hint");
+    if (hint) hint.textContent = parsed.msg;
+    selected = (currentSetData.problems || []).slice();
+  } else {
+    const hint = document.getElementById("range-hint");
+    if (hint) hint.textContent = parsed.msg;
+    selected = (currentSetData.problems || []).filter((_q, idx) => parsed.set.has(idx + 1));
+  }
+}
+
   root.innerHTML = "";
+
+  const probeFirst = buildPage(setId, currentSetData, 0, 99, [], indexMap, variant, bucket);
+  root.appendChild(probeFirst);
+  const bodyHFirst = getBodyHeightPx(probeFirst);
+
+  const probeOther = buildPage(setId, currentSetData, 1, 99, [], indexMap, variant, bucket);
+  root.appendChild(probeOther);
+  const bodyHOther = getBodyHeightPx(probeOther);
+
+  root.removeChild(probeFirst);
+  root.removeChild(probeOther);
 
   // 1) "빈 페이지" 하나 만들어서 폭/높이 측정
   const probePage = buildPage(setId, currentSetData, 0, 1, [], indexMap, variant, bucket);
@@ -546,13 +584,15 @@ async function renderAll({ setId, bucket, variant }) {
     heights.set(q.id, h);
     meas.removeChild(card);
   }
+  const colGapPx = parseFloat(getComputedStyle(probePage.querySelector(".page-col")).gap || "0");
+
 
   // probe 제거
   root.removeChild(probePage);
   meas.remove();
 
     // ✅ vertical gap(열 내부 카드 간격) px 구하기
-  const colGapPx = parseFloat(getComputedStyle(probePage.querySelector(".page-col")).gap || "0");
+  // const colGapPx = parseFloat(getComputedStyle(probePage.querySelector(".page-col")).gap || "0");
 
   // ✅ 3) 규칙 기반 패킹
   // 1) 기본은 1행 2열(= 2문제)
@@ -565,6 +605,9 @@ async function renderAll({ setId, bucket, variant }) {
     const q2 = selected[i + 1] ?? null;
 
     const page = { left: [], right: [] };
+    const bodyHPage = (pages.length === 0) ? bodyHFirst : bodyHOther;
+
+    
     if (q1) page.left.push(q1);
     if (q2) page.right.push(q2);
 
@@ -577,22 +620,61 @@ async function renderAll({ setId, bucket, variant }) {
     // 다음 페이지가 "2문제" 형태로 있을 때만 합치기(네 요구와 동일)
     if (q3 && q4) {
       const h1 = heights.get(q1.id) ?? 0;
-      const h2 = heights.get(q2.id) ?? 0;
+      const h2 = q2 ? (heights.get(q2.id) ?? 0) : 0;
+
       const h3 = heights.get(q3.id) ?? 0;
       const h4 = heights.get(q4.id) ?? 0;
+      
+      // AFTER
+      const fitLeft  = (h1 + colGapPx + h3) <= bodyHPage;
+      const fitRight = (h2 + colGapPx + h4) <= bodyHPage;
 
-      const fitLeft  = (h1 + colGapPx + h3) <= bodyH;
-      const fitRight = (h2 + colGapPx + h4) <= bodyH;
+      // 4칸(2행2열) 조건: q3는 왼쪽 아래, q4는 오른쪽 아래
+      const fitLeft3   = (h1 + colGapPx + h3) <= bodyHPage;
+      const fitRight4  = (h2 + colGapPx + h4) <= bodyHPage;
 
-      if (fitLeft && fitRight) {
+      // 3칸 예외(오른쪽 아래에 q3만 넣기) 조건: q3가 오른쪽 아래에 실제로 들어가는지
+      const fitRight3  = (h2 + colGapPx + h3) <= bodyHPage;
+
+
+      if (fitLeft3 && fitRight4) {
+        // 1 2 / 3 4
         page.left.push(q3);
         page.right.push(q4);
-        i += 2; // ✅ 다음 페이지의 2문제를 흡수했으므로 인덱스 추가 이동
+        i += 2;
+      } else if (fitLeft3) {
+        // 1 2 / 3 _
+        page.left.push(q3);
+        i += 1;
+      } else if (fitRight3) {
+        // 1 2 / _ 3
+        page.right.push(q3);
+        i += 1;
       }
+
     }
 
-    pages.push(page);
+  // ✅ q4가 없고 q3만 남은 경우도 동일하게 처리 가능
+  else if (q3) {
+      const h1 = heights.get(q1.id) ?? 0;
+      const h2 = q2 ? (heights.get(q2.id) ?? 0) : 0;
+      const h3 = heights.get(q3.id) ?? 0;
+
+      const fitLeft  = (h1 + colGapPx + h3) <= bodyHPage;
+      const fitRight = (h2 + colGapPx + h3) <= bodyHPage;
+
+      if (fitLeft) {
+        page.left.push(q3);   // 1 2 / 3 _
+        i += 1;
+      } else if (fitRight) {
+        page.right.push(q3);  // ✅ 1 2 / _ 3
+        i += 1;
+      }
   }
+  
+
+    pages.push(page);
+}
 
 
   // 4) 실제 렌더
@@ -620,6 +702,33 @@ async function renderAll({ setId, bucket, variant }) {
   updateToolbarTitle(currentSetData, bucket, variant);
 }
 
+// [print.markdown.js] 위치: qp()/setQp() 위쪽(유틸 함수 영역) 아무 데나 추가
+function parseRangeSpec(spec, maxN) {
+  const raw = String(spec || "").trim();
+  if (!raw) return { ok: false, set: new Set(), msg: "범위를 입력하세요. (예: 1-8,10,12-14)" };
+
+  const out = new Set();
+  const parts = raw.split(",").map(s => s.trim()).filter(Boolean);
+
+  for (const p of parts) {
+    const m = p.match(/^(\d+)\s*-\s*(\d+)$/);
+    if (m) {
+      let a = Number(m[1]), b = Number(m[2]);
+      if (!Number.isFinite(a) || !Number.isFinite(b)) return { ok:false, set:new Set(), msg:`형식 오류: ${p}` };
+      if (a > b) [a, b] = [b, a];
+      for (let k = a; k <= b; k++) if (k >= 1 && k <= maxN) out.add(k);
+      continue;
+    }
+    const n = Number(p);
+    if (!Number.isFinite(n)) return { ok:false, set:new Set(), msg:`형식 오류: ${p}` };
+    if (n >= 1 && n <= maxN) out.add(n);
+  }
+
+  if (out.size === 0) return { ok:false, set:new Set(), msg:"선택된 문항이 없습니다. (범위가 세트 길이를 넘었을 수 있어요)" };
+  return { ok: true, set: out, msg: `선택됨: ${out.size}문항` };
+}
+
+
 
 function qp(name) {
   const p = new URLSearchParams(location.search);
@@ -641,22 +750,51 @@ document.addEventListener("DOMContentLoaded", async () => {
   const variantSel = document.getElementById("variant-select");
   const bucketSel = document.getElementById("bucket-select");
 
-  const initVariant = qp("variant") || "student";
-  const initBucket = qp("bucket") || "all";
+// [print.markdown.js] 위치: document.addEventListener("DOMContentLoaded", ...) 내부
+// bucket-select/apply-btn 세팅하는 부분에 추가
 
-  if (variantSel) variantSel.value = (initVariant === "teacher" ? "teacher" : "student");
-  if (bucketSel) bucketSel.value = (initBucket === "core" || initBucket === "supp") ? initBucket : "all";
+const rangeWrap = document.getElementById("range-wrap");
+const rangeInput = document.getElementById("range-input");
+const rangeHint = document.getElementById("range-hint");
+
+// 초기값(쿼리스트링)
+const initBucket = qp("bucket") || "all";
+const initRange = qp("range") || "";
+
+if (bucketSel) bucketSel.value = (["all","core","supp","custom"].includes(initBucket) ? initBucket : "all");
+if (rangeInput) rangeInput.value = initRange;
+
+// bucket 변경 시 입력칸 토글
+function syncRangeUI() {
+  const isCustom = (bucketSel && bucketSel.value === "custom");
+  if (rangeWrap) rangeWrap.classList.toggle("is-hidden", !isCustom);
+  if (rangeHint) rangeHint.textContent = "";
+}
+if (bucketSel) bucketSel.addEventListener("change", syncRangeUI);
+syncRangeUI();
+
+
+  // if (variantSel) variantSel.value = (initVariant === "teacher" ? "teacher" : "student");
+  // if (bucketSel) bucketSel.value = (initBucket === "core" || initBucket === "supp") ? initBucket : "all";
 
   const applyBtn = document.getElementById("apply-btn");
-  if (applyBtn) {
-    applyBtn.addEventListener("click", async () => {
-      const variant = variantSel ? variantSel.value : "student";
-      const bucket = bucketSel ? bucketSel.value : "all";
-      setQp("variant", variant);
-      setQp("bucket", bucket);
-      await renderAll({ setId, bucket, variant });
-    });
-  }
+  
+// apply 클릭 시 range도 query param에 반영
+if (applyBtn) {
+  applyBtn.addEventListener("click", async () => {
+    const variant = variantSel ? variantSel.value : "student";
+    const bucket = bucketSel ? bucketSel.value : "all";
+    const range = (rangeInput ? rangeInput.value : "").trim();
+
+    setQp("variant", variant);
+    setQp("bucket", bucket);
+    if (bucket === "custom") setQp("range", range);
+    else setQp("range", ""); // custom 아니면 비워두기(혼선 방지)
+
+    await renderAll({ setId, bucket, variant });
+  });
+}
+
 
   const printBtn = document.getElementById("print-btn");
   if (printBtn) printBtn.addEventListener("click", () => window.print());
