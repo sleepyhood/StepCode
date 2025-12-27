@@ -1562,8 +1562,8 @@ function shouldMcqOptionsUseTwoColumns(q) {
   if (opts.length < 4) return false; // 2~3지는 굳이 2열 필요 없음
   if (opts.length > 6) return false; // 보기 수가 많으면 2열에서도 세로가 길어짐
 
-  const MAX_ROWS = 10; // (대략) 5줄 이내면 2열 허용
-  const MAX_ROW_CHARS = 25; // n: 한 행(줄)의 최대 글자 수(경험적으로 조절)
+  const MAX_ROWS = 20; // (대략) 5줄 이내면 2열 허용
+  const MAX_ROW_CHARS = 8; // n: 한 행(줄)의 최대 글자 수(경험적으로 조절)
 
   const normalize = (s) =>
     String(s ?? "")

@@ -12,7 +12,7 @@
       "level": "챌린지",
       "title": "MCQ 1. 무한 루프가 되는 이유(갱신 누락)",
       "description": "아래 코드가 무한 루프가 되는 이유로 가장 알맞은 것을 고르세요.",
-      "code": "n = int(input())\nwhile n > 0:\n    print('%d' % n)\n    # n을 변화시키는 코드가 없다",
+      "code": "n = int(input())\nwhile n > 0:\n    print('%d' % n)\n    # 무한루프 발생",
       "options": [
         "조건식이 항상 거짓이다",
         "n이 0이 될 수 없기 때문에 무한 루프가 된다",
@@ -74,7 +74,7 @@
       "type": "mcq",
       "level": "챌린지",
       "title": "MCQ 4. 찾으면 종료, 없으면 -1",
-      "description": "다음 중 정수 n을 입력받고, 이어서 n개의 정수를 입력받아 **처음으로 음수가 나온 위치(1부터 시작)**를 출력하는 코드로 올바른 것을 고르세요.\n음수가 한 번도 없다면 -1을 출력합니다.\n(출력은 서식문자를 사용한다.)",
+      "description": "다음 중 정수 n을 입력받고, 이어서 n개의 정수를 입력받아 **처음으로 음수가 나온 위치(1부터 시작)** 를 출력하는 코드로 올바른 것을 고르세요.\n음수가 한 번도 없다면 -1을 출력합니다.\n(출력은 서식문자를 사용한다.)",
       "code": null,
       "options": [
         "n = int(input())\npos = -1\ni = 1\nwhile i <= n:\n    x = int(input())\n    if x < 0 and pos == -1:\n        pos = i\n        break\n    i = i + 1\nprint('%d' % pos)",
@@ -134,7 +134,7 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 1. 첫 양수의 위치 (조건식 채우기)",
-      "description": "정수 n을 입력받고, 이어서 n개의 정수를 입력받습니다.\n그 중 **처음으로 양수가 나온 위치(1부터 시작)**를 출력하세요.\n양수가 한 번도 없다면 -1을 출력합니다.\n\n아래 코드에서 주석 위치에 들어갈 조건식 한 줄만 작성하면 됩니다.",
+      "description": "정수 n을 입력받고, 이어서 n개의 정수를 입력받습니다.\n그 중 **처음으로 양수가 나온 위치(1부터 시작)** 를 출력하세요.\n양수가 한 번도 없다면 -1을 출력합니다.\n\n아래 코드에서 주석 위치에 들어갈 조건식 한 줄만 작성하면 됩니다.",
       "code": "n = int(input())\npos = -1\ni = 1\nwhile i <= n:\n    x = int(input())\n    if  # TODO: x가 양수이고 아직 pos가 -1일 때만 실행되도록 조건식을 작성하시오.\n        pos = i\n        break\n    i = i + 1\nprint('%d' % pos)",
       "expectedCode": "x > 0 and pos == -1",
       "hint": ""
