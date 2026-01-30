@@ -1,0 +1,119 @@
+﻿{
+  "id": "py_while_m1",
+  "title": "Python while문 변수 연계 1회차",
+  "categoryId": "py_while",
+  "availableLanguages": ["python"],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. 반복 변수의 역할",
+      "description": "다음 코드에서 변수 i의 역할로 알맞은 것을 고르세요.",
+      "code": "n = int(input())\ns = 0\ni = 1\nwhile i <= n:\n    s = s + i\n    i = i + 1\nprint('%d' % s)",
+      "options": [
+        "반복 횟수를 세는 변수",
+        "입력값의 합을 저장하는 변수",
+        "마지막으로 입력한 값을 저장하는 변수",
+        "최댓값을 저장하는 변수"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. 잘못된 변수 갱신",
+      "description": "다음 코드는 n개의 정수를 입력받아 짝수의 개수를 세려는 코드입니다. 올바른 동작을 위해 필요한 한 줄로 알맞은 것을 고르세요.",
+      "code": "n = int(input())\ni = 1\ncnt = 0\nwhile i <= n:\n    x = int(input())\n    if x % 2 == 0:\n        cnt = cnt + 1\n    # TODO: 여기에 필요한 한 줄을 추가",
+      "options": [
+        "i = i + 1",
+        "x = x + 1",
+        "cnt = cnt + 1",
+        "n = n - 1"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "기초",
+      "title": "Short 1. 음수 개수",
+      "description": "아래 프로그램에서 입력이 순서대로 6, 3, -1, 0, -5, 2, -3일 때 출력되는 값을 쓰시오.",
+      "code": "n = int(input())\ni = 1\ncnt = 0\nwhile i <= n:\n    x = int(input())\n    if x < 0:\n        cnt = cnt + 1\n    i = i + 1\nprint('%d' % cnt)",
+      "expectedText": "3"
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "중급",
+      "title": "MCQ 3. 최댓값 초기화",
+      "description": "다음 중 입력된 n개의 정수에서 최댓값을 올바르게 출력하는 코드로 알맞은 것을 고르세요. (입력값은 음수일 수도 있습니다.)",
+      "code": null,
+      "options": [
+        "n = int(input())\ni = 1\nmx = 0\nwhile i <= n:\n    x = int(input())\n    if x > mx:\n        mx = x\n    i = i + 1\nprint('%d' % mx)",
+        "n = int(input())\ni = 1\nx = int(input())\nmx = x\nwhile i < n:\n    x = int(input())\n    if x > mx:\n        mx = x\n    i = i + 1\nprint('%d' % mx)",
+        "n = int(input())\ni = 1\nmx = -1\nwhile i <= n:\n    x = int(input())\n    if x > mx:\n        mx = x\n    i = i + 1\nprint('%d' % mx)",
+        "n = int(input())\ni = 1\nmx = 0\nwhile i < n:\n    x = int(input())\n    mx = x\n    i = i + 1\nprint('%d' % mx)"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "중급",
+      "title": "Short 2. 짝수 번째 입력의 합",
+      "description": "아래 프로그램에서 입력이 순서대로 5, 3, 8, 2, 9, 1일 때 출력되는 값을 쓰시오.",
+      "code": "n = int(input())\ni = 1\ns = 0\nwhile i <= n:\n    x = int(input())\n    if i % 2 == 0:\n        s = s + x\n    i = i + 1\nprint('%d' % s)",
+      "expectedText": "10"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "중급",
+      "title": "Code 1. 플래그 변수 사용",
+      "description": "정수 n을 입력받고, 이어서 n개의 정수를 입력받습니다. 그 중 3의 배수가 **하나라도** 있으면 Yes, 없으면 No를 출력하세요.\n\n아래 코드에서 주석 위치에 들어갈 한 줄을 작성하세요.",
+      "code": "n = int(input())\ni = 1\nfound = False\nwhile i <= n:\n    x = int(input())\n    if x % 3 == 0:\n        # TODO: 3의 배수를 찾았음을 기록\n        pass\n    i = i + 1\nif found:\n    print('%s' % 'Yes')\nelse:\n    print('%s' % 'No')",
+      "expectedCode": "found = True",
+      "hint": ""
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "챌린지",
+      "title": "MCQ 4. 변수 사용 오류",
+      "description": "다음 코드는 n개의 정수를 입력받아 합을 출력하려고 합니다. 이 코드의 문제점으로 알맞은 것을 고르세요.",
+      "code": "n = int(input())\ni = 1\ns = 0\nwhile i <= n:\n    x = int(input())\n    s = s + i\n    i = i + 1\nprint('%d' % s)",
+      "options": [
+        "입력값 x가 합에 반영되지 않는다",
+        "i가 증가하지 않아 무한 루프가 된다",
+        "s가 문자열로 저장된다",
+        "print에서 서식문자를 사용하지 않아 오류가 난다"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 0
+    },
+    {
+      "id": "short3",
+      "type": "short",
+      "level": "챌린지",
+      "title": "Short 3. 합과 개수",
+      "description": "아래 프로그램에서 입력이 순서대로 4, 2, 7, 6, 0일 때 출력되는 값을 쓰시오.",
+      "code": "s = 0\ncnt = 0\nwhile True:\n    x = int(input())\n    if x == 0:\n        break\n    if x % 2 == 0:\n        s = s + x\n        cnt = cnt + 1\nprint('%d' % cnt)",
+      "expectedText": "2"
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "챌린지",
+      "title": "Code 2. 최솟값 초기값 채우기",
+      "description": "정수 n을 입력받고, n개의 정수를 입력받아 최솟값을 출력하는 코드를 완성하세요.\n\n아래 코드에서 주석 위치에 들어갈 한 줄을 작성하세요.",
+      "code": "n = int(input())\ni = 1\nx = int(input())\nmn =  # TODO: 첫 입력값으로 최솟값 초기화\nwhile i < n:\n    x = int(input())\n    if x < mn:\n        mn = x\n    i = i + 1\nprint('%d' % mn)",
+      "expectedCode": "x",
+      "hint": ""
+    }
+  ]
+}

@@ -10,14 +10,14 @@
       "id": "mcq1",
       "type": "mcq",
       "level": "챌린지",
-      "title": "MCQ 1. 무한 루프가 되는 이유(갱신 누락)",
-      "description": "아래 코드가 무한 루프가 되는 이유로 가장 알맞은 것을 고르세요.",
-      "code": "n = int(input())\nwhile n > 0:\n    print('%d' % n)\n    # 무한루프 발생",
+      "title": "MCQ 1. 이전 값이 필요한 이유",
+      "description": "아래 프로그램에서 입력이 순서대로 3, 5, 4, 6, 0 일 때 출력으로 알맞은 것을 고르세요.",
+      "code": "prev = int(input())\ncnt = 0\nwhile True:\n    x = int(input())\n    if x == 0:\n        break\n    if x > prev:\n        cnt = cnt + 1\n    prev = x\nprint('%d' % cnt)",
       "options": [
-        "조건식이 항상 거짓이다",
-        "n이 0이 될 수 없기 때문에 무한 루프가 된다",
-        "반복문 안에서 n이 변하지 않아 n > 0이 계속 참이 된다",
-        "print에 서식문자를 사용했기 때문에 무한 루프가 된다"
+        "0",
+        "1",
+        "2",
+        "3"
       ],
       "optionLabels": [
         "A",

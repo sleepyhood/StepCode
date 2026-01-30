@@ -1,0 +1,153 @@
+{
+  "id": "py_lv07_for_comment_a02",
+  "title": "Python for문 주석 훈련 A02 (주석 기반 디버깅/빈칸)",
+  "categoryId": "py_for",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. s의 역할(설명) 고르기",
+      "description": "아래 코드에서 s의 역할을 가장 잘 설명한 것을 고르세요.",
+      "code": "n = int(input())\ns = 0\nfor i in range(n):\n    num = int(input())\n    if num > 0:\n        s = s + num\nprint('%d' % s)",
+      "options": [
+        "s: 지금까지 입력된 양수의 합",
+        "s: 지금까지 입력된 양수의 개수",
+        "s: 반복문이 돈 횟수",
+        "s: 입력값 중 최솟값"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. (디버깅) 입력 받는 위치가 이상하다",
+      "description": "아래 코드는 'n개의 입력값 중 홀수의 합'을 구하려는 코드입니다.\n가장 간단한 수정은 무엇인가요?",
+      "code": "n = int(input())\nnum = int(input())\ns = 0\nfor i in range(n):\n    if num % 2 != 0:\n        s = s + num\nprint('%d' % s)",
+      "options": [
+        "for i in range(n): 줄을 지운다",
+        "num = int(input()) 을 for문 안으로 옮긴다",
+        "if 조건을 i % 2 != 0 으로 바꾼다",
+        "s = s + num 을 s = s + 1 로 바꾼다"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. (디버깅) 틀린 주석 고르기 2",
+      "description": "아래 코드에 붙인 주석들 중 **틀린 주석**을 고르세요.",
+      "code": "n = int(input())\nmin_v = int(input())\n# min_v: 지금까지 입력된 값 중 최솟값\nfor i in range(n - 1):\n    num = int(input())\n    # num: 입력값\n    if num < min_v:\n        min_v = num\nprint('%d' % min_v)",
+      "options": [
+        "# min_v: 지금까지 입력된 값 중 최솟값",
+        "# num: 입력값",
+        "# i: 반복 인덱스",
+        "# min_v: 입력값의 합"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. range만 바꾸려는 시도는 왜 위험할까?",
+      "description": "다음 중 'range만 바꾸면 된다'는 생각이 **가장 틀리기 쉬운** 문제를 고르세요.",
+      "code": null,
+      "options": [
+        "1부터 20까지 짝수 출력",
+        "n개의 입력값 중 짝수의 개수 세기",
+        "1부터 20까지 3의 배수 출력",
+        "5부터 1까지 거꾸로 출력"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. (개수 vs 합) 설명에 맞는 변수는?",
+      "description": "설명: '조건을 만족한 입력값을 하나 발견할 때마다 1씩 증가한다'\n이 설명에 가장 잘 맞는 변수 역할은 무엇인가요?",
+      "code": null,
+      "options": [
+        "반복 인덱스",
+        "입력값",
+        "누적 합",
+        "개수"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. 빈칸: cnt 주석 완성",
+      "description": "아래 문장을 완성하세요.\n\n\"cnt는 지금까지 입력된 ________의 개수\" (정답은 한 단어)",
+      "code": "",
+      "expectedText": "짝수"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. 빈칸: s 주석 완성",
+      "description": "아래 문장을 완성하세요.\n\n\"s는 지금까지 입력된 ________의 합\" (정답은 한 단어)",
+      "code": "",
+      "expectedText": "양수"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. 주석 한 줄 작성 (cnt)",
+      "description": "아래 TODO 위치에 **주석 한 줄**을 작성하세요.\n형식은 반드시 아래와 같이 쓰세요.\n\n- 형식: # cnt: 짝수의 개수",
+      "code": "cnt = 0\n# TODO: 여기에 주석 한 줄\nfor i in range(n):\n    num = int(input())\n    if num % 2 == 0:\n        cnt = cnt + 1\nprint('%d' % cnt)",
+      "expectedCode": "# cnt: 짝수의 개수",
+      "hint": "개수는 1씩 증가합니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. 입력 한 줄 + 주석 (루프 안)",
+      "description": "아래 코드는 'n개의 입력값을 하나씩 처리'해야 합니다.\nTODO 위치에 들어갈 **입력 한 줄(주석 포함)**을 작성하세요.\n\n- 형식: num = int(input())  # 입력값",
+      "code": "n = int(input())\ns = 0\nfor i in range(n):\n    # TODO: 여기에 입력 한 줄(주석 포함)\n    if num > 0:\n        s = s + num\nprint('%d' % s)",
+      "expectedCode": "num = int(input())  # 입력값",
+      "hint": "입력은 반복문 안에서 n번 받아야 합니다."
+    }
+  ]
+}

@@ -157,6 +157,14 @@ body{
   gap: 3mm;
 }
 
+.page-grid.page-grid--single{
+  display: block;
+}
+
+.page-col.page-col--single{
+  width: 100%;
+}
+
 /* problem card */
 .p-card{
     break-inside: avoid;

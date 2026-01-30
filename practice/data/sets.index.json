@@ -111,6 +111,35 @@
   "numProblems": 9,
   "file": "c_for_b1.json"
 },
+  {
+  "id": "c_for_b2",
+  "categoryId": "c_for",
+  "title": "C for문 기초 2회차",
+  "round": 2,
+  "difficulty": "basic",
+  "numProblems": 9,
+  "file": "c_for_b2.json"
+},
+
+  {
+  "id": "c_for_b3",
+  "categoryId": "c_for",
+  "title": "C for문 기초 3회차",
+  "round": 3,
+  "difficulty": "basic",
+  "numProblems": 9,
+  "file": "c_for_b3.json"
+},
+
+  {
+  "id": "c_for_b4",
+  "categoryId": "c_for",
+  "title": "C for문 기초 4회차",
+  "round": 4,
+  "difficulty": "basic",
+  "numProblems": 9,
+  "file": "c_for_b4.json"
+},
 {
   "id": "c_for_c1",
   "categoryId": "c_for",
@@ -395,7 +424,7 @@
     "id": "py_lv05_cast_c01",
     "categoryId": "py_cast",
     "title": "Python 자료형 변환 LV05 챌린지 1회차",
-    "round": 3,
+    "round": 4,
     "difficulty": "challenge",
     "numProblems": 9,
     "file": "py_lv05_cast_c01.json"
@@ -411,6 +440,38 @@
     "numProblems": 9,
     "file": "py_lv07_for_b02.json"
   },
+  
+  {
+    "id": "py_lv07_for_b03",
+    "categoryId": "py_for",
+    "title": "Python for문 LV07 기초 2회차",
+    "round": 3,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv07_for_b03.json"
+  },
+
+    {
+    "id": "py_lv07_for_b04",
+    "categoryId": "py_for",
+    "title": "Python for문 LV07 기초 2회차",
+    "round": 4,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv07_for_b04.json"
+  },
+
+  {
+    "id": "py_lv07_for_comment_a01",
+    "categoryId": "py_for",
+    "title": "Python for문 LV07 기초 a1회차",
+    "round": 5,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv07_for_comment_a01.json"
+  },
+  
+
   {
     "id": "py_lv08_while_b02",
     "categoryId": "py_while",
@@ -429,6 +490,17 @@
     "numProblems": 9,
     "file": "py_lv08_while_c01.json"
   },
+  {
+    "id": "py_lv08_while_m01",
+    "categoryId": "py_while",
+    "title": "Python while문 변수 연계 1회차",
+    "round": 4,
+    "difficulty": "basic",
+    "numProblems": 9,
+    "file": "py_lv08_while_m01.json"
+  },
+
+
 
   {
     "id": "py_lv09_nfor_b01",

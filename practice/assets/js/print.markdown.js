@@ -442,7 +442,7 @@ function metaField(label, key, extraClass, defaultValue = "") {
 // (2) buildPage() : 메타(학생/반/번호/배부일/제출일) + docid는 1페이지에만
 /* [print.markdown.js] 위치: buildPage()를 "2열 컬럼 컨테이너" 방식으로 수정 */
 
-function buildPage(setId, set, pageIndex, pageCount, problems, indexMap, variant, bucket) {
+function buildPage(setId, set, pageIndex, pageCount, problems, indexMap, variant, bucket, layout = "double") {
   const page = el("div", "print-page");
 
   const header = el("div", "page-header");
@@ -481,10 +481,16 @@ function buildPage(setId, set, pageIndex, pageCount, problems, indexMap, variant
 
   // ✅ grid 대신 "2열 컬럼 컨테이너"
   const grid = el("div", "page-grid");
+  if (layout === "single") grid.classList.add("page-grid--single");
+
   const colL = el("div", "page-col");
-  const colR = el("div", "page-col");
+  if (layout === "single") colL.classList.add("page-col--single");
   grid.appendChild(colL);
-  grid.appendChild(colR);
+
+  if (layout !== "single") {
+    const colR = el("div", "page-col");
+    grid.appendChild(colR);
+  }
   page.appendChild(grid);
 
   // problems는 이제 "페이지에 들어갈 카드들"만 넘긴다고 가정(렌더는 여기서만)
@@ -541,11 +547,11 @@ async function renderAll({ setId, bucket, variant }) {
 
   root.innerHTML = "";
 
-  const probeFirst = buildPage(setId, currentSetData, 0, 99, [], indexMap, variant, bucket);
+  const probeFirst = buildPage(setId, currentSetData, 0, 99, [], indexMap, variant, bucket, "double");
   root.appendChild(probeFirst);
   const bodyHFirst = getBodyHeightPx(probeFirst);
 
-  const probeOther = buildPage(setId, currentSetData, 1, 99, [], indexMap, variant, bucket);
+  const probeOther = buildPage(setId, currentSetData, 1, 99, [], indexMap, variant, bucket, "double");
   root.appendChild(probeOther);
   const bodyHOther = getBodyHeightPx(probeOther);
 
@@ -553,7 +559,7 @@ async function renderAll({ setId, bucket, variant }) {
   root.removeChild(probeOther);
 
   // 1) "빈 페이지" 하나 만들어서 폭/높이 측정
-  const probePage = buildPage(setId, currentSetData, 0, 1, [], indexMap, variant, bucket);
+  const probePage = buildPage(setId, currentSetData, 0, 1, [], indexMap, variant, bucket, "double");
   root.appendChild(probePage);
 
   const grid = probePage.querySelector(".page-grid");
@@ -576,12 +582,15 @@ async function renderAll({ setId, bucket, variant }) {
 
   // 2) 카드 높이 측정
   const heights = new Map();
+  const heightsFull = new Map();
   for (const q of selected) {
     const originalIndex = indexMap.get(q.id) ?? 0;
     const card = buildProblemCard(currentSetData, q, originalIndex, variant);
     meas.appendChild(card);
     const h = measureCardHeightPx(card, colW);
     heights.set(q.id, h);
+    const hf = measureCardHeightPx(card, gridRect.width);
+    heightsFull.set(q.id, hf);
     meas.removeChild(card);
   }
   const colGapPx = parseFloat(getComputedStyle(probePage.querySelector(".page-col")).gap || "0");
@@ -604,21 +613,39 @@ async function renderAll({ setId, bucket, variant }) {
     const q1 = selected[i] ?? null;
     const q2 = selected[i + 1] ?? null;
 
-    const page = { left: [], right: [] };
     const bodyHPage = (pages.length === 0) ? bodyHFirst : bodyHOther;
+    const isWideCandidate = (q) => {
+      if (!q || q.type !== "mcq") return false;
+      const hCol = heights.get(q.id) ?? 0;
+      const hFull = heightsFull.get(q.id) ?? 0;
+      return hCol > bodyHPage && hFull <= bodyHPage;
+    };
 
-    
+    if (q1 && isWideCandidate(q1)) {
+      pages.push({ layout: "single", single: [q1] });
+      i += 1;
+      continue;
+    }
+
+    if (q2 && isWideCandidate(q2)) {
+      const page = { layout: "double", left: [], right: [] };
+      if (q1) page.left.push(q1);
+      pages.push(page);
+      i += 1;
+      continue;
+    }
+
+    const page = { layout: "double", left: [], right: [] };
     if (q1) page.left.push(q1);
     if (q2) page.right.push(q2);
-
-    i += 2;
+    i += q2 ? 2 : 1;
 
     // 다음 2개를 "2행"으로 합칠지 판단
     const q3 = selected[i] ?? null;
     const q4 = selected[i + 1] ?? null;
 
     // 다음 페이지가 "2문제" 형태로 있을 때만 합치기(네 요구와 동일)
-    if (q3 && q4) {
+    if (q3 && q4 && !isWideCandidate(q3) && !isWideCandidate(q4)) {
       const h1 = heights.get(q1.id) ?? 0;
       const h2 = q2 ? (heights.get(q2.id) ?? 0) : 0;
 
@@ -635,7 +662,6 @@ async function renderAll({ setId, bucket, variant }) {
 
       // 3칸 예외(오른쪽 아래에 q3만 넣기) 조건: q3가 오른쪽 아래에 실제로 들어가는지
       const fitRight3  = (h2 + colGapPx + h3) <= bodyHPage;
-
 
       if (fitLeft3 && fitRight4) {
         // 1 2 / 3 4
@@ -655,7 +681,7 @@ async function renderAll({ setId, bucket, variant }) {
     }
 
   // ✅ q4가 없고 q3만 남은 경우도 동일하게 처리 가능
-  else if (q3) {
+  else if (q3 && !isWideCandidate(q3)) {
       const h1 = heights.get(q1.id) ?? 0;
       const h2 = q2 ? (heights.get(q2.id) ?? 0) : 0;
       const h3 = heights.get(q3.id) ?? 0;
@@ -672,7 +698,6 @@ async function renderAll({ setId, bucket, variant }) {
       }
   }
   
-
     pages.push(page);
 }
 
@@ -680,21 +705,29 @@ async function renderAll({ setId, bucket, variant }) {
   // 4) 실제 렌더
   const pageCount = pages.length;
   pages.forEach((p, i) => {
-    const pageEl = buildPage(setId, currentSetData, i, pageCount, [], indexMap, variant, bucket);
-    // ✅ 수정
+    const layout = p.layout || "double";
+    const pageEl = buildPage(setId, currentSetData, i, pageCount, [], indexMap, variant, bucket, layout);
+
     const cols = pageEl.querySelectorAll(".page-col");
     const colL = cols[0];
-    const colR = cols[1]; 
+    const colR = cols[1];
 
-    p.left.forEach((q) => {
-      const originalIndex = indexMap.get(q.id) ?? 0;
-      colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
-    });
+    if (layout === "single") {
+      (p.single || []).forEach((q) => {
+        const originalIndex = indexMap.get(q.id) ?? 0;
+        colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+      });
+    } else {
+      (p.left || []).forEach((q) => {
+        const originalIndex = indexMap.get(q.id) ?? 0;
+        colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+      });
 
-    p.right.forEach((q) => {
-      const originalIndex = indexMap.get(q.id) ?? 0;
-      colR.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
-    });
+      (p.right || []).forEach((q) => {
+        const originalIndex = indexMap.get(q.id) ?? 0;
+        colR.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+      });
+    }
 
     root.appendChild(pageEl);
   });

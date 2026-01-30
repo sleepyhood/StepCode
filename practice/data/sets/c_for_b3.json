@@ -1,0 +1,153 @@
+{
+  "id": "c_for_b3",
+  "title": "C for문 기초 3회차",
+  "categoryId": "c_for",
+  "availableLanguages": [
+    "c"
+  ],
+  "problems": [
+    {
+      "id": "mcq1",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 1. (함정) 짝수 개수인데 i를 검사하면?",
+      "description": "아래 프로그램의 출력으로 알맞은 것을 고르세요.\n(입력은 순서대로: 5, 1, 2, 3, 4, 5)",
+      "code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        if (i % 2 == 0) {\n            cnt = cnt + 1;\n        }\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq2",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 2. n개의 입력 중 짝수의 개수 (정답 코드 고르기)",
+      "description": "정수 n을 입력받고, 이어서 n개의 정수를 입력받아 짝수의 개수를 출력하려고 합니다.\n설명에 딱 맞는 코드를 고르세요.",
+      "code": null,
+      "options": [
+        "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        if (i % 2 == 0) {\n            cnt = cnt + 1;\n        }\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}",
+        "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int cnt = 0;\n    for (int num = 0; num < n; num += 2) {\n        cnt = cnt + 1;\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}",
+        "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        if (num % 2 == 0) {\n            cnt = cnt + 1;\n        }\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}",
+        "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        if (num % 2 != 0) {\n            cnt = cnt + 1;\n        }\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq3",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 3. (함정) '홀수의 합'을 range로 바꾸면 왜 틀리나?",
+      "description": "정수 n을 입력받고, 이어서 n개의 정수를 입력받아 '입력값 중 홀수의 합'을 출력하려고 합니다.\n올바른 코드를 고르세요.",
+      "code": null,
+      "options": [
+        "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int s = 0;\n    for (int i = 1; i <= n; i += 2) {\n        s = s + i;\n    }\n\n    printf(\"%d\\n\", s);\n    return 0;\n}",
+        "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int s = 0;\n    for (int i = 0; i < n; i += 2) {\n        int num;\n        scanf(\"%d\", &num);\n        s = s + num;\n    }\n\n    printf(\"%d\\n\", s);\n    return 0;\n}",
+        "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int s = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        if (num % 2 != 0) {\n            s = s + num;\n        }\n    }\n\n    printf(\"%d\\n\", s);\n    return 0;\n}",
+        "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int s = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        if (i % 2 != 0) {\n            s = s + num;\n        }\n    }\n\n    printf(\"%d\\n\", s);\n    return 0;\n}"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "mcq4",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 4. 최소 수정으로 고치기 (i → num)",
+      "description": "아래 코드는 '양수의 개수'를 세려는 의도입니다. 의도대로 되게 하려면 무엇을 고쳐야 하나요?",
+      "code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        if (i > 0) {\n            cnt = cnt + 1;\n        }\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}",
+      "options": [
+        "for문의 시작값을 1로 바꾼다 (예: i = 1부터 시작)",
+        "if (i > 0)를 if (num > 0)로 바꾼다",
+        "cnt = cnt + 1을 cnt = cnt + num으로 바꾼다",
+        "printf를 지운다"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "mcq5",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 5. (개념 구분) 아래 중 range를 바꾸는 게 '맞는 경우'는?",
+      "description": "다음 중 '반복문의 범위/증가값을 바꾸는 것'이 핵심 해결책인 경우를 고르세요.",
+      "code": null,
+      "options": [
+        "1부터 10까지의 홀수를 출력한다",
+        "n개의 입력값 중 홀수만 더한다",
+        "n개의 입력값 중 짝수의 개수를 센다",
+        "n개의 입력값 중 0보다 큰 수의 합을 구한다"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 1. (실행 추적) i를 검사하면 이렇게 된다",
+      "description": "아래 프로그램에서 입력이 순서대로 4, 10, -2, 7, 0일 때 출력되는 값을 쓰세요.",
+      "code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        if (i < 2) {\n            cnt = cnt + 1;\n        }\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}",
+      "expectedText": "2"
+    },
+    {
+      "id": "short2",
+      "type": "short",
+      "level": "단답형",
+      "title": "Short 2. (정상 패턴) num을 검사하면?",
+      "description": "아래 프로그램에서 입력이 순서대로 5, 1, 2, 3, 4, 5일 때 출력되는 값을 쓰세요.",
+      "code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        if (num % 2 == 0) {\n            cnt = cnt + 1;\n        }\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}",
+      "expectedText": "2"
+    },
+    {
+      "id": "code1",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 1. (한 줄) 짝수 개수 세기 - if 한 줄 작성",
+      "description": "아래 코드의 TODO 위치에 들어갈 if문 한 줄을 작성하세요.\n(짝수일 때만 cnt가 1 증가해야 합니다.)",
+      "code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int cnt = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        // TODO: 여기에 if 한 줄을 작성하시오.\n            cnt = cnt + 1;\n    }\n\n    printf(\"%d\\n\", cnt);\n    return 0;\n}",
+      "expectedCode": "if (num % 2 == 0)",
+      "hint": "조건은 i가 아니라 num을 검사해야 합니다."
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "코드 작성",
+      "title": "Code 2. (한 줄) 홀수 합 구하기 - if 한 줄 작성",
+      "description": "아래 코드는 '입력값 중 홀수만 더하기'를 만들려는 코드입니다.\nTODO 위치에 들어갈 if문 한 줄을 작성하세요.",
+      "code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    int s = 0;\n    for (int i = 0; i < n; i++) {\n        int num;\n        scanf(\"%d\", &num);\n\n        // TODO: 여기에 if 한 줄을 작성하시오.\n            s = s + num;\n    }\n\n    printf(\"%d\\n\", s);\n    return 0;\n}",
+      "expectedCode": "if (num % 2 != 0)",
+      "hint": "반복 범위를 바꾸는 게 아니라, 입력값(num)을 if로 거르세요."
+    }
+  ]
+}
