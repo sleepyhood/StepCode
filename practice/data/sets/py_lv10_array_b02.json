@@ -71,11 +71,11 @@
       "id": "code2",
       "type": "code",
       "level": "기초",
-      "title": "Code 2. 평균을 실수로 계산",
-      "description": "sum_val(합계)와 n(개수)이 주어졌을 때, 평균을 실수(float)로 저장하는 **한 줄**을 작성하세요.",
-      "code": "sum_val = 0\nn = 0\n# TODO: 평균을 float avg에 저장하는 한 줄을 작성하시오.",
-      "expectedCode": "avg = sum_val / n",
-      "hint": "파이썬에서 / 는 실수 나눗셈입니다."
+      "title": "Code 2. 최솟값 갱신",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(arr[i]가 더 작으면 min_val을 갱신해야 합니다.)",
+      "code": "min_val = arr[0]\nfor i in range(1, len(arr)):\n    # TODO: 더 작은 값을 만나면 min_val을 갱신하는 한 줄을 작성하시오.",
+      "expectedCode": "if arr[i] < min_val: min_val = arr[i]",
+      "hint": "arr[i]가 min_val보다 작을 때 갱신합니다."
     },
     {
       "id": "mcq3",

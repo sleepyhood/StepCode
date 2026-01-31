@@ -11,7 +11,7 @@
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 1. N행 M열 별 사각형(입력)",
-      "description": "다음 요구사항을 만족하는 Python 코드를 고르세요.\n\n- 첫 줄에 정수 N, M을 입력받는다.\n- 별(*)로 N행 M열 사각형을 출력한다.\n- 문자열 반복(곱셈)은 사용하지 않는다.",
+      "description": "다음 출력 결과와 **같이 출력**하는 Python 코드를 고르세요.\n(문자열 반복(곱셈)은 사용하지 않는다.)\n\n예: N=2, M=3일 때 출력\n```\n***\n***\n```",
       "code": null,
       "options": [
         "n, m = map(int, input().split())\nfor i in range(m):\n    for j in range(n):\n        print('*', end='')\n    print()",
@@ -32,7 +32,7 @@
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 2. 높이 N 삼각형(입력)",
-      "description": "다음 요구사항을 만족하는 Python 코드를 고르세요.\n\n- 정수 N을 입력받는다.\n- 1번째 줄부터 N번째 줄까지, i번째 줄에 별 i개를 출력한다.\n- 문자열 반복(곱셈)은 사용하지 않는다.",
+      "description": "다음 출력 결과와 **같이 출력**하는 Python 코드를 고르세요.\n(문자열 반복(곱셈)은 사용하지 않는다.)\n\n예: N=4일 때 출력\n```\n*\n**\n***\n****\n```",
       "code": null,
       "options": [
         "n = int(input())\nfor i in range(1, n):\n    for j in range(i):\n        print('*', end='')\n    print()",
@@ -62,7 +62,7 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 1. N행을 반복하는 외부 for문",
-      "description": "첫 줄에 N과 M을 입력받아 N행 M열 별 사각형을 출력합니다.\n주석 위치에 들어갈 **외부 for문 한 줄**을 작성하세요.",
+      "description": "첫 줄에 N과 M을 입력받아 N행 M열 별 사각형을 출력합니다.\n주석 위치에 들어갈 **외부 for문 한 줄**을 작성하세요.\n\n예: N=2, M=3일 때 출력\n```\n***\n***\n```",
       "code": "n, m = map(int, input().split())\n# TODO: n행을 반복하는 for문 한 줄을 작성하시오.\n    for j in range(m):\n        print('*', end='')\n    print()",
       "expectedCode": "for i in range(n):",
       "hint": "range(n)를 사용하세요."
@@ -72,7 +72,7 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 2. M열을 반복하는 내부 for문",
-      "description": "첫 줄에 N과 M을 입력받아 N행 M열 별 사각형을 출력합니다.\n주석 위치에 들어갈 **내부 for문 한 줄**을 작성하세요.",
+      "description": "첫 줄에 N과 M을 입력받아 N행 M열 별 사각형을 출력합니다.\n주석 위치에 들어갈 **내부 for문 한 줄**을 작성하세요.\n\n예: N=2, M=3일 때 출력\n```\n***\n***\n```",
       "code": "n, m = map(int, input().split())\nfor i in range(n):\n    # TODO: m열을 반복하는 for문 한 줄을 작성하시오.\n        print('*', end='')\n    print()",
       "expectedCode": "for j in range(m):",
       "hint": "range(m)를 사용하세요."
@@ -82,7 +82,7 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 3. i번째 줄에 i개 출력(내부 for문)",
-      "description": "정수 N을 입력받아 왼쪽 직각삼각형을 출력합니다.\n주석 위치에 들어갈 **내부 for문 한 줄**을 작성하세요.\n\n- 1번째 줄: 1개, ..., N번째 줄: N개",
+      "description": "정수 N을 입력받아 왼쪽 직각삼각형을 출력합니다.\n주석 위치에 들어갈 **내부 for문 한 줄**을 작성하세요.\n\n- 1번째 줄: 1개, ..., N번째 줄: N개\n\n예: N=3일 때 출력\n```\n*\n**\n***\n```",
       "code": "n = int(input())\nfor i in range(1, n + 1):\n    # TODO: i번 반복하는 for문 한 줄을 작성하시오.\n        print('*', end='')\n    print()",
       "expectedCode": "for j in range(i):",
       "hint": "range(i)를 사용하세요."
@@ -92,7 +92,7 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 4. 역삼각형(내부 for문)",
-      "description": "정수 N을 입력받아 역삼각형을 출력합니다.\n주석 위치에 들어갈 **내부 for문 한 줄**을 작성하세요.\n\n- 1번째 줄: N개, 2번째 줄: N-1개, ..., N번째 줄: 1개",
+      "description": "정수 N을 입력받아 역삼각형을 출력합니다.\n주석 위치에 들어갈 **내부 for문 한 줄**을 작성하세요.\n\n- 1번째 줄: N개, 2번째 줄: N-1개, ..., N번째 줄: 1개\n\n예: N=3일 때 출력\n```\n***\n**\n*\n```",
       "code": "n = int(input())\nfor i in range(n, 0, -1):\n    # TODO: i번 반복하는 for문 한 줄을 작성하시오.\n        print('*', end='')\n    print()",
       "expectedCode": "for j in range(i):",
       "hint": "range(i)를 사용하세요."
@@ -102,7 +102,7 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 5. 행 번호를 출력(서식문자 사용)",
-      "description": "정수 N을 입력받아 N×N 숫자 사각형을 출력합니다.\ni번째 행(1부터 시작)에는 숫자 i를 N번 출력합니다.\n주석 위치에 들어갈 **print 한 줄**을 작성하세요.\n\n- 숫자는 서식문자(%)를 사용한다.\n- 숫자 사이에는 공백 1개를 둔다.",
+      "description": "정수 N을 입력받아 N×N 숫자 사각형을 출력합니다.\ni번째 행(1부터 시작)에는 숫자 i를 N번 출력합니다.\n주석 위치에 들어갈 **print 한 줄**을 작성하세요.\n\n- 숫자는 서식문자(%)를 사용한다.\n- 숫자 사이에는 공백 1개를 둔다.\n\n예: N=3일 때 출력\n```\n1 1 1\n2 2 2\n3 3 3\n```",
       "code": "n = int(input())\nfor i in range(1, n + 1):\n    for j in range(n):\n        # TODO: i를 공백과 함께 출력하시오.\n    print()",
       "expectedCode": "print('%d ' % i, end='')",
       "hint": "print('%d ' % i, end='') 형태를 사용하세요."
@@ -112,7 +112,7 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 6. 열 번호를 출력(서식문자 사용)",
-      "description": "정수 N을 입력받아 N×N 숫자 사각형을 출력합니다.\n각 행은 1 2 3 ... N 형태로 출력합니다.\n주석 위치에 들어갈 **print 한 줄**을 작성하세요.\n\n- 숫자는 서식문자(%)를 사용한다.\n- 숫자 사이에는 공백 1개를 둔다.",
+      "description": "정수 N을 입력받아 N×N 숫자 사각형을 출력합니다.\n각 행은 1 2 3 ... N 형태로 출력합니다.\n주석 위치에 들어갈 **print 한 줄**을 작성하세요.\n\n- 숫자는 서식문자(%)를 사용한다.\n- 숫자 사이에는 공백 1개를 둔다.\n\n예: N=3일 때 출력\n```\n1 2 3\n1 2 3\n1 2 3\n```",
       "code": "n = int(input())\nfor i in range(n):\n    for j in range(1, n + 1):\n        # TODO: j를 공백과 함께 출력하시오.\n    print()",
       "expectedCode": "print('%d ' % j, end='')",
       "hint": "print('%d ' % j, end='') 형태를 사용하세요."

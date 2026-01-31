@@ -71,11 +71,11 @@
       "id": "code2",
       "type": "code",
       "level": "기초",
-      "title": "Code 2. 역순 출력 for문 한 줄",
-      "description": "아래 코드에서 주석 위치에 들어갈 **for문 한 줄**을 작성하세요.\n(i가 n-1부터 0까지 1씩 감소해야 합니다.)",
-      "code": "n = len(arr)\n# TODO: i가 n-1부터 0까지 1씩 감소하는 for문 한 줄을 작성하시오.\n    print('%d' % arr[i])",
-      "expectedCode": "for i in range(n - 1, -1, -1):",
-      "hint": "range의 끝값은 포함되지 않으므로 -1까지 가려면 stop을 -1로 둡니다."
+      "title": "Code 2. 최솟값 인덱스 갱신",
+      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(arr[i]가 더 작으면 min_idx를 i로 갱신해야 합니다.)",
+      "code": "min_idx = 0\nfor i in range(1, len(arr)):\n    if arr[i] < arr[min_idx]:\n        # TODO: min_idx를 갱신하는 한 줄을 작성하시오.",
+      "expectedCode": "min_idx = i",
+      "hint": "인덱스를 갱신해야 하므로 i를 넣습니다."
     },
     {
       "id": "short2",

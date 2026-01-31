@@ -490,15 +490,6 @@
     "numProblems": 9,
     "file": "py_lv08_while_c01.json"
   },
-  {
-    "id": "py_lv08_while_m01",
-    "categoryId": "py_while",
-    "title": "Python while문 변수 연계 1회차",
-    "round": 4,
-    "difficulty": "basic",
-    "numProblems": 9,
-    "file": "py_lv08_while_m01.json"
-  },
 
 
 
