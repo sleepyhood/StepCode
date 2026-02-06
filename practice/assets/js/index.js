@@ -1,4 +1,4 @@
-// practice/assets/js/index.js
+﻿// practice/assets/js/index.js
 // 개선: 카테고리는 카드/아코디언(기본 접힘), 회차는 '칩'으로 압축, 검색 추가
 
 // 카테고리에서 언어 이름 뽑기 (예: "C - 조건문" → "C")
@@ -41,16 +41,16 @@ function createSetChip(s) {
 
   const main = document.createElement("span");
   main.className = "set-chip-main";
-  main.textContent = `${s.round}회차`;
+  main.textContent = `Round ${s.round}`;
 
   const sub = document.createElement("span");
   sub.className = "set-chip-sub";
-  sub.textContent = diff === "challenge" ? "챌린지" : "기초";
+  sub.textContent = diff === "challenge" ? "Challenge" : "Basic";
 
   const tiny = document.createElement("span");
   tiny.className = "set-chip-tiny";
   tiny.textContent =
-    typeof s.numProblems === "number" ? `${s.numProblems}문제` : "";
+    typeof s.numProblems === "number" ? `${s.numProblems} problems` : "";
 
   a.append(main, sub);
   if (tiny.textContent) a.append(tiny);
@@ -71,7 +71,7 @@ function preferredLangSort(langs) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   const root = document.getElementById("list-root");
-  root.textContent = "문제 목록을 불러오는 중입니다...";
+  root.textContent = "Loading problem library...";
 
   try {
     const [categories, sets] = await Promise.all([
@@ -90,12 +90,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const filterBar = document.createElement("div");
     filterBar.className = "filter-bar";
-    filterBar.appendChild(createFilterButton("전체", "all", true));
+    filterBar.appendChild(createFilterButton("All", "all", true));
     langs.forEach((lang) =>
       filterBar.appendChild(createFilterButton(lang, lang, false))
     );
 
-    // ===== 2) 상단 컨트롤(검색 + 모두 접기/펼치기) =====
+    // ===== 2) 상단 컨트롤(검색 + Collapse all/펼치기) =====
     const topControls = document.createElement("div");
     topControls.className = "top-controls";
 
@@ -106,17 +106,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     searchInput.className = "search-input";
     searchInput.type = "search";
     searchInput.placeholder =
-      "카테고리/세트 제목 검색 (예: 조건문, 2회차, while...)";
+      "Search tracks or rounds (e.g., arrays, round 2, while...)";
 
     const btnCollapseAll = document.createElement("button");
     btnCollapseAll.type = "button";
     btnCollapseAll.className = "action-btn";
-    btnCollapseAll.textContent = "모두 접기";
+    btnCollapseAll.textContent = "Collapse all";
 
     const btnExpandAll = document.createElement("button");
     btnExpandAll.type = "button";
     btnExpandAll.className = "action-btn";
-    btnExpandAll.textContent = "모두 펼치기";
+    btnExpandAll.textContent = "Expand all";
 
     searchRow.append(searchInput, btnCollapseAll, btnExpandAll);
     topControls.appendChild(searchRow);
@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const meta = document.createElement("div");
       meta.className = "category-meta";
-      meta.textContent = `기초 ${basicCount} · 챌린지 ${challCount}`;
+      meta.textContent = `Basics ${basicCount} · Challenges ${challCount}`;
 
       titleWrap.append(h3, meta);
 
@@ -177,6 +177,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       toggleBtn.type = "button";
       toggleBtn.className = "cat-toggle";
       toggleBtn.innerHTML = "▾";
+      toggleBtn.setAttribute("aria-label", "Toggle category");
 
       headerRow.append(titleWrap, toggleBtn);
       section.appendChild(headerRow);
@@ -188,12 +189,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       const groups = [
         {
           key: "basic",
-          label: "기초",
+          label: "Basics",
           pick: (s) => (s.difficulty || "basic") !== "challenge",
         },
         {
           key: "challenge",
-          label: "챌린지",
+          label: "Challenges",
           pick: (s) => (s.difficulty || "basic") === "challenge",
         },
       ];
@@ -315,7 +316,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     render();
   } catch (err) {
     console.error(err);
-    root.textContent = "목록을 불러오는 중 오류가 발생했습니다.";
+    root.textContent = "Failed to load the library.";
   }
 });
 
@@ -370,7 +371,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // document.addEventListener("DOMContentLoaded", async () => {
 //   const root = document.getElementById("list-root");
-//   root.textContent = "문제 목록을 불러오는 중입니다...";
+//   root.textContent = "Loading problem library...";
 
 //   try {
 //     const [categories, sets] = await Promise.all([
@@ -393,7 +394,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 //     const filterBar = document.createElement("div");
 //     filterBar.className = "filter-bar";
-//     filterBar.appendChild(createFilterButton("전체", "all", true));
+//     filterBar.appendChild(createFilterButton("All", "all", true));
 //     langs.forEach((lang) => filterBar.appendChild(createFilterButton(lang, lang, false)));
 
 //     const searchRow = document.createElement("div");
@@ -408,7 +409,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 //     const collapseAllBtn = document.createElement("button");
 //     collapseAllBtn.type = "button";
 //     collapseAllBtn.className = "action-btn";
-//     collapseAllBtn.textContent = "모두 접기";
+//     collapseAllBtn.textContent = "Collapse all";
 
 //     searchRow.appendChild(searchInput);
 //     searchRow.appendChild(collapseAllBtn);
@@ -460,6 +461,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 //       toggleBtn.type = "button";
 //       toggleBtn.className = "cat-toggle";
 //       toggleBtn.innerHTML = "▾";
+      toggleBtn.setAttribute("aria-label", "Toggle category");
 
 //       headerRow.appendChild(titleWrap);
 //       headerRow.appendChild(toggleBtn);
@@ -574,7 +576,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 //       updateVisibility();
 //     });
 
-//     // 모두 접기
+//     // Collapse all
 //     collapseAllBtn.addEventListener("click", () => {
 //       document.querySelectorAll(".category-section").forEach((sec) => sec.classList.add("collapsed"));
 //     });
@@ -584,6 +586,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 //   } catch (err) {
 //     console.error(err);
-//     root.textContent = "목록을 불러오는 중 오류가 발생했습니다.";
+//     root.textContent = "Failed to load the library.";
 //   }
 // });
+
+
+
+
