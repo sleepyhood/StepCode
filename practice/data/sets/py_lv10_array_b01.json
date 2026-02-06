@@ -5,12 +5,51 @@
   "availableLanguages": [
     "python"
   ],
+  "concepts": [
+    {
+      "id": "list_input",
+      "title": "한 줄 입력을 리스트로",
+      "summary": "공백으로 구분된 정수를 한 줄로 입력받아 리스트로 변환합니다.",
+      "example": "```python\nlst = list(map(int, input().split()))\n```",
+      "algorithm": "```text\n1) 입력 한 줄을 공백 기준으로 나눈다.\n2) 각 값을 정수로 변환한다.\n3) 리스트로 감싼다.\n```",
+      "relatedProblems": [
+        "mcq1",
+        "code2",
+        "code3"
+      ]
+    },
+    {
+      "id": "index_last",
+      "title": "마지막 원소 접근",
+      "summary": "리스트 길이가 `n`일 때 마지막 인덱스는 `n - 1`입니다.",
+      "example": "```python\nlast = lst[n - 1]\n# 또는\nlast = lst[-1]\n```",
+      "algorithm": "```text\n1) 리스트 길이를 n이라 둔다.\n2) 마지막 인덱스 n-1을 사용한다.\n3) lst[n-1]로 접근한다.\n```",
+      "relatedProblems": [
+        "mcq2",
+        "mcq3",
+        "code1"
+      ]
+    },
+    {
+      "id": "range_len",
+      "title": "range와 len",
+      "summary": "`range(len(lst))`는 0부터 `len(lst)-1`까지 반복합니다.",
+      "example": "```python\nfor i in range(len(lst)):\n    print(lst[i])\n```",
+      "algorithm": "```text\n1) i를 0부터 시작한다.\n2) i < len(lst)까지 반복한다.\n3) 각 i에서 lst[i]를 처리한다.\n```",
+      "relatedProblems": [
+        "short1",
+        "short2",
+        "mcq4"
+      ]
+    }
+  ],
   "problems": [
     {
       "id": "mcq1",
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 1. 입력을 리스트에 저장",
+      "conceptRef": "list_input",
       "description": "다음 중 정수 n을 입력받고, 이어서 n개의 정수를 **한 줄에 공백으로** 입력받아 리스트 lst에 저장하는 코드로 올바른 것을 고르세요.",
       "code": null,
       "options": [
@@ -32,6 +71,7 @@
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 2. 마지막 원소 접근",
+      "conceptRef": "index_last",
       "description": "다음 중 길이가 n인 리스트 lst의 **마지막 원소**를 표현한 것으로 올바른 것을 고르세요.\n(n은 리스트의 길이입니다.)",
       "code": null,
       "options": [
@@ -53,6 +93,7 @@
       "type": "short",
       "level": "기초",
       "title": "Short 1. 0 입력 전까지 개수",
+      "conceptRef": "range_len",
       "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (줄바꿈 없이 한 줄입니다.)",
       "code": "lst = [4, 9, 1, 0, 7, 8]\ncnt = 0\nfor i in range(len(lst)):\n    if lst[i] == 0:\n        break\n    cnt += 1\nprint('%d' % cnt)",
       "expectedText": "3"
@@ -62,6 +103,7 @@
       "type": "code",
       "level": "기초",
       "title": "Code 0. 마지막 3개 역순 출력",
+      "conceptRef": "index_last",
       "description": "아래 코드에서 주석 위치에 들어갈 **출력 한 줄**을 작성하세요.\n(리스트 lst의 마지막 3개를 **역순**으로 한 줄에 공백으로 출력해야 합니다.)\n(len(lst)는 리스트 lst의 원소 개수를 뜻합니다.)",
       "code": "lst = list(map(int, input().split()))\nn = len(lst)\n# TODO: 마지막 3개를 역순으로 출력하는 한 줄을 작성하시오.",
       "expectedCode": "print('%d %d %d' % (lst[n - 1], lst[n - 2], lst[n - 3]))",
@@ -72,6 +114,7 @@
       "type": "short",
       "level": "기초",
       "title": "Short 2. 짝수 인덱스 합",
+      "conceptRef": "range_len",
       "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (줄바꿈 없이 한 줄입니다.)",
       "code": "n = 5\nlst = [5, 1, 4, 2, 7]\ns = 0\nfor i in range(0, n, 2):\n    s += lst[i]\nprint('%d' % s)",
       "expectedText": "16"
@@ -81,6 +124,7 @@
       "type": "code",
       "level": "기초",
       "title": "Code 1. 마지막 원소 출력",
+      "conceptRef": "index_last",
       "description": "아래 코드에서 주석 위치에 들어갈 **출력 한 줄**을 작성하세요.\n(마지막 원소를 출력해야 합니다.)",
       "code": "n = 6\nlst = [4, 8, 15, 16, 23, 42]\n# TODO: 마지막 원소를 출력하는 한 줄을 작성하시오.",
       "expectedCode": "print('%d' % lst[n - 1])",
@@ -91,6 +135,7 @@
       "type": "code",
       "level": "기초",
       "title": "Code 2. 빈 리스트 만들기",
+      "conceptRef": "list_input",
       "description": "정수 n을 입력받았습니다. 입력받은 값들을 저장할 **빈 리스트 lst**를 만드는 한 줄을 작성하세요.",
       "code": "n = int(input())\n# TODO: 입력받은 값을 저장할 빈 리스트 lst를 만드는 한 줄을 작성하시오.",
       "expectedCode": "lst = []",
@@ -101,6 +146,7 @@
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 4. for문 range 범위",
+      "conceptRef": "range_len",
       "description": "아래 코드에서 `range( ??? )` 안에 들어갈 내용으로 알맞은 것을 고르세요.\n\n- i가 0부터 시작해서\n- lst의 모든 원소를 정확히 한 번씩 접근해야 합니다.",
       "code": "for i in range( ??? ):\n    print('%d' % lst[i])",
       "options": [
@@ -122,6 +168,7 @@
       "type": "code",
       "level": "기초",
       "title": "Code 3. 입력을 배열(리스트)에 저장",
+      "conceptRef": "list_input",
       "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(n개의 정수는 한 줄에 공백으로 입력됩니다.)",
       "code": "n = int(input())\n# TODO: 한 줄 입력을 받아 lst에 저장하는 한 줄을 작성하시오.",
       "expectedCode": "lst = list(map(int, input().split()))",

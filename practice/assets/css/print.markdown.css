@@ -48,6 +48,17 @@ body{
   border-color:#111827;
   color:#fff;
 }
+.tool-check .check-line{
+  display:flex;
+  align-items:center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink);
+}
+.tool-check input[type="checkbox"]{
+  width: 14px;
+  height: 14px;
+}
 
 /* [print.markdown.css] 위치: .toolbar-right / .tool 스타일 근처에 추가 */
 
@@ -84,6 +95,56 @@ body{
   break-after: page;
   page-break-after: always;
   padding: 0;
+}
+
+.concept-page{
+  break-after: page;
+  page-break-after: always;
+  padding: 0;
+}
+.concept-block{
+  border: 1px solid var(--box);
+  border-radius: 10px;
+  padding: 5mm;
+  display: grid;
+  gap: 4mm;
+}
+.concept-page.concept-cols-1 .concept-block{
+  grid-template-columns: 1fr;
+}
+.concept-page.concept-cols-2 .concept-block{
+  grid-template-columns: 1fr 1fr;
+}
+.concept-item{
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  padding: 3mm 4mm;
+  break-inside: avoid;
+}
+.concept-item h3{
+  margin: 0 0 2mm 0;
+  font-size: 12px;
+  font-weight: 900;
+}
+.concept-item .concept-summary{
+  font-size: 11px;
+  line-height: 1.35;
+  margin-bottom: 2mm;
+}
+.concept-item .concept-example{
+  font-size: 10.5px;
+  border: 1px solid var(--box);
+  border-radius: 6px;
+  padding: 2mm 3mm;
+  white-space: pre-wrap;
+}
+.concept-item .concept-algorithm{
+  margin-top: 2mm;
+  font-size: 10.5px;
+  border: 1px solid var(--box);
+  border-radius: 6px;
+  padding: 2mm 3mm;
+  white-space: pre-wrap;
 }
 
 .page-header{

@@ -1,4 +1,4 @@
-/* print.js - A4 landscape worksheet printer (2 columns, 4 problems per page) */
+﻿/* print.js - A4 landscape worksheet printer (2 columns, 4 problems per page) */
 
 let currentSetData = null;
 const SLOTS_PER_PAGE = 2;
@@ -275,6 +275,71 @@ function setMD(node, raw, mode = "block") {
   node.innerHTML = mode === "inline" ? mdInline(raw) : mdBlock(raw);
 }
 
+function buildConceptPage(set, variant, bucket) {
+  const concepts = Array.isArray(set?.concepts) ? set.concepts : [];
+  if (!concepts.length) return null;
+
+  const maxLineLen = concepts.reduce((max, c) => {
+    const text = String(c?.algorithm || "")
+      .replace(/```[\s\S]*?```/g, (m) => m.replace(/```/g, ""))
+      .replace(/\r/g, "");
+    const lines = text.split("\n");
+    const localMax = lines.reduce((m, line) => Math.max(m, line.length), 0);
+    return Math.max(max, localMax);
+  }, 0);
+
+  const page = el("div", "concept-page");
+  if (maxLineLen > 60) page.classList.add("concept-cols-1");
+  else page.classList.add("concept-cols-2");
+
+  const header = el("div", "page-header");
+  const left = el("div", "meta-left");
+  left.appendChild(el("div", "page-title", `${set.title || "학습지"} · 핵심 개념`));
+
+  const row = el("div", "meta-row");
+  row.appendChild(metaField("학생", "name", "w80"));
+  row.appendChild(metaField("배부일", "dist", "", ymd()));
+  row.appendChild(metaField("제출일", "due", "w80"));
+  left.appendChild(row);
+
+  const rowInfo = el("div", "meta-row");
+  rowInfo.appendChild(el("div", "", `범위: ${bucket}`));
+  rowInfo.appendChild(el("div", "", `유형: ${variant === "teacher" ? "선생님용" : "학생용"}`));
+  left.appendChild(rowInfo);
+
+  const right = el("div", "meta-right");
+  right.innerHTML = `<div>${ymd()}</div>`;
+  header.appendChild(left);
+  header.appendChild(right);
+  page.appendChild(header);
+
+  const block = el("div", "concept-block");
+  concepts.forEach((c) => {
+    const item = el("div", "concept-item");
+    const title = el("h3", "", c.title || "개념");
+    item.appendChild(title);
+
+    const summary = el("div", "concept-summary md");
+    setMD(summary, c.summary || "", "block");
+    item.appendChild(summary);
+
+    if (c.example) {
+      const example = el("div", "concept-example md");
+      setMD(example, c.example || "", "block");
+      item.appendChild(example);
+    }
+    if (c.algorithm) {
+      const algo = el("div", "concept-algorithm md");
+      setMD(algo, c.algorithm || "", "block");
+      item.appendChild(algo);
+    }
+    block.appendChild(item);
+  });
+
+  page.appendChild(block);
+  return page;
+}
+
 function shouldMcqCodeOptionsUseTwoColumns(q) {
   const opts = Array.isArray(q?.options) ? q.options : [];
   if (opts.length < 4) return false;
@@ -547,6 +612,12 @@ async function renderAll({ setId, bucket, variant }) {
 
   root.innerHTML = "";
 
+  const includeConcept = qp("concept") !== "0";
+  if (includeConcept) {
+    const conceptPage = buildConceptPage(currentSetData, variant, bucket);
+    if (conceptPage) root.appendChild(conceptPage);
+  }
+
   const probeFirst = buildPage(setId, currentSetData, 0, 99, [], indexMap, variant, bucket, "double");
   root.appendChild(probeFirst);
   const bodyHFirst = getBodyHeightPx(probeFirst);
@@ -782,6 +853,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const variantSel = document.getElementById("variant-select");
   const bucketSel = document.getElementById("bucket-select");
+  const conceptCheck = document.getElementById("concept-check");
 
 // [print.markdown.js] 위치: document.addEventListener("DOMContentLoaded", ...) 내부
 // bucket-select/apply-btn 세팅하는 부분에 추가
@@ -793,9 +865,11 @@ const rangeHint = document.getElementById("range-hint");
 // 초기값(쿼리스트링)
 const initBucket = qp("bucket") || "all";
 const initRange = qp("range") || "";
+const initConcept = qp("concept");
 
 if (bucketSel) bucketSel.value = (["all","core","supp","custom"].includes(initBucket) ? initBucket : "all");
 if (rangeInput) rangeInput.value = initRange;
+if (conceptCheck) conceptCheck.checked = initConcept !== "0";
 
 // bucket 변경 시 입력칸 토글
 function syncRangeUI() {
@@ -818,11 +892,13 @@ if (applyBtn) {
     const variant = variantSel ? variantSel.value : "student";
     const bucket = bucketSel ? bucketSel.value : "all";
     const range = (rangeInput ? rangeInput.value : "").trim();
+    const concept = conceptCheck && conceptCheck.checked ? "1" : "0";
 
     setQp("variant", variant);
     setQp("bucket", bucket);
     if (bucket === "custom") setQp("range", range);
     else setQp("range", ""); // custom 아니면 비워두기(혼선 방지)
+    setQp("concept", concept);
 
     await renderAll({ setId, bucket, variant });
   });

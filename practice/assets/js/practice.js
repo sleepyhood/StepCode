@@ -103,6 +103,116 @@ function renderMarkdownInto(targetEl, mdText) {
 }
 
 // ===== 수업모드(코칭) =====
+function buildConceptIndex(concepts) {
+  const list = Array.isArray(concepts) ? concepts : [];
+  const byId = {};
+  list.forEach((c) => {
+    if (!c || !c.id) return;
+    byId[String(c.id)] = c;
+  });
+  return { list, byId };
+}
+
+function renderConceptSection(container, concepts) {
+  const { list } = buildConceptIndex(concepts);
+  if (!list.length) return null;
+
+  const wrap = document.createElement("section");
+  wrap.className = "concept-wrap";
+  const maxLineLen = list.reduce((max, c) => {
+    const text = [c.summary, c.example, c.algorithm].filter(Boolean).join("\n");
+    const raw = String(text || "")
+      .replace(/```[\s\S]*?```/g, (m) => m.replace(/```/g, ""))
+      .replace(/\r/g, "");
+    const lines = raw.split("\n");
+    const localMax = lines.reduce((m, line) => Math.max(m, line.length), 0);
+    return Math.max(max, localMax);
+  }, 0);
+
+  if (maxLineLen > 60) wrap.classList.add("concept-cols-1");
+  else if (maxLineLen > 35) wrap.classList.add("concept-cols-2");
+  else wrap.classList.add("concept-cols-3");
+
+  const collapseLimit = 3;
+  if (list.length > collapseLimit) wrap.classList.add("concept-collapsed");
+  wrap.innerHTML = `
+    <div class="concept-header">
+      <h2>핵심 개념</h2>
+      <p>문제를 풀기 전에 꼭 확인해요.</p>
+    </div>
+  `;
+
+  const grid = document.createElement("div");
+  grid.className = "concept-grid";
+
+  list.forEach((c) => {
+    const card = document.createElement("article");
+    card.className = "concept-card";
+    card.id = `concept-${c.id}`;
+    card.setAttribute("data-concept-id", c.id);
+
+    const title = document.createElement("h3");
+    title.textContent = c.title || "개념";
+    card.appendChild(title);
+
+    const summary = document.createElement("div");
+    summary.className = "concept-summary md";
+    renderMarkdownInto(summary, c.summary || "");
+    card.appendChild(summary);
+
+    if (c.example) {
+      const ex = document.createElement("div");
+      ex.className = "concept-example md";
+      renderMarkdownInto(ex, c.example || "");
+      card.appendChild(ex);
+    }
+
+    if (c.algorithm) {
+      const algo = document.createElement("div");
+      algo.className = "concept-algorithm md";
+      renderMarkdownInto(algo, c.algorithm || "");
+      card.appendChild(algo);
+    }
+
+    grid.appendChild(card);
+  });
+
+  wrap.appendChild(grid);
+
+  if (list.length > collapseLimit) {
+    const actions = document.createElement("div");
+    actions.className = "concept-actions";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "concept-toggle";
+    btn.textContent = "더보기";
+    btn.addEventListener("click", () => {
+      const collapsed = wrap.classList.toggle("concept-collapsed");
+      btn.textContent = collapsed ? "더보기" : "접기";
+    });
+    actions.appendChild(btn);
+    wrap.appendChild(actions);
+  }
+
+  container.appendChild(wrap);
+  return wrap;
+}
+
+function scrollToConcept(conceptId) {
+  if (!conceptId) return;
+  const el = document.getElementById(`concept-${conceptId}`);
+  if (!el) return;
+  const wrap = el.closest(".concept-wrap");
+  if (wrap && wrap.classList.contains("concept-collapsed")) {
+    wrap.classList.remove("concept-collapsed");
+    const btn = wrap.querySelector(".concept-toggle");
+    if (btn) btn.textContent = "접기";
+  }
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  el.classList.add("concept-flash");
+  setTimeout(() => el.classList.remove("concept-flash"), 1200);
+}
+
 const MODE_STORAGE_KEY = "stepcode:practiceMode"; // "normal" | "class"
 const COACH_STATE_PREFIX = "stepcode:coachState:";
 
@@ -865,6 +975,13 @@ function applyHostOnlyUi(isHost) {
   });
 }
 
+function shouldEnableDashboardUi(isHost) {
+  const q = new URLSearchParams(location.search);
+  if (q.get("dash") === "1") return true;
+  if (typeof isClassMode === "function" && isClassMode()) return true;
+  return !!isHost;
+}
+
 
 document.addEventListener("DOMContentLoaded", initPractice);
 
@@ -963,7 +1080,9 @@ async function initPractice() {
     }
 
 
-    setupRealtimeDashboard(); // ← 추가
+    const dashEnabled = shouldEnableDashboardUi(isHost);
+    document.body.classList.toggle("dash-on", dashEnabled);
+    if (dashEnabled) setupRealtimeDashboard(); // ← 추가
   } catch (err) {
     console.error(err);
     container.textContent = "문제를 불러오는 중 오류가 발생했습니다.";
@@ -1098,6 +1217,9 @@ function renderSet() {
 
   container.innerHTML = "";
 
+  const conceptIndex = buildConceptIndex(currentSetData.concepts);
+  renderConceptSection(container, conceptIndex.list);
+
   const questions = currentSetData.problems || [];
   const coreCount = Number(currentSetData.coreCount ?? 6);
 
@@ -1175,18 +1297,36 @@ function renderSet() {
     const header = document.createElement("div");
     header.className = "question-header";
 
+    const headerLeft = document.createElement("div");
+    headerLeft.className = "question-header-left";
+
     const title = document.createElement("h2");
     title.textContent = `${idx + 1}. ${q.title}`;
-    header.appendChild(title);
+    headerLeft.appendChild(title);
+
+    if (q.conceptRef && conceptIndex.byId[q.conceptRef]) {
+      const c = conceptIndex.byId[q.conceptRef];
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "concept-chip";
+      chip.textContent = `개념: ${c.title || q.conceptRef}`;
+      chip.addEventListener("click", () => scrollToConcept(q.conceptRef));
+      headerLeft.appendChild(chip);
+    }
+
+    const headerRight = document.createElement("div");
+    headerRight.className = "question-header-right";
 
     const typeTag = document.createElement("span");
     typeTag.className = "q-type-tag";
     if (q.type === "mcq") typeTag.textContent = "객관식";
     else if (q.type === "short") typeTag.textContent = "단답형";
     else if (q.type === "code") typeTag.textContent = "코드 작성";
-    header.appendChild(typeTag);
-    appendQGradeBadge(header, q.id);
+    headerRight.appendChild(typeTag);
+    appendQGradeBadge(headerRight, q.id);
 
+    header.appendChild(headerLeft);
+    header.appendChild(headerRight);
     card.appendChild(header);
 
     // --- 설명 ---

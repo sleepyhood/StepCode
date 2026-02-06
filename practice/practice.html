@@ -26,95 +26,81 @@
     <div class="app-container">
 
       <header class="top-bar">
-          <a id="back-to-list-btn" class="back-to-list-link" href="index.html">← 목록</a>
+        <a id="back-to-list-btn" class="back-to-list-link" href="index.html">← 목록</a>
 
         <div class="top-title">
           <span id="set-title">연습장</span>
+          <span class="set-subtitle">문제 풀이</span>
         </div>
+
         <div class="top-controls">
+          <div class="lang-control">
+            <span class="lang-label">언어</span>
+            <span id="lang-single" class="lang-single" hidden></span>
+            <select id="lang-select"></select>
+          </div>
 
-          <!-- <a id="back-to-list-btn" class="back-to-list-link" href="index.html">← 목록</a> -->
+          <details class="teacher-menu" id="teacher-menu">
+            <summary class="teacher-menu-summary">도구</summary>
+            <div class="teacher-menu-panel">
+              <button id="mode-toggle-btn" class="mode-toggle-btn" type="button">
+                수업모드 OFF
+              </button>
 
+              <button id="fullscreen-btn" class="fullscreen-btn" type="button">
+                전체화면
+              </button>
 
-      <div class="lang-control">
-       
+              <button
+                id="print-worksheet-btn"
+                class="print-btn"
+                title="학습지 출력 (클릭: 학생용 / Alt: 선생님용 / Shift: 전체문항)"
+                type="button"
+              >
+                학습지 출력
+              </button>
 
-  <span class="lang-label">언어</span>
-  <span id="lang-single" class="lang-single" hidden></span>
-  <select id="lang-select"></select>
-</div>
-
-
-          <div class="solve-timer" title="누적 풀이시간 (탭을 벗어나면 자동 일시정지)">
-  <span class="solve-timer-label">⏱</span>
-  <span id="solve-timer">00:00</span>
-  <span id="solve-timer-state" class="solve-timer-state"></span>
-
-</div>
-
-<!-- (추가) 권장시간/수업모드/전체화면 -->
-<span id="rec-timer" class="rec-timer" title="권장 시간"></span>
-
-<button id="mode-toggle-btn" class="mode-toggle-btn" type="button">
-  수업모드 OFF
-</button>
-
-<button id="fullscreen-btn" class="fullscreen-btn" type="button">
-  전체화면
-</button>
-<!-- 
-
- <button id="back-to-list-btn" class="back-to-list-btn" type="button" title="목록으로">
-        목록
-  </button> -->
-<!-- <button id="popout-btn" class="popout-btn" type="button" title="새 창으로 열기">
-  새창
-</button> -->
-
-          <button
-  id="print-worksheet-btn"
-  class="print-btn"
-  title="학습지 출력 (클릭: 학생용 / Alt: 선생님용 / Shift: 전체문항)"
-  type="button"
->
-  학습지 출력
-</button>
-
-          <button
-            id="export-log-btn"
-            class="export-log-btn"
-            title="교사용 로그 다운로드 (클릭: JSON / Ctrl(Cmd): CSV / Shift: 둘 다)"
-            type="button"
-          >
-            로그 다운로드
-          </button>
-
+              <button
+                id="export-log-btn"
+                class="export-log-btn"
+                title="교사용 로그 다운로드 (클릭: JSON / Ctrl(Cmd): CSV / Shift: 둘 다)"
+                type="button"
+              >
+                로그 다운로드
+              </button>
+            </div>
+          </details>
         </div>
       </header>
 
-<main class="main-content-layout" style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
+      <section class="focus-strip" aria-label="풀이 상태">
+        <div class="focus-left">
+          <div class="solve-timer" title="누적 풀이시간 (탭을 벗어나면 자동 일시정지)">
+            <span class="solve-timer-label">⏱</span>
+            <span id="solve-timer">00:00</span>
+            <span id="solve-timer-state" class="solve-timer-state"></span>
+          </div>
+          <span id="rec-timer" class="rec-timer" title="권장 시간"></span>
+        </div>
+
+        <div class="focus-center progress-wrap" id="progress-wrap" aria-label="진행도">
+          <span id="progress-label-solve" class="progress-label">풀이 0/0</span>
+          <span class="progress-dot">·</span>
+          <span id="progress-label-correct" class="progress-label">정답 0/0</span>
+        </div>
+
+        <div class="focus-right">
+          <button id="grade-btn">채점하기</button>
+          <div id="score" class="score"></div>
+          <div id="grade-meta" class="grade-meta"></div>
+        </div>
+      </section>
+
+<main class="main-content-layout" style="max-width: 1100px; margin: 0 auto; padding: 0 18px;">
   <div id="problem-container"></div>        <!-- practice.js에서 문제 렌더 -->
       </main>
 
-      <footer class="footer">
-  <button id="grade-btn">채점하기</button>
-  <div id="score" class="score"></div>
-    <div id="grade-meta" class="grade-meta"></div>
-
-    <!-- 진행/정답 프로그레스 (추가) -->
-<div id="progress-wrap" class="progress-wrap" aria-label="진행도">
-  <div class="progress-row">
-    <span id="progress-label-solve" class="progress-label">풀이 0/0</span>
-    <div class="progress-bar"><div id="progress-fill-solve" class="progress-fill"></div></div>
-  </div>
-
-  <div class="progress-row">
-    <span id="progress-label-correct" class="progress-label">정답 0/0</span>
-    <div class="progress-bar"><div id="progress-fill-correct" class="progress-fill"></div></div>
-  </div>
-</div>
-
-</footer>
+      <footer class="footer footer-spacer" aria-hidden="true"></footer>
 
 
 
