@@ -147,6 +147,29 @@ body{
   white-space: pre-wrap;
 }
 
+/* ===== Media (Print) ===== */
+.media-block{
+  margin-top: 2mm;
+  display: grid;
+  gap: 2mm;
+}
+.media-figure{
+  margin: 0;
+  border: 1px solid var(--box);
+  border-radius: 6px;
+  padding: 2mm;
+}
+.media-figure img{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.media-caption{
+  margin-top: 1mm;
+  font-size: 9.5px;
+  color: var(--muted);
+}
+
 .page-header{
   display:flex;
   align-items:flex-end;
@@ -321,6 +344,43 @@ body{
   line-height: 1.25;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: 10px;
+}
+
+/* ===== IO Example (Print) ===== */
+.p-io{
+  margin-top: 2mm;
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  padding: 2mm 3mm;
+}
+.p-io-title{
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--ink);
+  margin-bottom: 1.5mm;
+}
+.p-io-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2mm;
+}
+.p-io-box{
+  border: 1px solid var(--box);
+  border-radius: 6px;
+  padding: 1.5mm 2mm;
+}
+.p-io-label{
+  font-size: 9px;
+  color: var(--muted);
+  font-weight: 900;
+  margin-bottom: 1mm;
+}
+.p-io-pre{
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 9.5px;
+  white-space: pre-wrap;
+  line-height: 1.25;
 }
 
 /* answer areas */

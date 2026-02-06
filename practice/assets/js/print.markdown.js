@@ -275,6 +275,30 @@ function setMD(node, raw, mode = "block") {
   node.innerHTML = mode === "inline" ? mdInline(raw) : mdBlock(raw);
 }
 
+function buildMediaBlock(media) {
+  const items = Array.isArray(media) ? media : [];
+  if (!items.length) return null;
+
+  const wrap = el("div", "media-block");
+  items.forEach((m) => {
+    if (!m || m.type !== "image" || !m.src) return;
+    const fig = el("figure", "media-figure");
+    const img = document.createElement("img");
+    img.src = m.src;
+    img.alt = m.alt || "";
+    img.addEventListener("error", () => {
+      fig.remove();
+    });
+    fig.appendChild(img);
+    if (m.caption) {
+      const cap = el("figcaption", "media-caption", m.caption);
+      fig.appendChild(cap);
+    }
+    wrap.appendChild(fig);
+  });
+  return wrap.childElementCount ? wrap : null;
+}
+
 function buildConceptPage(set, variant, bucket) {
   const concepts = Array.isArray(set?.concepts) ? set.concepts : [];
   if (!concepts.length) return null;
@@ -333,6 +357,8 @@ function buildConceptPage(set, variant, bucket) {
       setMD(algo, c.algorithm || "", "block");
       item.appendChild(algo);
     }
+    const media = buildMediaBlock(c.media);
+    if (media) item.appendChild(media);
     block.appendChild(item);
   });
 
@@ -400,6 +426,30 @@ function buildProblemCard(set, q, originalIndex, variant) {
     pre.textContent = String(q.code);
     card.appendChild(pre);
   }
+
+  if (q.ioExample && (q.ioExample.input || q.ioExample.output)) {
+    const io = el("div", "p-io");
+    io.appendChild(el("div", "p-io-title", "입력/출력 예시"));
+
+    const grid = el("div", "p-io-grid");
+    const inBox = el("div", "p-io-box");
+    inBox.appendChild(el("div", "p-io-label", "입력"));
+    const inPre = el("pre", "p-io-pre", q.ioExample.input || "(입력 없음)");
+    inBox.appendChild(inPre);
+
+    const outBox = el("div", "p-io-box");
+    outBox.appendChild(el("div", "p-io-label", "출력"));
+    const outPre = el("pre", "p-io-pre", q.ioExample.output || "(출력 없음)");
+    outBox.appendChild(outPre);
+
+    grid.appendChild(inBox);
+    grid.appendChild(outBox);
+    io.appendChild(grid);
+    card.appendChild(io);
+  }
+
+  const media = buildMediaBlock(q.media);
+  if (media) card.appendChild(media);
 
 if (q.type === "mcq") {
   const opts = el("div", "p-options");

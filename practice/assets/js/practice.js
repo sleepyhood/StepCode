@@ -167,6 +167,8 @@ function renderConceptSection(container, concepts) {
       card.appendChild(ex);
     }
 
+    renderMediaBlock(card, c.media);
+
     if (c.algorithm) {
       const algo = document.createElement("div");
       algo.className = "concept-algorithm md";
@@ -211,6 +213,159 @@ function scrollToConcept(conceptId) {
   el.scrollIntoView({ behavior: "smooth", block: "start" });
   el.classList.add("concept-flash");
   setTimeout(() => el.classList.remove("concept-flash"), 1200);
+}
+
+function renderMediaBlock(targetEl, media) {
+  const items = Array.isArray(media) ? media : [];
+  if (!items.length) return;
+
+  const wrap = document.createElement("div");
+  wrap.className = "media-block";
+  const hostDebug = isHostUiEnabled();
+
+  items.forEach((m) => {
+    if (!m || m.type !== "image") return;
+    if (!m.src) {
+      if (hostDebug) {
+        const miss = document.createElement("div");
+        miss.className = "media-missing";
+        miss.textContent = "이미지 경로 없음";
+        wrap.appendChild(miss);
+      }
+      return;
+    }
+    const fig = document.createElement("figure");
+    fig.className = "media-figure";
+
+    const img = document.createElement("img");
+    img.src = m.src;
+    img.alt = m.alt || "";
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.addEventListener("error", () => {
+      fig.remove();
+      if (hostDebug) {
+        const miss = document.createElement("div");
+        miss.className = "media-missing";
+        miss.textContent = `이미지 로드 실패: ${m.src}`;
+        wrap.appendChild(miss);
+      }
+    });
+    fig.appendChild(img);
+
+    if (m.caption) {
+      const cap = document.createElement("figcaption");
+      cap.textContent = m.caption;
+      fig.appendChild(cap);
+    }
+    wrap.appendChild(fig);
+  });
+
+  if (wrap.childElementCount) targetEl.appendChild(wrap);
+}
+
+function renderTracePanel(targetEl, q) {
+  const steps = Array.isArray(q?.trace) ? q.trace : [];
+  if (!steps.length || !q?.code) return;
+
+  const lines = String(q.code).replace(/\r\n?/g, "\n").split("\n");
+  let idx = 0;
+
+  const wrap = document.createElement("div");
+  wrap.className = "trace-panel";
+
+  const head = document.createElement("div");
+  head.className = "trace-head";
+  const title = document.createElement("div");
+  title.className = "trace-title";
+  title.textContent = "실행 흐름(Trace)";
+  const pager = document.createElement("div");
+  pager.className = "trace-pager";
+  head.appendChild(title);
+  head.appendChild(pager);
+  wrap.appendChild(head);
+
+  const body = document.createElement("div");
+  body.className = "trace-body";
+
+  const codeBox = document.createElement("pre");
+  codeBox.className = "trace-code";
+
+  const varBox = document.createElement("div");
+  varBox.className = "trace-vars";
+
+  const noteBox = document.createElement("div");
+  noteBox.className = "trace-note";
+
+  body.appendChild(codeBox);
+  body.appendChild(varBox);
+  body.appendChild(noteBox);
+  wrap.appendChild(body);
+
+  const controls = document.createElement("div");
+  controls.className = "trace-controls";
+  const prevBtn = document.createElement("button");
+  prevBtn.type = "button";
+  prevBtn.textContent = "이전";
+  const nextBtn = document.createElement("button");
+  nextBtn.type = "button";
+  nextBtn.textContent = "다음";
+  controls.appendChild(prevBtn);
+  controls.appendChild(nextBtn);
+  wrap.appendChild(controls);
+
+  function renderStep(i) {
+    const step = steps[i];
+    const lineNo = Number(step?.line) || 0;
+    const lineText = lineNo > 0 && lineNo <= lines.length ? lines[lineNo - 1] : "";
+
+    codeBox.textContent = lineNo ? `${lineNo}: ${lineText}` : lineText;
+
+    varBox.innerHTML = "";
+    const vars = step?.vars && typeof step.vars === "object" ? step.vars : {};
+    const keys = Object.keys(vars);
+    if (keys.length) {
+      keys.forEach((k) => {
+        const row = document.createElement("div");
+        row.className = "trace-var-row";
+        const key = document.createElement("span");
+        key.className = "trace-var-key";
+        key.textContent = k;
+        const val = document.createElement("span");
+        val.className = "trace-var-val";
+        val.textContent = String(vars[k]);
+        row.appendChild(key);
+        row.appendChild(val);
+        varBox.appendChild(row);
+      });
+    } else {
+      const empty = document.createElement("div");
+      empty.className = "trace-var-empty";
+      empty.textContent = "변수 변화 없음";
+      varBox.appendChild(empty);
+    }
+
+    noteBox.textContent = step?.note ? `설명: ${step.note}` : "";
+    pager.textContent = `${i + 1} / ${steps.length}`;
+    prevBtn.disabled = i <= 0;
+    nextBtn.disabled = i >= steps.length - 1;
+  }
+
+  prevBtn.addEventListener("click", () => {
+    if (idx > 0) {
+      idx -= 1;
+      renderStep(idx);
+    }
+  });
+  nextBtn.addEventListener("click", () => {
+    if (idx < steps.length - 1) {
+      idx += 1;
+      renderStep(idx);
+    }
+  });
+
+  renderStep(idx);
+  targetEl.appendChild(wrap);
 }
 
 const MODE_STORAGE_KEY = "stepcode:practiceMode"; // "normal" | "class"
@@ -1335,6 +1490,8 @@ function renderSet() {
     renderMarkdownInto(desc, q.description || "");
     card.appendChild(desc);
 
+    renderMediaBlock(card, q.media);
+
     // --- 코드 블록 (있으면) ---
     if (q.code) {
       const pre = document.createElement("pre");
@@ -1348,6 +1505,49 @@ function renderSet() {
       pre.appendChild(codeEl);
       card.appendChild(pre);
     }
+
+    if (q.ioExample && (q.ioExample.input || q.ioExample.output)) {
+      const ioWrap = document.createElement("div");
+      ioWrap.className = "io-example";
+
+      const ioTitle = document.createElement("div");
+      ioTitle.className = "io-title";
+      ioTitle.textContent = "입력/출력 예시";
+      ioWrap.appendChild(ioTitle);
+
+      const ioGrid = document.createElement("div");
+      ioGrid.className = "io-grid";
+
+      const inBox = document.createElement("div");
+      inBox.className = "io-box";
+      const inLabel = document.createElement("div");
+      inLabel.className = "io-label";
+      inLabel.textContent = "입력";
+      const inPre = document.createElement("pre");
+      inPre.className = "io-pre";
+      inPre.textContent = q.ioExample.input || "(입력 없음)";
+      inBox.appendChild(inLabel);
+      inBox.appendChild(inPre);
+
+      const outBox = document.createElement("div");
+      outBox.className = "io-box";
+      const outLabel = document.createElement("div");
+      outLabel.className = "io-label";
+      outLabel.textContent = "출력";
+      const outPre = document.createElement("pre");
+      outPre.className = "io-pre";
+      outPre.textContent = q.ioExample.output || "(출력 없음)";
+      outBox.appendChild(outLabel);
+      outBox.appendChild(outPre);
+
+      ioGrid.appendChild(inBox);
+      ioGrid.appendChild(outBox);
+      ioWrap.appendChild(ioGrid);
+
+      card.appendChild(ioWrap);
+    }
+
+    renderTracePanel(card, q);
 
     // --- 유형별 입력/보기 생성 ---
     if (q.type === "mcq") {
