@@ -5,13 +5,48 @@
   "availableLanguages": [
     "python"
   ],
+  "concepts": [
+    {
+      "id": "linear_search",
+      "title": "선형 탐색",
+      "summary": "앞에서부터 순회하며 조건을 만족하면 찾습니다.",
+      "example": "```python\nfound = 0\nfor i in range(len(lst)):\n    if lst[i] == x:\n        found = 1\n        break\n```",
+      "algorithm": "```text\n1) found를 0으로 둔다.\n2) 순회하며 조건을 검사한다.\n3) 찾으면 found=1 후 종료한다.\n```",
+      "relatedProblems": ["mcq1", "short1", "code1", "mcq4"]
+    },
+    {
+      "id": "reverse_loop",
+      "title": "역순 순회",
+      "summary": "인덱스를 뒤에서 앞으로 감소시키며 순회합니다.",
+      "example": "```python\nfor i in range(len(lst) - 1, -1, -1):\n    print(lst[i])\n```",
+      "algorithm": "```text\n1) i를 len(lst)-1로 둔다.\n2) i>=0까지 감소시키며 반복한다.\n```",
+      "relatedProblems": ["mcq2"]
+    },
+    {
+      "id": "min_max_index",
+      "title": "최솟값/최댓값 인덱스 갱신",
+      "summary": "값 비교 후 인덱스를 갱신합니다.",
+      "example": "```python\nif lst[i] < lst[min_idx]:\n    min_idx = i\n```",
+      "algorithm": "```text\n1) min/max 인덱스를 0으로 둔다.\n2) 더 작은/큰 값을 만나면 인덱스를 갱신한다.\n```",
+      "relatedProblems": ["code2", "code3", "short2"]
+    },
+    {
+      "id": "swap_basic",
+      "title": "swap 기본",
+      "summary": "임시 변수를 사용해 두 값을 교환합니다.",
+      "example": "```python\ntmp = lst[a]\nlst[a] = lst[b]\nlst[b] = tmp\n```",
+      "algorithm": "```text\n1) tmp에 첫 값을 저장한다.\n2) 첫 값을 두 번째 값으로 바꾼다.\n3) 두 번째 값을 tmp로 바꾼다.\n```",
+      "relatedProblems": ["short2", "mcq3"]
+    }
+  ],
   "problems": [
     {
       "id": "mcq1",
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 1. 선형 탐색",
-      "description": "다음 중 리스트 arr에서 값 x가 **존재하는지** 확인해 found를 1/0으로 만드는 코드로 올바른 것을 고르세요.\n(arr은 정수 리스트, x는 정수이며, 처음 찾으면 바로 종료해도 됩니다.)",
+      "conceptRef": "linear_search",
+      "description": "다음 중 리스트 lst에서 값 x가 **존재하는지** 확인해 found를 1/0으로 만드는 코드로 올바른 것을 고르세요.\n(lst은 정수 리스트, x는 정수이며, 처음 찾으면 바로 종료해도 됩니다.)",
       "code": null,
       "options": [
         "found = 0\nfor i in range(len(lst)):\n    if lst[i] == x:\n        found = 1\n# found 사용",
@@ -25,15 +60,22 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "wrongFeedback": {
+        "0": "찾아도 종료하지 않아 비효율적입니다.",
+        "2": "found의 초기값과 갱신이 반대로 되어 있습니다.",
+        "3": "len(lst)+1은 인덱스 오류를 유발할 수 있습니다."
+      }
     },
     {
       "id": "short1",
       "type": "short",
       "level": "기초",
       "title": "Short 1. 첫 등장 인덱스",
+      "conceptRef": "linear_search",
       "description": "다음 배열에서 값 x=7이 **처음 등장하는 인덱스**를 쓰세요.",
       "code": "lst = [5, 7, 2, 7, 9]\nx = 7",
+      "wrongFeedbackText": "앞에서부터 처음 만나는 위치를 기준으로 찾습니다.",
       "expectedText": "1"
     },
     {
@@ -41,8 +83,13 @@
       "type": "code",
       "level": "기초",
       "title": "Code 1. 찾으면 for문 종료",
+      "conceptRef": "linear_search",
       "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(x를 찾았을 때 for문을 즉시 종료해야 합니다.)",
       "code": "for i in range(n):\n    if lst[i] == x:\n        # TODO: for문을 즉시 종료하는 한 줄을 작성하시오.",
+      "hints": [
+        "반복문을 즉시 종료할 때는 break를 사용합니다."
+      ],
+      "wrongFeedbackText": "찾았을 때는 break로 반복을 종료합니다.",
       "expectedCode": "break",
       "hint": "반복문을 즉시 종료할 때는 break를 사용합니다."
     },
@@ -51,7 +98,8 @@
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 2. 역순 출력 for문",
-      "description": "다음 중 리스트 arr의 원소를 **뒤에서부터** 한 줄에 하나씩 출력하는 for문으로 올바른 것을 고르세요.\n(arr은 정수 리스트입니다.)",
+      "conceptRef": "reverse_loop",
+      "description": "다음 중 리스트 lst의 원소를 **뒤에서부터** 한 줄에 하나씩 출력하는 for문으로 올바른 것을 고르세요.\n(lst는 정수 리스트입니다.)",
       "code": null,
       "options": [
         "for i in range(len(lst), -1, -1):\n    print('%d' % lst[i])",
@@ -65,15 +113,25 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "wrongFeedback": {
+        "0": "len(lst)부터 시작하면 첫 접근에서 범위를 벗어납니다.",
+        "2": "증가 방향이 잘못되었습니다.",
+        "3": "0번째 원소가 출력되지 않습니다."
+      }
     },
     {
       "id": "code2",
       "type": "code",
       "level": "기초",
       "title": "Code 2. 최솟값 인덱스 갱신",
+      "conceptRef": "min_max_index",
       "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(lst[i]가 더 작으면 min_idx를 i로 갱신해야 합니다.)",
       "code": "min_idx = 0\nfor i in range(1, len(lst)):\n    if lst[i] < lst[min_idx]:\n        # TODO: min_idx를 갱신하는 한 줄을 작성하시오.",
+      "hints": [
+        "인덱스를 갱신해야 하므로 i를 사용합니다."
+      ],
+      "wrongFeedbackText": "값이 아니라 인덱스를 갱신해야 합니다.",
       "expectedCode": "min_idx = i",
       "hint": "인덱스를 갱신해야 하므로 i를 넣습니다."
     },
@@ -82,8 +140,10 @@
       "type": "short",
       "level": "기초",
       "title": "Short 2. swap 후 배열 상태",
-      "description": "아래 코드 실행 후, 배열 arr의 내용을 `lst[0] lst[1] lst[2] lst[3]` 순서로 공백으로 구분해 쓰세요.",
-      "code": "lst = [1, 2, 3, 4]\ntmp = lst[0]\narr[0] = lst[3]\narr[3] = tmp",
+      "conceptRef": "swap_basic",
+      "description": "아래 코드 실행 후, 배열 lst의 내용을 `lst[0] lst[1] lst[2] lst[3]` 순서로 공백으로 구분해 쓰세요.",
+      "code": "lst = [1, 2, 3, 4]\ntmp = lst[0]\nlst[0] = lst[3]\nlst[3] = tmp",
+      "wrongFeedbackText": "tmp를 통해 첫 값과 마지막 값을 교환합니다.",
       "expectedText": "4 2 3 1"
     },
     {
@@ -91,7 +151,8 @@
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 3. 배열을 뒤집는 코드",
-      "description": "다음 중 리스트 arr를 **제자리(in-place)**에서 뒤집는 코드로 올바른 것을 고르세요.\n(arr은 정수 리스트입니다.)",
+      "conceptRef": "swap_basic",
+      "description": "다음 중 리스트 lst를 **제자리(in-place)** 에서 뒤집는 코드로 올바른 것을 고르세요.\n(lst은 정수 리스트입니다.)",
       "code": null,
       "options": [
         "for i in range(len(lst)):\n    tmp = lst[i]\n    lst[i] = lst[len(lst) - 1 - i]\n    lst[len(lst) - 1 - i] = tmp",
@@ -105,15 +166,25 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "wrongFeedback": {
+        "0": "전체를 순회하면 두 번 교환되어 원래대로 돌아옵니다.",
+        "2": "인덱스 범위와 접근이 잘못되었습니다.",
+        "3": "len(lst)-i는 범위를 벗어납니다."
+      }
     },
     {
       "id": "code3",
       "type": "code",
       "level": "기초",
       "title": "Code 3. 최댓값 인덱스 갱신",
+      "conceptRef": "min_max_index",
       "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(lst[i]가 더 크면 max_idx를 i로 갱신해야 합니다.)",
       "code": "max_idx = 0\nfor i in range(1, len(lst)):\n    if lst[i] > lst[max_idx]:\n        # TODO: max_idx를 갱신하는 한 줄을 작성하시오.",
+      "hints": [
+        "인덱스를 갱신해야 하므로 i를 사용합니다."
+      ],
+      "wrongFeedbackText": "값이 아니라 인덱스를 갱신해야 합니다.",
       "expectedCode": "max_idx = i",
       "hint": "인덱스를 갱신해야 하므로 i를 넣습니다."
     },
@@ -121,14 +192,15 @@
       "id": "mcq4",
       "type": "mcq",
       "level": "기초",
-      "title": "MCQ 4. 배열 복사",
-      "description": "다음 중 리스트 a의 내용을 **독립적인 새 리스트 b**로 복사하는 코드로 올바른 것을 고르세요.\n(복사 후 a를 바꿔도 b가 영향을 받지 않아야 합니다.)",
+      "title": "MCQ 4. 마지막 등장 인덱스",
+      "conceptRef": "linear_search",
+      "description": "다음 중 리스트 lst에서 값 x가 **마지막으로 등장한 인덱스**를 찾는 코드로 올바른 것을 고르세요.\n(없으면 -1로 남겨 둡니다.)",
       "code": null,
       "options": [
-        "b = a",
-        "b = []\nfor i in range(len(a)):\n    b = b + [a[i]]",
-        "b = []\nfor i in range(len(a)):\n    b[i] = a[i]",
-        "b = []\nfor i in range(len(a) - 1):\n    b = b + [a[i]]"
+        "last = -1\nfor i in range(len(lst)):\n    if lst[i] == x:\n        last = i\n# last 사용",
+        "last = -1\nfor i in range(len(lst)):\n    if lst[i] == x:\n        break\n# last 사용",
+        "last = 0\nfor i in range(len(lst)):\n    if lst[i] == x:\n        last = 0\n# last 사용",
+        "last = -1\nfor i in range(len(lst) - 1, -1, -1):\n    if lst[i] == x:\n        last = i\n        break\n# last 사용"
       ],
       "optionLabels": [
         "A",
@@ -136,7 +208,12 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 0,
+      "wrongFeedback": {
+        "1": "break를 하면 첫 등장 인덱스만 얻습니다.",
+        "2": "last를 항상 0으로 두면 의미가 없습니다.",
+        "3": "뒤에서 찾는 것도 가능하지만, 설명에 맞는 코드는 A입니다."
+      }
     }
   ]
 }

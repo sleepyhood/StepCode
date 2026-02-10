@@ -5,13 +5,64 @@
   "availableLanguages": [
     "python"
   ],
+  "concepts": [
+    {
+      "id": "linear_search",
+      "title": "선형 탐색",
+      "summary": "앞에서부터 순회하며 조건을 만족하면 찾습니다.",
+      "example": "```python\nfound = 0\nfor i in range(len(lst)):\n    if lst[i] == x:\n        found = 1\n        break\n```",
+      "algorithm": "```text\n1) found를 0으로 둔다.\n2) 순회하며 조건을 검사한다.\n3) 찾으면 found=1 후 종료한다.\n```",
+      "relatedProblems": ["mcq1", "short1", "code1"]
+    },
+    {
+      "id": "first_last_occurrence",
+      "title": "등장 위치(첫/마지막)",
+      "summary": "앞에서부터 순회하면 첫 등장, 끝까지 갱신하면 마지막 등장입니다.",
+      "example": "```python\nlast = -1\nfor i in range(len(lst)):\n    if lst[i] == x:\n        last = i\n```",
+      "algorithm": "```text\n1) last를 -1로 둔다.\n2) 순회하며 조건을 검사한다.\n3) 일치하면 last를 갱신한다.\n```",
+      "relatedProblems": ["short1", "mcq2", "mcq3"]
+    },
+    {
+      "id": "min_max_index",
+      "title": "최솟값/최댓값 인덱스 갱신",
+      "summary": "값 비교 후 인덱스를 갱신합니다.",
+      "example": "```python\nif lst[i] < lst[min_idx]:\n    min_idx = i\n```",
+      "algorithm": "```text\n1) min/max 인덱스를 0으로 둔다.\n2) 더 작은/큰 값을 만나면 인덱스를 갱신한다.\n```",
+      "relatedProblems": ["short1", "code1"]
+    },
+    {
+      "id": "second_max",
+      "title": "두 번째 큰 값 갱신",
+      "summary": "최댓값과 두 번째 최댓값을 함께 관리합니다.",
+      "example": "```python\nif v > max1:\n    max2 = max1\n    max1 = v\nelif v > max2 and v != max1:\n    max2 = v\n```",
+      "algorithm": "```text\n1) max1/max2를 매우 작은 값으로 초기화한다.\n2) max1이 갱신되면 max2를 이전 max1으로 옮긴다.\n3) 그렇지 않으면 max2를 갱신한다.\n```",
+      "relatedProblems": ["code2"]
+    },
+    {
+      "id": "adjacent_sum",
+      "title": "인접 합 최대",
+      "summary": "인접한 두 수의 합을 구해 최댓값을 갱신합니다.",
+      "example": "```python\ns = lst[i] + lst[i+1]\nif s > best:\n    best = s\n```",
+      "algorithm": "```text\n1) 첫 두 원소의 합을 best로 둔다.\n2) 인접합 s를 구한다.\n3) s가 크면 best를 갱신한다.\n```",
+      "relatedProblems": ["code3"]
+    },
+    {
+      "id": "sorted_check",
+      "title": "오름차순(비내림) 확인",
+      "summary": "이전 값보다 작아지는 순간 오름차순이 깨집니다.",
+      "example": "```python\nif lst[i] < lst[i-1]:\n    ok = 0\n```",
+      "algorithm": "```text\n1) i=1부터 순회한다.\n2) lst[i] < lst[i-1]이면 ok=0.\n```",
+      "relatedProblems": ["code4"]
+    }
+  ],
   "problems": [
     {
       "id": "mcq1",
       "type": "mcq",
       "level": "챌린지",
       "title": "MCQ 1. 예외(경계) 디버깅",
-      "description": "다음 코드는 리스트 arr의 합을 구하려고 합니다. 실행하면 예외가 발생할 수 있습니다.\n가장 올바른 수정 방법을 고르세요.",
+      "conceptRef": "linear_search",
+      "description": "다음 코드는 리스트 lst의 합을 구하려고 합니다. 실행하면 예외가 발생할 수 있습니다.\n가장 올바른 수정 방법을 고르세요.",
       "code": "sum_val = 0\nfor i in range(len(lst) + 1):\n    sum_val += lst[i]\nprint('%d' % sum_val)",
       "options": [
         "for i in range(len(lst)):\n    sum_val += lst[i]",
@@ -25,15 +76,22 @@
         "C",
         "D"
       ],
-      "correctIndex": 0
+      "correctIndex": 0,
+      "wrongFeedback": {
+        "1": "0번째 원소가 빠집니다.",
+        "2": "마지막 원소가 빠집니다.",
+        "3": "인덱스가 하나씩 밀려 범위를 벗어날 수 있습니다."
+      }
     },
     {
       "id": "short1",
       "type": "short",
       "level": "챌린지",
       "title": "Short 1. 중복 최댓값일 때 인덱스",
+      "conceptRef": "min_max_index",
       "description": "아래 코드가 출력하는 내용을 그대로 쓰세요.\n(최댓값이 여러 개일 때, 어떤 인덱스를 선택하는지 확인하는 문제입니다.)",
       "code": "lst = [7, 3, 7, 7, 2]\nmax_idx = 0\nfor i in range(1, len(lst)):\n    if lst[i] >= lst[max_idx]:\n        max_idx = i\nprint('%d' % max_idx)",
+      "wrongFeedbackText": "같은 값일 때도 갱신하므로 가장 뒤 인덱스가 됩니다.",
       "expectedText": "3"
     },
     {
@@ -41,8 +99,10 @@
       "type": "code",
       "level": "챌린지",
       "title": "Code 1. '가장 앞' 최댓값 인덱스 유지",
+      "conceptRef": "min_max_index",
       "description": "최댓값이 여러 개일 때 **가장 앞 인덱스**를 유지하려면, 아래 코드의 `/* TODO */`에 들어갈 연산자로 올바른 것을 작성하세요.\n(연산자 하나만 작성)",
       "code": "max_idx = 0\nfor i in range(1, len(lst)):\n    if lst[i] /* TODO */ lst[max_idx]:\n        max_idx = i",
+      "wrongFeedbackText": "동일할 때는 갱신하지 않아야 하므로 `>`가 맞습니다.",
       "expectedCode": ">",
       "hint": "동일한 값일 때는 갱신하지 않아야 합니다."
     },
@@ -51,8 +111,10 @@
       "type": "short",
       "level": "챌린지",
       "title": "Short 0. 0 이전 3개 출력",
+      "conceptRef": "first_last_occurrence",
       "description": "아래 코드가 출력하는 내용을 그대로 쓰세요.\n(배열에서 0이 처음 나오는 위치 **이전 3개**를 순서대로 출력합니다.)",
       "code": "lst = [8, 4, 1, 9, 0, 7]\nidx = -1\nfor i in range(len(lst)):\n    if lst[i] == 0:\n        idx = i\n        break\nprint('%d %d %d' % (lst[idx - 3], lst[idx - 2], lst[idx - 1]))",
+      "wrongFeedbackText": "0이 처음 등장하는 위치 바로 앞의 3개를 순서대로 읽습니다.",
       "expectedText": "4 1 9"
     },
     {
@@ -60,8 +122,14 @@
       "type": "code",
       "level": "챌린지",
       "title": "Code 2. 두 번째 큰 값 갱신",
+      "conceptRef": "second_max",
       "description": "아래 코드는 서로 다른 값들 중 **두 번째로 큰 값**(second max)을 구하려고 합니다.\n주석 위치에 들어갈 **한 줄**을 작성하세요.",
       "code": "max1 = -10**18\nmax2 = -10**18\nfor i in range(n):\n    v = lst[i]\n    if v > max1:\n        max2 = max1\n        max1 = v\n    elif v > max2 and v != max1:\n        # TODO: max2를 갱신하는 한 줄을 작성하시오.",
+      "hints": [
+        "elif 블록에서는 v가 두 번째 후보입니다.",
+        "max2는 값으로 갱신합니다."
+      ],
+      "wrongFeedbackText": "두 번째로 큰 값은 `max2 = v`로 갱신합니다.",
       "expectedCode": "max2 = v",
       "hint": "else if 블록에서는 v가 두 번째로 큰 후보입니다."
     },
@@ -70,8 +138,10 @@
       "type": "short",
       "level": "챌린지",
       "title": "Short 2. 버그가 있는 최솟값 코드의 출력",
+      "conceptRef": "min_max_index",
       "description": "아래 코드는 최솟값을 구하려고 하지만 버그가 있습니다.\n입력이 `lst = [5, 1, 4]`일 때, 이 코드가 출력하는 값은 무엇인가요?",
       "code": "lst = [5, 1, 4]\nmin_val = lst[0]\nfor i in range(1, len(lst)):\n    if lst[i] > min_val:\n        min_val = lst[i]\nprint('%d' % min_val)",
+      "wrongFeedbackText": "조건식이 반대로 되어 최댓값 쪽으로 갱신됩니다.",
       "expectedText": "5"
     },
     {
@@ -79,8 +149,10 @@
       "type": "code",
       "level": "챌린지",
       "title": "Code 3. 인접한 두 수의 합 최댓값 갱신",
+      "conceptRef": "adjacent_sum",
       "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(인접한 두 원소 합 s가 best보다 크면 best를 갱신해야 합니다.)",
       "code": "best = lst[0] + lst[1]\nfor i in range(1, n - 1):\n    s = lst[i] + lst[i + 1]\n    # TODO: best를 갱신하는 한 줄을 작성하시오.\nprint('%d' % best)",
+      "wrongFeedbackText": "조건식은 `s > best` 입니다.",
       "expectedCode": "if s > best: best = s",
       "hint": "if문 한 줄로 작성할 수 있습니다."
     },
@@ -89,8 +161,10 @@
       "type": "short",
       "level": "챌린지",
       "title": "Short 1. 0 이전 3개 역순 출력",
+      "conceptRef": "first_last_occurrence",
       "description": "아래 코드가 출력하는 내용을 그대로 쓰세요.\n(배열에서 0이 처음 나오는 위치 **이전 3개**를 역순으로 출력합니다.)",
       "code": "lst = [8, 4, 1, 9, 0, 7]\nidx = -1\nfor i in range(len(lst)):\n    if lst[i] == 0:\n        idx = i\n        break\nprint('%d %d %d' % (lst[idx - 1], lst[idx - 2], lst[idx - 3]))",
+      "wrongFeedbackText": "0 이전 3개를 역순으로 출력합니다.",
       "expectedText": "9 1 4"
     },
     {
@@ -98,10 +172,12 @@
       "type": "code",
       "level": "챌린지",
       "title": "Code 4. 비내림차순(오름차순) 확인",
-      "description": "아래 코드는 배열이 비내림차순(오름차순)인지 확인하려고 합니다.\n주석 위치에 들어갈 **한 줄**을 작성하세요.\n(lst[i]가 lst[i-1]보다 작으면 ok를 0으로 만들면 됩니다.)",
-      "code": "ok = 1\nfor i in range(1, n):\n    # TODO: 오름차순이 깨지면 ok를 0으로 만드는 한 줄을 작성하시오.\nif ok == 1:\n    print('YES')\nelse:\n    print('NO')",
-      "expectedCode": "if lst[i] < lst[i - 1]: ok = 0",
-      "hint": "조건을 만족하면 ok를 0으로 바꿉니다."
+      "conceptRef": "sorted_check",
+      "description": "아래 코드는 배열이 비내림차순(오름차순)인지 확인하려고 합니다.\n**조건식만** 작성하세요.\n(lst[i]가 lst[i-1]보다 작으면 ok를 0으로 만들면 됩니다.)",
+      "code": "ok = 1\nfor i in range(1, n):\n    if (                        ):\n        ok = 0\nif ok == 1:\n    print('YES')\nelse:\n    print('NO')",
+      "wrongFeedbackText": "오름차순이 깨지는 조건은 lst[i] < lst[i-1] 입니다.",
+      "expectedCode": "lst[i] < lst[i - 1]",
+      "hint": "오름차순이 깨지는 조건을 쓰면 됩니다."
     }
   ]
 }

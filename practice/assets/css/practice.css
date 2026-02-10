@@ -155,6 +155,67 @@ body {
   align-items: center;
 }
 
+/* ===== Concept Report (Host Only) ===== */
+.concept-report{
+  max-width: 1100px;
+  margin: 0 auto 18px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.95);
+  display: none;
+}
+.host-ui .concept-report{
+  display: block;
+}
+.concept-report-head{
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.concept-report-head h3{
+  margin: 0;
+  font-size: 1rem;
+}
+.concept-report-sub{
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+}
+.concept-report-body{
+  display: grid;
+  gap: 8px;
+}
+.concept-report-row{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+}
+.concept-report-title{
+  font-weight: 700;
+}
+.concept-report-stats{
+  font-size: 0.82rem;
+  color: #64748b;
+}
+.concept-report-bar{
+  grid-column: 1 / -1;
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+.concept-report-fill{
+  height: 100%;
+  background: var(--accent-primary);
+  width: 0%;
+}
+
 .focus-left,
 .focus-right {
   display: flex;
@@ -335,7 +396,7 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .concept-cols-3 .concept-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 @media (max-width: 900px) {
@@ -531,6 +592,24 @@ body {
   font-size: 0.82rem;
   white-space: pre-wrap;
 }
+.trace-line{
+  display: grid;
+  grid-template-columns: 2.5ch 1fr;
+  gap: 8px;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+.trace-line-no{
+  color: #94a3b8;
+  text-align: right;
+}
+.trace-line-text{
+  color: #0f172a;
+}
+.trace-line.active{
+  background: #bfdbfe;
+  outline: 1px solid #60a5fa;
+}
 .trace-vars{
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -588,8 +667,37 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== Hint Steps (Normal Mode) ===== */
+.hint-steps{
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.hint-step-btn{
+  align-self: flex-start;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.hint-step-btn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.hint-step{
+  font-size: 0.82rem;
+  color: #6b7280;
+}
 .concept-flash {
   animation: conceptFlash 1.2s ease-out;
+}
+.concept-attention{
+  outline: 2px solid rgba(14, 116, 144, 0.45);
+  box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.18);
 }
 @keyframes conceptFlash {
   0% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.45); }

@@ -1,4 +1,4 @@
-// practice/assets/js/practice.js
+﻿// practice/assets/js/practice.js
 
 let currentSetData = null;
 let currentLang = "c"; // 지금은 C만, 나중에 언어별 코드 확장
@@ -130,8 +130,7 @@ function renderConceptSection(container, concepts) {
   }, 0);
 
   if (maxLineLen > 60) wrap.classList.add("concept-cols-1");
-  else if (maxLineLen > 35) wrap.classList.add("concept-cols-2");
-  else wrap.classList.add("concept-cols-3");
+  else wrap.classList.add("concept-cols-2");
 
   const collapseLimit = 3;
   if (list.length > collapseLimit) wrap.classList.add("concept-collapsed");
@@ -213,6 +212,20 @@ function scrollToConcept(conceptId) {
   el.scrollIntoView({ behavior: "smooth", block: "start" });
   el.classList.add("concept-flash");
   setTimeout(() => el.classList.remove("concept-flash"), 1200);
+}
+
+function highlightConcept(conceptId) {
+  if (!conceptId) return;
+  const el = document.getElementById(`concept-${conceptId}`);
+  if (!el) return;
+  const wrap = el.closest(".concept-wrap");
+  if (wrap && wrap.classList.contains("concept-collapsed")) {
+    wrap.classList.remove("concept-collapsed");
+    const btn = wrap.querySelector(".concept-toggle");
+    if (btn) btn.textContent = "접기";
+  }
+  el.classList.add("concept-attention");
+  setTimeout(() => el.classList.remove("concept-attention"), 1400);
 }
 
 function renderMediaBlock(targetEl, media) {
@@ -317,9 +330,21 @@ function renderTracePanel(targetEl, q) {
   function renderStep(i) {
     const step = steps[i];
     const lineNo = Number(step?.line) || 0;
-    const lineText = lineNo > 0 && lineNo <= lines.length ? lines[lineNo - 1] : "";
-
-    codeBox.textContent = lineNo ? `${lineNo}: ${lineText}` : lineText;
+    codeBox.innerHTML = "";
+    lines.forEach((ln, i) => {
+      const row = document.createElement("div");
+      row.className = "trace-line";
+      const no = document.createElement("span");
+      no.className = "trace-line-no";
+      no.textContent = String(i + 1).padStart(2, " ");
+      const tx = document.createElement("span");
+      tx.className = "trace-line-text";
+      tx.textContent = ln;
+      row.appendChild(no);
+      row.appendChild(tx);
+      if (lineNo === i + 1) row.classList.add("active");
+      codeBox.appendChild(row);
+    });
 
     varBox.innerHTML = "";
     const vars = step?.vars && typeof step.vars === "object" ? step.vars : {};
@@ -646,6 +671,8 @@ function updateProgressUi() {
 
   if (solveFill) solveFill.style.width = `${pSolve}%`;
   if (corFill) corFill.style.width = `${pCor}%`;
+
+  renderConceptReport();
 }
 
 function appendQGradeBadge(headerEl, qid) {
@@ -1237,7 +1264,7 @@ async function initPractice() {
 
     const dashEnabled = shouldEnableDashboardUi(isHost);
     document.body.classList.toggle("dash-on", dashEnabled);
-    if (dashEnabled) setupRealtimeDashboard(); // ← 추가
+    if (dashEnabled) setupRealtimeDashboard(); // ← 추가`r`n`r`n    document.body.classList.toggle("host-ui", !!isHost);`r`n    if (isHost) renderConceptReport();
   } catch (err) {
     console.error(err);
     container.textContent = "문제를 불러오는 중 오류가 발생했습니다.";
@@ -1363,6 +1390,98 @@ function setInlineWarning(qid, msg) {
 
 function normalizeText(str) {
   return (str || "").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+function computeConceptReport() {
+  const concepts = Array.isArray(currentSetData?.concepts)
+    ? currentSetData.concepts
+    : [];
+  const byId = {};
+  concepts.forEach((c) => {
+    if (!c || !c.id) return;
+    byId[c.id] = { id: c.id, title: c.title || c.id, total: 0, correct: 0, wrong: 0 };
+  });
+
+  const byQ = qGradeMeta?.byQ || {};
+  const qs = currentSetData?.problems || [];
+  qs.forEach((q) => {
+    const cid = q.conceptRef;
+    if (!cid || !byId[cid]) return;
+    byId[cid].total += 1;
+    if (byQ[q.id]?.lastIsCorrect === true) byId[cid].correct += 1;
+    else if (byQ[q.id]?.lastIsCorrect === false) byId[cid].wrong += 1;
+  });
+
+  return Object.values(byId).filter((r) => r.total > 0);
+}
+
+function renderConceptReport() {
+  const wrap = document.getElementById("concept-report");
+  const body = document.getElementById("concept-report-body");
+  if (!wrap || !body) return;
+
+  const rows = computeConceptReport();
+  if (!rows.length) {
+    wrap.hidden = true;
+    body.innerHTML = "";
+    return;
+  }
+
+  body.innerHTML = "";
+  rows.forEach((r) => {
+    const row = document.createElement("div");
+    row.className = "concept-report-row";
+
+    const title = document.createElement("div");
+    title.className = "concept-report-title";
+    title.textContent = r.title;
+
+    const stats = document.createElement("div");
+    stats.className = "concept-report-stats";
+    stats.textContent = `정답 ${r.correct}/${r.total} · 오답 ${r.wrong}`;
+
+    const bar = document.createElement("div");
+    bar.className = "concept-report-bar";
+    const fill = document.createElement("div");
+    fill.className = "concept-report-fill";
+    const ratio = r.total ? (r.correct / r.total) * 100 : 0;
+    fill.style.width = `${Math.max(0, Math.min(100, ratio))}%`;
+    bar.appendChild(fill);
+
+    row.appendChild(title);
+    row.appendChild(stats);
+    row.appendChild(bar);
+    body.appendChild(row);
+  });
+
+  wrap.hidden = false;
+}
+
+function getWrongFeedbackMessage(q, userVal) {
+  if (!q) return "";
+
+  if (q.type === "mcq") {
+    if (userVal === undefined || userVal === null || String(userVal) === "") {
+      return "보기를 먼저 선택해 주세요.";
+    }
+    const map = q.wrongFeedback && typeof q.wrongFeedback === "object"
+      ? q.wrongFeedback
+      : null;
+    if (map) {
+      const key = String(userVal);
+      const msg = map[key];
+      if (msg) return String(msg);
+    }
+  }
+
+  if (q.type === "short" || q.type === "code") {
+    if (userVal === undefined || userVal === null || String(userVal).trim() === "") {
+      return "답안을 입력해 주세요.";
+    }
+    if (q.wrongFeedbackText) return String(q.wrongFeedbackText);
+  }
+
+  return "❌ 다시 한 번 생각해보세요.";
 }
 
 // ====== 문제 전체 렌더 ======
@@ -1616,12 +1735,45 @@ function getQuestionRecommendedMs(q, idx) {
 function appendCoachPanel(card, q, idx, bucket) {
   // 일반모드: 기존처럼 hint(있으면)만 노출
   if (!isClassMode()) {
-    if (q.hint) {
-      const hint = document.createElement("div");
-      hint.className = "hint";
-      hint.classList.add("md");
-      renderMarkdownInto(hint, q.hint);
-      card.appendChild(hint);
+    const hints = getHints(q);
+    if (hints && hints.length) {
+      const wrap = document.createElement("div");
+      wrap.className = "hint-steps";
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "hint-step-btn";
+      btn.textContent = "힌트 보기";
+      wrap.appendChild(btn);
+
+      const list = document.createElement("div");
+      list.className = "hint-step-list";
+      wrap.appendChild(list);
+
+      let stage = 0;
+      const hintEls = hints.map((h, i) => {
+        const el = document.createElement("div");
+        el.className = "hint-step md";
+        el.hidden = true;
+        renderMarkdownInto(el, h);
+        list.appendChild(el);
+        return el;
+      });
+
+      btn.addEventListener("click", () => {
+        if (stage < hintEls.length) {
+          hintEls[stage].hidden = false;
+          stage += 1;
+        }
+        if (stage >= hintEls.length) {
+          btn.disabled = true;
+          btn.textContent = "힌트 모두 열림";
+        } else {
+          btn.textContent = `다음 힌트 (${stage}/${hintEls.length})`;
+        }
+      });
+
+      card.appendChild(wrap);
     }
     return;
   }
@@ -2329,9 +2481,14 @@ function setupGrading() {
           feedbackEl.classList.remove("incorrect");
           feedbackEl.classList.add("correct");
         } else {
-          feedbackEl.textContent = "❌ 다시 한 번 생각해보세요.";
+          let userVal = currentAnswers ? currentAnswers[q.id] : "";
+          feedbackEl.textContent = getWrongFeedbackMessage(q, userVal);
           feedbackEl.classList.remove("correct");
           feedbackEl.classList.add("incorrect");
+          if (q.conceptRef) {
+            scrollToConcept(q.conceptRef);
+            highlightConcept(q.conceptRef);
+          }
         }
       }
     });
@@ -3247,3 +3404,4 @@ function setupWorksheetPrint() {
   });
 }
 // ====== 답안 채점 ======
+

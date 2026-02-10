@@ -5,12 +5,55 @@
   "availableLanguages": [
     "python"
   ],
+  "concepts": [
+    {
+      "id": "if_basic",
+      "title": "if / else 기본",
+      "summary": "조건이 참이면 if, 거짓이면 else가 실행됩니다.",
+      "example": "```python\nif score >= 60:\n    print('Pass')\nelse:\n    print('Fail')\n```",
+      "algorithm": "```text\n1) 조건을 평가한다.\n2) 참이면 if, 거짓이면 else를 실행한다.\n```",
+      "relatedProblems": ["mcq1", "short1", "code1"]
+    },
+    {
+      "id": "even_odd",
+      "title": "짝수/홀수 판별",
+      "summary": "n % 2 == 0이면 짝수입니다.",
+      "example": "```python\nif n % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')\n```",
+      "algorithm": "```text\n1) n을 2로 나눈 나머지를 확인한다.\n2) 0이면 짝수, 아니면 홀수.\n```",
+      "relatedProblems": ["mcq2"]
+    },
+    {
+      "id": "range_check",
+      "title": "범위 검사",
+      "summary": "Python은 연속 비교(1 <= n <= 10)를 지원합니다.",
+      "example": "```python\nif 1 <= n <= 10:\n    print('InRange')\n```",
+      "algorithm": "```text\n1) n이 하한 이상인지 확인한다.\n2) n이 상한 이하인지 확인한다.\n```",
+      "relatedProblems": ["mcq3", "short1", "short2", "code1"]
+    },
+    {
+      "id": "indentation",
+      "title": "들여쓰기와 실행 위치",
+      "summary": "print 위치에 따라 항상 실행될 수 있습니다.",
+      "example": "```python\nif n < 0:\n    print('Minus')\n```\n",
+      "algorithm": "```text\n1) 들여쓰기 블록 안/밖을 구분한다.\n```",
+      "relatedProblems": ["mcq4"]
+    },
+    {
+      "id": "elif_chain",
+      "title": "elif 조건 순서",
+      "summary": "범위가 겹치면 순서가 중요합니다.",
+      "example": "```python\nif score >= 90:\n    print('A')\nelif score >= 80:\n    print('B')\nelse:\n    print('C')\n```",
+      "algorithm": "```text\n1) 큰 조건부터 검사한다.\n2) 해당되면 아래는 건너뛴다.\n```",
+      "relatedProblems": ["mcq5", "code2"]
+    }
+  ],
   "problems": [
     {
       "id": "mcq1",
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 1. Pass / Fail 프로그램",
+      "conceptRef": "if_basic",
       "description": "다음 설명에 맞는 Python 코드를 고르세요.\n\n- 정수 score를 하나 입력받는다.\n- score가 60 이상이면 \"Pass\"를 출력하고,\n  그렇지 않으면 \"Fail\"을 출력한다.",
       "code": null,
       "options": [
@@ -25,13 +68,19 @@
         "C",
         "D"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "wrongFeedback": {
+        "0": "input()은 문자열이므로 int 변환이 필요합니다.",
+        "1": "60 이상이므로 >= 여야 합니다.",
+        "3": "60만 통과시키면 70, 80은 Fail이 됩니다."
+      }
     },
     {
       "id": "mcq2",
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 2. 짝수/홀수 출력 결과",
+      "conceptRef": "even_odd",
       "description": "아래 프로그램에서 입력이 3일 때, 출력으로 알맞은 것을 고르세요.",
       "code": "n = int(input())\nif n % 2 == 0:\n    print('%s' % 'Even')\nelse:\n    print('%s' % 'Odd')\nprint('%s' % 'Done')",
       "options": [
@@ -46,13 +95,19 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "wrongFeedback": {
+        "0": "3은 홀수이므로 Odd가 출력됩니다.",
+        "2": "입력을 출력하지 않습니다.",
+        "3": "출력 순서가 다릅니다."
+      }
     },
     {
       "id": "mcq3",
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 3. 범위 검사",
+      "conceptRef": "range_check",
       "description": "다음 프로그램은 1 이상 10 이하이면 \"InRange\"를 출력합니다.\n\"InRange\"가 출력되는 입력을 모두 고른 것은?",
       "code": "n = int(input())\nif 1 <= n <= 10:\n    print('%s' % 'InRange')",
       "options": [
@@ -67,13 +122,19 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "wrongFeedback": {
+        "0": "0은 범위에 포함되지 않습니다.",
+        "2": "11은 범위를 벗어납니다.",
+        "3": "0과 11은 범위를 벗어납니다."
+      }
     },
     {
       "id": "mcq4",
       "type": "mcq",
       "level": "조금 응용",
       "title": "MCQ 4. 항상 Minus가 나오는 이유",
+      "conceptRef": "indentation",
       "description": "다음 프로그램은 음수일 때만 \"Minus\"를 출력하려고 했지만,\n입력 값과 상관없이 항상 \"Minus\"가 출력됩니다.\n가장 중요한 원인은 무엇인가요?",
       "code": "n = int(input())\nif n < 0:\n    n = n\nprint('%s' % 'Minus')",
       "options": [
@@ -88,13 +149,19 @@
         "C",
         "D"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "wrongFeedback": {
+        "0": "자료형 문제는 아닙니다.",
+        "1": "조건식보다 출력 위치가 문제입니다.",
+        "3": "int 변환은 이미 하고 있습니다."
+      }
     },
     {
       "id": "mcq5",
       "type": "mcq",
       "level": "기초",
       "title": "MCQ 5. 학점 조건식",
+      "conceptRef": "elif_chain",
       "description": "다음은 점수에 따라 학점을 출력하려는 프로그램입니다.\n- 90 이상이면 \"A\"\n- 80 이상 90 미만이면 \"B\"\n- 나머지는 \"C\"를 출력하려고 합니다.\n올바른 코드 한 개를 고르세요.",
       "code": null,
       "options": [
@@ -109,15 +176,22 @@
         "C",
         "D"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "wrongFeedback": {
+        "0": "두 번째 if는 else가 아닌 if라서 90점 이상에서 B도 출력됩니다.",
+        "1": "조건 순서가 잘못되어 A가 출력되지 않습니다.",
+        "3": "경계값(90, 80)을 포함하지 않습니다."
+      }
     },
     {
       "id": "short1",
       "type": "short",
       "level": "단답형",
       "title": "Short 1. 범위 + if-else 결과",
+      "conceptRef": "range_check",
       "description": "아래 프로그램에서 입력이 7일 때, 출력되는 내용을 그대로 쓰세요.\n(줄바꿈 없이 한 줄입니다.)",
       "code": "n = int(input())\nif 5 <= n <= 10:\n    print('%s' % 'OK')\nelse:\n    print('%s' % 'NG')",
+      "wrongFeedbackText": "조건이 참이면 OK, 아니면 NG입니다.",
       "expectedText": "OK"
     },
     {
@@ -125,8 +199,10 @@
       "type": "short",
       "level": "단답형",
       "title": "Short 2. 어떤 값을 넣으면 참이 될까?",
+      "conceptRef": "range_check",
       "description": "다음 조건식이 참(true)이 되도록 n의 값을 하나만 쓰세요.\n(여러 개 중 아무거나 하나 맞으면 정답입니다.)",
       "code": "1 <= n <= 5",
+      "wrongFeedbackText": "1 이상 5 이하 중 아무 값이나 가능합니다.",
       "expectedAnyOf": [
         "1",
         "2",
@@ -140,8 +216,13 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 1. 1 이상 10 이하 조건식 작성",
+      "conceptRef": "range_check",
       "description": "변수 n이 1 이상 10 이하일 때만 if 안이 실행되도록, 괄호 안의 조건식을 작성하세요.\n\nif 뒤에 들어갈 조건식을 한 줄로 쓰세요.\n(연속 비교: 1 <= n <= 10 형태를 사용하세요.)",
       "code": "n = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print('%s' % 'InRange')",
+      "hints": [
+        "1 <= n <= 10 형태의 연속 비교를 사용합니다."
+      ],
+      "wrongFeedbackText": "연속 비교를 사용하면 가장 간단합니다.",
       "expectedCode": "1 <= n <= 10",
       "hint": "Python에서는 ? <= n <= ? 처럼 연속 비교를 쓸 수 있습니다."
     },
@@ -150,8 +231,13 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 2. 두 조건을 모두 만족해야 Pass",
+      "conceptRef": "elif_chain",
       "description": "정수 score와 absent를 입력받았을 때,\n- score가 60 이상이고\n- absent(결석 횟수)가 5 미만일 때만 \"Pass\"를 출력하고,\n그렇지 않으면 \"Fail\"을 출력하는 조건식을 작성하세요.\n\nif 뒤 괄호 안에 들어갈 조건식만 한 줄로 쓰면 됩니다.",
       "code": "score = int(input())\nabsent = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print('%s' % 'Pass')\nelse:\n    print('%s' % 'Fail')",
+      "hints": [
+        "score >= 60 and absent < 5"
+      ],
+      "wrongFeedbackText": "두 조건을 and로 묶어야 합니다.",
       "expectedCode": "score >= 60 and absent < 5",
       "hint": "두 조건을 and 로 묶어서 사용할 수 있습니다."
     }

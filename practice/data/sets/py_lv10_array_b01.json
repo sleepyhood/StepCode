@@ -72,7 +72,12 @@
         "C",
         "D"
       ],
-      "correctIndex": 0
+      "correctIndex": 0,
+      "wrongFeedback": {
+        "1": "map 객체를 그대로 쓰면 리스트가 아닙니다. list(...)로 감싸야 해요.",
+        "2": "input()을 split 없이 쓰면 한 글자씩 들어갑니다.",
+        "3": "정수로 변환해야 하므로 float가 아니라 int입니다."
+      }
     },
     {
       "id": "mcq2",
@@ -102,7 +107,12 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "wrongFeedback": {
+        "0": "인덱스는 0부터 시작해요. 마지막은 n이 아니라 n-1입니다.",
+        "2": "n+1은 범위를 벗어납니다.",
+        "3": "lst[0]은 첫 번째 원소입니다."
+      }
     },
     {
       "id": "short1",
@@ -112,10 +122,7 @@
       "conceptRef": "range_len",
       "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (줄바꿈 없이 한 줄입니다.)",
       "code": "lst = [4, 9, 1, 0, 7, 8]\ncnt = 0\nfor i in range(len(lst)):\n    if lst[i] == 0:\n        break\n    cnt += 1\nprint('%d' % cnt)",
-      "ioExample": {
-        "input": "",
-        "output": "3"
-      },
+      "wrongFeedbackText": "0을 만나기 전까지 몇 번 더하는지 확인해 보세요.",
       "trace": [
         {
           "line": 1,
@@ -213,6 +220,10 @@
         "input": "10 20 30 40 50",
         "output": "50 40 30"
       },
+      "hints": [
+        "마지막 원소는 `lst[n-1]` 입니다.",
+        "그 이전 원소는 `lst[n-2]`, 그 이전은 `lst[n-3]` 입니다."
+      ],
       "expectedCode": "print('%d %d %d' % (lst[n - 1], lst[n - 2], lst[n - 3]))",
       "hint": "마지막 원소는 lst[n-1] 입니다."
     },
@@ -224,10 +235,7 @@
       "conceptRef": "range_len",
       "description": "아래 코드가 출력하는 내용을 그대로 쓰세요. (줄바꿈 없이 한 줄입니다.)",
       "code": "n = 5\nlst = [5, 1, 4, 2, 7]\ns = 0\nfor i in range(0, n, 2):\n    s += lst[i]\nprint('%d' % s)",
-      "ioExample": {
-        "input": "",
-        "output": "16"
-      },
+      "wrongFeedbackText": "짝수 인덱스(0, 2, 4)의 합만 더해야 합니다.",
       "expectedText": "16"
     },
     {
@@ -242,6 +250,11 @@
         "input": "",
         "output": "42"
       },
+      "hints": [
+        "마지막 인덱스는 `n-1` 입니다.",
+        "포맷은 `print('%d' % lst[n-1])` 형태입니다."
+      ],
+      "wrongFeedbackText": "마지막 인덱스는 `n-1` 입니다. 포맷을 다시 확인하세요.",
       "expectedCode": "print('%d' % lst[n - 1])",
       "hint": "마지막 인덱스는 n - 1 입니다."
     },
@@ -276,20 +289,26 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "wrongFeedback": {
+        "0": "n+1이면 마지막 인덱스에서 범위를 벗어납니다.",
+        "2": "n-1이면 마지막 원소를 방문하지 못합니다.",
+        "3": "range(1, n)은 0부터 시작하지 않습니다."
+      }
     },
     {
       "id": "code3",
       "type": "code",
       "level": "기초",
-      "title": "Code 3. 입력을 배열(리스트)에 저장",
+      "title": "Code 3. 한 줄 수정: 입력을 리스트에 저장",
       "conceptRef": "list_input",
-      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(n개의 정수는 한 줄에 공백으로 입력됩니다.)",
-      "code": "n = int(input())\n# TODO: 한 줄 입력을 받아 lst에 저장하는 한 줄을 작성하시오.",
+      "description": "아래 코드에는 한 줄짜리 버그가 있습니다. **틀린 한 줄을 올바르게 수정**하세요.\n(n개의 정수는 한 줄에 공백으로 입력됩니다.)",
+      "code": "n = int(input())\n# BUG: 아래 한 줄을 올바르게 수정하세요.\nlst = list(map(int, input()))",
       "ioExample": {
         "input": "4\n1 2 3 4",
         "output": "[1, 2, 3, 4]"
       },
+      "wrongFeedbackText": "공백으로 구분된 입력은 `split()`이 필요합니다.",
       "expectedCode": "lst = list(map(int, input().split()))",
       "hint": "정수 배열은 list(map(int, input().split())) 입니다."
     }

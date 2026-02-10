@@ -5,12 +5,55 @@
   "availableLanguages": [
     "python"
   ],
+  "concepts": [
+    {
+      "id": "compound_conditions",
+      "title": "복합 조건(and / or)",
+      "summary": "and는 모두 참일 때, or는 하나라도 참일 때 참입니다.",
+      "example": "```python\nif age >= 20 and is_student == 'Y':\n    print('성인 학생')\n```\n",
+      "algorithm": "```text\n1) 각 조건의 참/거짓을 판단한다.\n2) and는 모두 참인지, or는 하나라도 참인지 확인한다.\n```",
+      "relatedProblems": ["mcq1", "mcq4", "short2", "code1"]
+    },
+    {
+      "id": "elif_order",
+      "title": "elif 조건 순서",
+      "summary": "위에서 조건이 참이면 아래 elif는 검사하지 않습니다.",
+      "example": "```python\nif score >= 90:\n    print('A')\nelif score >= 80:\n    print('B')\nelse:\n    print('C')\n```\n",
+      "algorithm": "```text\n1) 위 조건부터 차례대로 검사한다.\n2) 처음 참인 블록만 실행한다.\n```",
+      "relatedProblems": ["mcq2", "short1", "code2"]
+    },
+    {
+      "id": "separate_if",
+      "title": "if와 elif의 차이",
+      "summary": "if를 두 번 쓰면 각각 독립적으로 실행됩니다.",
+      "example": "```python\nif n % 2 == 0:\n    print('Even')\nif n % 3 == 0:\n    print('Three')\n```\n",
+      "algorithm": "```text\n1) 첫 번째 if를 검사하고 실행한다.\n2) 두 번째 if를 다시 검사한다.\n```",
+      "relatedProblems": ["mcq3"]
+    },
+    {
+      "id": "nested_if",
+      "title": "중첩 if",
+      "summary": "조건 안에서 또 조건을 검사합니다.",
+      "example": "```python\nif score >= 60:\n    if score >= 90:\n        print('A')\n    else:\n        print('B')\n```\n",
+      "algorithm": "```text\n1) 바깥 조건을 먼저 검사한다.\n2) 참이면 안쪽 조건을 추가로 검사한다.\n```",
+      "relatedProblems": ["mcq5"]
+    },
+    {
+      "id": "range_even",
+      "title": "범위 + 짝수 조건",
+      "summary": "범위 검사와 나머지 조건을 함께 사용할 수 있습니다.",
+      "example": "```python\nif 10 <= n <= 99 and n % 2 == 0:\n    print('YES')\n```\n",
+      "algorithm": "```text\n1) 범위 조건을 확인한다.\n2) 짝수 조건(n % 2 == 0)을 확인한다.\n```",
+      "relatedProblems": ["short2", "code1"]
+    }
+  ],
   "problems": [
     {
       "id": "mcq1",
       "type": "mcq",
       "level": "챌린지",
       "title": "MCQ 1. 성인 / 학생 분류",
+      "conceptRef": "compound_conditions",
       "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n- 나이 age와 학생 여부 is_student(\"Y\" 또는 \"N\")를 입력받는다.\n- age가 20 이상이고 is_student가 \"Y\"이면 \"성인 학생\"을 출력한다.\n- age가 20 이상이고 is_student가 \"Y\"가 아니면 \"성인\"을 출력한다.\n- 그 외에는 \"미성년자\"를 출력한다.",
       "code": null,
       "options": [
@@ -25,13 +68,19 @@
         "C",
         "D"
       ],
-      "correctIndex": 0
+      "correctIndex": 0,
+      "wrongFeedback": {
+        "1": "or를 쓰면 학생이면 미성년자라도 '성인 학생'이 됩니다.",
+        "2": "age >= 20이면 바로 성인이 출력되어 '성인 학생'이 나올 수 없습니다.",
+        "3": "미성년자가 항상 출력됩니다."
+      }
     },
     {
       "id": "mcq2",
       "type": "mcq",
       "level": "챌린지",
       "title": "MCQ 2. 조건의 순서",
+      "conceptRef": "elif_order",
       "description": "아래 프로그램에서 입력이 95일 때, 출력으로 알맞은 것을 고르세요.",
       "code": "score = int(input())\nif score >= 70:\n    print('%s' % 'C')\nelif score >= 80:\n    print('%s' % 'B')\nelif score >= 90:\n    print('%s' % 'A')\nelse:\n    print('%s' % 'D')",
       "options": [
@@ -46,13 +95,19 @@
         "C",
         "D"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "wrongFeedback": {
+        "0": "score >= 70이 먼저 참이므로 A까지 내려가지 않습니다.",
+        "1": "B 역시 if에서 이미 걸려 내려오지 않습니다.",
+        "3": "95는 70 이상이므로 D가 아닙니다."
+      }
     },
     {
       "id": "mcq3",
       "type": "mcq",
       "level": "챌린지",
       "title": "MCQ 3. if와 elif의 차이",
+      "conceptRef": "separate_if",
       "description": "아래 프로그램에서 입력이 6일 때, 출력으로 알맞은 것을 고르세요.",
       "code": "n = int(input())\nif n % 2 == 0:\n    print('%s' % 'Even')\nif n % 3 == 0:\n    print('%s' % 'Three')\nelse:\n    print('%s' % 'Other')",
       "options": [
@@ -67,13 +122,19 @@
         "C",
         "D"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "wrongFeedback": {
+        "0": "6은 3의 배수라서 Three도 출력됩니다.",
+        "1": "첫 번째 if도 참이어서 Even이 먼저 출력됩니다.",
+        "3": "두 번째 if는 참이므로 Other는 출력되지 않습니다."
+      }
     },
     {
       "id": "mcq4",
       "type": "mcq",
       "level": "챌린지",
       "title": "MCQ 4. and / or 섞어서 쓰기",
+      "conceptRef": "compound_conditions",
       "description": "아래 프로그램에서 \"OK\"가 출력되는 n만 모아 둔 것을 고르세요.",
       "code": "n = int(input())\nif (n % 2 == 0 and n > 0) or n == 1:\n    print('%s' % 'OK')\nelse:\n    print('%s' % 'NG')",
       "options": [
@@ -88,13 +149,19 @@
         "C",
         "D"
       ],
-      "correctIndex": 0
+      "correctIndex": 0,
+      "wrongFeedback": {
+        "1": "-2는 n > 0 조건을 만족하지 못합니다.",
+        "2": "0은 n > 0이 거짓이고, -2도 거짓입니다.",
+        "3": "0은 n > 0이 거짓이라 OK가 아닙니다."
+      }
     },
     {
       "id": "mcq5",
       "type": "mcq",
       "level": "챌린지",
       "title": "MCQ 5. 중첩 if의 동작",
+      "conceptRef": "nested_if",
       "description": "아래 프로그램에서 입력이 75일 때, 출력으로 알맞은 것을 고르세요.",
       "code": "score = int(input())\nif score >= 60:\n    if score >= 90:\n        print('%s' % 'A')\n    else:\n        print('%s' % 'B')\nelse:\n    print('%s' % 'F')",
       "options": [
@@ -109,15 +176,22 @@
         "C",
         "D"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "wrongFeedback": {
+        "0": "75는 90 이상이 아니므로 A가 아닙니다.",
+        "2": "75는 60 이상이라 F가 아닙니다.",
+        "3": "조건을 만족하므로 출력이 있습니다."
+      }
     },
     {
       "id": "short1",
       "type": "short",
       "level": "챌린지",
       "title": "Short 1. 여러 조건 분기",
+      "conceptRef": "elif_order",
       "description": "아래 프로그램에서 입력이 6일 때, 출력되는 한 줄을 그대로 쓰세요.\n(따옴표는 쓰지 마시오)",
       "code": "n = int(input())\nif n < 0:\n    print('%s' % 'minus')\nelif n == 0:\n    print('%s' % 'zero')\nelif n % 2 == 0:\n    print('%s' % 'plus-even')\nelse:\n    print('%s' % 'plus-odd')",
+      "wrongFeedbackText": "앞 조건이 거짓일 때만 아래 elif가 실행됩니다.",
       "expectedText": "plus-even"
     },
     {
@@ -125,8 +199,10 @@
       "type": "short",
       "level": "챌린지",
       "title": "Short 2. 조건을 만족하는 값 찾기",
+      "conceptRef": "range_even",
       "description": "다음 조건식이 참(true)이 되도록 n의 값을 하나만 쓰세요.\n(여러 개 중 아무거나 하나 맞으면 정답입니다.)",
       "code": "n % 2 == 0 and 10 <= n <= 20",
+      "wrongFeedbackText": "10 이상 20 이하의 짝수라면 무엇이든 됩니다.",
       "expectedAnyOf": [
         "10",
         "12",
@@ -141,8 +217,13 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 1. 두 자리 양수이면서 짝수",
+      "conceptRef": "range_even",
       "description": "정수 n이 \"두 자리 양수(10 이상 99 이하)\"이고, 동시에 짝수일 때만 \"YES\"를 출력하려고 합니다.\nif 뒤 괄호 안에 들어갈 조건식을 한 줄로 작성하세요.",
       "code": "n = int(input())\nif  # 여기에 조건식을 작성하세요:\n    print('%s' % 'YES')\nelse:\n    print('%s' % 'NO')",
+      "hints": [
+        "10 <= n <= 99와 n % 2 == 0을 and로 묶습니다."
+      ],
+      "wrongFeedbackText": "범위 조건과 짝수 조건을 모두 만족해야 합니다.",
       "expectedCode": "10 <= n <= 99 and n % 2 == 0",
       "hint": "10 <= n <= 99와 n % 2 == 0을 and로 묶어 보세요."
     },
@@ -151,8 +232,13 @@
       "type": "code",
       "level": "코드 작성",
       "title": "Code 2. 학점 B 구간 조건식",
+      "conceptRef": "elif_order",
       "description": "아래는 학점을 A, B, C로 나누는 코드의 일부입니다.\n- 90 이상이면 A\n- 80 이상 90 미만이면 B\n- 나머지는 C\n\nelif 줄의 조건식을 완성하세요.",
       "code": "score = int(input())\nif score >= 90:\n    print('%s' % 'A')\nelif  # 여기에 조건식을 작성하세요:\n    print('%s' % 'B')\nelse:\n    print('%s' % 'C')",
+      "hints": [
+        "앞에서 score >= 90이 거짓일 때만 내려옵니다."
+      ],
+      "wrongFeedbackText": "90 미만이면서 80 이상을 의미하는 조건을 쓰면 됩니다.",
       "expectedCode": "score >= 80",
       "hint": "앞의 if가 거짓일 때만 elif를 검사한다는 점을 생각해 보세요."
     }
