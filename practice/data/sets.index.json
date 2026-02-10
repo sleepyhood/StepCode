@@ -81,21 +81,21 @@
     "file": "py_lv03_input_b01.json"
   },
   {
-    "id": "py_for_b1",
+    "id": "py_lv07_for_b01",
     "categoryId": "py_for",
     "title": "Python for문 기초 1회차",
     "round": 1,
     "difficulty": "basic",
-    "numProblems": 9,
+    "numProblems": 5,
     "file": "py_lv07_for_b01.json"
   },
   {
-    "id": "py_for_c1",
+    "id": "py_lv07_for_c01",
     "categoryId": "py_for",
     "title": "Python for문 챌린지 1회차",
     "round": 2,
     "difficulty": "challenge",
-    "numProblems": 9,
+    "numProblems": 5,
     "file": "py_lv07_for_c01.json"
   },
   {
@@ -500,36 +500,28 @@
     "title": "Python for문 LV07 기초 2회차",
     "round": 2,
     "difficulty": "basic",
-    "numProblems": 9,
+    "numProblems": 5,
     "file": "py_lv07_for_b02.json"
   },
   {
     "id": "py_lv07_for_b03",
     "categoryId": "py_for",
-    "title": "Python for문 LV07 기초 2회차",
+    "title": "Python for문 LV07 기초 3회차",
     "round": 3,
     "difficulty": "basic",
-    "numProblems": 9,
+    "numProblems": 5,
     "file": "py_lv07_for_b03.json"
   },
   {
     "id": "py_lv07_for_b04",
     "categoryId": "py_for",
-    "title": "Python for문 LV07 기초 2회차",
+    "title": "Python for문 LV07 기초 4회차",
     "round": 4,
     "difficulty": "basic",
-    "numProblems": 9,
+    "numProblems": 8,
     "file": "py_lv07_for_b04.json"
   },
-  {
-    "id": "py_lv07_for_comment_a01",
-    "categoryId": "py_for",
-    "title": "Python for문 LV07 기초 a1회차",
-    "round": 5,
-    "difficulty": "basic",
-    "numProblems": 9,
-    "file": "py_lv07_for_comment_a01.json"
-  },
+  
   {
     "id": "py_lv08_while_b02",
     "categoryId": "py_while",

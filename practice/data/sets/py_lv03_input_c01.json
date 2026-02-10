@@ -8,10 +8,10 @@
   "concepts": [
     {
       "id": "split_space_bug",
-      "title": "split(' ')의 함정",
-      "summary": "연속 공백이 있으면 split(' ')이 빈 토큰을 만들 수 있습니다.",
+      "title": "split() 기본 사용",
+      "summary": "연속 공백이 있어도 split()으로 안전하게 분리할 수 있습니다.",
       "example": "```python\na, b = map(int, input().split())\n```",
-      "algorithm": "```text\n1) split()은 모든 공백을 안전하게 분리한다.\n2) split(' ')은 연속 공백에서 문제가 생길 수 있다.\n```",
+      "algorithm": "```text\n1) split()은 모든 공백을 안전하게 분리한다.\n2) 연속 공백도 하나의 구분자로 처리한다.\n```",
       "relatedProblems": [
         "mcq1",
         "mcq5",
@@ -54,77 +54,18 @@
   ],
   "problems": [
     {
-      "id": "t_n_values",
+      "id": "t_name_scores_lines",
       "type": "short",
       "level": "challenge",
-      "title": "Trace 1. Sum of n values",
-      "description": "First input is n. Second line has n integers.\nSum values by index and fill i, value, sum.\n\nExample table:\n| i | value | sum |\n| --- | --- | --- |\n| ... | 1 | 0 |",
-      "code": "n = int(input())\nvals = list(map(int, input().split()))\nsumv = 0\nfor i in range(n):\n    sumv += vals[i]\nprint(sumv)",
+      "title": "Trace 1. 이름과 점수(두 줄)",
+      "description": "1줄째에는 이름, 2줄째에는 정수 두 개가 추가 공백과 함께 주어져요.\n요구사항:\n- 점수 합을 계산해요.\n- 이름과 합을 함께 출력해요.\n- name, s1, s2, output을 표에 채워요.\n\n예시 표:\n| name | s1 | s2 | output |\n| --- | --- | --- | --- |\n| Lee | 70 | 80 | 0 |",
+      "code": "name = input().strip()\ns1, s2 = map(int, input().split())\nprint(name, s1 + s2)",
       "answerUi": {
         "kind": "grid",
         "rows": [
-          "1",
-          "2",
-          "3",
-          "4"
-        ],
-        "columns": [
-          "i",
-          "value",
-          "sum"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "0",
-          "1",
-          "1"
-        ],
-        [
-          "1",
-          "2",
-          "3"
-        ],
-        [
-          "2",
-          "3",
-          "6"
-        ],
-        [
-          "3",
-          "4",
-          "10"
-        ]
-      ],
-      "ioExample": {
-        "input": "4\n1 2 3 4"
-      }
-    },
-    {
-      "id": "r_find_b",
-      "type": "short",
-      "level": "challenge",
-      "title": "Reverse 1. Find the second input",
-      "description": "You are told the first input and the final product.\nFind the missing second input. (number only)",
-      "code": "a = int(input())\nb = int(input())\nprint(a * b)",
-      "expectedText": "9",
-      "ioExample": {
-        "input": "3\n?"
-      }
-    },
-    {
-      "id": "t_name_scores",
-      "type": "short",
-      "level": "challenge",
-      "title": "Trace 2. Name and two scores",
-      "description": "Read a name and two scores from one line.\nConvert scores to int and print name with their sum. Fill the table.\n\nExample table:\n| name | s1 | s2 | output |\n| --- | --- | --- | --- |\n| Amy | 70 | 80 | 0 |",
-      "code": "name, s1, s2 = input().split()\ns1 = int(s1)\ns2 = int(s2)\nprint(name, s1 + s2)",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "1"
+          "line1",
+          "line2",
+          "result"
         ],
         "columns": [
           "name",
@@ -137,12 +78,49 @@
       },
       "expectedGrid": [
         [
-          "Kim",
+          "Lee",
+          "",
+          "",
+          ""
+        ],
+        [
+          "Lee",
           "70",
           "80",
-          "Kim 150"
+          ""
+        ],
+        [
+          "Lee",
+          "70",
+          "80",
+          "Lee 150"
         ]
       ],
+      "ioExample": {
+        "input": "Lee\n70   80"
+      }
+    },
+    {
+      "id": "r_find_b",
+      "type": "short",
+      "level": "challenge",
+      "title": "Reverse 1. 가운데 입력 찾기",
+      "description": "a, c와 a*b+c의 출력값이 주어져요.\n요구사항:\n- 출력값이 11이라고 가정해요.\n- 빠진 b를 구해요. (숫자만)",
+      "code": "a, b, c = map(int, input().split())\nprint(a * b + c)",
+      "expectedText": "4",
+      "ioExample": {
+        "input": "2 ? 3",
+        "output": "11"
+      }
+    },
+    {
+      "id": "t_name_scores",
+      "type": "short",
+      "level": "challenge",
+      "title": "Short 1. 이름과 두 점수",
+      "description": "한 줄에서 이름과 점수 두 개를 읽어요.\n요구사항:\n- 점수를 정수로 변환해요.\n- 합을 계산해 출력해요.\n- 결과 한 줄만 작성해요.",
+      "code": "name, s1, s2 = input().split()\ns1 = int(s1)\ns2 = int(s2)\nprint(name, s1 + s2)",
+      "expectedText": "Kim 150",
       "ioExample": {
         "input": "Kim 70 80"
       }
@@ -151,33 +129,10 @@
       "id": "t_split_space",
       "type": "short",
       "level": "challenge",
-      "title": "Trace 3. split(' ') with extra spaces",
-      "description": "Input has three spaces between values.\nUsing split(' ') produces empty values. Fill values and length.\n\nExample table:\n| value1 | value2 | value3 | value4 | len |\n| --- | --- | --- | --- | --- |\n| ... | ... | ... | ... | 3 |",
-      "code": "parts = input().split( )\nprint(len(parts))",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "1"
-        ],
-        "columns": [
-          "value1",
-          "value2",
-          "value3",
-          "value4",
-          "len"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "A",
-          "",
-          "",
-          "B",
-          "4"
-        ]
-      ],
+      "title": "Short 2. 여러 공백 값 개수",
+      "description": "값 사이에 공백이 여러 개 있어요.\n요구사항:\n- split()으로 값을 나눠요.\n- 값 개수를 출력해요.\n- 결과 한 줄만 작성해요.",
+      "code": "parts = input().split()\nprint(len(parts))",
+      "expectedText": "2",
       "ioExample": {
         "input": "A   B"
       }

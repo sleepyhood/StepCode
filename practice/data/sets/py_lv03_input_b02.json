@@ -10,8 +10,8 @@
       "id": "t_split_spaces",
       "type": "short",
       "level": "basic",
-      "title": "Trace 1. Multiple spaces",
-      "description": "The input line contains multiple spaces.\nUse split() and fill input1, input2, a, b, and output.\n\nExample table:\n| input1 | input2 | a | b | output |\n| --- | --- | --- | --- | --- |\n| 3 | 5 | 3 | 5 | 0 |",
+      "title": "Trace 1. 여러 공백 입력",
+      "description": "입력 줄에 공백이 여러 개 있어요.\n요구사항:\n- split()으로 토큰을 나눠요.\n- input1, input2에는 토큰 그대로 적어요.\n- a, b에는 정수 변환 결과를 적어요.\n- a + b를 계산해 output에 적어요.\n\n예시 표:\n| input1 | input2 | a | b | output |\n| --- | --- | --- | --- | --- |\n| 3 | 5 | 3 | 5 | 0 |",
       "code": "a, b = map(int, input().split())\nprint(a + b)",
       "answerUi": {
         "kind": "grid",
@@ -45,29 +45,10 @@
       "id": "t_name_age",
       "type": "short",
       "level": "basic",
-      "title": "Trace 2. Name and age",
-      "description": "Read name and age from one line. Convert age to int.\nPrint in the format name:age. Fill the table.\n\nExample table:\n| name | age | output |\n| --- | --- | --- |\n| Amy | 12 | 0 |",
-      "code": "name, age = input().split()\nage = int(age)\nprint(%s:%d % (name, age))",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "1"
-        ],
-        "columns": [
-          "name",
-          "age",
-          "output"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "Amy",
-          "12",
-          "Amy:12"
-        ]
-      ],
+      "title": "Short 1. 이름과 나이 출력",
+      "description": "한 줄에서 이름과 나이를 읽어요.\n요구사항:\n- age를 정수로 변환해요.\n- 출력 형식은 name:age예요.\n- 결과 한 줄만 작성해요.",
+      "code": "name, age = input().split()\nage = int(age)\nprint('%s:%d' % (name, age))",
+      "expectedText": "Amy:12",
       "ioExample": {
         "input": "Amy 12"
       }
@@ -76,20 +57,21 @@
       "id": "r_find_age",
       "type": "short",
       "level": "basic",
-      "title": "Reverse 1. Find the age",
-      "description": "You are given the output format name:age.\nFind the missing age. (number only)",
-      "code": "name, age = input().split()\nprint(%s:%s % (name, age))",
+      "title": "Reverse 1. 나이 찾기",
+      "description": "출력 형식 name:age가 주어져요.\n요구사항:\n- 출력에서 age를 찾아요.\n- 정답은 숫자만 작성해요.",
+      "code": "name, age = input().split()\nprint('%s:%s' % (name, age))",
       "expectedText": "20",
       "ioExample": {
-        "input": "Tom ?"
+        "input": "Tom ?",
+        "output": "Tom:20"
       }
     },
     {
       "id": "t_two_line_mix",
       "type": "short",
       "level": "basic",
-      "title": "Trace 3. Two-line mixed input",
-      "description": "Line1 contains a name. Line2 contains two integers.\nCompute x + y and print name with the sum. Fill the table.\n\nExample table:\n| name | x | y | output |\n| --- | --- | --- | --- |\n| Amy | 1 | 1 | 0 |",
+      "title": "Trace 3. 두 줄 혼합 입력",
+      "description": "1줄째에는 이름, 2줄째에는 정수 두 개가 있어요.\n요구사항:\n- x + y를 계산해요.\n- 이름과 합을 함께 출력해요.\n- name, x, y, output을 표에 채워요.\n\n예시 표:\n| name | x | y | output |\n| --- | --- | --- | --- |\n| Amy | 1 | 1 | 0 |",
       "code": "name = input().strip()\nx, y = map(int, input().split())\nprint(name, x + y)",
       "answerUi": {
         "kind": "grid",
@@ -132,36 +114,15 @@
       }
     },
     {
-      "id": "t_split_space_bug",
+      "id": "t_two_lines_one_output",
       "type": "short",
       "level": "basic",
-      "title": "Trace 4. split(' ') effect",
-      "description": "The input contains two spaces between values.\nUsing split(' ') creates an empty value. Fill values and length.\n\nExample table:\n| value1 | value2 | value3 | len |\n| --- | --- | --- | --- |\n| ... | ... | ... | 3 |",
-      "code": "parts = input().split( )\nprint(len(parts))",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "1"
-        ],
-        "columns": [
-          "value1",
-          "value2",
-          "value3",
-          "len"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "A",
-          "",
-          "B",
-          "3"
-        ]
-      ],
+      "title": "Short 2. 두 줄 입력 한 줄 출력",
+      "description": "두 줄 입력을 한 줄로 정리해 출력해요.\n요구사항:\n- 1줄째 두 정수, 2줄째 두 정수를 읽어요.\n- 네 값을 한 줄에 순서대로 출력해요.",
+      "code": "a, b = map(int, input().split())\nc, d = map(int, input().split())\nprint(a, b, c, d)",
+      "expectedText": "1 2 3 4",
       "ioExample": {
-        "input": "A  B"
+        "input": "1 2\n3 4"
       }
     }
   ]

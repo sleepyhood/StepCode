@@ -71,95 +71,64 @@
 
 
 ## Python
-### Python - Lv7 반복1(for) (py_for)
 
-- ?? ??
-  - `py_for_b1` - Python for문 기초 1회차
-    - ??: `py_lv07_for_b01.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 1부터 5까지 출력 (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. for와 range 실행 결과 (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. 합 구하기 (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. 거꾸로 출력 (level: 기초, concept: -)
-      - 5. [mcq] MCQ 5. 짝수만 더하기 (level: 기초, concept: -)
-      - 6. [short] Short 1. range(3)의 출력 (level: 단답형, concept: -)
-      - 7. [short] Short 2. 합의 결과 (level: 단답형, concept: -)
-      - 8. [code] Code 1. 1부터 n까지 출력하는 for문 (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. 구구단 한 단 출력 (level: 코드 작성, concept: -)
+### 리뉴얼 목표
 
-  - `py_for_c1` - Python for문 챌린지 1회차
-    - ??: `py_lv07_for_c01.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 거꾸로 출력 (홀수만) (level: 챌린지, concept: -)
-      - 2. [mcq] MCQ 2. break와 continue 함께 쓰기 (level: 챌린지, concept: -)
-      - 3. [mcq] MCQ 3. n개의 입력 중 양수 개수 (level: 챌린지, concept: -)
-      - 4. [mcq] MCQ 4. n개의 입력 중 최솟값과 최댓값 (level: 챌린지, concept: -)
-      - 5. [mcq] MCQ 5. 홀수만 출력하는 코드 고르기 (level: 챌린지, concept: -)
-      - 6. [short] Short 1. range(2, 10, 3)의 출력 (level: 챌린지, concept: -)
-      - 7. [short] Short 2. n개의 입력 절댓값 합 (level: 챌린지, concept: -)
-      - 8. [code] Code 1. 3의 배수만 더하기 (level: 챌린지, concept: -)
-      - 9. [code] Code 2. n부터 1까지 거꾸로 출력 (level: 챌린지, concept: -)
+1. for문의 반복 흐름을 **입력-처리-출력 관점**에서 이해하도록 구성해요.
+2. Trace 50% / Short 30% / Code 20% 비율을 기본으로 해요.
+3. 출력 형식과 반복 종료 조건을 혼동하지 않도록 강조해요.
 
-  - `py_lv07_for_b02` - Python for문 기초 2회차
-    - ??: `py_lv07_for_b02.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. range 방향이 잘못되면? (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. 1부터 n까지(끝 포함) 출력 (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. 첫 번째 7의 배수 찾기 (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. 1부터 n까지 3의 배수 개수 (level: 기초, concept: -)
-      - 5. [mcq] MCQ 5. 홀수만 더하기 (level: 기초, concept: -)
-      - 6. [short] Short 1. 출력이 없는 경우 (level: 단답형, concept: -)
-      - 7. [short] Short 2. step이 -2인 range (level: 단답형, concept: -)
-      - 8. [code] Code 1. 1부터 n까지 중 첫 7의 배수 (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. a부터 b까지 k의 배수 합 (level: 코드 작성, concept: -)
+### 핵심 개념
 
-  - `py_lv07_for_b03` - Python for문 기초 3회차
-    - ??: `py_lv07_for_b03.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. (함정) 짝수 개수인데 i를 검사하면? (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. n개의 입력 중 짝수의 개수 (정답 코드 고르기) (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. (함정) '홀수의 합'을 range로 바꾸면 왜 틀리나? (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. 최소 수정으로 고치기 (i → num) (level: 기초, concept: -)
-      - 5. [mcq] MCQ 5. (개념 구분) 아래 중 range를 바꾸는 게 '맞는 경우'는? (level: 기초, concept: -)
-      - 6. [short] Short 1. (실행 추적) i를 검사하면 이렇게 된다 (level: 단답형, concept: -)
-      - 7. [short] Short 2. (정상 패턴) num을 검사하면? (level: 단답형, concept: -)
-      - 8. [code] Code 1. (한 줄) 짝수 개수 세기 - if 한 줄 작성 (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. (한 줄) 홀수 합 구하기 - if 한 줄 작성 (level: 코드 작성, concept: -)
+1. `range(n)`, `range(a, b)`, `range(a, b, step)`의 반복 범위.
+2. 누적 변수(`sum`, `count`)의 초기화와 갱신.
+3. 반복 종료 직후 변수 값(조건이 깨지는 순간).
+4. 조건 포함 반복(짝수/양수 등 조건 필터).
+5. 입력과 반복 연결(`n` + n개 값 처리).
 
-  - `py_lv07_for_b04` - Python for문 기초 4회차
-    - ??: `py_lv07_for_b04.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. range의 끝값은 포함될까? (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. (함정) i를 검사하면 무엇을 더하나? (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. 개수 vs 합 (음수의 개수) (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. 경계값 0 처리 (양수의 합) (level: 기초, concept: -)
-      - 5. [mcq] MCQ 5. (함정) 입력을 루프 밖에서 받으면? (level: 기초, concept: -)
-      - 6. [short] Short 1. step 방향이 잘못되면? (level: 단답형, concept: -)
-      - 7. [short] Short 2. 0 포함 여부 (0 이상 합) (level: 단답형, concept: -)
-      - 8. [code] Code 1. 입력 받는 위치 (num 한 줄) (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. 홀수만 더하기 (if 한 줄) (level: 코드 작성, concept: -)
+### 세트 구성 (상세)
 
-  - `py_lv07_for_comment_a01` - Python for문 주석 훈련 A01 (변수 역할 라벨링)
-    - ??: `py_lv07_for_comment_a01.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. i의 역할은? (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. num의 역할은? (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. cnt의 주석으로 알맞은 것은? (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. s의 주석으로 알맞은 것은? (level: 기초, concept: -)
-      - 5. [mcq] MCQ 5. (디버깅) 틀린 주석 고르기 (level: 기초, concept: -)
-      - 6. [short] Short 1. (핵심) 조건은 i일까 num일까? (level: 단답형, concept: -)
-      - 7. [short] Short 2. 변수 역할 라벨 (level: 단답형, concept: -)
-      - 8. [code] Code 1. 주석 한 줄 작성 (num) (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. if 한 줄 + 주석 (짝수 필터) (level: 코드 작성, concept: -)
+> py_for 세트는 총 5개예요: b01, b02, b03, b04, c01
+
+#### py_lv07_for_b01 (기초)
+
+1. Trace: `range(n)` 기본 흐름. 표: i, 출력.
+2. Trace: 누적 합 흐름. 표: i, sum.
+3. Short: 1부터 n까지 홀수만 출력.
+4. Reverse: 출력 합이 주어질 때 n 추론.
+5. Code: 1부터 n까지 출력하는 for문 작성.
+
+#### py_lv07_for_b02 (기초)
+
+1. Trace: step이 있는 `range` 흐름. 표: i, 출력.
+2. Trace: 입력 포함 누적. 표: i, num, sum.
+3. Short: n개 입력 중 짝수 개수 출력.
+4. Reverse: 최종 sum으로 입력 개수 또는 범위 추론.
+5. Code: a부터 b까지 k의 배수 합 출력.
+
+#### py_lv07_for_b03 (기초)
+
+1. Trace: 조건 포함 누적. 표: i, sum.
+2. Trace: n개 입력 중 최대값 추적. 표: i, num, max.
+3. Short: n개 입력 중 양수 개수 출력.
+4. Reverse: 출력 패턴으로 반복 횟수 추론.
+5. Code: 구구단 한 단 출력.
+
+#### py_lv07_for_c01 (챌린지)
+
+1. Trace: 입력 포함 누적(조건 2개). 표: i, num, sum.
+2. Trace: 중간 상태 복원. 표: i, sum.
+3. Short: 조건을 만족하는 값의 합 또는 개수 출력.
+4. Reverse: 출력 결과로 초기값/범위 추론.
+5. Code: 두 조건을 만족하는 값만 출력.
+
+#### py_lv07_for_b04 (기초)
+
+1. Trace: range 끝값 확인. 표: i, output.
+2. Trace: 0 포함 여부. 표: i, num, count, output.
+3. Short: step 방향 오류 확인(출력 없음 포함).
+4. Short: 종료 직후 i 값 출력.
+5. Code: 입력 위치(루프 안) 작성.
+6. Short: count 역할 문장 완성.
+7. Short: 검사할 변수(i vs num) 판별.
+8. Code: if 조건 + 주석 한 줄 작성.

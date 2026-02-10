@@ -50,8 +50,8 @@
       "id": "t_basic_sum",
       "type": "short",
       "level": "basic",
-      "title": "Trace 1. Two integers in one line",
-      "description": "Given the input line, split it into two values and convert them to integers.\nFill the table with input1, input2, a, b, and the final output.\n\nExample table:\n| input1 | input2 | a | b | output |\n| --- | --- | --- | --- | --- |\n| 3 | 5 | 3 | 5 | 0 |",
+      "title": "Trace 1. 한 줄 두 정수",
+      "description": "한 줄 입력에서 값 두 개를 읽어 정수로 바꿔요.\n요구사항:\n- input1, input2에는 입력 토큰 그대로 적어요.\n- a, b에는 정수 변환 결과를 적어요.\n- a + b를 계산해 output에 적어요.\n\n예시 표:\n| input1 | input2 | a | b | output |\n| --- | --- | --- | --- | --- |\n| 3 | 5 | 3 | 5 | 0 |",
       "code": "a, b = map(int, input().split())\nprint(a + b)",
       "answerUi": {
         "kind": "grid",
@@ -82,70 +82,36 @@
       }
     },
     {
-      "id": "t_two_lines_mul",
+      "id": "s_swap_output",
       "type": "short",
       "level": "basic",
-      "title": "Trace 2. Two-line multiplication",
-      "description": "Two lines are provided as input.\nRead line1 into a, line2 into b, then compute a * b.\nFill the table step by step.\n\nExample table:\n| value | a | b | output |\n| --- | --- | --- | --- |\n| 1 | 3 | 5 | 0 |",
-      "code": "a = int(input())\nb = int(input())\nprint(a * b)",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "line1",
-          "line2",
-          "result"
-        ],
-        "columns": [
-          "value",
-          "a",
-          "b",
-          "output"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "2",
-          "2",
-          "",
-          ""
-        ],
-        [
-          "4",
-          "2",
-          "4",
-          ""
-        ],
-        [
-          "",
-          "2",
-          "4",
-          "8"
-        ]
-      ],
+      "title": "Short 1. 출력 순서 바꾸기",
+      "description": "두 값을 입력받아 순서를 바꿔 출력해요.\n요구사항:\n- 출력은 공백으로 구분된 한 줄이에요.\n- 원래 순서를 반대로 출력해요.",
+      "code": "a, b = input().split()\nprint(b, a)",
+      "expectedText": "9 4",
       "ioExample": {
-        "input": "2\n4"
+        "input": "4 9"
       }
     },
     {
       "id": "r_find_b",
       "type": "short",
       "level": "basic",
-      "title": "Reverse 1. Find the second input",
-      "description": "You are told the first input and the final output.\nFind the missing second input. (number only)",
+      "title": "Reverse 1. 두 번째 입력 찾기",
+      "description": "첫 번째 입력과 최종 출력이 주어져요.\n출력은 6이라고 가정해요.\n요구사항:\n- 코드는 a + b를 출력해요.\n- 이 조건으로 b를 구해요.\n- 정답은 숫자만 작성해요.",
       "code": "a = int(input())\nb = int(input())\nprint(a + b)",
       "expectedText": "3",
       "ioExample": {
-        "input": "3\n?"
+        "input": "3\n?",
+        "output": "6"
       }
     },
     {
       "id": "t_three_expr",
       "type": "short",
       "level": "basic",
-      "title": "Trace 3. Three integers expression",
-      "description": "Split the input line into a, b, c and convert to integers.\nCompute a * b + c. Fill the table with variables and output.\n\nExample table:\n| a | b | c | output |\n| --- | --- | --- | --- |\n| 3 | 5 | 1 | 0 |",
+      "title": "Trace 3. 세 정수 식",
+      "description": "한 줄 입력에서 정수 3개를 읽어 식을 계산해요.\n요구사항:\n- a, b, c를 정수로 변환해요.\n- a * b + c를 계산해 output에 적어요.\n- a, b, c, output을 표에 채워요.\n\n예시 표:\n| a | b | c | output |\n| --- | --- | --- | --- |\n| 3 | 5 | 1 | 0 |",
       "code": "a, b, c = map(int, input().split())\nprint(a * b + c)",
       "answerUi": {
         "kind": "grid",
@@ -174,15 +140,15 @@
       }
     },
     {
-      "id": "s_swap_output",
+      "id": "t_two_lines_mul",
       "type": "short",
       "level": "basic",
-      "title": "Short 1. Swap output order",
-      "description": "Read two values and print them in reverse order.\nWrite the exact output as one line.",
-      "code": "a, b = input().split()\nprint(b, a)",
-      "expectedText": "9 4",
+      "title": "Short 2. 두 줄 곱셈 결과",
+      "description": "두 줄 입력을 차례로 읽어 곱을 계산해요.\n요구사항:\n- line1 값을 a에 저장해요.\n- line2 값을 b에 저장해요.\n- a * b의 결과만 출력해요.",
+      "code": "a = int(input())\nb = int(input())\nprint(a * b)",
+      "expectedText": "8",
       "ioExample": {
-        "input": "4 9"
+        "input": "2\n4"
       }
     }
   ]

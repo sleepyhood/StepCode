@@ -418,6 +418,18 @@ VSCode Live Server, Web Server for Chrome 등 다른 정적 서버를 써도 됩
 
 ## 6. 새 문제 / 새 세트 / 새 카테고리 추가 가이드
 
+### 6.0 정합성 체크
+
+`sets.index.json`과 실제 세트 파일의 `numProblems`가 일치하는지 확인하려면 아래 스크립트를 실행하세요.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/check_sets_index.ps1
+```
+
+### 6.0.1 문서 템플릿 위치
+
+파트 문서를 새로 만들 때는 `docs/parts/_template.md`를 기준으로 작성하세요.
+
 ### 6.1 기존 세트에 “문제 하나 더” 추가
 
 1. `data/sets/<세트ID>.json` 파일을 연다.
@@ -611,4 +623,35 @@ VSCode Live Server, Web Server for Chrome 등 다른 정적 서버를 써도 됩
    * 모든 문제 렌더링/채점이 정상 동작하는지 확인
 
 이 규칙만 지키면, 나중에 서버로 옮겨도 **JSON 구조는 그대로 재사용**할 수 있습니다.
+
+---
+
+## 10. 문서/세트 생성 표준 흐름
+
+다음 순서를 기준으로 작업하면 누락 없이 정합성을 유지할 수 있습니다.
+
+1. **파트별 문서 초안 작성** (`docs/parts/*.md`)
+
+   - 핵심 개념, 세트 구성(요약), 문항 타입 비율을 먼저 정리합니다.
+
+2. **세트 JSON 작성** (`practice/data/sets/*.json`)
+
+   - 문서의 세트 구성에 맞춰 문제를 작성합니다.
+   - 문제 수와 순서를 문서와 일치시키세요.
+
+3. **세트 인덱스 등록** (`practice/data/sets.index.json`)
+
+   - `id`, `categoryId`, `title`, `round`, `difficulty`, `numProblems`, `file`를 추가합니다.
+
+4. **신규 카테고리 등록** (필요 시) (`practice/data/categories.json`)
+
+   - 새 단원이라면 카테고리를 먼저 추가합니다.
+
+5. **정합성 체크 실행**
+
+   - 아래 명령으로 문제 수/파일 존재/카테고리 일치를 확인합니다.
+
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File scripts/check_sets_index.ps1
+   ```
 
