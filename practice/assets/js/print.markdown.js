@@ -65,6 +65,51 @@ function typeLabel(q) {
   return q.type || "";
 }
 
+function isGridQuestion(q) {
+  return q && q.type === "short" && q.answerUi && q.answerUi.kind === "grid";
+}
+
+function extractFirstMarkdownTable(raw) {
+  const text = String(raw ?? "").replace(/\r\n?/g, "\n");
+  const lines = text.split("\n");
+  const isTableRow = (s) => /\|/.test(s);
+  const isSepRow = (s) => /^\s*\|?\s*:?-{3,}:?(?:\s*\|\s*:?-{3,}:?)*\s*\|?\s*$/.test(s);
+
+  for (let i = 0; i < lines.length - 1; i++) {
+    if (isTableRow(lines[i]) && isSepRow(lines[i + 1])) {
+      const out = [lines[i], lines[i + 1]];
+      let j = i + 2;
+      while (j < lines.length && lines[j].trim() !== "" && isTableRow(lines[j])) {
+        out.push(lines[j]);
+        j++;
+      }
+      return out.join("\n");
+    }
+  }
+  return "";
+}
+
+function removeFirstMarkdownTable(raw) {
+  const text = String(raw ?? "").replace(/\r\n?/g, "\n");
+  const lines = text.split("\n");
+  const isTableRow = (s) => /\|/.test(s);
+  const isSepRow = (s) => /^\s*\|?\s*:?-{3,}:?(?:\s*\|\s*:?-{3,}:?)*\s*\|?\s*:?-{3,}:?\s*\|?\s*$/.test(s);
+
+  for (let i = 0; i < lines.length - 1; i++) {
+    if (isTableRow(lines[i]) && isSepRow(lines[i + 1])) {
+      let j = i + 2;
+      while (j < lines.length && lines[j].trim() !== "" && isTableRow(lines[j])) {
+        j++;
+      }
+      const before = lines.slice(0, i);
+      const after = lines.slice(j);
+      const merged = before.concat(after).join("\n").replace(/\n{3,}/g, "\n\n").trim();
+      return merged;
+    }
+  }
+  return text;
+}
+
 function correctForTeacher(q) {
   if (!q) return "";
   if (q.type === "mcq") {
@@ -84,6 +129,43 @@ function correctForTeacher(q) {
     return "";
   }
   return "";
+}
+
+function buildGridAnswerTable(q, variant) {
+  const ui = q.answerUi || {};
+  const rows = Array.isArray(ui.rows) && ui.rows.length ? ui.rows : [];
+  const cols = Array.isArray(ui.columns) && ui.columns.length ? ui.columns : [];
+  const expected = Array.isArray(q.expectedGrid) ? q.expectedGrid : [];
+
+  const wrap = el("div", "grid-answer-wrap");
+  const table = el("table", "grid-answer-table");
+
+  const thead = document.createElement("thead");
+  const trh = document.createElement("tr");
+  const corner = el("th", "grid-corner", "");
+  trh.appendChild(corner);
+  cols.forEach((c) => trh.appendChild(el("th", "grid-col-label", c)));
+  thead.appendChild(trh);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  rows.forEach((r, rIdx) => {
+    const tr = document.createElement("tr");
+    tr.appendChild(el("th", "grid-row-label", r));
+    cols.forEach((_c, cIdx) => {
+      const td = document.createElement("td");
+      const val =
+        variant === "teacher" && expected[rIdx]
+          ? String(expected[rIdx][cIdx] ?? "")
+          : "";
+      td.textContent = val;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  return wrap;
 }
 
 function makeDocId(setId, bucket, variant) {
@@ -237,6 +319,43 @@ function mdBlock(raw) {
       out.push(
         `<ol class="md-ol">${items.map((it) => `<li>${mdInline(it)}</li>`).join("")}</ol>`
       );
+      continue;
+    }
+
+    // markdown table (simple)
+    const isTableRow = (s) => /\|/.test(s);
+    const isSepRow = (s) => /^\s*\|?\s*:?-{3,}:?(?:\s*\|\s*:?-{3,}:?)*\s*\|?\s*$/.test(s);
+    if (isTableRow(line) && i + 1 < lines.length && isSepRow(lines[i + 1])) {
+      const head = line;
+      const sep = lines[i + 1];
+      i += 2;
+      const body = [];
+      while (i < lines.length && lines[i].trim() !== "" && isTableRow(lines[i])) {
+        body.push(lines[i]);
+        i++;
+      }
+
+      const parseRow = (row) =>
+        row
+          .trim()
+          .replace(/^\|/, "")
+          .replace(/\|$/, "")
+          .split("|")
+          .map((c) => mdInline(c.trim()));
+
+      const headCells = parseRow(head);
+      const bodyRows = body.map(parseRow);
+
+      const thead = `<thead><tr>${headCells
+        .map((c) => `<th>${c}</th>`)
+        .join("")}</tr></thead>`;
+      const tbody = `<tbody>${bodyRows
+        .map(
+          (r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`
+        )
+        .join("")}</tbody>`;
+
+      out.push(`<table class="md-table">${thead}${tbody}</table>`);
       continue;
     }
 
@@ -418,8 +537,17 @@ function buildProblemCard(set, q, originalIndex, variant) {
 
 
   const desc = el("div", "p-desc md");
-  setMD(desc, q.description || "", "block");
+  const rawDesc = q.description || "";
+  const tableOnly = extractFirstMarkdownTable(rawDesc);
+  const descText = tableOnly ? removeFirstMarkdownTable(rawDesc) : rawDesc;
+  setMD(desc, descText, "block");
   card.appendChild(desc);
+
+  if (tableOnly) {
+    const tableBlock = el("div", "p-desc p-desc--table md");
+    setMD(tableBlock, tableOnly, "block");
+    card.appendChild(tableBlock);
+  }
 
   if (q.code) {
     const pre = el("pre", "p-code");
@@ -498,10 +626,15 @@ if (q.type === "mcq") {
   answer.appendChild(lines);
 
 } else if (q.type === "short") {
-  answer.appendChild(el("div", "answer-label", "답:"));
-  const lines = el("div", "answer-lines");
-  lines.style.setProperty("--n", "1.5");
-  answer.appendChild(lines);
+  if (isGridQuestion(q)) {
+    answer.appendChild(el("div", "answer-label", "표:"));
+    answer.appendChild(buildGridAnswerTable(q, variant));
+  } else {
+    answer.appendChild(el("div", "answer-label", "답:"));
+    const lines = el("div", "answer-lines");
+    lines.style.setProperty("--n", "1.5");
+    answer.appendChild(lines);
+  }
 
 } else if (q.type === "code") {
   if (isCondBlankQuestion(q)) {

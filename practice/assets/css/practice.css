@@ -891,6 +891,61 @@ body {
   background: #eff6ff;
 }
 
+/* ===== Grid(표) 답안 UI ===== */
+.grid-answer-wrap {
+  margin-top: 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  overflow-x: auto;
+}
+
+.grid-answer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.grid-answer-table th,
+.grid-answer-table td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.grid-corner {
+  background: #f8fafc;
+  width: 84px;
+}
+
+.grid-col-label {
+  background: #f8fafc;
+  font-weight: 800;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.grid-row-label {
+  background: #f9fafb;
+  font-weight: 800;
+  color: #374151;
+  white-space: nowrap;
+}
+
+/* input은 기존 .answer-input 느낌 유지 + 표에 맞게 조정 */
+.answer-input.grid-cell {
+  width: 100%;
+  min-height: 34px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.86rem;
+  text-align: center;
+}
+
 /* ===== 단답형 / 코드 입력 ===== */
 
 .answer-input {
@@ -1401,6 +1456,24 @@ body.mode-class .mode-toggle-btn {
   padding: 0;
   color: inherit;
   white-space: pre;
+}
+
+/* ===== Markdown Table (Practice) ===== */
+.md table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0 10px;
+  font-size: 0.86rem;
+}
+.md th,
+.md td {
+  border: 1px solid #e5e7eb;
+  padding: 6px 8px;
+  text-align: center;
+}
+.md th {
+  background: #f8fafc;
+  font-weight: 800;
 }
 
 

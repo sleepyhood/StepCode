@@ -336,8 +336,20 @@ async def practice_html_handler(request: web.Request):
     return web.Response(text=text, content_type="text/html", charset="utf-8")
 
 
+@web.middleware
+async def json_charset_middleware(request: web.Request, handler):
+    response = await handler(request)
+    try:
+        ctype = response.headers.get("Content-Type", "")
+        if ctype.startswith("application/json") and "charset=" not in ctype:
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+    except Exception:
+        pass
+    return response
+
+
 def main():
-    app = web.Application()
+    app = web.Application(middlewares=[json_charset_middleware])
     app.router.add_get("/ws", ws_handler)
     app.router.add_get("/api/host/status", host_status)
     app.router.add_post("/api/host/login", host_login)

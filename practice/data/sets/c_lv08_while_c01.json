@@ -1,8 +1,10 @@
 {
-  "id": "c_while_c1",
+  "id": "c_lv08_while_c01",
   "title": "C while문 챌린지 1회차",
   "categoryId": "c_while",
-  "availableLanguages": ["c"],
+  "availableLanguages": [
+    "c"
+  ],
   "problems": [
     {
       "id": "mcq1",
@@ -17,7 +19,12 @@
         "반복문 안에서 n이 변하지 않아 n > 0이 계속 참이 된다",
         "printf에 서식문자를 사용했기 때문에 무한 루프가 된다"
       ],
-      "optionLabels": ["A", "B", "C", "D"],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
       "correctIndex": 2
     },
     {
@@ -27,8 +34,18 @@
       "title": "MCQ 2. off-by-one (n개 입력)",
       "description": "아래 코드의 목적은 '정수 n을 입력받고, n개의 정수를 더해 합을 출력'하는 것입니다.\n\n입력이 n개일 때 이 코드는 몇 개를 더하려고 시도하나요?",
       "code": "int n;\nscanf(\"%d\", &n);\nint i = 1;\nint s = 0;\nwhile (i <= n + 1) {\n    int x;\n    scanf(\"%d\", &x);\n    s = s + x;\n    i = i + 1;\n}\nprintf(\"%d\\n\", s);",
-      "options": ["n-1개", "n개", "n+1개", "무한히"],
-      "optionLabels": ["A", "B", "C", "D"],
+      "options": [
+        "n-1개",
+        "n개",
+        "n+1개",
+        "무한히"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
       "correctIndex": 2
     },
     {
@@ -44,7 +61,12 @@
         "s = 0;",
         "break;"
       ],
-      "optionLabels": ["A", "B", "C", "D"],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
       "correctIndex": 1
     },
     {
@@ -60,7 +82,12 @@
         "int n;\nscanf(\"%d\", &n);\nint pos = -1;\nint i = 1;\nwhile (i <= n) {\n    int x;\n    scanf(\"%d\", &x);\n    if (x < 0) {\n        break;\n    }\n    i = i + 1;\n}\nprintf(\"%d\\n\", pos);",
         "int n;\nscanf(\"%d\", &n);\nint pos = -1;\nint i = 0;\nwhile (i < n) {\n    int x;\n    scanf(\"%d\", &x);\n    if (x < 0 && pos == -1) {\n        pos = i;\n        break;\n    }\n    i = i + 1;\n}\nprintf(\"%d\\n\", pos);"
       ],
-      "optionLabels": ["A", "B", "C", "D"],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
       "correctIndex": 0
     },
     {
@@ -70,8 +97,18 @@
       "title": "MCQ 5. continue와 갱신 순서",
       "description": "아래 프로그램에서 입력이 4일 때 출력으로 알맞은 것을 고르세요.",
       "code": "int n;\nscanf(\"%d\", &n);\nint i = 0;\nint s = 0;\nwhile (i < n) {\n    i = i + 1;\n    if (i % 2 == 0) {\n        continue;\n    }\n    s = s + i;\n}\nprintf(\"%d\\n\", s);",
-      "options": ["4", "6", "8", "10"],
-      "optionLabels": ["A", "B", "C", "D"],
+      "options": [
+        "4",
+        "6",
+        "8",
+        "10"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
       "correctIndex": 0
     },
     {

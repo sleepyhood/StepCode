@@ -2149,6 +2149,203 @@ function renderMcqOptions(card, q) {
   card.appendChild(optionsWrap);
 }
 
+function isGridAnswerQuestion(q) {
+  return q && q.type === "short" && q.answerUi && q.answerUi.kind === "grid";
+}
+
+function parseGridAnswerText(text, rowCount, colCount, rowSep, colSep) {
+  const rs = rowSep ?? "\n";
+  const cs = colSep ?? " ";
+  const raw = String(text ?? "").trim();
+  if (!raw)
+    return Array.from({ length: rowCount }, () => Array(colCount).fill(""));
+
+  const lines = raw.split(rs).map((s) => s.trim());
+  const out = Array.from({ length: rowCount }, () => Array(colCount).fill(""));
+
+  for (let r = 0; r < Math.min(rowCount, lines.length); r++) {
+    const line = lines[r];
+    if (!line) continue;
+
+    const parts =
+      cs.trim() === ""
+        ? line.split(/\s+/)
+        : line
+            .split(cs)
+            .map((s) => s.trim())
+            .filter((s) => s.length > 0);
+
+    for (let c = 0; c < Math.min(colCount, parts.length); c++) {
+      out[r][c] = parts[c];
+    }
+  }
+  return out;
+}
+
+function serializeGridAnswer(fieldEl, rowCount, colCount, rowSep, colSep) {
+  const rs = rowSep ?? "\n";
+  const cs = colSep ?? " ";
+
+  const cells = fieldEl.querySelectorAll('input[data-grid-cell="1"]');
+  const mat = Array.from({ length: rowCount }, () => Array(colCount).fill(""));
+
+  cells.forEach((inp) => {
+    const r = Number(inp.getAttribute("data-r"));
+    const c = Number(inp.getAttribute("data-c"));
+    if (Number.isFinite(r) && Number.isFinite(c) && r >= 0 && c >= 0) {
+      mat[r][c] = String(inp.value ?? "").trim();
+    }
+  });
+
+  return mat
+    .map((row) => row.join(cs).trim())
+    .join(rs)
+    .trim();
+}
+
+function renderGridAnswerField(field, q, savedValue) {
+  const ui = q.answerUi || {};
+  const rows = Array.isArray(ui.rows) && ui.rows.length ? ui.rows : [];
+  const cols =
+    Array.isArray(ui.columns) && ui.columns.length ? ui.columns : ["값"];
+
+  const rowCount = Math.max(1, rows.length || 1);
+  const colCount = Math.max(1, cols.length || 1);
+  const rowSep = ui.rowSep ?? "\n";
+  const colSep = ui.colSep ?? " ";
+
+  const matrix = parseGridAnswerText(
+    savedValue,
+    rowCount,
+    colCount,
+    rowSep,
+    colSep
+  );
+
+  const tableWrap = document.createElement("div");
+  tableWrap.className = "grid-answer-wrap";
+
+  const table = document.createElement("table");
+  table.className = "grid-answer-table";
+
+  const thead = document.createElement("thead");
+  const hr = document.createElement("tr");
+
+  const th0 = document.createElement("th");
+  th0.className = "grid-corner";
+  th0.textContent = "";
+  hr.appendChild(th0);
+
+  cols.forEach((c) => {
+    const th = document.createElement("th");
+    th.className = "grid-col-label";
+    th.textContent = c;
+    hr.appendChild(th);
+  });
+
+  thead.appendChild(hr);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+
+  for (let r = 0; r < rowCount; r++) {
+    const tr = document.createElement("tr");
+
+    const rowTh = document.createElement("th");
+    rowTh.className = "grid-row-label";
+    rowTh.textContent = rows[r] ?? String(r + 1);
+    tr.appendChild(rowTh);
+
+    for (let c = 0; c < colCount; c++) {
+      const td = document.createElement("td");
+      const inp = document.createElement("input");
+      inp.type = "text";
+      inp.className = "answer-input grid-cell";
+      inp.setAttribute("data-question", q.id);
+      inp.setAttribute("data-qtype", q.type);
+      inp.setAttribute("data-grid-cell", "1");
+      inp.setAttribute("data-r", String(r));
+      inp.setAttribute("data-c", String(c));
+      inp.spellcheck = false;
+      inp.value = matrix[r]?.[c] ?? "";
+
+      inp.addEventListener("input", () => {
+        const text = serializeGridAnswer(
+          field,
+          rowCount,
+          colCount,
+          rowSep,
+          colSep
+        );
+        recordAnswer(q.id, text);
+        const msg = getFormatWarning(q, text);
+        setInlineWarning(q.id, msg);
+      });
+
+      td.appendChild(inp);
+      tr.appendChild(td);
+    }
+
+    tbody.appendChild(tr);
+  }
+
+  table.appendChild(tbody);
+  tableWrap.appendChild(table);
+  field.appendChild(tableWrap);
+
+  const initial = serializeGridAnswer(
+    field,
+    rowCount,
+    colCount,
+    rowSep,
+    colSep
+  );
+  const initialMsg = getFormatWarning(q, initial);
+  setInlineWarning(q.id, initialMsg);
+}
+
+function gradeGridAnswer(q, userText) {
+  const ui = q.answerUi || {};
+  const rowCount = (ui.rows || []).length;
+  const colCount = (ui.columns || []).length;
+  const rowSep = ui.rowSep ?? "\n";
+  const colSep = ui.colSep ?? " ";
+
+  let expectedMatrix = null;
+  if (Array.isArray(q.expectedGrid)) {
+    expectedMatrix = q.expectedGrid.map((r) => (Array.isArray(r) ? r : []));
+  } else if (q.expectedText != null) {
+    expectedMatrix = parseGridAnswerText(
+      q.expectedText,
+      rowCount,
+      colCount,
+      rowSep,
+      colSep
+    );
+  } else {
+    return false;
+  }
+
+  const userMatrix = parseGridAnswerText(
+    userText,
+    rowCount,
+    colCount,
+    rowSep,
+    colSep
+  );
+
+  for (let r = 0; r < rowCount; r++) {
+    for (let c = 0; c < colCount; c++) {
+      const a = String(
+        (expectedMatrix[r] && expectedMatrix[r][c]) ?? ""
+      ).trim();
+      const b = String((userMatrix[r] && userMatrix[r][c]) ?? "").trim();
+      if (a !== b) return false;
+    }
+  }
+  return true;
+}
+
 // ====== 단답형/코드 입력 렌더링 ======
 function renderTextArea(card, q) {
   const field = document.createElement("div");
@@ -2167,9 +2364,25 @@ function renderTextArea(card, q) {
   hintMini.style.fontSize = "0.78rem";
   hintMini.style.color = "#6b7280";
   hintMini.textContent = q.type === "code" ? "코드를 작성" : "출력 결과만 작성";
+  if (isGridAnswerQuestion(q)) hintMini.textContent = "표에 직접 입력";
 
   header.appendChild(badge);
   header.appendChild(hintMini);
+
+  const saved = currentAnswers && currentAnswers[q.id];
+
+  if (isGridAnswerQuestion(q)) {
+    const warn = document.createElement("div");
+    warn.className = "answer-warning";
+    warn.setAttribute("data-warning", q.id);
+
+    field.appendChild(header);
+    field.appendChild(warn);
+    card.appendChild(field);
+
+    renderGridAnswerField(field, q, saved ?? "");
+    return;
+  }
 
   const input = document.createElement("textarea");
   input.className = "answer-input";
@@ -2184,7 +2397,6 @@ function renderTextArea(card, q) {
     input.placeholder = "여기에 코드를 작성하세요. (예: print('%d' % x))";
 
   // 저장된 답안 복원
-  const saved = currentAnswers && currentAnswers[q.id];
   if (typeof saved === "string") input.value = saved;
 
   const warn = document.createElement("div");
@@ -2425,7 +2637,9 @@ function setupGrading() {
         // const val = (inputEl && inputEl.value) || "";
         const val = String((currentAnswers && currentAnswers[q.id]) ?? "");
 
-        if (q.expectedAnyOf) {
+        if (isGridAnswerQuestion(q)) {
+          isCorrect = gradeGridAnswer(q, val);
+        } else if (q.expectedAnyOf) {
           const norm = normalizeText(val);
           isCorrect = q.expectedAnyOf.some(
             (ans) => normalizeText(ans) === norm

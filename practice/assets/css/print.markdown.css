@@ -346,6 +346,39 @@ body{
   font-size: 10px;
 }
 
+/* ===== Grid Answer Table (Print) ===== */
+.grid-answer-wrap{
+  margin-top: 2mm;
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  padding: 2mm;
+}
+.grid-answer-table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+.grid-answer-table th,
+.grid-answer-table td{
+  border: 1px solid var(--box);
+  padding: 1.5mm 2mm;
+  text-align: center;
+  vertical-align: middle;
+  height: 6mm;
+}
+.grid-corner{
+  width: 18mm;
+  background: rgba(15,23,42,.03);
+}
+.grid-col-label{
+  font-weight: 900;
+  background: rgba(15,23,42,.03);
+}
+.grid-row-label{
+  font-weight: 900;
+  background: rgba(15,23,42,.03);
+}
+
 /* ===== IO Example (Print) ===== */
 .p-io{
   margin-top: 2mm;
@@ -478,6 +511,25 @@ body{
   padding: 0 2px;
   border: 1px solid var(--line);
   border-radius: 4px;
+}
+
+/* ===== Markdown Table (Print) ===== */
+.md-table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2mm 0;
+  font-size: 10px;
+}
+.md-table th,
+.md-table td{
+  border: 1px solid var(--box);
+  padding: 1.5mm 2mm;
+  text-align: center;
+  vertical-align: middle;
+}
+.md-table th{
+  background: rgba(15,23,42,.03);
+  font-weight: 900;
 }
 
 .md pre.md-fence{
