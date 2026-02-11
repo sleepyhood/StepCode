@@ -1,0 +1,305 @@
+:root {
+  --theory-card-bg: rgba(255, 255, 255, 0.92);
+  --theory-border: rgba(15, 23, 42, 0.1);
+}
+
+.theory-shell {
+  max-width: 1180px;
+}
+
+.theory-topbar {
+  position: sticky;
+  top: 12px;
+  z-index: 20;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--theory-border);
+  background: var(--theory-card-bg);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.theory-back-link,
+.theory-start-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+}
+
+.theory-back-link {
+  color: #0f172a;
+  background: #ffffff;
+}
+
+.theory-start-btn {
+  color: #ffffff;
+  border-color: #0f766e;
+  background: #0f766e;
+}
+
+.theory-title-wrap h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.theory-title-wrap p {
+  margin: 4px 0 0;
+  font-size: 0.86rem;
+  color: #475569;
+}
+
+.theory-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 14px;
+}
+
+.theory-content,
+.theory-side-card {
+  border-radius: 16px;
+  border: 1px solid var(--theory-border);
+  background: var(--theory-card-bg);
+  padding: 16px;
+}
+
+.theory-content {
+  line-height: 1.72;
+}
+
+.theory-lang-toggle {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--theory-border);
+  background: var(--theory-card-bg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.theory-lang-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #334155;
+  margin-right: 4px;
+}
+
+.theory-lang-btn {
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.theory-lang-btn.is-active {
+  border-color: #0f766e;
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
+}
+
+.theory-code-label {
+  display: inline-flex;
+  margin-bottom: 4px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.theory-content h1,
+.theory-content h2,
+.theory-content h3 {
+  margin-top: 1.1em;
+  margin-bottom: 0.42em;
+}
+
+.theory-content pre {
+  margin: 10px 0;
+  border-radius: 12px;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 10px 12px;
+  overflow: auto;
+}
+
+.theory-content pre.theory-code {
+  border: 1px solid #1e293b;
+}
+
+.theory-content code {
+  border-radius: 8px;
+  background: #f1f5f9;
+  padding: 2px 6px;
+}
+
+.theory-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.theory-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+.theory-content th,
+.theory-content td {
+  border: 1px solid #e2e8f0;
+  padding: 6px 8px;
+}
+
+.theory-side-card h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.theory-related-list {
+  display: grid;
+  gap: 8px;
+}
+
+.theory-related-item {
+  display: grid;
+  gap: 4px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 10px;
+  text-decoration: none;
+  color: #0f172a;
+}
+
+.theory-related-item:hover {
+  border-color: rgba(15, 118, 110, 0.4);
+  background: rgba(15, 118, 110, 0.05);
+}
+
+.theory-related-item small {
+  color: #64748b;
+}
+
+.theory-related-item.is-recommended {
+  border-color: rgba(249, 115, 22, 0.45);
+  box-shadow: 0 6px 14px -12px rgba(249, 115, 22, 0.8);
+}
+
+.theory-io {
+  margin: 10px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  padding: 10px;
+}
+
+.theory-trace-grid {
+  margin: 10px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 10px;
+}
+
+.theory-trace-title {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.theory-trace-table-wrap {
+  overflow-x: auto;
+}
+
+.theory-trace-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.theory-trace-table th,
+.theory-trace-table td {
+  border: 1px solid #e2e8f0;
+  padding: 6px 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.theory-trace-table th {
+  background: #f8fafc;
+  font-weight: 800;
+}
+
+.theory-io-title {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.theory-io-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.theory-io-box {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 8px;
+}
+
+.theory-io-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.theory-io-pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.82rem;
+}
+
+.theory-empty {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 980px) {
+  .theory-topbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .theory-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .theory-io-grid {
+    grid-template-columns: 1fr;
+  }
+}

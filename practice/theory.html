@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StepCode - 개념</title>
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/theory.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css"
+    />
+  </head>
+  <body>
+    <div class="app-container theory-shell">
+      <header class="theory-topbar">
+        <a id="theory-back-link" class="theory-back-link" href="index.html">← 목록</a>
+        <div class="theory-title-wrap">
+          <h1 id="theory-title">개념 페이지</h1>
+          <p id="theory-subtitle">관련 문제와 함께 학습합니다.</p>
+        </div>
+        <a id="theory-start-btn" class="theory-start-btn" href="#" hidden>대표 문제 풀기</a>
+      </header>
+
+      <main class="theory-layout">
+        <section class="theory-main">
+          <section id="theory-lang-toggle" class="theory-lang-toggle" hidden></section>
+          <article id="theory-content" class="theory-content">
+            불러오는 중...
+          </article>
+        </section>
+
+        <aside class="theory-side">
+          <section class="theory-side-card">
+            <h2>관련 문제</h2>
+            <div id="theory-related-list" class="theory-related-list"></div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/services/problemService.local.js"></script>
+    <script src="assets/js/theory.js"></script>
+  </body>
+</html>

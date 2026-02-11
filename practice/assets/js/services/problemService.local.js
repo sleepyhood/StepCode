@@ -24,5 +24,21 @@ const ProblemService = {
     );
     if (!res.ok) throw new Error(`failed to load set: ${meta.file}`);
     return res.json();
+  },
+
+  async listTheoryIndex() {
+    const res = await fetch(`${APP_CONFIG.dataBasePath}/theory.index.json`);
+    if (!res.ok) throw new Error("failed to load theory index");
+    return res.json();
+  },
+
+  async getTheoryByConceptId(conceptId) {
+    const items = await this.listTheoryIndex();
+    return items.find((item) => item.conceptId === conceptId) || null;
+  },
+
+  async getTheoryByCategoryId(categoryId) {
+    const items = await this.listTheoryIndex();
+    return items.find((item) => item.categoryId === categoryId) || null;
   }
 };

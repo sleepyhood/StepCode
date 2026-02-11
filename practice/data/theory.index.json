@@ -1,0 +1,201 @@
+[
+  {
+    "conceptId": "py_lv01_print",
+    "title": "Python Lv1 출력",
+    "categoryId": "py_print",
+    "lang": "python",
+    "mdPath": "./data/theory/lv01_print.md",
+    "recommendedSetId": "py_print_b1",
+    "relatedSetIds": ["py_print_b1", "py_print_b2", "py_print_b3", "py_print_c1"],
+    "prerequisites": [],
+    "nextConcepts": ["py_lv02_var"]
+  },
+  {
+    "conceptId": "py_lv02_var",
+    "title": "Python Lv2 변수",
+    "categoryId": "py_var",
+    "lang": "python",
+    "mdPath": "./data/theory/lv02_var.md",
+    "recommendedSetId": "py_var_b1",
+    "relatedSetIds": ["py_var_b1", "py_var_b2", "py_var_b3", "py_var_b4", "py_var_c1"],
+    "prerequisites": ["py_lv01_print"],
+    "nextConcepts": ["py_lv03_input"]
+  },
+  {
+    "conceptId": "py_lv03_input",
+    "title": "Python Lv3 입력",
+    "categoryId": "py_input",
+    "lang": "python",
+    "mdPath": "./data/theory/lv03_input.md",
+    "recommendedSetId": "py_input_b1",
+    "relatedSetIds": ["py_input_b1", "py_input_b2", "py_input_b3", "py_input_c1"],
+    "prerequisites": ["py_lv02_var"],
+    "nextConcepts": ["py_lv04_operator"]
+  },
+  {
+    "conceptId": "py_lv04_operator",
+    "title": "Python Lv4 연산자",
+    "categoryId": "py_operator",
+    "lang": "python",
+    "mdPath": "./data/theory/lv04_operator.md",
+    "recommendedSetId": "py_lv04_operator_b01",
+    "relatedSetIds": ["py_lv04_operator_b01", "py_lv04_operator_b02", "py_lv04_operator_c01"],
+    "prerequisites": ["py_lv03_input"],
+    "nextConcepts": ["py_lv05_cast"]
+  },
+  {
+    "conceptId": "py_lv05_cast",
+    "title": "Python Lv5 자료형 변환",
+    "categoryId": "py_cast",
+    "lang": "python",
+    "mdPath": "./data/theory/lv05_cast.md",
+    "recommendedSetId": "py_lv05_cast_b01",
+    "relatedSetIds": ["py_lv05_cast_b01", "py_lv05_cast_b02", "py_lv05_cast_c01"],
+    "prerequisites": ["py_lv04_operator"],
+    "nextConcepts": ["py_lv06_if"]
+  },
+  {
+    "conceptId": "py_lv06_if",
+    "title": "Python Lv6 조건문",
+    "categoryId": "py_if",
+    "lang": "python",
+    "mdPath": "./data/theory/lv06_if.md",
+    "recommendedSetId": "py_if_b1",
+    "relatedSetIds": ["py_if_b1", "py_if_b2", "py_if_b3", "py_if_b4", "py_if_c1", "py_if_c2"],
+    "prerequisites": ["py_lv05_cast"],
+    "nextConcepts": ["py_lv07_for"]
+  },
+  {
+    "conceptId": "py_lv07_for",
+    "title": "Python Lv7 for문",
+    "categoryId": "py_for",
+    "lang": "python",
+    "mdPath": "./data/theory/theory_lv07_for.md",
+    "recommendedSetId": "py_lv07_for_b01",
+    "relatedSetIds": ["py_lv07_for_b01", "py_lv07_for_b02", "py_lv07_for_b03", "py_lv07_for_b04", "py_lv07_for_c01"],
+    "prerequisites": ["py_lv06_if"],
+    "nextConcepts": ["py_lv08_while"]
+  },
+  {
+    "conceptId": "py_lv08_while",
+    "title": "Python Lv8 while문",
+    "categoryId": "py_while",
+    "lang": "python",
+    "mdPath": "./data/theory/lv08_while.md",
+    "recommendedSetId": "py_while_b1",
+    "relatedSetIds": ["py_while_b1", "py_lv08_while_b02", "py_lv08_while_c01"],
+    "prerequisites": ["py_lv07_for"],
+    "nextConcepts": ["py_lv09_nfor"]
+  },
+  {
+    "conceptId": "py_lv09_nfor",
+    "title": "Python Lv9 중첩 for",
+    "categoryId": "py_nfor",
+    "lang": "python",
+    "mdPath": "./data/theory/lv09_nfor.md",
+    "recommendedSetId": "py_lv09_nfor_b01",
+    "relatedSetIds": ["py_lv09_nfor_b01", "py_lv09_nfor_b02", "py_lv09_nfor_b03", "py_lv09_nfor_c01"],
+    "prerequisites": ["py_lv07_for"],
+    "nextConcepts": ["py_lv10_array"]
+  },
+  {
+    "conceptId": "py_lv10_array",
+    "title": "Python Lv10 배열",
+    "categoryId": "py_array",
+    "lang": "python",
+    "mdPath": "./data/theory/lv10_array.md",
+    "recommendedSetId": "py_lv10_array_b01",
+    "relatedSetIds": ["py_lv10_array_b01", "py_lv10_array_b02", "py_lv10_array_b03", "py_lv10_array_c01", "py_lv10_array_c02"],
+    "prerequisites": ["py_lv09_nfor"],
+    "nextConcepts": ["py_lv15_array2d"]
+  },
+  {
+    "conceptId": "py_lv15_array2d",
+    "title": "Python Lv15 2차원 배열",
+    "categoryId": "py_array2d",
+    "lang": "python",
+    "mdPath": "./data/theory/array2d.md",
+    "recommendedSetId": "py_lv15_array2d_b01",
+    "relatedSetIds": ["py_lv15_array2d_b01", "py_lv15_array2d_b02", "py_lv15_array2d_b03", "py_lv15_array2d_c01", "py_lv15_array2d_c02"],
+    "prerequisites": ["py_lv10_array"],
+    "nextConcepts": []
+  },
+  {
+    "conceptId": "c_lv06_if",
+    "title": "C Lv6 조건문",
+    "categoryId": "c_if",
+    "lang": "c",
+    "mdPath": "./data/theory/lv06_if.md",
+    "recommendedSetId": "c_if_b1",
+    "relatedSetIds": ["c_if_b1", "c_if_b2", "c_if_b3", "c_if_b4", "c_if_c1", "c_if_c2"],
+    "prerequisites": [],
+    "nextConcepts": ["c_lv07_for"]
+  },
+  {
+    "conceptId": "c_lv07_for",
+    "title": "C Lv7 for문",
+    "categoryId": "c_for",
+    "lang": "c",
+    "mdPath": "./data/theory/theory_lv07_for.md",
+    "recommendedSetId": "c_lv07_for_b01",
+    "relatedSetIds": ["c_lv07_for_b01", "c_lv07_for_b02", "c_lv07_for_b03", "c_lv07_for_b04", "c_lv07_for_c01"],
+    "prerequisites": ["c_lv06_if"],
+    "nextConcepts": ["c_lv08_while"]
+  },
+  {
+    "conceptId": "c_lv08_while",
+    "title": "C Lv8 while문",
+    "categoryId": "c_while",
+    "lang": "c",
+    "mdPath": "./data/theory/lv08_while.md",
+    "recommendedSetId": "c_lv08_while_b01",
+    "relatedSetIds": ["c_lv08_while_b01", "c_lv08_while_b02", "c_lv08_while_c01"],
+    "prerequisites": ["c_lv07_for"],
+    "nextConcepts": ["c_lv10_array"]
+  },
+  {
+    "conceptId": "c_lv10_array",
+    "title": "C Lv10 배열",
+    "categoryId": "c_array",
+    "lang": "c",
+    "mdPath": "./data/theory/lv10_array.md",
+    "recommendedSetId": "c_lv10_array_b01",
+    "relatedSetIds": ["c_lv10_array_b01", "c_lv10_array_b02", "c_lv10_array_b03", "c_lv10_array_c01", "c_lv10_array_c02"],
+    "prerequisites": ["c_lv08_while"],
+    "nextConcepts": []
+  },
+  {
+    "conceptId": "java_lv06_if",
+    "title": "Java 조건문",
+    "categoryId": "java_if",
+    "lang": "java",
+    "mdPath": "./data/theory/lv06_if.md",
+    "recommendedSetId": "java_if_b1",
+    "relatedSetIds": ["java_if_b1"],
+    "prerequisites": [],
+    "nextConcepts": ["java_lv10_array"]
+  },
+  {
+    "conceptId": "java_lv10_array",
+    "title": "Java Lv10 배열",
+    "categoryId": "java_array",
+    "lang": "java",
+    "mdPath": "./data/theory/lv10_array.md",
+    "recommendedSetId": "java_array_b01",
+    "relatedSetIds": ["java_array_b01", "java_array_b02", "java_array_b03", "java_array_c01", "java_array_c02"],
+    "prerequisites": ["java_lv06_if"],
+    "nextConcepts": ["java_lv15_array2d"]
+  },
+  {
+    "conceptId": "java_lv15_array2d",
+    "title": "Java Lv15 2차원 배열",
+    "categoryId": "java_array2d",
+    "lang": "java",
+    "mdPath": "./data/theory/array2d.md",
+    "recommendedSetId": "java_array2d_b01",
+    "relatedSetIds": ["java_array2d_b01", "java_array2d_b02", "java_array2d_b03", "java_array2d_c01", "java_array2d_c02"],
+    "prerequisites": ["java_lv10_array"],
+    "nextConcepts": []
+  }
+]
+

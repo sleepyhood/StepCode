@@ -6,7 +6,7 @@
 - `lv10_array.md`
 - `array2d.md`
 - `lv05_cast.md`
-- `lv07_for.md`
+- `guide_lv07_for.md`
 - `lv06_if.md`
 - `lv03_input.md`
 - `lv09_nfor.md`

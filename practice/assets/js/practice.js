@@ -1157,6 +1157,51 @@ function applyHostOnlyUi(isHost) {
   });
 }
 
+let theoryLookupCache = null;
+
+async function getTheoryLookupMap() {
+  if (theoryLookupCache) return theoryLookupCache;
+  try {
+    const list = await ProblemService.listTheoryIndex();
+    const byCategoryId = {};
+    const byConceptId = {};
+    list.forEach((item) => {
+      if (!item) return;
+      if (item.categoryId) byCategoryId[item.categoryId] = item;
+      if (item.conceptId) byConceptId[item.conceptId] = item;
+    });
+    theoryLookupCache = { byCategoryId, byConceptId };
+  } catch (_) {
+    theoryLookupCache = { byCategoryId: {}, byConceptId: {} };
+  }
+  return theoryLookupCache;
+}
+
+async function syncTheoryShortcutLink(setId, setData) {
+  const link = document.getElementById("theory-link-btn");
+  if (!link) return;
+
+  const categoryId = setData?.categoryId;
+  if (!categoryId) {
+    link.hidden = true;
+    return;
+  }
+
+  const lookup = await getTheoryLookupMap();
+  const entry = lookup.byCategoryId[categoryId];
+  if (!entry || !entry.conceptId) {
+    link.hidden = true;
+    return;
+  }
+
+  const q = new URLSearchParams();
+  q.set("concept", entry.conceptId);
+  q.set("set", setId);
+  if (currentLang) q.set("lang", currentLang);
+  link.href = `theory.html?${q.toString()}`;
+  link.hidden = false;
+}
+
 function shouldEnableDashboardUi(isHost) {
   const q = new URLSearchParams(location.search);
   if (q.get("dash") === "1") return true;
@@ -1224,6 +1269,7 @@ async function initPractice() {
     titleSpan.textContent = isClassMode()
       ? `수업모드 · ${baseTitle}`
       : baseTitle;
+    await syncTheoryShortcutLink(setId, currentSetData);
 
     // (선택) lesson.html 전용 배지/정책 UI 갱신
     updateModeHeaderUi();

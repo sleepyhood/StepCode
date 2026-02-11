@@ -69,15 +69,29 @@ function preferredLangSort(langs) {
   });
 }
 
+function normalizeUiLangToParam(lang) {
+  const v = String(lang || "").toLowerCase();
+  if (v === "python") return "python";
+  if (v === "c") return "c";
+  if (v === "java") return "java";
+  return "";
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const root = document.getElementById("list-root");
   root.textContent = "Loading problem library...";
 
   try {
-    const [categories, sets] = await Promise.all([
+    const [categories, sets, theoryIndex] = await Promise.all([
       ProblemService.listCategories(),
       ProblemService.listSets(),
+      ProblemService.listTheoryIndex().catch(() => []),
     ]);
+    const theoryByCategoryId = {};
+    theoryIndex.forEach((item) => {
+      if (!item || !item.categoryId) return;
+      theoryByCategoryId[item.categoryId] = item;
+    });
 
     categories.sort((a, b) => (a.order || 0) - (b.order || 0));
 
@@ -172,6 +186,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       meta.textContent = `Basics ${basicCount} · Challenges ${challCount}`;
 
       titleWrap.append(h3, meta);
+      const theoryMeta = theoryByCategoryId[cat.id];
+      if (theoryMeta && theoryMeta.conceptId) {
+        const theoryLink = document.createElement("a");
+        theoryLink.className = "category-theory-link";
+        const q = new URLSearchParams();
+        q.set("concept", theoryMeta.conceptId);
+        const langParam = normalizeUiLangToParam(lang);
+        if (langParam) q.set("lang", langParam);
+        theoryLink.href = `theory.html?${q.toString()}`;
+        theoryLink.textContent = "개념 보기";
+        theoryLink.setAttribute("aria-label", `${h3.textContent} 개념 보기`);
+        theoryLink.addEventListener("click", (e) => e.stopPropagation());
+        titleWrap.appendChild(theoryLink);
+      }
 
       const toggleBtn = document.createElement("button");
       toggleBtn.type = "button";

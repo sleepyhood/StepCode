@@ -59,6 +59,23 @@ body {
   letter-spacing: 0.2px;
 }
 
+.theory-link-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 118, 110, 0.28);
+  background: rgba(15, 118, 110, 0.08);
+  color: #0f766e;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.theory-link-btn:hover {
+  background: rgba(15, 118, 110, 0.15);
+}
+
 
 /* 상단 컨트롤: 무조건 가로 한 줄 */
 .top-controls {

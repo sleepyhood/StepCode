@@ -376,6 +376,25 @@ body {
   color: #64748b;
 }
 
+.category-theory-link {
+  margin-top: 6px;
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 118, 110, 0.3);
+  background: rgba(15, 118, 110, 0.08);
+  color: #0f766e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.category-theory-link:hover {
+  background: rgba(15, 118, 110, 0.16);
+}
+
 /* 접힌 상태에서는 세트 영역 숨김 */
 .category-section.collapsed .set-container {
   display: none;
