@@ -509,7 +509,7 @@
     "title": "Python for문 LV07 기초 3회차",
     "round": 3,
     "difficulty": "basic",
-    "numProblems": 5,
+    "numProblems": 6,
     "file": "py_lv07_for_b03.json"
   },
   {
@@ -518,7 +518,7 @@
     "title": "Python for문 LV07 기초 4회차",
     "round": 4,
     "difficulty": "basic",
-    "numProblems": 8,
+    "numProblems": 9,
     "file": "py_lv07_for_b04.json"
   },
   

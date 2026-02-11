@@ -1,5 +1,5 @@
-{
-    "id": "py_for_c1",
+﻿{
+    "id": "py_lv07_for_c01",
     "title": "Python for문 챌린지 1회차",
     "categoryId": "py_for",
     "availableLanguages": ["python"],
@@ -106,3 +106,4 @@
       }
     ]
   }
+

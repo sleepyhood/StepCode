@@ -832,6 +832,26 @@ body {
   padding-left: 2px;
 }
 
+/* ===== 지문 내 보기(문항 설명의 보기) ===== */
+.view-panel {
+  margin: 10px 0 12px;
+  padding: 10px 12px;
+  border: 1px dashed #cbd5f5;
+  border-radius: 12px;
+  background: #f5f7ff;
+}
+
+.view-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 6px;
+}
+
+.view-body {
+  font-size: 0.9rem;
+}
+
 /* (추가) 짧은 보기일 때 2열 그리드 */
 @media (min-width: 1000px) {
   .options.options--grid2 {

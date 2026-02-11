@@ -114,6 +114,22 @@
         "print('%d x %d = %d' % (n,i,n*i))"
       ],
       "hint": "print('%d x %d = %d' % (?, ?, ?)) 형태를 사용해요."
+    },
+    {
+      "id": "mcq6",
+      "type": "mcq",
+      "level": "기초",
+      "title": "MCQ 6. (합답형) 옳은 설명 고르기",
+      "description": "아래 코드에 대한 설명 (가)~(다)가 주어져요.\n맞는 설명의 조합을 고르세요.\n\n보기\n(가) cnt는 입력값 중 짝수의 개수이다.\n(나) if문은 i가 아니라 num을 검사한다.\n(다) 입력값이 5개라면 반복은 5번 실행된다.",
+      "code": "n = int(input())\ncnt = 0\nfor i in range(n):\n    num = int(input())\n    if num % 2 == 0:\n        cnt = cnt + 1\nprint('%d' % cnt)",
+      "options": [
+        "(가)",
+        "(가), (나)",
+        "(나), (다)",
+        "(가), (나), (다)"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 3
     }
   ]
 }

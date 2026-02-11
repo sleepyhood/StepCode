@@ -1604,10 +1604,30 @@ function renderSet() {
     card.appendChild(header);
 
     // --- 설명 ---
-    const desc = document.createElement("div");
-    desc.className = "description md";
-    renderMarkdownInto(desc, q.description || "");
-    card.appendChild(desc);
+    const { main: descMain, view: descView } = splitDescriptionForView(
+      q.description || ""
+    );
+
+    if (descMain) {
+      const desc = document.createElement("div");
+      desc.className = "description md";
+      renderMarkdownInto(desc, descMain);
+      card.appendChild(desc);
+    }
+
+    if (descView) {
+      const viewWrap = document.createElement("div");
+      viewWrap.className = "view-panel";
+      const viewTitle = document.createElement("div");
+      viewTitle.className = "view-title";
+      viewTitle.textContent = "보기";
+      const viewBody = document.createElement("div");
+      viewBody.className = "view-body md";
+      renderMarkdownInto(viewBody, descView);
+      viewWrap.appendChild(viewTitle);
+      viewWrap.appendChild(viewBody);
+      card.appendChild(viewWrap);
+    }
 
     renderMediaBlock(card, q.media);
 
@@ -2147,6 +2167,22 @@ function renderMcqOptions(card, q) {
   });
 
   card.appendChild(optionsWrap);
+}
+
+function splitDescriptionForView(rawText) {
+  const text = String(rawText ?? "");
+  if (!text) return { main: "", view: "" };
+
+  const lines = text.replace(/\r\n?/g, "\n").split("\n");
+  const markerIndex = lines.findIndex((line) =>
+    /^\s*보기\s*[:：]?\s*$/.test(line)
+  );
+
+  if (markerIndex < 0) return { main: text, view: "" };
+
+  const main = lines.slice(0, markerIndex).join("\n").trim();
+  const view = lines.slice(markerIndex + 1).join("\n").trim();
+  return { main, view };
 }
 
 function isGridAnswerQuestion(q) {

@@ -131,6 +131,22 @@ function correctForTeacher(q) {
   return "";
 }
 
+function splitDescriptionForView(rawText) {
+  const text = String(rawText ?? "");
+  if (!text) return { main: "", view: "" };
+
+  const lines = text.replace(/\r\n?/g, "\n").split("\n");
+  const markerIndex = lines.findIndex((line) =>
+    /^\s*보기\s*[:：]?\s*$/.test(line)
+  );
+
+  if (markerIndex < 0) return { main: text, view: "" };
+
+  const main = lines.slice(0, markerIndex).join("\n").trim();
+  const view = lines.slice(markerIndex + 1).join("\n").trim();
+  return { main, view };
+}
+
 function buildGridAnswerTable(q, variant) {
   const ui = q.answerUi || {};
   const rows = Array.isArray(ui.rows) && ui.rows.length ? ui.rows : [];
@@ -536,12 +552,25 @@ function buildProblemCard(set, q, originalIndex, variant) {
   card.appendChild(title);
 
 
-  const desc = el("div", "p-desc md");
   const rawDesc = q.description || "";
   const tableOnly = extractFirstMarkdownTable(rawDesc);
   const descText = tableOnly ? removeFirstMarkdownTable(rawDesc) : rawDesc;
-  setMD(desc, descText, "block");
-  card.appendChild(desc);
+  const { main: descMain, view: descView } = splitDescriptionForView(descText);
+
+  if (descMain) {
+    const desc = el("div", "p-desc md");
+    setMD(desc, descMain, "block");
+    card.appendChild(desc);
+  }
+
+  if (descView) {
+    const viewWrap = el("div", "p-view");
+    viewWrap.appendChild(el("div", "p-view-title", "보기"));
+    const viewBody = el("div", "p-view-body md");
+    setMD(viewBody, descView, "block");
+    viewWrap.appendChild(viewBody);
+    card.appendChild(viewWrap);
+  }
 
   if (tableOnly) {
     const tableBlock = el("div", "p-desc p-desc--table md");
