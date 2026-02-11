@@ -491,3 +491,226 @@ body {
 
 /* 기존 리스트(ul/li) 스타일은 남겨둬도 무방하지만,
    set-chip을 쓰면 세로로 길어지는 문제를 많이 줄일 수 있음. */
+
+/* ===== Part-first index (new) ===== */
+.part-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.part-controls-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.part-lang-btn {
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #475569;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.part-lang-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.part-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.part-card {
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 14px;
+  box-shadow: 0 10px 20px -18px rgba(15, 23, 42, 0.5);
+}
+
+.part-card-head {
+  margin-bottom: 10px;
+}
+
+.part-card-title {
+  margin: 0;
+  font-family: "Space Grotesk", "Karla", sans-serif;
+  font-size: 1.08rem;
+}
+
+.part-level-badge {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  border: 1px solid rgba(2, 132, 199, 0.3);
+  background: #f0f9ff;
+  color: #0369a1;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.part-card-meta {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.part-priority-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #64748b;
+}
+
+.part-priority-badge.p3 {
+  border-color: rgba(234, 88, 12, 0.2);
+  background: #fffaf5;
+  color: #b45309;
+}
+
+.part-priority-badge.p2 {
+  border-color: rgba(2, 132, 199, 0.2);
+  background: #f5fbff;
+  color: #0c4a6e;
+}
+
+.part-priority-badge.p1 {
+  border-color: rgba(20, 184, 166, 0.2);
+  background: #f5fcfb;
+  color: #115e59;
+}
+
+.part-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.part-action-link {
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border: 1px solid #d1d5db;
+  color: #0f172a;
+  background: #fff;
+}
+
+.part-action-link.start {
+  border-color: rgba(15, 118, 110, 0.3);
+  color: #0f766e;
+  background: rgba(15, 118, 110, 0.08);
+}
+
+.part-action-link.theory {
+  border-color: rgba(15, 118, 110, 0.3);
+  color: #0f766e;
+  background: rgba(15, 118, 110, 0.08);
+}
+
+.part-action-link.basic {
+  border-color: rgba(2, 132, 199, 0.3);
+  color: #0369a1;
+  background: #f0f9ff;
+}
+
+.part-action-link.challenge {
+  border-color: rgba(249, 115, 22, 0.35);
+  color: #9a3412;
+  background: #fff7ed;
+}
+
+.part-rounds-toggle {
+  margin-top: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 10px;
+  background: #fff;
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+.part-rounds {
+  margin-top: 10px;
+  border-top: 1px solid rgba(148, 163, 184, 0.25);
+  padding-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.part-rounds[hidden] {
+  display: none !important;
+}
+
+.part-round-stats {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.part-secondary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.part-round-title {
+  margin: 0 0 6px;
+  color: #64748b;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.part-round-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.part-round-chip {
+  text-decoration: none;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: #fff;
+  color: #334155;
+}
+
+.part-empty {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .part-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .part-list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,64 +1,17 @@
-﻿// practice/assets/js/index.js
-// 개선: 카테고리는 카드/아코디언(기본 접힘), 회차는 '칩'으로 압축, 검색 추가
-
-// 카테고리에서 언어 이름 뽑기 (예: "C - 조건문" → "C")
 // practice/assets/js/index.js
+// Part-first library view: Part -> Language toggle -> Concept / Basic / Challenge / Rounds
 
 function getLangFromCategory(cat) {
   if (cat.lang) return cat.lang;
   if (typeof cat.name === "string") {
     const parts = cat.name.split("-");
-    return parts[0].trim();
+    return (parts[0] || "").trim() || "기타";
   }
   return "기타";
 }
 
-// "C - 조건문" -> "조건문" 처럼 카드 제목을 짧게
-function getShortCategoryName(cat) {
-  if (cat.shortName) return cat.shortName;
-  if (typeof cat.name !== "string") return cat.name || "";
-  const parts = cat.name.split("-");
-  if (parts.length <= 1) return cat.name.trim();
-  return parts.slice(1).join("-").trim();
-}
-
-function createFilterButton(label, lang, isActive) {
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "filter-btn";
-  if (isActive) btn.classList.add("active");
-  btn.dataset.lang = lang;
-  btn.textContent = label;
-  return btn;
-}
-
-function createSetChip(s) {
-  const diff = s.difficulty || "basic";
-  const a = document.createElement("a");
-  a.className = "set-chip";
-  a.dataset.diff = diff;
-  a.href = `practice.html?set=${encodeURIComponent(s.id)}`;
-
-  const main = document.createElement("span");
-  main.className = "set-chip-main";
-  main.textContent = `Round ${s.round}`;
-
-  const sub = document.createElement("span");
-  sub.className = "set-chip-sub";
-  sub.textContent = diff === "challenge" ? "Challenge" : "Basic";
-
-  const tiny = document.createElement("span");
-  tiny.className = "set-chip-tiny";
-  tiny.textContent =
-    typeof s.numProblems === "number" ? `${s.numProblems} problems` : "";
-
-  a.append(main, sub);
-  if (tiny.textContent) a.append(tiny);
-  return a;
-}
-
 function preferredLangSort(langs) {
-  const prefer = ["C", "Python", "Java", "JavaScript", "C++"];
+  const prefer = ["Python", "C", "Java", "JavaScript", "C++", "C#"];
   return langs.slice().sort((a, b) => {
     const ia = prefer.indexOf(a);
     const ib = prefer.indexOf(b);
@@ -77,6 +30,260 @@ function normalizeUiLangToParam(lang) {
   return "";
 }
 
+function getPartKey(cat) {
+  const id = String(cat?.id || "");
+  if (!id.includes("_")) return id || "misc";
+  return id.split("_").slice(1).join("_") || id;
+}
+
+function cleanPartLabel(raw) {
+  const s = String(raw || "").trim();
+  if (!s) return "미분류";
+  return s.replace(/^lv\s*\d+\s*/i, "").replace(/^LV\s*\d+\s*/i, "").trim();
+}
+
+function getLevelFromCategory(cat) {
+  const name = String(cat?.name || "");
+  const m = name.match(/\b(LV|Lv|lv)\s*(\d+)\b/);
+  if (!m) return "";
+  return `Lv${m[2]}`;
+}
+
+function getPartLabel(cat) {
+  if (cat.partName) return cat.partName;
+  const name = String(cat?.name || "");
+  if (!name.includes("-")) return cleanPartLabel(name);
+  const rhs = name.split("-").slice(1).join("-").trim();
+  return cleanPartLabel(rhs);
+}
+
+function getPriorityInfo(priorityRaw) {
+  const n = Number(priorityRaw);
+  const value = Number.isFinite(n) ? Math.max(1, Math.min(3, Math.round(n))) : 2;
+  if (value >= 3) return { value: 3, stars: "★★★", label: "집중" };
+  if (value === 2) return { value: 2, stars: "★★", label: "핵심" };
+  return { value: 1, stars: "★", label: "기본" };
+}
+
+function createLangButton(lang, active) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "part-lang-btn";
+  if (active) btn.classList.add("active");
+  btn.dataset.lang = lang;
+  btn.textContent = lang;
+  return btn;
+}
+
+function createActionLink(label, href, variant) {
+  const a = document.createElement("a");
+  a.className = `part-action-link ${variant || ""}`.trim();
+  a.href = href;
+  a.textContent = label;
+  return a;
+}
+
+function createRoundChip(setMeta) {
+  const a = document.createElement("a");
+  a.className = "part-round-chip";
+  a.href = `practice.html?set=${encodeURIComponent(setMeta.id)}`;
+  const diff = setMeta.difficulty === "challenge" ? "Challenge" : "Basic";
+  a.textContent = `R${setMeta.round} · ${diff}`;
+  return a;
+}
+
+function setCardRoundsHidden(cardEl, hidden) {
+  const rounds = cardEl.querySelector(".part-rounds");
+  const toggle = cardEl.querySelector(".part-rounds-toggle");
+  if (!rounds || !toggle) return;
+  rounds.hidden = hidden;
+  toggle.textContent = hidden ? "자세히 보기" : "접기";
+}
+
+function getCardsInSameRow(cardEl) {
+  const parent = cardEl.parentElement;
+  if (!parent) return [cardEl];
+  const cards = Array.from(parent.children).filter((el) =>
+    el.classList.contains("part-card")
+  );
+  const top = cardEl.offsetTop;
+  const tolerance = 4;
+  const sameRow = cards.filter((el) => Math.abs(el.offsetTop - top) <= tolerance);
+  return sameRow.length ? sameRow : [cardEl];
+}
+
+function groupByPart(categories, sets) {
+  const map = new Map();
+  categories.forEach((cat) => {
+    const key = getPartKey(cat);
+    const part = map.get(key) || {
+      key,
+      label: getPartLabel(cat),
+      level: getLevelFromCategory(cat),
+      byLang: {},
+      order: Number.MAX_SAFE_INTEGER,
+    };
+    const lang = getLangFromCategory(cat);
+    part.byLang[lang] = {
+      category: cat,
+      sets: sets
+        .filter((s) => s.categoryId === cat.id)
+        .sort((a, b) => (a.round || 0) - (b.round || 0)),
+    };
+    if (!part.level) part.level = getLevelFromCategory(cat);
+    part.order = Math.min(part.order, cat.order || Number.MAX_SAFE_INTEGER);
+    map.set(key, part);
+  });
+  function levelRank(part) {
+    const m = String(part?.level || "").match(/(\d+)/);
+    return m ? Number(m[1]) : Number.MAX_SAFE_INTEGER;
+  }
+
+  return Array.from(map.values()).sort((a, b) => {
+    const lvDiff = levelRank(a) - levelRank(b);
+    if (lvDiff !== 0) return lvDiff;
+
+    const orderDiff = (a.order || Number.MAX_SAFE_INTEGER) - (b.order || Number.MAX_SAFE_INTEGER);
+    if (orderDiff !== 0) return orderDiff;
+
+    return String(a.label || "").localeCompare(String(b.label || ""), "ko");
+  });
+}
+
+function buildPartCard(part, lang, theoryByCategoryId) {
+  const langInfo = part.byLang[lang];
+  if (!langInfo || !langInfo.sets.length) return null;
+
+  const section = document.createElement("section");
+  section.className = "part-card";
+
+  const head = document.createElement("div");
+  head.className = "part-card-head";
+
+  const title = document.createElement("h3");
+  title.className = "part-card-title";
+  title.textContent = part.label;
+  if (part.level) {
+    const lv = document.createElement("span");
+    lv.className = "part-level-badge";
+    lv.textContent = part.level;
+    title.appendChild(document.createTextNode(" "));
+    title.appendChild(lv);
+  }
+
+  const meta = document.createElement("p");
+  meta.className = "part-card-meta";
+  const basicCount = langInfo.sets.filter((s) => s.difficulty !== "challenge").length;
+  const challengeCount = langInfo.sets.filter((s) => s.difficulty === "challenge").length;
+  const theory = theoryByCategoryId[langInfo.category.id];
+  const priority = getPriorityInfo(theory?.priority);
+  meta.textContent = `${lang}`;
+
+  const priorityBadge = document.createElement("span");
+  priorityBadge.className = `part-priority-badge p${priority.value}`;
+  priorityBadge.textContent = `${priority.stars} ${priority.label}`;
+  meta.appendChild(document.createTextNode(" "));
+  meta.appendChild(priorityBadge);
+
+  head.append(title, meta);
+
+  const actions = document.createElement("div");
+  actions.className = "part-actions";
+  const basics = langInfo.sets.filter((s) => s.difficulty !== "challenge");
+  const challenges = langInfo.sets.filter((s) => s.difficulty === "challenge");
+  const startHref = (() => {
+    if (theory?.conceptId) {
+      const q = new URLSearchParams();
+      q.set("concept", theory.conceptId);
+      const langParam = normalizeUiLangToParam(lang);
+      if (langParam) q.set("lang", langParam);
+      return `theory.html?${q.toString()}`;
+    }
+    if (basics[0]) return `practice.html?set=${encodeURIComponent(basics[0].id)}`;
+    if (challenges[0]) return `practice.html?set=${encodeURIComponent(challenges[0].id)}`;
+    return "#";
+  })();
+  actions.appendChild(createActionLink("학습 시작", startHref, "start"));
+
+  const toggle = document.createElement("button");
+  toggle.type = "button";
+  toggle.className = "part-rounds-toggle";
+  toggle.textContent = "자세히 보기";
+
+  const rounds = document.createElement("div");
+  rounds.className = "part-rounds";
+  rounds.hidden = true;
+  const stats = document.createElement("p");
+  stats.className = "part-round-stats";
+  stats.textContent = `Basics ${basicCount} · Challenges ${challengeCount}`;
+  rounds.appendChild(stats);
+
+  const secondary = document.createElement("div");
+  secondary.className = "part-secondary-actions";
+  if (theory?.conceptId) {
+    const q = new URLSearchParams();
+    q.set("concept", theory.conceptId);
+    const langParam = normalizeUiLangToParam(lang);
+    if (langParam) q.set("lang", langParam);
+    secondary.appendChild(
+      createActionLink("개념 보기", `theory.html?${q.toString()}`, "theory")
+    );
+  }
+  if (basics[0]) {
+    secondary.appendChild(
+      createActionLink(
+        "기초 시작",
+        `practice.html?set=${encodeURIComponent(basics[0].id)}`,
+        "basic"
+      )
+    );
+  }
+  if (challenges[0]) {
+    secondary.appendChild(
+      createActionLink(
+        "챌린지 시작",
+        `practice.html?set=${encodeURIComponent(challenges[0].id)}`,
+        "challenge"
+      )
+    );
+  }
+  if (secondary.childElementCount) rounds.appendChild(secondary);
+
+  if (basics.length) {
+    const g = document.createElement("div");
+    g.className = "part-round-group";
+    const gt = document.createElement("p");
+    gt.className = "part-round-title";
+    gt.textContent = "Basics";
+    const row = document.createElement("div");
+    row.className = "part-round-row";
+    basics.forEach((s) => row.appendChild(createRoundChip(s)));
+    g.append(gt, row);
+    rounds.appendChild(g);
+  }
+  if (challenges.length) {
+    const g = document.createElement("div");
+    g.className = "part-round-group";
+    const gt = document.createElement("p");
+    gt.className = "part-round-title";
+    gt.textContent = "Challenges";
+    const row = document.createElement("div");
+    row.className = "part-round-row";
+    challenges.forEach((s) => row.appendChild(createRoundChip(s)));
+    g.append(gt, row);
+    rounds.appendChild(g);
+  }
+
+  toggle.addEventListener("click", () => {
+    const nextHidden = !rounds.hidden;
+    const sameRowCards = getCardsInSameRow(section);
+    sameRowCards.forEach((cardEl) => setCardRoundsHidden(cardEl, nextHidden));
+  });
+
+  section.append(head, actions, toggle, rounds);
+  return section;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const root = document.getElementById("list-root");
   root.textContent = "Loading problem library...";
@@ -87,537 +294,68 @@ document.addEventListener("DOMContentLoaded", async () => {
       ProblemService.listSets(),
       ProblemService.listTheoryIndex().catch(() => []),
     ]);
-    const theoryByCategoryId = {};
-    theoryIndex.forEach((item) => {
-      if (!item || !item.categoryId) return;
-      theoryByCategoryId[item.categoryId] = item;
-    });
 
     categories.sort((a, b) => (a.order || 0) - (b.order || 0));
 
+    const theoryByCategoryId = {};
+    theoryIndex.forEach((item) => {
+      if (item?.categoryId) theoryByCategoryId[item.categoryId] = item;
+    });
+
+    const parts = groupByPart(categories, sets);
+    const langs = preferredLangSort(
+      Array.from(new Set(categories.map((c) => getLangFromCategory(c))))
+    );
+    const state = {
+      lang: langs.includes("Python") ? "Python" : langs[0],
+    };
+
     root.innerHTML = "";
 
-    // ===== 1) 언어 필터 바 =====
-    const langSet = new Set();
-    categories.forEach((cat) => langSet.add(getLangFromCategory(cat)));
-    const langs = preferredLangSort(Array.from(langSet));
-
-    const filterBar = document.createElement("div");
-    filterBar.className = "filter-bar";
-    filterBar.appendChild(createFilterButton("All", "all", true));
+    const controls = document.createElement("section");
+    controls.className = "part-controls";
+    const label = document.createElement("span");
+    label.className = "part-controls-label";
+    label.textContent = "언어";
+    controls.appendChild(label);
     langs.forEach((lang) =>
-      filterBar.appendChild(createFilterButton(lang, lang, false))
+      controls.appendChild(createLangButton(lang, lang === state.lang))
     );
+    root.appendChild(controls);
 
-    // ===== 2) 상단 컨트롤(검색 + Collapse all/펼치기) =====
-    const topControls = document.createElement("div");
-    topControls.className = "top-controls";
-
-    const searchRow = document.createElement("div");
-    searchRow.className = "search-row";
-
-    const searchInput = document.createElement("input");
-    searchInput.className = "search-input";
-    searchInput.type = "search";
-    searchInput.placeholder =
-      "Search tracks or rounds (e.g., arrays, round 2, while...)";
-
-    const btnCollapseAll = document.createElement("button");
-    btnCollapseAll.type = "button";
-    btnCollapseAll.className = "action-btn";
-    btnCollapseAll.textContent = "Collapse all";
-
-    const btnExpandAll = document.createElement("button");
-    btnExpandAll.type = "button";
-    btnExpandAll.className = "action-btn";
-    btnExpandAll.textContent = "Expand all";
-
-    searchRow.append(searchInput, btnCollapseAll, btnExpandAll);
-    topControls.appendChild(searchRow);
-
-    // ===== 3) 렌더 컨테이너 =====
-    const listContainer = document.createElement("div");
-    listContainer.id = "category-list";
-
-    root.appendChild(topControls);
-    root.appendChild(filterBar);
-    root.appendChild(listContainer);
-
-    // ===== 4) 상태 + 렌더 함수 =====
-    const state = { lang: "all", q: "" };
-
-    function matchesQuery(cat, catSets, q) {
-      if (!q) return true;
-      const needle = q.toLowerCase();
-      const inCat =
-        (cat.name || "").toLowerCase().includes(needle) ||
-        getShortCategoryName(cat).toLowerCase().includes(needle);
-      if (inCat) return true;
-      return catSets.some((s) =>
-        (s.title || "").toLowerCase().includes(needle)
-      );
-    }
-
-    function buildCategoryCard(cat, catSets) {
-      const section = document.createElement("section");
-      section.className = "category-section";
-      const lang = getLangFromCategory(cat);
-      section.dataset.lang = lang;
-
-      // 헤더
-      const headerRow = document.createElement("div");
-      headerRow.className = "category-header-row";
-
-      const titleWrap = document.createElement("div");
-      titleWrap.className = "category-title-wrap";
-
-      const h3 = document.createElement("h3");
-      h3.textContent = getShortCategoryName(cat);
-
-      const basicCount = catSets.filter(
-        (s) => (s.difficulty || "basic") !== "challenge"
-      ).length;
-      const challCount = catSets.filter(
-        (s) => (s.difficulty || "basic") === "challenge"
-      ).length;
-
-      const meta = document.createElement("div");
-      meta.className = "category-meta";
-      meta.textContent = `Basics ${basicCount} · Challenges ${challCount}`;
-
-      titleWrap.append(h3, meta);
-      const theoryMeta = theoryByCategoryId[cat.id];
-      if (theoryMeta && theoryMeta.conceptId) {
-        const theoryLink = document.createElement("a");
-        theoryLink.className = "category-theory-link";
-        const q = new URLSearchParams();
-        q.set("concept", theoryMeta.conceptId);
-        const langParam = normalizeUiLangToParam(lang);
-        if (langParam) q.set("lang", langParam);
-        theoryLink.href = `theory.html?${q.toString()}`;
-        theoryLink.textContent = "개념 보기";
-        theoryLink.setAttribute("aria-label", `${h3.textContent} 개념 보기`);
-        theoryLink.addEventListener("click", (e) => e.stopPropagation());
-        titleWrap.appendChild(theoryLink);
-      }
-
-      const toggleBtn = document.createElement("button");
-      toggleBtn.type = "button";
-      toggleBtn.className = "cat-toggle";
-      toggleBtn.innerHTML = "▾";
-      toggleBtn.setAttribute("aria-label", "Toggle category");
-
-      headerRow.append(titleWrap, toggleBtn);
-      section.appendChild(headerRow);
-
-      // 본문(칩)
-      const setContainer = document.createElement("div");
-      setContainer.className = "set-container";
-
-      const groups = [
-        {
-          key: "basic",
-          label: "Basics",
-          pick: (s) => (s.difficulty || "basic") !== "challenge",
-        },
-        {
-          key: "challenge",
-          label: "Challenges",
-          pick: (s) => (s.difficulty || "basic") === "challenge",
-        },
-      ];
-
-      groups.forEach((g) => {
-        const groupSets = catSets
-          .filter(g.pick)
-          .sort((a, b) => (a.round || 0) - (b.round || 0));
-        if (groupSets.length === 0) return;
-
-        const group = document.createElement("div");
-        group.className = "set-group";
-
-        const title = document.createElement("p");
-        title.className = "set-group-title";
-        title.textContent = g.label;
-
-        const row = document.createElement("div");
-        row.className = "set-chip-row";
-
-        groupSets.forEach((s) => row.appendChild(createSetChip(s)));
-
-        group.append(title, row);
-        setContainer.appendChild(group);
-      });
-
-      section.appendChild(setContainer);
-
-      // 기본은 접힌 상태(= 벤또에서 훑기 좋게), 검색 중엔 펼쳐두기
-      section.classList.toggle("collapsed", !state.q);
-
-      headerRow.addEventListener("click", () => {
-        section.classList.toggle("collapsed");
-      });
-
-      return section;
-    }
+    const list = document.createElement("section");
+    list.className = "part-list";
+    root.appendChild(list);
 
     function render() {
-      listContainer.innerHTML = "";
+      list.innerHTML = "";
+      const cards = parts
+        .map((part) => buildPartCard(part, state.lang, theoryByCategoryId))
+        .filter(Boolean);
 
-      const visibleLangs =
-        state.lang === "all" ? langs : langs.filter((l) => l === state.lang);
-
-      visibleLangs.forEach((lang) => {
-        const cats = categories.filter((c) => getLangFromCategory(c) === lang);
-
-        // 이 언어의 카테고리 중, 검색에 걸리는 것만 남기기
-        const picked = [];
-        for (const cat of cats) {
-          const catSets = sets
-            .filter((s) => s.categoryId === cat.id)
-            .sort((a, b) => (a.round || 0) - (b.round || 0));
-
-          if (catSets.length === 0) continue;
-          if (!matchesQuery(cat, catSets, state.q)) continue;
-
-          picked.push({ cat, catSets });
-        }
-        if (picked.length === 0) return;
-
-        // === 여기부터가 질문에서 준 "언어 섹션 + 그리드 컨테이너" 구조 ===
-        const langSec = document.createElement("section");
-        langSec.className = "lang-section";
-        langSec.dataset.lang = lang;
-
-        const title = document.createElement("h2");
-        title.className = "lang-title";
-        title.textContent = lang;
-        langSec.appendChild(title);
-
-        // 핵심: CSS에 이미 있는 2열 그리드(.category-grid)를 사용
-        const gridDiv = document.createElement("div");
-        gridDiv.className = "category-grid";
-
-        picked.forEach(({ cat, catSets }) => {
-          // createCategorySection(cat) 가 아니라, 현재 파일에 존재하는 buildCategoryCard 사용
-          const sec = buildCategoryCard(cat, catSets);
-          gridDiv.appendChild(sec);
-        });
-
-        langSec.appendChild(gridDiv);
-        listContainer.appendChild(langSec);
-      });
+      if (!cards.length) {
+        const empty = document.createElement("p");
+        empty.className = "part-empty";
+        empty.textContent = `${state.lang}에 등록된 파트가 없습니다.`;
+        list.appendChild(empty);
+        return;
+      }
+      cards.forEach((card) => list.appendChild(card));
     }
 
-    // ===== 5) 이벤트 =====
-    filterBar.addEventListener("click", (e) => {
-      const btn = e.target.closest(".filter-btn");
+    controls.addEventListener("click", (e) => {
+      const btn = e.target.closest(".part-lang-btn");
       if (!btn) return;
-
       state.lang = btn.dataset.lang;
-
-      filterBar.querySelectorAll(".filter-btn").forEach((b) => {
-        b.classList.toggle("active", b === btn);
-      });
-
+      controls
+        .querySelectorAll(".part-lang-btn")
+        .forEach((it) => it.classList.toggle("active", it === btn));
       render();
     });
 
-    searchInput.addEventListener("input", () => {
-      state.q = searchInput.value.trim();
-      render();
-    });
-
-    btnCollapseAll.addEventListener("click", () => {
-      document
-        .querySelectorAll(".category-section")
-        .forEach((sec) => sec.classList.add("collapsed"));
-    });
-
-    btnExpandAll.addEventListener("click", () => {
-      document
-        .querySelectorAll(".category-section")
-        .forEach((sec) => sec.classList.remove("collapsed"));
-    });
-
-    // 최초 렌더
     render();
   } catch (err) {
     console.error(err);
     root.textContent = "Failed to load the library.";
   }
 });
-
-// function normalize(s) {
-//   return String(s || "").toLowerCase().replace(/\s+/g, " ").trim();
-// }
-
-// // 언어 필터 버튼 생성
-// function createFilterButton(label, lang, isActive) {
-//   const btn = document.createElement("button");
-//   btn.type = "button";
-//   btn.className = "filter-btn";
-//   if (isActive) btn.classList.add("active");
-//   btn.dataset.lang = lang;
-//   btn.textContent = label;
-//   return btn;
-// }
-
-// // 회차 칩 생성 (세로 리스트 대신)
-// function createSetChip(setItem, shortLabel, diffLabel) {
-//   const a = document.createElement("a");
-//   a.className = "set-chip";
-//   a.href = `practice.html?set=${encodeURIComponent(setItem.id)}`;
-//   a.dataset.diff = setItem.difficulty || "basic";
-
-//   const main = document.createElement("span");
-//   main.className = "set-chip-main";
-//   main.textContent = shortLabel;
-
-//   const sub = document.createElement("span");
-//   sub.className = "set-chip-sub";
-//   sub.textContent = diffLabel;
-
-//   const tiny = document.createElement("span");
-//   tiny.className = "set-chip-tiny";
-//   if (typeof setItem.numProblems === "number") {
-//     tiny.textContent = `${setItem.numProblems}문항`;
-//   } else {
-//     tiny.textContent = "";
-//   }
-
-//   a.title = setItem.title;
-//   // 검색용 텍스트(제목/회차/라벨)
-//   a.dataset.search = `${shortLabel} ${diffLabel} ${setItem.round ?? ""}회차 ${setItem.title ?? ""}`;
-
-//   a.appendChild(main);
-//   a.appendChild(sub);
-//   if (tiny.textContent) a.appendChild(tiny);
-
-//   return a;
-// }
-
-// document.addEventListener("DOMContentLoaded", async () => {
-//   const root = document.getElementById("list-root");
-//   root.textContent = "Loading problem library...";
-
-//   try {
-//     const [categories, sets] = await Promise.all([
-//       ProblemService.listCategories(),
-//       ProblemService.listSets()
-//     ]);
-
-//     // 카테고리 순서대로 정렬
-//     categories.sort((a, b) => (a.order || 0) - (b.order || 0));
-
-//     root.innerHTML = "";
-
-//     // ===== 1) 언어 목록 추출 후 필터 바 만들기 =====
-//     const langSet = new Set();
-//     categories.forEach((cat) => langSet.add(getLangFromCategory(cat)));
-//     const langs = Array.from(langSet);
-
-//     const controls = document.createElement("div");
-//     controls.className = "top-controls";
-
-//     const filterBar = document.createElement("div");
-//     filterBar.className = "filter-bar";
-//     filterBar.appendChild(createFilterButton("All", "all", true));
-//     langs.forEach((lang) => filterBar.appendChild(createFilterButton(lang, lang, false)));
-
-//     const searchRow = document.createElement("div");
-//     searchRow.className = "search-row";
-
-//     const searchInput = document.createElement("input");
-//     searchInput.className = "search-input";
-//     searchInput.type = "search";
-//     searchInput.placeholder = "단원/회차 검색 (예: 조건, if, 3회차, 기초2)";
-//     searchInput.autocomplete = "off";
-
-//     const collapseAllBtn = document.createElement("button");
-//     collapseAllBtn.type = "button";
-//     collapseAllBtn.className = "action-btn";
-//     collapseAllBtn.textContent = "Collapse all";
-
-//     searchRow.appendChild(searchInput);
-//     searchRow.appendChild(collapseAllBtn);
-
-//     controls.appendChild(filterBar);
-//     controls.appendChild(searchRow);
-
-//     const listContainer = document.createElement("div");
-//     listContainer.id = "category-list";
-
-//     root.appendChild(controls);
-//     root.appendChild(listContainer);
-
-//     // ===== 2) 카테고리 + 세트 목록 렌더링 (기본 접힘 + 칩) =====
-//     for (const cat of categories) {
-//       const catSets = sets
-//         .filter((s) => s.categoryId === cat.id)
-//         .sort((a, b) => (a.round || 0) - (b.round || 0));
-
-//       if (catSets.length === 0) continue;
-
-//       const section = document.createElement("section");
-//       section.className = "category-section collapsed"; // ✅ 기본 접힘
-//       const lang = getLangFromCategory(cat);
-//       section.dataset.lang = lang;
-//       section.dataset.catname = cat.name || "";
-
-//       // 헤더(제목 + 메타 + 접기 버튼)
-//       const headerRow = document.createElement("div");
-//       headerRow.className = "category-header-row";
-
-//       const titleWrap = document.createElement("div");
-//       titleWrap.className = "category-title-wrap";
-
-//       const h2 = document.createElement("h2");
-//       h2.textContent = cat.name;
-
-//       const basicSets = catSets.filter(s => (s.difficulty || "basic") !== "challenge");
-//       const challengeSets = catSets.filter(s => (s.difficulty || "basic") === "challenge");
-
-//       const meta = document.createElement("div");
-//       meta.className = "category-meta";
-//       meta.textContent = `기초 ${basicSets.length} · 챌린지 ${challengeSets.length} · 총 ${catSets.length}`;
-
-//       titleWrap.appendChild(h2);
-//       titleWrap.appendChild(meta);
-
-//       const toggleBtn = document.createElement("button");
-//       toggleBtn.type = "button";
-//       toggleBtn.className = "cat-toggle";
-//       toggleBtn.innerHTML = "▾";
-      toggleBtn.setAttribute("aria-label", "Toggle category");
-
-//       headerRow.appendChild(titleWrap);
-//       headerRow.appendChild(toggleBtn);
-//       section.appendChild(headerRow);
-
-//       // 세트(회차) 영역: 그룹(기초/챌린지) + 칩
-//       const setContainer = document.createElement("div");
-//       setContainer.className = "set-container";
-
-//       function addGroup(groupTitle, groupSets, prefix) {
-//         if (!groupSets.length) return;
-
-//         const group = document.createElement("div");
-//         group.className = "set-group";
-
-//         const gTitle = document.createElement("div");
-//         gTitle.className = "set-group-title";
-//         gTitle.textContent = groupTitle;
-
-//         const chips = document.createElement("div");
-//         chips.className = "set-chip-row";
-
-//         groupSets.forEach((s, idx) => {
-//           // 표시 라벨은 round 대신 그룹 내 순번 기준(B1/B2..., C1/C2...)
-//           const shortLabel = `${prefix}${idx + 1}`;
-//           const diffLabel = (s.difficulty === "challenge") ? "챌린지" : "기초";
-//           chips.appendChild(createSetChip(s, shortLabel, diffLabel));
-//         });
-
-//         group.appendChild(gTitle);
-//         group.appendChild(chips);
-//         setContainer.appendChild(group);
-//       }
-
-//       addGroup("기초", basicSets, "B");
-//       addGroup("챌린지", challengeSets, "C");
-
-//       section.appendChild(setContainer);
-//       listContainer.appendChild(section);
-
-//       // 카테고리 접기/펼치기
-//       headerRow.addEventListener("click", () => {
-//         section.classList.toggle("collapsed");
-//       });
-//     }
-
-//     // ===== 3) 필터 + 검색 동작(동시에 적용) =====
-//     const state = { lang: "all", query: "" };
-
-//     function updateVisibility() {
-//       const q = normalize(state.query);
-
-//       document.querySelectorAll(".category-section").forEach((sec) => {
-//         // 1) 언어 필터
-//         const langOk = (state.lang === "all" || sec.dataset.lang === state.lang);
-//         if (!langOk) {
-//           sec.style.display = "none";
-//           return;
-//         }
-
-//         // 2) 검색
-//         const catName = sec.dataset.catname || "";
-//         const catMatch = q && normalize(catName).includes(q);
-
-//         let anyVisible = false;
-
-//         sec.querySelectorAll(".set-group").forEach((group) => {
-//           let groupVisible = false;
-
-//           group.querySelectorAll(".set-chip").forEach((chip) => {
-//             // 카테고리명이 매치면 해당 카테고리의 모든 칩을 보여줌
-//             const text = chip.dataset.search || "";
-//             const match = !q || catMatch || normalize(text).includes(q);
-//             chip.style.display = match ? "" : "none";
-//             if (match) {
-//               groupVisible = true;
-//               anyVisible = true;
-//             }
-//           });
-
-//           group.style.display = groupVisible ? "" : "none";
-//         });
-
-//         // 카테고리명만 매치했는데 칩을 숨겨버릴 상황을 방지
-//         if (catMatch) anyVisible = true;
-
-//         sec.style.display = (!q || anyVisible) ? "" : "none";
-
-//         // 검색 중이면 자동 펼침
-//         if (q && anyVisible) sec.classList.remove("collapsed");
-//       });
-//     }
-
-//     // 언어 필터 클릭
-//     filterBar.addEventListener("click", (e) => {
-//       const btn = e.target.closest(".filter-btn");
-//       if (!btn) return;
-
-//       state.lang = btn.dataset.lang;
-
-//       // 버튼 active 토글
-//       filterBar.querySelectorAll(".filter-btn").forEach((b) => {
-//         b.classList.toggle("active", b === btn);
-//       });
-
-//       updateVisibility();
-//     });
-
-//     // 검색 입력
-//     searchInput.addEventListener("input", (e) => {
-//       state.query = e.target.value;
-//       updateVisibility();
-//     });
-
-//     // Collapse all
-//     collapseAllBtn.addEventListener("click", () => {
-//       document.querySelectorAll(".category-section").forEach((sec) => sec.classList.add("collapsed"));
-//     });
-
-//     // 초기 적용
-//     updateVisibility();
-
-//   } catch (err) {
-//     console.error(err);
-//     root.textContent = "Failed to load the library.";
-//   }
-// });
-
-
-
-
