@@ -400,6 +400,20 @@ body{
   background: rgba(15,23,42,.03);
 }
 
+.grid-answer-table td.grid-cell-skipped{
+  background: #eceff3;
+  border-style: dashed;
+  border-color: #9ca3af;
+  color: #6b7280;
+  font-weight: 800;
+}
+
+.grid-answer-note{
+  margin-top: 1.5mm;
+  font-size: 9px;
+  color: var(--muted);
+}
+
 /* ===== IO Example (Print) ===== */
 .p-io{
   margin-top: 2mm;

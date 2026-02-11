@@ -1,151 +1,109 @@
 {
-  "id": "c_lv07_for_b02",
-  "title": "C for문 기초 2회차",
-  "categoryId": "c_for",
-  "availableLanguages": [
-    "c"
-  ],
-  "problems": [
-    {
-      "id": "t_step_neg",
-      "type": "short",
-      "level": "basic",
-      "title": "Trace 1. Decreasing loop",
-      "description": "Fill the table with i and output for each iteration.",
-      "code": "#include <stdio.h>\n\nint main(void) {\n    for (int i = 5; i >= 1; i -= 2) {\n        printf(\"%d\\n\", i);\n    }\n    return 0;\n}",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "1",
-          "2",
-          "3"
-        ],
-        "columns": [
-          "i",
-          "output"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "5",
-          "5"
-        ],
-        [
-          "3",
-          "3"
-        ],
-        [
-          "1",
-          "1"
-        ]
-      ]
-    },
-    {
-      "id": "t_mid_state",
-      "type": "short",
-      "level": "basic",
-      "title": "Trace 2. State after 3 iterations",
-      "description": "Fill the table with i and sum after the 1st, 2nd, and 3rd iterations.",
-      "code": "#include <stdio.h>\n\nint main(void) {\n    int sum = 0;\n    for (int i = 1; i <= 6; i++) {\n        sum = sum + i;\n    }\n    printf(\"%d\\n\", sum);\n    return 0;\n}",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "1",
-          "2",
-          "3"
-        ],
-        "columns": [
-          "i",
-          "sum"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "1",
-          "1"
-        ],
-        [
-          "2",
-          "3"
-        ],
-        [
-          "3",
-          "6"
-        ]
-      ]
-    },
-    {
-      "id": "r_start_value",
-      "type": "short",
-      "level": "basic",
-      "title": "Reverse 1. Find start value",
-      "description": "If the output is 3 4 5, what value should replace ? (number only)",
-      "code": "#include <stdio.h>\n\nint main(void) {\n    for (int i = ?; i <= 5; i++) {\n        printf(\"%d\\n\", i);\n    }\n    return 0;\n}",
-      "expectedText": "3"
-    },
-    {
-      "id": "t_even_sum",
-      "type": "short",
-      "level": "basic",
-      "title": "Trace 3. Sum of evens",
-      "description": "Fill the table with i and sum after each iteration.",
-      "code": "#include <stdio.h>\n\nint main(void) {\n    int sum = 0;\n    for (int i = 1; i <= 6; i++) {\n        if (i % 2 == 0) {\n            sum = sum + i;\n        }\n    }\n    printf(\"%d\\n\", sum);\n    return 0;\n}",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6"
-        ],
-        "columns": [
-          "i",
-          "sum"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "1",
-          "0"
-        ],
-        [
-          "2",
-          "2"
-        ],
-        [
-          "3",
-          "2"
-        ],
-        [
-          "4",
-          "6"
-        ],
-        [
-          "5",
-          "6"
-        ],
-        [
-          "6",
-          "12"
-        ]
-      ]
-    },
-    {
-      "id": "s_after_loop_i",
-      "type": "short",
-      "level": "basic",
-      "title": "Short 1. i after loop",
-      "description": "What is the value of i right after the loop ends? (number only)",
-      "code": "#include <stdio.h>\n\nint main(void) {\n    int i;\n    for (i = 0; i < 5; i++) { }\n    printf(\"%d\\n\", i);\n    return 0;\n}",
-      "expectedText": "5"
-    }
-  ]
+    "id":  "c_lv07_for_b02",
+    "title":  "C for문 기초 2회차",
+    "categoryId":  "c_for",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "t_step_neg",
+                         "type":  "short",
+                         "level":  "기초",
+                         "title":  "Trace 1. 감소 step",
+                         "description":  "각 반복 직후 i와 output을 표에 채우세요.",
+                         "code":  "for (int i = 5; i \u003e= 1; i -= 2) {\n    printf(\"%d\\n\", i);\n}",
+                         "answerUi":  {
+                                          "kind":  "grid",
+                                          "rows":  [
+                                                       "1",
+                                                       "2",
+                                                       "3"
+                                                   ],
+                                          "columns":  [
+                                                          "i",
+                                                          "output"
+                                                      ],
+                                          "rowSep":  "\\n",
+                                          "colSep":  " "
+                                      },
+                         "expectedGrid":  [
+                                              [
+                                                  "5",
+                                                  "5"
+                                              ],
+                                              [
+                                                  "3",
+                                                  "3"
+                                              ],
+                                              [
+                                                  "1",
+                                                  "1"
+                                              ]
+                                          ]
+                     },
+                     {
+                         "id":  "t_mid_state",
+                         "type":  "short",
+                         "level":  "기초",
+                         "title":  "Trace 2. 중간 상태 복원",
+                         "description":  "3회 반복이 끝난 직후 i와 sum을 표에 채우세요.",
+                         "code":  "int sum = 0;\nfor (int i = 1; i \u003c= 6; i++) {\n    sum += i;\n}",
+                         "answerUi":  {
+                                          "kind":  "grid",
+                                          "rows":  [
+                                                       "1",
+                                                       "2",
+                                                       "3"
+                                                   ],
+                                          "columns":  [
+                                                          "i",
+                                                          "sum"
+                                                      ],
+                                          "rowSep":  "\\n",
+                                          "colSep":  " "
+                                      },
+                         "expectedGrid":  [
+                                              [
+                                                  "1",
+                                                  "1"
+                                              ],
+                                              [
+                                                  "2",
+                                                  "3"
+                                              ],
+                                              [
+                                                  "3",
+                                                  "6"
+                                              ]
+                                          ]
+                     },
+                     {
+                         "id":  "r_start_value",
+                         "type":  "short",
+                         "level":  "기초",
+                         "title":  "Reverse 1. 시작값/step 추론",
+                         "description":  "출력이 2, 4, 6, 8일 때 start와 step을 공백으로 구분해 쓰세요.",
+                         "code":  "for (int i = start; i \u003c= 8; i += step) {\n    printf(\"%d\\n\", i);\n}",
+                         "expectedText":  "2 2"
+                     },
+                     {
+                         "id":  "s_after_loop_i",
+                         "type":  "short",
+                         "level":  "기초",
+                         "title":  "Short 1. 경계 비교",
+                         "description":  "다음 코드는 몇 번 반복되나요?",
+                         "code":  "for (int i = 0; i \u003c 5; i++) {\n    // body\n}",
+                         "expectedText":  "5"
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "기초",
+                         "title":  "Code 1. 조건식 한 줄",
+                         "description":  "if문의 괄호 안에 들어갈 조건식 한 줄을 작성하세요.",
+                         "code":  "int sum = 0;\nfor (int i = 1; i \u003c= n; i++) {\n    if (/* TODO */) {\n        sum += i;\n    }\n}",
+                         "expectedCode":  "i % 2 == 0"
+                     }
+                 ]
 }

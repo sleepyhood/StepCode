@@ -13,10 +13,9 @@
       "example": "```python\na, b = map(int, input().split())\n```",
       "algorithm": "```text\n1) split()은 모든 공백을 안전하게 분리한다.\n2) 연속 공백도 하나의 구분자로 처리한다.\n```",
       "relatedProblems": [
-        "mcq1",
-        "mcq5",
-        "short1",
-        "code1"
+        "t_name_scores_lines",
+        "code_read_scores",
+        "s_split_space"
       ]
     },
     {
@@ -26,7 +25,7 @@
       "example": "```python\nprint('%d %d' % (a, b))\n```",
       "algorithm": "```text\n1) %d 개수와 값 개수가 같아야 한다.\n```",
       "relatedProblems": [
-        "mcq2"
+        "code_print_name_sum_fmt"
       ]
     },
     {
@@ -36,8 +35,8 @@
       "example": "```python\na, b = map(int, input().split())\n```",
       "algorithm": "```text\n1) split으로 문자열을 나눈다.\n2) int로 변환한다.\n```",
       "relatedProblems": [
-        "mcq3",
-        "mcq4"
+        "code_read_scores",
+        "r_find_b"
       ]
     },
     {
@@ -47,8 +46,7 @@
       "example": "```python\nname, age = input().split()\nprint('%s:%d' % (name, int(age)))\n```",
       "algorithm": "```text\n1) split으로 문자열 두 개를 받는다.\n2) age만 int로 변환한다.\n```",
       "relatedProblems": [
-        "short2",
-        "code2"
+        "code_print_name_sum_fmt"
       ]
     }
   ],
@@ -101,6 +99,18 @@
       }
     },
     {
+      "id": "code_read_scores",
+      "type": "code",
+      "level": "challenge",
+      "title": "Code 1. 둘째 줄 점수 입력",
+      "description": "첫 줄 이름은 이미 읽었습니다.\n주석 위치에 둘째 줄 정수 두 개를 읽는 한 줄을 작성하세요.",
+      "code": "name = input().strip()\n# TODO: 둘째 줄에서 정수 두 개를 읽어 s1, s2에 저장하세요.\nprint(name, s1 + s2)",
+      "expectedCode": "s1, s2 = map(int, input().split())",
+      "ioExample": {
+        "input": "Lee\n70 80"
+      }
+    },
+    {
       "id": "r_find_b",
       "type": "short",
       "level": "challenge",
@@ -114,19 +124,19 @@
       }
     },
     {
-      "id": "t_name_scores",
-      "type": "short",
+      "id": "code_print_name_sum_fmt",
+      "type": "code",
       "level": "challenge",
-      "title": "Short 1. 이름과 두 점수",
-      "description": "한 줄에서 이름과 점수 두 개를 읽어요.\n요구사항:\n- 점수를 정수로 변환해요.\n- 합을 계산해 출력해요.\n- 결과 한 줄만 작성해요.",
-      "code": "name, s1, s2 = input().split()\ns1 = int(s1)\ns2 = int(s2)\nprint(name, s1 + s2)",
-      "expectedText": "Kim 150",
+      "title": "Code 2. 이름과 합 서식문자 출력",
+      "description": "name은 문자열, s1/s2는 정수입니다.\n주석 위치에 `name total` 형식의 출력 한 줄을 작성하세요.",
+      "code": "name, s1, s2 = input().split()\ns1 = int(s1)\ns2 = int(s2)\n# TODO: 서식문자로 name과 합계를 출력하세요.",
+      "expectedCode": "print('%s %d' % (name, s1 + s2))",
       "ioExample": {
         "input": "Kim 70 80"
       }
     },
     {
-      "id": "t_split_space",
+      "id": "s_split_space",
       "type": "short",
       "level": "challenge",
       "title": "Short 2. 여러 공백 값 개수",

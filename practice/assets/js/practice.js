@@ -2189,6 +2189,31 @@ function isGridAnswerQuestion(q) {
   return q && q.type === "short" && q.answerUi && q.answerUi.kind === "grid";
 }
 
+function buildExpectedGridMatrix(q, rowCount, colCount, rowSep, colSep) {
+  if (Array.isArray(q.expectedGrid)) {
+    return q.expectedGrid.map((r) => (Array.isArray(r) ? r : []));
+  }
+  if (q.expectedText != null) {
+    return parseGridAnswerText(q.expectedText, rowCount, colCount, rowSep, colSep);
+  }
+  return Array.from({ length: rowCount }, () => Array(colCount).fill(""));
+}
+
+function isSkippedGridCell(q, r, c, expectedMatrix) {
+  const ui = q.answerUi || {};
+  const explicit = Array.isArray(ui.skipCells) ? ui.skipCells : [];
+  const key = `${r},${c}`;
+  if (explicit.includes(key)) return true;
+
+  const skipEmptyExpected = ui.skipEmptyExpected !== false;
+  if (!skipEmptyExpected) return false;
+
+  const expected = String(
+    (expectedMatrix[r] && expectedMatrix[r][c]) ?? ""
+  ).trim();
+  return expected === "";
+}
+
 function parseGridAnswerText(text, rowCount, colCount, rowSep, colSep) {
   const rs = rowSep ?? "\n";
   const cs = colSep ?? " ";
@@ -2229,6 +2254,10 @@ function serializeGridAnswer(fieldEl, rowCount, colCount, rowSep, colSep) {
     const r = Number(inp.getAttribute("data-r"));
     const c = Number(inp.getAttribute("data-c"));
     if (Number.isFinite(r) && Number.isFinite(c) && r >= 0 && c >= 0) {
+      if (inp.disabled) {
+        mat[r][c] = "";
+        return;
+      }
       mat[r][c] = String(inp.value ?? "").trim();
     }
   });
@@ -2249,6 +2278,13 @@ function renderGridAnswerField(field, q, savedValue) {
   const colCount = Math.max(1, cols.length || 1);
   const rowSep = ui.rowSep ?? "\n";
   const colSep = ui.colSep ?? " ";
+  const expectedMatrix = buildExpectedGridMatrix(
+    q,
+    rowCount,
+    colCount,
+    rowSep,
+    colSep
+  );
 
   const matrix = parseGridAnswerText(
     savedValue,
@@ -2263,6 +2299,7 @@ function renderGridAnswerField(field, q, savedValue) {
 
   const table = document.createElement("table");
   table.className = "grid-answer-table";
+  let hasSkippedCell = false;
 
   const thead = document.createElement("thead");
   const hr = document.createElement("tr");
@@ -2304,19 +2341,32 @@ function renderGridAnswerField(field, q, savedValue) {
       inp.setAttribute("data-c", String(c));
       inp.spellcheck = false;
       inp.value = matrix[r]?.[c] ?? "";
+      const skipped = isSkippedGridCell(q, r, c, expectedMatrix);
+      if (skipped) {
+        hasSkippedCell = true;
+        inp.value = "";
+        inp.disabled = true;
+        inp.readOnly = true;
+        inp.classList.add("is-skipped");
+        inp.setAttribute("aria-label", "입력 불필요");
+        inp.setAttribute("title", "이 칸은 입력하지 않아도 됩니다.");
+        td.classList.add("grid-cell-skipped");
+      }
 
-      inp.addEventListener("input", () => {
-        const text = serializeGridAnswer(
-          field,
-          rowCount,
-          colCount,
-          rowSep,
-          colSep
-        );
-        recordAnswer(q.id, text);
-        const msg = getFormatWarning(q, text);
-        setInlineWarning(q.id, msg);
-      });
+      if (!skipped) {
+        inp.addEventListener("input", () => {
+          const text = serializeGridAnswer(
+            field,
+            rowCount,
+            colCount,
+            rowSep,
+            colSep
+          );
+          recordAnswer(q.id, text);
+          const msg = getFormatWarning(q, text);
+          setInlineWarning(q.id, msg);
+        });
+      }
 
       td.appendChild(inp);
       tr.appendChild(td);
@@ -2326,6 +2376,12 @@ function renderGridAnswerField(field, q, savedValue) {
   }
 
   table.appendChild(tbody);
+  if (hasSkippedCell) {
+    const note = document.createElement("div");
+    note.className = "grid-answer-note";
+    note.textContent = "회색 칸은 입력하지 않아도 됩니다.";
+    field.appendChild(note);
+  }
   tableWrap.appendChild(table);
   field.appendChild(tableWrap);
 
@@ -2336,6 +2392,7 @@ function renderGridAnswerField(field, q, savedValue) {
     rowSep,
     colSep
   );
+  recordAnswer(q.id, initial);
   const initialMsg = getFormatWarning(q, initial);
   setInlineWarning(q.id, initialMsg);
 }
@@ -2348,19 +2405,9 @@ function gradeGridAnswer(q, userText) {
   const colSep = ui.colSep ?? " ";
 
   let expectedMatrix = null;
-  if (Array.isArray(q.expectedGrid)) {
-    expectedMatrix = q.expectedGrid.map((r) => (Array.isArray(r) ? r : []));
-  } else if (q.expectedText != null) {
-    expectedMatrix = parseGridAnswerText(
-      q.expectedText,
-      rowCount,
-      colCount,
-      rowSep,
-      colSep
-    );
-  } else {
-    return false;
-  }
+  if (Array.isArray(q.expectedGrid) || q.expectedText != null) {
+    expectedMatrix = buildExpectedGridMatrix(q, rowCount, colCount, rowSep, colSep);
+  } else return false;
 
   const userMatrix = parseGridAnswerText(
     userText,
@@ -2372,6 +2419,7 @@ function gradeGridAnswer(q, userText) {
 
   for (let r = 0; r < rowCount; r++) {
     for (let c = 0; c < colCount; c++) {
+      if (isSkippedGridCell(q, r, c, expectedMatrix)) continue;
       const a = String(
         (expectedMatrix[r] && expectedMatrix[r][c]) ?? ""
       ).trim();

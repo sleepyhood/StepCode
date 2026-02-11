@@ -953,6 +953,12 @@ body {
   white-space: nowrap;
 }
 
+.grid-answer-note {
+  margin: 8px 10px 0;
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
 /* input은 기존 .answer-input 느낌 유지 + 표에 맞게 조정 */
 .answer-input.grid-cell {
   width: 100%;
@@ -964,6 +970,17 @@ body {
     "Liberation Mono", "Courier New", monospace;
   font-size: 0.86rem;
   text-align: center;
+}
+
+.grid-answer-table td.grid-cell-skipped {
+  background: #f3f4f6;
+}
+
+.answer-input.grid-cell.is-skipped {
+  border-color: #d1d5db;
+  background: #e5e7eb;
+  color: #6b7280;
+  cursor: not-allowed;
 }
 
 /* ===== 단답형 / 코드 입력 ===== */

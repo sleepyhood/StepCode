@@ -54,67 +54,31 @@
       }
     },
     {
-      "id": "r_find_age",
-      "type": "short",
+      "id": "code_read_second_line",
+      "type": "code",
       "level": "basic",
-      "title": "Reverse 1. 나이 찾기",
-      "description": "출력 형식 name:age가 주어져요.\n요구사항:\n- 출력에서 age를 찾아요.\n- 정답은 숫자만 작성해요.",
-      "code": "name, age = input().split()\nprint('%s:%s' % (name, age))",
-      "expectedText": "20",
+      "title": "Code 1. 두 번째 줄 입력 파싱",
+      "description": "첫 줄은 이미 읽었습니다.\n주석 위치에 둘째 줄 정수 두 개를 읽는 코드 한 줄을 작성하세요.",
+      "code": "a, b = map(int, input().split())\n# TODO: 둘째 줄에서 정수 두 개를 읽어 c, d에 저장하세요.\nprint(a, b, c, d)",
+      "expectedCode": "c, d = map(int, input().split())",
       "ioExample": {
-        "input": "Tom ?",
-        "output": "Tom:20"
+        "input": "1 2\n3 4"
       }
     },
     {
-      "id": "t_two_line_mix",
-      "type": "short",
+      "id": "code_format_four",
+      "type": "code",
       "level": "basic",
-      "title": "Trace 3. 두 줄 혼합 입력",
-      "description": "1줄째에는 이름, 2줄째에는 정수 두 개가 있어요.\n요구사항:\n- x + y를 계산해요.\n- 이름과 합을 함께 출력해요.\n- name, x, y, output을 표에 채워요.\n\n예시 표:\n| name | x | y | output |\n| --- | --- | --- | --- |\n| Amy | 1 | 1 | 0 |",
-      "code": "name = input().strip()\nx, y = map(int, input().split())\nprint(name, x + y)",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "line1",
-          "line2",
-          "result"
-        ],
-        "columns": [
-          "name",
-          "x",
-          "y",
-          "output"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "Bob",
-          "",
-          "",
-          ""
-        ],
-        [
-          "Bob",
-          "3",
-          "7",
-          ""
-        ],
-        [
-          "Bob",
-          "3",
-          "7",
-          "Bob 10"
-        ]
-      ],
+      "title": "Code 2. 네 값 서식문자 출력",
+      "description": "a, b, c, d가 정수로 저장되어 있습니다.\n주석 위치에 네 값을 공백으로 출력하는 한 줄을 작성하세요.",
+      "code": "a, b = map(int, input().split())\nc, d = map(int, input().split())\n# TODO: 서식문자로 a b c d를 한 줄 출력하세요.",
+      "expectedCode": "print('%d %d %d %d' % (a, b, c, d))",
       "ioExample": {
-        "input": "Bob\n3 7"
+        "input": "1 2\n3 4"
       }
     },
     {
-      "id": "t_two_lines_one_output",
+      "id": "s_two_lines_one_output",
       "type": "short",
       "level": "basic",
       "title": "Short 2. 두 줄 입력 한 줄 출력",

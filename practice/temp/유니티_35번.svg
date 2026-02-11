@@ -1,0 +1,110 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="680" viewBox="0 0 1600 680">
+  <defs>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <rect width="36" height="36" fill="#2b2b2b"></rect>
+      <path d="M 36 0 L 0 0 0 36" fill="none" stroke="#3a3a3a" stroke-width="1"></path>
+    </pattern>
+
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.55"></feDropShadow>
+    </filter>
+
+    <linearGradient id="gradReset" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cf8626"></stop>
+      <stop offset="1" stop-color="#a85f0e"></stop>
+    </linearGradient>
+
+    <linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5f6a73"></stop>
+      <stop offset="1" stop-color="#4b545c"></stop>
+    </linearGradient>
+
+    <linearGradient id="gradGray" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5c6166"></stop>
+      <stop offset="1" stop-color="#44484d"></stop>
+    </linearGradient>
+
+    <linearGradient id="gradPanel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3c3c3c"></stop>
+      <stop offset="1" stop-color="#2f2f2f"></stop>
+    </linearGradient>
+
+    <linearGradient id="gradTopbar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a4a4a"></stop>
+      <stop offset="1" stop-color="#343434"></stop>
+    </linearGradient>
+
+    <marker id="arrowWhite" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e6e6e6"></path>
+    </marker>
+
+    <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d19a2a"></path>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="56" fill="url(#gradTopbar)"></rect>
+  <text x="22" y="36" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#cfcfcf">레이어</text>
+  <text x="140" y="36" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#cfcfcf">매개 변수</text>
+  <rect x="320" y="10" width="170" height="36" rx="6" ry="6" fill="#2d2d2d" stroke="#1f1f1f" stroke-width="1"></rect>
+  <text x="336" y="36" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#d5d5d5">기본 레이어</text>
+
+  <g filter="url(#shadow)">
+    <rect x="0" y="56" width="370" height="624" fill="url(#gradPanel)"></rect>
+    <rect x="18" y="76" width="334" height="34" rx="6" ry="6" fill="#2a2a2a" stroke="#1b1b1b" stroke-width="1"></rect>
+    <text x="32" y="100" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#bfbfbf">이름</text>
+    <text x="336" y="100" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#cfcfcf">+</text>
+
+    <!-- same column + checkbox on every row -->
+    <g font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#d0d0d0">
+      <text x="56" y="160" font-size="26" fill="#cfcfcf">LockOn</text>
+      <rect x="318" y="142" width="24" height="24" rx="4" ry="4" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="2"></rect>
+
+      <text x="56" y="220">Search</text>
+      <rect x="318" y="202" width="24" height="24" rx="4" ry="4" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="2"></rect>
+
+      <text x="56" y="290">friendly</text>
+      <rect x="318" y="272" width="24" height="24" rx="4" ry="4" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="2"></rect>
+      <path d="M 322 284 L 329 292 L 340 276" fill="none" stroke="#e6e6e6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+
+      <text x="56" y="360">enemy</text>
+      <rect x="318" y="342" width="24" height="24" rx="4" ry="4" fill="#2b2b2b" stroke="#1a1a1a" stroke-width="2"></rect>
+    </g>
+
+    <rect x="18" y="392" width="334" height="2" fill="#232323"></rect>
+  </g>
+
+  <rect x="370" y="56" width="1230" height="624" fill="url(#grid)"></rect>
+
+  <path d="M 1140 190 L 1070 190" stroke="#dedede" stroke-width="6" fill="none" marker-end="url(#arrowWhite)"></path>
+  <path d="M 1350 470 L 1350 210" stroke="#dedede" stroke-width="6" fill="none" marker-end="url(#arrowWhite)"></path>
+  <path d="M 1140 515 L 1070 515" stroke="#dedede" stroke-width="6" fill="none" marker-end="url(#arrowWhite)"></path>
+  <path d="M 860 470 L 860 210" stroke="#dedede" stroke-width="6" fill="none" marker-end="url(#arrowWhite)"></path>
+  <path d="M 860 210 L 1350 470" stroke="#dedede" stroke-width="6" fill="none" marker-end="url(#arrowWhite)"></path>
+  <path d="M 370 260 L 650 190" stroke="#c68a1d" stroke-width="6" fill="none" marker-end="url(#arrowOrange)" opacity="0.85"></path>
+
+  <text x="815" y="338" font-family="Arial, Helvetica, sans-serif" font-size="34" fill="#d3a600">1</text>
+
+  <g filter="url(#shadow)">
+    <rect x="650" y="145" width="420" height="90" rx="10" ry="10" fill="url(#gradReset)" stroke="#6c3b06" stroke-width="2"></rect>
+    <text x="860" y="205" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="56" fill="#f2f2f2">reset</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1140" y="145" width="420" height="90" rx="10" ry="10" fill="url(#gradGray)" stroke="#2b2f33" stroke-width="2"></rect>
+    <text x="1350" y="205" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="56" fill="#f2f2f2">enemy</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="650" y="470" width="420" height="90" rx="10" ry="10" fill="url(#gradBlue)" stroke="#3b8dd8" stroke-width="5"></rect>
+    <text x="860" y="530" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="56" fill="#f2f2f2">friendly</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1140" y="470" width="420" height="90" rx="10" ry="10" fill="url(#gradGray)" stroke="#2b2f33" stroke-width="2"></rect>
+    <text x="1350" y="530" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="56" fill="#f2f2f2">lock</text>
+  </g>
+
+  <rect x="0" y="0" width="1600" height="680" fill="none" stroke="#1f1f1f" stroke-width="2"></rect>
+</svg>

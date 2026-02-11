@@ -1,240 +1,95 @@
-# array
+# 배열
 
-## C
-### C - Lv10 배열 (c_array)
+## 공통 원칙 (언어 무관)
 
-- ?? ??
-  - `c_lv10_array_b01` - C 배열 Lv10 기초 1회차
-    - ??: `c_lv10_array_b01.json`
-    - ?? ?: 9 (mcq 4, short 2, code 3, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 배열 만들기 (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. 마지막 원소 접근 (level: 기초, concept: -)
-      - 3. [short] Short 1. 실행 결과 (level: 기초, concept: -)
-      - 4. [mcq] MCQ 3. 배열 전체 출력 for문 (level: 기초, concept: -)
-      - 5. [short] Short 2. 마지막 인덱스 (level: 기초, concept: -)
-      - 6. [code] Code 1. 마지막 원소 출력 (level: 기초, concept: -)
-      - 7. [code] Code 2. 길이가 n인 0 배열 만들기 (level: 기초, concept: -)
-      - 8. [mcq] MCQ 4. for문 범위 (level: 기초, concept: -)
-      - 9. [code] Code 3. 입력을 배열에 저장 (level: 기초, concept: -)
+### 리뉴얼 목표
+1. 배열 단원은 **인덱스/상태 변화 이해**를 중심으로 구성한다.
+2. 현재 운영은 Python 세트를 기준으로 하며, C/Java는 **동일한 문항 유형**으로 확장한다.
+3. `basic`은 기초 재현 중심, `challenge`는 역추적/디버깅 비중을 높인다.
 
-  - `c_lv10_array_b02` - C 배열 Lv10 기초 2회차
-    - ??: `c_lv10_array_b02.json`
-    - ?? ?: 9 (mcq 4, short 2, code 3, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. n개 입력을 배열에 저장 (level: 기초, concept: -)
-      - 2. [short] Short 1. 누적합 실행 결과 (level: 기초, concept: -)
-      - 3. [mcq] MCQ 2. 합계 변수 초기화 위치 (level: 기초, concept: -)
-      - 4. [code] Code 1. 짝수 개수 세기 (level: 기초, concept: -)
-      - 5. [code] Code 2. 평균을 실수로 계산 (level: 기초, concept: -)
-      - 6. [mcq] MCQ 3. 정수 나눗셈 (level: 기초, concept: -)
-      - 7. [short] Short 2. 최댓값 실행 결과 (level: 기초, concept: -)
-      - 8. [mcq] MCQ 4. 최댓값의 인덱스 갱신 (level: 기초, concept: -)
-      - 9. [code] Code 3. 양수만 더하기 (level: 기초, concept: -)
+### 학습 개념(필수)
+1. 배열(리스트) 입력/초기화, 길이 기반 접근.
+2. 인덱스 경계(`0 <= i < n`, 마지막 인덱스).
+3. 순회 패턴(정순/역순)과 범위 오류(off-by-one).
+4. 누적/갱신(합, 개수, min/max, 인덱스).
+5. 상태 복원(탐색, swap, prefix/freq).
 
-  - `c_lv10_array_b03` - C 배열 Lv10 기초 3회차
-    - ??: `c_lv10_array_b03.json`
-    - ?? ?: 9 (mcq 4, short 2, code 3, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 선형 탐색 (level: 기초, concept: -)
-      - 2. [short] Short 1. 첫 등장 인덱스 (level: 기초, concept: -)
-      - 3. [code] Code 1. 찾으면 for문 종료 (level: 기초, concept: -)
-      - 4. [mcq] MCQ 2. 역순 출력 for문 (level: 기초, concept: -)
-      - 5. [code] Code 2. 역순 출력 for문 한 줄 (level: 기초, concept: -)
-      - 6. [short] Short 2. swap 후 배열 상태 (level: 기초, concept: -)
-      - 7. [mcq] MCQ 3. 배열을 뒤집는 코드 (level: 기초, concept: -)
-      - 8. [code] Code 3. 최댓값 인덱스 갱신 (level: 기초, concept: -)
-      - 9. [mcq] MCQ 4. 배열 복사 (level: 기초, concept: -)
+### 문항 구성 규칙
+1. 세트당 `Code` 최소 1문항.
+2. 세트당 `Trace/Grid` 1~2문항.
+3. `basic`의 `Reverse`는 0~1문항(보충), `challenge`는 최소 1문항.
+4. 세트당 `MCQ` 0~1문항(보조).
+5. 단순 출력 맞히기 문항은 세트의 40% 이하.
+6. 세트는 기본 5문항으로 고정한다.
 
-  - `c_lv10_array_c01` - C 배열 Lv10 챌린지 1회차
-    - ??: `c_lv10_array_c01.json`
-    - ?? ?: 9 (mcq 3, short 2, code 4, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 경계 디버깅 (level: 챌린지, concept: -)
-      - 2. [short] Short 1. 중복 최댓값일 때 인덱스 (level: 챌린지, concept: -)
-      - 3. [code] Code 1. '가장 앞' 최댓값 인덱스 유지 (level: 챌린지, concept: -)
-      - 4. [mcq] MCQ 2. 배열 비교(내용 비교) (level: 챌린지, concept: -)
-      - 5. [code] Code 2. 두 번째 큰 값 갱신 (level: 챌린지, concept: -)
-      - 6. [short] Short 2. 버그가 있는 최솟값 코드의 출력 (level: 챌린지, concept: -)
-      - 7. [code] Code 3. 인접한 두 수의 합 최댓값 갱신 (level: 챌린지, concept: -)
-      - 8. [mcq] MCQ 3. off-by-one (level: 챌린지, concept: -)
-      - 9. [code] Code 4. 비내림차순(오름차순) 확인 (level: 챌린지, concept: -)
+### Code 문항 고정 규칙 (배열 단원)
+1. `Code` 문항은 가능한 한 **한 줄 작성**으로 출제한다.
+2. 제어문 전체를 한 줄로 압축해 쓰게 하지 않는다.
+3. 제어문이 필요한 경우는 골격을 주고 한 요소만 쓰게 한다.
+   - 예: `for ( ____ )` 범위
+   - 예: `if ( ____ )` 조건식
+4. 한 문항은 한 기능만 검증한다.
+   - 입력 한 줄, 출력 한 줄, 조건식 한 줄, 갱신 한 줄
 
-  - `c_lv10_array_c02` - C 배열 Lv10 챌린지 2회차
-    - ??: `c_lv10_array_c02.json`
-    - ?? ?: 9 (mcq 3, short 2, code 4, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 빈도 배열 크기 (level: 챌린지, concept: -)
-      - 2. [code] Code 1. 빈도 증가 (level: 챌린지, concept: -)
-      - 3. [short] Short 1. 빈도 실행 결과 (level: 챌린지, concept: -)
-      - 4. [mcq] MCQ 2. 최빈값 tie-break (level: 챌린지, concept: -)
-      - 5. [code] Code 2. 최빈값 갱신(2줄) (level: 챌린지, concept: -)
-      - 6. [mcq] MCQ 3. 누적합(prefix) 점화식 (level: 챌린지, concept: -)
-      - 7. [code] Code 3. prefix 채우기 (level: 챌린지, concept: -)
-      - 8. [short] Short 2. prefix로 구간합 (level: 챌린지, concept: -)
-      - 9. [code] Code 4. prefix로 구간합 한 줄 (level: 챌린지, concept: -)
+### 언어별 변환 규칙
+1. **유형/의도/정답 논리 동일**: 같은 세트 번호(b01~c02)는 같은 사고를 검증한다.
+2. **문법만 변경**:
+   - Python: `list`, `range`, `print`, `input`
+   - C: 배열/포인터, `for`, `scanf`, `printf`
+   - Java: 배열, `for`, `Scanner`, `System.out`
+3. 경계 조건/출력 의미/채점 기준은 언어 간 동일하게 맞춘다.
 
+## 세트 골격 (공통 템플릿)
 
-## Java
-### Java - LV10 배열 (java_array)
+### b01 (기초)
+1. Trace/Grid: 인덱스와 값 매핑(`i`, `arr[i]`, `output`).
+2. Code: 입력을 배열(리스트)에 저장하는 한 줄.
+3. Short: 마지막 원소/마지막 인덱스 구분.
+4. Reverse: 누락 값/인덱스 추론.
+5. Code: 경계 안전 범위(`range/for`) 한 줄 수정/완성.
 
-- ?? ??
-  - `java_array_b01` - Java 배열 Lv10 기초 1회차
-    - ??: `java_lv10_array_b01.json`
-    - ?? ?: 9 (mcq 4, short 2, code 3, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 배열 선언과 초기화 (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. 마지막 원소 접근 (level: 기초, concept: -)
-      - 3. [short] Short 1. 실행 결과 (level: 단답형, concept: -)
-      - 4. [mcq] MCQ 3. 배열 전체 출력 for문 (level: 기초, concept: -)
-      - 5. [short] Short 2. 마지막 인덱스 (level: 단답형, concept: -)
-      - 6. [code] Code 1. 마지막 원소 출력 (level: 코드 작성, concept: -)
-      - 7. [code] Code 2. 길이가 n인 배열 만들기 (level: 코드 작성, concept: -)
-      - 8. [mcq] MCQ 4. for문 조건식 (level: 기초, concept: -)
-      - 9. [code] Code 3. 입력을 배열에 저장 (level: 코드 작성, concept: -)
+### b02 (기초)
+1. Trace/Grid: 누적합/개수 추적(`i`, `x`, `sum`, `count`).
+2. Code: 조건 카운트(짝수 개수) 한 줄.
+3. Reverse: 최종 상태(sum/count) 기반 누락 값 추론.
+4. Short: 초기화 위치/경계 판단.
+5. Code: min/max 갱신 조건 한 줄.
 
-  - `java_array_b02` - Java 배열 Lv10 기초 2회차
-    - ??: `java_lv10_array_b02.json`
-    - ?? ?: 9 (mcq 4, short 2, code 3, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. n개 입력을 배열에 저장 (level: 기초, concept: -)
-      - 2. [short] Short 1. 누적합 실행 결과 (level: 단답형, concept: -)
-      - 3. [mcq] MCQ 2. 합계 변수 초기화 위치 (level: 기초, concept: -)
-      - 4. [code] Code 1. 짝수 개수 세기 (level: 코드 작성, concept: -)
-      - 5. [code] Code 2. 평균을 실수로 계산 (level: 코드 작성, concept: -)
-      - 6. [mcq] MCQ 3. 정수 나눗셈 (level: 기초, concept: -)
-      - 7. [short] Short 2. 최댓값 실행 결과 (level: 단답형, concept: -)
-      - 8. [mcq] MCQ 4. 최댓값의 인덱스 갱신 (level: 기초, concept: -)
-      - 9. [code] Code 3. 양수만 더하기 (level: 코드 작성, concept: -)
+### b03 (기초)
+1. Trace/Grid: 탐색 상태 추적(`i`, `arr[i]`, `idx/found`).
+2. Code: 첫 등장/마지막 등장 갱신 한 줄.
+3. Reverse: 최종 배열/인덱스로 입력 추론.
+4. Short: 탐색/등장 횟수 결과 판단.
+5. Code: 역순 순회 범위 한 줄.
 
-  - `java_array_b03` - Java 배열 Lv10 기초 3회차
-    - ??: `java_lv10_array_b03.json`
-    - ?? ?: 9 (mcq 4, short 2, code 3, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 선형 탐색 (level: 기초, concept: -)
-      - 2. [short] Short 1. 첫 등장 인덱스 (level: 단답형, concept: -)
-      - 3. [code] Code 1. 찾으면 for문 종료 (level: 코드 작성, concept: -)
-      - 4. [mcq] MCQ 2. 역순 출력 for문 (level: 기초, concept: -)
-      - 5. [code] Code 2. 역순 출력 for문 한 줄 (level: 코드 작성, concept: -)
-      - 6. [short] Short 2. swap 후 배열 상태 (level: 단답형, concept: -)
-      - 7. [mcq] MCQ 3. 배열을 뒤집는 코드 (level: 기초, concept: -)
-      - 8. [code] Code 3. 최댓값 인덱스 갱신 (level: 코드 작성, concept: -)
-      - 9. [mcq] MCQ 4. 배열 복사 (level: 기초, concept: -)
+### c01 (챌린지)
+1. Trace/Grid: tie-break 포함 최대/최소 인덱스 추적.
+2. Code: 복합 조건 갱신 한 줄.
+3. Reverse: 최종 인덱스/값으로 입력 후보 추론.
+4. Code: 두 번째 값(2nd max/min) 갱신 한 줄.
+5. Short: 반례 또는 규칙 변경 영향 판단.
 
-  - `java_array_c01` - Java 배열 Lv10 챌린지 1회차
-    - ??: `java_lv10_array_c01.json`
-    - ?? ?: 9 (mcq 3, short 2, code 4, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 예외(경계) 디버깅 (level: 챌린지, concept: -)
-      - 2. [short] Short 1. 중복 최댓값일 때 인덱스 (level: 단답형, concept: -)
-      - 3. [code] Code 1. '가장 앞' 최댓값 인덱스 유지 (level: 코드 작성, concept: -)
-      - 4. [mcq] MCQ 2. 배열 비교 (level: 챌린지, concept: -)
-      - 5. [code] Code 2. 두 번째 큰 값 갱신 (level: 코드 작성, concept: -)
-      - 6. [short] Short 2. 버그가 있는 최솟값 코드의 출력 (level: 단답형, concept: -)
-      - 7. [code] Code 3. 인접한 두 수의 합 최댓값 갱신 (level: 코드 작성, concept: -)
-      - 8. [mcq] MCQ 3. off-by-one (level: 챌린지, concept: -)
-      - 9. [code] Code 4. 비내림차순(오름차순) 확인 (level: 코드 작성, concept: -)
+### c02 (챌린지)
+1. Trace/Grid: `freq/prefix` 중간 상태 복원.
+2. Code: 빈도 증가/누적합 채우기 한 줄.
+3. Code: 최빈값/tie-break 조건식 한 줄.
+4. Reverse: prefix/freq로 원배열 일부 복원.
+5. Short: 구간합/최빈값 결과 판단.
 
-  - `java_array_c02` - Java 배열 Lv10 챌린지 2회차
-    - ??: `java_lv10_array_c02.json`
-    - ?? ?: 9 (mcq 3, short 2, code 4, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 빈도 배열 크기 (level: 챌린지, concept: -)
-      - 2. [code] Code 1. 빈도 증가 (level: 코드 작성, concept: -)
-      - 3. [short] Short 1. 빈도 실행 결과 (level: 단답형, concept: -)
-      - 4. [mcq] MCQ 2. 최빈값 tie-break (level: 챌린지, concept: -)
-      - 5. [code] Code 2. 최빈값 갱신(2줄) (level: 코드 작성, concept: -)
-      - 6. [mcq] MCQ 3. 누적합(prefix) 점화식 (level: 챌린지, concept: -)
-      - 7. [code] Code 3. prefix 채우기 (level: 코드 작성, concept: -)
-      - 8. [short] Short 2. prefix로 구간합 (level: 단답형, concept: -)
-      - 9. [code] Code 4. prefix로 구간합 한 줄 (level: 코드 작성, concept: -)
+## 실제 세트 매핑
 
+- 현재 운영(Python) 세트 파일:
+  - `py_lv10_array_b01.json`
+  - `py_lv10_array_b02.json`
+  - `py_lv10_array_b03.json`
+  - `py_lv10_array_c01.json`
+  - `py_lv10_array_c02.json`
+- C/Java 세트는 위 공통 템플릿을 그대로 따라 동형으로 확장한다.
 
-## Python
-### Python - Lv10 배열 (py_array)
-
-- ?? ??
-  - `py_lv10_array_b01` - Python 배열 Lv10 기초 1회차
-    - ??: `py_lv10_array_b01.json`
-    - ?? ?: 9 (mcq 3, short 2, code 4, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 입력을 리스트에 저장 (level: 기초, concept: list_input)
-      - 2. [mcq] MCQ 2. 마지막 원소 접근 (level: 기초, concept: index_last)
-      - 3. [short] Short 1. 0 입력 전까지 개수 (level: 기초, concept: range_len)
-      - 4. [code] Code 0. 마지막 3개 역순 출력 (level: 기초, concept: index_last)
-      - 5. [short] Short 2. 짝수 인덱스 합 (level: 기초, concept: range_len)
-      - 6. [code] Code 1. 마지막 원소 출력 (level: 기초, concept: index_last)
-      - 7. [code] Code 2. 빈 리스트 만들기 (level: 기초, concept: list_input)
-      - 8. [mcq] MCQ 4. for문 range 범위 (level: 기초, concept: range_len)
-      - 9. [code] Code 3. 한 줄 수정: 입력을 리스트에 저장 (level: 기초, concept: list_input)
-
-  - `py_lv10_array_b02` - Python 배열 Lv10 기초 2회차
-    - ??: `py_lv10_array_b02.json`
-    - ?? ?: 9 (mcq 3, short 2, code 4, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. n개 입력을 배열(리스트)에 저장 (실수) (level: 기초, concept: list_input_float)
-      - 2. [short] Short 1. 누적합 실행 결과 (level: 기초, concept: sum_acc)
-      - 3. [mcq] MCQ 2. 합계 변수 초기화 위치 (level: 기초, concept: sum_acc)
-      - 4. [code] Code 1. 짝수 개수 세기 (level: 기초, concept: count_even)
-      - 5. [code] Code 2. 최솟값 갱신 (level: 기초, concept: min_max)
-      - 6. [code] Code 0. 평균 구하기 (level: 기초, concept: sum_acc)
-      - 7. [short] Short 2. 최댓값 실행 결과 (level: 기초, concept: min_max)
-      - 8. [mcq] MCQ 4. 최댓값의 인덱스 갱신 (level: 기초, concept: min_max)
-      - 9. [code] Code 3. 양수만 더하기 (level: 기초, concept: sum_acc)
-
-  - `py_lv10_array_b03` - Python 배열 Lv10 기초 3회차
-    - ??: `py_lv10_array_b03.json`
-    - ?? ?: 9 (mcq 4, short 2, code 3, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 선형 탐색 (level: 기초, concept: linear_search)
-      - 2. [short] Short 1. 첫 등장 인덱스 (level: 기초, concept: linear_search)
-      - 3. [code] Code 1. 찾으면 for문 종료 (level: 기초, concept: linear_search)
-      - 4. [mcq] MCQ 2. 역순 출력 for문 (level: 기초, concept: reverse_loop)
-      - 5. [code] Code 2. 최솟값 인덱스 갱신 (level: 기초, concept: min_max_index)
-      - 6. [short] Short 2. swap 후 배열 상태 (level: 기초, concept: swap_basic)
-      - 7. [mcq] MCQ 3. 배열을 뒤집는 코드 (level: 기초, concept: swap_basic)
-      - 8. [code] Code 3. 최댓값 인덱스 갱신 (level: 기초, concept: min_max_index)
-      - 9. [mcq] MCQ 4. 마지막 등장 인덱스 (level: 기초, concept: linear_search)
-
-  - `py_lv10_array_c01` - Python 배열 Lv10 챌린지 1회차
-    - ??: `py_lv10_array_c01.json`
-    - ?? ?: 9 (mcq 1, short 4, code 4, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 예외(경계) 디버깅 (level: 챌린지, concept: linear_search)
-      - 2. [short] Short 1. 중복 최댓값일 때 인덱스 (level: 챌린지, concept: min_max_index)
-      - 3. [code] Code 1. '가장 앞' 최댓값 인덱스 유지 (level: 챌린지, concept: min_max_index)
-      - 4. [short] Short 0. 0 이전 3개 출력 (level: 챌린지, concept: first_last_occurrence)
-      - 5. [code] Code 2. 두 번째 큰 값 갱신 (level: 챌린지, concept: second_max)
-      - 6. [short] Short 2. 버그가 있는 최솟값 코드의 출력 (level: 챌린지, concept: min_max_index)
-      - 7. [code] Code 3. 인접한 두 수의 합 최댓값 갱신 (level: 챌린지, concept: adjacent_sum)
-      - 8. [short] Short 1. 0 이전 3개 역순 출력 (level: 챌린지, concept: first_last_occurrence)
-      - 9. [code] Code 4. 비내림차순(오름차순) 확인 (level: 챌린지, concept: sorted_check)
-
-  - `py_lv10_array_c02` - Python 배열 Lv10 챌린지 2회차
-    - ??: `py_lv10_array_c02.json`
-    - ?? ?: 9 (mcq 2, short 2, code 5, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 빈도 배열 크기 (level: 챌린지, concept: freq_array)
-      - 2. [code] Code 1. 빈도 증가 (level: 챌린지, concept: freq_array)
-      - 3. [short] Short 1. 빈도 실행 결과 (level: 챌린지, concept: freq_array)
-      - 4. [mcq] MCQ 2. 최빈값 tie-break (level: 챌린지, concept: mode_tiebreak)
-      - 5. [code] Code 2. 최빈값 갱신(2줄) (level: 챌린지, concept: mode_tiebreak)
-      - 6. [code] Code 0. 한 학생의 등수 구하기 (level: 챌린지, concept: ranking_simple)
-      - 7. [code] Code 3. prefix 채우기 (level: 챌린지, concept: prefix_sum)
-      - 8. [short] Short 2. prefix로 구간합 (level: 챌린지, concept: prefix_sum)
-      - 9. [code] Code 4. prefix로 구간합 한 줄 (level: 챌린지, concept: prefix_sum)
+## 체크리스트
+1. 같은 세트 번호가 언어별로 동형 구조인가?
+2. `Code` 정답이 한 줄 중심인가? (제어문은 골격+요소 작성)
+3. `Trace/Grid`가 상태 변화 시점(반복 직후)을 명시했는가?
+4. `basic` Reverse는 보충 수준, `challenge` Reverse는 핵심 수준인가?
+5. MCQ가 보조용(0~1문항)으로 제한되어 있는가?
+6. 세트 문항 수가 5문항으로 고정되어 있는가?

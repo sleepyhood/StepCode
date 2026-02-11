@@ -1,196 +1,204 @@
 {
-  "id": "py_lv10_array_c02",
-  "title": "Python 배열 Lv10 챌린지 2회차",
-  "categoryId": "py_array",
-  "availableLanguages": [
-    "python"
-  ],
-  "concepts": [
-    {
-      "id": "freq_array",
-      "title": "빈도 배열",
-      "summary": "값을 인덱스로 삼아 등장 횟수를 누적합니다.",
-      "example": "```python\ncnt = [0] * 10\ncnt[x] += 1\n```",
-      "algorithm": "```text\n1) cnt를 0으로 초기화한다.\n2) 입력 x에 대해 cnt[x]를 증가한다.\n```",
-      "relatedProblems": ["mcq1", "code1", "short1"]
-    },
-    {
-      "id": "mode_tiebreak",
-      "title": "최빈값 tie-break",
-      "summary": "빈도가 같으면 더 작은 값을 선택합니다.",
-      "example": "```python\nif cnt[i] > best_cnt or (cnt[i] == best_cnt and i < best_num):\n    best_cnt = cnt[i]\n    best_num = i\n```",
-      "algorithm": "```text\n1) 빈도가 큰 값을 우선한다.\n2) 같으면 더 작은 값을 선택한다.\n```",
-      "relatedProblems": ["mcq2", "code2"]
-    },
-    {
-      "id": "ranking_simple",
-      "title": "단순 등수 계산",
-      "summary": "더 큰 점수 개수 + 1이 등수입니다.",
-      "example": "```python\nrank = 1\nfor s in scores:\n    if s > target:\n        rank += 1\n```",
-      "algorithm": "```text\n1) rank를 1로 둔다.\n2) 더 큰 점수를 만나면 1 증가한다.\n```",
-      "relatedProblems": ["mcq3"]
-    },
-    {
-      "id": "prefix_sum",
-      "title": "prefix 합",
-      "summary": "prefix[i+1] = prefix[i] + lst[i]",
-      "example": "```python\nprefix[i + 1] = prefix[i] + lst[i]\n```",
-      "algorithm": "```text\n1) prefix[0]=0으로 둔다.\n2) 누적합을 채운다.\n3) 구간합을 prefix로 계산한다.\n```",
-      "relatedProblems": ["code3", "short2", "code4"]
-    }
-  ],
-  "problems": [
-    {
-      "id": "mcq1",
-      "type": "mcq",
-      "level": "챌린지",
-      "title": "MCQ 1. 빈도 배열 크기",
-      "conceptRef": "freq_array",
-      "description": "0부터 9까지의 숫자가 입력으로 들어올 때, 각 숫자의 등장 횟수를 세기 위한 빈도 배열 cnt의 올바른 초기화 코드를 고르세요.",
-      "code": null,
-      "options": [
-        "cnt = [0] * 9",
-        "cnt = [0] * 10",
-        "cnt = [0] * 11",
-        "cnt = [0] * n"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 1,
-      "wrongFeedback": {
-        "0": "0~9까지 10개이므로 9개는 부족합니다.",
-        "2": "11개는 필요 이상입니다.",
-        "3": "0~9 전용이므로 n 대신 10을 써야 합니다."
-      }
-    },
-    {
-      "id": "code1",
-      "type": "code",
-      "level": "챌린지",
-      "title": "Code 1. 빈도 증가",
-      "conceptRef": "freq_array",
-      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n입력 x(0~9)의 등장 횟수를 cnt에 누적해야 합니다.",
-      "code": "cnt = []\nfor i in range(10):\n    cnt = cnt + [0]\nfor i in range(n):\n    x = int(input())\n    # TODO: x의 빈도를 1 증가시키는 한 줄을 작성하시오.",
-      "hints": [
-        "인덱스를 이용해 cnt[x]를 증가시키면 됩니다."
-      ],
-      "wrongFeedbackText": "x를 인덱스로 사용해 cnt[x]를 1 증가합니다.",
-      "expectedCode": "cnt[x] += 1",
-      "hint": "인덱스를 이용해 cnt[x]를 증가시키면 됩니다."
-    },
-    {
-      "id": "short1",
-      "type": "short",
-      "level": "챌린지",
-      "title": "Short 1. 빈도 실행 결과",
-      "conceptRef": "freq_array",
-      "description": "아래 코드가 실행된 뒤, cnt[0]의 값은 무엇인가요?",
-      "code": "cnt = []\nfor i in range(10):\n    cnt = cnt + [0]\ndata = [0, 2, 0, 9, 0]\nfor i in range(len(data)):\n    x = data[i]\n    cnt[x] += 1\n# 여기서 cnt[0]의 값은?",
-      "wrongFeedbackText": "data에서 0이 몇 번 나오는지 세면 됩니다.",
-      "expectedText": "3"
-    },
-    {
-      "id": "mcq2",
-      "type": "mcq",
-      "level": "챌린지",
-      "title": "MCQ 2. 최빈값 tie-break",
-      "conceptRef": "mode_tiebreak",
-      "description": "다음 중 최빈값을 찾을 때, 빈도가 같으면 **더 작은 숫자**를 선택하는 조건식으로 올바른 것을 고르세요.\n(best_cnt, best_num, cnt[i]가 이미 정의되어 있다고 가정합니다.)",
-      "code": null,
-      "options": [
-        "cnt[i] > best_cnt and i < best_num",
-        "cnt[i] >= best_cnt and i < best_num",
-        "cnt[i] > best_cnt or (cnt[i] == best_cnt and i < best_num)",
-        "cnt[i] == best_cnt or i < best_num"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 2,
-      "wrongFeedback": {
-        "0": "빈도가 같을 때만 작은 값 선택이 누락되었습니다.",
-        "1": "빈도가 같은 경우 작은 값을 선택해야 합니다.",
-        "3": "cnt[i]가 작아도 i < best_num이면 갱신되어 버립니다."
-      }
-    },
-    {
-      "id": "code2",
-      "type": "code",
-      "level": "챌린지",
-      "title": "Code 2. 최빈값 갱신(2줄)",
-      "conceptRef": "mode_tiebreak",
-      "description": "아래 코드에서 주석 위치에 들어갈 내용을 작성하세요.\n조건을 만족하면 best_cnt와 best_num을 갱신해야 합니다.\n(주석 위치에 **두 줄**로 작성하세요.)",
-      "code": "best_num = 0\nbest_cnt = -1\nfor i in range(10):\n    if cnt[i] > best_cnt or (cnt[i] == best_cnt and i < best_num):\n        # TODO: best_cnt와 best_num을 갱신하는 두 줄을 작성하시오.\nprint('%d' % best_num)",
-      "hints": [
-        "먼저 best_cnt를 cnt[i]로 갱신합니다.",
-        "그 다음 best_num을 i로 갱신합니다."
-      ],
-      "wrongFeedbackText": "best_cnt와 best_num을 각각 한 줄로 갱신해야 합니다.",
-      "expectedCode": "best_cnt = cnt[i]\nbest_num = i",
-      "hint": "먼저 best_cnt를 갱신한 뒤 best_num을 갱신합니다."
-    },
-    {
-      "id": "mcq3",
-      "type": "code",
-      "level": "챌린지",
-      "title": "Code 0. 한 학생의 등수 구하기",
-      "conceptRef": "ranking_simple",
-      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(점수가 높을수록 등수가 높으며, 같은 점수는 같은 등수로 처리하지 않고 단순히 큰 점수 개수만 센다고 가정합니다.)",
-      "code": "scores = list(map(int, input().split()))\ns = int(input())\nrank = 1\nfor i in range(len(scores)):\n    # TODO: s보다 큰 점수가 나오면 rank를 1 증가시키는 한 줄을 작성하시오.\nprint('%d' % rank)",
-      "hints": [
-        "s보다 큰 점수 개수에 1을 더하면 등수입니다."
-      ],
-      "wrongFeedbackText": "조건은 `scores[i] > s` 입니다.",
-      "expectedCode": "if scores[i] > s: rank += 1",
-      "hint": "s보다 큰 점수의 개수 + 1 이 등수입니다."
-    },
-    {
-      "id": "code3",
-      "type": "code",
-      "level": "챌린지",
-      "title": "Code 3. prefix 채우기",
-      "conceptRef": "prefix_sum",
-      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(prefix 배열은 길이가 n+1이고 prefix[0]=0입니다.)",
-      "code": "prefix = []\nfor i in range(n + 1):\n    prefix = prefix + [0]\nprefix[0] = 0\nfor i in range(n):\n    # TODO: prefix[i+1]을 채우는 한 줄을 작성하시오.",
-      "hints": [
-        "prefix[i+1]은 prefix[i]에 lst[i]를 더한 값입니다."
-      ],
-      "wrongFeedbackText": "공식은 `prefix[i+1] = prefix[i] + lst[i]` 입니다.",
-      "expectedCode": "prefix[i + 1] = prefix[i] + lst[i]",
-      "hint": "바로 전 prefix 값에 lst[i]를 더합니다."
-    },
-    {
-      "id": "short2",
-      "type": "short",
-      "level": "챌린지",
-      "title": "Short 2. prefix로 구간합",
-      "conceptRef": "prefix_sum",
-      "description": "prefix 배열이 아래와 같을 때, l=1, r=2 (0-index) 구간의 합은 얼마인가요?\n(구간합 공식: sum = prefix[r+1] - prefix[l])",
-      "code": "prefix = [0, 2, 5, 9, 10]\nl = 1\nr = 2",
-      "wrongFeedbackText": "구간합 공식: prefix[r+1] - prefix[l] 을 적용하세요.",
-      "expectedText": "7"
-    },
-    {
-      "id": "code4",
-      "type": "code",
-      "level": "챌린지",
-      "title": "Code 4. prefix로 구간합 한 줄",
-      "conceptRef": "prefix_sum",
-      "description": "아래 코드에서 주석 위치에 들어갈 **한 줄**을 작성하세요.\n(0-index, l~r 구간합을 계산해야 합니다.)",
-      "code": "sum_val = 0\n# TODO: prefix를 이용해 l~r 구간합을 sum_val에 저장하는 한 줄을 작성하시오.",
-      "hints": [
-        "구간합 공식은 prefix[r+1] - prefix[l] 입니다."
-      ],
-      "wrongFeedbackText": "sum_val = prefix[r+1] - prefix[l] 형태입니다.",
-      "expectedCode": "sum_val = prefix[r + 1] - prefix[l]",
-      "hint": "구간합은 prefix[r+1] - prefix[l] 입니다."
-    }
-  ]
+    "id":  "py_lv10_array_c02",
+    "title":  "Python 배열 Lv10 챌린지 2회차",
+    "categoryId":  "py_array",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "concepts":  [
+                     {
+                         "id":  "freq_array",
+                         "title":  "빈도 배열",
+                         "summary":  "값을 인덱스로 삼아 등장 횟수를 누적합니다.",
+                         "example":  "```python\ncnt = [0] * 10\ncnt[x] += 1\n```",
+                         "algorithm":  "```text\n1) cnt를 0으로 초기화한다.\n2) 입력 x에 대해 cnt[x]를 증가한다.\n```",
+                         "relatedProblems":  [
+                                                 "code1",
+                                                 "short1",
+                                                 "mcq1"
+                                             ]
+                     },
+                     {
+                         "id":  "mode_tiebreak",
+                         "title":  "최빈값 tie-break",
+                         "summary":  "빈도가 같으면 더 작은 값을 선택합니다.",
+                         "example":  "```python\nif cnt[i] \u003e best_cnt or (cnt[i] == best_cnt and i \u003c best_num):\n    best_cnt = cnt[i]\n    best_num = i\n```",
+                         "algorithm":  "```text\n1) 빈도가 큰 값을 우선한다.\n2) 같으면 더 작은 값을 선택한다.\n```",
+                         "relatedProblems":  [
+                                                 "code2"
+                                             ]
+                     },
+                     {
+                         "id":  "ranking_simple",
+                         "title":  "단순 등수 계산",
+                         "summary":  "더 큰 점수 개수 + 1이 등수입니다.",
+                         "example":  "```python\nrank = 1\nfor s in scores:\n    if s \u003e target:\n        rank += 1\n```",
+                         "algorithm":  "```text\n1) rank를 1로 둔다.\n2) 더 큰 점수를 만나면 1 증가한다.\n```",
+                         "relatedProblems":  [
+                                                 "code_rank"
+                                             ]
+                     },
+                     {
+                         "id":  "prefix_sum",
+                         "title":  "prefix 합",
+                         "summary":  "prefix[i+1] = prefix[i] + lst[i]",
+                         "example":  "```python\nprefix[i + 1] = prefix[i] + lst[i]\n```",
+                         "algorithm":  "```text\n1) prefix[0]=0으로 둔다.\n2) 누적합을 채운다.\n3) 구간합을 prefix로 계산한다.\n```",
+                         "relatedProblems":  [
+                                                 "t_prefix_trace",
+                                                 "reverse_prefix_restore",
+                                                 "code3",
+                                                 "short2"
+                                             ]
+                     }
+                 ],
+    "problems":  [
+                     {
+                         "id":  "t_prefix_trace",
+                         "type":  "short",
+                         "level":  "챌린지",
+                         "title":  "Trace 1. prefix 배열 추적",
+                         "conceptRef":  "prefix_sum",
+                         "description":  "코드를 실행해 prefix 값이 채워지는 과정을 표로 작성하세요.",
+                         "code":  "arr = [2, 1, 3, 4]\nprefix = [0] * len(arr)\nprefix[0] = arr[0]\nfor i in range(1, len(arr)):\n    prefix[i] = prefix[i - 1] + arr[i]\nprint(prefix)",
+                         "answerUi":  {
+                                          "kind":  "grid",
+                                          "rows":  [
+                                                       "1",
+                                                       "2",
+                                                       "3",
+                                                       "result"
+                                                   ],
+                                          "columns":  [
+                                                          "i",
+                                                          "arr[i]",
+                                                          "prefix[i]",
+                                                          "output"
+                                                      ],
+                                          "rowSep":  "\n",
+                                          "colSep":  " "
+                                      },
+                         "expectedGrid":  [
+                                              [
+                                                  "1",
+                                                  "1",
+                                                  "3",
+                                                  ""
+                                              ],
+                                              [
+                                                  "2",
+                                                  "3",
+                                                  "6",
+                                                  ""
+                                              ],
+                                              [
+                                                  "3",
+                                                  "4",
+                                                  "10",
+                                                  ""
+                                              ],
+                                              [
+                                                  "",
+                                                  "",
+                                                  "",
+                                                  "2 3 6 10"
+                                              ]
+                                          ],
+                         "ioExample":  {
+                                           "input":  ""
+                                       }
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "챌린지",
+                         "title":  "Code 1. 빈도 증가",
+                         "conceptRef":  "freq_array",
+                         "description":  "값 x가 나왔을 때 해당 빈도를 1 증가시키는 한 줄을 작성하세요.",
+                         "code":  "# freq 배열 길이는 101\n# TODO: x의 빈도 1 증가",
+                         "expectedCode":  "freq[x] += 1"
+                     },
+                     {
+                         "id":  "short1",
+                         "type":  "short",
+                         "level":  "챌린지",
+                         "title":  "Short 1. 값의 등장 횟수",
+                         "conceptRef":  "freq_array",
+                         "description":  "arr에서 값 1이 몇 번 등장하는지 쓰세요.",
+                         "code":  "arr = [1,2,1,3,2,1]",
+                         "expectedText":  "3"
+                     },
+                     {
+                         "id":  "code2",
+                         "type":  "code",
+                         "level":  "챌린지",
+                         "title":  "Code 2. 최빈값 갱신(2줄)",
+                         "conceptRef":  "mode_tiebreak",
+                         "description":  "후보 값 v의 빈도 f가 더 좋을 때 best, bestF를 갱신하는 2줄을 작성하세요.",
+                         "code":  "if f \u003e bestF:\n    # TODO",
+                         "expectedCode":  "bestF = f\n    best = v"
+                     },
+                     {
+                         "id":  "reverse_prefix_restore",
+                         "type":  "short",
+                         "level":  "챌린지",
+                         "title":  "Reverse 1. prefix로 원소 복원",
+                         "conceptRef":  "prefix_sum",
+                         "description":  "prefix가 [2, 3, 6, 10]일 때 arr[2] 값을 쓰세요.",
+                         "code":  "arr[i] = prefix[i] - prefix[i-1] (i\u003e0)",
+                         "expectedText":  "3"
+                     },
+                     {
+                         "id":  "code_rank",
+                         "type":  "code",
+                         "level":  "챌린지",
+                         "title":  "Code 3. 단순 등수 계산",
+                         "conceptRef":  "ranking_simple",
+                         "description":  "scores에서 target보다 큰 점수를 만나면 rank를 증가시키는 코드를 작성하세요.",
+                         "code":  "rank = 1\nfor s in scores:\n    # TODO",
+                         "expectedCode":  "if s \u003e target:\n        rank += 1"
+                     },
+                     {
+                         "id":  "code3",
+                         "type":  "code",
+                         "level":  "챌린지",
+                         "title":  "Code 4. prefix 채우기",
+                         "conceptRef":  "prefix_sum",
+                         "description":  "prefix 배열을 누적합으로 채우는 한 줄을 작성하세요.",
+                         "code":  "for i in range(1, n):\n    # TODO",
+                         "expectedCode":  "prefix[i] = prefix[i - 1] + arr[i]"
+                     },
+                     {
+                         "id":  "short2",
+                         "type":  "short",
+                         "level":  "챌린지",
+                         "title":  "Short 2. prefix 구간합",
+                         "conceptRef":  "prefix_sum",
+                         "description":  "prefix=[2,3,6,10]일 때 1~3 구간합을 쓰세요.",
+                         "code":  "sum(1..3) = prefix[3] - prefix[0]",
+                         "expectedText":  "8"
+                     },
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "챌린지",
+                         "title":  "MCQ 1. 빈도 배열 길이",
+                         "conceptRef":  "freq_array",
+                         "description":  "값의 범위가 0~100(포함)일 때 필요한 freq 배열 길이를 고르세요.",
+                         "code":  "# value in [0, 100]",
+                         "options":  [
+                                         "100",
+                                         "101",
+                                         "99",
+                                         "102"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  1
+                     }
+                 ]
 }

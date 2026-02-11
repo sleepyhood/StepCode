@@ -13,10 +13,9 @@
       "example": "```python\na, b = map(int, input().split())\n```",
       "algorithm": "```text\n1) 한 줄을 split으로 나눈다.\n2) 각 토큰을 int로 변환한다.\n```",
       "relatedProblems": [
-        "mcq1",
-        "mcq3",
-        "short1",
-        "code1"
+        "t_basic_sum",
+        "code_read_two_ints",
+        "s_swap_output"
       ]
     },
     {
@@ -26,10 +25,9 @@
       "example": "```python\nprint('%d + %d = %d' % (a, b, a + b))\n```",
       "algorithm": "```text\n1) 포맷 문자열을 작성한다.\n2) 대응되는 값을 튜플로 넣는다.\n```",
       "relatedProblems": [
-        "mcq1",
-        "mcq4",
-        "short1",
-        "code2"
+        "code_print_sum_fmt",
+        "s_swap_output",
+        "s_two_lines_mul"
       ]
     },
     {
@@ -39,9 +37,8 @@
       "example": "```python\na = int(input())\n```",
       "algorithm": "```text\n1) input()으로 문자열을 받는다.\n2) int(...)로 변환한다.\n```",
       "relatedProblems": [
-        "mcq2",
-        "mcq5",
-        "short2"
+        "code_read_two_ints",
+        "s_two_lines_mul"
       ]
     }
   ],
@@ -82,11 +79,23 @@
       }
     },
     {
+      "id": "code_read_two_ints",
+      "type": "code",
+      "level": "basic",
+      "title": "Code 1. 두 정수 입력 받기",
+      "description": "한 줄에서 정수 2개를 읽는 코드입니다.\n주석 위치에 들어갈 입력 한 줄만 작성하세요.",
+      "code": "# TODO: 한 줄 입력에서 정수 2개를 읽어 a, b에 저장하세요.\nprint('%d' % (a + b))",
+      "expectedCode": "a, b = map(int, input().split())",
+      "ioExample": {
+        "input": "3 5"
+      }
+    },
+    {
       "id": "s_swap_output",
       "type": "short",
       "level": "basic",
       "title": "Short 1. 출력 순서 바꾸기",
-      "description": "두 값을 입력받아 순서를 바꿔 출력해요.\n요구사항:\n- 출력은 공백으로 구분된 한 줄이에요.\n- 원래 순서를 반대로 출력해요.",
+      "description": "두 값을 입력받아 순서를 바꿔 출력하세요.\n출력은 공백으로 구분된 한 줄입니다.",
       "code": "a, b = input().split()\nprint(b, a)",
       "expectedText": "9 4",
       "ioExample": {
@@ -94,53 +103,19 @@
       }
     },
     {
-      "id": "r_find_b",
-      "type": "short",
+      "id": "code_print_sum_fmt",
+      "type": "code",
       "level": "basic",
-      "title": "Reverse 1. 두 번째 입력 찾기",
-      "description": "첫 번째 입력과 최종 출력이 주어져요.\n출력은 6이라고 가정해요.\n요구사항:\n- 코드는 a + b를 출력해요.\n- 이 조건으로 b를 구해요.\n- 정답은 숫자만 작성해요.",
-      "code": "a = int(input())\nb = int(input())\nprint(a + b)",
-      "expectedText": "3",
+      "title": "Code 2. 서식문자 합 출력",
+      "description": "a와 b가 이미 정수로 저장되어 있습니다.\n주석 위치에 들어갈 출력 한 줄만 작성하세요.\n출력 형식은 `a + b = result` 입니다.",
+      "code": "a, b = map(int, input().split())\n# TODO: 서식문자로 \"a + b = result\"를 출력하세요.",
+      "expectedCode": "print('%d + %d = %d' % (a, b, a + b))",
       "ioExample": {
-        "input": "3\n?",
-        "output": "6"
+        "input": "2 4"
       }
     },
     {
-      "id": "t_three_expr",
-      "type": "short",
-      "level": "basic",
-      "title": "Trace 3. 세 정수 식",
-      "description": "한 줄 입력에서 정수 3개를 읽어 식을 계산해요.\n요구사항:\n- a, b, c를 정수로 변환해요.\n- a * b + c를 계산해 output에 적어요.\n- a, b, c, output을 표에 채워요.\n\n예시 표:\n| a | b | c | output |\n| --- | --- | --- | --- |\n| 3 | 5 | 1 | 0 |",
-      "code": "a, b, c = map(int, input().split())\nprint(a * b + c)",
-      "answerUi": {
-        "kind": "grid",
-        "rows": [
-          "1"
-        ],
-        "columns": [
-          "a",
-          "b",
-          "c",
-          "output"
-        ],
-        "rowSep": "\n",
-        "colSep": " "
-      },
-      "expectedGrid": [
-        [
-          "1",
-          "2",
-          "3",
-          "5"
-        ]
-      ],
-      "ioExample": {
-        "input": "1 2 3"
-      }
-    },
-    {
-      "id": "t_two_lines_mul",
+      "id": "s_two_lines_mul",
       "type": "short",
       "level": "basic",
       "title": "Short 2. 두 줄 곱셈 결과",

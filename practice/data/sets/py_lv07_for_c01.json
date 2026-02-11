@@ -1,109 +1,139 @@
-﻿{
-    "id": "py_lv07_for_c01",
-    "title": "Python for문 챌린지 1회차",
-    "categoryId": "py_for",
-    "availableLanguages": ["python"],
-    "problems": [
-      {
-        "id": "t_cond_sum2",
-        "type": "short",
-        "level": "챌린지",
-        "title": "Trace 1. 조건 2개 누적",
-        "description": "양수이면서 짝수인 값만 더하는 과정을 추적해요.\n요구사항:\n- i, num, sum을 표에 채워요.",
-        "code": "n = int(input())\nsumv = 0\nfor i in range(n):\n    num = int(input())\n    if num > 0 and num % 2 == 0:\n        sumv = sumv + num\nprint('%d' % sumv)",
-        "answerUi": {
-          "kind": "grid",
-          "rows": [
-            "1",
-            "2",
-            "3",
-            "4",
-            "result"
-          ],
-          "columns": [
-            "i",
-            "num",
-            "sum"
-          ],
-          "rowSep": "\n",
-          "colSep": " "
-        },
-        "expectedGrid": [
-          ["0", "-2", "0"],
-          ["1", "4", "4"],
-          ["2", "3", "4"],
-          ["3", "6", "10"],
-          ["", "", "10"]
-        ],
-        "ioExample": {
-          "input": "4\n-2\n4\n3\n6"
-        }
-      },
-      {
-        "id": "t_mid_state",
-        "type": "short",
-        "level": "챌린지",
-        "title": "Trace 2. 중간 상태 복원",
-        "description": "3번째 반복 직후의 값을 확인해요.\n요구사항:\n- i와 sum을 표에 채워요.\n- 3회 반복까지의 상태만 기록해요.",
-        "code": "n = int(input())\nsumv = 0\nfor i in range(1, n + 1):\n    sumv = sumv + i\nprint('%d' % sumv)",
-        "answerUi": {
-          "kind": "grid",
-          "rows": [
-            "1",
-            "2",
-            "3"
-          ],
-          "columns": [
-            "i",
-            "sum"
-          ],
-          "rowSep": "\n",
-          "colSep": " "
-        },
-        "expectedGrid": [
-          ["1", "1"],
-          ["2", "3"],
-          ["3", "6"]
-        ],
-        "ioExample": {
-          "input": "5"
-        }
-      },
-      {
-        "id": "s_cond_sum",
-        "type": "short",
-        "level": "챌린지",
-        "title": "Short 1. 조건 만족 합",
-        "description": "n개의 입력 중 10 이상인 값의 합을 출력해요.\n요구사항:\n- 결과 한 줄만 작성해요.",
-        "code": "n = int(input())\nsumv = 0\nfor i in range(n):\n    num = int(input())\n    if num >= 10:\n        sumv = sumv + num\nprint('%d' % sumv)",
-        "expectedText": "30",
-        "ioExample": {
-          "input": "4\n5\n10\n12\n8"
-        }
-      },
-      {
-        "id": "r_find_n_even_sum",
-        "type": "short",
-        "level": "챌린지",
-        "title": "Reverse 1. 출력으로 n 추론",
-        "description": "프로그램의 출력이 18이라고 가정해요.\n요구사항:\n- 출력이 2부터 n까지의 짝수 합일 때 n을 구해요.\n- 정답은 숫자만 작성해요.",
-        "code": "n = int(input())\nsumv = 0\nfor i in range(2, n + 1, 2):\n    sumv = sumv + i\nprint('%d' % sumv)",
-        "expectedText": "8",
-        "ioExample": {
-          "input": "?",
-          "output": "18"
-        }
-      },
-      {
-        "id": "code1",
-        "type": "code",
-        "level": "챌린지",
-        "title": "Code 1. 두 조건 만족 출력",
-        "description": "정수 n을 입력받아 1부터 n까지 중 2와 3의 공배수만 출력해요.\n주석 위치에 들어갈 if문 한 줄을 작성해요.",
-        "code": "n = int(input())\nfor i in range(1, n + 1):\n    # TODO: i가 2와 3의 공배수인지 검사하는 if문을 작성하세요.\n        print('%d' % i)",
-        "expectedCode": "if i % 2 == 0 and i % 3 == 0:",
-        "hint": ""
-      }
-    ]
-  }
-
+{
+    "id":  "py_lv07_for_c01",
+    "title":  "Python for문 챌린지 1회차",
+    "categoryId":  "py_for",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "t_cond_sum2",
+                         "type":  "short",
+                         "level":  "챌린지",
+                         "title":  "Trace 1. 복합 조건 누적",
+                         "description":  "짝수이면서 3 이상인 값만 더할 때 i와 sum을 표에 채우세요.",
+                         "code":  "sumv = 0\nfor i in range(1, 9):\n    if i % 2 == 0 and i \u003e= 3:\n        sumv += i",
+                         "answerUi":  {
+                                          "kind":  "grid",
+                                          "rows":  [
+                                                       "1",
+                                                       "2",
+                                                       "3",
+                                                       "4",
+                                                       "5",
+                                                       "6",
+                                                       "7",
+                                                       "8"
+                                                   ],
+                                          "columns":  [
+                                                          "i",
+                                                          "sum"
+                                                      ],
+                                          "rowSep":  "\\n",
+                                          "colSep":  " "
+                                      },
+                         "expectedGrid":  [
+                                              [
+                                                  "1",
+                                                  "0"
+                                              ],
+                                              [
+                                                  "2",
+                                                  "0"
+                                              ],
+                                              [
+                                                  "3",
+                                                  "0"
+                                              ],
+                                              [
+                                                  "4",
+                                                  "4"
+                                              ],
+                                              [
+                                                  "5",
+                                                  "4"
+                                              ],
+                                              [
+                                                  "6",
+                                                  "10"
+                                              ],
+                                              [
+                                                  "7",
+                                                  "10"
+                                              ],
+                                              [
+                                                  "8",
+                                                  "18"
+                                              ]
+                                          ]
+                     },
+                     {
+                         "id":  "r_find_n_even_sum",
+                         "type":  "short",
+                         "level":  "챌린지",
+                         "title":  "Reverse 1. 범위 추론",
+                         "description":  "1부터 n까지 짝수 합이 30이면 n을 추론하세요.",
+                         "code":  "sumv = 0\nfor i in range(1, n + 1):\n    if i % 2 == 0:\n        sumv += i",
+                         "expectedText":  "10"
+                     },
+                     {
+                         "id":  "t_mid_state",
+                         "type":  "short",
+                         "level":  "챌린지",
+                         "title":  "Trace 2. break 포함 추적",
+                         "description":  "break가 있는 반복에서 i와 sum 변화를 표에 채우세요.",
+                         "code":  "sumv = 0\nfor i in range(1, 7):\n    if i == 5:\n        break\n    sumv += i",
+                         "answerUi":  {
+                                          "kind":  "grid",
+                                          "rows":  [
+                                                       "1",
+                                                       "2",
+                                                       "3",
+                                                       "4"
+                                                   ],
+                                          "columns":  [
+                                                          "i",
+                                                          "sum"
+                                                      ],
+                                          "rowSep":  "\\n",
+                                          "colSep":  " "
+                                      },
+                         "expectedGrid":  [
+                                              [
+                                                  "1",
+                                                  "1"
+                                              ],
+                                              [
+                                                  "2",
+                                                  "3"
+                                              ],
+                                              [
+                                                  "3",
+                                                  "6"
+                                              ],
+                                              [
+                                                  "4",
+                                                  "10"
+                                              ]
+                                          ]
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "챌린지",
+                         "title":  "Code 1. 복합 조건식 한 줄",
+                         "description":  "if문의 조건식 한 줄을 작성하세요.",
+                         "code":  "count = 0\nif ____:\n    count += 1",
+                         "expectedCode":  "num \u003e 0 and num % 2 == 0"
+                     },
+                     {
+                         "id":  "s_cond_sum",
+                         "type":  "short",
+                         "level":  "챌린지",
+                         "title":  "Short 1. 종료값 + 분기 횟수",
+                         "description":  "아래 코드의 출력 결과 `last hits`를 공백으로 구분해 쓰세요.",
+                         "code":  "last = 0\nhits = 0\nfor i in range(2, 9, 2):\n    last = i\n    if i \u003e= 6:\n        hits += 1\nprint(\u0027%d %d\u0027 % (last, hits))",
+                         "expectedText":  "8 2"
+                     }
+                 ]
+}

@@ -69,6 +69,28 @@ function isGridQuestion(q) {
   return q && q.type === "short" && q.answerUi && q.answerUi.kind === "grid";
 }
 
+function buildExpectedGridMatrixForPrint(q, rowCount, colCount) {
+  if (Array.isArray(q.expectedGrid)) {
+    return q.expectedGrid.map((r) => (Array.isArray(r) ? r : []));
+  }
+  return Array.from({ length: rowCount }, () => Array(colCount).fill(""));
+}
+
+function isSkippedGridCellForPrint(q, r, c, expectedMatrix) {
+  const ui = q.answerUi || {};
+  const explicit = Array.isArray(ui.skipCells) ? ui.skipCells : [];
+  const key = `${r},${c}`;
+  if (explicit.includes(key)) return true;
+
+  const skipEmptyExpected = ui.skipEmptyExpected !== false;
+  if (!skipEmptyExpected) return false;
+
+  const expected = String(
+    (expectedMatrix[r] && expectedMatrix[r][c]) ?? ""
+  ).trim();
+  return expected === "";
+}
+
 function extractFirstMarkdownTable(raw) {
   const text = String(raw ?? "").replace(/\r\n?/g, "\n");
   const lines = text.split("\n");
@@ -151,10 +173,11 @@ function buildGridAnswerTable(q, variant) {
   const ui = q.answerUi || {};
   const rows = Array.isArray(ui.rows) && ui.rows.length ? ui.rows : [];
   const cols = Array.isArray(ui.columns) && ui.columns.length ? ui.columns : [];
-  const expected = Array.isArray(q.expectedGrid) ? q.expectedGrid : [];
+  const expected = buildExpectedGridMatrixForPrint(q, rows.length, cols.length);
 
   const wrap = el("div", "grid-answer-wrap");
   const table = el("table", "grid-answer-table");
+  let hasSkippedCell = false;
 
   const thead = document.createElement("thead");
   const trh = document.createElement("tr");
@@ -170,17 +193,25 @@ function buildGridAnswerTable(q, variant) {
     tr.appendChild(el("th", "grid-row-label", r));
     cols.forEach((_c, cIdx) => {
       const td = document.createElement("td");
+      const skipped = isSkippedGridCellForPrint(q, rIdx, cIdx, expected);
+      if (skipped) {
+        hasSkippedCell = true;
+        td.classList.add("grid-cell-skipped");
+      }
       const val =
         variant === "teacher" && expected[rIdx]
           ? String(expected[rIdx][cIdx] ?? "")
           : "";
-      td.textContent = val;
+      td.textContent = skipped ? (val || "N/A") : val;
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
   });
   table.appendChild(tbody);
   wrap.appendChild(table);
+  if (hasSkippedCell) {
+    wrap.appendChild(el("div", "grid-answer-note", "회색 칸은 입력하지 않아도 됩니다."));
+  }
   return wrap;
 }
 
