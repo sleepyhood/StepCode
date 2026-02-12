@@ -21,6 +21,8 @@ for문을 읽을 때는 아래 4단계를 고정으로 보세요.
 
 핵심은 "**조건이 참일 때만 본문이 실행된다**"는 점입니다.
 
+![for 실행 흐름도](./data/theory/images/for_flow.svg)
+
 ---
 
 ## 3) 가장 자주 쓰는 패턴
@@ -43,6 +45,8 @@ for (int i = 0; i < n; i++) {
     System.out.println(i);
 }
 ```
+
+![range 경계 시각화](./data/theory/images/for_range_boundary.svg)
 
 ```io
 input:
@@ -164,6 +168,8 @@ for (int i = 1; i <= n; i++) {
 }
 printf("%d\n", sumv);
 ```
+
+![sum 누적 변화 표](./data/theory/images/for_accumulate_sum.svg)
 
 ```io
 input:

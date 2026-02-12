@@ -603,6 +603,13 @@ body {
   gap: 8px;
 }
 
+.part-primary-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .part-action-link {
   text-decoration: none;
   border-radius: 999px;
@@ -639,7 +646,6 @@ body {
 }
 
 .part-rounds-toggle {
-  margin-top: 10px;
   border: 1px solid rgba(148, 163, 184, 0.4);
   border-radius: 10px;
   background: #fff;
@@ -648,6 +654,7 @@ body {
   font-weight: 700;
   padding: 7px 10px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .part-rounds {

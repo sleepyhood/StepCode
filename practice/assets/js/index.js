@@ -187,6 +187,9 @@ function buildPartCard(part, lang, theoryByCategoryId) {
 
   head.append(title, meta);
 
+  const controls = document.createElement("div");
+  controls.className = "part-primary-controls";
+
   const actions = document.createElement("div");
   actions.className = "part-actions";
   const basics = langInfo.sets.filter((s) => s.difficulty !== "challenge");
@@ -204,11 +207,13 @@ function buildPartCard(part, lang, theoryByCategoryId) {
     return "#";
   })();
   actions.appendChild(createActionLink("학습 시작", startHref, "start"));
+  controls.appendChild(actions);
 
   const toggle = document.createElement("button");
   toggle.type = "button";
   toggle.className = "part-rounds-toggle";
   toggle.textContent = "자세히 보기";
+  controls.appendChild(toggle);
 
   const rounds = document.createElement("div");
   rounds.className = "part-rounds";
@@ -280,7 +285,7 @@ function buildPartCard(part, lang, theoryByCategoryId) {
     sameRowCards.forEach((cardEl) => setCardRoundsHidden(cardEl, nextHidden));
   });
 
-  section.append(head, actions, toggle, rounds);
+  section.append(head, controls, rounds);
   return section;
 }
 

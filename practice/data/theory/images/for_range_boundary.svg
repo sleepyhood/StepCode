@@ -1,0 +1,42 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="920" height="240" viewBox="0 0 920 240">
+  <defs>
+    <style>
+      .t{font:700 18px 'Segoe UI',sans-serif;fill:#0f172a}
+      .s{font:600 14px 'Segoe UI',sans-serif;fill:#334155}
+      .n{font:700 20px 'Segoe UI',sans-serif;fill:#0f172a}
+      .hit{fill:#ecfeff;stroke:#0891b2;stroke-width:2;rx:8;ry:8}
+      .end{fill:#fff1f2;stroke:#e11d48;stroke-width:2;rx:8;ry:8}
+      .line{stroke:#94a3b8;stroke-width:2}
+    </style>
+  </defs>
+  <text class="t" x="20" y="34">range(1, 5) 는 1, 2, 3, 4 까지만 포함 (끝값 5는 포함하지 않음)</text>
+
+  <line class="line" x1="70" y1="130" x2="850" y2="130"/>
+
+  <g transform="translate(120,100)">
+    <rect class="hit" x="-20" y="-28" width="40" height="40"/>
+    <text class="n" x="0" y="0" text-anchor="middle">1</text>
+  </g>
+  <g transform="translate(260,100)">
+    <rect class="hit" x="-20" y="-28" width="40" height="40"/>
+    <text class="n" x="0" y="0" text-anchor="middle">2</text>
+  </g>
+  <g transform="translate(400,100)">
+    <rect class="hit" x="-20" y="-28" width="40" height="40"/>
+    <text class="n" x="0" y="0" text-anchor="middle">3</text>
+  </g>
+  <g transform="translate(540,100)">
+    <rect class="hit" x="-20" y="-28" width="40" height="40"/>
+    <text class="n" x="0" y="0" text-anchor="middle">4</text>
+  </g>
+  <g transform="translate(680,100)">
+    <rect class="end" x="-20" y="-28" width="40" height="40"/>
+    <text class="n" x="0" y="0" text-anchor="middle">5</text>
+  </g>
+
+  <text class="s" x="103" y="170">포함</text>
+  <text class="s" x="243" y="170">포함</text>
+  <text class="s" x="383" y="170">포함</text>
+  <text class="s" x="523" y="170">포함</text>
+  <text class="s" x="652" y="170" fill="#be123c">비포함</text>
+</svg>
