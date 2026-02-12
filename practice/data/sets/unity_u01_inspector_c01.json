@@ -1,0 +1,54 @@
+﻿{
+    "id":  "unity_u01_inspector_c01",
+    "title":  "Unity U01 인스펙터 챌린지 1회차",
+    "categoryId":  "unity_u01_inspector",
+    "availableLanguages":  [
+                               "csharp"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "응용",
+                         "title":  "인스펙터 설명 판단",
+                         "description":  "가장 정확한 설명을 고르세요.",
+                         "options":  [
+                                         "Tag는 스크립트 검색과 무관하다.",
+                                         "Static 설정은 최적화 워크플로에 활용될 수 있다.",
+                                         "Prefab은 Inspector에서 수정할 수 없다.",
+                                         "Hierarchy 창은 에셋 임포트 전용이다."
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  1
+                     },
+                     {
+                         "id":  "short1",
+                         "type":  "short",
+                         "level":  "응용",
+                         "title":  "IDE 설정 위치",
+                         "description":  "C# 스크립트를 열 IDE를 설정하는 메뉴 키워드를 쓰세요.",
+                         "expectedAnyOf":  [
+                                               "External Script Editor",
+                                               "Preferences \u003e External Tools",
+                                               "Edit \u003e Preferences \u003e External Tools"
+                                           ]
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "응용",
+                         "title":  "태그 검색 API",
+                         "description":  "Enemy 태그 오브젝트를 모두 찾아 enemies 변수에 담는 한 줄을 쓰세요.",
+                         "expectedAnyOf":  [
+                                               "var enemies = GameObject.FindGameObjectsWithTag(\"Enemy\");",
+                                               "GameObject[] enemies = GameObject.FindGameObjectsWithTag(\"Enemy\");"
+                                           ],
+                         "expectedCode":  "var enemies = GameObject.FindGameObjectsWithTag(\"Enemy\");"
+                     }
+                 ]
+}

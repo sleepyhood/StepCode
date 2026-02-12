@@ -1,0 +1,53 @@
+﻿{
+    "id":  "unity_u01_inspector_b01",
+    "title":  "Unity U01 인스펙터 기초 1회차",
+    "categoryId":  "unity_u01_inspector",
+    "availableLanguages":  [
+                               "csharp"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "기초",
+                         "title":  "창 역할 구분",
+                         "description":  "현재 씬의 GameObject 목록이 표시되는 창은 무엇인가요?",
+                         "options":  [
+                                         "Project",
+                                         "Hierarchy",
+                                         "Inspector",
+                                         "Console"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  1
+                     },
+                     {
+                         "id":  "short1",
+                         "type":  "short",
+                         "level":  "기초",
+                         "title":  "private 필드 노출",
+                         "description":  "private 필드를 Inspector에 노출하는 속성 이름을 쓰세요.",
+                         "expectedAnyOf":  [
+                                               "SerializeField",
+                                               "[SerializeField]"
+                                           ]
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "기초",
+                         "title":  "선언 한 줄 작성",
+                         "description":  "Inspector에 노출되는 private int speed 필드 선언 한 줄을 쓰세요.",
+                         "expectedAnyOf":  [
+                                               "[SerializeField] private int speed;",
+                                               "private [SerializeField] int speed;"
+                                           ],
+                         "expectedCode":  "[SerializeField] private int speed;"
+                     }
+                 ]
+}

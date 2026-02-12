@@ -7,7 +7,7 @@ function getMdRenderer() {
   });
 }
 
-const TOGGLE_LANGS = new Set(["python", "c", "java"]);
+const TOGGLE_LANGS = new Set(["python", "c", "java", "csharp"]);
 
 function renderTheoryMarkdown(target, mdText) {
   const raw = String(mdText || "");
@@ -25,6 +25,7 @@ function normalizeCodeLang(raw) {
   if (v === "py" || v === "python") return "python";
   if (v === "c" || v === "c99" || v === "c11") return "c";
   if (v === "java") return "java";
+  if (v === "cs" || v === "c#" || v === "csharp") return "csharp";
   return v;
 }
 
@@ -43,6 +44,7 @@ function titleLang(lang) {
   if (lang === "python") return "Python";
   if (lang === "c") return "C";
   if (lang === "java") return "Java";
+  if (lang === "csharp") return "C#";
   return lang.toUpperCase();
 }
 
@@ -271,6 +273,7 @@ function mapPrismLanguage(lang) {
   if (lang === "python") return "python";
   if (lang === "c") return "c";
   if (lang === "java") return "java";
+  if (lang === "csharp") return "csharp";
   return "";
 }
 
@@ -396,9 +399,11 @@ function setupLanguageToggle(contentEl, preferredLangRaw) {
   label.textContent = "언어 예시";
   toggleEl.appendChild(label);
 
-  const ordered = ["python", "c", "java"]
+  const ordered = ["python", "c", "java", "csharp"]
     .filter((lang) => langs.includes(lang))
-    .concat(langs.filter((lang) => !["python", "c", "java"].includes(lang)));
+    .concat(
+      langs.filter((lang) => !["python", "c", "java", "csharp"].includes(lang))
+    );
 
   const options = ["all", ...ordered];
   options.forEach((lang) => {

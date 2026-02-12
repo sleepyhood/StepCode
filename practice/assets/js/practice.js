@@ -9,6 +9,7 @@ const CODEMIRROR_EDITORS = new Map();
 function getCodeMirrorMode(lang) {
   if (lang === "python") return "python";
   if (lang === "java") return "text/x-java";
+  if (lang === "csharp" || lang === "c#") return "text/x-csharp";
   return "text/x-csrc"; // c
 }
 
@@ -1332,6 +1333,8 @@ function setupLangSelect(availableLanguages) {
         ? "Python"
         : lang === "java"
         ? "Java"
+        : lang === "csharp" || lang === "c#"
+        ? "C#"
         : lang;
     select.appendChild(opt);
   }
@@ -2574,6 +2577,13 @@ const LanguageAdapter = {
     },
   },
   java: {
+    condBlank: {
+      left: () => "if (",
+      right: ")",
+      placeholder: "조건식만 입력 (예: n >= 1 && n <= 10)",
+    },
+  },
+  csharp: {
     condBlank: {
       left: () => "if (",
       right: ")",

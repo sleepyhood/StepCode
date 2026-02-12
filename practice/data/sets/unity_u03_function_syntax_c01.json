@@ -1,0 +1,52 @@
+﻿{
+    "id":  "unity_u03_function_syntax_c01",
+    "title":  "Unity U03 함수/static 챌린지 1회차",
+    "categoryId":  "unity_u03_function_syntax",
+    "availableLanguages":  [
+                               "csharp"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "응용",
+                         "title":  "static 호출 판단",
+                         "description":  "인스턴스 생성 없이 호출 가능한 멤버는 무엇인가요?",
+                         "options":  [
+                                         "인스턴스 필드",
+                                         "인스턴스 메서드",
+                                         "static 메서드",
+                                         "생성자만"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  2
+                     },
+                     {
+                         "id":  "short1",
+                         "type":  "short",
+                         "level":  "응용",
+                         "title":  "함수 선언 빈칸",
+                         "description":  "private ___ SetMessageToDisplay(string msg) { ... } 빈칸을 채우세요.",
+                         "expectedAnyOf":  [
+                                               "void"
+                                           ]
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "응용",
+                         "title":  "메시지 함수 선언",
+                         "description":  "stringToDisplay 문자열 1개를 받아 반환값이 없는 선언 한 줄을 쓰세요.",
+                         "expectedAnyOf":  [
+                                               "private void SetMessageToDisplay(string stringToDisplay)",
+                                               "void SetMessageToDisplay(string stringToDisplay)"
+                                           ],
+                         "expectedCode":  "private void SetMessageToDisplay(string stringToDisplay)"
+                     }
+                 ]
+}

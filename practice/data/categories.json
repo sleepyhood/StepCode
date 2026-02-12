@@ -1,36 +1,205 @@
-[
-  { "id": "c_if",   "name": "C - LV6 조건문", "order": 1 },
-  { "id": "c_for", "name": "C - Lv7 반복1(for)", "order": 7 },
-    { "id": "c_while",  "name": "C - Lv8 반복2(while)","order": 8 },
-      { "id": "c_array",  "name": "C - Lv10 배열","order": 10 },
-
+﻿[
     {
-    "id": "py_print",
-    "name": "Python - Lv1 출력",
-    "order": 201
-  },
-  {
-    "id": "py_var",
-    "name": "Python - Lv2 변수",
-    "order": 202
-  },
-  { "id": "py_input",  "name": "Python - Lv3 입력", "order": 203 },
-    { "id": "py_operator",  "name": "Python - Lv4 연산자", "order": 204 },
-    { "id": "py_cast",  "name": "Python - Lv5 자료형 변환", "order": 205 },
-
-  { "id": "py_if",  "name": "Python - Lv6 조건", "order": 206 },
-  
-  { "id": "py_for",  "name": "Python - Lv7 반복1(for)","order": 207 },
-  { "id": "py_while",  "name": "Python - Lv8 반복2(while)","order": 208 },
-  { "id": "py_nfor",  "name": "Python - Lv9 중첩 for","order": 209 },
-  { "id": "py_array",  "name": "Python - Lv10 배열","order": 210 },
-
-  { "id": "py_array2d", "name": "Python - LV15 2차원 배열", "order": 215 },
-
-  { "id": "java_if","name": "Java - 조건문",   "order": 401 },
-  { "id": "java_array", "name": "Java - LV10 배열", "order": 410 },
-  { "id": "java_array2d", "name": "Java - LV15 2차원 배열", "order": 415 },
-  { "id": "csharp", "name": "C# - Unity 기초", "order": 501 }
-
-
+        "id":  "c_if",
+        "name":  "C - LV6 조건문",
+        "lang":  "C",
+        "track":  "language",
+        "order":  1
+    },
+    {
+        "id":  "c_for",
+        "name":  "C - Lv7 반복1(for)",
+        "lang":  "C",
+        "track":  "language",
+        "order":  7
+    },
+    {
+        "id":  "c_while",
+        "name":  "C - Lv8 반복2(while)",
+        "lang":  "C",
+        "track":  "language",
+        "order":  8
+    },
+    {
+        "id":  "c_array",
+        "name":  "C - Lv10 배열",
+        "lang":  "C",
+        "track":  "language",
+        "order":  10
+    },
+    {
+        "id":  "py_print",
+        "name":  "Python - Lv1 출력",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  201
+    },
+    {
+        "id":  "py_var",
+        "name":  "Python - Lv2 변수",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  202
+    },
+    {
+        "id":  "py_input",
+        "name":  "Python - Lv3 입력",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  203
+    },
+    {
+        "id":  "py_operator",
+        "name":  "Python - Lv4 연산자",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  204
+    },
+    {
+        "id":  "py_cast",
+        "name":  "Python - Lv5 자료형 변환",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  205
+    },
+    {
+        "id":  "py_if",
+        "name":  "Python - Lv6 조건",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  206
+    },
+    {
+        "id":  "py_for",
+        "name":  "Python - Lv7 반복1(for)",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  207
+    },
+    {
+        "id":  "py_while",
+        "name":  "Python - Lv8 반복2(while)",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  208
+    },
+    {
+        "id":  "py_nfor",
+        "name":  "Python - Lv9 중첩 for",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  209
+    },
+    {
+        "id":  "py_array",
+        "name":  "Python - Lv10 배열",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  210
+    },
+    {
+        "id":  "py_array2d",
+        "name":  "Python - LV15 2차원 배열",
+        "lang":  "Python",
+        "track":  "language",
+        "order":  215
+    },
+    {
+        "id":  "java_if",
+        "name":  "Java - 조건문",
+        "lang":  "Java",
+        "track":  "language",
+        "order":  401
+    },
+    {
+        "id":  "java_array",
+        "name":  "Java - LV10 배열",
+        "lang":  "Java",
+        "track":  "language",
+        "order":  410
+    },
+    {
+        "id":  "java_array2d",
+        "name":  "Java - LV15 2차원 배열",
+        "lang":  "Java",
+        "track":  "language",
+        "order":  415
+    },
+    {
+        "id":  "csharp",
+        "name":  "C# - Unity 기초",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  501
+    },
+    {
+        "id":  "unity_u01_inspector",
+        "name":  "C# - Unity U01 Inspector Basics",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  510
+    },
+    {
+        "id":  "unity_u02_log_operator",
+        "name":  "C# - Unity U02 Log and Operators",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  511
+    },
+    {
+        "id":  "unity_u03_function_syntax",
+        "name":  "C# - Unity U03 Functions and static",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  512
+    },
+    {
+        "id":  "unity_u04_null_exception",
+        "name":  "C# - Unity U04 Null and Exceptions",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  513
+    },
+    {
+        "id":  "unity_u05_transform_lifecycle",
+        "name":  "C# - Unity U05 Transform and Lifecycle",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  514
+    },
+    {
+        "id":  "unity_u06_input",
+        "name":  "C# - Unity U06 Input",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  515
+    },
+    {
+        "id":  "unity_u07_spawn_physics",
+        "name":  "C# - Unity U07 Spawn and Physics",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  516
+    },
+    {
+        "id":  "unity_u08_ui",
+        "name":  "C# - Unity U08 UI",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  517
+    },
+    {
+        "id":  "unity_u09_animator",
+        "name":  "C# - Unity U09 Animator",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  518
+    },
+    {
+        "id":  "unity_u10_material_color",
+        "name":  "C# - Unity U10 Material and Color",
+        "lang":  "C#",
+        "track":  "unity",
+        "order":  519
+    }
 ]

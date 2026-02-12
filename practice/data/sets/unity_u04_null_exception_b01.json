@@ -1,0 +1,52 @@
+﻿{
+    "id":  "unity_u04_null_exception_b01",
+    "title":  "Unity U04 Null/예외 기초 1회차",
+    "categoryId":  "unity_u04_null_exception",
+    "availableLanguages":  [
+                               "csharp"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "기초",
+                         "title":  "NullReference 원인",
+                         "description":  "Book book = new Book(); int age = book.Author.Age;에서 직접 null인 대상은?",
+                         "options":  [
+                                         "book",
+                                         "Age",
+                                         "Author",
+                                         "int 변수"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  2
+                     },
+                     {
+                         "id":  "short1",
+                         "type":  "short",
+                         "level":  "기초",
+                         "title":  "null 체크식",
+                         "description":  "projectile이 null인지 확인하는 조건식을 쓰세요.",
+                         "expectedAnyOf":  [
+                                               "projectile == null",
+                                               "(projectile == null)"
+                                           ]
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "기초",
+                         "title":  "Dictionary 초기화",
+                         "description":  "Dictionary\u003cstring, GameObject\u003e 초기화 한 줄을 쓰세요.",
+                         "expectedAnyOf":  [
+                                               "dictionary = new Dictionary\u003cstring, GameObject\u003e();"
+                                           ],
+                         "expectedCode":  "dictionary = new Dictionary\u003cstring, GameObject\u003e();"
+                     }
+                 ]
+}

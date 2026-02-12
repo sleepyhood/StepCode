@@ -10,6 +10,29 @@ function getLangFromCategory(cat) {
   return "기타";
 }
 
+function getTrackFromCategory(cat) {
+  const explicit = String(cat?.track || "").trim().toLowerCase();
+  if (explicit) return explicit;
+
+  const id = String(cat?.id || "").toLowerCase();
+  const name = String(cat?.name || "").toLowerCase();
+  if (
+    id.includes("unity") ||
+    id.includes("csharp") ||
+    name.includes("unity") ||
+    name.includes("유니티")
+  ) {
+    return "unity";
+  }
+  return "language";
+}
+
+function getTrackLabel(track) {
+  if (track === "language") return "언어 수업";
+  if (track === "unity") return "유니티 수업";
+  return track;
+}
+
 function preferredLangSort(langs) {
   const prefer = ["Python", "C", "Java", "JavaScript", "C++", "C#"];
   return langs.slice().sort((a, b) => {
@@ -27,7 +50,11 @@ function normalizeUiLangToParam(lang) {
   if (v === "python") return "python";
   if (v === "c") return "c";
   if (v === "java") return "java";
-  return "";
+  if (v === "cs" || v === "c#" || v === "csharp") return "csharp";
+  return v
+    .replace(/\s+/g, "")
+    .replace(/[^\w#+-]/g, "")
+    .replace(/^c#$/, "csharp");
 }
 
 function getPartKey(cat) {
@@ -72,6 +99,16 @@ function createLangButton(lang, active) {
   if (active) btn.classList.add("active");
   btn.dataset.lang = lang;
   btn.textContent = lang;
+  return btn;
+}
+
+function createTrackButton(track, active) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "part-lang-btn";
+  if (active) btn.classList.add("active");
+  btn.dataset.track = track;
+  btn.textContent = getTrackLabel(track);
   return btn;
 }
 
@@ -307,33 +344,92 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (item?.categoryId) theoryByCategoryId[item.categoryId] = item;
     });
 
-    const parts = groupByPart(categories, sets);
-    const langs = preferredLangSort(
-      Array.from(new Set(categories.map((c) => getLangFromCategory(c))))
-    );
+    const tracks = ["language", "unity"]
+      .filter((track) => categories.some((cat) => getTrackFromCategory(cat) === track))
+      .concat(
+        Array.from(
+          new Set(categories.map((cat) => getTrackFromCategory(cat)))
+        ).filter((track) => !["language", "unity"].includes(track))
+      );
+
     const state = {
-      lang: langs.includes("Python") ? "Python" : langs[0],
+      track: tracks.includes("language") ? "language" : tracks[0],
+      lang: "",
     };
 
     root.innerHTML = "";
 
     const controls = document.createElement("section");
     controls.className = "part-controls";
-    const label = document.createElement("span");
-    label.className = "part-controls-label";
-    label.textContent = "언어";
-    controls.appendChild(label);
-    langs.forEach((lang) =>
-      controls.appendChild(createLangButton(lang, lang === state.lang))
-    );
+
+    const trackLabel = document.createElement("span");
+    trackLabel.className = "part-controls-label";
+    trackLabel.textContent = "수업";
+    controls.appendChild(trackLabel);
+
+    const trackWrap = document.createElement("div");
+    trackWrap.className = "part-track-wrap";
+    controls.appendChild(trackWrap);
+
+    const langLabel = document.createElement("span");
+    langLabel.className = "part-controls-label";
+    langLabel.textContent = "언어";
+    controls.appendChild(langLabel);
+
+    const langWrap = document.createElement("div");
+    langWrap.className = "part-lang-wrap";
+    controls.appendChild(langWrap);
+
     root.appendChild(controls);
 
     const list = document.createElement("section");
     list.className = "part-list";
     root.appendChild(list);
 
+    function getLanguagesForTrack(track) {
+      return preferredLangSort(
+        Array.from(
+          new Set(
+            categories
+              .filter((cat) => getTrackFromCategory(cat) === track)
+              .map((cat) => getLangFromCategory(cat))
+          )
+        )
+      );
+    }
+
+    function syncLanguageState() {
+      const langs = getLanguagesForTrack(state.track);
+      if (!langs.includes(state.lang)) {
+        state.lang = langs.includes("Python") ? "Python" : langs[0] || "";
+      }
+      return langs;
+    }
+
+    function renderTrackButtons() {
+      trackWrap.innerHTML = "";
+      tracks.forEach((track) =>
+        trackWrap.appendChild(createTrackButton(track, track === state.track))
+      );
+    }
+
+    function renderLanguageButtons(langs) {
+      langWrap.innerHTML = "";
+      langs.forEach((lang) =>
+        langWrap.appendChild(createLangButton(lang, lang === state.lang))
+      );
+    }
+
     function render() {
+      const langs = syncLanguageState();
+      renderTrackButtons();
+      renderLanguageButtons(langs);
+
       list.innerHTML = "";
+      const activeCategories = categories.filter(
+        (cat) => getTrackFromCategory(cat) === state.track
+      );
+      const parts = groupByPart(activeCategories, sets);
       const cards = parts
         .map((part) => buildPartCard(part, state.lang, theoryByCategoryId))
         .filter(Boolean);
@@ -341,20 +437,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!cards.length) {
         const empty = document.createElement("p");
         empty.className = "part-empty";
-        empty.textContent = `${state.lang}에 등록된 파트가 없습니다.`;
+        empty.textContent = `${getTrackLabel(state.track)}에 등록된 파트가 없습니다.`;
         list.appendChild(empty);
         return;
       }
       cards.forEach((card) => list.appendChild(card));
     }
 
-    controls.addEventListener("click", (e) => {
-      const btn = e.target.closest(".part-lang-btn");
+    trackWrap.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-track]");
+      if (!btn) return;
+      state.track = btn.dataset.track;
+      state.lang = "";
+      render();
+    });
+
+    langWrap.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-lang]");
       if (!btn) return;
       state.lang = btn.dataset.lang;
-      controls
-        .querySelectorAll(".part-lang-btn")
-        .forEach((it) => it.classList.toggle("active", it === btn));
       render();
     });
 

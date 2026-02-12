@@ -1,4 +1,4 @@
-const TOGGLE_LANGS = new Set(["python", "c", "java"]);
+const TOGGLE_LANGS = new Set(["python", "c", "java", "csharp"]);
 
 function qp(name) {
   const p = new URLSearchParams(location.search);
@@ -21,6 +21,7 @@ function normalizeCodeLang(raw) {
   if (v === "py" || v === "python") return "python";
   if (v === "c" || v === "c99" || v === "c11") return "c";
   if (v === "java") return "java";
+  if (v === "cs" || v === "c#" || v === "csharp") return "csharp";
   return v;
 }
 
@@ -44,6 +45,7 @@ function titleLang(lang) {
   if (lang === "python") return "Python";
   if (lang === "c") return "C";
   if (lang === "java") return "Java";
+  if (lang === "csharp") return "C#";
   return lang.toUpperCase();
 }
 
@@ -270,6 +272,7 @@ function mapPrismLanguage(lang) {
   if (lang === "python") return "python";
   if (lang === "c") return "c";
   if (lang === "java") return "java";
+  if (lang === "csharp") return "csharp";
   return "";
 }
 
@@ -349,7 +352,9 @@ function setupLanguageSelect(contentEl, preferredLangRaw) {
     .querySelectorAll("[data-lang-scope='text'][data-langs], [data-lang-scope='trace'][data-langs]")
     .forEach((el) => normalizeLanguageList(el.dataset.langs || "").forEach((lang) => langs.add(lang)));
 
-  const available = ["python", "c", "java"].filter((lang) => langs.has(lang));
+  const available = ["python", "c", "java", "csharp"].filter((lang) =>
+    langs.has(lang)
+  );
   const selectedFromQuery = normalizeCodeLang(qp("lang"));
   const preferred = normalizeCodeLang(preferredLangRaw);
   const defaultLang = available.includes(selectedFromQuery)

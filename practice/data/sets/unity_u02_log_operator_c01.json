@@ -1,0 +1,51 @@
+﻿{
+    "id":  "unity_u02_log_operator_c01",
+    "title":  "Unity U02 로그/연산자 챌린지 1회차",
+    "categoryId":  "unity_u02_log_operator",
+    "availableLanguages":  [
+                               "csharp"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "응용",
+                         "title":  "조건식 수정",
+                         "description":  "\"x가 10이거나 y가 20\" 조건식으로 올바른 것을 고르세요.",
+                         "options":  [
+                                         "if (x = 10 || y = 20)",
+                                         "if (x == 10 || y == 20)",
+                                         "if (x == 10 | y == 20)",
+                                         "if (x = = 10 || y = = 20)"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  1
+                     },
+                     {
+                         "id":  "short1",
+                         "type":  "short",
+                         "level":  "응용",
+                         "title":  "나머지 계산",
+                         "description":  "17 % 5 결과를 쓰세요.",
+                         "expectedAnyOf":  [
+                                               "2"
+                                           ]
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "응용",
+                         "title":  "문자열 결합 로그",
+                         "description":  "\"Score: \" + score 를 출력하는 한 줄을 쓰세요.",
+                         "expectedAnyOf":  [
+                                               "Debug.Log(\"Score: \" + score);"
+                                           ],
+                         "expectedCode":  "Debug.Log(\"Score: \" + score);"
+                     }
+                 ]
+}

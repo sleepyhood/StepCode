@@ -1,0 +1,52 @@
+﻿{
+    "id":  "unity_u05_transform_lifecycle_c01",
+    "title":  "Unity U05 Transform and Lifecycle Challenge R1",
+    "categoryId":  "unity_u05_transform_lifecycle",
+    "availableLanguages":  [
+                               "csharp"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "challenge",
+                         "title":  "[Draft] Unity U05 Transform and Lifecycle scenario decision",
+                         "description":  "Pick the correct action for the scenario.",
+                         "code":  "// TODO replace with real code",
+                         "options":  [
+                                         "correct (draft)",
+                                         "wrong A",
+                                         "wrong B",
+                                         "wrong C"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  0
+                     },
+                     {
+                         "id":  "short1",
+                         "type":  "short",
+                         "level":  "challenge",
+                         "title":  "[Draft] Unity U05 Transform and Lifecycle output prediction",
+                         "description":  "Write the expected output/result in one line.",
+                         "code":  "// TODO",
+                         "expectedAnyOf":  [
+                                               "TODO",
+                                               "todo"
+                                           ]
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "challenge",
+                         "title":  "[Draft] Unity U05 Transform and Lifecycle fix TODO",
+                         "description":  "Fill the TODO with the correct code.",
+                         "code":  "// TODO",
+                         "expectedCode":  "TODO"
+                     }
+                 ]
+}
