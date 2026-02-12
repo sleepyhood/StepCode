@@ -238,6 +238,35 @@ function enhanceTraceGridBlocks(contentEl) {
   });
 }
 
+function enhanceMiniCheckSection(contentEl) {
+  const h2List = Array.from(contentEl.querySelectorAll("h2"));
+  const start = h2List.find((h2) => /미니\s*체크\s*문제/.test(h2.textContent || ""));
+  if (!start) return;
+
+  start.classList.add("theory-mini-check-title");
+
+  let cursor = start.nextElementSibling;
+  let activeCard = null;
+
+  while (cursor && cursor.tagName !== "H2") {
+    const next = cursor.nextElementSibling;
+
+    const isQuestionHeader =
+      cursor.tagName === "H3" && /^Q\s*\d+/i.test((cursor.textContent || "").trim());
+
+    if (isQuestionHeader) {
+      activeCard = document.createElement("section");
+      activeCard.className = "theory-mini-check-card";
+      cursor.parentNode.insertBefore(activeCard, cursor);
+      activeCard.appendChild(cursor);
+    } else if (activeCard) {
+      activeCard.appendChild(cursor);
+    }
+
+    cursor = next;
+  }
+}
+
 function mapPrismLanguage(lang) {
   if (lang === "python") return "python";
   if (lang === "c") return "c";
@@ -480,6 +509,38 @@ function updateTopLinks(entry, setIdInQuery) {
   }
 }
 
+async function apiIsHost() {
+  if (window.__STEPCODE_IS_HOST__ === true) return true;
+  try {
+    const r = await fetch("/api/host/status", { credentials: "same-origin" });
+    if (!r.ok) return false;
+    const j = await r.json();
+    return !!j.isHost;
+  } catch (_) {
+    return false;
+  }
+}
+
+async function syncTheoryPrintButton(entry, params, setIdInQuery) {
+  const btn = document.getElementById("theory-print-btn");
+  if (!btn) return;
+  btn.hidden = true;
+
+  const isHost = await apiIsHost();
+  if (!isHost) return;
+
+  const q = new URLSearchParams();
+  if (setIdInQuery) q.set("set", setIdInQuery);
+  if (entry?.categoryId) q.set("category", entry.categoryId);
+  if (entry?.conceptId) q.set("concept", entry.conceptId);
+
+  const lang = params.get("lang") || entry?.lang || "";
+  if (lang) q.set("lang", lang);
+
+  btn.href = `theory_print.html?${q.toString()}`;
+  btn.hidden = false;
+}
+
 function updateTitle(entry) {
   const titleEl = document.getElementById("theory-title");
   const subEl = document.getElementById("theory-subtitle");
@@ -528,12 +589,14 @@ async function initTheoryPage() {
 
     updateTitle(entry);
     updateTopLinks(entry, setIdInQuery);
+    await syncTheoryPrintButton(entry, params, setIdInQuery);
     renderRelatedList(entry, setMap, setIdInQuery);
 
     const res = await fetch(entry.mdPath);
     if (!res.ok) throw new Error(`failed to load markdown: ${entry.mdPath}`);
     const mdText = await res.text();
     renderTheoryMarkdown(contentEl, mdText);
+    enhanceMiniCheckSection(contentEl);
     enhanceIoBlocks(contentEl);
     enhanceTraceGridBlocks(contentEl);
     enhanceCodeBlocks(contentEl);

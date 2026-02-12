@@ -1,0 +1,430 @@
+body {
+  margin: 0;
+  background: #f3f4f6;
+  color: #0f172a;
+}
+
+.theory-print-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #cbd5e1;
+  background: #ffffff;
+}
+
+.tool-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tp-link {
+  color: #0f766e;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.tp-link:hover {
+  text-decoration: underline;
+}
+
+.tp-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tp-title {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.tp-subtitle {
+  font-size: 12px;
+  color: #475569;
+}
+
+.tool-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tp-tool {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tp-tool select,
+.tool-right button {
+  border: 1px solid #94a3b8;
+  border-radius: 8px;
+  padding: 7px 10px;
+  background: #fff;
+  color: #0f172a;
+}
+
+.tool-right button {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.tool-right button.primary {
+  border-color: #0f766e;
+  background: #0f766e;
+  color: #fff;
+}
+
+.theory-print-root {
+  max-width: 980px;
+  margin: 20px auto 36px;
+  padding: 22px 26px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  font-size: 15px;
+  line-height: 1.62;
+}
+
+body.layout-double .theory-print-root {
+  column-count: 2;
+  column-gap: 18px;
+  font-size: 13px;
+  line-height: 1.46;
+}
+
+body.layout-double .theory-print-root h1,
+body.layout-double .theory-print-root h2,
+body.layout-double .theory-print-root h3,
+body.layout-double .theory-print-root pre,
+body.layout-double .theory-print-root table,
+body.layout-double .theory-print-root blockquote,
+body.layout-double .theory-print-root .theory-io,
+body.layout-double .theory-print-root .theory-trace-grid,
+body.layout-double .theory-print-root img,
+body.layout-double .theory-print-root svg {
+  break-inside: avoid;
+}
+
+body.layout-double .theory-print-root h1 {
+  font-size: 1.3em;
+  margin: 0.45em 0 0.3em;
+}
+
+body.layout-double .theory-print-root h2 {
+  font-size: 1.15em;
+  margin: 0.42em 0 0.28em;
+}
+
+body.layout-double .theory-print-root h3 {
+  font-size: 1.05em;
+  margin: 0.38em 0 0.24em;
+}
+
+body.layout-double .theory-print-root p,
+body.layout-double .theory-print-root li {
+  margin: 0.3em 0;
+}
+
+body.layout-double .theory-print-root .theory-trace-table-wrap {
+  overflow-x: hidden;
+}
+
+body.layout-double .theory-print-root .theory-trace-table,
+body.layout-double .theory-print-root table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+
+body.layout-double .theory-print-root .theory-trace-table th,
+body.layout-double .theory-print-root .theory-trace-table td,
+body.layout-double .theory-print-root table th,
+body.layout-double .theory-print-root table td {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  font-size: 0.92em;
+}
+
+body.layout-double .theory-print-root pre {
+  font-size: 0.86em;
+  padding: 7px 8px;
+  line-height: 1.34;
+}
+
+body.layout-double .theory-print-root .theory-io,
+body.layout-double .theory-print-root .theory-trace-grid {
+  margin: 8px 0;
+  padding: 8px;
+}
+
+body.layout-double .theory-print-root .theory-code-label {
+  margin: 8px 0 4px;
+  padding: 2px 7px;
+  font-size: 11px;
+}
+
+.theory-print-root img,
+.theory-print-root svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.theory-print-root pre {
+  overflow-x: auto;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.theory-code-label {
+  display: inline-flex;
+  margin: 14px 0 6px;
+  padding: 3px 9px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid #99f6e4;
+  color: #115e59;
+  background: #f0fdfa;
+}
+
+.theory-io {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.theory-io-title {
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.theory-io-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.theory-io-box {
+  border: 1px solid #dbeafe;
+  background: #f8fbff;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.theory-io-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.theory-io-pre {
+  margin: 0;
+  background: #fff;
+}
+
+.theory-trace-grid {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 12px 0;
+}
+
+.theory-trace-title {
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.theory-trace-table-wrap {
+  overflow-x: auto;
+}
+
+.theory-trace-table {
+  border-collapse: collapse;
+  min-width: 480px;
+  width: 100%;
+}
+
+.theory-trace-table th,
+.theory-trace-table td {
+  border: 1px solid #cbd5e1;
+  padding: 6px 8px;
+  text-align: center;
+}
+
+.theory-trace-table th {
+  background: #f1f5f9;
+  font-weight: 800;
+}
+
+.theory-print-denied {
+  max-width: 680px;
+  margin: 48px auto;
+  background: #ffffff;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.theory-print-denied h1 {
+  margin-top: 0;
+}
+
+.theory-mini-check-title {
+  margin-top: 1.2em;
+  margin-bottom: 0.65em;
+}
+
+.theory-mini-check-card {
+  margin: 0 0 12px;
+  padding: 10px 11px 8px;
+  border: 1px solid #dbe5f1;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.theory-mini-check-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+.theory-mini-check-card p {
+  margin: 6px 0;
+  font-size: 1rem;
+  line-height: 1.66;
+}
+
+.theory-mini-check-card code {
+  border-radius: 7px;
+  border: 1px solid #dbe2ea;
+  background: #eef3f9;
+  padding: 2px 7px;
+}
+
+.theory-mini-check-card p > code:only-child {
+  display: block;
+  border-radius: 8px;
+  border: 1px solid #d6e0eb;
+  background: #f1f5f9;
+  padding: 8px 10px;
+  line-height: 1.54;
+  white-space: pre-wrap;
+}
+
+body.layout-double .theory-print-root .theory-mini-check-card {
+  margin: 0 0 8px;
+  padding: 7px 8px 6px;
+}
+
+body.layout-double .theory-print-root .theory-mini-check-card h3 {
+  font-size: 0.98em;
+}
+
+body.layout-double .theory-print-root .theory-mini-check-card p {
+  font-size: 0.95em;
+  line-height: 1.45;
+}
+
+@media print {
+  @page theoryPortrait {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  @page theoryLandscape {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .theory-print-root {
+    page: theoryPortrait;
+    margin: 0;
+    max-width: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  body.layout-double .theory-print-root {
+    page: theoryLandscape;
+    column-count: 2;
+    column-gap: 10mm;
+    font-size: 10.5pt;
+    line-height: 1.36;
+  }
+
+  body.layout-double .theory-print-root h1 {
+    font-size: 13pt;
+  }
+
+  body.layout-double .theory-print-root h2 {
+    font-size: 12pt;
+  }
+
+  body.layout-double .theory-print-root h3 {
+    font-size: 11pt;
+  }
+
+  body.layout-double .theory-print-root .theory-trace-table-wrap {
+    overflow-x: hidden;
+  }
+
+  body.layout-double .theory-print-root .theory-trace-table,
+  body.layout-double .theory-print-root table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  body.layout-double .theory-print-root .theory-trace-table th,
+  body.layout-double .theory-print-root .theory-trace-table td,
+  body.layout-double .theory-print-root table th,
+  body.layout-double .theory-print-root table td {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  pre,
+  blockquote,
+  table,
+  .theory-io,
+  .theory-trace-grid,
+  .theory-mini-check-card {
+    break-inside: avoid;
+  }
+
+  body.layout-double .theory-print-root .theory-mini-check-card h3 {
+    font-size: 10.2pt;
+  }
+}

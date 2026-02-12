@@ -1,241 +1,304 @@
 {
-  "id": "py_if_c2",
-  "title": "Python 조건문 챌린지 2회차",
-  "categoryId": "py_if",
-  "availableLanguages": [
-    "python"
-  ],
-  "concepts": [
-    {
-      "id": "policy_priority",
-      "title": "정책형 분기 우선순위",
-      "summary": "예외 조건(VIP 등)을 가장 먼저 처리해야 합니다.",
-      "example": "```python\nif is_vip == 'Y':\n    fee = 0\nelif is_remote == 'Y':\n    fee = 5000\nelif price >= 50000:\n    fee = 0\nelse:\n    fee = 3000\n```\n",
-      "algorithm": "```text\n1) 가장 강한 예외부터 검사한다.\n2) 일반 조건을 순서대로 적용한다.\n```",
-      "relatedProblems": ["mcq1", "mcq3", "short1", "short2", "code1"]
-    },
-    {
-      "id": "rate_cap",
-      "title": "누적 후 상한 적용",
-      "summary": "보너스가 여러 개일 때는 합산 후 상한을 적용합니다.",
-      "example": "```python\nrate += 5\nrate += 5\nif rate > 20:\n    rate = 20\n```\n",
-      "algorithm": "```text\n1) 기본값을 계산한다.\n2) 추가 요소를 모두 더한다.\n3) 마지막에 상한을 적용한다.\n```",
-      "relatedProblems": ["mcq2"]
-    },
-    {
-      "id": "compound_rules",
-      "title": "복합 조건식 구성",
-      "summary": "예외(or)와 일반(and)을 괄호로 명확히 묶습니다.",
-      "example": "```python\nis_free = is_vip == 'Y' or (is_remote == 'N' and price >= 50000)\n```\n",
-      "algorithm": "```text\n1) 예외 조건을 먼저 묶는다.\n2) 일반 조건을 and로 묶는다.\n3) 전체를 or로 결합한다.\n```",
-      "relatedProblems": ["mcq4", "code1", "code2"]
-    },
-    {
-      "id": "coverage_tests",
-      "title": "분기 커버리지 테스트",
-      "summary": "모든 출력 분기를 최소 테스트로 검증합니다.",
-      "example": "```text\nVIP / 도서산간 / 무료배송 / 기본요금\n각 분기를 1개씩 최소로 확인\n```\n",
-      "algorithm": "```text\n1) 출력 분기 수를 센다.\n2) 각 분기를 대표하는 입력을 만든다.\n```",
-      "relatedProblems": ["mcq5"]
-    }
-  ],
-  "problems": [
-    {
-      "id": "mcq1",
-      "type": "mcq",
-      "level": "챌린지",
-      "title": "MCQ 1. 정책형 분기: 배송비 계산 (예외 우선)",
-      "conceptRef": "policy_priority",
-      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n입력: price(정수), is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")\n\n출력: 배송비(정수)\n- VIP(is_vip==\"Y\")는 항상 배송비 0\n- VIP가 아니고, 도서산간(is_remote==\"Y\")이면 배송비 5000\n- VIP가 아니고, 도서산간이 아니며(price>=50000)이면 배송비 0\n- 그 외에는 배송비 3000",
-      "code": null,
-      "options": [
-        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\":\n    print('%d' % 0)\nelif is_remote == \"Y\":\n    print('%d' % 5000)\nelif price >= 50000:\n    print('%d' % 0)\nelse:\n    print('%d' % 3000)",
-        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif price >= 50000:\n    print('%d' % 0)\nelif is_remote == \"Y\":\n    print('%d' % 5000)\nelif is_vip == \"Y\":\n    print('%d' % 0)\nelse:\n    print('%d' % 3000)",
-        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_remote == \"Y\":\n    print('%d' % 5000)\nelif is_vip == \"Y\":\n    print('%d' % 0)\nelif price >= 50000:\n    print('%d' % 0)\nelse:\n    print('%d' % 3000)",
-        "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\" or price >= 50000:\n    print('%d' % 0)\nelif is_remote == \"Y\":\n    print('%d' % 5000)\nelse:\n    print('%d' % 3000)"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 0,
-      "wrongFeedback": {
-        "1": "VIP가 예외인데 가격 조건이 먼저라서 VIP가 뒤로 밀립니다.",
-        "2": "도서산간을 VIP보다 먼저 검사하면 VIP도 5000이 될 수 있습니다.",
-        "3": "도서산간+VIP가 아니면 5000이어야 하는데, VIP 아니고 5만원 이상이면 무료가 되어 버립니다."
-      }
-    },
-    {
-      "id": "mcq2",
-      "type": "mcq",
-      "level": "챌린지",
-      "title": "MCQ 2. 정책형 분기: 할인율 + 상한(최대 20%)",
-      "conceptRef": "rate_cap",
-      "description": "다음 요구사항을 만족하는 코드를 고르세요.\n\n입력: grade(\"G\"/\"S\"/\"B\"), coupon(\"Y\"/\"N\"), first(\"Y\"/\"N\")\n\n출력: 최종 할인율(정수, %) \n- 등급 할인: G=15, S=10, B=5\n- coupon이 Y면 +5\n- first가 Y면 +5\n- 최종 할인율은 최대 20%",
-      "code": null,
-      "options": [
-        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nif rate > 20:\n    rate = 20\nprint('%d' % (rate))",
-        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif rate > 20:\n    rate = 20\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nprint('%d' % (rate))",
-        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelif grade == \"B\":\n    rate = 5\n\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nprint('%d' % (rate))",
-        "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif coupon == \"Y\" or first == \"Y\":\n    rate += 5\n\nif rate > 20:\n    rate = 20\nprint('%d' % (rate))"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 0,
-      "wrongFeedback": {
-        "1": "상한을 먼저 적용하면 이후 +5가 더해져 20을 넘을 수 있습니다.",
-        "2": "B 등급일 때 rate가 설정되지 않습니다.",
-        "3": "coupon과 first는 각각 +5가 되어야 하는데 한 번만 더합니다."
-      }
-    },
-    {
-      "id": "mcq3",
-      "type": "mcq",
-      "level": "챌린지",
-      "title": "MCQ 3. 버그를 잡는 테스트케이스",
-      "conceptRef": "policy_priority",
-      "description": "아래 코드는 배송비 정책을 구현하려고 했지만 버그가 있습니다.\n\n(정답 기준 정책)\n- VIP면 0\n- VIP가 아니고 도서산간이면 5000\n- VIP가 아니고 도서산간이 아니며 price>=50000이면 0\n- 그 외 3000\n\n다음 중 **이 코드의 버그를 확실히 드러내는 입력**을 고르세요.",
-      "code": "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\":\n    print('%d' % 0)\nelif price >= 50000:\n    print('%d' % 0)\nelif is_remote == \"Y\":\n    print('%d' % 5000)\nelse:\n    print('%d' % 3000)",
-      "options": [
-        "price=60000, is_remote=N, is_vip=N",
-        "price=60000, is_remote=Y, is_vip=N",
-        "price=40000, is_remote=N, is_vip=Y",
-        "price=40000, is_remote=N, is_vip=N"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 1,
-      "wrongFeedback": {
-        "0": "정상적으로 무료배송이 나와 버그가 드러나지 않습니다.",
-        "2": "VIP는 정상적으로 0이 나와 버그가 드러나지 않습니다.",
-        "3": "기본 배송비가 나와 버그가 드러나지 않습니다."
-      }
-    },
-    {
-      "id": "mcq4",
-      "type": "mcq",
-      "level": "챌린지",
-      "title": "MCQ 4. 무료배송 조건식 고르기",
-      "conceptRef": "compound_rules",
-      "description": "다음 정책에서 배송비가 0이 되는 조건식으로 알맞은 것을 고르세요.\n\n- VIP면 항상 0\n- VIP가 아니면, 도서산간이 아니고(price>=50000)일 때만 0\n\n변수: price(정수), is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")",
-      "code": null,
-      "options": [
-        "is_vip == \"Y\" or (is_remote == \"N\" and price >= 50000)",
-        "(is_vip == \"Y\" or is_remote == \"N\") and price >= 50000",
-        "is_vip == \"Y\" and (is_remote == \"N\" or price >= 50000)",
-        "is_vip == \"Y\" or is_remote == \"N\" or price >= 50000"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 0,
-      "wrongFeedback": {
-        "1": "VIP여도 price >= 50000이 필요해져 예외가 깨집니다.",
-        "2": "VIP가 아니면 무료배송이 불가능해집니다.",
-        "3": "도서산간이 아니기만 해도 무료가 되어 정책이 틀립니다."
-      }
-    },
-    {
-      "id": "mcq5",
-      "type": "mcq",
-      "level": "챌린지",
-      "title": "MCQ 5. 케이스 누락 방지: 최소 테스트 3개",
-      "conceptRef": "coverage_tests",
-      "description": "배송비 정책( VIP / 도서산간 / 5만원 이상 무료 / 그 외 )을 검증하려고 합니다.\n아래 보기 중, **모든 분기(모든 출력)**를 최소한으로 확인할 수 있는 테스트 3개 묶음으로 가장 적절한 것은?\n\n(각 테스트는 price, is_remote, is_vip 순서)",
-      "code": null,
-      "options": [
-        "(50000, N, N), (60000, N, N), (40000, N, N)",
-        "(40000, N, Y), (60000, Y, N), (50000, N, N)",
-        "(40000, Y, N), (60000, Y, N), (50000, N, N)",
-        "(40000, N, Y), (40000, N, N), (40000, Y, N)"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
-      "correctIndex": 1,
-      "wrongFeedback": {
-        "0": "무료배송만 테스트되고 나머지 분기가 빠집니다.",
-        "2": "VIP 분기가 없습니다.",
-        "3": "5만원 이상 무료배송 분기가 없습니다."
-      }
-    },
-    {
-      "id": "short1",
-      "type": "short",
-      "level": "단답형",
-      "title": "Short 1. 경계값: VIP가 아니고 도서산간이 아닐 때 무료배송 최소 금액",
-      "conceptRef": "policy_priority",
-      "description": "정책이 다음과 같을 때,\n- VIP가 아니고(is_vip=\"N\")\n- 도서산간이 아니며(is_remote=\"N\")\n무료배송(배송비 0)이 되기 위한 price의 최소값을 쓰세요.",
-      "wrongFeedbackText": "5만원 이상에서만 무료배송이 됩니다.",
-      "expectedText": "50000"
-    },
-    {
-      "id": "short2",
-      "type": "short",
-      "level": "단답형",
-      "title": "Short 2. 출력 예측: 예외 케이스(도서산간)",
-      "conceptRef": "policy_priority",
-      "description": "아래 정책(배송비 계산)에서 입력이\nprice=60000, is_remote=Y, is_vip=N 일 때 출력되는 배송비를 쓰세요.",
-      "wrongFeedbackText": "도서산간이면 가격과 무관하게 5000입니다.",
-      "expectedText": "5000"
-    },
-    {
-      "id": "code1",
-      "type": "code",
-      "level": "코드 작성",
-      "title": "Code 1. 무료배송 조건식 한 줄",
-      "conceptRef": "compound_rules",
-      "description": "다음 정책에서 배송비가 0이 되는 조건식을 if 뒤에 한 줄로 작성하세요.\n\n- VIP면 항상 0\n- VIP가 아니면, 도서산간이 아니고(price>=50000)일 때만 0\n\n변수: price, is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")",
-      "code": "if  # 여기에 조건식을 작성하세요:\n    print('%d' % 0)\nelse:\n    print('%d' % (1)  # (여기는 의미 없음))",
-      "hints": [
-        "VIP는 예외로 무조건 무료배송입니다.",
-        "VIP가 아니라면 (도서산간 아님) AND (5만원 이상)입니다."
-      ],
-      "wrongFeedbackText": "예외(or)와 일반(and)을 올바르게 묶어야 합니다.",
-      "expectedCodes": [
-        "is_vip == \"Y\" or (is_remote == \"N\" and price >= 50000)",
-        "(is_remote == \"N\" and price >= 50000) or is_vip == \"Y\"",
-        "is_vip==\"Y\" or (is_remote==\"N\" and price>=50000)",
-        "(is_remote==\"N\" and price>=50000) or is_vip==\"Y\""
-      ],
-      "hint": "VIP는 무조건 무료배송입니다. VIP가 아니라면, '도서산간이 아니고 + 5만원 이상'이어야 합니다."
-    },
-    {
-      "id": "code2",
-      "type": "code",
-      "level": "코드 작성",
-      "title": "Code 2. 쿠폰 적용 가능 조건식 (등급/금액/예외)",
-      "conceptRef": "compound_rules",
-      "description": "쿠폰 사용 가능 조건은 다음과 같습니다.\n\n- VIP(is_vip==\"Y\")면 언제나 쿠폰 사용 가능\n- VIP가 아니면, price가 30000 이상이고 grade가 \"G\" 또는 \"S\"일 때만 쿠폰 사용 가능\n\n변수: price(정수), grade(\"G\"/\"S\"/\"B\"), is_vip(\"Y\"/\"N\")\nif 뒤의 조건식을 한 줄로 작성하세요.",
-      "code": "if  # 여기에 조건식을 작성하세요:\n    print('%s' % 'COUPON')\nelse:\n    print('%s' % 'NO')",
-      "hints": [
-        "VIP는 예외로 항상 가능입니다.",
-        "VIP가 아니라면 (3만원 이상) AND (G 또는 S)입니다."
-      ],
-      "wrongFeedbackText": "예외(or)와 일반(and)을 괄호로 묶어 작성하세요.",
-      "expectedCodes": [
-        "is_vip == \"Y\" or (price >= 30000 and (grade == \"G\" or grade == \"S\"))",
-        "is_vip == \"Y\" or (price >= 30000 and (grade == \"S\" or grade == \"G\"))",
-        "is_vip==\"Y\" or (price>=30000 and (grade==\"G\" or grade==\"S\"))",
-        "is_vip==\"Y\" or (price>=30000 and (grade==\"S\" or grade==\"G\"))"
-      ],
-      "hint": "VIP는 예외(항상 가능)입니다. VIP가 아니면 '3만원 이상 AND (G 또는 S)'를 만족해야 합니다."
-    }
-  ]
+    "id":  "py_if_c2",
+    "title":  "Python 조건문 챌린지 2회차",
+    "categoryId":  "py_if",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "concepts":  [
+                     {
+                         "id":  "policy_priority",
+                         "title":  "정책형 분기 우선순위",
+                         "summary":  "예외 조건(VIP 등)을 가장 먼저 처리해야 합니다.",
+                         "example":  "```python\nif is_vip == \u0027Y\u0027:\n    fee = 0\nelif is_remote == \u0027Y\u0027:\n    fee = 5000\nelif price \u003e= 50000:\n    fee = 0\nelse:\n    fee = 3000\n```\n",
+                         "algorithm":  "```text\n1) 가장 강한 예외부터 검사한다.\n2) 일반 조건을 순서대로 적용한다.\n```",
+                         "relatedProblems":  [
+                                                 "mcq1",
+                                                 "mcq3",
+                                                 "short1",
+                                                 "short2",
+                                                 "code1"
+                                             ]
+                     },
+                     {
+                         "id":  "rate_cap",
+                         "title":  "누적 후 상한 적용",
+                         "summary":  "보너스가 여러 개일 때는 합산 후 상한을 적용합니다.",
+                         "example":  "```python\nrate += 5\nrate += 5\nif rate \u003e 20:\n    rate = 20\n```\n",
+                         "algorithm":  "```text\n1) 기본값을 계산한다.\n2) 추가 요소를 모두 더한다.\n3) 마지막에 상한을 적용한다.\n```",
+                         "relatedProblems":  [
+                                                 "mcq2"
+                                             ]
+                     },
+                     {
+                         "id":  "compound_rules",
+                         "title":  "복합 조건식 구성",
+                         "summary":  "예외(or)와 일반(and)을 괄호로 명확히 묶습니다.",
+                         "example":  "```python\nis_free = is_vip == \u0027Y\u0027 or (is_remote == \u0027N\u0027 and price \u003e= 50000)\n```\n",
+                         "algorithm":  "```text\n1) 예외 조건을 먼저 묶는다.\n2) 일반 조건을 and로 묶는다.\n3) 전체를 or로 결합한다.\n```",
+                         "relatedProblems":  [
+                                                 "mcq4",
+                                                 "code1",
+                                                 "code2"
+                                             ]
+                     },
+                     {
+                         "id":  "coverage_tests",
+                         "title":  "분기 커버리지 테스트",
+                         "summary":  "모든 출력 분기를 최소 테스트로 검증합니다.",
+                         "example":  "```text\nVIP / 도서산간 / 무료배송 / 기본요금\n각 분기를 1개씩 최소로 확인\n```\n",
+                         "algorithm":  "```text\n1) 출력 분기 수를 센다.\n2) 각 분기를 대표하는 입력을 만든다.\n```",
+                         "relatedProblems":  [
+                                                 "mcq5"
+                                             ]
+                     }
+                 ],
+    "problems":  [
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "챌린지",
+                         "title":  "MCQ 1. 정책형 분기: 배송비 계산 (예외 우선)",
+                         "conceptRef":  "policy_priority",
+                         "description":  "다음 요구사항을 만족하는 코드를 고르세요.\n\n입력: price(정수), is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")\n\n출력: 배송비(정수)\n- VIP(is_vip==\"Y\")는 항상 배송비 0\n- VIP가 아니고, 도서산간(is_remote==\"Y\")이면 배송비 5000\n- VIP가 아니고, 도서산간이 아니며(price\u003e=50000)이면 배송비 0\n- 그 외에는 배송비 3000",
+                         "code":  null,
+                         "options":  [
+                                         "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\":\n    print(\u0027%d\u0027 % 0)\nelif is_remote == \"Y\":\n    print(\u0027%d\u0027 % 5000)\nelif price \u003e= 50000:\n    print(\u0027%d\u0027 % 0)\nelse:\n    print(\u0027%d\u0027 % 3000)",
+                                         "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif price \u003e= 50000:\n    print(\u0027%d\u0027 % 0)\nelif is_remote == \"Y\":\n    print(\u0027%d\u0027 % 5000)\nelif is_vip == \"Y\":\n    print(\u0027%d\u0027 % 0)\nelse:\n    print(\u0027%d\u0027 % 3000)",
+                                         "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_remote == \"Y\":\n    print(\u0027%d\u0027 % 5000)\nelif is_vip == \"Y\":\n    print(\u0027%d\u0027 % 0)\nelif price \u003e= 50000:\n    print(\u0027%d\u0027 % 0)\nelse:\n    print(\u0027%d\u0027 % 3000)",
+                                         "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\" or price \u003e= 50000:\n    print(\u0027%d\u0027 % 0)\nelif is_remote == \"Y\":\n    print(\u0027%d\u0027 % 5000)\nelse:\n    print(\u0027%d\u0027 % 3000)"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  0,
+                         "wrongFeedback":  {
+                                               "1":  "VIP가 예외인데 가격 조건이 먼저라서 VIP가 뒤로 밀립니다.",
+                                               "2":  "도서산간을 VIP보다 먼저 검사하면 VIP도 5000이 될 수 있습니다.",
+                                               "3":  "도서산간+VIP가 아니면 5000이어야 하는데, VIP 아니고 5만원 이상이면 무료가 되어 버립니다."
+                                           }
+                     },
+                     {
+                         "id":  "mcq2",
+                         "type":  "mcq",
+                         "level":  "챌린지",
+                         "title":  "MCQ 2. 정책형 분기: 할인율 + 상한(최대 20%)",
+                         "conceptRef":  "rate_cap",
+                         "description":  "다음 요구사항을 만족하는 코드를 고르세요.\n\n입력: grade(\"G\"/\"S\"/\"B\"), coupon(\"Y\"/\"N\"), first(\"Y\"/\"N\")\n\n출력: 최종 할인율(정수, %) \n- 등급 할인: G=15, S=10, B=5\n- coupon이 Y면 +5\n- first가 Y면 +5\n- 최종 할인율은 최대 20%",
+                         "code":  null,
+                         "options":  [
+                                         "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nif rate \u003e 20:\n    rate = 20\nprint(\u0027%d\u0027 % (rate))",
+                                         "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif rate \u003e 20:\n    rate = 20\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nprint(\u0027%d\u0027 % (rate))",
+                                         "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelif grade == \"B\":\n    rate = 5\n\nif coupon == \"Y\":\n    rate += 5\nif first == \"Y\":\n    rate += 5\n\nprint(\u0027%d\u0027 % (rate))",
+                                         "grade = input()\ncoupon = input()\nfirst = input()\n\nrate = 0\nif grade == \"G\":\n    rate = 15\nelif grade == \"S\":\n    rate = 10\nelse:\n    rate = 5\n\nif coupon == \"Y\" or first == \"Y\":\n    rate += 5\n\nif rate \u003e 20:\n    rate = 20\nprint(\u0027%d\u0027 % (rate))"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  0,
+                         "wrongFeedback":  {
+                                               "1":  "상한을 먼저 적용하면 이후 +5가 더해져 20을 넘을 수 있습니다.",
+                                               "2":  "B 등급일 때 rate가 설정되지 않습니다.",
+                                               "3":  "coupon과 first는 각각 +5가 되어야 하는데 한 번만 더합니다."
+                                           }
+                     },
+                     {
+                         "id":  "mcq3",
+                         "type":  "mcq",
+                         "level":  "챌린지",
+                         "title":  "MCQ 3. 버그를 잡는 테스트케이스",
+                         "conceptRef":  "policy_priority",
+                         "description":  "아래 코드는 배송비 정책을 구현하려고 했지만 버그가 있습니다.\n\n(정답 기준 정책)\n- VIP면 0\n- VIP가 아니고 도서산간이면 5000\n- VIP가 아니고 도서산간이 아니며 price\u003e=50000이면 0\n- 그 외 3000\n\n다음 중 **이 코드의 버그를 확실히 드러내는 입력**을 고르세요.",
+                         "code":  "price = int(input())\nis_remote = input()\nis_vip = input()\n\nif is_vip == \"Y\":\n    print(\u0027%d\u0027 % 0)\nelif price \u003e= 50000:\n    print(\u0027%d\u0027 % 0)\nelif is_remote == \"Y\":\n    print(\u0027%d\u0027 % 5000)\nelse:\n    print(\u0027%d\u0027 % 3000)",
+                         "options":  [
+                                         "price=60000, is_remote=N, is_vip=N",
+                                         "price=60000, is_remote=Y, is_vip=N",
+                                         "price=40000, is_remote=N, is_vip=Y",
+                                         "price=40000, is_remote=N, is_vip=N"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  1,
+                         "wrongFeedback":  {
+                                               "0":  "정상적으로 무료배송이 나와 버그가 드러나지 않습니다.",
+                                               "2":  "VIP는 정상적으로 0이 나와 버그가 드러나지 않습니다.",
+                                               "3":  "기본 배송비가 나와 버그가 드러나지 않습니다."
+                                           }
+                     },
+                     {
+                         "id":  "mcq4",
+                         "type":  "mcq",
+                         "level":  "챌린지",
+                         "title":  "MCQ 4. 무료배송 조건식 고르기",
+                         "conceptRef":  "compound_rules",
+                         "description":  "다음 정책에서 배송비가 0이 되는 조건식으로 알맞은 것을 고르세요.\n\n- VIP면 항상 0\n- VIP가 아니면, 도서산간이 아니고(price\u003e=50000)일 때만 0\n\n변수: price(정수), is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")",
+                         "code":  null,
+                         "options":  [
+                                         "is_vip == \"Y\" or (is_remote == \"N\" and price \u003e= 50000)",
+                                         "(is_vip == \"Y\" or is_remote == \"N\") and price \u003e= 50000",
+                                         "is_vip == \"Y\" and (is_remote == \"N\" or price \u003e= 50000)",
+                                         "is_vip == \"Y\" or is_remote == \"N\" or price \u003e= 50000"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  0,
+                         "wrongFeedback":  {
+                                               "1":  "VIP여도 price \u003e= 50000이 필요해져 예외가 깨집니다.",
+                                               "2":  "VIP가 아니면 무료배송이 불가능해집니다.",
+                                               "3":  "도서산간이 아니기만 해도 무료가 되어 정책이 틀립니다."
+                                           }
+                     },
+                     {
+                         "id":  "mcq5",
+                         "type":  "mcq",
+                         "level":  "챌린지",
+                         "title":  "MCQ 5. 케이스 누락 방지: 최소 테스트 3개",
+                         "conceptRef":  "coverage_tests",
+                         "description":  "배송비 정책( VIP / 도서산간 / 5만원 이상 무료 / 그 외 )을 검증하려고 합니다.\n아래 보기 중, **모든 분기(모든 출력)**를 최소한으로 확인할 수 있는 테스트 3개 묶음으로 가장 적절한 것은?\n\n(각 테스트는 price, is_remote, is_vip 순서)",
+                         "code":  null,
+                         "options":  [
+                                         "(50000, N, N), (60000, N, N), (40000, N, N)",
+                                         "(40000, N, Y), (60000, Y, N), (50000, N, N)",
+                                         "(40000, Y, N), (60000, Y, N), (50000, N, N)",
+                                         "(40000, N, Y), (40000, N, N), (40000, Y, N)"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  1,
+                         "wrongFeedback":  {
+                                               "0":  "무료배송만 테스트되고 나머지 분기가 빠집니다.",
+                                               "2":  "VIP 분기가 없습니다.",
+                                               "3":  "5만원 이상 무료배송 분기가 없습니다."
+                                           }
+                     },
+                     {
+                         "id":  "trace1",
+                         "type":  "short",
+                         "level":  "기초",
+                         "title":  "Trace 1. 정책 우선순위 할인",
+                         "conceptRef":  "policy_priority",
+                         "description":  "spend, coupon, vip에 따라 할인율이 결정됩니다. 어떤 분기가 선택되는지 표에 채우세요.\n\n입력 케이스 예시:\n- case1: spend=120000, coupon=0, vip=1\n- case2: spend=120000, coupon=1, vip=0\n- case3: spend=90000, coupon=1, vip=0",
+                         "code":  "spend, coupon, vip = map(int, input().split())\nif vip == 1:\n    print(\u0027%d\u0027 % 30)\nelif spend \u003e= 100000 and coupon == 1:\n    print(\u0027%d\u0027 % 20)\nelif spend \u003e= 100000:\n    print(\u0027%d\u0027 % 10)\nelse:\n    print(\u0027%d\u0027 % 0)",
+                         "answerUi":  {
+                                          "kind":  "grid",
+                                          "rows":  [
+                                                       "case1",
+                                                       "case2",
+                                                       "case3"
+                                                   ],
+                                          "columns":  [
+                                                          "spend",
+                                                          "coupon",
+                                                          "vip",
+                                                          "branch",
+                                                          "output"
+                                                      ],
+                                          "rowSep":  "\\n",
+                                          "colSep":  " "
+                                      },
+                         "expectedGrid":  [
+                                              [
+                                                  "120000",
+                                                  "0",
+                                                  "1",
+                                                  "if",
+                                                  "30"
+                                              ],
+                                              [
+                                                  "120000",
+                                                  "1",
+                                                  "0",
+                                                  "else if 1",
+                                                  "20"
+                                              ],
+                                              [
+                                                  "90000",
+                                                  "1",
+                                                  "0",
+                                                  "else",
+                                                  "0"
+                                              ]
+                                          ]
+                     },
+                     {
+                         "id":  "short1",
+                         "type":  "short",
+                         "level":  "단답형",
+                         "title":  "Short 1. 경계값: VIP가 아니고 도서산간이 아닐 때 무료배송 최소 금액",
+                         "conceptRef":  "policy_priority",
+                         "description":  "정책이 다음과 같을 때,\n- VIP가 아니고(is_vip=\"N\")\n- 도서산간이 아니며(is_remote=\"N\")\n무료배송(배송비 0)이 되기 위한 price의 최소값을 쓰세요.",
+                         "wrongFeedbackText":  "5만원 이상에서만 무료배송이 됩니다.",
+                         "expectedText":  "50000"
+                     },
+                     {
+                         "id":  "short2",
+                         "type":  "short",
+                         "level":  "단답형",
+                         "title":  "Short 2. 출력 예측: 예외 케이스(도서산간)",
+                         "conceptRef":  "policy_priority",
+                         "description":  "아래 정책(배송비 계산)에서 입력이\nprice=60000, is_remote=Y, is_vip=N 일 때 출력되는 배송비를 쓰세요.",
+                         "wrongFeedbackText":  "도서산간이면 가격과 무관하게 5000입니다.",
+                         "expectedText":  "5000"
+                     },
+                     {
+                         "id":  "code1",
+                         "type":  "code",
+                         "level":  "코드 작성",
+                         "title":  "Code 1. 무료배송 조건식 한 줄",
+                         "conceptRef":  "compound_rules",
+                         "description":  "다음 정책에서 배송비가 0이 되는 조건식을 if 뒤에 한 줄로 작성하세요.\n\n- VIP면 항상 0\n- VIP가 아니면, 도서산간이 아니고(price\u003e=50000)일 때만 0\n\n변수: price, is_remote(\"Y\"/\"N\"), is_vip(\"Y\"/\"N\")",
+                         "code":  "if  # 여기에 조건식을 작성하세요:\n    print(\u0027%d\u0027 % 0)\nelse:\n    print(\u0027%d\u0027 % (1)  # (여기는 의미 없음))",
+                         "hints":  [
+                                       "VIP는 예외로 무조건 무료배송입니다.",
+                                       "VIP가 아니라면 (도서산간 아님) AND (5만원 이상)입니다."
+                                   ],
+                         "wrongFeedbackText":  "예외(or)와 일반(and)을 올바르게 묶어야 합니다.",
+                         "expectedCodes":  [
+                                               "is_vip == \"Y\" or (is_remote == \"N\" and price \u003e= 50000)",
+                                               "(is_remote == \"N\" and price \u003e= 50000) or is_vip == \"Y\"",
+                                               "is_vip==\"Y\" or (is_remote==\"N\" and price\u003e=50000)",
+                                               "(is_remote==\"N\" and price\u003e=50000) or is_vip==\"Y\""
+                                           ],
+                         "hint":  "VIP는 무조건 무료배송입니다. VIP가 아니라면, \u0027도서산간이 아니고 + 5만원 이상\u0027이어야 합니다."
+                     },
+                     {
+                         "id":  "code2",
+                         "type":  "code",
+                         "level":  "코드 작성",
+                         "title":  "Code 2. 쿠폰 적용 가능 조건식 (등급/금액/예외)",
+                         "conceptRef":  "compound_rules",
+                         "description":  "쿠폰 사용 가능 조건은 다음과 같습니다.\n\n- VIP(is_vip==\"Y\")면 언제나 쿠폰 사용 가능\n- VIP가 아니면, price가 30000 이상이고 grade가 \"G\" 또는 \"S\"일 때만 쿠폰 사용 가능\n\n변수: price(정수), grade(\"G\"/\"S\"/\"B\"), is_vip(\"Y\"/\"N\")\nif 뒤의 조건식을 한 줄로 작성하세요.",
+                         "code":  "if  # 여기에 조건식을 작성하세요:\n    print(\u0027%s\u0027 % \u0027COUPON\u0027)\nelse:\n    print(\u0027%s\u0027 % \u0027NO\u0027)",
+                         "hints":  [
+                                       "VIP는 예외로 항상 가능입니다.",
+                                       "VIP가 아니라면 (3만원 이상) AND (G 또는 S)입니다."
+                                   ],
+                         "wrongFeedbackText":  "예외(or)와 일반(and)을 괄호로 묶어 작성하세요.",
+                         "expectedCodes":  [
+                                               "is_vip == \"Y\" or (price \u003e= 30000 and (grade == \"G\" or grade == \"S\"))",
+                                               "is_vip == \"Y\" or (price \u003e= 30000 and (grade == \"S\" or grade == \"G\"))",
+                                               "is_vip==\"Y\" or (price\u003e=30000 and (grade==\"G\" or grade==\"S\"))",
+                                               "is_vip==\"Y\" or (price\u003e=30000 and (grade==\"S\" or grade==\"G\"))"
+                                           ],
+                         "hint":  "VIP는 예외(항상 가능)입니다. VIP가 아니면 \u00273만원 이상 AND (G 또는 S)\u0027를 만족해야 합니다."
+                     }
+                 ]
 }

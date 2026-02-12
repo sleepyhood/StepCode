@@ -1,210 +1,108 @@
-# if
+﻿# if
 
-## C
-### C - LV6 조건문 (c_if)
+## 공통 원칙 (언어 무관)
 
-- ?? ??
-  - `c_if_b1` - C 조건문 기초 1회차
-    - ??: `c_lv06_if_b01.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. Pass / Fail 프로그램 (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. 짝수/홀수 출력 결과 (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. 범위 검사 (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. 항상 Minus가 나오는 이유 (level: 조금 응용, concept: -)
-      - 5. [mcq] MCQ 5. 학점 조건식 (level: 기초, concept: -)
-      - 6. [short] Short 1. 범위 + if-else 결과 (level: 단답형, concept: -)
-      - 7. [short] Short 2. 어떤 값을 넣으면 참이 될까? (level: 단답형, concept: -)
-      - 8. [code] Code 1. 1 이상 10 이하 조건식 작성 (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. 두 조건을 모두 만족해야 Pass (level: 코드 작성, concept: -)
+### 리뉴얼 목표
+1. 정답 맞히기보다 **조건 검사 순서와 실행 경로 추적**을 우선한다.
+2. Python/C/Java를 **동일 문항 의도**로 맞추고, 차이는 문법만 둔다.
+3. 핵심 검증은 `Trace(Grid)`, `Short`, `Code`로 수행하고 MCQ 비중은 낮춘다.
 
-  - `c_if_b2` - C 조건문 기초 2회차
-    - ??: `c_lv06_if_b02.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 7이면 Lucky 출력 (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. 1~9 범위 밖이면 OUT (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. 0으로 나누기 방지 (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. 3의 배수 또는 5의 배수 (level: 기초, concept: -)
-      - 5. [mcq] MCQ 5. 영하/영상 판정 (level: 기초, concept: -)
-      - 6. [short] Short 1. not으로 홀짝 판별 (level: 단답형, concept: -)
-      - 7. [short] Short 2. 조건을 만족하는 값 찾기 (level: 단답형, concept: -)
-      - 8. [code] Code 1. 3의 배수 또는 5의 배수 조건식 (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. 1~9가 아니면 OUT 조건식 (level: 코드 작성, concept: -)
+### 학습 개념(필수)
+1. 단일 `if`는 조건이 거짓이면 **실행 0회**일 수 있다.
+2. `if -> elif/else if -> else`는 **첫 true 분기만 실행**된다.
+3. 조건 순서가 바뀌면 결과가 달라질 수 있다.
+4. 경계값(`<`, `<=`, `>`, `>=`)은 출력 분기를 바꾼다.
+5. 복합 조건(`and/or/not`, `&&/||/!`)은 부분식 결과를 분리해 해석한다.
+6. 중첩 `if`에서 `else`는 가장 가까운 `if`에 결합된다.
 
-  - `c_if_b3` - C 조건문 기초 3회차
-    - ??: `c_lv06_if_b03.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. elif로 학점 5단계 만들기 (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. elif 순서가 바뀌면? (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. 구간 분리: MID가 나오는 입력 (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. else가 어디에 붙을까? (level: 기초, concept: -)
-      - 5. [mcq] MCQ 5. elif 조건식: 범위 분리에서 단순화 (level: 기초, concept: -)
-      - 6. [short] Short 1. 경계값: 69점은 어디로? (level: 단답형, concept: -)
-      - 7. [short] Short 2. MID가 나오게 하는 값 (level: 단답형, concept: -)
-      - 8. [code] Code 1. elif로 B 구간 조건식 완성 (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. 할인 구간 elif 조건식 (level: 코드 작성, concept: -)
+### 문항 구성 규칙
+1. 세트당 `Trace(Grid)` 최소 1~2문항 포함.
+2. 세트당 `Short` 1~2문항 포함.
+3. 세트당 `Code` 1~2문항 포함.
+4. 세트당 `MCQ`는 보조용으로 제한한다.
+5. `Trace(Grid)` 시점은 "각 조건식 검사 직후"로 통일한다.
+6. 세트마다 경계값 케이스를 최소 1문항 포함한다.
+7. `Short` 기본형은 `expectedText`/`expectedAnyOf`를 사용하고, `grid`를 강제하지 않는다.
+8. `grid`는 별도 `trace*` 문항으로 분리한다. (`short1`에 혼합 금지)
+9. `grid` 문항은 입력 변수가 2개 이상인 경우를 기본으로 한다.
+10. `grid` 문항은 최소 `입력값`, `핵심 조건 결과`, `최종 출력` 열을 포함한다.
 
-  - `c_if_b4` - C 조건문 기초 4회차
-    - ??: `c_lv06_if_b04.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. else는 어느 if에 붙을까? (중첩 if) (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. if가 두 개면 else는 어디에 붙을까? (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. 자주 하는 실수: a == 1 or 2 (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. 드모르간/리팩토링: not (1 <= n <= 9)와 같은 의미 (level: 기초, concept: -)
-      - 5. [mcq] MCQ 5. 괄호/우선순위: 의도에 맞는 조건식 (level: 기초, concept: -)
-      - 6. [short] Short 1. 출력 예측: and/or 우선순위 (level: 단답형, concept: -)
-      - 7. [short] Short 2. 출력 예측: else가 붙는 위치 (level: 단답형, concept: -)
-      - 8. [code] Code 1. not 없이 같은 의미로 바꾸기 (드모르간) (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. a가 1 또는 2일 때만 YES (level: 코드 작성, concept: -)
+### Code 문항 고정 규칙 (if 단원)
+1. `Code` 문항은 가능한 한 한 줄 작성으로 출제한다.
+2. 제어문 전체를 한 줄로 압축하게 하지 않는다.
+   - 지양: `if (...) printf("PASS");`
+3. 골격 제공 후 한 요소만 작성하게 한다.
+   - 예: `if ( ____ )`
+   - 예: `elif ____:`
+4. 한 문항에서 한 기능만 검증한다.
+   - 조건식 1개 / 비교 연산 1개 / 논리 연결 1개
 
-  - `c_if_c1` - C 조건문 챌린지 1회차
-    - ??: `c_lv06_if_c01.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 성인 / 학생 분류 (level: 챌린지, concept: -)
-      - 2. [mcq] MCQ 2. 조건의 순서 (level: 챌린지, concept: -)
-      - 3. [mcq] MCQ 3. if와 elif의 차이 (level: 챌린지, concept: -)
-      - 4. [mcq] MCQ 4. and / or 섞어서 쓰기 (level: 챌린지, concept: -)
-      - 5. [mcq] MCQ 5. 중첩 if의 동작 (level: 챌린지, concept: -)
-      - 6. [short] Short 1. 여러 조건 분기 (level: 챌린지, concept: -)
-      - 7. [short] Short 2. 조건을 만족하는 값 찾기 (level: 챌린지, concept: -)
-      - 8. [code] Code 1. 두 자리 양수이면서 짝수 (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. 학점 B 구간 조건식 (level: 코드 작성, concept: -)
+### 언어별 변환 규칙
+1. 유형/의도/정답 논리는 동일하게 유지한다.
+2. 문법만 변경한다.
+   - Python: `if/elif/else`, `and/or/not`
+   - C/Java: `if/else if/else`, `&&/||/!`
+3. C/Java 문맥에서는 `elif` 표현을 쓰지 않는다. (`else if`로 통일)
 
-  - `c_if_c2` - C 조건문 챌린지 2회차
-    - ??: `c_lv06_if_c02.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 정책형 분기: 배송비 계산 (예외 우선) (level: 챌린지, concept: -)
-      - 2. [mcq] MCQ 2. 정책형 분기: 할인율 + 상한(최대 20%) (level: 챌린지, concept: -)
-      - 3. [mcq] MCQ 3. 버그를 잡는 테스트케이스 (level: 챌린지, concept: -)
-      - 4. [mcq] MCQ 4. 무료배송 조건식 고르기 (level: 챌린지, concept: -)
-      - 5. [mcq] MCQ 5. 케이스 누락 방지: 최소 테스트 3개 (level: 챌린지, concept: -)
-      - 6. [short] Short 1. 경계값: VIP가 아니고 도서산간이 아닐 때 무료배송 최소 금액 (level: 단답형, concept: -)
-      - 7. [short] Short 2. 출력 예측: 예외 케이스(도서산간) (level: 단답형, concept: -)
-      - 8. [code] Code 1. 무료배송 조건식 한 줄 (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. 쿠폰 적용 가능 조건식 (등급/금액/예외) (level: 코드 작성, concept: -)
+## 세트 골격 (공통 템플릿)
 
+### b01 (기초)
+1. Trace(Grid): 단일 `if` (실행/미실행 모두 확인)
+2. Trace(Grid): `if-else` 기본 분기
+3. Short: 조건이 참/거짓이 되는 입력 찾기
+4. Code: 기본 범위 조건식 작성
+5. MCQ(선택): 기초 분기 판별
 
-## Java
-### Java - 조건문 (java_if)
+### b02 (기초)
+1. Trace(Grid): 복합 조건(`and/or`) 부분식 추적
+2. Short: `not`/`!` 적용 결과
+3. Code: 복합 조건 한 줄 작성
+4. Short: 경계값 비교
+5. MCQ(선택): 오개념(우선순위) 판별
 
-- ?? ??
-  - `java_if_b1` - Java 조건문 기초 1회차
-    - ??: `java_if_b1.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. Pass / Fail 프로그램 (level: 기초, concept: -)
-      - 2. [mcq] MCQ 2. 짝수/홀수 출력 결과 (level: 기초, concept: -)
-      - 3. [mcq] MCQ 3. 범위 검사 (level: 기초, concept: -)
-      - 4. [mcq] MCQ 4. 항상 Minus가 나오는 이유 (level: 조금 응용, concept: -)
-      - 5. [mcq] MCQ 5. 변수 설계 (level: 기초, concept: -)
-      - 6. [short] Short 1. 범위 + if-else 결과 (level: 단답형, concept: -)
-      - 7. [short] Short 2. 어떤 값을 넣으면 참이 될까? (level: 단답형, concept: -)
-      - 8. [code] Code 1. 1 이상 10 이하 조건식 작성 (level: 코드 작성, concept: -)
-      - 9. [code] Code 2. 두 정수 입력 받기 (level: 코드 작성, concept: -)
+### b03 (기초)
+1. Trace(Grid): 다중 분기(`if-elif-else`) 순서 추적
+2. Trace(Grid): 경계값(예: 90/80/79)
+3. Short: 특정 입력에서 실행 분기 맞히기
+4. Code: `elif/else if` 조건식 작성
+5. MCQ(선택): 조건 순서 변경 영향
 
+### b04 (기초)
+1. Trace(Grid): 중첩 `if` + `else` 결합 위치
+2. Short: 중첩 분기 출력 예측
+3. Code: 중첩 조건식 한 줄 작성
+4. Short: else 결합 대상 판별
+5. MCQ(선택): dangling else 오개념 교정
 
-## Python
-### Python - Lv6 조건 (py_if)
+### c01 (챌린지)
+1. Trace(Grid): 복합 + 다중 분기 결합
+2. Short: 반례/경계값 찾기
+3. Code: 정책형 조건식 한 줄 작성
+4. Trace(Grid): 예외 우선 분기 경로 확인
+5. MCQ(선택): 리팩토링 동치 판별
 
-- ?? ??
-  - `py_if_b1` - Python 조건문 기초 1회차
-    - ??: `py_lv06_if_b01.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. Pass / Fail 프로그램 (level: 기초, concept: if_basic)
-      - 2. [mcq] MCQ 2. 짝수/홀수 출력 결과 (level: 기초, concept: even_odd)
-      - 3. [mcq] MCQ 3. 범위 검사 (level: 기초, concept: range_check)
-      - 4. [mcq] MCQ 4. 항상 Minus가 나오는 이유 (level: 조금 응용, concept: indentation)
-      - 5. [mcq] MCQ 5. 학점 조건식 (level: 기초, concept: elif_chain)
-      - 6. [short] Short 1. 범위 + if-else 결과 (level: 단답형, concept: range_check)
-      - 7. [short] Short 2. 어떤 값을 넣으면 참이 될까? (level: 단답형, concept: range_check)
-      - 8. [code] Code 1. 1 이상 10 이하 조건식 작성 (level: 코드 작성, concept: range_check)
-      - 9. [code] Code 2. 두 조건을 모두 만족해야 Pass (level: 코드 작성, concept: elif_chain)
+### c02 (챌린지)
+1. Trace(Grid): 정책형 분기(예외 우선)
+2. Short: 최소 테스트케이스(경계/예외) 설계
+3. Code: 정책 조건식 한 줄 작성
+4. Short: 누락 케이스 찾기
+5. MCQ(선택): 잘못된 조건식 판별
 
-  - `py_if_b2` - Python 조건문 기초 2회차
-    - ??: `py_lv06_if_b02.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 7이면 Lucky 출력 (level: 기초, concept: eq_only)
-      - 2. [mcq] MCQ 2. 1~9 범위 밖이면 OUT (level: 기초, concept: not_range)
-      - 3. [mcq] MCQ 3. 0으로 나누기 방지 (level: 기초, concept: safe_mod)
-      - 4. [mcq] MCQ 4. 3의 배수 또는 5의 배수 (level: 기초, concept: or_condition)
-      - 5. [mcq] MCQ 5. 영하/영상 판정 (level: 기초, concept: threshold)
-      - 6. [short] Short 1. not으로 홀짝 판별 (level: 단답형, concept: threshold)
-      - 7. [short] Short 2. 조건을 만족하는 값 찾기 (level: 단답형, concept: not_range)
-      - 8. [code] Code 1. 3의 배수 또는 5의 배수 조건식 (level: 코드 작성, concept: or_condition)
-      - 9. [code] Code 2. 1~9가 아니면 OUT 조건식 (level: 코드 작성, concept: not_range)
+## JSON/가이드 품질 규칙
+1. `*_lv06_if_*.json`의 문제는 `conceptRef`를 필수로 둔다.
+2. Python/C/Java 같은 회차 세트는 문항 의도와 타입 순서를 동형으로 맞춘다.
+3. `grid` 문항은 `answerUi.kind = "grid"`를 사용하고 검사 시점을 명시한다.
+4. 이론(`theory_lv06_if.md`)의 핵심 항목(경계값/복합조건/중첩else)을 세트에 최소 1회 이상 반영한다.
+5. 출력 정답뿐 아니라 "왜 그 분기가 실행됐는지"를 설명 가능한 문항을 포함한다.
+6. `short1`은 단답형으로 유지하고 `expectedText`를 사용한다.
+7. `grid` 정답은 `expectedGrid` 2차원 배열 형식을 사용한다.
+8. `grid` 전용 문항 id는 `trace1`, `trace2` 형식을 권장한다.
 
-  - `py_if_b3` - Python 조건문 기초 3회차
-    - ??: `py_lv06_if_b03.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. elif로 학점 5단계 만들기 (level: 기초, concept: elif_chain)
-      - 2. [mcq] MCQ 2. elif 순서가 바뀌면? (level: 기초, concept: elif_chain)
-      - 3. [mcq] MCQ 3. 구간 분리: MID가 나오는 입력 (level: 기초, concept: range_split)
-      - 4. [mcq] MCQ 4. else가 어디에 붙을까? (level: 기초, concept: three_way)
-      - 5. [mcq] MCQ 5. elif 조건식: 범위 분리에서 단순화 (level: 기초, concept: elif_chain)
-      - 6. [short] Short 1. 경계값: 69점은 어디로? (level: 단답형, concept: boundary_values)
-      - 7. [short] Short 2. MID가 나오게 하는 값 (level: 단답형, concept: range_split)
-      - 8. [code] Code 1. elif로 B 구간 조건식 완성 (level: 코드 작성, concept: elif_chain)
-      - 9. [code] Code 2. 할인 구간 elif 조건식 (level: 코드 작성, concept: elif_chain)
-
-  - `py_if_b4` - Python 조건문 기초 4회차
-    - ??: `py_lv06_if_b04.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. else는 어느 if에 붙을까? (중첩 if) (level: 기초, concept: nested_if)
-      - 2. [mcq] MCQ 2. if가 두 개면 else는 어디에 붙을까? (level: 기초, concept: dangling_else)
-      - 3. [mcq] MCQ 3. 자주 하는 실수: a == 1 or 2 (level: 기초, concept: or_pitfall)
-      - 4. [mcq] MCQ 4. 드모르간/리팩토링: not (1 <= n <= 9)와 같은 의미 (level: 기초, concept: de_morgan)
-      - 5. [mcq] MCQ 5. 괄호/우선순위: 의도에 맞는 조건식 (level: 기초, concept: precedence)
-      - 6. [short] Short 1. 출력 예측: and/or 우선순위 (level: 단답형, concept: precedence)
-      - 7. [short] Short 2. 출력 예측: else가 붙는 위치 (level: 단답형, concept: nested_if)
-      - 8. [code] Code 1. not 없이 같은 의미로 바꾸기 (드모르간) (level: 코드 작성, concept: de_morgan)
-      - 9. [code] Code 2. a가 1 또는 2일 때만 YES (level: 코드 작성, concept: or_pitfall)
-
-  - `py_if_c1` - Python 조건문 챌린지 1회차
-    - ??: `py_lv06_if_c01.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 성인 / 학생 분류 (level: 챌린지, concept: compound_conditions)
-      - 2. [mcq] MCQ 2. 조건의 순서 (level: 챌린지, concept: elif_order)
-      - 3. [mcq] MCQ 3. if와 elif의 차이 (level: 챌린지, concept: separate_if)
-      - 4. [mcq] MCQ 4. and / or 섞어서 쓰기 (level: 챌린지, concept: compound_conditions)
-      - 5. [mcq] MCQ 5. 중첩 if의 동작 (level: 챌린지, concept: nested_if)
-      - 6. [short] Short 1. 여러 조건 분기 (level: 챌린지, concept: elif_order)
-      - 7. [short] Short 2. 조건을 만족하는 값 찾기 (level: 챌린지, concept: range_even)
-      - 8. [code] Code 1. 두 자리 양수이면서 짝수 (level: 코드 작성, concept: range_even)
-      - 9. [code] Code 2. 학점 B 구간 조건식 (level: 코드 작성, concept: elif_order)
-
-  - `py_if_c2` - Python 조건문 챌린지 2회차
-    - ??: `py_lv06_if_c02.json`
-    - ?? ?: 9 (mcq 5, short 2, code 2, grid 0)
-    - coreCount: -
-    - ?? ??:
-      - 1. [mcq] MCQ 1. 정책형 분기: 배송비 계산 (예외 우선) (level: 챌린지, concept: policy_priority)
-      - 2. [mcq] MCQ 2. 정책형 분기: 할인율 + 상한(최대 20%) (level: 챌린지, concept: rate_cap)
-      - 3. [mcq] MCQ 3. 버그를 잡는 테스트케이스 (level: 챌린지, concept: policy_priority)
-      - 4. [mcq] MCQ 4. 무료배송 조건식 고르기 (level: 챌린지, concept: compound_rules)
-      - 5. [mcq] MCQ 5. 케이스 누락 방지: 최소 테스트 3개 (level: 챌린지, concept: coverage_tests)
-      - 6. [short] Short 1. 경계값: VIP가 아니고 도서산간이 아닐 때 무료배송 최소 금액 (level: 단답형, concept: policy_priority)
-      - 7. [short] Short 2. 출력 예측: 예외 케이스(도서산간) (level: 단답형, concept: policy_priority)
-      - 8. [code] Code 1. 무료배송 조건식 한 줄 (level: 코드 작성, concept: compound_rules)
-      - 9. [code] Code 2. 쿠폰 적용 가능 조건식 (등급/금액/예외) (level: 코드 작성, concept: compound_rules)
+## 체크리스트
+1. 세트마다 `Trace(Grid)`가 최소 1~2문항 포함됐는가
+2. 경계값 문항이 포함됐는가 (예: 90/80/79)
+3. 복합 조건(`and/or/not`, `&&/||/!`) 문항이 포함됐는가
+4. 중첩 `if`와 `else` 결합 문항이 포함됐는가
+5. `Code` 문항이 골격+한 요소 작성 규칙을 지키는가
+6. MCQ 비중이 과도하지 않은가
+7. 언어별 표현(`elif` vs `else if`)이 정확한가

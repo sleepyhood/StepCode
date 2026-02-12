@@ -1,4 +1,4 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" width="920" height="240" viewBox="0 0 920 240">
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 920 240" preserveAspectRatio="xMinYMin meet">
   <defs>
     <style>
       .t{font:700 18px 'Segoe UI',sans-serif;fill:#0f172a}
@@ -40,3 +40,4 @@
   <text class="s" x="523" y="170">포함</text>
   <text class="s" x="652" y="170" fill="#be123c">비포함</text>
 </svg>
+

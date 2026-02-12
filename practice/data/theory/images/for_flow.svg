@@ -1,4 +1,4 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" width="920" height="220" viewBox="0 0 920 220">
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 920 220" preserveAspectRatio="xMinYMin meet">
   <defs>
     <style>
       .box{fill:#ffffff;stroke:#334155;stroke-width:2;rx:12;ry:12}
@@ -31,3 +31,4 @@
   <text class="s" x="20" y="30">for문은 조건이 참이면: 조건 확인 → 본문 실행 → 증감 → 조건 확인 ... 을 반복합니다.</text>
   <text class="s" x="20" y="190">조건이 거짓이 되는 순간 반복이 종료됩니다.</text>
 </svg>
+
