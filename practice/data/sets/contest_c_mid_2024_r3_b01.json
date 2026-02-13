@@ -1,0 +1,59 @@
+{
+    "id":  "contest_c_mid_2024_r3_b01",
+    "title":  "C 경시대회(중등) 2024 제3회 실전 1회차",
+    "categoryId":  "contest_c_mid_2024_r3",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "trace1",
+                         "type":  "short",
+                         "level":  "초,중,고",
+                         "title":  "Trace 1. 3의 배수 누적 합",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "#include <stdio.h>\nint main() {\n    int sum = 0;\n    for (int i = 1; i <= 10; i++) {\n        if (i % 3 == 0) sum += i;\n    }\n    printf(\"%d\", sum);\n    return 0;\n}",
+                         "expectedText":  "18"
+                     },
+                     {
+                         "id":  "trace2",
+                         "type":  "short",
+                         "level":  "중,고",
+                         "title":  "Trace 2. 조건식 우선순위",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "#include <stdio.h>\nint main() {\n    int a = 0;\n    for (int i = 2; i < 15; i++) {\n        if (i % 2 == 0 || i % 3 == 0 && i % 5 == 0) a++;\n    }\n    printf(\"%d\", a);\n    return 0;\n}",
+                         "expectedText":  "7"
+                     },
+                     {
+                         "id":  "theory1",
+                         "type":  "mcq",
+                         "level":  "초,중,고",
+                         "title":  "Theory 1. 형식 없는 출력 함수",
+                         "description":  "아래 중 형식 있는 입출력이 아닌 함수를 고르세요.",
+                         "options":  [
+                                         "scanf",
+                                         "fputs",
+                                         "vprintf",
+                                         "printf",
+                                         "sprintf"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1
+                     },
+                     {
+                         "id":  "rec1",
+                         "type":  "short",
+                         "level":  "중,고",
+                         "title":  "Recursion 1. 호출 결과",
+                         "description":  "다음 코드에서 `f(11, 3)`의 결과를 쓰세요.",
+                         "code":  "int f(int a, int b) {\n    if (a == 1) return 1;\n    if (a % 2 == 1) return b * f(a - 1, b);\n    return b * f(a / 2, b);\n}",
+                         "expectedText":  "243"
+                     }
+                 ]
+}

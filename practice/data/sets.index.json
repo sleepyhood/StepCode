@@ -871,5 +871,59 @@
         "difficulty":  "challenge",
         "numProblems":  3,
         "file":  "unity_u10_material_color_c01.json"
+    },
+    {
+        "id":  "contest_c_elem_2024_r3_b01",
+        "categoryId":  "contest_c_elem_2024_r3",
+        "title":  "C 경시대회(초등) 2024 제3회 실전 1회차",
+        "round":  1,
+        "difficulty":  "basic",
+        "numProblems":  4,
+        "file":  "contest_c_elem_2024_r3_b01.json"
+    },
+    {
+        "id":  "contest_c_mid_2024_r3_b01",
+        "categoryId":  "contest_c_mid_2024_r3",
+        "title":  "C 경시대회(중등) 2024 제3회 실전 1회차",
+        "round":  1,
+        "difficulty":  "basic",
+        "numProblems":  4,
+        "file":  "contest_c_mid_2024_r3_b01.json"
+    },
+    {
+        "id":  "contest_c_high_2024_r3_b01",
+        "categoryId":  "contest_c_high_2024_r3",
+        "title":  "C 경시대회(고등) 2024 제3회 실전 1회차",
+        "round":  1,
+        "difficulty":  "basic",
+        "numProblems":  4,
+        "file":  "contest_c_high_2024_r3_b01.json"
+    },
+    {
+        "id":  "contest_py_elem_2024_r3_b01",
+        "categoryId":  "contest_py_elem_2024_r3",
+        "title":  "Python 경시대회(초등) 2024 제3회 실전 1회차",
+        "round":  1,
+        "difficulty":  "basic",
+        "numProblems":  4,
+        "file":  "contest_py_elem_2024_r3_b01.json"
+    },
+    {
+        "id":  "contest_py_mid_2024_r3_b01",
+        "categoryId":  "contest_py_mid_2024_r3",
+        "title":  "Python 경시대회(중등) 2024 제3회 실전 1회차",
+        "round":  1,
+        "difficulty":  "basic",
+        "numProblems":  4,
+        "file":  "contest_py_mid_2024_r3_b01.json"
+    },
+    {
+        "id":  "contest_py_high_2024_r3_b01",
+        "categoryId":  "contest_py_high_2024_r3",
+        "title":  "Python 경시대회(고등) 2024 제3회 실전 1회차",
+        "round":  1,
+        "difficulty":  "basic",
+        "numProblems":  4,
+        "file":  "contest_py_high_2024_r3_b01.json"
     }
 ]

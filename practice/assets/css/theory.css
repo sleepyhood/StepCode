@@ -169,6 +169,29 @@
   font-size: 0.9rem;
 }
 
+.theory-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 10px auto 2px;
+}
+
+.theory-content img + p > em:only-child {
+  display: block;
+  margin-top: 0;
+  color: #64748b;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  font-style: normal;
+}
+
+.theory-content img + p > em:only-child code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
 .theory-content th,
 .theory-content td {
   border: 1px solid #e2e8f0;

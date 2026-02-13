@@ -1,0 +1,57 @@
+{
+    "id":  "contest_c_elem_2024_r3_b01",
+    "title":  "C 경시대회(초등) 2024 제3회 실전 1회차",
+    "categoryId":  "contest_c_elem_2024_r3",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "trace1",
+                         "type":  "short",
+                         "level":  "초,중,고",
+                         "title":  "Trace 1. 3의 배수 누적 합",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "#include <stdio.h>\nint main() {\n    int sum = 0;\n    for (int i = 1; i <= 10; i++) {\n        if (i % 3 == 0) sum += i;\n    }\n    printf(\"%d\", sum);\n    return 0;\n}",
+                         "expectedText":  "18"
+                     },
+                     {
+                         "id":  "theory1",
+                         "type":  "mcq",
+                         "level":  "초,중,고",
+                         "title":  "Theory 1. strncmp 함수 원형",
+                         "description":  "`string.h`의 `strncmp` 함수 원형으로 올바른 것을 고르세요.",
+                         "options":  [
+                                         "int strncmp(const char*, const char*, size_t);",
+                                         "char* strncmp(const char*, const char*, size_t);",
+                                         "void strncmp(const char*, const char*, size_t);",
+                                         "int strncmp(const char*, const char*);"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  0
+                     },
+                     {
+                         "id":  "trace2",
+                         "type":  "short",
+                         "level":  "초,중",
+                         "title":  "Trace 2. while 반복 결과",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "#include <stdio.h>\nint main() {\n    int a = 20, b = 30;\n    while (a > 0) {\n        a -= 6;\n        b += 3;\n    }\n    printf(\"%d\", b);\n    return 0;\n}",
+                         "expectedText":  "42"
+                     },
+                     {
+                         "id":  "trace3",
+                         "type":  "short",
+                         "level":  "초,중,고",
+                         "title":  "Trace 3. 인덱스 조건 누적",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "#include <stdio.h>\nint main() {\n    int a[] = {9, 10, 12, 3, 5, 1, 11, 6, 4, 2, 8, 7};\n    int b = 0;\n    for (int i = 0; i < 12; i++) {\n        if (i % 2 == 1) b += a[i];\n        if (i % 3 == 2) b -= a[i];\n    }\n    printf(\"%d\", b);\n    return 0;\n}",
+                         "expectedText":  "5"
+                     }
+                 ]
+}

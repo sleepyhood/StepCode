@@ -1,0 +1,77 @@
+{
+    "id":  "contest_c_high_2024_r3_b01",
+    "title":  "C 경시대회(고등) 2024 제3회 실전 1회차",
+    "categoryId":  "contest_c_high_2024_r3",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "trace1",
+                         "type":  "short",
+                         "level":  "중,고",
+                         "title":  "Trace 1. 조건식 우선순위",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "#include <stdio.h>\nint main() {\n    int a = 0;\n    for (int i = 2; i < 15; i++) {\n        if (i % 2 == 0 || i % 3 == 0 && i % 5 == 0) a++;\n    }\n    printf(\"%d\", a);\n    return 0;\n}",
+                         "expectedText":  "7"
+                     },
+                     {
+                         "id":  "rec1",
+                         "type":  "short",
+                         "level":  "중,고",
+                         "title":  "Recursion 1. 호출 결과",
+                         "description":  "다음 코드에서 `f(11, 3)`의 결과를 쓰세요.",
+                         "code":  "int f(int a, int b) {\n    if (a == 1) return 1;\n    if (a % 2 == 1) return b * f(a - 1, b);\n    return b * f(a / 2, b);\n}",
+                         "expectedText":  "243"
+                     },
+                     {
+                         "id":  "rec_trace",
+                         "type":  "short",
+                         "level":  "고",
+                         "title":  "Recursion Trace. f(2)~f(6) 값",
+                         "description":  "다음 재귀 함수의 `f(2)`부터 `f(6)`까지 값을 표로 채우세요.",
+                         "code":  "int f(int a) {\n    if (a <= 1) return 1;\n    return f(a - 1) + f(a - 4) * 2;\n}",
+                         "answerUi":  {
+                                          "kind":  "grid",
+                                          "rows":  [
+                                                       "f2",
+                                                       "f3",
+                                                       "f4",
+                                                       "f5",
+                                                       "f6"
+                                                   ],
+                                          "columns":  [
+                                                          "value"
+                                                      ],
+                                          "rowSep":  "\n",
+                                          "colSep":  " "
+                                      },
+                         "expectedGrid":  [
+                                              [
+                                                  "3"
+                                              ],
+                                              [
+                                                  "5"
+                                              ],
+                                              [
+                                                  "7"
+                                              ],
+                                              [
+                                                  "9"
+                                              ],
+                                              [
+                                                  "15"
+                                              ]
+                                          ]
+                     },
+                     {
+                         "id":  "dfs1",
+                         "type":  "short",
+                         "level":  "고",
+                         "title":  "DFS 1. 연결 요소 개수",
+                         "description":  "아래 입력에서 출력값을 쓰세요.",
+                         "code":  "#include <stdio.h>\nint mapp[10][10], w, h, ans;\nvoid f(int x, int y) {\n    if (x < 1 || x > w || y < 1 || y > h) return;\n    if (!mapp[x][y]) return;\n    mapp[x][y] = 0;\n    for (int i = -1; i <= 1; i++) {\n        for (int j = -1; j <= 1; j++) {\n            f(x + i, y + j);\n        }\n    }\n}\n/* input\n5 4\n1 0 1 0 0\n1 0 0 0 0\n1 0 1 0 1\n1 0 0 1 0\n*/",
+                         "expectedText":  "3"
+                     }
+                 ]
+}

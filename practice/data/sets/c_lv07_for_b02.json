@@ -101,7 +101,7 @@
                          "type":  "code",
                          "level":  "기초",
                          "title":  "Code 1. 조건식 한 줄",
-                         "description":  "if문의 괄호 안에 들어갈 조건식 한 줄을 작성하세요.",
+                         "description":  "1부터 n까지 수 중 짝수만 sum에 더하려고 합니다. if문의 괄호 안에 들어갈 조건식 한 줄을 작성하세요.",
                          "code":  "int sum = 0;\nfor (int i = 1; i \u003c= n; i++) {\n    if (/* TODO */) {\n        sum += i;\n    }\n}",
                          "expectedCode":  "i % 2 == 0"
                      }

@@ -1,0 +1,110 @@
+{
+    "id":  "contest_py_2024_r3_b01",
+    "title":  "Python 경시대회 2024 제3회 실전 1회차",
+    "categoryId":  "contest_py_2024_r3",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "trace1",
+                         "type":  "short",
+                         "level":  "초,중,고",
+                         "title":  "Trace 1. 중첩 반복 횟수",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "a = 0\nfor i in range(1, 30, 2):\n    for j in range(2, 20, 3):\n        a += 1\nprint(a)",
+                         "expectedText":  "90"
+                     },
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "초,중,고",
+                         "title":  "Theory 1. collections 모듈",
+                         "description":  "`collections` 모듈의 특수 컨테이너가 직접 대체 대상으로 두지 않는 내장 타입을 고르세요.",
+                         "options":  [
+                                         "list",
+                                         "dict",
+                                         "set",
+                                         "str",
+                                         "tuple"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3
+                     },
+                     {
+                         "id":  "trace2",
+                         "type":  "short",
+                         "level":  "초,중,고",
+                         "title":  "Trace 2. None이 아닌 출력 줄",
+                         "description":  "아래 코드에서 `None`이 아닌 값이 출력되는 줄 번호를 쓰세요.",
+                         "code":  "import re\npattern = re.compile('o[gh]')\nprint(pattern.fullmatch('o'))      # 1\nprint(pattern.fullmatch('oh'))     # 2\nprint(pattern.fullmatch('dog'))    # 3\nprint(pattern.fullmatch('doggie')) # 4\nprint(pattern.fullmatch('ogre'))   # 5",
+                         "expectedText":  "2"
+                     },
+                     {
+                         "id":  "rec1",
+                         "type":  "short",
+                         "level":  "초,중,고",
+                         "title":  "Recursion 1. while 기반 재귀 사고",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "a = 1\ni = 1\nwhile True:\n    if i > 10:\n        break\n    i += 2\n    a *= 3\nprint(a)",
+                         "expectedText":  "243"
+                     },
+                     {
+                         "id":  "rec_trace",
+                         "type":  "short",
+                         "level":  "고",
+                         "title":  "Recursion Trace. 깊이별 호출값",
+                         "description":  "`f(7, 10)` 계산 과정의 깊이별 상태를 표로 채우세요.",
+                         "code":  "def f(a, b):\n    if a < 1:\n        return 1\n    return b * f(a - 2, b + 1)",
+                         "answerUi":  {
+                                          "kind":  "grid",
+                                          "rows":  [
+                                                       "d0",
+                                                       "d1",
+                                                       "d2",
+                                                       "d3",
+                                                       "d4",
+                                                       "result"
+                                                   ],
+                                          "columns":  [
+                                                          "a",
+                                                          "b"
+                                                      ],
+                                          "rowSep":  "\n",
+                                          "colSep":  " "
+                                      },
+                         "expectedGrid":  [
+                                              [
+                                                  "7",
+                                                  "10"
+                                              ],
+                                              [
+                                                  "5",
+                                                  "11"
+                                              ],
+                                              [
+                                                  "3",
+                                                  "12"
+                                              ],
+                                              [
+                                                  "1",
+                                                  "13"
+                                              ],
+                                              [
+                                                  "-1",
+                                                  "14"
+                                              ],
+                                              [
+                                                  "17160",
+                                                  "17160"
+                                              ]
+                                          ]
+                     }
+                 ]
+}

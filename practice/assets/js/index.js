@@ -30,6 +30,7 @@ function getTrackFromCategory(cat) {
 function getTrackLabel(track) {
   if (track === "language") return "언어 수업";
   if (track === "unity") return "유니티 수업";
+  if (track === "contest") return "경시대회 수업";
   return track;
 }
 

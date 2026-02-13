@@ -5,7 +5,6 @@
 - Scene 배치 관련 개념(Local/Global, Transform Tool, Snapping)을 실제 문항 수준으로 설명할 수 있다.
 
 ## 범위
-- 출처 매핑: `practice/temp/유니티 1차 문제 풀이.md`의 2, 9, 13, 18, 29번
 - 키워드: Hierarchy, Scene, Project, Inspector, Static, Tag, Prefab, SerializeField, External Script Editor
 
 ## 먼저 큰 그림
@@ -15,7 +14,10 @@ Unity 편집 화면은 크게 4개로 생각하면 쉽다.
 - `Project`: 프로젝트 에셋(스크립트, 프리팹, 머티리얼, 이미지 등) 보관함
 - `Inspector`: "지금 선택한 대상"의 상세 설정 편집창
 
-이 4개를 정확히 구분하면 `9번` 유형은 거의 바로 풀린다.
+이 4개를 정확히 구분하면 창 매칭 유형은 거의 바로 풀린다.
+
+![Unity 에디터 4대 창 전체 화면 예시 (Hierarchy, Scene, Project, Inspector 위치 확인)](./data/theory/images/unity_u01_inspector_editor_overview.png)
+*Unity 에디터의 기본 4대 창 배치를 한 화면에서 확인한다. 출처: [Unity Manual - Using the Unity Interface](https://docs.unity3d.com/es/2019.4/uploads/Main/Editor-Breakdown.png)*
 
 ## 창 역할을 표로 정리
 | 창 | 한 줄 요약 | 자주 하는 작업 |
@@ -24,6 +26,9 @@ Unity 편집 화면은 크게 4개로 생각하면 쉽다.
 | Scene | 씬을 직접 만지는 뷰 | 이동/회전/스케일, 배치, 스냅 |
 | Project | 에셋 관리 창 | 스크립트/프리팹/이미지 찾기 |
 | Inspector | 선택 대상 상세 설정 | 컴포넌트 값 수정, Tag/Layer/Static 설정 |
+
+![4대 창 라벨링 다이어그램 (창 역할 매칭 연습용)](./data/theory/images/unity_u01_inspector_window_mapping.png)
+*Project 창 중심 UI 예시로 4대 창 역할 매칭을 연습한다. 출처: [Unity Manual - Project Window](https://docs.unity.cn/uploads/Main/project-window-context.png)*
 
 ## 핵심 패턴
 ```csharp
@@ -47,41 +52,56 @@ void Start()
 - `Debug.Log(enemies.Length)`
   - 검색 결과를 바로 콘솔에서 확인하는 디버깅 습관이다.
 
-## 문항 핵심 포인트 (2/9/18/29/13번 대응)
-### 1) Inspector 기본 기능 (2번)
-- `Static`: 이 오브젝트를 정적 오브젝트로 취급하게 해서 최적화/베이크 관련 기능에 활용된다.
+## 문항 핵심 포인트
+### 1) Inspector 기본 기능
+- `Static`: 이 오브젝트를 정적 오브젝트로 "표시"해 정적 배칭/라이트맵/오클루전 등 최적화·베이크에 활용한다.
+  - 주의: 이동 자체를 강제로 막는 스위치는 아니며, 움직이면 결과/성능상 문제가 생길 수 있다.
 - `Tag`: 스크립트에서 같은 Tag를 가진 여러 오브젝트를 찾을 때 사용한다.
   - 예: `GameObject.FindGameObjectsWithTag("Player")`
 - `Prefab`: Inspector에서 값 수정 가능하고, 인스턴스 변경사항은 Overrides/Apply로 원본 반영 가능하다.
 
-즉, 2번의 세 문장은 모두 참으로 볼 수 있다.
+![Inspector 상단 UI 예시 (Static, Tag, Layer, Prefab Overrides 위치)](./data/theory/images/unity_u01_inspector_static_tag_prefab.png)
+*Inspector의 Static 관련 UI 위치를 확인한다. 출처: [Unity Manual - Static GameObjects](https://docs.unity.cn/2017.4/Documentation/uploads/Main/GameObjectStaticDropDownMenu.png)*
 
-### 2) 창 매칭 (9번)
+
+
+### 2) 창 매칭
 - 씬 오브젝트 목록 = `Hierarchy`
 - 씬을 직접 보고 배치 = `Scene`
 - 프로젝트 자산 관리 = `Project`
 - 선택 대상 세부 설정 = `Inspector`
 
-### 3) IDE 선택 (18번)
+### 3) IDE 선택
 - Unity에서 C# 편집기(IDE) 선택 위치:
   - `Edit > Preferences > External Tools > External Script Editor`
+  - macOS/버전에 따라 `Unity > Settings(Preferences) > External Tools`로 보일 수 있다.
 - 보기형 문항에서는 `External Script Editor`가 정답 포인트다.
 
-### 4) Scene 배치 T/F (29번)
+![External Script Editor 설정 화면 예시 (IDE 선택 위치 확인)](./data/theory/images/unity_u01_inspector_external_script_editor.png)
+*External Script Editor 설정 위치를 확인한다. 출처: [Unity Manual - Preferences (External Tools)](https://docs.unity3d.com/es/2018.4/uploads/Main/PrefsExtTools.png)*
+
+### 4) Scene 배치 T/F
 - Local / Global 전환: 가능 (참)
 - Transform(또는 Universal) Tool: 이동/회전/스케일 결합 (참)
 - Vertex Snapping:
   - 단순히 "그리드 전용"이라고만 보면 오답 가능
-  - 주로 꼭지점 기준 정밀 배치 용도 (문항 맥락상 3번 거짓)
+  - 주로 꼭지점 기준 정밀 배치 용도 (거짓)
 - Transform 조작:
-  - Scene 뷰뿐 아니라 Inspector 수치 입력으로도 가능 (4번 거짓)
+  - Scene 뷰뿐 아니라 Inspector 수치 입력으로도 가능 (거짓)
 
-### 5) Inspector에 변수 안 보임 (13번)
+![Scene 배치 도구 예시 (Local/Global 토글, Transform Tool, Vertex Snapping)](./data/theory/images/unity_u01_inspector_scene_tools.png)
+*Scene 뷰의 Transform 관련 조작 UI를 확인한다. 출처: [Unity Manual - Positioning GameObjects](https://docs.unity.cn/uploads/Main/game-objects-transform-modes.png)*
+
+### 5) Inspector에 변수 안 보임
 - Inspector는 기본적으로 "직렬화 가능한 필드"를 표시한다.
 - `private string playerName;`만 쓰면 기본 상태에서는 Inspector에 안 보인다.
+- 또한 `static`/`readonly` 필드이거나, Unity가 직렬화하지 않는 타입이면 표시되지 않을 수 있다.
 - 해결:
   - `public string playerName;` 또는
   - `[SerializeField] private string playerName;`
+
+![Inspector 변수 노출 비교 예시 (public 필드 vs [SerializeField] private 필드)](./data/theory/images/unity_u01_inspector_serializefield_compare.png)
+*Inspector에서 스크립트 필드 노출 형태를 확인한다. 출처: [Unity Manual - Inspector Example](https://docs.unity3d.com/es/2019.4/uploads/Main/InspectorExampleObjWithScripts.png)*
 
 ## 자주 하는 실수
 - Hierarchy와 Project를 바꿔 생각함

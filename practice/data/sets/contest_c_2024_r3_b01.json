@@ -1,0 +1,97 @@
+{
+    "id":  "contest_c_2024_r3_b01",
+    "title":  "C 경시대회 2024 제3회 실전 1회차",
+    "categoryId":  "contest_c_2024_r3",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "trace1",
+                         "type":  "short",
+                         "level":  "초,중,고",
+                         "title":  "Trace 1. 3의 배수 누적 합",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "#include <stdio.h>\nint main() {\n    int sum = 0;\n    for (int i = 1; i <= 10; i++) {\n        if (i % 3 == 0) sum += i;\n    }\n    printf(\"%d\", sum);\n    return 0;\n}",
+                         "expectedText":  "18"
+                     },
+                     {
+                         "id":  "mcq1",
+                         "type":  "mcq",
+                         "level":  "초,중,고",
+                         "title":  "Theory 1. strncmp 함수 원형",
+                         "description":  "`string.h`의 `strncmp` 함수 원형으로 올바른 것을 고르세요.",
+                         "options":  [
+                                         "int strncmp(const char*, const char*, size_t);",
+                                         "char* strncmp(const char*, const char*, size_t);",
+                                         "void strncmp(const char*, const char*, size_t);",
+                                         "int strncmp(const char*, const char*);"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D"
+                                          ],
+                         "correctIndex":  0
+                     },
+                     {
+                         "id":  "trace2",
+                         "type":  "short",
+                         "level":  "중,고",
+                         "title":  "Trace 2. 조건식 우선순위",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "#include <stdio.h>\nint main() {\n    int a = 0;\n    for (int i = 2; i < 15; i++) {\n        if (i % 2 == 0 || i % 3 == 0 && i % 5 == 0) a++;\n    }\n    printf(\"%d\", a);\n    return 0;\n}",
+                         "expectedText":  "7"
+                     },
+                     {
+                         "id":  "rec1",
+                         "type":  "short",
+                         "level":  "중,고",
+                         "title":  "Recursion 1. 호출-반환 결과",
+                         "description":  "다음 코드에서 `f(11, 3)`의 결과를 쓰세요.",
+                         "code":  "int f(int a, int b) {\n    if (a == 1) return 1;\n    if (a % 2 == 1) return b * f(a - 1, b);\n    return b * f(a / 2, b);\n}",
+                         "expectedText":  "243"
+                     },
+                     {
+                         "id":  "rec_trace",
+                         "type":  "short",
+                         "level":  "고",
+                         "title":  "Recursion Trace. 호출표 작성",
+                         "description":  "`f(6)`의 결과를 구하고, 호출표를 채우세요.",
+                         "code":  "int f(int a) {\n    if (a <= 1) return 1;\n    return f(a - 1) + f(a - 4) * 2;\n}",
+                         "answerUi":  {
+                                          "kind":  "grid",
+                                          "rows":  [
+                                                       "f2",
+                                                       "f3",
+                                                       "f4",
+                                                       "f5",
+                                                       "f6"
+                                                   ],
+                                          "columns":  [
+                                                          "value"
+                                                      ],
+                                          "rowSep":  "\n",
+                                          "colSep":  " "
+                                      },
+                         "expectedGrid":  [
+                                              [
+                                                  "3"
+                                              ],
+                                              [
+                                                  "5"
+                                              ],
+                                              [
+                                                  "7"
+                                              ],
+                                              [
+                                                  "9"
+                                              ],
+                                              [
+                                                  "15"
+                                              ]
+                                          ]
+                     }
+                 ]
+}
