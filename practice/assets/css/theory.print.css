@@ -188,6 +188,18 @@ body.layout-double .theory-print-root .theory-code-label {
   padding: 10px 12px;
 }
 
+.theory-print-root pre.line-numbers.theory-code {
+  padding-left: 3.2em;
+}
+
+.theory-print-root pre.line-numbers.theory-code .line-numbers-rows {
+  border-right: 1px solid #cbd5e1;
+}
+
+.theory-print-root pre.line-numbers.theory-code .line-numbers-rows > span:before {
+  color: #64748b;
+}
+
 .theory-code-label {
   display: inline-flex;
   margin: 14px 0 6px;
@@ -198,6 +210,24 @@ body.layout-double .theory-print-root .theory-code-label {
   border: 1px solid #99f6e4;
   color: #115e59;
   background: #f0fdfa;
+}
+
+/* Print separation: avoid section blocks looking glued together */
+.theory-print-root .theory-trace-grid + h1,
+.theory-print-root .theory-trace-grid + h2,
+.theory-print-root .theory-trace-grid + h3,
+.theory-print-root .theory-io + h1,
+.theory-print-root .theory-io + h2,
+.theory-print-root .theory-io + h3,
+.theory-print-root pre + h1,
+.theory-print-root pre + h2,
+.theory-print-root pre + h3,
+.theory-print-root table + h1,
+.theory-print-root table + h2,
+.theory-print-root table + h3 {
+  margin-top: 1.2em;
+  padding-top: 0.42em;
+  border-top: 1px solid #dbe5f1;
 }
 
 .theory-io {

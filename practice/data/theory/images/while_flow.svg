@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="300" viewBox="0 0 920 300">
+  <defs>
+    <style>
+      .title { font: 700 24px 'Segoe UI', sans-serif; fill: #1f2937; }
+      .box { fill: #eef2ff; stroke: #a5b4fc; stroke-width: 2; }
+      .txt { font: 600 16px 'Segoe UI', sans-serif; fill: #1f2937; }
+      .small { font: 500 14px 'Segoe UI', sans-serif; fill: #4b5563; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="920" height="300" fill="#f8fafc"/>
+  <text x="40" y="42" class="title">while 실행 흐름</text>
+
+  <rect x="60" y="105" width="190" height="60" rx="10" class="box"/>
+  <text x="155" y="141" text-anchor="middle" class="txt">1) 조건 검사</text>
+
+  <rect x="310" y="105" width="190" height="60" rx="10" class="box"/>
+  <text x="405" y="141" text-anchor="middle" class="txt">2) 본문 실행</text>
+
+  <rect x="560" y="105" width="190" height="60" rx="10" class="box"/>
+  <text x="655" y="141" text-anchor="middle" class="txt">3) 상태 갱신</text>
+
+  <line x1="250" y1="135" x2="310" y2="135" stroke="#4f46e5" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="500" y1="135" x2="560" y2="135" stroke="#4f46e5" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <path d="M750 135 C 830 135, 830 235, 655 235 C 520 235, 380 235, 155 235 C 85 235, 85 170, 120 150" fill="none" stroke="#4f46e5" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="460" y="258" text-anchor="middle" class="txt">조건이 true면 반복</text>
+
+  <line x1="155" y1="105" x2="155" y2="75" stroke="#dc2626" stroke-width="3"/>
+  <text x="180" y="80" class="txt" fill="#dc2626">false면 종료</text>
+
+  <text x="40" y="286" class="small">핵심: 조건 검사 -&gt; 본문 -&gt; 갱신 순서가 유지되어야 무한 루프를 피할 수 있습니다.</text>
+</svg>

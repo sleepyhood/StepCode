@@ -131,7 +131,7 @@
                          "type":  "code",
                          "level":  "기초",
                          "title":  "Code 1. 조건식 한 줄",
-                         "description":  "if문의 괄호 안에 들어갈 조건식 한 줄을 작성하세요.",
+                         "description":  "n개의 정수를 입력받아 양수만 sum에 더하려고 합니다.\nif문의 괄호 안( /* TODO */ 부분 )에 들어갈 조건식 한 줄을 작성하세요.",
                          "code":  "int sum = 0;\nfor (int i = 0; i \u003c n; i++) {\n    int num;\n    scanf(\"%d\", \u0026num);\n    if (/* TODO */) {\n        sum += num;\n    }\n}",
                          "expectedCode":  "num \u003e 0"
                      }

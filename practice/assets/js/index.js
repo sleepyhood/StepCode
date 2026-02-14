@@ -31,6 +31,7 @@ function getTrackLabel(track) {
   if (track === "language") return "언어 수업";
   if (track === "unity") return "유니티 수업";
   if (track === "contest") return "경시대회 수업";
+  if (track === "canva") return "Canva 가이드";
   return track;
 }
 
@@ -190,7 +191,10 @@ function groupByPart(categories, sets) {
 
 function buildPartCard(part, lang, theoryByCategoryId) {
   const langInfo = part.byLang[lang];
-  if (!langInfo || !langInfo.sets.length) return null;
+  if (!langInfo) return null;
+  const theory = theoryByCategoryId[langInfo.category.id];
+  const hasTheoryOnly = !langInfo.sets.length && !!theory?.conceptId;
+  if (!langInfo.sets.length && !hasTheoryOnly) return null;
 
   const section = document.createElement("section");
   section.className = "part-card";
@@ -213,7 +217,6 @@ function buildPartCard(part, lang, theoryByCategoryId) {
   meta.className = "part-card-meta";
   const basicCount = langInfo.sets.filter((s) => s.difficulty !== "challenge").length;
   const challengeCount = langInfo.sets.filter((s) => s.difficulty === "challenge").length;
-  const theory = theoryByCategoryId[langInfo.category.id];
   const priority = getPriorityInfo(theory?.priority);
   meta.textContent = `${lang}`;
 
@@ -251,7 +254,7 @@ function buildPartCard(part, lang, theoryByCategoryId) {
   toggle.type = "button";
   toggle.className = "part-rounds-toggle";
   toggle.textContent = "자세히 보기";
-  controls.appendChild(toggle);
+  if (langInfo.sets.length) controls.appendChild(toggle);
 
   const rounds = document.createElement("div");
   rounds.className = "part-rounds";
@@ -317,11 +320,15 @@ function buildPartCard(part, lang, theoryByCategoryId) {
     rounds.appendChild(g);
   }
 
-  toggle.addEventListener("click", () => {
-    const nextHidden = !rounds.hidden;
-    const sameRowCards = getCardsInSameRow(section);
-    sameRowCards.forEach((cardEl) => setCardRoundsHidden(cardEl, nextHidden));
-  });
+  if (langInfo.sets.length) {
+    toggle.addEventListener("click", () => {
+      const nextHidden = !rounds.hidden;
+      const sameRowCards = getCardsInSameRow(section);
+      sameRowCards.forEach((cardEl) => setCardRoundsHidden(cardEl, nextHidden));
+    });
+  } else {
+    rounds.hidden = false;
+  }
 
   section.append(head, controls, rounds);
   return section;

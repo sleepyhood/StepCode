@@ -281,16 +281,16 @@ function enhanceCodeBlocks(contentEl) {
   const codeBlocks = contentEl.querySelectorAll("pre > code");
   codeBlocks.forEach((codeEl) => {
     const lang = detectLangFromCode(codeEl);
-    if (!isToggleLanguage(lang)) return;
-    const prismLang = mapPrismLanguage(lang);
-    if (!prismLang) return;
-
     const pre = codeEl.closest("pre");
     if (!pre) return;
 
-    codeEl.className = `language-${prismLang}`;
     pre.classList.add("line-numbers");
     pre.classList.add("theory-code");
+
+    const prismLang = mapPrismLanguage(lang);
+    if (prismLang) {
+      codeEl.className = `language-${prismLang}`;
+    }
   });
 
   if (window.Prism && typeof window.Prism.highlightAllUnder === "function") {

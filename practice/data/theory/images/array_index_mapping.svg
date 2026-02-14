@@ -1,0 +1,43 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="920" height="280" viewBox="0 0 920 280">
+  <defs>
+    <style>
+      .title { font: 700 24px 'Segoe UI', sans-serif; fill: #1f2937; }
+      .label { font: 600 16px 'Segoe UI', sans-serif; fill: #374151; }
+      .small { font: 500 14px 'Segoe UI', sans-serif; fill: #4b5563; }
+      .idx { font: 700 15px 'Consolas', monospace; fill: #1d4ed8; }
+      .val { font: 700 20px 'Consolas', monospace; fill: #111827; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="920" height="280" fill="#f8fafc"/>
+  <text x="40" y="42" class="title">배열 인덱스 - 값 매핑</text>
+  <text x="40" y="70" class="small">인덱스는 0부터 시작하고, 길이가 n이면 마지막 인덱스는 n-1입니다.</text>
+
+  <rect x="90" y="120" width="130" height="70" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+  <rect x="220" y="120" width="130" height="70" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+  <rect x="350" y="120" width="130" height="70" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+  <rect x="480" y="120" width="130" height="70" rx="8" fill="#dbeafe" stroke="#93c5fd"/>
+
+  <text x="150" y="112" text-anchor="middle" class="idx">[0]</text>
+  <text x="280" y="112" text-anchor="middle" class="idx">[1]</text>
+  <text x="410" y="112" text-anchor="middle" class="idx">[2]</text>
+  <text x="540" y="112" text-anchor="middle" class="idx">[3]</text>
+
+  <text x="155" y="163" text-anchor="middle" class="val">10</text>
+  <text x="285" y="163" text-anchor="middle" class="val">20</text>
+  <text x="415" y="163" text-anchor="middle" class="val">30</text>
+  <text x="545" y="163" text-anchor="middle" class="val">40</text>
+
+  <line x1="675" y1="145" x2="840" y2="145" stroke="#16a34a" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="675" y="125" class="label">arr[2] 접근</text>
+  <text x="845" y="150" class="val">30</text>
+  <text x="675" y="182" class="small" fill="#6b7280">범위 밖 예시: arr[4] -&gt; 오류</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <text x="40" y="240" class="small">예시: arr = [10, 20, 30, 40], arr[2]의 값은 30</text>
+</svg>

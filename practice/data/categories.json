@@ -243,5 +243,89 @@
         "lang":  "Python",
         "track":  "contest",
         "order":  606
+    },
+    {
+        "id":  "canva_curriculum",
+        "name":  "Canva - 통합 커리큘럼",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  701
+    },
+    {
+        "id":  "canva_assignments_index",
+        "name":  "Canva - 학생 과제지(1~10)",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  702
+    },
+    {
+        "id":  "canva_l01_assignment",
+        "name":  "Canva - 1차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  703
+    },
+    {
+        "id":  "canva_l02_assignment",
+        "name":  "Canva - 2차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  704
+    },
+    {
+        "id":  "canva_l03_assignment",
+        "name":  "Canva - 3차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  705
+    },
+    {
+        "id":  "canva_l04_assignment",
+        "name":  "Canva - 4차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  706
+    },
+    {
+        "id":  "canva_l05_assignment",
+        "name":  "Canva - 5차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  707
+    },
+    {
+        "id":  "canva_l06_assignment",
+        "name":  "Canva - 6차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  708
+    },
+    {
+        "id":  "canva_l07_assignment",
+        "name":  "Canva - 7차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  709
+    },
+    {
+        "id":  "canva_l08_assignment",
+        "name":  "Canva - 8차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  710
+    },
+    {
+        "id":  "canva_l09_assignment",
+        "name":  "Canva - 9차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  711
+    },
+    {
+        "id":  "canva_l10_assignment",
+        "name":  "Canva - 10차시 과제지",
+        "lang":  "Canva",
+        "track":  "canva",
+        "order":  712
     }
 ]

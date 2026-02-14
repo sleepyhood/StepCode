@@ -138,6 +138,24 @@
   margin-bottom: 0.42em;
 }
 
+/* Section separation: when a new heading starts right after a block, add clear spacing/divider */
+.theory-content .theory-trace-grid + h1,
+.theory-content .theory-trace-grid + h2,
+.theory-content .theory-trace-grid + h3,
+.theory-content .theory-io + h1,
+.theory-content .theory-io + h2,
+.theory-content .theory-io + h3,
+.theory-content pre + h1,
+.theory-content pre + h2,
+.theory-content pre + h3,
+.theory-content table + h1,
+.theory-content table + h2,
+.theory-content table + h3 {
+  margin-top: 1.45em;
+  padding-top: 0.55em;
+  border-top: 1px solid #e2e8f0;
+}
+
 .theory-content pre {
   margin: 10px 0;
   border-radius: 12px;
@@ -149,6 +167,18 @@
 
 .theory-content pre.theory-code {
   border: 1px solid #1e293b;
+}
+
+.theory-content pre.line-numbers.theory-code {
+  padding-left: 3.2em;
+}
+
+.theory-content pre.line-numbers.theory-code .line-numbers-rows {
+  border-right: 1px solid rgba(226, 232, 240, 0.25);
+}
+
+.theory-content pre.line-numbers.theory-code .line-numbers-rows > span:before {
+  color: #94a3b8;
 }
 
 .theory-content code {

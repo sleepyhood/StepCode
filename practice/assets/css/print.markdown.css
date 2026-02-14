@@ -621,12 +621,30 @@ pre.opt-code {
   tab-size: 2;
 }
 
+pre.p-code.line-numbers,
+pre.opt-code.line-numbers {
+  padding-left: calc(3.2em + 2mm);
+}
+pre.p-code.line-numbers .line-numbers-rows,
+pre.opt-code.line-numbers .line-numbers-rows {
+  top: 0 !important;
+}
+pre.p-code.line-numbers,
+pre.opt-code.line-numbers,
+pre.p-code.line-numbers > code,
+pre.opt-code.line-numbers > code {
+  line-height: 1.25 !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
 /* Low-ink container styling: thin border, no background fill */
 .p-code,
 .opt-code {
   border: 0.5px solid #cfcfcf;  /* light gray = low ink */
   border-radius: 6px;
-  padding: 3mm 3.5mm;
+  --code-pad-y: 3mm;
+  padding: var(--code-pad-y) 3.5mm;
   margin: 2mm 0;
   background: transparent;      /* IMPORTANT: no gray fill */
 }
@@ -636,6 +654,9 @@ pre.opt-code {
 .opt-code code {
   background: transparent;
   padding: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  display: block;
 }
 
 
@@ -643,7 +664,8 @@ pre.opt-code {
 /* Slightly tighter inside MCQ options (often shorter boxes) */
 .p-options .opt-code,
 .p-options pre.opt-code {
-  padding: 2.5mm 3mm;
+  --code-pad-y: 2.5mm;
+  padding: var(--code-pad-y) 3mm;
   margin: 1.5mm 0 0;
 }
 
@@ -672,6 +694,89 @@ pre.opt-code {
     print-color-adjust: exact;
     background: transparent !important;
   }
+}
+
+/* Prism token styling (print-friendly, low-ink) */
+.p-code code[class*="language-"],
+.opt-code code[class*="language-"]{
+  color: #111827;
+  background: transparent !important;
+  background-image: none !important;
+  text-shadow: none !important;
+  text-decoration: none !important;
+}
+
+.p-code code[class*="language-"] .token,
+.opt-code code[class*="language-"] .token{
+  background: transparent !important;
+  background-image: none !important;
+  text-shadow: none !important;
+  text-decoration: none !important;
+}
+.print-root pre[class*="language-"],
+.print-root code[class*="language-"],
+.print-root .token.operator,
+.print-root .token.entity,
+.print-root .token.url,
+.print-root .language-css .token.string,
+.print-root .style .token.string {
+  background: transparent !important;
+  background-image: none !important;
+  text-shadow: none !important;
+}
+
+.print-root.variant-student .token.comment,
+.print-root.variant-student .token.prolog,
+.print-root.variant-student .token.doctype,
+.print-root.variant-student .token.cdata{
+  color: #6b7280;
+  font-style: italic;
+}
+.print-root.variant-student .token.keyword,
+.print-root.variant-student .token.selector,
+.print-root.variant-student .token.atrule{
+  color: #1f2937;
+  font-weight: 700;
+}
+.print-root.variant-student .token.string,
+.print-root.variant-student .token.char,
+.print-root.variant-student .token.attr-value{
+  color: #374151;
+}
+.print-root.variant-student .token.number,
+.print-root.variant-student .token.boolean,
+.print-root.variant-student .token.constant{
+  color: #111827;
+  font-weight: 700;
+}
+
+.print-root.variant-teacher .token.comment,
+.print-root.variant-teacher .token.prolog,
+.print-root.variant-teacher .token.doctype,
+.print-root.variant-teacher .token.cdata{
+  color: #6b7280;
+  font-style: italic;
+}
+.print-root.variant-teacher .token.keyword,
+.print-root.variant-teacher .token.selector,
+.print-root.variant-teacher .token.atrule{
+  color: #0f3a8a;
+  font-weight: 700;
+}
+.print-root.variant-teacher .token.string,
+.print-root.variant-teacher .token.char,
+.print-root.variant-teacher .token.attr-value{
+  color: #0f5f3b;
+}
+.print-root.variant-teacher .token.number,
+.print-root.variant-teacher .token.boolean,
+.print-root.variant-teacher .token.constant{
+  color: #7a2e0e;
+  font-weight: 700;
+}
+.print-root.variant-teacher .token.function{
+  color: #3f3f46;
+  font-weight: 700;
 }
 
 

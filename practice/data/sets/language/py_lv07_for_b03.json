@@ -131,7 +131,7 @@
                          "type":  "code",
                          "level":  "기초",
                          "title":  "Code 1. 조건식 한 줄",
-                         "description":  "if문의 조건식 한 줄을 작성하세요.",
+                         "description":  "n개의 정수를 입력받아 양수만 sumv에 더하려고 합니다.\nif ____ 부분에 들어갈 조건식 한 줄을 작성하세요.",
                          "code":  "sumv = 0\nfor i in range(n):\n    num = int(input())\n    if ____:\n        sumv += num",
                          "expectedCode":  "num \u003e 0"
                      }

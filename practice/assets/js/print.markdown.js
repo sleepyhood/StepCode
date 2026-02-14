@@ -2,6 +2,7 @@
 
 let currentSetData = null;
 const SLOTS_PER_PAGE = 2;
+let currentShowLineNumbers = false;
 
 function ymd(d = new Date()) {
   const y = d.getFullYear();
@@ -225,6 +226,39 @@ function el(tag, cls, text) {
   if (cls) x.className = cls;
   if (text != null) x.textContent = text;
   return x;
+}
+
+function detectPrismLanguage(set) {
+  const raw = String(
+    (set && Array.isArray(set.availableLanguages) ? set.availableLanguages[0] : "") || ""
+  )
+    .trim()
+    .toLowerCase();
+
+  if (raw === "python" || raw === "py") return "python";
+  if (raw === "java") return "java";
+  if (raw === "csharp" || raw === "cs" || raw === "c#") return "csharp";
+  if (raw === "c") return "c";
+  return "clike";
+}
+
+function buildHighlightedCodePre(set, className, source, withLineNumbers = true) {
+  const pre = el("pre", className);
+  if (currentShowLineNumbers && withLineNumbers) pre.classList.add("line-numbers");
+  const code = document.createElement("code");
+  code.className = `language-${detectPrismLanguage(set)}`;
+  code.textContent = String(source ?? "");
+  pre.appendChild(code);
+  return pre;
+}
+
+function applyPrismHighlight(scopeEl) {
+  const prism = window.Prism;
+  if (!prism || typeof prism.highlightElement !== "function") return;
+  const root = scopeEl || document;
+  root.querySelectorAll("pre.p-code code, pre.opt-code code").forEach((node) => {
+    prism.highlightElement(node);
+  });
 }
 
 function shouldMcqOptionsUseTwoColumns(q) {
@@ -538,10 +572,10 @@ function shouldMcqCodeOptionsUseTwoColumns(q) {
   if (opts.length > 6) return false;
 
   // ✅ 코드박스는 2열에서 폭이 더 좁아지므로 텍스트보다 보수적으로
-  const MAX_ROWS = 15;          // (래핑 포함) 옵션 1개당 허용 "보이는 줄" 총합
+  const MAX_ROWS = 18;          // (래핑 포함) 옵션 1개당 허용 "보이는 줄" 총합
   const MAX_ROW_CHARS = 28;    // 한 줄이 이 길이를 넘으면 래핑된다고 가정
   const MAX_TOKEN_CHARS = 28;  // 공백 없는 덩어리(긴 식별자/문자열)가 너무 길면 2열 금지
-  const MAX_PHYSICAL_LINES = 15; // 실제 개행 줄 수 하드캡
+  const MAX_PHYSICAL_LINES = 18; // 실제 개행 줄 수 하드캡
 
   const normalize = (s) =>
     String(s ?? "")
@@ -610,8 +644,7 @@ function buildProblemCard(set, q, originalIndex, variant) {
   }
 
   if (q.code) {
-    const pre = el("pre", "p-code");
-    pre.textContent = String(q.code);
+    const pre = buildHighlightedCodePre(set, "p-code", q.code, true);
     card.appendChild(pre);
   }
 
@@ -663,8 +696,7 @@ if (q.type === "mcq") {
     const opt = String(t ?? "");
 
     if (forceOptCodeBox || opt.includes("\n")) {
-      const pre = el("pre", "p-code opt-code");
-      pre.textContent = opt;
+      const pre = buildHighlightedCodePre(set, "p-code opt-code", opt, false);
       tdiv.appendChild(pre);
     } else {
       tdiv.classList.add("md-inline");
@@ -854,6 +886,8 @@ async function renderAll({ setId, bucket, variant }) {
 }
 
   root.innerHTML = "";
+  root.classList.remove("variant-student", "variant-teacher");
+  root.classList.add(variant === "teacher" ? "variant-teacher" : "variant-student");
 
   const includeConcept = qp("concept") !== "0";
   if (includeConcept) {
@@ -1046,6 +1080,7 @@ async function renderAll({ setId, bucket, variant }) {
     root.appendChild(pageEl);
   });
 
+  applyPrismHighlight(root);
   updateToolbarTitle(currentSetData, bucket, variant);
 }
 
@@ -1097,6 +1132,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const variantSel = document.getElementById("variant-select");
   const bucketSel = document.getElementById("bucket-select");
   const conceptCheck = document.getElementById("concept-check");
+  const lineNumbersCheck = document.getElementById("line-numbers-check");
 
 // [print.markdown.js] 위치: document.addEventListener("DOMContentLoaded", ...) 내부
 // bucket-select/apply-btn 세팅하는 부분에 추가
@@ -1109,10 +1145,27 @@ const rangeHint = document.getElementById("range-hint");
 const initBucket = qp("bucket") || "all";
 const initRange = qp("range") || "";
 const initConcept = qp("concept");
+const initLineNumbers = qp("lineNumbers");
+const hasInitLineNumbers = initLineNumbers === "1" || initLineNumbers === "0";
 
 if (bucketSel) bucketSel.value = (["all","core","supp","custom"].includes(initBucket) ? initBucket : "all");
 if (rangeInput) rangeInput.value = initRange;
 if (conceptCheck) conceptCheck.checked = initConcept !== "0";
+if (lineNumbersCheck) {
+  if (hasInitLineNumbers) {
+    lineNumbersCheck.checked = initLineNumbers === "1";
+  } else {
+    lineNumbersCheck.checked = !!(variantSel && variantSel.value === "teacher");
+  }
+}
+currentShowLineNumbers = !!(lineNumbersCheck && lineNumbersCheck.checked);
+
+if (variantSel && lineNumbersCheck && !hasInitLineNumbers) {
+  variantSel.addEventListener("change", () => {
+    lineNumbersCheck.checked = variantSel.value === "teacher";
+    currentShowLineNumbers = lineNumbersCheck.checked;
+  });
+}
 
 // bucket 변경 시 입력칸 토글
 function syncRangeUI() {
@@ -1136,12 +1189,15 @@ if (applyBtn) {
     const bucket = bucketSel ? bucketSel.value : "all";
     const range = (rangeInput ? rangeInput.value : "").trim();
     const concept = conceptCheck && conceptCheck.checked ? "1" : "0";
+    const lineNumbers = lineNumbersCheck && lineNumbersCheck.checked ? "1" : "0";
+    currentShowLineNumbers = lineNumbers === "1";
 
     setQp("variant", variant);
     setQp("bucket", bucket);
     if (bucket === "custom") setQp("range", range);
     else setQp("range", ""); // custom 아니면 비워두기(혼선 방지)
     setQp("concept", concept);
+    setQp("lineNumbers", lineNumbers);
 
     await renderAll({ setId, bucket, variant });
   });
