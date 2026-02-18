@@ -8,8 +8,9 @@
 ## 파일/리소스 규칙
 - 본문 파일: `practice/data/theory/canva/theory_canva_<topic>.md`
 - 이미지 파일: `practice/data/theory/images/canva_<topic>_<purpose>.png` 또는 `.svg`
-- 문서 내 이미지 경로: `./data/theory/images/<file>`
+- 문서 내 이미지 경로: `../images/<file>`
 - Canva 원본 링크는 문서 하단 `출처/작업 링크` 섹션에 기록
+- 라이선스 메모는 문서 하단 `출처/라이선스 기록` 섹션에 차시별로 기록
 
 ## 복사용 본문 템플릿
 ~~~markdown
@@ -24,7 +25,7 @@
 - [이 단원의 핵심 문장 1개]
 
 ## 개념 지도
-![개념 지도](./data/theory/images/canva_<topic>_map.png)
+![개념 지도](../images/canva_<topic>_map.png)
 *캡션: [무엇을 보여주는지]. 출처: [Canva 작업본](https://...)*
 
 ## 핵심 개념 1: [개념명]
@@ -65,9 +66,32 @@ rows:
 - [요약 1]
 - [요약 2]
 
-## 출처/작업 링크
+## 출처/라이선스 기록
 - Canva 원본:
 - 참고 문서:
+- 이미지 자산 기록:
+  - 파일명:
+  - 출처 URL:
+  - 라이선스: Free / Pro / Editorial
+  - 사용 범위: 수업자료 / 과제 배포 / 내부 공유
+  - 확인일: YYYY-MM-DD
+~~~
+
+## 캡션 표기 예시
+- 일반: `*캡션: [설명]. 출처: [문서명](URL)*`
+- 라이선스 포함: `*캡션: [설명]. 출처: [Canva Docs](URL), 라이선스: Free, 확인일: 2026-02-16*`
+
+## 출처/라이선스 미니 템플릿
+~~~markdown
+## 출처/라이선스 기록
+- Canva 원본: https://www.canva.com/design/...
+- 참고 문서: https://www.canva.com/help/...
+- 이미지 자산 기록:
+  - 파일명: canva_l04_magic_design_output_01.png
+  - 출처 URL: https://www.canva.com/help/magic-design/
+  - 라이선스: Free
+  - 사용 범위: 수업자료 / 과제 배포
+  - 확인일: 2026-02-16
 ~~~
 
 ## 출고 전 체크리스트
@@ -76,3 +100,4 @@ rows:
 3. 이미지마다 캡션/출처가 있는가?
 4. 미니 체크 3문항 이상이 포함됐는가?
 5. 학생 화면에 제작 메모가 노출되지 않는가?
+6. 이미지별 라이선스(Free/Pro/Editorial)와 확인일이 기록되었는가?

@@ -4,6 +4,10 @@
 - 본 문서는 학생 자습/복습용 이론 본문입니다.
 - 실습/제출 규정은 차시별 과제지를 함께 사용합니다.
 
+## 운영 문서
+- 이미지 준비 체크리스트: [canva_lesson_image_checklist_l01_l10.md](./canva_lesson_image_checklist_l01_l10.md)
+- 출처/라이선스 템플릿 가이드: [guide_canva_md_template.md](./guide_canva_md_template.md)
+
 ## 차시별 교재
 - L01: [theory_canva_l01.md](./theory_canva_l01.md) | 과제지: [student_assignment_l01.md](./student_assignment_l01.md)
 - L02: [theory_canva_l02.md](./theory_canva_l02.md) | 과제지: [student_assignment_l02.md](./student_assignment_l02.md)

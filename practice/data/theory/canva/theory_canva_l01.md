@@ -11,21 +11,31 @@
 ## 핵심 한 줄
 - 계정, 라이선스, 기본 작업 흐름
 
+## 개념 지도
+![L01 개념 지도](../images/canva_l01_ui_home_01.png)
+*캡션: Canva 홈 화면에서 수업 시작 동선을 확인한다. 출처: [Canva Docs](https://www.canva.com/help/)*
+
 ## 핵심 개념 1: 작업 흐름
 - 정의: 이 차시에서 가장 먼저 판단해야 하는 기준이다.
 - 언제 쓰는가: 결과물 방향을 정할 때 사용한다.
 - 자주 틀리는 포인트: 기능만 쓰고 목적을 놓치는 경우.
+![L01 에디터 화면](../images/canva_l01_ui_editor_01.png)
+*캡션: 에디터에서 텍스트/요소/공유 흐름을 확인한다. 출처: [Canva Docs](https://www.canva.com/help/)*
 
 ## 핵심 개념 2: 라이선스 확인
 - 정의: 결과물 품질을 일정하게 유지하는 운영 기준이다.
 - 언제 쓰는가: 초안 완성 후 수정/검수 단계에서 사용한다.
 - 자주 틀리는 포인트: 점검 순서 없이 감으로 수정하는 경우.
+![L01 라이선스 비교](../images/canva_l01_license_free_vs_pro_01.png)
+*캡션: Free/Pro 요소 차이를 확인해 사용 가능 여부를 판단한다. 출처: [Canva Docs](https://www.canva.com/help/)*
 
 ## 예시 흐름
 1. 목적과 대상 독자를 한 줄로 정의한다.
 2. 초안을 1개 빠르게 만들고 핵심 메시지를 남긴다.
 3. 불필요 요소를 줄여 가독성/일관성을 맞춘다.
 4. 과제지 제출 규격으로 내보내기 전에 최종 점검한다.
+![L01 결과물 예시](../images/canva_l01_result_introcard_01.png)
+*캡션: 자기소개 카드 완성 예시로 결과물 기준을 맞춘다. 출처: [Canva Docs](https://www.canva.com/help/)*
 
 ## 미니 체크
 ### Q1
@@ -45,7 +55,29 @@
 - 초안과 검수를 분리하면 결과물 완성도가 오른다.
 - 과제지 기준과 이론 기준을 함께 써야 실전 품질이 유지된다.
 
-## 출처/작업 링크
+## 출처/라이선스 기록
 - Canva 원본: (수업용 링크 추가)
 - 참고 문서: ./canva_3books_integrated_curriculum.md
+- 이미지 자산 기록:
+  - 파일명: canva_l01_ui_home_01.png
+  - 출처 URL: https://www.canva.com/help/
+  - 라이선스: Free / Pro / Editorial
+  - 사용 범위: 수업자료 / 과제 배포 / 내부 공유
+  - 확인일: YYYY-MM-DD
+  - 파일명: canva_l01_ui_editor_01.png
+  - 출처 URL: https://www.canva.com/help/
+  - 라이선스: Free / Pro / Editorial
+  - 사용 범위: 수업자료 / 과제 배포 / 내부 공유
+  - 확인일: YYYY-MM-DD
+  - 파일명: canva_l01_license_free_vs_pro_01.png
+  - 출처 URL: https://www.canva.com/help/
+  - 라이선스: Free / Pro / Editorial
+  - 사용 범위: 수업자료 / 과제 배포 / 내부 공유
+  - 확인일: YYYY-MM-DD
+  - 파일명: canva_l01_result_introcard_01.png
+  - 출처 URL: https://www.canva.com/help/
+  - 라이선스: Free / Pro / Editorial
+  - 사용 범위: 수업자료 / 과제 배포 / 내부 공유
+  - 확인일: YYYY-MM-DD
+
 
