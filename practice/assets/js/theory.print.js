@@ -52,7 +52,7 @@ function titleLang(lang) {
 function getMdRenderer() {
   if (!window.markdownit || !window.DOMPurify) return null;
   return window.markdownit({
-    html: false,
+    html: true,
     linkify: true,
     breaks: true,
   });
@@ -340,11 +340,112 @@ function applyLanguageFilter(contentEl, selected) {
   });
 }
 
-function setupLanguageSelect(contentEl, preferredLangRaw) {
+function detectAudienceFromHeadingText(text) {
+  const raw = String(text || "");
+  if (/\bCOMMON\b/i.test(raw) || /공통/.test(raw)) return "common";
+  if (/\bELEMENTARY\b/i.test(raw) || /초등/.test(raw)) return "elementary";
+  if (/\bMIDDLE\b/i.test(raw) || /중등/.test(raw)) return "middle";
+  if (/\bHIGH\b/i.test(raw) || /고등/.test(raw)) return "high";
+  return "";
+}
+
+function detectViewFromHeadingText(text) {
+  const m = String(text || "").match(/\{view:(student|teacher)\}/i);
+  return m ? m[1].toLowerCase() : "";
+}
+
+function cleanHeadingMarkers(el) {
+  if (!el) return;
+  const next = String(el.textContent || "")
+    .replace(/\{view:(student|teacher)\}/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  el.textContent = next;
+}
+
+function groupSectionBlocks(contentEl) {
+  const children = Array.from(contentEl.children || []);
+  if (!children.length) return false;
+  const markers = [];
+  children.forEach((el, idx) => {
+    if (el?.tagName === "H2") markers.push({ idx });
+  });
+  if (!markers.length) return false;
+
+  const frag = document.createDocumentFragment();
+  let cursor = 0;
+  for (let i = 0; i < markers.length; i += 1) {
+    const m = markers[i];
+    const nextIdx = i + 1 < markers.length ? markers[i + 1].idx : children.length;
+    const heading = children[m.idx];
+    const aud = detectAudienceFromHeadingText(heading.textContent || "");
+    const view = detectViewFromHeadingText(heading.textContent || "");
+    cleanHeadingMarkers(heading);
+
+    while (cursor < m.idx) {
+      frag.appendChild(children[cursor]);
+      cursor += 1;
+    }
+
+    const wrap = document.createElement("section");
+    wrap.className = "theory-section-block";
+    if (aud) wrap.dataset.audience = aud;
+    if (view) wrap.dataset.view = view;
+    for (let j = m.idx; j < nextIdx; j += 1) wrap.appendChild(children[j]);
+    cursor = nextIdx;
+    frag.appendChild(wrap);
+  }
+
+  while (cursor < children.length) {
+    frag.appendChild(children[cursor]);
+    cursor += 1;
+  }
+
+  contentEl.innerHTML = "";
+  contentEl.appendChild(frag);
+  return true;
+}
+
+function applyAudienceFilter(contentEl, selected) {
+  const blocks = contentEl.querySelectorAll(".theory-section-block[data-audience]");
+  blocks.forEach((block) => {
+    const aud = block.dataset.audience || "";
+    let visible = true;
+    if (selected === "all") visible = true;
+    else if (aud === "common") visible = true;
+    else visible = aud === selected;
+    block.style.display = visible ? "" : "none";
+  });
+}
+
+function applyViewFilter(contentEl, selected) {
+  const blocks = contentEl.querySelectorAll(".theory-section-block[data-view]");
+  blocks.forEach((block) => {
+    const view = block.dataset.view || "";
+    const visible = selected === "all" ? true : view === selected;
+    block.style.display = visible ? "" : "none";
+  });
+}
+
+function guessAudienceFromSet(setIdInQuery, setMap) {
+  const sid = String(setIdInQuery || "").toLowerCase();
+  if (/contest_py_elem_/.test(sid)) return "elementary";
+  if (/contest_py_mid_/.test(sid)) return "middle";
+  if (/contest_py_high_/.test(sid)) return "high";
+  const title = String(setMap?.[setIdInQuery]?.title || "");
+  if (title.includes("초등")) return "elementary";
+  if (title.includes("중등")) return "middle";
+  if (title.includes("고등")) return "high";
+  return "all";
+}
+
+function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, setMap) {
   const sel = document.getElementById("tp-lang-select");
+  const audSel = document.getElementById("tp-audience-select");
+  const viewSel = document.getElementById("tp-view-select");
   const layoutSel = document.getElementById("tp-layout-select");
   const applyBtn = document.getElementById("tp-apply-btn");
-  if (!sel || !layoutSel || !applyBtn) return;
+  if (!sel || !audSel || !viewSel || !layoutSel || !applyBtn) return;
 
   annotateLanguageTextBlocks(contentEl);
 
@@ -364,6 +465,14 @@ function setupLanguageSelect(contentEl, preferredLangRaw) {
     : available.includes(preferred)
       ? preferred
       : "all";
+  const audienceFromQuery = String(params.get("audience") || "").toLowerCase();
+  const defaultAudience = ["all", "elementary", "middle", "high"].includes(audienceFromQuery)
+    ? audienceFromQuery
+    : guessAudienceFromSet(setIdInQuery, setMap);
+  const viewFromQuery = String(params.get("view") || "").toLowerCase();
+  const defaultView = ["all", "student", "teacher"].includes(viewFromQuery)
+    ? viewFromQuery
+    : "student";
 
   Array.from(sel.options).forEach((opt) => {
     if (opt.value === "all") return;
@@ -371,17 +480,27 @@ function setupLanguageSelect(contentEl, preferredLangRaw) {
   });
 
   sel.value = defaultLang;
+  audSel.value = defaultAudience;
+  viewSel.value = defaultView;
   applyLanguageFilter(contentEl, defaultLang);
+  applyAudienceFilter(contentEl, defaultAudience);
+  applyViewFilter(contentEl, defaultView);
   const initialLayout = normalizeLayout(qp("layout"));
   layoutSel.value = initialLayout;
   document.body.classList.toggle("layout-double", initialLayout === "double");
 
   applyBtn.addEventListener("click", () => {
     const selected = normalizeCodeLang(sel.value) || "all";
+    const selectedAudience = audSel.value || "all";
+    const selectedView = viewSel.value || "student";
     const layout = normalizeLayout(layoutSel.value);
     setQp("lang", selected === "all" ? "" : selected);
+    setQp("audience", selectedAudience === "all" ? "" : selectedAudience);
+    setQp("view", selectedView === "all" ? "" : selectedView);
     setQp("layout", layout === "single" ? "" : layout);
     applyLanguageFilter(contentEl, selected);
+    applyAudienceFilter(contentEl, selectedAudience);
+    applyViewFilter(contentEl, selectedView);
     document.body.classList.toggle("layout-double", layout === "double");
   });
 }
@@ -505,11 +624,12 @@ async function initTheoryPrintPage() {
     const mdText = await res.text();
 
     renderTheoryMarkdown(root, mdText);
+    groupSectionBlocks(root);
     enhanceMiniCheckSection(root);
     enhanceIoBlocks(root);
     enhanceTraceGridBlocks(root);
     enhanceCodeBlocks(root);
-    setupLanguageSelect(root, langInQuery || entry.lang);
+    setupLanguageSelect(root, langInQuery || entry.lang, params, setIdInQuery, setMap);
   } catch (err) {
     console.error(err);
     root.textContent = "개념 출력 페이지를 불러오는 중 오류가 발생했습니다.";

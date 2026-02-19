@@ -1,4 +1,4 @@
-# Python 경시대회 커리큘럼 (2023-1, 2024-2, 2024-3 기반)
+﻿# Python 경시대회 커리큘럼 (2023-1, 2024-2, 2024-3 기반)
 
 ## Part 목차
 1. 기본 문법(연산/대입/출력 형식)
@@ -32,4 +32,5 @@
 - 초등 기본 세트: `contest_py_elem_2024_r3_b01`
 - 중등 기본 세트: `contest_py_mid_2024_r3_b01`
 - 고등 기본 세트: `contest_py_high_2024_r3_b01`
-- 공통 이론: `./data/theory/contest/common/theory_contest_py_u01_flow_and_recursion.md`
+- 주차 이론(웹 노출): `./data/theory/contest/weeks/theory_contest_py_w01_diagnostic_io_casting.md` ~ `./data/theory/contest/weeks/theory_contest_py_w12_final_mock.md`
+

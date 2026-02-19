@@ -1,7 +1,7 @@
 ﻿{
-    "id":  "contest_py_high_2024_r3_b01",
-    "title":  "Python 경시대회(고등) 2024 제3회 실전 1회차",
-    "categoryId":  "contest_py_w01_diagnostic_io_casting",
+    "id":  "contest_py_high_2024_r3_b10",
+    "title":  "Python 경시대회(고등) 2024 제3회 실전 10회차",
+    "categoryId":  "contest_py_w10_module_datetime_re_collections",
     "availableLanguages":  [
                                "python"
                            ],

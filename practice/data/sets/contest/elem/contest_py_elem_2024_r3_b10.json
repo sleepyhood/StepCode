@@ -1,7 +1,7 @@
 ﻿{
-    "id":  "contest_py_mid_2024_r3_b01",
-    "title":  "Python 경시대회(중등) 2024 제3회 실전 1회차",
-    "categoryId":  "contest_py_w01_diagnostic_io_casting",
+    "id":  "contest_py_elem_2024_r3_b10",
+    "title":  "Python 경시대회(초등) 2024 제3회 실전 10회차",
+    "categoryId":  "contest_py_w10_module_datetime_re_collections",
     "availableLanguages":  [
                                "python"
                            ],
@@ -18,11 +18,11 @@
                      {
                          "id":  "trace2",
                          "type":  "short",
-                         "level":  "초,중,고",
-                         "title":  "Trace 2. None이 아닌 출력 줄",
-                         "description":  "아래 코드에서 `None`이 아닌 값이 출력되는 줄 번호를 쓰세요.",
-                         "code":  "import re\npattern = re.compile(\u0027o[gh]\u0027)\nprint(pattern.fullmatch(\u0027o\u0027))      # 1\nprint(pattern.fullmatch(\u0027oh\u0027))     # 2\nprint(pattern.fullmatch(\u0027dog\u0027))    # 3\nprint(pattern.fullmatch(\u0027doggie\u0027)) # 4\nprint(pattern.fullmatch(\u0027ogre\u0027))   # 5",
-                         "expectedText":  "2"
+                         "level":  "초",
+                         "title":  "Trace 2. 조건 누적",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "b = 0\nfor i in [1, 2, 3, 4, 5, 6, 7]:\n    if i % 2 == 1:\n        b += i\n    if i % 3 == 1:\n        b -= i\nprint(b)",
+                         "expectedText":  "4"
                      },
                      {
                          "id":  "theory1",
@@ -47,13 +47,13 @@
                          "correctIndex":  3
                      },
                      {
-                         "id":  "rec1",
+                         "id":  "trace3",
                          "type":  "short",
-                         "level":  "중,고",
-                         "title":  "Recursion 1. f(8) 값",
-                         "description":  "다음 재귀 함수에서 `f(8)` 값을 쓰세요.",
-                         "code":  "def f(n):\n    if n == 0:\n        return 1\n    if n == 1:\n        return 2\n    if n == 2:\n        return 3\n    return 2 * f(n - 1) + 3 * f(n - 3)",
-                         "expectedText":  "879"
+                         "level":  "초,중,고",
+                         "title":  "Trace 3. while 반복",
+                         "description":  "다음 코드의 출력값을 쓰세요.",
+                         "code":  "a = 1\ni = 1\nwhile True:\n    if i \u003e 10:\n        break\n    i += 2\n    a *= 3\nprint(a)",
+                         "expectedText":  "243"
                      }
                  ]
 }

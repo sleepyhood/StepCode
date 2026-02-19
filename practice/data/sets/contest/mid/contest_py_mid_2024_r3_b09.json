@@ -1,7 +1,7 @@
 ﻿{
-    "id":  "contest_py_mid_2024_r3_b01",
-    "title":  "Python 경시대회(중등) 2024 제3회 실전 1회차",
-    "categoryId":  "contest_py_w01_diagnostic_io_casting",
+    "id":  "contest_py_mid_2024_r3_b09",
+    "title":  "Python 경시대회(중등) 2024 제3회 실전 9회차",
+    "categoryId":  "contest_py_w09_lambda_sort_ternary",
     "availableLanguages":  [
                                "python"
                            ],

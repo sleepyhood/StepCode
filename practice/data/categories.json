@@ -224,27 +224,6 @@
         "order":  603
     },
     {
-        "id":  "contest_py_elem_2024_r3",
-        "name":  "Python - 경시대회(초등) 2024 제3회",
-        "lang":  "Python",
-        "track":  "contest",
-        "order":  604
-    },
-    {
-        "id":  "contest_py_mid_2024_r3",
-        "name":  "Python - 경시대회(중등) 2024 제3회",
-        "lang":  "Python",
-        "track":  "contest",
-        "order":  605
-    },
-    {
-        "id":  "contest_py_high_2024_r3",
-        "name":  "Python - 경시대회(고등) 2024 제3회",
-        "lang":  "Python",
-        "track":  "contest",
-        "order":  606
-    },
-    {
         "id":  "canva_curriculum",
         "name":  "Canva - 통합 커리큘럼",
         "lang":  "Canva",
@@ -327,5 +306,89 @@
         "lang":  "Canva",
         "track":  "canva",
         "order":  712
+    },
+    {
+        "id":  "contest_py_w01_diagnostic_io_casting",
+        "name":  "Python - 경시대회 W01 진단평가/변수/입출력/형변환",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  604
+    },
+    {
+        "id":  "contest_py_w02_for_range_accum",
+        "name":  "Python - 경시대회 W02 for/range/누적",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  605
+    },
+    {
+        "id":  "contest_py_w03_while_termination",
+        "name":  "Python - 경시대회 W03 while/종료조건",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  606
+    },
+    {
+        "id":  "contest_py_w04_list_indexing_insert",
+        "name":  "Python - 경시대회 W04 리스트/인덱싱/삽입",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  607
+    },
+    {
+        "id":  "contest_py_w05_nested_loop_array",
+        "name":  "Python - 경시대회 W05 2중 반복/배열 탐색",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  608
+    },
+    {
+        "id":  "contest_py_w06_string_compare_methods",
+        "name":  "Python - 경시대회 W06 문자열 비교/메서드",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  609
+    },
+    {
+        "id":  "contest_py_w07_function_scope",
+        "name":  "Python - 경시대회 W07 함수/스코프",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  610
+    },
+    {
+        "id":  "contest_py_w08_recursion_base_case",
+        "name":  "Python - 경시대회 W08 재귀/초기값/종료조건",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  611
+    },
+    {
+        "id":  "contest_py_w09_lambda_sort_ternary",
+        "name":  "Python - 경시대회 W09 람다/정렬/삼항",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  612
+    },
+    {
+        "id":  "contest_py_w10_module_datetime_re_collections",
+        "name":  "Python - 경시대회 W10 모듈(datetime/re/collections)",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  613
+    },
+    {
+        "id":  "contest_py_w11_bit_oct_2d",
+        "name":  "Python - 경시대회 W11 비트/진수/2차원",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  614
+    },
+    {
+        "id":  "contest_py_w12_final_mock",
+        "name":  "Python - 경시대회 W12 종합 모의/피드백",
+        "lang":  "Python",
+        "track":  "contest",
+        "order":  615
     }
 ]

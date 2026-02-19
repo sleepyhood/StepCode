@@ -665,57 +665,199 @@
         "priority":  3
     },
     {
-        "conceptId":  "contest_py_elem_u01_flow_and_recursion",
-        "title":  "Python 경시대회(초등) 실전 1 - 흐름 추적",
-        "categoryId":  "contest_py_elem_2024_r3",
+        "conceptId":  "contest_py_w01_diagnostic_io_casting",
+        "title":  "Python 경시대회 W01 - 진단평가/변수/입출력/형변환",
+        "categoryId":  "contest_py_w01_diagnostic_io_casting",
         "lang":  "python",
-        "mdPath":  "./data/theory/contest/common/theory_contest_py_u01_flow_and_recursion.md",
-        "recommendedSetId":  "contest_py_elem_2024_r3_b01",
-        "relatedSetIds":  [
-                              "contest_py_elem_2024_r3_b01"
-                          ],
-        "prerequisites":  [
-
-                          ],
-        "nextConcepts":  [
-
-                         ],
-        "priority":  3
-    },
-    {
-        "conceptId":  "contest_py_mid_u01_flow_and_recursion",
-        "title":  "Python 경시대회(중등) 실전 1 - 흐름 추적과 재귀",
-        "categoryId":  "contest_py_mid_2024_r3",
-        "lang":  "python",
-        "mdPath":  "./data/theory/contest/common/theory_contest_py_u01_flow_and_recursion.md",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w01_diagnostic_io_casting.md",
         "recommendedSetId":  "contest_py_mid_2024_r3_b01",
         "relatedSetIds":  [
-                              "contest_py_mid_2024_r3_b01"
+                              "contest_py_elem_2024_r3_b01",
+                              "contest_py_mid_2024_r3_b01",
+                              "contest_py_high_2024_r3_b01"
                           ],
-        "prerequisites":  [
+        "prerequisites":  {
 
-                          ],
-        "nextConcepts":  [
-
-                         ],
+                          },
+        "nextConcepts":  "contest_py_w02_for_range_accum",
         "priority":  3
     },
     {
-        "conceptId":  "contest_py_high_u01_flow_and_recursion",
-        "title":  "Python 경시대회(고등) 실전 1 - 재귀/탐색",
-        "categoryId":  "contest_py_high_2024_r3",
+        "conceptId":  "contest_py_w02_for_range_accum",
+        "title":  "Python 경시대회 W02 - for/range/누적",
+        "categoryId":  "contest_py_w02_for_range_accum",
         "lang":  "python",
-        "mdPath":  "./data/theory/contest/common/theory_contest_py_u01_flow_and_recursion.md",
-        "recommendedSetId":  "contest_py_high_2024_r3_b01",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w02_for_range_accum.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b02",
         "relatedSetIds":  [
-                              "contest_py_high_2024_r3_b01"
+                              "contest_py_elem_2024_r3_b02",
+                              "contest_py_mid_2024_r3_b02",
+                              "contest_py_high_2024_r3_b02"
                           ],
-        "prerequisites":  [
-
+        "prerequisites":  "contest_py_w01_diagnostic_io_casting",
+        "nextConcepts":  "contest_py_w03_while_termination",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w03_while_termination",
+        "title":  "Python 경시대회 W03 - while/종료조건",
+        "categoryId":  "contest_py_w03_while_termination",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w03_while_termination.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b03",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b03",
+                              "contest_py_mid_2024_r3_b03",
+                              "contest_py_high_2024_r3_b03"
                           ],
-        "nextConcepts":  [
+        "prerequisites":  "contest_py_w02_for_range_accum",
+        "nextConcepts":  "contest_py_w04_list_indexing_insert",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w04_list_indexing_insert",
+        "title":  "Python 경시대회 W04 - 리스트/인덱싱/삽입",
+        "categoryId":  "contest_py_w04_list_indexing_insert",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w04_list_indexing_insert.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b04",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b04",
+                              "contest_py_mid_2024_r3_b04",
+                              "contest_py_high_2024_r3_b04"
+                          ],
+        "prerequisites":  "contest_py_w03_while_termination",
+        "nextConcepts":  "contest_py_w05_nested_loop_array",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w05_nested_loop_array",
+        "title":  "Python 경시대회 W05 - 2중 반복/배열 탐색",
+        "categoryId":  "contest_py_w05_nested_loop_array",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w05_nested_loop_array.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b05",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b05",
+                              "contest_py_mid_2024_r3_b05",
+                              "contest_py_high_2024_r3_b05"
+                          ],
+        "prerequisites":  "contest_py_w04_list_indexing_insert",
+        "nextConcepts":  "contest_py_w06_string_compare_methods",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w06_string_compare_methods",
+        "title":  "Python 경시대회 W06 - 문자열 비교/메서드",
+        "categoryId":  "contest_py_w06_string_compare_methods",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w06_string_compare_methods.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b06",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b06",
+                              "contest_py_mid_2024_r3_b06",
+                              "contest_py_high_2024_r3_b06"
+                          ],
+        "prerequisites":  "contest_py_w05_nested_loop_array",
+        "nextConcepts":  "contest_py_w07_function_scope",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w07_function_scope",
+        "title":  "Python 경시대회 W07 - 함수/스코프",
+        "categoryId":  "contest_py_w07_function_scope",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w07_function_scope.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b07",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b07",
+                              "contest_py_mid_2024_r3_b07",
+                              "contest_py_high_2024_r3_b07"
+                          ],
+        "prerequisites":  "contest_py_w06_string_compare_methods",
+        "nextConcepts":  "contest_py_w08_recursion_base_case",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w08_recursion_base_case",
+        "title":  "Python 경시대회 W08 - 재귀/초기값/종료조건",
+        "categoryId":  "contest_py_w08_recursion_base_case",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w08_recursion_base_case.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b08",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b08",
+                              "contest_py_mid_2024_r3_b08",
+                              "contest_py_high_2024_r3_b08"
+                          ],
+        "prerequisites":  "contest_py_w07_function_scope",
+        "nextConcepts":  "contest_py_w09_lambda_sort_ternary",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w09_lambda_sort_ternary",
+        "title":  "Python 경시대회 W09 - 람다/정렬/삼항",
+        "categoryId":  "contest_py_w09_lambda_sort_ternary",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w09_lambda_sort_ternary.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b09",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b09",
+                              "contest_py_mid_2024_r3_b09",
+                              "contest_py_high_2024_r3_b09"
+                          ],
+        "prerequisites":  "contest_py_w08_recursion_base_case",
+        "nextConcepts":  "contest_py_w10_module_datetime_re_collections",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w10_module_datetime_re_collections",
+        "title":  "Python 경시대회 W10 - 모듈(datetime/re/collections)",
+        "categoryId":  "contest_py_w10_module_datetime_re_collections",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w10_module_datetime_re_collections.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b10",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b10",
+                              "contest_py_mid_2024_r3_b10",
+                              "contest_py_high_2024_r3_b10"
+                          ],
+        "prerequisites":  "contest_py_w09_lambda_sort_ternary",
+        "nextConcepts":  "contest_py_w11_bit_oct_2d",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w11_bit_oct_2d",
+        "title":  "Python 경시대회 W11 - 비트/진수/2차원",
+        "categoryId":  "contest_py_w11_bit_oct_2d",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w11_bit_oct_2d.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b11",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b11",
+                              "contest_py_mid_2024_r3_b11",
+                              "contest_py_high_2024_r3_b11"
+                          ],
+        "prerequisites":  "contest_py_w10_module_datetime_re_collections",
+        "nextConcepts":  "contest_py_w12_final_mock",
+        "priority":  3
+    },
+    {
+        "conceptId":  "contest_py_w12_final_mock",
+        "title":  "Python 경시대회 W12 - 종합 모의/피드백",
+        "categoryId":  "contest_py_w12_final_mock",
+        "lang":  "python",
+        "mdPath":  "./data/theory/contest/weeks/theory_contest_py_w12_final_mock.md",
+        "recommendedSetId":  "contest_py_mid_2024_r3_b12",
+        "relatedSetIds":  [
+                              "contest_py_elem_2024_r3_b12",
+                              "contest_py_mid_2024_r3_b12",
+                              "contest_py_high_2024_r3_b12"
+                          ],
+        "prerequisites":  "contest_py_w11_bit_oct_2d",
+        "nextConcepts":  {
 
-                         ],
+                         },
         "priority":  3
     },
     {

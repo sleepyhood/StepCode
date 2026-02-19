@@ -1,7 +1,7 @@
-{
+﻿{
     "id":  "contest_py_elem_2024_r3_b01",
     "title":  "Python 경시대회(초등) 2024 제3회 실전 1회차",
-    "categoryId":  "contest_py_elem_2024_r3",
+    "categoryId":  "contest_py_w01_diagnostic_io_casting",
     "availableLanguages":  [
                                "python"
                            ],
@@ -52,7 +52,7 @@
                          "level":  "초,중,고",
                          "title":  "Trace 3. while 반복",
                          "description":  "다음 코드의 출력값을 쓰세요.",
-                         "code":  "a = 1\ni = 1\nwhile True:\n    if i > 10:\n        break\n    i += 2\n    a *= 3\nprint(a)",
+                         "code":  "a = 1\ni = 1\nwhile True:\n    if i \u003e 10:\n        break\n    i += 2\n    a *= 3\nprint(a)",
                          "expectedText":  "243"
                      }
                  ]

@@ -1,7 +1,7 @@
 function getMdRenderer() {
   if (!window.markdownit || !window.DOMPurify) return null;
   return window.markdownit({
-    html: false,
+    html: true,
     linkify: true,
     breaks: true,
   });
@@ -425,6 +425,262 @@ function setupLanguageToggle(contentEl, preferredLangRaw) {
   applyLanguageFilter(contentEl, selectedByDefault);
 }
 
+function detectAudienceFromHeadingText(text) {
+  const raw = String(text || "");
+  if (/\bCOMMON\b/i.test(raw) || /공통/.test(raw)) return "common";
+  if (/\bELEMENTARY\b/i.test(raw) || /초등/.test(raw)) return "elementary";
+  if (/\bMIDDLE\b/i.test(raw) || /중등/.test(raw)) return "middle";
+  if (/\bHIGH\b/i.test(raw) || /고등/.test(raw)) return "high";
+  return "";
+}
+
+function detectViewFromHeadingText(text) {
+  const m = String(text || "").match(/\{view:(student|teacher)\}/i);
+  return m ? m[1].toLowerCase() : "";
+}
+
+function cleanHeadingMarkers(el) {
+  if (!el) return;
+  const next = String(el.textContent || "")
+    .replace(/\{view:(student|teacher)\}/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  el.textContent = next;
+}
+
+function groupSectionBlocks(contentEl) {
+  const children = Array.from(contentEl.children || []);
+  if (!children.length) return false;
+
+  const h2Markers = [];
+  children.forEach((el, idx) => {
+    if (!el || el.tagName !== "H2") return;
+    h2Markers.push({ idx });
+  });
+  if (!h2Markers.length) return false;
+
+  const frag = document.createDocumentFragment();
+  let cursor = 0;
+  for (let i = 0; i < h2Markers.length; i += 1) {
+    const m = h2Markers[i];
+    const nextIdx = i + 1 < h2Markers.length ? h2Markers[i + 1].idx : children.length;
+    const heading = children[m.idx];
+    const aud = detectAudienceFromHeadingText(heading.textContent || "");
+    const view = detectViewFromHeadingText(heading.textContent || "");
+
+    while (cursor < m.idx) {
+      frag.appendChild(children[cursor]);
+      cursor += 1;
+    }
+
+    cleanHeadingMarkers(heading);
+
+    const wrap = document.createElement("section");
+    wrap.className = "theory-section-block";
+    if (aud) wrap.dataset.audience = aud;
+    if (view) wrap.dataset.view = view;
+    for (let j = m.idx; j < nextIdx; j += 1) {
+      wrap.appendChild(children[j]);
+    }
+    cursor = nextIdx;
+    frag.appendChild(wrap);
+  }
+
+  while (cursor < children.length) {
+    frag.appendChild(children[cursor]);
+    cursor += 1;
+  }
+
+  contentEl.innerHTML = "";
+  contentEl.appendChild(frag);
+  return true;
+}
+
+function applyAudienceFilter(contentEl, selected) {
+  const blocks = contentEl.querySelectorAll(".theory-section-block[data-audience]");
+  blocks.forEach((block) => {
+    const aud = block.dataset.audience || "";
+    let visible = true;
+    if (selected === "all") visible = true;
+    else if (aud === "common") visible = true;
+    else visible = aud === selected;
+    block.style.display = visible ? "" : "none";
+  });
+}
+
+function applyViewFilter(contentEl, selected) {
+  const blocks = contentEl.querySelectorAll(".theory-section-block[data-view]");
+  blocks.forEach((block) => {
+    const view = block.dataset.view || "";
+    let visible = true;
+    if (selected === "all") visible = true;
+    else visible = view === selected;
+    block.style.display = visible ? "" : "none";
+  });
+}
+
+function guessAudienceFromSet(setIdInQuery, setMap) {
+  const sid = String(setIdInQuery || "").toLowerCase();
+  if (/contest_py_elem_/.test(sid)) return "elementary";
+  if (/contest_py_mid_/.test(sid)) return "middle";
+  if (/contest_py_high_/.test(sid)) return "high";
+
+  const title = String(setMap?.[setIdInQuery]?.title || "");
+  if (title.includes("초등")) return "elementary";
+  if (title.includes("중등")) return "middle";
+  if (title.includes("고등")) return "high";
+  return "all";
+}
+
+function syncAudienceParam(selected) {
+  try {
+    const url = new URL(location.href);
+    if (selected === "all") url.searchParams.delete("audience");
+    else url.searchParams.set("audience", selected);
+    history.replaceState(null, "", url.toString());
+  } catch (_) {}
+}
+
+function syncViewParam(selected) {
+  try {
+    const url = new URL(location.href);
+    if (selected === "all") url.searchParams.delete("view");
+    else url.searchParams.set("view", selected);
+    history.replaceState(null, "", url.toString());
+  } catch (_) {}
+}
+
+function getActiveAudienceValue() {
+  const root = document.getElementById("theory-audience-toggle");
+  if (root?.dataset?.currentAudience) return root.dataset.currentAudience;
+  const active = document.querySelector("#theory-audience-toggle .theory-lang-btn.is-active");
+  return active?.dataset?.audience || "all";
+}
+
+function getActiveViewValue() {
+  const root = document.getElementById("theory-view-toggle");
+  if (root?.dataset?.currentView) return root.dataset.currentView;
+  const active = document.querySelector("#theory-view-toggle .theory-lang-btn.is-active");
+  return active?.dataset?.view || "all";
+}
+
+function applySectionFilters(contentEl) {
+  applyAudienceFilter(contentEl, getActiveAudienceValue());
+  applyViewFilter(contentEl, getActiveViewValue());
+}
+
+function setupAudienceToggle(contentEl, params, setIdInQuery, setMap) {
+  const toggleEl = document.getElementById("theory-audience-toggle");
+  if (!toggleEl) return;
+
+  const hasAudience = !!contentEl.querySelector(".theory-section-block[data-audience]");
+  if (!hasAudience) {
+    toggleEl.hidden = true;
+    return;
+  }
+
+  const queryVal = String(params.get("audience") || "").toLowerCase();
+  const bySet = guessAudienceFromSet(setIdInQuery, setMap);
+  const selectedByDefault = ["all", "elementary", "middle", "high"].includes(queryVal)
+    ? queryVal
+    : bySet;
+  toggleEl.dataset.currentAudience = selectedByDefault;
+
+  toggleEl.hidden = false;
+  toggleEl.innerHTML = "";
+
+  const label = document.createElement("span");
+  label.className = "theory-lang-label";
+  label.textContent = "표시 범위";
+  toggleEl.appendChild(label);
+
+  const options = [
+    { v: "all", t: "모두" },
+    { v: "elementary", t: "초등만" },
+    { v: "middle", t: "중등만" },
+    { v: "high", t: "고등만" },
+  ];
+
+  options.forEach((opt) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "theory-lang-btn";
+    btn.dataset.audience = opt.v;
+    btn.textContent = opt.t;
+    if (opt.v === selectedByDefault) btn.classList.add("is-active");
+    btn.addEventListener("click", () => {
+      toggleEl
+        .querySelectorAll(".theory-lang-btn")
+        .forEach((it) => it.classList.toggle("is-active", it === btn));
+      toggleEl.dataset.currentAudience = opt.v;
+      applySectionFilters(contentEl);
+      syncAudienceParam(opt.v);
+    });
+    toggleEl.appendChild(btn);
+  });
+
+  applyAudienceFilter(contentEl, selectedByDefault);
+}
+
+function setupViewToggle(contentEl, params, isHost) {
+  const toggleEl = document.getElementById("theory-view-toggle");
+  if (!toggleEl) return;
+
+  const hasView = !!contentEl.querySelector(".theory-section-block[data-view]");
+  if (!hasView) {
+    toggleEl.hidden = true;
+    return;
+  }
+
+  const queryVal = String(params.get("view") || "").toLowerCase();
+  const selectedByDefault = ["all", "student", "teacher"].includes(queryVal)
+    ? queryVal
+    : "student";
+  toggleEl.dataset.currentView = selectedByDefault;
+
+  if (!isHost) {
+    toggleEl.hidden = true;
+    toggleEl.dataset.currentView = "student";
+    applyViewFilter(contentEl, "student");
+    syncViewParam("student");
+    return;
+  }
+
+  toggleEl.hidden = false;
+  toggleEl.innerHTML = "";
+
+  const label = document.createElement("span");
+  label.className = "theory-lang-label";
+  label.textContent = "표시 대상";
+  toggleEl.appendChild(label);
+
+  const options = [
+    { v: "student", t: "학생용" },
+    { v: "teacher", t: "교사용" },
+    { v: "all", t: "모두" },
+  ];
+
+  options.forEach((opt) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "theory-lang-btn";
+    btn.dataset.view = opt.v;
+    btn.textContent = opt.t;
+    if (opt.v === selectedByDefault) btn.classList.add("is-active");
+    btn.addEventListener("click", () => {
+      toggleEl
+        .querySelectorAll(".theory-lang-btn")
+        .forEach((it) => it.classList.toggle("is-active", it === btn));
+      toggleEl.dataset.currentView = opt.v;
+      applySectionFilters(contentEl);
+      syncViewParam(opt.v);
+    });
+    toggleEl.appendChild(btn);
+  });
+
+  applyViewFilter(contentEl, selectedByDefault);
+}
+
 function buildTheoryLookup(items) {
   const byConceptId = {};
   const byCategoryId = {};
@@ -586,6 +842,7 @@ async function initTheoryPage() {
     const lookup = buildTheoryLookup(theoryIndex);
     const setMap = toSetMap(sets);
     const entry = pickEntry(params, lookup, setMap);
+    const isHost = await apiIsHost();
 
     if (!entry) {
       contentEl.textContent = "개념을 찾을 수 없습니다. 목록에서 개념을 선택해 주세요.";
@@ -601,6 +858,10 @@ async function initTheoryPage() {
     if (!res.ok) throw new Error(`failed to load markdown: ${entry.mdPath}`);
     const mdText = await res.text();
     renderTheoryMarkdown(contentEl, mdText);
+    groupSectionBlocks(contentEl);
+    setupAudienceToggle(contentEl, params, setIdInQuery, setMap);
+    setupViewToggle(contentEl, params, isHost);
+    applySectionFilters(contentEl);
     enhanceMiniCheckSection(contentEl);
     enhanceIoBlocks(contentEl);
     enhanceTraceGridBlocks(contentEl);
