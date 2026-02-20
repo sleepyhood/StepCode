@@ -223,23 +223,43 @@ body.layout-double .theory-print-root .theory-code-label {
 }
 
 .theory-print-root pre {
-  overflow-x: auto;
+  overflow-x: hidden;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 10px 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .theory-print-root pre.line-numbers.theory-code {
-  padding-left: 3.2em;
+  padding-left: 12px;
 }
 
 .theory-print-root pre.line-numbers.theory-code .line-numbers-rows {
-  border-right: 1px solid #cbd5e1;
+  display: none !important;
+  border-right: 0;
 }
 
 .theory-print-root pre.line-numbers.theory-code .line-numbers-rows > span:before {
   color: #64748b;
+}
+
+.theory-print-root pre[class*="language-"],
+.theory-print-root pre[class*="language-"] > code,
+.theory-print-root pre.line-numbers > code {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.theory-print-root p code,
+.theory-print-root li code,
+.theory-print-root td code,
+.theory-print-root th code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .theory-code-label {
@@ -252,6 +272,42 @@ body.layout-double .theory-print-root .theory-code-label {
   border: 1px solid #99f6e4;
   color: #115e59;
   background: #f0fdfa;
+}
+
+.theory-print-root p > strong:only-child {
+  display: inline-flex;
+  margin: 8px 0 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.theory-print-root .theory-example-block {
+  border: 1px solid #94a3b8;
+  border-radius: 10px;
+  padding: 8px;
+  margin: 10px 0;
+  background: #f8fafc;
+}
+
+.theory-print-root .theory-example-block > p {
+  margin: 0 0 4px;
+}
+
+.theory-print-root .theory-example-block > p > strong:only-child {
+  margin: 0 0 4px;
+}
+
+.theory-print-root .theory-example-block .theory-code-label {
+  margin: 2px 0 6px;
+}
+
+.theory-print-root .theory-example-block pre {
+  margin-top: 0;
 }
 
 /* Print separation: avoid section blocks looking glued together */
@@ -280,7 +336,9 @@ body.layout-double .theory-print-root .theory-code-label {
 }
 
 .theory-io-title {
+  font-size: 12px;
   font-weight: 800;
+  line-height: 1.35;
   margin-bottom: 8px;
 }
 

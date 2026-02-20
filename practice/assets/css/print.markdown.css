@@ -174,14 +174,68 @@ body{
   margin: 0 0 1.8mm 0;
 }
 
+.theory-md-page .theory-md-block p > strong:only-child{
+  display: inline-flex;
+  margin: 1.2mm 0 1mm;
+  padding: 0.7mm 1.8mm;
+  border-radius: 999px;
+  border: 1px solid var(--box);
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.theory-md-page .theory-md-block .theory-example-block{
+  border: 1px solid #b6c0cb;
+  border-radius: 8px;
+  padding: 2mm;
+  margin: 2mm 0;
+  background: #f8fafc;
+}
+
+.theory-md-page .theory-md-block .theory-example-block > p{
+  margin: 0 0 0.8mm 0;
+}
+
+.theory-md-page .theory-md-block .theory-example-block > p > strong:only-child{
+  margin: 0 0 0.8mm;
+}
+
+.theory-md-page .theory-md-block .theory-example-block .theory-code-label{
+  margin: 0.7mm 0 1.1mm;
+}
+
+.theory-md-page .theory-md-block .theory-example-block pre{
+  margin-top: 0;
+}
+
 .theory-md-page .theory-md-block pre{
   margin: 0 0 2mm 0;
   border: 1px solid var(--box);
   border-radius: 6px;
   padding: 2.5mm 3mm;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   font-size: 10.5px;
   line-height: 1.35;
+}
+
+.theory-md-page .theory-md-block pre[class*="language-"],
+.theory-md-page .theory-md-block pre[class*="language-"] > code,
+.theory-md-page .theory-md-block pre.line-numbers > code{
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.theory-md-page .theory-md-block pre.line-numbers{
+  padding-left: 3mm;
+}
+
+.theory-md-page .theory-md-block pre.line-numbers .line-numbers-rows{
+  display: none !important;
 }
 
 .theory-md-page .theory-md-block table{
@@ -282,6 +336,9 @@ body{
 .theory-md-page .theory-md-block .theory-io-pre{
   margin: 0;
   font-size: 9.5px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .theory-md-page .theory-md-block .theory-trace-grid{

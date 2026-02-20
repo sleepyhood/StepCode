@@ -798,6 +798,64 @@ function enhanceCombinedTheoryCodeBlocks(contentEl) {
   }
 }
 
+function isCombinedTheoryExampleHeader(el) {
+  if (!el || el.tagName !== "P") return false;
+  const strong = el.querySelector("strong:only-child");
+  if (!strong) return false;
+  const txt = String(strong.textContent || "").trim();
+  return /예시/.test(txt);
+}
+
+function enhanceCombinedTheoryExampleBlocks(contentEl) {
+  const containers = [contentEl, ...Array.from(contentEl.querySelectorAll(".theory-section-block"))];
+  containers.forEach((root) => {
+    const nodes = Array.from(root.children || []);
+    if (!nodes.length) return;
+
+    let i = 0;
+    while (i < nodes.length) {
+      const cur = nodes[i];
+      if (!isCombinedTheoryExampleHeader(cur)) {
+        i += 1;
+        continue;
+      }
+
+      const wrap = document.createElement("section");
+      wrap.className = "theory-example-block";
+      cur.parentNode.insertBefore(wrap, cur);
+      wrap.appendChild(cur);
+
+      while (true) {
+        const next = wrap.nextElementSibling;
+        if (!next) break;
+        if (isCombinedTheoryExampleHeader(next)) break;
+        if (/^H[1-6]$/.test(next.tagName)) break;
+        wrap.appendChild(next);
+      }
+
+      i += 1;
+    }
+  });
+}
+
+function attachCombinedTrailingExampleBlocks(contentEl) {
+  const cards = contentEl.querySelectorAll(".theory-example-block");
+  cards.forEach((card) => {
+    while (true) {
+      const next = card.nextElementSibling;
+      if (!next) break;
+      if (
+        next.classList.contains("theory-io") ||
+        next.classList.contains("theory-trace-grid")
+      ) {
+        card.appendChild(next);
+        continue;
+      }
+      break;
+    }
+  });
+}
+
 function enhanceCombinedTheoryMarkdownTables(contentEl) {
   const headingEls = Array.from(contentEl.querySelectorAll("h1, h2, h3, h4, h5, h6"));
 
@@ -890,6 +948,8 @@ function renderCombinedTheoryMarkdown(target, mdText, variant) {
   enhanceCombinedTheoryTraceGridBlocks(target);
   enhanceCombinedTheoryMarkdownTables(target);
   enhanceCombinedTheoryCodeBlocks(target);
+  enhanceCombinedTheoryExampleBlocks(target);
+  attachCombinedTrailingExampleBlocks(target);
 }
 
 function resolveCombinedTheoryDataPathSuffix(src) {

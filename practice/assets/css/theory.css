@@ -162,7 +162,10 @@
   background: #0f172a;
   color: #e2e8f0;
   padding: 10px 12px;
-  overflow: auto;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .theory-content pre.theory-code {
@@ -190,6 +193,62 @@
 .theory-content pre code {
   background: transparent;
   padding: 0;
+  white-space: inherit;
+  overflow-wrap: inherit;
+  word-break: inherit;
+}
+
+.theory-content pre[class*="language-"],
+.theory-content pre[class*="language-"] > code,
+.theory-content pre.line-numbers > code {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.theory-content p code,
+.theory-content li code,
+.theory-content td code,
+.theory-content th code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.theory-content p > strong:only-child {
+  display: inline-flex;
+  margin: 10px 0 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.theory-content .theory-example-block {
+  margin: 10px 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  padding: 10px 12px;
+}
+
+.theory-content .theory-example-block > p {
+  margin: 0 0 4px;
+}
+
+.theory-content .theory-example-block > p > strong:only-child {
+  margin: 0 0 4px;
+}
+
+.theory-content .theory-example-block .theory-code-label {
+  margin: 2px 0 5px;
+}
+
+.theory-content .theory-example-block pre {
+  margin-top: 0;
 }
 
 .theory-content table {
