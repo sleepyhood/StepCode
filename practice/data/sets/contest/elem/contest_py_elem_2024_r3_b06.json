@@ -1,59 +1,13 @@
 ﻿{
-    "id":  "contest_py_elem_2024_r3_b06",
-    "title":  "Python 경시대회(초등) 2024 제3회 실전 6회차",
-    "categoryId":  "contest_py_w06_string_compare_methods",
-    "availableLanguages":  [
-                               "python"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "trace1",
-                         "type":  "short",
-                         "level":  "초,중,고",
-                         "title":  "Trace 1. 중첩 반복 횟수",
-                         "description":  "다음 코드의 출력값을 쓰세요.",
-                         "code":  "a = 0\nfor i in range(1, 30, 2):\n    for j in range(2, 20, 3):\n        a += 1\nprint(a)",
-                         "expectedText":  "90"
-                     },
-                     {
-                         "id":  "trace2",
-                         "type":  "short",
-                         "level":  "초",
-                         "title":  "Trace 2. 조건 누적",
-                         "description":  "다음 코드의 출력값을 쓰세요.",
-                         "code":  "b = 0\nfor i in [1, 2, 3, 4, 5, 6, 7]:\n    if i % 2 == 1:\n        b += i\n    if i % 3 == 1:\n        b -= i\nprint(b)",
-                         "expectedText":  "4"
-                     },
-                     {
-                         "id":  "theory1",
-                         "type":  "mcq",
-                         "level":  "초,중,고",
-                         "title":  "Theory 1. collections 모듈",
-                         "description":  "`collections` 모듈의 특수 컨테이너가 직접 대체 대상으로 두지 않는 내장 타입을 고르세요.",
-                         "options":  [
-                                         "list",
-                                         "dict",
-                                         "set",
-                                         "str",
-                                         "tuple"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  3
-                     },
-                     {
-                         "id":  "trace3",
-                         "type":  "short",
-                         "level":  "초,중,고",
-                         "title":  "Trace 3. while 반복",
-                         "description":  "다음 코드의 출력값을 쓰세요.",
-                         "code":  "a = 1\ni = 1\nwhile True:\n    if i \u003e 10:\n        break\n    i += 2\n    a *= 3\nprint(a)",
-                         "expectedText":  "243"
-                     }
-                 ]
+  "id": "contest_py_elem_2024_r3_b06",
+  "title": "Python 경시대회(초등) 2024 제3회 실전 6회차",
+  "categoryId": "contest_py_w06_string_compare_methods",
+  "availableLanguages": ["python"],
+  "problems": [
+    {"id":"q1","type":"mcq","level":"초","title":"문제 1","description":"다음 프로그램의 실행 결과는 무엇인가?","code":"a = \"apple\"\nb = 0\nfor i in range(5):\n    for j in range(i):\n        if a[i] != a[j]:\n            b += 1\nprint(b)","options":["6","7","8","9","10"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
+    {"id":"q2","type":"mcq","level":"초","title":"문제 2","description":"다음 중 문자열이 특정 접미사로 끝나는지 확인하는 메서드는 무엇인가?","options":["append","endswith","split","replace","remove"],"optionLabels":["A","B","C","D","E"],"correctIndex":1},
+    {"id":"q3","type":"mcq","level":"초","title":"문제 3","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"s = \"savefromtheavalanche\"\nt = \"av\"\nr = len(s)\np = len(t)\ni = 0\nwhile i <= len(s) - p:\n    j, u = 0, 0\n    if s[i] == t[j]:\n        for j in range(1, p):\n            if s[i + j] != t[j]:\n                u = 1\n                i += 1\n                break\n        if not u:\n            i += p\n            r -= p - 1\n    else:\n        i += 1\nprint(r)","options":["16","17","18","19","20"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
+    {"id":"q4","type":"mcq","level":"초","title":"문제 4","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"def f():\n    global a, b\n    i = 0\n    j = 0\n    while i < len(a) - 1:\n        if a[i] != a[i + 1]:\n            b = b[:j] + a[i] + b[j+1:]\n            j += 1\n        i += 1\na = \"aaabbccccdefffff\"\nb = \"\"\nf()\nprint(b)","options":["abc","abcd","abcde","abccde","aabbccddee"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
+    {"id":"q5","type":"mcq","level":"초","title":"문제 5","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"s = \"programming\"\nprint(s[2:8:2])","options":["prg","oag","orm","rmi","pgm"],"optionLabels":["A","B","C","D","E"],"correctIndex":2}
+  ]
 }
