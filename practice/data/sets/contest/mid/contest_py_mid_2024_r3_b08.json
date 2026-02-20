@@ -1,6 +1,6 @@
 ﻿{
   "id": "contest_py_mid_2024_r3_b08",
-  "title": "Python 경시대회(중등) 2024 제3회 실전 8회차",
+  "title": "Python 경시대회(중등) 8회차",
   "categoryId": "contest_py_w08_recursion_base_case",
   "availableLanguages": ["python"],
   "problems": [

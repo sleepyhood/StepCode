@@ -902,7 +902,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b01",
         "categoryId":  "contest_py_w01_diagnostic_io_casting",
-        "title":  "Python 초등 1회차",
+        "title":  "Python 경시대회(초등) 1회차",
         "round":  1,
         "difficulty":  "basic",
         "numProblems":  5,
@@ -911,7 +911,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b01",
         "categoryId":  "contest_py_w01_diagnostic_io_casting",
-        "title":  "Python 중등 1회차",
+        "title":  "Python 경시대회(중등) 1회차",
         "round":  1,
         "difficulty":  "basic",
         "numProblems":  5,
@@ -920,7 +920,7 @@
     {
         "id":  "contest_py_high_2024_r3_b01",
         "categoryId":  "contest_py_w01_diagnostic_io_casting",
-        "title":  "Python 고등 1회차",
+        "title":  "Python 경시대회(고등) 1회차",
         "round":  1,
         "difficulty":  "basic",
         "numProblems":  5,
@@ -929,7 +929,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b02",
         "categoryId":  "contest_py_w02_for_range_accum",
-        "title":  "Python 초등 2회차",
+        "title":  "Python 경시대회(초등) 2회차",
         "round":  2,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -938,7 +938,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b03",
         "categoryId":  "contest_py_w03_while_termination",
-        "title":  "Python 초등 3회차",
+        "title":  "Python 경시대회(초등) 3회차",
         "round":  3,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -947,7 +947,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b04",
         "categoryId":  "contest_py_w04_list_indexing_insert",
-        "title":  "Python 초등 4회차",
+        "title":  "Python 경시대회(초등) 4회차",
         "round":  4,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -956,7 +956,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b05",
         "categoryId":  "contest_py_w05_nested_loop_array",
-        "title":  "Python 초등 5회차",
+        "title":  "Python 경시대회(초등) 5회차",
         "round":  5,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -965,7 +965,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b06",
         "categoryId":  "contest_py_w06_string_compare_methods",
-        "title":  "Python 초등 6회차",
+        "title":  "Python 경시대회(초등) 6회차",
         "round":  6,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -974,7 +974,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b07",
         "categoryId":  "contest_py_w07_function_scope",
-        "title":  "Python 초등 7회차",
+        "title":  "Python 경시대회(초등) 7회차",
         "round":  7,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -983,7 +983,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b08",
         "categoryId":  "contest_py_w08_recursion_base_case",
-        "title":  "Python 초등 8회차",
+        "title":  "Python 경시대회(초등) 8회차",
         "round":  8,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -992,7 +992,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b09",
         "categoryId":  "contest_py_w09_lambda_sort_ternary",
-        "title":  "Python 초등 9회차",
+        "title":  "Python 경시대회(초등) 9회차",
         "round":  9,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1001,7 +1001,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b10",
         "categoryId":  "contest_py_w10_module_datetime_re_collections",
-        "title":  "Python 초등 10회차",
+        "title":  "Python 경시대회(초등) 10회차",
         "round":  10,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1010,7 +1010,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b11",
         "categoryId":  "contest_py_w11_bit_oct_2d",
-        "title":  "Python 초등 11회차",
+        "title":  "Python 경시대회(초등) 11회차",
         "round":  11,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1019,7 +1019,7 @@
     {
         "id":  "contest_py_elem_2024_r3_b12",
         "categoryId":  "contest_py_w12_final_mock",
-        "title":  "Python 초등 12회차",
+        "title":  "Python 경시대회(초등) 12회차",
         "round":  12,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1028,7 +1028,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b02",
         "categoryId":  "contest_py_w02_for_range_accum",
-        "title":  "Python 중등 2회차",
+        "title":  "Python 경시대회(중등) 2회차",
         "round":  2,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1037,7 +1037,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b03",
         "categoryId":  "contest_py_w03_while_termination",
-        "title":  "Python 중등 3회차",
+        "title":  "Python 경시대회(중등) 3회차",
         "round":  3,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1046,7 +1046,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b04",
         "categoryId":  "contest_py_w04_list_indexing_insert",
-        "title":  "Python 중등 4회차",
+        "title":  "Python 경시대회(중등) 4회차",
         "round":  4,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1055,7 +1055,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b05",
         "categoryId":  "contest_py_w05_nested_loop_array",
-        "title":  "Python 중등 5회차",
+        "title":  "Python 경시대회(중등) 5회차",
         "round":  5,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1064,7 +1064,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b06",
         "categoryId":  "contest_py_w06_string_compare_methods",
-        "title":  "Python 중등 6회차",
+        "title":  "Python 경시대회(중등) 6회차",
         "round":  6,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1073,7 +1073,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b07",
         "categoryId":  "contest_py_w07_function_scope",
-        "title":  "Python 중등 7회차",
+        "title":  "Python 경시대회(중등) 7회차",
         "round":  7,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1082,7 +1082,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b08",
         "categoryId":  "contest_py_w08_recursion_base_case",
-        "title":  "Python 중등 8회차",
+        "title":  "Python 경시대회(중등) 8회차",
         "round":  8,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1091,7 +1091,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b09",
         "categoryId":  "contest_py_w09_lambda_sort_ternary",
-        "title":  "Python 중등 9회차",
+        "title":  "Python 경시대회(중등) 9회차",
         "round":  9,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1100,7 +1100,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b10",
         "categoryId":  "contest_py_w10_module_datetime_re_collections",
-        "title":  "Python 중등 10회차",
+        "title":  "Python 경시대회(중등) 10회차",
         "round":  10,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1109,7 +1109,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b11",
         "categoryId":  "contest_py_w11_bit_oct_2d",
-        "title":  "Python 중등 11회차",
+        "title":  "Python 경시대회(중등) 11회차",
         "round":  11,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1118,7 +1118,7 @@
     {
         "id":  "contest_py_mid_2024_r3_b12",
         "categoryId":  "contest_py_w12_final_mock",
-        "title":  "Python 중등 12회차",
+        "title":  "Python 경시대회(중등) 12회차",
         "round":  12,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1127,7 +1127,7 @@
     {
         "id":  "contest_py_high_2024_r3_b02",
         "categoryId":  "contest_py_w02_for_range_accum",
-        "title":  "Python 고등 2회차",
+        "title":  "Python 경시대회(고등) 2회차",
         "round":  2,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1136,7 +1136,7 @@
     {
         "id":  "contest_py_high_2024_r3_b03",
         "categoryId":  "contest_py_w03_while_termination",
-        "title":  "Python 고등 3회차",
+        "title":  "Python 경시대회(고등) 3회차",
         "round":  3,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1145,7 +1145,7 @@
     {
         "id":  "contest_py_high_2024_r3_b04",
         "categoryId":  "contest_py_w04_list_indexing_insert",
-        "title":  "Python 고등 4회차",
+        "title":  "Python 경시대회(고등) 4회차",
         "round":  4,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1154,7 +1154,7 @@
     {
         "id":  "contest_py_high_2024_r3_b05",
         "categoryId":  "contest_py_w05_nested_loop_array",
-        "title":  "Python 고등 5회차",
+        "title":  "Python 경시대회(고등) 5회차",
         "round":  5,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1163,7 +1163,7 @@
     {
         "id":  "contest_py_high_2024_r3_b06",
         "categoryId":  "contest_py_w06_string_compare_methods",
-        "title":  "Python 고등 6회차",
+        "title":  "Python 경시대회(고등) 6회차",
         "round":  6,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1172,7 +1172,7 @@
     {
         "id":  "contest_py_high_2024_r3_b07",
         "categoryId":  "contest_py_w07_function_scope",
-        "title":  "Python 고등 7회차",
+        "title":  "Python 경시대회(고등) 7회차",
         "round":  7,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1181,7 +1181,7 @@
     {
         "id":  "contest_py_high_2024_r3_b08",
         "categoryId":  "contest_py_w08_recursion_base_case",
-        "title":  "Python 고등 8회차",
+        "title":  "Python 경시대회(고등) 8회차",
         "round":  8,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1190,7 +1190,7 @@
     {
         "id":  "contest_py_high_2024_r3_b09",
         "categoryId":  "contest_py_w09_lambda_sort_ternary",
-        "title":  "Python 고등 9회차",
+        "title":  "Python 경시대회(고등) 9회차",
         "round":  9,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1199,7 +1199,7 @@
     {
         "id":  "contest_py_high_2024_r3_b10",
         "categoryId":  "contest_py_w10_module_datetime_re_collections",
-        "title":  "Python 고등 10회차",
+        "title":  "Python 경시대회(고등) 10회차",
         "round":  10,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1208,7 +1208,7 @@
     {
         "id":  "contest_py_high_2024_r3_b11",
         "categoryId":  "contest_py_w11_bit_oct_2d",
-        "title":  "Python 고등 11회차",
+        "title":  "Python 경시대회(고등) 11회차",
         "round":  11,
         "difficulty":  "basic",
         "numProblems":  4,
@@ -1217,7 +1217,7 @@
     {
         "id":  "contest_py_high_2024_r3_b12",
         "categoryId":  "contest_py_w12_final_mock",
-        "title":  "Python 고등 12회차",
+        "title":  "Python 경시대회(고등) 12회차",
         "round":  12,
         "difficulty":  "basic",
         "numProblems":  4,
