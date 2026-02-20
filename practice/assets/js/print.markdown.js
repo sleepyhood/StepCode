@@ -566,6 +566,438 @@ function buildConceptPage(set, variant, bucket) {
   return page;
 }
 
+let theoryIndexCache = null;
+
+function normalizeCombinedTheoryCodeLang(raw) {
+  const v = String(raw || "").toLowerCase();
+  if (v === "py" || v === "python") return "python";
+  if (v === "c" || v === "c99" || v === "c11") return "c";
+  if (v === "java") return "java";
+  if (v === "cs" || v === "c#" || v === "csharp") return "csharp";
+  return v;
+}
+
+function detectCombinedTheoryLangFromCode(codeEl) {
+  const classes = Array.from(codeEl.classList || []);
+  for (const cls of classes) {
+    if (!cls.startsWith("language-")) continue;
+    return normalizeCombinedTheoryCodeLang(cls.replace("language-", ""));
+  }
+  return "";
+}
+
+function parseCombinedTheoryIoFenceText(rawText) {
+  const text = String(rawText || "").replace(/\r\n?/g, "\n");
+  const lines = text.split("\n");
+  let mode = "";
+  const input = [];
+  const output = [];
+
+  lines.forEach((line) => {
+    if (/^\s*(input|in|입력)\s*:\s*$/i.test(line)) {
+      mode = "input";
+      return;
+    }
+    if (/^\s*(output|out|출력)\s*:\s*$/i.test(line)) {
+      mode = "output";
+      return;
+    }
+    if (mode === "input") input.push(line);
+    if (mode === "output") output.push(line);
+  });
+
+  return {
+    input: input.join("\n").trim(),
+    output: output.join("\n").trim(),
+  };
+}
+
+function parseCombinedTheoryTraceGridFenceText(rawText) {
+  const lines = String(rawText || "").replace(/\r\n?/g, "\n").split("\n");
+  const conf = { title: "", columns: [], rows: [] };
+  let inRows = false;
+
+  lines.forEach((lineRaw) => {
+    const line = lineRaw.trim();
+    if (!line) return;
+    if (!inRows) {
+      const kv = line.match(/^([a-zA-Z_]+)\s*:\s*(.*)$/);
+      if (kv) {
+        const key = kv[1].toLowerCase();
+        const value = kv[2].trim();
+        if (key === "title") conf.title = value;
+        if (key === "columns" || key === "cols") {
+          conf.columns = value
+            .split(",")
+            .map((v) => v.trim())
+            .filter(Boolean);
+        }
+        if (key === "rows") inRows = true;
+        return;
+      }
+    }
+    if (inRows) {
+      const row = line
+        .split("|")
+        .map((v) => v.trim())
+        .filter((v, idx, arr) => !(idx === 0 && arr.length > 1 && v === ""));
+      if (row.length) conf.rows.push(row);
+    }
+  });
+  if (!conf.columns.length || !conf.rows.length) return null;
+  return conf;
+}
+
+function buildCombinedTheoryIoExampleBlock(io) {
+  const wrap = document.createElement("div");
+  wrap.className = "theory-io";
+
+  const title = document.createElement("div");
+  title.className = "theory-io-title";
+  title.textContent = "예상 입력/출력";
+  wrap.appendChild(title);
+
+  const grid = document.createElement("div");
+  grid.className = "theory-io-grid";
+
+  const inBox = document.createElement("div");
+  inBox.className = "theory-io-box";
+  const inLabel = document.createElement("div");
+  inLabel.className = "theory-io-label";
+  inLabel.textContent = "입력";
+  const inPre = document.createElement("pre");
+  inPre.className = "theory-io-pre";
+  inPre.textContent = io.input || "(입력 없음)";
+  inBox.append(inLabel, inPre);
+
+  const outBox = document.createElement("div");
+  outBox.className = "theory-io-box";
+  const outLabel = document.createElement("div");
+  outLabel.className = "theory-io-label";
+  outLabel.textContent = "출력";
+  const outPre = document.createElement("pre");
+  outPre.className = "theory-io-pre";
+  outPre.textContent = io.output || "(출력 없음)";
+  outBox.append(outLabel, outPre);
+
+  grid.append(inBox, outBox);
+  wrap.appendChild(grid);
+  return wrap;
+}
+
+function buildCombinedTheoryTraceGridBlock(conf) {
+  const wrap = document.createElement("div");
+  wrap.className = "theory-trace-grid";
+
+  if (conf.title) {
+    const title = document.createElement("div");
+    title.className = "theory-trace-title";
+    title.textContent = conf.title;
+    wrap.appendChild(title);
+  }
+
+  const tableWrap = document.createElement("div");
+  tableWrap.className = "theory-trace-table-wrap";
+  const table = document.createElement("table");
+  table.className = "theory-trace-table";
+
+  const thead = document.createElement("thead");
+  const trh = document.createElement("tr");
+  conf.columns.forEach((col) => {
+    const th = document.createElement("th");
+    th.textContent = col;
+    trh.appendChild(th);
+  });
+  thead.appendChild(trh);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  conf.rows.forEach((row) => {
+    const tr = document.createElement("tr");
+    conf.columns.forEach((_, i) => {
+      const td = document.createElement("td");
+      td.textContent = row[i] ?? "";
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  tableWrap.appendChild(table);
+  wrap.appendChild(tableWrap);
+  return wrap;
+}
+
+function enhanceCombinedTheoryIoBlocks(contentEl) {
+  const candidates = contentEl.querySelectorAll("pre > code");
+  candidates.forEach((codeEl) => {
+    const lang = detectCombinedTheoryLangFromCode(codeEl);
+    if (!["io", "inout", "exampleio"].includes(lang)) return;
+    const pre = codeEl.closest("pre");
+    if (!pre) return;
+    pre.replaceWith(
+      buildCombinedTheoryIoExampleBlock(
+        parseCombinedTheoryIoFenceText(codeEl.textContent || "")
+      )
+    );
+  });
+}
+
+function enhanceCombinedTheoryTraceGridBlocks(contentEl) {
+  const candidates = contentEl.querySelectorAll("pre > code");
+  candidates.forEach((codeEl) => {
+    const lang = detectCombinedTheoryLangFromCode(codeEl);
+    if (!["tracegrid", "trace-grid", "gridtrace"].includes(lang)) return;
+    const pre = codeEl.closest("pre");
+    if (!pre) return;
+    const conf = parseCombinedTheoryTraceGridFenceText(codeEl.textContent || "");
+    if (!conf) return;
+    pre.replaceWith(buildCombinedTheoryTraceGridBlock(conf));
+  });
+}
+
+function enhanceCombinedTheoryMiniCheckSection(contentEl) {
+  const h2List = Array.from(contentEl.querySelectorAll("h2"));
+  const start = h2List.find((h2) => /미니\s*체크\s*문제/.test(h2.textContent || ""));
+  if (!start) return;
+
+  start.classList.add("theory-mini-check-title");
+  let cursor = start.nextElementSibling;
+  let activeCard = null;
+
+  while (cursor && cursor.tagName !== "H2") {
+    const next = cursor.nextElementSibling;
+    const isQuestionHeader =
+      cursor.tagName === "H3" && /^Q\s*\d+/i.test((cursor.textContent || "").trim());
+
+    if (isQuestionHeader) {
+      activeCard = document.createElement("section");
+      activeCard.className = "theory-mini-check-card";
+      cursor.parentNode.insertBefore(activeCard, cursor);
+      activeCard.appendChild(cursor);
+    } else if (activeCard) {
+      activeCard.appendChild(cursor);
+    }
+    cursor = next;
+  }
+}
+
+function enhanceCombinedTheoryCodeBlocks(contentEl) {
+  const codeBlocks = contentEl.querySelectorAll("pre > code");
+  codeBlocks.forEach((codeEl) => {
+    const lang = detectCombinedTheoryLangFromCode(codeEl);
+    const pre = codeEl.closest("pre");
+    if (!pre) return;
+    pre.classList.add("theory-code");
+    if (lang === "python" || lang === "c" || lang === "java" || lang === "csharp") {
+      codeEl.className = `language-${lang}`;
+    }
+  });
+
+  if (window.Prism && typeof window.Prism.highlightAllUnder === "function") {
+    window.Prism.highlightAllUnder(contentEl);
+  }
+}
+
+function enhanceCombinedTheoryMarkdownTables(contentEl) {
+  const headingEls = Array.from(contentEl.querySelectorAll("h1, h2, h3, h4, h5, h6"));
+
+  function resolveTableTitle(table) {
+    const caption = table.querySelector("caption");
+    if (caption && caption.textContent.trim()) {
+      const text = caption.textContent.trim();
+      caption.remove();
+      return text;
+    }
+
+    let lastHeading = "";
+    headingEls.forEach((h) => {
+      const rel = h.compareDocumentPosition(table);
+      if (rel & Node.DOCUMENT_POSITION_FOLLOWING) {
+        lastHeading = (h.textContent || "").trim();
+      }
+    });
+    if (!lastHeading) return "표 요약";
+    return `표 요약. ${lastHeading}`;
+  }
+
+  const tables = contentEl.querySelectorAll("table");
+  tables.forEach((table) => {
+    if (table.classList.contains("theory-trace-table")) return;
+    if (table.closest(".theory-trace-grid")) return;
+    if (table.closest(".theory-md-table-wrap")) return;
+    if (!table.parentElement) return;
+
+    const grid = document.createElement("div");
+    grid.className = "theory-trace-grid theory-md-table-grid";
+
+    const title = document.createElement("div");
+    title.className = "theory-trace-title theory-md-table-title";
+    title.textContent = resolveTableTitle(table);
+
+    const wrap = document.createElement("div");
+    wrap.className = "theory-trace-table-wrap theory-md-table-wrap";
+
+    table.classList.add("theory-trace-table", "theory-md-table");
+    table.parentElement.insertBefore(grid, table);
+    grid.appendChild(title);
+    grid.appendChild(wrap);
+    wrap.appendChild(table);
+  });
+}
+
+function applyCombinedTheoryViewFilter(contentEl, variant) {
+  const children = Array.from(contentEl.children || []);
+  let currentView = "student";
+
+  children.forEach((el) => {
+    const tag = String(el.tagName || "").toUpperCase();
+    if (/^H[1-6]$/.test(tag)) {
+      const raw = String(el.textContent || "").trim();
+      const m = raw.match(/^\{view:(teacher|student)\}\s*/i);
+      if (m) {
+        currentView = m[1].toLowerCase();
+        el.textContent = raw.replace(/^\{view:(teacher|student)\}\s*/i, "");
+      }
+    }
+    el.dataset.view = currentView;
+  });
+
+  const hideTeacher = String(variant || "student").toLowerCase() !== "teacher";
+  if (!hideTeacher) return;
+  children.forEach((el) => {
+    if (el.dataset.view === "teacher") el.remove();
+  });
+}
+
+function renderCombinedTheoryMarkdown(target, mdText, variant) {
+  const raw = String(mdText || "");
+  if (!window.markdownit || !window.DOMPurify) {
+    setMD(target, raw, "block");
+    return;
+  }
+
+  const md = window.markdownit({
+    html: true,
+    linkify: true,
+    breaks: true,
+  });
+  const safe = window.DOMPurify.sanitize(md.render(raw));
+  target.innerHTML = safe;
+  applyCombinedTheoryViewFilter(target, variant);
+  applyCombinedTheoryDataImageFallbacks(target);
+  enhanceCombinedTheoryMiniCheckSection(target);
+  enhanceCombinedTheoryIoBlocks(target);
+  enhanceCombinedTheoryTraceGridBlocks(target);
+  enhanceCombinedTheoryMarkdownTables(target);
+  enhanceCombinedTheoryCodeBlocks(target);
+}
+
+function resolveCombinedTheoryDataPathSuffix(src) {
+  const s = String(src || "").trim();
+  if (s.startsWith("./data/")) return s.slice("./data/".length);
+  if (s.startsWith("/data/")) return s.slice("/data/".length);
+  if (s.startsWith("/practice/data/")) return s.slice("/practice/data/".length);
+  if (s.startsWith("data/")) return s.slice("data/".length);
+  return "";
+}
+
+function buildCombinedTheoryDataPathCandidates(src) {
+  const suffix = resolveCombinedTheoryDataPathSuffix(src);
+  if (!suffix) return [];
+  return [`./data/${suffix}`, `/data/${suffix}`, `/practice/data/${suffix}`];
+}
+
+function applyCombinedTheoryDataImageFallbacks(root) {
+  const imgs = root.querySelectorAll("img[src]");
+  imgs.forEach((img) => {
+    const original = String(img.getAttribute("src") || "").trim();
+    const candidates = buildCombinedTheoryDataPathCandidates(original).filter((v) => v !== original);
+    if (!candidates.length) return;
+
+    const tried = new Set([original]);
+    let idx = 0;
+    const onError = () => {
+      while (idx < candidates.length) {
+        const next = candidates[idx++];
+        if (tried.has(next)) continue;
+        tried.add(next);
+        img.setAttribute("src", next);
+        return;
+      }
+      img.removeEventListener("error", onError);
+    };
+    img.addEventListener("error", onError);
+  });
+}
+
+async function loadTheoryIndexCached() {
+  if (theoryIndexCache) return theoryIndexCache;
+  try {
+    theoryIndexCache = await ProblemService.listTheoryIndex();
+  } catch (_) {
+    theoryIndexCache = [];
+  }
+  return theoryIndexCache;
+}
+
+async function loadTheoryMarkdownForSet(set) {
+  const categoryId = String(set?.categoryId || "");
+  if (!categoryId) return null;
+
+  const index = await loadTheoryIndexCached();
+  const entry = (Array.isArray(index) ? index : []).find(
+    (item) => item && item.categoryId === categoryId && item.mdPath
+  );
+  if (!entry || !entry.mdPath) return null;
+
+  try {
+    const res = await fetch(entry.mdPath);
+    if (!res.ok) return null;
+    const mdText = await res.text();
+    return {
+      title: entry.title || "이론",
+      mdText,
+    };
+  } catch (_) {
+    return null;
+  }
+}
+
+function buildTheoryMarkdownPage(set, theory, variant, bucket, theoryLayout) {
+  if (!theory || !theory.mdText) return null;
+
+  const page = el("div", "concept-page theory-md-page");
+  if (theoryLayout === "double") page.classList.add("theory-layout-double");
+  else page.classList.add("theory-layout-single");
+
+  const header = el("div", "page-header");
+  const left = el("div", "meta-left");
+  left.appendChild(el("div", "page-title", `${theory.title || set?.title || "이론"} · 이론`));
+
+  const row = el("div", "meta-row");
+  row.appendChild(metaField("학생", "name", "w80"));
+  row.appendChild(metaField("배부일", "dist", "", ymd()));
+  row.appendChild(metaField("제출일", "due", "w80"));
+  left.appendChild(row);
+
+  const rowInfo = el("div", "meta-row");
+  rowInfo.appendChild(el("div", "", `범위: ${bucket}`));
+  rowInfo.appendChild(el("div", "", `유형: ${variant === "teacher" ? "선생님용" : "학생용"}`));
+  rowInfo.appendChild(el("div", "", `레이아웃: ${theoryLayout === "double" ? "2열" : "1열"}`));
+  left.appendChild(rowInfo);
+
+  const right = el("div", "meta-right");
+  right.innerHTML = `<div>${ymd()}</div>`;
+  header.appendChild(left);
+  header.appendChild(right);
+  page.appendChild(header);
+
+  const block = el("section", "theory-md-block md");
+  renderCombinedTheoryMarkdown(block, theory.mdText, variant);
+  page.appendChild(block);
+  return page;
+}
+
 function shouldMcqCodeOptionsUseTwoColumns(q) {
   const opts = Array.isArray(q?.options) ? q.options : [];
   if (opts.length < 4) return false;
@@ -889,11 +1321,7 @@ async function renderAll({ setId, bucket, variant }) {
   root.classList.remove("variant-student", "variant-teacher");
   root.classList.add(variant === "teacher" ? "variant-teacher" : "variant-student");
 
-  const includeConcept = qp("concept") !== "0";
-  if (includeConcept) {
-    const conceptPage = buildConceptPage(currentSetData, variant, bucket);
-    if (conceptPage) root.appendChild(conceptPage);
-  }
+  // 문제 출력 화면은 문제만 렌더한다.
 
   const probeFirst = buildPage(setId, currentSetData, 0, 99, [], indexMap, variant, bucket, "double");
   root.appendChild(probeFirst);
@@ -1131,11 +1559,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const variantSel = document.getElementById("variant-select");
   const bucketSel = document.getElementById("bucket-select");
-  const conceptCheck = document.getElementById("concept-check");
   const lineNumbersCheck = document.getElementById("line-numbers-check");
-
-// [print.markdown.js] 위치: document.addEventListener("DOMContentLoaded", ...) 내부
-// bucket-select/apply-btn 세팅하는 부분에 추가
 
 const rangeWrap = document.getElementById("range-wrap");
 const rangeInput = document.getElementById("range-input");
@@ -1144,13 +1568,11 @@ const rangeHint = document.getElementById("range-hint");
 // 초기값(쿼리스트링)
 const initBucket = qp("bucket") || "all";
 const initRange = qp("range") || "";
-const initConcept = qp("concept");
 const initLineNumbers = qp("lineNumbers");
 const hasInitLineNumbers = initLineNumbers === "1" || initLineNumbers === "0";
 
 if (bucketSel) bucketSel.value = (["all","core","supp","custom"].includes(initBucket) ? initBucket : "all");
 if (rangeInput) rangeInput.value = initRange;
-if (conceptCheck) conceptCheck.checked = initConcept !== "0";
 if (lineNumbersCheck) {
   if (hasInitLineNumbers) {
     lineNumbersCheck.checked = initLineNumbers === "1";
@@ -1176,27 +1598,19 @@ function syncRangeUI() {
 if (bucketSel) bucketSel.addEventListener("change", syncRangeUI);
 syncRangeUI();
 
-
-  // if (variantSel) variantSel.value = (initVariant === "teacher" ? "teacher" : "student");
-  // if (bucketSel) bucketSel.value = (initBucket === "core" || initBucket === "supp") ? initBucket : "all";
-
   const applyBtn = document.getElementById("apply-btn");
-  
-// apply 클릭 시 range도 query param에 반영
 if (applyBtn) {
   applyBtn.addEventListener("click", async () => {
     const variant = variantSel ? variantSel.value : "student";
     const bucket = bucketSel ? bucketSel.value : "all";
     const range = (rangeInput ? rangeInput.value : "").trim();
-    const concept = conceptCheck && conceptCheck.checked ? "1" : "0";
     const lineNumbers = lineNumbersCheck && lineNumbersCheck.checked ? "1" : "0";
     currentShowLineNumbers = lineNumbers === "1";
 
     setQp("variant", variant);
     setQp("bucket", bucket);
     if (bucket === "custom") setQp("range", range);
-    else setQp("range", ""); // custom 아니면 비워두기(혼선 방지)
-    setQp("concept", concept);
+    else setQp("range", "");
     setQp("lineNumbers", lineNumbers);
 
     await renderAll({ setId, bucket, variant });

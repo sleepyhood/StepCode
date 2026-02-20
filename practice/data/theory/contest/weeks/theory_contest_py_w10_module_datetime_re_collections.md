@@ -28,6 +28,14 @@
 - 추적 절차: 모듈명 확인 -> 대표 기능 키워드 대입 -> 보기 문장과 일치 여부 판정 순으로 풀이합니다.
 - 오답 포인트: 함수 이름 하나만 보고 모듈 전체 용도를 오해하면 오답이 됩니다.
 
+| 모듈 | 대표 용도 | 자주 쓰는 예 |
+| --- | --- | --- |
+| `os` | 운영체제/파일 경로/프로세스 | `listdir`, `getcwd`, `getpid` |
+| `re` | 정규식 검색/검증 | `search`, `fullmatch`, `sub` |
+| `datetime` | 날짜/시간 표현/포맷 | `datetime.now()`, `strftime` |
+| `collections` | 고급 컨테이너 | `Counter`, `deque`, `defaultdict` |
+| `pickle` | 직렬화/역직렬화 | `dumps`, `loads` |
+
 ![모듈-기능 매핑 맵](./data/theory/images/contest_w10_module_function_map.svg)
 
 예시 (기본):
@@ -127,6 +135,12 @@ False
 - 추적 절차: 패턴 해석 -> 대상 문자열 전체 비교 -> 매치/None 판정 -> 줄 번호 매핑 순으로 풀이합니다.
 - 오답 포인트: `search`처럼 부분 매칭으로 해석하면 결과를 반대로 고르게 됩니다.
 
+| 함수 | 매칭 범위 | `"dog"` + 패턴 `"o[gh]"` | 대표 용도 |
+| --- | --- | --- | --- |
+| `re.search` | 문자열 일부 | 매치됨 (`"og"`) | 포함 여부 검사 |
+| `re.match` | 문자열 시작 부분 | 매치 안 됨 | 접두 패턴 검사 |
+| `re.fullmatch` | 문자열 전체 | 매치 안 됨 | 입력 형식 검증 |
+
 ![search vs fullmatch 매칭 범위 비교](./data/theory/images/contest_w10_search_vs_fullmatch.svg)
 
 예시 (기본):
@@ -180,6 +194,19 @@ False
 - 추적 절차: 포맷 코드 분해 -> 각 코드 의미 대입 -> 예시 문자열과 일치 여부 판정 순으로 풀이합니다.
 - 오답 포인트: `%Z`와 `%p`를 혼동하면 오답이 됩니다.
 
+| 코드 | 의미 | 예시 값 (`2024-02-05 13:03:07`) |
+| --- | --- | --- |
+| `%Y` | 4자리 연도 | `2024` |
+| `%B` | 월 이름(영문 전체) | `February` |
+| `%a` | 요일 축약(영문) | `Mon` |
+| `%m` | 2자리 월 | `02` |
+| `%d` | 2자리 일 | `05` |
+| `%H` | 24시간 시 | `13` |
+| `%M` | 분 | `03` |
+| `%S` | 초 | `07` |
+| `%Z` | 시간대 이름 | `''` (naive datetime이면 빈 문자열) |
+| `%p` | AM/PM | `PM` |
+
 예시 (기본):
 ```python
 from datetime import datetime
@@ -231,6 +258,13 @@ False
 - 판별 규칙: 대표 대응은 `deque/list`, `defaultdict/dict`, `namedtuple/tuple`, `Counter/dict`다.
 - 추적 절차: 컬렉션 이름 확인 -> 기반 컨테이너 계열 매핑 -> 보기와 일치 여부 판정 순으로 풀이합니다.
 - 오답 포인트: 문자열(`str`)을 `collections` 대체 컨테이너로 착각하면 오답이 됩니다.
+
+| 타입 | 기반 계열 | 핵심 특징 | 대표 사용 |
+| --- | --- | --- | --- |
+| `Counter` | `dict` 확장 | 항목 빈도 자동 집계 | 문자/단어 개수 세기 |
+| `deque` | 시퀀스 큐 | 양쪽 `append/pop` O(1) | BFS 큐 |
+| `defaultdict` | `dict` 확장 | 없는 키 기본값 자동 생성 | 누적/그룹핑 |
+| `namedtuple` | `tuple` 확장 | 필드명으로 접근 가능 | 좌표/레코드 |
 
 예시 (기본):
 ```python

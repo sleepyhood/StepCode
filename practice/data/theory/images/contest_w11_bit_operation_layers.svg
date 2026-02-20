@@ -10,7 +10,7 @@
     </style>
   </defs>
 
-  <text x="34" y="36" class="t">비트 연산 레이어: 같은 비트열에 연산자(&, |, ^, &lt;&lt;)를 적용하면 의미가 달라집니다.</text>
+  <text x="34" y="36" class="t">비트 연산 레이어: 같은 비트열에 연산자(&amp;, |, ^, &lt;&lt;)를 적용하면 의미가 달라집니다.</text>
 
   <rect x="60" y="70" width="120" height="36" class="h"/><text x="95" y="94" class="mono">연산</text>
   <rect x="180" y="70" width="220" height="36" class="h"/><text x="260" y="94" class="mono">입력 1</text>

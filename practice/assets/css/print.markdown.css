@@ -33,6 +33,8 @@ body{
 .pt-subtitle{ font-size: 12px; color: var(--muted); white-space: nowrap; overflow:hidden; text-overflow: ellipsis; max-width: 520px; }
 
 .toolbar-right{ display:flex; align-items:flex-start; gap: 10px; flex-wrap: wrap; justify-content:flex-end; }
+.tool-mode{ display:flex; align-items:center; gap: 6px; }
+.detail-tools{ display:flex; align-items:flex-start; gap: 10px; flex-wrap: wrap; justify-content:flex-end; }
 .tool{ display:flex; align-items:flex-start; flex-direction:column; gap: 4px; font-size: 11px; color: var(--muted); }
 .tool select{ padding: 6px 10px; border-radius: 10px; border:1px solid #d1d5db; background:#fff; }
 .print-toolbar button{
@@ -48,6 +50,7 @@ body{
   border-color:#111827;
   color:#fff;
 }
+.detail-tools.is-hidden{ display:none; }
 .tool-check .check-line{
   display:flex;
   align-items:center;
@@ -145,6 +148,193 @@ body{
   border-radius: 6px;
   padding: 2mm 3mm;
   white-space: pre-wrap;
+}
+
+.theory-md-page .theory-md-block{
+  border: 1px solid var(--box);
+  border-radius: 10px;
+  padding: 5mm;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.theory-md-page .theory-md-block h1,
+.theory-md-page .theory-md-block h2,
+.theory-md-page .theory-md-block h3{
+  margin: 0 0 2.5mm 0;
+  line-height: 1.35;
+}
+
+.theory-md-page .theory-md-block h1{ font-size: 18px; }
+.theory-md-page .theory-md-block h2{ font-size: 15px; }
+.theory-md-page .theory-md-block h3{ font-size: 13px; }
+
+.theory-md-page .theory-md-block p,
+.theory-md-page .theory-md-block li{
+  margin: 0 0 1.8mm 0;
+}
+
+.theory-md-page .theory-md-block pre{
+  margin: 0 0 2mm 0;
+  border: 1px solid var(--box);
+  border-radius: 6px;
+  padding: 2.5mm 3mm;
+  white-space: pre-wrap;
+  font-size: 10.5px;
+  line-height: 1.35;
+}
+
+.theory-md-page .theory-md-block table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2mm 0;
+  font-size: 10.5px;
+}
+
+.theory-md-page .theory-md-block .theory-md-table-wrap{
+  margin: 0;
+  overflow-x: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.theory-md-page .theory-md-block .theory-md-table-grid{
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  padding: 2mm;
+  margin: 2mm 0;
+  background: #fff;
+}
+
+.theory-md-page .theory-md-block .theory-md-table-title{
+  font-size: 10px;
+  font-weight: 900;
+  margin-bottom: 1.2mm;
+}
+
+.theory-md-page .theory-md-block .theory-md-table{
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.theory-md-page .theory-md-block .theory-md-table th,
+.theory-md-page .theory-md-block .theory-md-table td{
+  border: 1px solid var(--box);
+  padding: 1.4mm 1.8mm;
+  text-align: left;
+  vertical-align: top;
+}
+
+.theory-md-page .theory-md-block .theory-md-table thead th{
+  background: #f8fafc;
+  font-weight: 900;
+}
+
+.theory-md-page .theory-md-block th,
+.theory-md-page .theory-md-block td{
+  border: 1px solid var(--box);
+  padding: 1.4mm 1.8mm;
+  vertical-align: top;
+}
+
+.theory-md-page .theory-md-block blockquote{
+  margin: 2mm 0;
+  padding: 1.5mm 2.5mm;
+  border-left: 2px solid var(--line);
+  color: var(--muted);
+}
+
+.theory-md-page .theory-md-block .theory-io{
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  padding: 2mm 2.5mm;
+  margin: 2mm 0;
+}
+
+.theory-md-page .theory-md-block .theory-io-title{
+  font-size: 10px;
+  font-weight: 900;
+  margin-bottom: 1.4mm;
+}
+
+.theory-md-page .theory-md-block .theory-io-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2mm;
+}
+
+.theory-md-page .theory-md-block .theory-io-box{
+  border: 1px solid var(--box);
+  border-radius: 6px;
+  padding: 1.5mm 2mm;
+}
+
+.theory-md-page .theory-md-block .theory-io-label{
+  font-size: 9px;
+  font-weight: 900;
+  color: var(--muted);
+  margin-bottom: 1mm;
+}
+
+.theory-md-page .theory-md-block .theory-io-pre{
+  margin: 0;
+  font-size: 9.5px;
+}
+
+.theory-md-page .theory-md-block .theory-trace-grid{
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  padding: 2mm;
+  margin: 2mm 0;
+}
+
+.theory-md-page .theory-md-block .theory-trace-title{
+  font-size: 10px;
+  font-weight: 900;
+  margin-bottom: 1.2mm;
+}
+
+.theory-md-page .theory-md-block .theory-trace-table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.5px;
+}
+
+.theory-md-page .theory-md-block .theory-trace-table th,
+.theory-md-page .theory-md-block .theory-trace-table td{
+  border: 1px solid var(--box);
+  padding: 1mm 1.5mm;
+}
+
+.theory-md-page .theory-md-block .theory-mini-check-title{
+  margin-top: 2.5mm;
+}
+
+.theory-md-page .theory-md-block .theory-mini-check-card{
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  padding: 2mm 2.5mm;
+  margin: 1.6mm 0;
+}
+
+.theory-md-page.theory-layout-double .theory-md-block{
+  column-count: 2;
+  column-gap: 6mm;
+}
+
+.theory-md-page.theory-layout-double .theory-md-block h1,
+.theory-md-page.theory-layout-double .theory-md-block h2,
+.theory-md-page.theory-layout-double .theory-md-block h3,
+.theory-md-page.theory-layout-double .theory-md-block pre,
+.theory-md-page.theory-layout-double .theory-md-block table,
+.theory-md-page.theory-layout-double .theory-md-block blockquote,
+.theory-md-page.theory-layout-double .theory-md-block .md-table{
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
 }
 
 /* ===== Media (Print) ===== */

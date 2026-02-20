@@ -34,14 +34,14 @@
       "type": "mcq",
       "level": "중",
       "title": "문제 2",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오. (`·`는 공백)",
       "code": "print(\"X{:5d}Y{:4s}Z\".format(27, \"AB\"))",
       "options": [
-        "X   27YAB  Z",
-        "X  27Y  ABZ",
-        "X27   YAB  Z",
-        "X   27Y  ABZ",
-        "X  27YAB   Z"
+        "X···27YAB··Z",
+        "X··27Y··ABZ",
+        "X27···YAB··Z",
+        "X···27Y··ABZ",
+        "X··27YAB···Z"
       ],
       "optionLabels": [
         "A",

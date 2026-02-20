@@ -34,14 +34,14 @@
       "type": "mcq",
       "level": "고",
       "title": "문제 2",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오. (`·`는 공백)",
       "code": "print(\"A{:6d}B{:5s}C\".format(81, \"K\"))",
       "options": [
-        "A    81BK    C",
-        "A   81BK    C",
-        "A    81B    KC",
-        "A81    BK    C",
-        "A   81B   KC"
+        "A····81BK····C",
+        "A···81BK····C",
+        "A····81B····KC",
+        "A81····BK····C",
+        "A···81B···KC"
       ],
       "optionLabels": [
         "A",

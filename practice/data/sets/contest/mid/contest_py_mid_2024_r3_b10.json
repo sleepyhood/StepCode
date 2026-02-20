@@ -1,59 +1,13 @@
 ﻿{
-    "id":  "contest_py_mid_2024_r3_b10",
-    "title":  "Python 경시대회(중등) 2024 제3회 실전 10회차",
-    "categoryId":  "contest_py_w10_module_datetime_re_collections",
-    "availableLanguages":  [
-                               "python"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "trace1",
-                         "type":  "short",
-                         "level":  "초,중,고",
-                         "title":  "Trace 1. 중첩 반복 횟수",
-                         "description":  "다음 코드의 출력값을 쓰세요.",
-                         "code":  "a = 0\nfor i in range(1, 30, 2):\n    for j in range(2, 20, 3):\n        a += 1\nprint(a)",
-                         "expectedText":  "90"
-                     },
-                     {
-                         "id":  "trace2",
-                         "type":  "short",
-                         "level":  "초,중,고",
-                         "title":  "Trace 2. None이 아닌 출력 줄",
-                         "description":  "아래 코드에서 `None`이 아닌 값이 출력되는 줄 번호를 쓰세요.",
-                         "code":  "import re\npattern = re.compile(\u0027o[gh]\u0027)\nprint(pattern.fullmatch(\u0027o\u0027))      # 1\nprint(pattern.fullmatch(\u0027oh\u0027))     # 2\nprint(pattern.fullmatch(\u0027dog\u0027))    # 3\nprint(pattern.fullmatch(\u0027doggie\u0027)) # 4\nprint(pattern.fullmatch(\u0027ogre\u0027))   # 5",
-                         "expectedText":  "2"
-                     },
-                     {
-                         "id":  "theory1",
-                         "type":  "mcq",
-                         "level":  "초,중,고",
-                         "title":  "Theory 1. collections 모듈",
-                         "description":  "`collections` 모듈의 특수 컨테이너가 직접 대체 대상으로 두지 않는 내장 타입을 고르세요.",
-                         "options":  [
-                                         "list",
-                                         "dict",
-                                         "set",
-                                         "str",
-                                         "tuple"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  3
-                     },
-                     {
-                         "id":  "rec1",
-                         "type":  "short",
-                         "level":  "중,고",
-                         "title":  "Recursion 1. f(8) 값",
-                         "description":  "다음 재귀 함수에서 `f(8)` 값을 쓰세요.",
-                         "code":  "def f(n):\n    if n == 0:\n        return 1\n    if n == 1:\n        return 2\n    if n == 2:\n        return 3\n    return 2 * f(n - 1) + 3 * f(n - 3)",
-                         "expectedText":  "879"
-                     }
-                 ]
+  "id": "contest_py_mid_2024_r3_b10",
+  "title": "Python 경시대회(중등) 2024 제3회 실전 10회차",
+  "categoryId": "contest_py_w10_module_datetime_re_collections",
+  "availableLanguages": ["python"],
+  "problems": [
+    {"id":"q1","type":"mcq","level":"중","title":"문제 1","description":"다음 중 collections 모듈의 특수 컨테이너가 직접 대체 대상으로 두지 않는 내장 타입을 고르시오.","options":["list","dict","set","str","tuple"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
+    {"id":"q2","type":"mcq","level":"중","title":"문제 2","description":"다음 프로그램의 실행 결과에서 None을 출력하지 않는 줄은 몇 번 줄인가?","code":"import re\npattern = re.compile('o[gh]')\nprint(pattern.fullmatch('o'))\nprint(pattern.fullmatch('oh'))\nprint(pattern.fullmatch('dog'))\nprint(pattern.fullmatch('doggie'))\nprint(pattern.fullmatch('ogre'))","options":["1번 줄","2번 줄","3번 줄","4번 줄","5번 줄"],"optionLabels":["A","B","C","D","E"],"correctIndex":1},
+    {"id":"q3","type":"mcq","level":"중","title":"문제 3","description":"datetime의 strftime 함수에 대한 설명으로 올바르지 않게 짝지어진 것을 고르시오.","options":["%a- Mon","%B- February","%M- 03","%Z- AM","%Y- 2024"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
+    {"id":"q4","type":"mcq","level":"중","title":"문제 4","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"from collections import defaultdict\nd = defaultdict(int)\nd['a'] += 2\nd['b'] += 1\nprint(d['a'] + d['c'])","options":["0","1","2","3","오류"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
+    {"id":"q5","type":"mcq","level":"중","title":"문제 5","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"import re\np = re.compile('ab+c')\nprint(bool(p.fullmatch('abbbc')), bool(p.fullmatch('ac')))","options":["True True","True False","False True","False False","오류"],"optionLabels":["A","B","C","D","E"],"correctIndex":1}
+  ]
 }

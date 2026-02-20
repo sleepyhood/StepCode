@@ -151,8 +151,9 @@ body.layout-double .theory-print-root .theory-trace-table td,
 body.layout-double .theory-print-root table th,
 body.layout-double .theory-print-root table td {
   white-space: normal;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: auto;
   font-size: 0.92em;
 }
 
@@ -178,6 +179,47 @@ body.layout-double .theory-print-root .theory-code-label {
 .theory-print-root svg {
   max-width: 100%;
   height: auto;
+}
+
+.theory-print-root .theory-md-table-wrap {
+  margin: 0;
+  overflow-x: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.theory-print-root .theory-md-table-grid {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 12px 0;
+  background: #ffffff;
+}
+
+.theory-print-root .theory-md-table-title {
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.theory-print-root .theory-md-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.theory-print-root .theory-md-table th,
+.theory-print-root .theory-md-table td {
+  border: 1px solid #cbd5e1;
+  padding: 6px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.theory-print-root .theory-md-table thead th {
+  background: #f1f5f9;
+  font-weight: 800;
 }
 
 .theory-print-root pre {
@@ -294,6 +336,18 @@ body.layout-double .theory-print-root .theory-code-label {
   border: 1px solid #cbd5e1;
   padding: 6px 8px;
   text-align: center;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: auto;
+}
+
+.theory-print-root table th code,
+.theory-print-root table td code,
+.theory-print-root .theory-trace-table th code,
+.theory-print-root .theory-trace-table td code {
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 
 .theory-trace-table th {
@@ -435,8 +489,17 @@ body.layout-double .theory-print-root .theory-mini-check-card p {
   body.layout-double .theory-print-root table th,
   body.layout-double .theory-print-root table td {
     white-space: normal;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-break: auto;
+  }
+
+  .theory-print-root .theory-md-table-wrap,
+  .theory-print-root .theory-md-table,
+  .theory-print-root .theory-md-table th,
+  .theory-print-root .theory-md-table td {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   h1,

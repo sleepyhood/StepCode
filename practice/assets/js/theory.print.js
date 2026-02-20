@@ -67,6 +67,45 @@ function renderTheoryMarkdown(target, mdText) {
   }
   const safe = window.DOMPurify.sanitize(md.render(raw));
   target.innerHTML = safe;
+  applyDataImageFallbacks(target);
+}
+
+function resolveDataPathSuffix(src) {
+  const s = String(src || "").trim();
+  if (s.startsWith("./data/")) return s.slice("./data/".length);
+  if (s.startsWith("/data/")) return s.slice("/data/".length);
+  if (s.startsWith("/practice/data/")) return s.slice("/practice/data/".length);
+  if (s.startsWith("data/")) return s.slice("data/".length);
+  return "";
+}
+
+function buildDataPathCandidates(src) {
+  const suffix = resolveDataPathSuffix(src);
+  if (!suffix) return [];
+  return [`./data/${suffix}`, `/data/${suffix}`, `/practice/data/${suffix}`];
+}
+
+function applyDataImageFallbacks(root) {
+  const imgs = root.querySelectorAll("img[src]");
+  imgs.forEach((img) => {
+    const original = String(img.getAttribute("src") || "").trim();
+    const candidates = buildDataPathCandidates(original).filter((v) => v !== original);
+    if (!candidates.length) return;
+
+    const tried = new Set([original]);
+    let idx = 0;
+    const onError = () => {
+      while (idx < candidates.length) {
+        const next = candidates[idx++];
+        if (tried.has(next)) continue;
+        tried.add(next);
+        img.setAttribute("src", next);
+        return;
+      }
+      img.removeEventListener("error", onError);
+    };
+    img.addEventListener("error", onError);
+  });
 }
 
 function parseIoFenceText(rawText) {
@@ -237,6 +276,53 @@ function enhanceTraceGridBlocks(contentEl) {
     const conf = parseTraceGridFenceText(codeEl.textContent || "");
     if (!conf) return;
     pre.replaceWith(buildTraceGridBlock(conf));
+  });
+}
+
+function enhanceMarkdownTables(contentEl) {
+  const headingEls = Array.from(contentEl.querySelectorAll("h1, h2, h3, h4, h5, h6"));
+
+  function resolveTableTitle(table) {
+    const caption = table.querySelector("caption");
+    if (caption && caption.textContent.trim()) {
+      const text = caption.textContent.trim();
+      caption.remove();
+      return text;
+    }
+
+    let lastHeading = "";
+    headingEls.forEach((h) => {
+      const rel = h.compareDocumentPosition(table);
+      if (rel & Node.DOCUMENT_POSITION_FOLLOWING) {
+        lastHeading = (h.textContent || "").trim();
+      }
+    });
+    if (!lastHeading) return "표 요약";
+    return `표 요약. ${lastHeading}`;
+  }
+
+  const tables = contentEl.querySelectorAll("table");
+  tables.forEach((table) => {
+    if (table.classList.contains("theory-trace-table")) return;
+    if (table.closest(".theory-trace-grid")) return;
+    if (table.closest(".theory-md-table-wrap")) return;
+    if (!table.parentElement) return;
+
+    const grid = document.createElement("div");
+    grid.className = "theory-trace-grid theory-md-table-grid";
+
+    const title = document.createElement("div");
+    title.className = "theory-trace-title theory-md-table-title";
+    title.textContent = resolveTableTitle(table);
+
+    const wrap = document.createElement("div");
+    wrap.className = "theory-trace-table-wrap theory-md-table-wrap";
+
+    table.classList.add("theory-trace-table", "theory-md-table");
+    table.parentElement.insertBefore(grid, table);
+    grid.appendChild(title);
+    grid.appendChild(wrap);
+    wrap.appendChild(table);
   });
 }
 
@@ -628,6 +714,7 @@ async function initTheoryPrintPage() {
     enhanceMiniCheckSection(root);
     enhanceIoBlocks(root);
     enhanceTraceGridBlocks(root);
+    enhanceMarkdownTables(root);
     enhanceCodeBlocks(root);
     setupLanguageSelect(root, langInQuery || entry.lang, params, setIdInQuery, setMap);
   } catch (err) {

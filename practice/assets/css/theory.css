@@ -199,6 +199,47 @@
   font-size: 0.9rem;
 }
 
+.theory-content .theory-md-table-wrap {
+  margin: 0;
+  overflow-x: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.theory-content .theory-md-table-grid {
+  background: #ffffff;
+}
+
+.theory-content .theory-md-table-title {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.theory-content .theory-md-table {
+  width: 100%;
+  min-width: 720px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+.theory-content .theory-md-table th,
+.theory-content .theory-md-table td {
+  border: 1px solid #e2e8f0;
+  padding: 6px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.theory-content .theory-md-table thead th {
+  background: #f8fafc;
+  font-weight: 800;
+}
+
 .theory-content img {
   display: block;
   max-width: 100%;
@@ -226,6 +267,17 @@
 .theory-content td {
   border: 1px solid #e2e8f0;
   padding: 6px 8px;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: auto;
+  vertical-align: top;
+}
+
+.theory-content th code,
+.theory-content td code {
+  word-break: normal;
+  overflow-wrap: anywhere;
 }
 
 .theory-side-card h2 {
@@ -302,6 +354,10 @@
   padding: 6px 8px;
   text-align: center;
   vertical-align: middle;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: auto;
 }
 
 .theory-trace-table th {
