@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .h { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 20px; font-weight: 700; fill: #111827; }
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .cell { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.2; }
+      .hi { fill: #dbeafe; stroke: #60a5fa; stroke-width: 1.2; }
+      .label { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 14px; fill: #374151; }
+    </style>
+  </defs>
+
+  <text x="28" y="38" class="t">바깥 반복 횟수 × 안쪽 반복 횟수 = 총 실행 횟수</text>
+  <text x="28" y="62" class="t">예시: for i in range(3), for j in range(4) -> 3 × 4 = 12</text>
+
+  <!-- grid origin -->
+  <g transform="translate(120,120)">
+    <!-- row labels -->
+    <text x="-70" y="24" class="label">i=0</text>
+    <text x="-70" y="64" class="label">i=1</text>
+    <text x="-70" y="104" class="label">i=2</text>
+
+    <!-- col labels -->
+    <text x="12" y="-15" class="label">j=0</text>
+    <text x="52" y="-15" class="label">j=1</text>
+    <text x="92" y="-15" class="label">j=2</text>
+    <text x="132" y="-15" class="label">j=3</text>
+
+    <!-- 3x4 cells -->
+    <rect x="0" y="0" width="36" height="36" class="hi"/>
+    <rect x="40" y="0" width="36" height="36" class="hi"/>
+    <rect x="80" y="0" width="36" height="36" class="hi"/>
+    <rect x="120" y="0" width="36" height="36" class="hi"/>
+
+    <rect x="0" y="40" width="36" height="36" class="hi"/>
+    <rect x="40" y="40" width="36" height="36" class="hi"/>
+    <rect x="80" y="40" width="36" height="36" class="hi"/>
+    <rect x="120" y="40" width="36" height="36" class="hi"/>
+
+    <rect x="0" y="80" width="36" height="36" class="hi"/>
+    <rect x="40" y="80" width="36" height="36" class="hi"/>
+    <rect x="80" y="80" width="36" height="36" class="hi"/>
+    <rect x="120" y="80" width="36" height="36" class="hi"/>
+  </g>
+
+  <text x="120" y="300" class="t">강조된 칸 1개 = 안쪽 본문 1회 실행</text>
+  <text x="120" y="326" class="t">총 칸 수 = 12</text>
+</svg>

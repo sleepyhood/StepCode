@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .box { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.5; rx: 10; }
+      .cond { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.8; rx: 10; }
+      .yes { fill: #ecfeff; stroke: #06b6d4; stroke-width: 1.6; rx: 10; }
+      .no { fill: #fee2e2; stroke: #ef4444; stroke-width: 1.6; rx: 10; }
+      .arr { stroke: #374151; stroke-width: 2; marker-end: url(#arrow); fill: none; }
+      .lab { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 14px; fill: #111827; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <text x="34" y="38" class="t">삼항 연산자 평가 순서: cond를 먼저 계산하고, 참이면 A, 거짓이면 B만 평가합니다.</text>
+  <text x="34" y="64" class="t">형식: A if cond else B</text>
+
+  <rect x="70" y="110" width="220" height="58" class="box"/>
+  <text x="120" y="145" class="t">cond 평가</text>
+
+  <rect x="380" y="110" width="220" height="58" class="cond"/>
+  <text x="450" y="145" class="t">cond ?</text>
+
+  <rect x="690" y="86" width="220" height="58" class="yes"/>
+  <text x="770" y="121" class="t">A 계산</text>
+
+  <rect x="690" y="176" width="220" height="58" class="no"/>
+  <text x="770" y="211" class="t">B 계산</text>
+
+  <rect x="690" y="266" width="220" height="58" class="box"/>
+  <text x="760" y="301" class="t">출력</text>
+
+  <path d="M290,139 L380,139" class="arr"/>
+  <path d="M600,132 L690,115" class="arr"/>
+  <path d="M600,146 L690,205" class="arr"/>
+  <path d="M800,144 L800,266" class="arr"/>
+  <path d="M800,234 L800,266" class="arr"/>
+  <text x="620" y="118" class="lab">참</text>
+  <text x="620" y="184" class="lab">거짓</text>
+
+  <rect x="70" y="282" width="560" height="42" class="box"/>
+  <text x="90" y="309" class="t">핵심: A와 B를 둘 다 계산하지 않는다.</text>
+</svg>

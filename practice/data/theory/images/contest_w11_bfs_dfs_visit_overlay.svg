@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .cell { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.2; }
+      .on { fill: #dbeafe; stroke: #60a5fa; stroke-width: 1.2; }
+      .head { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.4; }
+      .note { fill: #ecfeff; stroke: #06b6d4; stroke-width: 1.4; rx: 8; }
+      .num { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 15px; fill: #111827; }
+    </style>
+  </defs>
+
+  <text x="34" y="36" class="t">2D 탐색 방문 번호 오버레이 예시 (상하좌우, 시작점 (0,0))</text>
+
+  <!-- legend -->
+  <rect x="34" y="52" width="24" height="24" class="on"/><text x="68" y="69" class="t">탐색 대상(1)</text>
+  <rect x="190" y="52" width="24" height="24" class="cell"/><text x="224" y="69" class="t">비대상(0)</text>
+
+  <!-- BFS grid -->
+  <rect x="70" y="94" width="180" height="34" class="head"/><text x="136" y="117" class="num">BFS</text>
+  <g transform="translate(70,130)">
+    <!-- row 0 -->
+    <rect x="0" y="0" width="50" height="50" class="on"/><text x="18" y="30" class="num">1</text>
+    <rect x="50" y="0" width="50" height="50" class="cell"/><text x="67" y="30" class="num">0</text>
+    <rect x="100" y="0" width="50" height="50" class="cell"/><text x="117" y="30" class="num">0</text>
+    <!-- row 1 -->
+    <rect x="0" y="50" width="50" height="50" class="on"/><text x="18" y="80" class="num">2</text>
+    <rect x="50" y="50" width="50" height="50" class="on"/><text x="68" y="80" class="num">3</text>
+    <rect x="100" y="50" width="50" height="50" class="cell"/><text x="117" y="80" class="num">0</text>
+    <!-- row 2 -->
+    <rect x="0" y="100" width="50" height="50" class="cell"/><text x="17" y="130" class="num">0</text>
+    <rect x="50" y="100" width="50" height="50" class="cell"/><text x="67" y="130" class="num">0</text>
+    <rect x="100" y="100" width="50" height="50" class="on"/><text x="118" y="130" class="num">4</text>
+  </g>
+
+  <!-- DFS grid -->
+  <rect x="390" y="94" width="180" height="34" class="head"/><text x="456" y="117" class="num">DFS</text>
+  <g transform="translate(390,130)">
+    <!-- row 0 -->
+    <rect x="0" y="0" width="50" height="50" class="on"/><text x="18" y="30" class="num">1</text>
+    <rect x="50" y="0" width="50" height="50" class="cell"/><text x="67" y="30" class="num">0</text>
+    <rect x="100" y="0" width="50" height="50" class="cell"/><text x="117" y="30" class="num">0</text>
+    <!-- row 1 -->
+    <rect x="0" y="50" width="50" height="50" class="on"/><text x="18" y="80" class="num">2</text>
+    <rect x="50" y="50" width="50" height="50" class="on"/><text x="68" y="80" class="num">3</text>
+    <rect x="100" y="50" width="50" height="50" class="cell"/><text x="117" y="80" class="num">0</text>
+    <!-- row 2 -->
+    <rect x="0" y="100" width="50" height="50" class="cell"/><text x="17" y="130" class="num">0</text>
+    <rect x="50" y="100" width="50" height="50" class="cell"/><text x="67" y="130" class="num">0</text>
+    <rect x="100" y="100" width="50" height="50" class="on"/><text x="118" y="130" class="num">4</text>
+  </g>
+
+  <rect x="70" y="300" width="860" height="42" class="note"/>
+  <text x="92" y="327" class="t">핵심: 방문 번호는 탐색 순서를 기록합니다. 방문 표시는 큐/스택 삽입 시점에 즉시 처리합니다.</text>
+</svg>

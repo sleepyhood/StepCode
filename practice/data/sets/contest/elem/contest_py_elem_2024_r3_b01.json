@@ -1,59 +1,123 @@
 ﻿{
-    "id":  "contest_py_elem_2024_r3_b01",
-    "title":  "Python 경시대회(초등) 2024 제3회 실전 1회차",
-    "categoryId":  "contest_py_w01_diagnostic_io_casting",
-    "availableLanguages":  [
-                               "python"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "trace1",
-                         "type":  "short",
-                         "level":  "초,중,고",
-                         "title":  "Trace 1. 중첩 반복 횟수",
-                         "description":  "다음 코드의 출력값을 쓰세요.",
-                         "code":  "a = 0\nfor i in range(1, 30, 2):\n    for j in range(2, 20, 3):\n        a += 1\nprint(a)",
-                         "expectedText":  "90"
-                     },
-                     {
-                         "id":  "trace2",
-                         "type":  "short",
-                         "level":  "초",
-                         "title":  "Trace 2. 조건 누적",
-                         "description":  "다음 코드의 출력값을 쓰세요.",
-                         "code":  "b = 0\nfor i in [1, 2, 3, 4, 5, 6, 7]:\n    if i % 2 == 1:\n        b += i\n    if i % 3 == 1:\n        b -= i\nprint(b)",
-                         "expectedText":  "4"
-                     },
-                     {
-                         "id":  "theory1",
-                         "type":  "mcq",
-                         "level":  "초,중,고",
-                         "title":  "Theory 1. collections 모듈",
-                         "description":  "`collections` 모듈의 특수 컨테이너가 직접 대체 대상으로 두지 않는 내장 타입을 고르세요.",
-                         "options":  [
-                                         "list",
-                                         "dict",
-                                         "set",
-                                         "str",
-                                         "tuple"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  3
-                     },
-                     {
-                         "id":  "trace3",
-                         "type":  "short",
-                         "level":  "초,중,고",
-                         "title":  "Trace 3. while 반복",
-                         "description":  "다음 코드의 출력값을 쓰세요.",
-                         "code":  "a = 1\ni = 1\nwhile True:\n    if i \u003e 10:\n        break\n    i += 2\n    a *= 3\nprint(a)",
-                         "expectedText":  "243"
-                     }
-                 ]
+  "id": "contest_py_elem_2024_r3_b01",
+  "title": "Python 경시대회(초등) 2024 제3회 실전 1회차",
+  "categoryId": "contest_py_w01_diagnostic_io_casting",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 1",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "v = -9\nv %= 4\nprint(v)",
+      "options": [
+        "-1",
+        "0",
+        "3",
+        "4",
+        "오류"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 2",
+      "description": "다음 중 함수 선언 키워드로 올바른 것을 고르시오.",
+      "options": [
+        "function",
+        "define",
+        "def",
+        "func",
+        "global"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 3",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "x = 12.34\nprint(round(x, 1))",
+      "options": [
+        "12",
+        "12.0",
+        "12.3",
+        "12.34",
+        "12.4"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 4",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "print(\"|{:4s}|\".format(\"A\"))",
+      "options": [
+        "|A|",
+        "|A  |",
+        "|  A|",
+        "|A   |",
+        "|   A|"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 5",
+      "description": "다음 중 조건식에서 거짓으로 판정되는 값을 고르시오.",
+      "options": [
+        "\"0\"",
+        "-1",
+        "[]",
+        "3.14",
+        "\"False\""
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2
+    }
+  ]
 }

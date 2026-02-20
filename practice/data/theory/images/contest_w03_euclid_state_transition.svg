@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .th { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.4; }
+      .td { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.1; }
+      .note { fill: #ecfeff; stroke: #06b6d4; stroke-width: 1.5; rx: 8; }
+      .mono { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 15px; fill: #111827; }
+    </style>
+  </defs>
+
+  <text x="40" y="36" class="t">호제법 상태 전이: (a, b) -> (b, a % b), b가 0이 되면 종료합니다.</text>
+
+  <!-- header -->
+  <rect x="60" y="70" width="120" height="42" class="th"/>
+  <rect x="180" y="70" width="170" height="42" class="th"/>
+  <rect x="350" y="70" width="170" height="42" class="th"/>
+  <rect x="520" y="70" width="300" height="42" class="th"/>
+  <text x="103" y="97" class="mono">step</text>
+  <text x="248" y="97" class="mono">a</text>
+  <text x="418" y="97" class="mono">b</text>
+  <text x="575" y="97" class="mono">다음 상태 (b, a % b)</text>
+
+  <!-- row 0 -->
+  <rect x="60" y="112" width="120" height="42" class="td"/>
+  <rect x="180" y="112" width="170" height="42" class="td"/>
+  <rect x="350" y="112" width="170" height="42" class="td"/>
+  <rect x="520" y="112" width="300" height="42" class="td"/>
+  <text x="110" y="139" class="mono">0</text>
+  <text x="248" y="139" class="mono">84</text>
+  <text x="418" y="139" class="mono">30</text>
+  <text x="585" y="139" class="mono">(30, 84 % 30) = (30, 24)</text>
+
+  <!-- row 1 -->
+  <rect x="60" y="154" width="120" height="42" class="td"/>
+  <rect x="180" y="154" width="170" height="42" class="td"/>
+  <rect x="350" y="154" width="170" height="42" class="td"/>
+  <rect x="520" y="154" width="300" height="42" class="td"/>
+  <text x="110" y="181" class="mono">1</text>
+  <text x="248" y="181" class="mono">30</text>
+  <text x="418" y="181" class="mono">24</text>
+  <text x="585" y="181" class="mono">(24, 30 % 24) = (24, 6)</text>
+
+  <!-- row 2 -->
+  <rect x="60" y="196" width="120" height="42" class="td"/>
+  <rect x="180" y="196" width="170" height="42" class="td"/>
+  <rect x="350" y="196" width="170" height="42" class="td"/>
+  <rect x="520" y="196" width="300" height="42" class="td"/>
+  <text x="110" y="223" class="mono">2</text>
+  <text x="248" y="223" class="mono">24</text>
+  <text x="418" y="223" class="mono">6</text>
+  <text x="593" y="223" class="mono">(6, 24 % 6) = (6, 0)</text>
+
+  <!-- row 3 -->
+  <rect x="60" y="238" width="120" height="42" class="td"/>
+  <rect x="180" y="238" width="170" height="42" class="td"/>
+  <rect x="350" y="238" width="170" height="42" class="td"/>
+  <rect x="520" y="238" width="300" height="42" class="td"/>
+  <text x="110" y="265" class="mono">3</text>
+  <text x="248" y="265" class="mono">6</text>
+  <text x="418" y="265" class="mono">0</text>
+  <text x="622" y="265" class="mono">종료 (최대공약수 = 6)</text>
+
+  <rect x="60" y="300" width="760" height="40" class="note"/>
+  <text x="82" y="325" class="t">순서 고정: 나머지 계산 후 (a, b)를 동시에 갱신합니다. b == 0이면 종료합니다.</text>
+</svg>

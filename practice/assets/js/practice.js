@@ -2089,6 +2089,16 @@ function setupBackToListButton() {
   if (!btn) return;
 
   btn.addEventListener("click", () => {
+    const search = new URLSearchParams(location.search);
+    const track = search.get("track");
+    const lang = search.get("lang");
+    const indexQuery = new URLSearchParams();
+    if (track) indexQuery.set("track", track);
+    if (lang) indexQuery.set("lang", lang);
+    const indexHref = indexQuery.toString()
+      ? `index.html?${indexQuery.toString()}`
+      : "index.html";
+
     const ref = document.referrer || "";
 
     // 같은 오리진의 index.html에서 왔으면 back이 UX가 더 좋음(스크롤/검색 상태 유지)
@@ -2109,7 +2119,7 @@ function setupBackToListButton() {
     }
 
     // fallback: 직접 index로 이동
-    window.location.href = "index.html";
+    window.location.href = indexHref;
   });
 }
 

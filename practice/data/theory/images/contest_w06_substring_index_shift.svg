@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .box { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.4; rx: 10; }
+      .ok { fill: #ecfeff; stroke: #06b6d4; stroke-width: 1.6; rx: 10; }
+      .bad { fill: #fee2e2; stroke: #ef4444; stroke-width: 1.6; rx: 10; }
+      .arr { stroke: #374151; stroke-width: 2; marker-end: url(#arrow); fill: none; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <text x="34" y="38" class="t">부분문자열 탐색 인덱스 이동: 실패는 i+=1, 성공은 i+=len(t)</text>
+
+  <rect x="60" y="86" width="860" height="68" class="box"/>
+  <text x="84" y="114" class="t">예시 문자열: s = "abcabcx", t = "abc", len(t)=3</text>
+  <text x="84" y="140" class="t">i=0에서 매칭 성공 -> 다음 시작점은 i=3으로 점프</text>
+
+  <rect x="60" y="190" width="400" height="120" class="ok"/>
+  <text x="84" y="222" class="t">성공 분기</text>
+  <text x="84" y="248" class="t">1) cnt += 1</text>
+  <text x="84" y="274" class="t">2) i += len(t)  (예: +3)</text>
+  <text x="84" y="300" class="t">3) 이미 확인한 구간 건너뛰기</text>
+
+  <rect x="520" y="190" width="400" height="120" class="bad"/>
+  <text x="544" y="222" class="t">실패 분기</text>
+  <text x="544" y="248" class="t">1) cnt 변화 없음</text>
+  <text x="544" y="274" class="t">2) i += 1</text>
+  <text x="544" y="300" class="t">3) 다음 시작점 재검사</text>
+
+  <path d="M460,250 L520,250" class="arr"/>
+  <path d="M260,154 L260,190" class="arr"/>
+  <path d="M720,154 L720,190" class="arr"/>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .box { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.5; rx: 10; }
+      .cond { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.8; rx: 10; }
+      .warn { fill: #fee2e2; stroke: #ef4444; stroke-width: 1.5; rx: 10; }
+      .arr { stroke: #374151; stroke-width: 2; marker-end: url(#arrow); fill: none; }
+      .lab { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 14px; fill: #111827; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <text x="34" y="38" class="t">재귀는 종료조건을 먼저 검사한 뒤, 비종료일 때만 다음 재귀를 호출합니다.</text>
+
+  <rect x="80" y="90" width="220" height="56" class="box"/>
+  <text x="130" y="124" class="t">함수 진입</text>
+
+  <rect x="380" y="90" width="220" height="56" class="cond"/>
+  <text x="424" y="124" class="t">종료조건 검사</text>
+
+  <rect x="700" y="90" width="200" height="56" class="box"/>
+  <text x="752" y="124" class="t">즉시 반환</text>
+
+  <rect x="380" y="202" width="220" height="56" class="box"/>
+  <text x="430" y="236" class="t">다음 인자 계산</text>
+
+  <rect x="700" y="202" width="200" height="56" class="box"/>
+  <text x="728" y="236" class="t">재귀 호출 진행</text>
+
+  <path d="M300,118 L380,118" class="arr"/>
+  <path d="M600,118 L700,118" class="arr"/>
+  <path d="M490,146 L490,202" class="arr"/>
+  <path d="M600,230 L700,230" class="arr"/>
+  <path d="M800,202 L800,168 L490,168 L490,202" class="arr"/>
+
+  <text x="628" y="108" class="lab">참</text>
+  <text x="502" y="182" class="lab">거짓</text>
+
+  <rect x="80" y="292" width="820" height="46" class="warn"/>
+  <text x="102" y="320" class="t">주의: 종료조건을 뒤에 두면 무한 재귀 또는 호출 횟수 오차가 발생하기 쉽습니다.</text>
+</svg>

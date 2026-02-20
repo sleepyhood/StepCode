@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .ring { fill: none; stroke: #93c5fd; stroke-width: 10; }
+      .pt { fill: #2563eb; }
+      .lab { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 15px; fill: #111827; }
+      .arr { stroke: #374151; stroke-width: 2; marker-end: url(#arrow); fill: none; }
+      .box { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.2; rx: 8; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <text x="40" y="36" class="t">사이클 길이 L=4일 때 반복 N은 N % L로 축약합니다.</text>
+
+  <!-- cycle ring -->
+  <circle cx="290" cy="185" r="105" class="ring"/>
+  <circle cx="290" cy="80" r="10" class="pt"/><text x="283" y="63" class="lab">0</text>
+  <circle cx="395" cy="185" r="10" class="pt"/><text x="408" y="190" class="lab">1</text>
+  <circle cx="290" cy="290" r="10" class="pt"/><text x="283" y="318" class="lab">2</text>
+  <circle cx="185" cy="185" r="10" class="pt"/><text x="160" y="190" class="lab">3</text>
+
+  <path d="M298,88 C340,110 368,140 386,176" class="arr"/>
+  <path d="M386,194 C365,238 338,261 298,281" class="arr"/>
+  <path d="M282,281 C242,260 216,238 194,194" class="arr"/>
+  <path d="M194,176 C214,139 240,111 282,88" class="arr"/>
+
+  <!-- formula panel -->
+  <rect x="500" y="92" width="420" height="168" class="box"/>
+  <text x="526" y="132" class="t">예시</text>
+  <text x="526" y="164" class="t">- 순환 길이 L = 4</text>
+  <text x="526" y="196" class="t">- 반복 횟수 N = 37</text>
+  <text x="526" y="228" class="t">- 축약 횟수 r = N % L = 37 % 4 = 1</text>
+  <text x="526" y="260" class="t">=> 순환 구간에서는 1칸만 이동한 결과와 동일</text>
+
+  <rect x="40" y="306" width="900" height="34" class="box"/>
+  <text x="58" y="329" class="t">핵심: 큰 반복은 모두 돌리지 말고, 순환 길이로 나머지를 계산해 최종 상태를 정합니다.</text>
+</svg>

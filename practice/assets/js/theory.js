@@ -748,21 +748,35 @@ function renderRelatedList(entry, setMap, setIdInQuery) {
   });
 }
 
-function updateTopLinks(entry, setIdInQuery) {
+function updateTopLinks(entry, setIdInQuery, params) {
   const backLink = document.getElementById("theory-back-link");
   const startBtn = document.getElementById("theory-start-btn");
+  const track = params?.get("track") || "";
+  const lang = params?.get("lang") || "";
+  const indexQ = new URLSearchParams();
+  if (track) indexQ.set("track", track);
+  if (lang) indexQ.set("lang", lang);
+  const indexHref = indexQ.toString() ? `index.html?${indexQ.toString()}` : "index.html";
   if (backLink) {
     if (setIdInQuery) {
-      backLink.href = `practice.html?set=${encodeURIComponent(setIdInQuery)}`;
+      const q = new URLSearchParams();
+      q.set("set", setIdInQuery);
+      if (track) q.set("track", track);
+      if (lang) q.set("lang", lang);
+      backLink.href = `practice.html?${q.toString()}`;
       backLink.textContent = "← 문제로 복귀";
     } else {
-      backLink.href = "index.html";
+      backLink.href = indexHref;
       backLink.textContent = "← 목록";
     }
   }
   if (startBtn) {
     if (entry.recommendedSetId) {
-      startBtn.href = `practice.html?set=${encodeURIComponent(entry.recommendedSetId)}`;
+      const q = new URLSearchParams();
+      q.set("set", entry.recommendedSetId);
+      if (track) q.set("track", track);
+      if (lang) q.set("lang", lang);
+      startBtn.href = `practice.html?${q.toString()}`;
       startBtn.hidden = false;
     } else {
       startBtn.hidden = true;
@@ -850,7 +864,7 @@ async function initTheoryPage() {
     }
 
     updateTitle(entry);
-    updateTopLinks(entry, setIdInQuery);
+    updateTopLinks(entry, setIdInQuery, params);
     await syncTheoryPrintButton(entry, params, setIdInQuery);
     renderRelatedList(entry, setMap, setIdInQuery);
 

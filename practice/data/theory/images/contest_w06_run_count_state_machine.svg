@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .state { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.5; rx: 10; }
+      .cond { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.6; rx: 10; }
+      .warn { fill: #fee2e2; stroke: #ef4444; stroke-width: 1.5; rx: 10; }
+      .arr { stroke: #374151; stroke-width: 2; marker-end: url(#arrow); fill: none; }
+      .dash { stroke-dasharray: 5 4; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <text x="34" y="38" class="t">연속 문자 카운트 상태 전이: 같으면 cnt 증가, 다르면 기준 문자(c) 교체</text>
+
+  <rect x="70" y="86" width="220" height="58" class="state"/>
+  <text x="110" y="122" class="t">초기화: c=s[0], cnt=0</text>
+
+  <rect x="390" y="86" width="220" height="58" class="cond"/>
+  <text x="440" y="122" class="t">조건: s[i] == c ?</text>
+
+  <rect x="710" y="86" width="190" height="58" class="state"/>
+  <text x="760" y="122" class="t">mx 갱신 검사</text>
+
+  <rect x="390" y="196" width="220" height="58" class="state"/>
+  <text x="430" y="232" class="t">참: cnt += 1</text>
+
+  <rect x="710" y="196" width="190" height="58" class="state"/>
+  <text x="742" y="232" class="t">거짓: c = s[i]</text>
+
+  <path d="M290,115 L390,115" class="arr"/>
+  <path d="M610,115 L710,115" class="arr"/>
+  <path d="M500,144 L500,196" class="arr"/>
+  <path d="M610,225 L710,225" class="arr"/>
+  <path d="M805,196 L805,164 L710,164 L710,144" class="arr dash"/>
+  <path d="M500,254 L500,286 L805,286 L805,254" class="arr dash"/>
+  <path d="M805,115 L920,115" class="arr"/>
+  <text x="635" y="104" class="t">매 반복</text>
+
+  <rect x="70" y="286" width="830" height="50" class="warn"/>
+  <text x="92" y="316" class="t">주의: c = s[i]를 if 바깥에 두면 매번 기준이 바뀌어 연속 카운트가 깨집니다.</text>
+</svg>

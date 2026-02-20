@@ -59,6 +59,65 @@ function normalizeUiLangToParam(lang) {
     .replace(/^c#$/, "csharp");
 }
 
+const INDEX_VIEW_STATE_KEY = "stepcode:index:view-state";
+
+function normalizeParamLangToUi(langParam) {
+  const v = String(langParam || "").trim().toLowerCase();
+  if (v === "python") return "Python";
+  if (v === "c") return "C";
+  if (v === "java") return "Java";
+  if (v === "csharp" || v === "c#" || v === "cs") return "C#";
+  return "";
+}
+
+function readSavedIndexViewState() {
+  try {
+    const raw = localStorage.getItem(INDEX_VIEW_STATE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return {};
+    return {
+      track: String(parsed.track || ""),
+      lang: String(parsed.lang || ""),
+    };
+  } catch (_) {
+    return {};
+  }
+}
+
+function persistIndexViewState(state) {
+  try {
+    localStorage.setItem(
+      INDEX_VIEW_STATE_KEY,
+      JSON.stringify({
+        track: String(state?.track || ""),
+        lang: String(state?.lang || ""),
+      })
+    );
+  } catch (_) {}
+}
+
+function withViewStateParams(href, viewState) {
+  const raw = String(href || "");
+  if (!raw || raw === "#") return raw;
+
+  const hashIdx = raw.indexOf("#");
+  const beforeHash = hashIdx >= 0 ? raw.slice(0, hashIdx) : raw;
+  const hash = hashIdx >= 0 ? raw.slice(hashIdx) : "";
+
+  const qIdx = beforeHash.indexOf("?");
+  const path = qIdx >= 0 ? beforeHash.slice(0, qIdx) : beforeHash;
+  const query = qIdx >= 0 ? beforeHash.slice(qIdx + 1) : "";
+  const q = new URLSearchParams(query);
+
+  if (viewState?.track) q.set("track", viewState.track);
+  const langParam = normalizeUiLangToParam(viewState?.lang);
+  if (langParam) q.set("lang", langParam);
+
+  const qs = q.toString();
+  return `${path}${qs ? `?${qs}` : ""}${hash}`;
+}
+
 function getPartKey(cat) {
   const id = String(cat?.id || "");
   if (!id.includes("_")) return id || "misc";
@@ -114,18 +173,21 @@ function createTrackButton(track, active) {
   return btn;
 }
 
-function createActionLink(label, href, variant) {
+function createActionLink(label, href, variant, viewState) {
   const a = document.createElement("a");
   a.className = `part-action-link ${variant || ""}`.trim();
-  a.href = href;
+  a.href = withViewStateParams(href, viewState);
   a.textContent = label;
   return a;
 }
 
-function createRoundChip(setMeta) {
+function createRoundChip(setMeta, viewState) {
   const a = document.createElement("a");
   a.className = "part-round-chip";
-  a.href = `practice.html?set=${encodeURIComponent(setMeta.id)}`;
+  a.href = withViewStateParams(
+    `practice.html?set=${encodeURIComponent(setMeta.id)}`,
+    viewState
+  );
   const diff = setMeta.difficulty === "challenge" ? "Challenge" : "Basic";
   a.textContent = `R${setMeta.round} · ${diff}`;
   return a;
@@ -189,7 +251,7 @@ function groupByPart(categories, sets) {
   });
 }
 
-function buildPartCard(part, lang, theoryByCategoryId) {
+function buildPartCard(part, lang, theoryByCategoryId, viewState) {
   const langInfo = part.byLang[lang];
   if (!langInfo) return null;
   const theory = theoryByCategoryId[langInfo.category.id];
@@ -247,7 +309,7 @@ function buildPartCard(part, lang, theoryByCategoryId) {
     if (challenges[0]) return `practice.html?set=${encodeURIComponent(challenges[0].id)}`;
     return "#";
   })();
-  actions.appendChild(createActionLink("학습 시작", startHref, "start"));
+  actions.appendChild(createActionLink("학습 시작", startHref, "start", viewState));
   controls.appendChild(actions);
 
   const toggle = document.createElement("button");
@@ -272,7 +334,7 @@ function buildPartCard(part, lang, theoryByCategoryId) {
     const langParam = normalizeUiLangToParam(lang);
     if (langParam) q.set("lang", langParam);
     secondary.appendChild(
-      createActionLink("개념 보기", `theory.html?${q.toString()}`, "theory")
+      createActionLink("개념 보기", `theory.html?${q.toString()}`, "theory", viewState)
     );
   }
   if (basics[0]) {
@@ -280,7 +342,8 @@ function buildPartCard(part, lang, theoryByCategoryId) {
       createActionLink(
         "기초 시작",
         `practice.html?set=${encodeURIComponent(basics[0].id)}`,
-        "basic"
+        "basic",
+        viewState
       )
     );
   }
@@ -289,7 +352,8 @@ function buildPartCard(part, lang, theoryByCategoryId) {
       createActionLink(
         "챌린지 시작",
         `practice.html?set=${encodeURIComponent(challenges[0].id)}`,
-        "challenge"
+        "challenge",
+        viewState
       )
     );
   }
@@ -303,7 +367,7 @@ function buildPartCard(part, lang, theoryByCategoryId) {
     gt.textContent = "Basics";
     const row = document.createElement("div");
     row.className = "part-round-row";
-    basics.forEach((s) => row.appendChild(createRoundChip(s)));
+    basics.forEach((s) => row.appendChild(createRoundChip(s, viewState)));
     g.append(gt, row);
     rounds.appendChild(g);
   }
@@ -315,7 +379,7 @@ function buildPartCard(part, lang, theoryByCategoryId) {
     gt.textContent = "Challenges";
     const row = document.createElement("div");
     row.className = "part-round-row";
-    challenges.forEach((s) => row.appendChild(createRoundChip(s)));
+    challenges.forEach((s) => row.appendChild(createRoundChip(s, viewState)));
     g.append(gt, row);
     rounds.appendChild(g);
   }
@@ -406,6 +470,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
     }
 
+    const savedState = readSavedIndexViewState();
+    const params = new URLSearchParams(location.search);
+    const trackFromQuery = params.get("track");
+    const langFromQuery = normalizeParamLangToUi(params.get("lang"));
+
+    if (tracks.includes(trackFromQuery)) {
+      state.track = trackFromQuery;
+    } else if (tracks.includes(savedState.track)) {
+      state.track = savedState.track;
+    }
+    state.lang = langFromQuery || normalizeParamLangToUi(savedState.lang);
+
     function syncLanguageState() {
       const langs = getLanguagesForTrack(state.track);
       if (!langs.includes(state.lang)) {
@@ -430,6 +506,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function render() {
       const langs = syncLanguageState();
+      persistIndexViewState(state);
+      try {
+        const q = new URLSearchParams(location.search);
+        q.set("track", state.track);
+        const langParam = normalizeUiLangToParam(state.lang);
+        if (langParam) q.set("lang", langParam);
+        else q.delete("lang");
+        const qs = q.toString();
+        const nextUrl = `${location.pathname}${qs ? `?${qs}` : ""}${location.hash || ""}`;
+        history.replaceState(null, "", nextUrl);
+      } catch (_) {}
       renderTrackButtons();
       renderLanguageButtons(langs);
 
@@ -439,7 +526,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
       const parts = groupByPart(activeCategories, sets);
       const cards = parts
-        .map((part) => buildPartCard(part, state.lang, theoryByCategoryId))
+        .map((part) => buildPartCard(part, state.lang, theoryByCategoryId, state))
         .filter(Boolean);
 
       if (!cards.length) {

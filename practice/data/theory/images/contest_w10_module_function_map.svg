@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .mod { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.8; rx: 10; }
+      .func { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.4; rx: 10; }
+      .arr { stroke: #374151; stroke-width: 2; marker-end: url(#arrow); fill: none; }
+      .warn { fill: #fee2e2; stroke: #ef4444; stroke-width: 1.4; rx: 8; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <text x="34" y="36" class="t">모듈-기능 매핑 맵: 모듈 이름을 보고 대표 기능을 먼저 연결합니다.</text>
+
+  <rect x="70" y="82" width="180" height="50" class="mod"/><text x="128" y="114" class="t">os</text>
+  <rect x="70" y="150" width="180" height="50" class="mod"/><text x="132" y="182" class="t">re</text>
+  <rect x="70" y="218" width="180" height="50" class="mod"/><text x="104" y="250" class="t">datetime</text>
+  <rect x="70" y="286" width="180" height="50" class="mod"/><text x="94" y="318" class="t">collections</text>
+
+  <rect x="360" y="82" width="540" height="50" class="func"/><text x="386" y="114" class="t">파일/디렉터리/프로세스 제어 (예: listdir, chdir, getpid)</text>
+  <rect x="360" y="150" width="540" height="50" class="func"/><text x="386" y="182" class="t">정규식 패턴 매칭 (search, fullmatch)</text>
+  <rect x="360" y="218" width="540" height="50" class="func"/><text x="386" y="250" class="t">날짜/시간 처리 및 포맷 (strftime)</text>
+  <rect x="360" y="286" width="540" height="50" class="func"/><text x="386" y="318" class="t">특수 컨테이너 (deque, defaultdict, Counter, namedtuple)</text>
+
+  <path d="M250,107 L360,107" class="arr"/>
+  <path d="M250,175 L360,175" class="arr"/>
+  <path d="M250,243 L360,243" class="arr"/>
+  <path d="M250,311 L360,311" class="arr"/>
+
+  <rect x="560" y="12" width="340" height="34" class="warn"/>
+  <text x="580" y="34" class="t">주의: 모듈 이름이 같아도 대표 기능이 다릅니다.</text>
+</svg>

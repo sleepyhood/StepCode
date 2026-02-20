@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .h { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 20px; font-weight: 700; fill: #111827; }
+      .slot { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.5; }
+      .fill { fill: #dbeafe; stroke: #60a5fa; stroke-width: 1.5; }
+      .label { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 14px; fill: #374151; }
+    </style>
+  </defs>
+
+  <text x="28" y="38" class="t">포맷 템플릿: B{:6d}X{:5s}B, 값 (314, "AB")</text>
+
+  <text x="28" y="82" class="t">출력 결과: B___314XAB___B  (밑줄은 공백 표시)</text>
+
+  <!-- B -->
+  <rect x="30" y="140" width="34" height="34" class="slot"/>
+  <text x="41" y="163" class="t">B</text>
+
+  <!-- {:6d} -->
+  <rect x="80" y="140" width="34" height="34" class="slot"/>
+  <rect x="114" y="140" width="34" height="34" class="slot"/>
+  <rect x="148" y="140" width="34" height="34" class="slot"/>
+  <rect x="182" y="140" width="34" height="34" class="fill"/>
+  <rect x="216" y="140" width="34" height="34" class="fill"/>
+  <rect x="250" y="140" width="34" height="34" class="fill"/>
+  <text x="86" y="163" class="label">_</text>
+  <text x="120" y="163" class="label">_</text>
+  <text x="154" y="163" class="label">_</text>
+  <text x="190" y="163" class="t">3</text>
+  <text x="224" y="163" class="t">1</text>
+  <text x="258" y="163" class="t">4</text>
+  <text x="122" y="198" class="label">{:6d}</text>
+
+  <!-- X -->
+  <rect x="306" y="140" width="34" height="34" class="slot"/>
+  <text x="317" y="163" class="t">X</text>
+
+  <!-- {:5s} -->
+  <rect x="356" y="140" width="34" height="34" class="fill"/>
+  <rect x="390" y="140" width="34" height="34" class="fill"/>
+  <rect x="424" y="140" width="34" height="34" class="slot"/>
+  <rect x="458" y="140" width="34" height="34" class="slot"/>
+  <rect x="492" y="140" width="34" height="34" class="slot"/>
+  <text x="366" y="163" class="t">A</text>
+  <text x="400" y="163" class="t">B</text>
+  <text x="432" y="163" class="label">_</text>
+  <text x="466" y="163" class="label">_</text>
+  <text x="500" y="163" class="label">_</text>
+  <text x="394" y="198" class="label">{:5s}</text>
+
+  <!-- B -->
+  <rect x="548" y="140" width="34" height="34" class="slot"/>
+  <text x="559" y="163" class="t">B</text>
+
+  <text x="30" y="242" class="t">핵심: width는 값이 아니라 전체 칸 수를 뜻합니다.</text>
+</svg>

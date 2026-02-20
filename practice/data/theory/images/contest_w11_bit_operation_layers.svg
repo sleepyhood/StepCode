@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .h { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.4; }
+      .r { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.1; }
+      .note { fill: #ecfeff; stroke: #06b6d4; stroke-width: 1.4; rx: 8; }
+      .warn { fill: #fee2e2; stroke: #ef4444; stroke-width: 1.4; rx: 8; }
+      .mono { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 15px; fill: #111827; }
+    </style>
+  </defs>
+
+  <text x="34" y="36" class="t">비트 연산 레이어: 같은 비트열에 연산자(&, |, ^, &lt;&lt;)를 적용하면 의미가 달라집니다.</text>
+
+  <rect x="60" y="70" width="120" height="36" class="h"/><text x="95" y="94" class="mono">연산</text>
+  <rect x="180" y="70" width="220" height="36" class="h"/><text x="260" y="94" class="mono">입력 1</text>
+  <rect x="400" y="70" width="220" height="36" class="h"/><text x="480" y="94" class="mono">입력 2</text>
+  <rect x="620" y="70" width="300" height="36" class="h"/><text x="740" y="94" class="mono">결과(비트/십진)</text>
+
+  <rect x="60" y="106" width="120" height="36" class="r"/><text x="106" y="130" class="mono">&amp;</text>
+  <rect x="180" y="106" width="220" height="36" class="r"/><text x="236" y="130" class="mono">0101 (5)</text>
+  <rect x="400" y="106" width="220" height="36" class="r"/><text x="456" y="130" class="mono">0011 (3)</text>
+  <rect x="620" y="106" width="300" height="36" class="r"/><text x="666" y="130" class="mono">0001 (1)</text>
+
+  <rect x="60" y="142" width="120" height="36" class="r"/><text x="106" y="166" class="mono">|</text>
+  <rect x="180" y="142" width="220" height="36" class="r"/><text x="236" y="166" class="mono">0101 (5)</text>
+  <rect x="400" y="142" width="220" height="36" class="r"/><text x="456" y="166" class="mono">0011 (3)</text>
+  <rect x="620" y="142" width="300" height="36" class="r"/><text x="666" y="166" class="mono">0111 (7)</text>
+
+  <rect x="60" y="178" width="120" height="36" class="r"/><text x="106" y="202" class="mono">^</text>
+  <rect x="180" y="178" width="220" height="36" class="r"/><text x="236" y="202" class="mono">0101 (5)</text>
+  <rect x="400" y="178" width="220" height="36" class="r"/><text x="456" y="202" class="mono">0011 (3)</text>
+  <rect x="620" y="178" width="300" height="36" class="r"/><text x="666" y="202" class="mono">0110 (6)</text>
+
+  <rect x="60" y="214" width="120" height="36" class="r"/><text x="95" y="238" class="mono">&lt;&lt; 2</text>
+  <rect x="180" y="214" width="220" height="36" class="r"/><text x="236" y="238" class="mono">0101 (5)</text>
+  <rect x="400" y="214" width="220" height="36" class="r"/><text x="460" y="238" class="mono">(이동량)</text>
+  <rect x="620" y="214" width="300" height="36" class="r"/><text x="666" y="238" class="mono">010100 (20)</text>
+
+  <rect x="60" y="274" width="860" height="36" class="note"/>
+  <text x="84" y="298" class="t">핵심: ^는 XOR이며 거듭제곱이 아닙니다. 왼쪽 시프트는 2의 거듭제곱 배 확장입니다.</text>
+
+  <rect x="60" y="316" width="860" height="30" class="warn"/>
+  <text x="84" y="336" class="t">주의: 2 ^ 3 = 1, 2 ** 3 = 8</text>
+</svg>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="980"
+   height="360"
+   viewBox="0 0 980 360"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="contest_w05_loop_control_depth_tree.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview12"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.90612245"
+     inkscape:cx="502.69144"
+     inkscape:cy="206.37387"
+     inkscape:window-width="1920"
+     inkscape:window-height="1010"
+     inkscape:window-x="1913"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg12" />
+  <defs
+     id="defs1">
+    <style
+       id="style1">
+      .t { font-family: &quot;Pretendard&quot;, &quot;Noto Sans KR&quot;, &quot;Malgun Gothic&quot;, &quot;Apple SD Gothic Neo&quot;, sans-serif; font-size: 16px; fill: #1f2937; }
+      .k { font-family: &quot;Pretendard&quot;, &quot;Noto Sans KR&quot;, &quot;Malgun Gothic&quot;, &quot;Apple SD Gothic Neo&quot;, sans-serif; font-size: 19px; font-weight: 700; fill: #111827; }
+      .loop { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.5; rx: 10; }
+      .cont { fill: #e0f2fe; stroke: #0284c7; stroke-width: 1.6; rx: 10; }
+      .brk { fill: #fee2e2; stroke: #ef4444; stroke-width: 1.6; rx: 10; }
+      .arr { stroke: #374151; stroke-width: 2; marker-end: url(#arrow); fill: none; }
+      .dash { stroke-dasharray: 5 4; }
+    </style>
+    <marker
+       id="arrow"
+       markerWidth="10"
+       markerHeight="10"
+       refX="8"
+       refY="3"
+       orient="auto">
+      <path
+         d="M0,0 L0,6 L9,3 z"
+         fill="#374151"
+         id="path1" />
+    </marker>
+  </defs>
+  <text
+     x="34"
+     y="40"
+     class="k"
+     id="text1">중첩 루프 깊이별 제어 범위</text>
+  <text
+     x="34"
+     y="68"
+     class="t"
+     id="text2">continue는 현재 반복(같은 깊이)만 건너뛰고, break는 현재 루프 1단계만 종료합니다.</text>
+  <!-- depth tree -->
+  <rect
+     x="80"
+     y="108"
+     width="220"
+     height="56"
+     class="loop"
+     id="rect2" />
+  <text
+     x="140"
+     y="142"
+     class="t"
+     id="text3">깊이 1: for i</text>
+  <rect
+     x="380"
+     y="108"
+     width="220"
+     height="56"
+     class="loop"
+     id="rect3" />
+  <text
+     x="440"
+     y="142"
+     class="t"
+     id="text4">깊이 2: for j</text>
+  <rect
+     x="680"
+     y="108"
+     width="220"
+     height="56"
+     class="loop"
+     id="rect4" />
+  <text
+     x="750"
+     y="142"
+     class="t"
+     id="text5">깊이 3: 본문</text>
+  <path
+     d="M300,136 L380,136"
+     class="arr"
+     id="path5" />
+  <path
+     d="M600,136 L680,136"
+     class="arr"
+     id="path6" />
+  <!-- continue scope -->
+  <rect
+     x="380"
+     y="210"
+     width="220"
+     height="64"
+     class="cont"
+     id="rect6" />
+  <text
+     x="440"
+     y="238"
+     class="t"
+     id="text6">continue 발생</text>
+  <text
+     x="404"
+     y="262"
+     class="t"
+     id="text7">깊이 2 다음 반복으로 이동</text>
+  <path
+     d="M490,210 L490,166"
+     class="arr dash"
+     id="path7" />
+  <!-- break scope -->
+  <rect
+     x="80"
+     y="210"
+     width="220"
+     height="64"
+     class="brk"
+     id="rect7" />
+  <text
+     x="152"
+     y="238"
+     class="t"
+     id="text8">break 발생</text>
+  <text
+     x="84"
+     y="264"
+     class="t"
+     id="text9">깊이 2 루프 종료 후 깊이 1 진행</text>
+  <path
+     d="M300,242 C340,242 340,176 380,176"
+     class="arr dash"
+     id="path9" />
+  <rect
+     x="680"
+     y="210"
+     width="220"
+     height="64"
+     class="loop"
+     id="rect9" />
+  <text
+     x="702"
+     y="236"
+     class="t"
+     id="text10">모든 루프 종료가 필요하면</text>
+  <text
+     x="704"
+     y="260"
+     class="t"
+     id="text11">flag 또는 함수 return 사용</text>
+  <rect
+     x="40"
+     y="300"
+     width="900"
+     height="44"
+     class="loop"
+     id="rect11" />
+  <text
+     x="60"
+     y="328"
+     class="t"
+     id="text12">핵심: break는 \&quot;현재 루프 1단계\&quot;만 멈춥니다. 상위 루프 종료는 별도 제어가 필요합니다.</text>
+</svg>

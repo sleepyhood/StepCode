@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 16px; fill: #1f2937; }
+      .bar { fill: #f9fafb; stroke: #9ca3af; stroke-width: 1.2; rx: 8; }
+      .match { fill: #dbeafe; stroke: #60a5fa; stroke-width: 1.2; rx: 6; }
+      .ok { fill: #ecfeff; stroke: #06b6d4; stroke-width: 1.5; rx: 8; }
+      .bad { fill: #fee2e2; stroke: #ef4444; stroke-width: 1.5; rx: 8; }
+    </style>
+  </defs>
+
+  <text x="34" y="36" class="t">`search` vs `fullmatch` 매칭 범위 비교 (패턴: o[gh], 문자열: "dog")</text>
+
+  <rect x="70" y="76" width="860" height="72" class="bar"/>
+  <text x="96" y="122" class="t">문자열: d o g</text>
+  <rect x="196" y="94" width="110" height="34" class="match"/>
+  <text x="212" y="117" class="t">"og" 부분</text>
+
+  <rect x="70" y="176" width="410" height="130" class="ok"/>
+  <text x="96" y="210" class="t">search("dog")</text>
+  <text x="96" y="238" class="t">- 문자열 일부에 "og"가 있으면 매치</text>
+  <text x="96" y="266" class="t">- 결과: True (매치 객체 반환)</text>
+  <text x="96" y="294" class="t">- 부분 일치 허용</text>
+
+  <rect x="520" y="176" width="410" height="130" class="bad"/>
+  <text x="546" y="210" class="t">fullmatch("dog")</text>
+  <text x="546" y="238" class="t">- 문자열 전체가 패턴과 같아야 매치</text>
+  <text x="546" y="266" class="t">- 결과: False (None)</text>
+  <text x="546" y="294" class="t">- 전체 일치만 허용</text>
+</svg>
