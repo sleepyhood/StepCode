@@ -3,6 +3,8 @@
 let currentSetData = null;
 const SLOTS_PER_PAGE = 2;
 let currentShowLineNumbers = false;
+const PRINT_PAGE_MARGIN_MM = 6;
+const PRINT_PAGE_WIDTH_MM = 297;
 
 function ymd(d = new Date()) {
   const y = d.getFullYear();
@@ -32,7 +34,7 @@ function cssToPx(cssLen) {
 
 /** header + gap 등을 제외한 "페이지 본문(문제영역)" 높이(px) 계산 */
 function getBodyHeightPx(pageEl) {
-  const pageH = cssToPx("calc(210mm - 20mm)"); // A4 landscape의 content height = 210-상하마진(10mm*2)=190mm
+  const pageH = cssToPx(`calc(210mm - ${PRINT_PAGE_MARGIN_MM * 2}mm)`);
   const header = pageEl.querySelector(".page-header");
   const h = header ? header.getBoundingClientRect().height : 0;
   const mb = header ? parseFloat(getComputedStyle(header).marginBottom || "0") : 0;
@@ -583,6 +585,10 @@ function detectCombinedTheoryLangFromCode(codeEl) {
     if (!cls.startsWith("language-")) continue;
     return normalizeCombinedTheoryCodeLang(cls.replace("language-", ""));
   }
+  const pre = codeEl.closest("pre");
+  if (pre && pre.dataset && pre.dataset.lang) {
+    return normalizeCombinedTheoryCodeLang(pre.dataset.lang);
+  }
   return "";
 }
 
@@ -685,6 +691,38 @@ function buildCombinedTheoryIoExampleBlock(io) {
   return wrap;
 }
 
+function findCombinedLastHeadingInNode(node) {
+  if (!node) return null;
+  if (/^H[1-6]$/.test(node.tagName || "")) return node;
+  if (!node.querySelectorAll) return null;
+  const hs = node.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  return hs.length ? hs[hs.length - 1] : null;
+}
+
+function findCombinedNearestPreviousHeadingText(root, startEl) {
+  let cursor = startEl;
+  while (cursor && cursor !== root) {
+    let prev = cursor.previousElementSibling;
+    while (prev) {
+      const h = findCombinedLastHeadingInNode(prev);
+      if (h) return String(h.textContent || "");
+      prev = prev.previousElementSibling;
+    }
+    cursor = cursor.parentElement;
+  }
+  return "";
+}
+
+function isCombinedPracticeLinkedSectionByHeading(text) {
+  return /연계\s*실습/.test(String(text || ""));
+}
+
+function isCombinedIoLabelParagraph(el) {
+  if (!el || el.tagName !== "P") return false;
+  const raw = String(el.textContent || "").trim();
+  return /^예상\s*(입력\s*\/\s*출력|출력)\s*[:：]?\s*$/i.test(raw);
+}
+
 function buildCombinedTheoryTraceGridBlock(conf) {
   const wrap = document.createElement("div");
   wrap.className = "theory-trace-grid";
@@ -734,10 +772,17 @@ function enhanceCombinedTheoryIoBlocks(contentEl) {
     if (!["io", "inout", "exampleio"].includes(lang)) return;
     const pre = codeEl.closest("pre");
     if (!pre) return;
+    const headingText = findCombinedNearestPreviousHeadingText(contentEl, pre);
+    const inPractice = isCombinedPracticeLinkedSectionByHeading(headingText);
+    const io = parseCombinedTheoryIoFenceText(codeEl.textContent || "");
+    if (inPractice) {
+      const prev = pre.previousElementSibling;
+      if (isCombinedIoLabelParagraph(prev)) prev.remove();
+      pre.remove();
+      return;
+    }
     pre.replaceWith(
-      buildCombinedTheoryIoExampleBlock(
-        parseCombinedTheoryIoFenceText(codeEl.textContent || "")
-      )
+      buildCombinedTheoryIoExampleBlock(io)
     );
   });
 }
@@ -755,30 +800,99 @@ function enhanceCombinedTheoryTraceGridBlocks(contentEl) {
   });
 }
 
+function isCombinedMiniCheckHeadingText(text) {
+  return /미니\s*체크/.test(String(text || ""));
+}
+
+function isCombinedMiniCheckLabel(el, kind) {
+  if (!el || el.tagName !== "P") return false;
+  const raw = String(el.textContent || "").trim();
+  if (kind === "questions") return /^문항\s*[:：]?\s*$/i.test(raw);
+  if (kind === "answers") return /^답안\s*작성\s*[:：]?\s*$/i.test(raw);
+  return false;
+}
+
+function buildPrintMiniCheckAnswerSheet(questionList) {
+  const wrap = document.createElement("div");
+  wrap.className = "theory-mini-check-print-sheet";
+
+  const title = document.createElement("div");
+  title.className = "theory-mini-check-print-title";
+  title.textContent = "답안 작성란";
+  wrap.appendChild(title);
+
+  const items = Array.from(questionList?.querySelectorAll(":scope > li") || []);
+  items.forEach((_, idx) => {
+    const row = document.createElement("div");
+    row.className = "theory-mini-check-print-row";
+
+    const no = document.createElement("span");
+    no.className = "theory-mini-check-print-no";
+    no.textContent = `${idx + 1}.`;
+
+    const answer = document.createElement("span");
+    answer.className = "theory-mini-check-print-line";
+    answer.textContent = "정답: ____________________";
+
+    const reason = document.createElement("span");
+    reason.className = "theory-mini-check-print-line";
+    reason.textContent = "근거: ________________________________";
+
+    row.append(no, answer, reason);
+    wrap.appendChild(row);
+  });
+
+  return wrap;
+}
+
 function enhanceCombinedTheoryMiniCheckSection(contentEl) {
-  const h2List = Array.from(contentEl.querySelectorAll("h2"));
-  const start = h2List.find((h2) => /미니\s*체크\s*문제/.test(h2.textContent || ""));
-  if (!start) return;
+  const heads = Array.from(contentEl.querySelectorAll("h2, h3"));
+  const starts = heads.filter((h) =>
+    isCombinedMiniCheckHeadingText(h.textContent || "")
+  );
+  if (!starts.length) return;
 
-  start.classList.add("theory-mini-check-title");
-  let cursor = start.nextElementSibling;
-  let activeCard = null;
+  starts.forEach((start) => {
+    start.classList.add("theory-mini-check-title");
 
-  while (cursor && cursor.tagName !== "H2") {
-    const next = cursor.nextElementSibling;
-    const isQuestionHeader =
-      cursor.tagName === "H3" && /^Q\s*\d+/i.test((cursor.textContent || "").trim());
-
-    if (isQuestionHeader) {
-      activeCard = document.createElement("section");
-      activeCard.className = "theory-mini-check-card";
-      cursor.parentNode.insertBefore(activeCard, cursor);
-      activeCard.appendChild(cursor);
-    } else if (activeCard) {
-      activeCard.appendChild(cursor);
+    const blockNodes = [];
+    let cursor = start.nextElementSibling;
+    while (cursor && cursor.tagName !== "H2") {
+      blockNodes.push(cursor);
+      cursor = cursor.nextElementSibling;
     }
-    cursor = next;
-  }
+    if (!blockNodes.length) return;
+
+    const card = document.createElement("section");
+    card.className = "theory-mini-check-card theory-mini-check-card--print";
+    blockNodes[0].parentNode.insertBefore(card, blockNodes[0]);
+    blockNodes.forEach((node) => card.appendChild(node));
+
+    const qLabel = Array.from(card.querySelectorAll("p")).find((p) =>
+      isCombinedMiniCheckLabel(p, "questions")
+    );
+    const qList =
+      qLabel && qLabel.nextElementSibling && qLabel.nextElementSibling.tagName === "OL"
+        ? qLabel.nextElementSibling
+        : null;
+
+    const aLabel = Array.from(card.querySelectorAll("p")).find((p) =>
+      isCombinedMiniCheckLabel(p, "answers")
+    );
+    const aList =
+      aLabel && aLabel.nextElementSibling && aLabel.nextElementSibling.tagName === "OL"
+        ? aLabel.nextElementSibling
+        : null;
+
+    if (qLabel) qLabel.remove();
+    if (aLabel) aLabel.remove();
+    if (aList) aList.remove();
+
+    if (qList) {
+      const answerSheet = buildPrintMiniCheckAnswerSheet(qList);
+      card.appendChild(answerSheet);
+    }
+  });
 }
 
 function enhanceCombinedTheoryCodeBlocks(contentEl) {
@@ -915,6 +1029,8 @@ function applyCombinedTheoryViewFilter(contentEl, variant) {
       if (m) {
         currentView = m[1].toLowerCase();
         el.textContent = raw.replace(/^\{view:(teacher|student)\}\s*/i, "");
+      } else if (/^\s*메타\s*$/i.test(raw)) {
+        currentView = "teacher";
       }
     }
     el.dataset.view = currentView;
@@ -931,16 +1047,16 @@ function renderCombinedTheoryMarkdown(target, mdText, variant) {
   const raw = String(mdText || "");
   if (!window.markdownit || !window.DOMPurify) {
     setMD(target, raw, "block");
-    return;
+  } else {
+    const md = window.markdownit({
+      html: true,
+      linkify: true,
+      breaks: true,
+    });
+    const safe = window.DOMPurify.sanitize(md.render(raw));
+    target.innerHTML = safe;
   }
 
-  const md = window.markdownit({
-    html: true,
-    linkify: true,
-    breaks: true,
-  });
-  const safe = window.DOMPurify.sanitize(md.render(raw));
-  target.innerHTML = safe;
   applyCombinedTheoryViewFilter(target, variant);
   applyCombinedTheoryDataImageFallbacks(target);
   enhanceCombinedTheoryMiniCheckSection(target);
@@ -1399,13 +1515,12 @@ async function renderAll({ setId, bucket, variant }) {
   root.appendChild(probePage);
 
   const grid = probePage.querySelector(".page-grid");
-  const colL = probePage.querySelector(".page-col");
   const bodyH = getBodyHeightPx(probePage);
 
-  // 컬럼 폭(px): grid의 절반 - gap 고려
-  const gridRect = grid.getBoundingClientRect();
+  // 인쇄 폭(mm) 기준으로 측정 폭을 고정해 viewport 영향 제거
+  const printableW = cssToPx(`calc(${PRINT_PAGE_WIDTH_MM}mm - ${PRINT_PAGE_MARGIN_MM * 2}mm)`);
   const gapPx = parseFloat(getComputedStyle(grid).gap || "0");
-  const colW = (gridRect.width - gapPx) / 2;
+  const colW = (printableW - gapPx) / 2;
 
   // 측정용 숨김 컨테이너
   const meas = document.createElement("div");
@@ -1423,9 +1538,11 @@ async function renderAll({ setId, bucket, variant }) {
     const originalIndex = indexMap.get(q.id) ?? 0;
     const card = buildProblemCard(currentSetData, q, originalIndex, variant);
     meas.appendChild(card);
+    // Measure with the same Prism-rendered DOM shape used in final output.
+    applyPrismHighlight(card);
     const h = measureCardHeightPx(card, colW);
     heights.set(q.id, h);
-    const hf = measureCardHeightPx(card, gridRect.width);
+    const hf = measureCardHeightPx(card, printableW);
     heightsFull.set(q.id, hf);
     meas.removeChild(card);
   }

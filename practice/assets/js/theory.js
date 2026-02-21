@@ -250,6 +250,38 @@ function buildIoExampleBlock(io) {
   return wrap;
 }
 
+function findLastHeadingInNode(node) {
+  if (!node) return null;
+  if (/^H[1-6]$/.test(node.tagName || "")) return node;
+  if (!node.querySelectorAll) return null;
+  const hs = node.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  return hs.length ? hs[hs.length - 1] : null;
+}
+
+function findNearestPreviousHeadingText(root, startEl) {
+  let cursor = startEl;
+  while (cursor && cursor !== root) {
+    let prev = cursor.previousElementSibling;
+    while (prev) {
+      const h = findLastHeadingInNode(prev);
+      if (h) return String(h.textContent || "");
+      prev = prev.previousElementSibling;
+    }
+    cursor = cursor.parentElement;
+  }
+  return "";
+}
+
+function isPracticeLinkedSectionByHeading(text) {
+  return /연계\s*실습/.test(String(text || ""));
+}
+
+function isIoLabelParagraph(el) {
+  if (!el || el.tagName !== "P") return false;
+  const raw = String(el.textContent || "").trim();
+  return /^예상\s*(입력\s*\/\s*출력|출력)\s*[:：]?\s*$/i.test(raw);
+}
+
 function enhanceIoBlocks(contentEl) {
   const candidates = contentEl.querySelectorAll("pre > code");
   candidates.forEach((codeEl) => {
@@ -259,6 +291,14 @@ function enhanceIoBlocks(contentEl) {
     const pre = codeEl.closest("pre");
     if (!pre) return;
     const io = parseIoFenceText(codeEl.textContent || "");
+    const headingText = findNearestPreviousHeadingText(contentEl, pre);
+    const inPractice = isPracticeLinkedSectionByHeading(headingText);
+    if (inPractice) {
+      const prev = pre.previousElementSibling;
+      if (isIoLabelParagraph(prev)) prev.remove();
+      pre.remove();
+      return;
+    }
     const ioBlock = buildIoExampleBlock(io);
     pre.replaceWith(ioBlock);
   });
@@ -326,33 +366,113 @@ function enhanceMarkdownTables(contentEl) {
   });
 }
 
+function isMiniCheckHeadingText(text) {
+  return /미니\s*체크/.test(String(text || ""));
+}
+
+function isMiniCheckLabel(el, kind) {
+  if (!el || el.tagName !== "P") return false;
+  const raw = String(el.textContent || "").trim();
+  if (kind === "questions") return /^문항\s*[:：]?\s*$/i.test(raw);
+  if (kind === "answers") return /^답안\s*작성\s*[:：]?\s*$/i.test(raw);
+  return false;
+}
+
+function buildInteractiveMiniCheck(questionList) {
+  if (!questionList || questionList.tagName !== "OL") return;
+  const items = Array.from(questionList.querySelectorAll(":scope > li"));
+  if (!items.length) return;
+
+  const progress = document.createElement("div");
+  progress.className = "theory-mini-check-progress";
+
+  const refreshProgress = () => {
+    const done = questionList.querySelectorAll(
+      ".theory-mini-check-item-check:checked"
+    ).length;
+    progress.textContent = `진행률 ${done}/${items.length}`;
+  };
+
+  items.forEach((li) => {
+    const bodyHtml = li.innerHTML;
+    li.innerHTML = "";
+    li.classList.add("theory-mini-check-item");
+
+    const row = document.createElement("div");
+    row.className = "theory-mini-check-row";
+
+    const check = document.createElement("input");
+    check.type = "checkbox";
+    check.className = "theory-mini-check-item-check";
+    check.addEventListener("change", refreshProgress);
+
+    const q = document.createElement("div");
+    q.className = "theory-mini-check-question";
+    q.innerHTML = bodyHtml;
+
+    row.append(check, q);
+
+    const details = document.createElement("details");
+    details.className = "theory-mini-check-answer-box";
+    const summary = document.createElement("summary");
+    summary.textContent = "답안 작성";
+
+    const ta = document.createElement("textarea");
+    ta.className = "theory-mini-check-answer-input";
+    ta.rows = 2;
+    ta.placeholder = "정답 + 근거 한 줄";
+
+    details.append(summary, ta);
+    li.append(row, details);
+  });
+
+  questionList.parentNode.insertBefore(progress, questionList);
+  refreshProgress();
+}
+
 function enhanceMiniCheckSection(contentEl) {
-  const h2List = Array.from(contentEl.querySelectorAll("h2"));
-  const start = h2List.find((h2) => /미니\s*체크\s*문제/.test(h2.textContent || ""));
-  if (!start) return;
+  const heads = Array.from(contentEl.querySelectorAll("h2, h3"));
+  const starts = heads.filter((h) => isMiniCheckHeadingText(h.textContent || ""));
+  if (!starts.length) return;
 
-  start.classList.add("theory-mini-check-title");
+  starts.forEach((start) => {
+    start.classList.add("theory-mini-check-title");
 
-  let cursor = start.nextElementSibling;
-  let activeCard = null;
-
-  while (cursor && cursor.tagName !== "H2") {
-    const next = cursor.nextElementSibling;
-
-    const isQuestionHeader =
-      cursor.tagName === "H3" && /^Q\s*\d+/i.test((cursor.textContent || "").trim());
-
-    if (isQuestionHeader) {
-      activeCard = document.createElement("section");
-      activeCard.className = "theory-mini-check-card";
-      cursor.parentNode.insertBefore(activeCard, cursor);
-      activeCard.appendChild(cursor);
-    } else if (activeCard) {
-      activeCard.appendChild(cursor);
+    const blockNodes = [];
+    let cursor = start.nextElementSibling;
+    while (cursor && cursor.tagName !== "H2") {
+      blockNodes.push(cursor);
+      cursor = cursor.nextElementSibling;
     }
+    if (!blockNodes.length) return;
 
-    cursor = next;
-  }
+    const card = document.createElement("section");
+    card.className = "theory-mini-check-card theory-mini-check-card--interactive";
+    blockNodes[0].parentNode.insertBefore(card, blockNodes[0]);
+    blockNodes.forEach((node) => card.appendChild(node));
+
+    const qLabel = Array.from(card.querySelectorAll("p")).find((p) =>
+      isMiniCheckLabel(p, "questions")
+    );
+    const qList =
+      qLabel && qLabel.nextElementSibling && qLabel.nextElementSibling.tagName === "OL"
+        ? qLabel.nextElementSibling
+        : null;
+
+    const aLabel = Array.from(card.querySelectorAll("p")).find((p) =>
+      isMiniCheckLabel(p, "answers")
+    );
+    const aList =
+      aLabel && aLabel.nextElementSibling && aLabel.nextElementSibling.tagName === "OL"
+        ? aLabel.nextElementSibling
+        : null;
+
+    if (aList) aList.remove();
+    if (aLabel) aLabel.remove();
+    if (qLabel) qLabel.remove();
+
+    buildInteractiveMiniCheck(qList);
+  });
 }
 
 function mapPrismLanguage(lang) {
@@ -579,8 +699,11 @@ function detectAudienceFromHeadingText(text) {
 }
 
 function detectViewFromHeadingText(text) {
-  const m = String(text || "").match(/\{view:(student|teacher)\}/i);
-  return m ? m[1].toLowerCase() : "";
+  const raw = String(text || "");
+  const m = raw.match(/\{view:(student|teacher)\}/i);
+  if (m) return m[1].toLowerCase();
+  if (/^\s*메타\s*$/i.test(raw)) return "teacher";
+  return "";
 }
 
 function cleanHeadingMarkers(el) {

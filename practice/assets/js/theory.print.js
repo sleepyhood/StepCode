@@ -38,6 +38,10 @@ function detectLangFromCode(codeEl) {
     if (!cls.startsWith("language-")) continue;
     return normalizeCodeLang(cls.replace("language-", ""));
   }
+  const pre = codeEl.closest("pre");
+  if (pre && pre.dataset && pre.dataset.lang) {
+    return normalizeCodeLang(pre.dataset.lang);
+  }
   return "";
 }
 
@@ -211,6 +215,38 @@ function buildIoExampleBlock(io) {
   return wrap;
 }
 
+function findLastHeadingInNode(node) {
+  if (!node) return null;
+  if (/^H[1-6]$/.test(node.tagName || "")) return node;
+  if (!node.querySelectorAll) return null;
+  const hs = node.querySelectorAll("h1, h2, h3, h4, h5, h6");
+  return hs.length ? hs[hs.length - 1] : null;
+}
+
+function findNearestPreviousHeadingText(root, startEl) {
+  let cursor = startEl;
+  while (cursor && cursor !== root) {
+    let prev = cursor.previousElementSibling;
+    while (prev) {
+      const h = findLastHeadingInNode(prev);
+      if (h) return String(h.textContent || "");
+      prev = prev.previousElementSibling;
+    }
+    cursor = cursor.parentElement;
+  }
+  return "";
+}
+
+function isPracticeLinkedSectionByHeading(text) {
+  return /연계\s*실습/.test(String(text || ""));
+}
+
+function isIoLabelParagraph(el) {
+  if (!el || el.tagName !== "P") return false;
+  const raw = String(el.textContent || "").trim();
+  return /^예상\s*(입력\s*\/\s*출력|출력)\s*[:：]?\s*$/i.test(raw);
+}
+
 function buildTraceGridBlock(conf) {
   const wrap = document.createElement("div");
   wrap.className = "theory-trace-grid";
@@ -262,6 +298,14 @@ function enhanceIoBlocks(contentEl) {
     if (!["io", "inout", "exampleio"].includes(lang)) return;
     const pre = codeEl.closest("pre");
     if (!pre) return;
+    const headingText = findNearestPreviousHeadingText(contentEl, pre);
+    const inPractice = isPracticeLinkedSectionByHeading(headingText);
+    if (inPractice) {
+      const prev = pre.previousElementSibling;
+      if (isIoLabelParagraph(prev)) prev.remove();
+      pre.remove();
+      return;
+    }
     pre.replaceWith(buildIoExampleBlock(parseIoFenceText(codeEl.textContent || "")));
   });
 }
@@ -327,31 +371,95 @@ function enhanceMarkdownTables(contentEl) {
 }
 
 function enhanceMiniCheckSection(contentEl) {
-  const h2List = Array.from(contentEl.querySelectorAll("h2"));
-  const start = h2List.find((h2) => /미니\s*체크\s*문제/.test(h2.textContent || ""));
-  if (!start) return;
+  const heads = Array.from(contentEl.querySelectorAll("h2, h3"));
+  const starts = heads.filter((h) => /미니\s*체크/.test(h.textContent || ""));
+  if (!starts.length) return;
 
-  start.classList.add("theory-mini-check-title");
+  starts.forEach((start) => {
+    start.classList.add("theory-mini-check-title");
 
-  let cursor = start.nextElementSibling;
-  let activeCard = null;
-
-  while (cursor && cursor.tagName !== "H2") {
-    const next = cursor.nextElementSibling;
-    const isQuestionHeader =
-      cursor.tagName === "H3" && /^Q\s*\d+/i.test((cursor.textContent || "").trim());
-
-    if (isQuestionHeader) {
-      activeCard = document.createElement("section");
-      activeCard.className = "theory-mini-check-card";
-      cursor.parentNode.insertBefore(activeCard, cursor);
-      activeCard.appendChild(cursor);
-    } else if (activeCard) {
-      activeCard.appendChild(cursor);
+    const blockNodes = [];
+    let cursor = start.nextElementSibling;
+    while (cursor && cursor.tagName !== "H2") {
+      blockNodes.push(cursor);
+      cursor = cursor.nextElementSibling;
     }
+    if (!blockNodes.length) return;
 
-    cursor = next;
-  }
+    const qLabel = blockNodes.find(
+      (el) =>
+        el.tagName === "P" &&
+        /^문항\s*[:：]?\s*$/i.test(String(el.textContent || "").trim())
+    );
+    const qList =
+      qLabel && qLabel.nextElementSibling && qLabel.nextElementSibling.tagName === "OL"
+        ? qLabel.nextElementSibling
+        : null;
+
+    const aLabel = blockNodes.find(
+      (el) =>
+        el.tagName === "P" &&
+        /^답안\s*작성\s*[:：]?\s*$/i.test(String(el.textContent || "").trim())
+    );
+    const aList =
+      aLabel && aLabel.nextElementSibling && aLabel.nextElementSibling.tagName === "OL"
+        ? aLabel.nextElementSibling
+        : null;
+
+    if (qLabel) qLabel.remove();
+    if (aLabel) aLabel.remove();
+    if (aList) aList.remove();
+
+    if (!qList) return;
+    qList.classList.add("theory-mini-check-qlist");
+    const items = Array.from(qList.querySelectorAll(":scope > li"));
+    items.forEach((li, idx) => {
+      li.classList.add("theory-mini-check-qitem");
+
+      const questionHtml = li.innerHTML;
+      li.innerHTML = "";
+
+      const itemRow = document.createElement("div");
+      itemRow.className = "theory-mini-check-item-row";
+
+      const itemNo = document.createElement("div");
+      itemNo.className = "theory-mini-check-item-no";
+      itemNo.textContent = `${idx + 1}.`;
+
+      const itemWrap = document.createElement("div");
+      itemWrap.className = "theory-mini-check-item-wrap";
+
+      const question = document.createElement("div");
+      question.className = "theory-mini-check-question";
+      question.innerHTML = questionHtml;
+
+      const answers = document.createElement("div");
+      answers.className = "theory-mini-check-inline-answer";
+
+      const answer = document.createElement("div");
+      answer.className = "theory-mini-check-inline-field";
+      const answerLabel = document.createElement("div");
+      answerLabel.className = "theory-mini-check-inline-label";
+      answerLabel.textContent = "정답";
+      const answerBox = document.createElement("div");
+      answerBox.className = "theory-mini-check-inline-box";
+      answer.append(answerLabel, answerBox);
+
+      const reason = document.createElement("div");
+      reason.className = "theory-mini-check-inline-field";
+      const reasonLabel = document.createElement("div");
+      reasonLabel.className = "theory-mini-check-inline-label";
+      reasonLabel.textContent = "근거";
+      const reasonBox = document.createElement("div");
+      reasonBox.className = "theory-mini-check-inline-box theory-mini-check-inline-box--reason";
+      reason.append(reasonLabel, reasonBox);
+
+      answers.append(answer, reason);
+      itemWrap.append(question, answers);
+      itemRow.append(itemNo, itemWrap);
+      li.appendChild(itemRow);
+    });
+  });
 }
 
 function mapPrismLanguage(lang) {
@@ -494,8 +602,11 @@ function detectAudienceFromHeadingText(text) {
 }
 
 function detectViewFromHeadingText(text) {
-  const m = String(text || "").match(/\{view:(student|teacher)\}/i);
-  return m ? m[1].toLowerCase() : "";
+  const raw = String(text || "");
+  const m = raw.match(/\{view:(student|teacher)\}/i);
+  if (m) return m[1].toLowerCase();
+  if (/^\s*메타\s*$/i.test(raw)) return "teacher";
+  return "";
 }
 
 function cleanHeadingMarkers(el) {
