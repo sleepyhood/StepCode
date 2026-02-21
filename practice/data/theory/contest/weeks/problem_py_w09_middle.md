@@ -1,4 +1,4 @@
-﻿# Python Contest Week 09 Middle Problem Set
+# Python Contest Week 09 Middle Problem Set
 
 ## 범위
 - lambda + eval 추적
@@ -6,6 +6,7 @@
 - key 정렬/튜플 정렬
 
 ## 문제 1
+연계 개념: 개념 1) 삼항 연산자 평가 순서
 실행 결과로 올바른 것을 고르시오.
 ```python
 f = lambda x: eval((str(x).replace("q", "4") + "*" + (str(x).replace("q", "4"))))
@@ -18,6 +19,7 @@ print(f("q"), f("q+1"), f("q+q"))
 ⓹ 오류가 발생한다.
 
 ## 문제 2
+연계 개념: 개념 1) 삼항 연산자 평가 순서
 다음 프로그램의 실행 결과는 무엇인가?
 ```python
 x = 12
@@ -31,6 +33,7 @@ print(x + y if x > y else x * y)
 ⓹ 180
 
 ## 문제 3
+연계 개념: 개념 2) 람다 함수 값 추적
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 arr = ["aa", "b", "cccc", "ddd"]
@@ -44,6 +47,7 @@ print(arr)
 ⓹ ['b', 'ddd', 'aa', 'cccc']
 
 ## 문제 4
+연계 개념: 개념 1) 삼항 연산자 평가 순서
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 f = lambda a, b: a if a > b else b
@@ -57,6 +61,7 @@ print(f(3, 7), g(f(2, 5), 4))
 ⓹ 7 7
 
 ## 문제 5
+연계 개념: 개념 2) 람다 함수 값 추적
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 pts = [(3, 2), (1, 9), (3, 1), (2, 5)]

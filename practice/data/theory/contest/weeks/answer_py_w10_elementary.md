@@ -1,9 +1,9 @@
-﻿# Python Contest Week 10 Elementary Answer Sheet
+# Python Contest Week 10 Elementary Answer Sheet
 
-| 문항 | 정답 |
-| --- | --- |
-| 1번 | ④ |
-| 2번 | ⑤ |
-| 3번 | ② |
-| 4번 | ④ |
-| 5번 | ② |
+| 문항 | 정답 | 연계 개념 |
+| --- | --- | --- |
+| 1번 | ④ | 개념 1) 모듈-용도 매핑 규칙 |
+| 2번 | ⑤ | 개념 1) 모듈-용도 매핑 규칙 |
+| 3번 | ② | 개념 2) `os` 함수 존재 여부 판별 |
+| 4번 | ④ | 개념 3) `re.fullmatch` 전체 매칭 |
+| 5번 | ② | 개념 1) 모듈-용도 매핑 규칙 |

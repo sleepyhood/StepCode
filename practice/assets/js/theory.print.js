@@ -618,6 +618,15 @@ function cleanHeadingMarkers(el) {
   el.textContent = next;
 }
 
+function detectConceptFromHeadingText(text) {
+  const m = String(text || "").match(/^\s*개념\s*(\d+)\)/i);
+  return m ? String(Number(m[1])) : "";
+}
+
+function normalizeConceptHeadingLabel(text) {
+  return String(text || "").replace(/\s+/g, " ").trim();
+}
+
 function groupSectionBlocks(contentEl) {
   const children = Array.from(contentEl.children || []);
   if (!children.length) return false;
@@ -661,6 +670,107 @@ function groupSectionBlocks(contentEl) {
   return true;
 }
 
+function groupConceptBlocks(contentEl) {
+  const sections = Array.from(contentEl.querySelectorAll(".theory-section-block"));
+  if (!sections.length) return false;
+
+  let grouped = false;
+  sections.forEach((section) => {
+    const children = Array.from(section.children || []);
+    if (!children.length) return;
+
+    const markers = [];
+    children.forEach((el, idx) => {
+      if (el?.tagName !== "H3") return;
+      const headingText = String(el.textContent || "");
+      const conceptNo = detectConceptFromHeadingText(headingText);
+      if (!conceptNo) return;
+      markers.push({
+        idx,
+        conceptNo,
+        label: normalizeConceptHeadingLabel(headingText),
+      });
+    });
+    if (!markers.length) return;
+
+    const frag = document.createDocumentFragment();
+    let cursor = 0;
+    for (let i = 0; i < markers.length; i += 1) {
+      const m = markers[i];
+      const nextIdx = i + 1 < markers.length ? markers[i + 1].idx : children.length;
+
+      while (cursor < m.idx) {
+        frag.appendChild(children[cursor]);
+        cursor += 1;
+      }
+
+      const wrap = document.createElement("section");
+      wrap.className = "theory-concept-block";
+      wrap.dataset.concept = m.conceptNo;
+      wrap.dataset.conceptLabel = m.label || "";
+      for (let j = m.idx; j < nextIdx; j += 1) wrap.appendChild(children[j]);
+      cursor = nextIdx;
+      frag.appendChild(wrap);
+    }
+
+    while (cursor < children.length) {
+      frag.appendChild(children[cursor]);
+      cursor += 1;
+    }
+
+    section.innerHTML = "";
+    section.appendChild(frag);
+    grouped = true;
+  });
+
+  return grouped;
+}
+
+function extractConceptItems(contentEl) {
+  const byNo = new Map();
+  contentEl.querySelectorAll(".theory-concept-block[data-concept]").forEach((block) => {
+    const v = String(block.dataset.concept || "").trim();
+    if (!/^\d+$/.test(v)) return;
+    const label = String(block.dataset.conceptLabel || "").trim() || `개념 ${v}`;
+    if (!byNo.has(v)) byNo.set(v, { no: v, label });
+  });
+  return Array.from(byNo.values()).sort((a, b) => Number(a.no) - Number(b.no));
+}
+
+function parseConceptSelection(raw, availableConcepts) {
+  const values = String(raw || "")
+    .split(",")
+    .map((v) => String(Number(v.trim())))
+    .filter((v) => /^\d+$/.test(v));
+  if (!values.length) return null;
+
+  const available = new Set((availableConcepts || []).map((v) => String(v)));
+  const picked = new Set(values.filter((v) => available.has(v)));
+  if (!picked.size) return null;
+  if (picked.size === available.size) return null;
+  return picked;
+}
+
+function serializeConceptSelection(selectedSet, availableConcepts) {
+  if (!selectedSet || !selectedSet.size) return "";
+  const available = (availableConcepts || []).map((v) => String(v));
+  const picked = available.filter((v) => selectedSet.has(v));
+  if (!picked.length || picked.length === available.length) return "";
+  return picked.join(",");
+}
+
+function refreshSectionVisibility(block) {
+  const byAudience = block.dataset.filterAudience !== "0";
+  const byView = block.dataset.filterView !== "0";
+  const byConcept = block.dataset.filterConcept !== "0";
+  block.style.display = byAudience && byView && byConcept ? "" : "none";
+}
+
+function setSectionFilterState(block, key, visible) {
+  block.dataset[key] = visible ? "1" : "0";
+  refreshSectionVisibility(block);
+}
+
 function applyAudienceFilter(contentEl, selected) {
   const blocks = contentEl.querySelectorAll(".theory-section-block[data-audience]");
   blocks.forEach((block) => {
@@ -669,7 +779,7 @@ function applyAudienceFilter(contentEl, selected) {
     if (selected === "all") visible = true;
     else if (aud === "common") visible = true;
     else visible = aud === selected;
-    block.style.display = visible ? "" : "none";
+    setSectionFilterState(block, "filterAudience", visible);
   });
 }
 
@@ -678,7 +788,29 @@ function applyViewFilter(contentEl, selected) {
   blocks.forEach((block) => {
     const view = block.dataset.view || "";
     const visible = selected === "all" ? true : view === selected;
-    block.style.display = visible ? "" : "none";
+    setSectionFilterState(block, "filterView", visible);
+  });
+}
+
+function applyConceptFilter(contentEl, selectedSet) {
+  const sections = contentEl.querySelectorAll(".theory-section-block");
+  sections.forEach((section) => {
+    const conceptBlocks = Array.from(
+      section.querySelectorAll(":scope > .theory-concept-block[data-concept]")
+    );
+    if (!conceptBlocks.length) {
+      setSectionFilterState(section, "filterConcept", true);
+      return;
+    }
+
+    let hasVisible = false;
+    conceptBlocks.forEach((block) => {
+      const conceptNo = String(block.dataset.concept || "");
+      const visible = !selectedSet || selectedSet.has(conceptNo);
+      block.style.display = visible ? "" : "none";
+      if (visible) hasVisible = true;
+    });
+    setSectionFilterState(section, "filterConcept", hasVisible);
   });
 }
 
@@ -699,6 +831,7 @@ function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, 
   const audSel = document.getElementById("tp-audience-select");
   const viewSel = document.getElementById("tp-view-select");
   const layoutSel = document.getElementById("tp-layout-select");
+  const conceptToggle = document.getElementById("tp-concept-toggle");
   const applyBtn = document.getElementById("tp-apply-btn");
   if (!sel || !audSel || !viewSel || !layoutSel || !applyBtn) return;
 
@@ -728,6 +861,9 @@ function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, 
   const defaultView = ["all", "student", "teacher"].includes(viewFromQuery)
     ? viewFromQuery
     : "student";
+  const conceptItems = extractConceptItems(contentEl);
+  const availableConcepts = conceptItems.map((it) => it.no);
+  let selectedConceptSet = parseConceptSelection(params.get("concepts"), availableConcepts);
 
   Array.from(sel.options).forEach((opt) => {
     if (opt.value === "all") return;
@@ -740,22 +876,83 @@ function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, 
   applyLanguageFilter(contentEl, defaultLang);
   applyAudienceFilter(contentEl, defaultAudience);
   applyViewFilter(contentEl, defaultView);
+  applyConceptFilter(contentEl, selectedConceptSet);
   const initialLayout = normalizeLayout(qp("layout"));
   layoutSel.value = initialLayout;
   document.body.classList.toggle("layout-double", initialLayout === "double");
+
+  if (conceptToggle) {
+    conceptToggle.innerHTML = "";
+    if (availableConcepts.length) {
+      const label = document.createElement("span");
+      label.className = "tp-concept-label";
+      label.textContent = "개념";
+      conceptToggle.appendChild(label);
+
+      const allBtn = document.createElement("button");
+      allBtn.type = "button";
+      allBtn.className = "tp-concept-btn";
+      allBtn.textContent = "전체";
+      conceptToggle.appendChild(allBtn);
+
+      const conceptBtns = conceptItems.map((item) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "tp-concept-btn";
+        btn.dataset.concept = item.no;
+        btn.textContent = item.label;
+        conceptToggle.appendChild(btn);
+        return btn;
+      });
+
+      const renderConceptBtns = () => {
+        allBtn.classList.toggle("is-active", !selectedConceptSet || !selectedConceptSet.size);
+        conceptBtns.forEach((btn) => {
+          const conceptNo = String(btn.dataset.concept || "");
+          btn.classList.toggle("is-active", !!selectedConceptSet && selectedConceptSet.has(conceptNo));
+        });
+      };
+
+      allBtn.addEventListener("click", () => {
+        selectedConceptSet = null;
+        renderConceptBtns();
+      });
+
+      conceptBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const conceptNo = String(btn.dataset.concept || "");
+          if (!selectedConceptSet) {
+            selectedConceptSet = new Set([conceptNo]);
+          } else {
+            if (selectedConceptSet.has(conceptNo)) selectedConceptSet.delete(conceptNo);
+            else selectedConceptSet.add(conceptNo);
+            if (!selectedConceptSet.size || selectedConceptSet.size === availableConcepts.length) {
+              selectedConceptSet = null;
+            }
+          }
+          renderConceptBtns();
+        });
+      });
+
+      renderConceptBtns();
+    }
+  }
 
   applyBtn.addEventListener("click", () => {
     const selected = normalizeCodeLang(sel.value) || "all";
     const selectedAudience = audSel.value || "all";
     const selectedView = viewSel.value || "student";
     const layout = normalizeLayout(layoutSel.value);
+    const concepts = serializeConceptSelection(selectedConceptSet, availableConcepts);
     setQp("lang", selected === "all" ? "" : selected);
     setQp("audience", selectedAudience === "all" ? "" : selectedAudience);
     setQp("view", selectedView === "all" ? "" : selectedView);
+    setQp("concepts", concepts);
     setQp("layout", layout === "single" ? "" : layout);
     applyLanguageFilter(contentEl, selected);
     applyAudienceFilter(contentEl, selectedAudience);
     applyViewFilter(contentEl, selectedView);
+    applyConceptFilter(contentEl, selectedConceptSet);
     document.body.classList.toggle("layout-double", layout === "double");
   });
 }
@@ -815,6 +1012,12 @@ function setupToolbarLinks(params, entry) {
     if (entry?.conceptId) q.set("concept", entry.conceptId);
     const lang = qp("lang");
     if (lang) q.set("lang", lang);
+    const audience = qp("audience");
+    const view = qp("view");
+    const concepts = qp("concepts");
+    if (audience) q.set("audience", audience);
+    if (view) q.set("view", view);
+    if (concepts) q.set("concepts", concepts);
     back.href = `theory.html?${q.toString()}`;
   }
 
@@ -880,6 +1083,7 @@ async function initTheoryPrintPage() {
 
     renderTheoryMarkdown(root, mdText);
     groupSectionBlocks(root);
+    groupConceptBlocks(root);
     enhanceMiniCheckSection(root);
     enhanceIoBlocks(root);
     enhanceTraceGridBlocks(root);

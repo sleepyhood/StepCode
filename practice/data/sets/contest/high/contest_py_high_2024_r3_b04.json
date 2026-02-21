@@ -1,4 +1,4 @@
-﻿{
+{
   "id": "contest_py_high_2024_r3_b04",
   "title": "Python 경시대회(고등) 4회차",
   "categoryId": "contest_py_w04_list_indexing_insert",
@@ -27,7 +27,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 0
+      "correctIndex": 0,
+      "conceptRef": "w04_c1"
     },
     {
       "id": "q2",
@@ -50,7 +51,12 @@
         "D",
         "E"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "conceptRef": "w04_c2",
+      "conceptRefs": [
+        "w04_c2",
+        "w04_c3"
+      ]
     },
     {
       "id": "q3",
@@ -73,7 +79,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "conceptRef": "w04_c1"
     },
     {
       "id": "q4",
@@ -96,7 +103,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 0
+      "correctIndex": 0,
+      "conceptRef": "w04_c3"
     },
     {
       "id": "q5",
@@ -119,7 +127,25 @@
         "D",
         "E"
       ],
-      "correctIndex": 3
+      "correctIndex": 3,
+      "conceptRef": "w04_c1"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w04_c1",
+      "title": "개념 1) 리스트 메서드 기능 구분",
+      "summary": "관련 이론: 개념 1) 리스트 메서드 기능 구분"
+    },
+    {
+      "id": "w04_c2",
+      "title": "개념 2) 반복 인덱싱 상태 전이 (`b = a[b]`)",
+      "summary": "관련 이론: 개념 2) 반복 인덱싱 상태 전이 (`b = a[b]`)"
+    },
+    {
+      "id": "w04_c3",
+      "title": "개념 3) 순환(cycle) 길이와 반복 횟수 관계",
+      "summary": "관련 이론: 개념 3) 순환(cycle) 길이와 반복 횟수 관계"
     }
   ]
 }

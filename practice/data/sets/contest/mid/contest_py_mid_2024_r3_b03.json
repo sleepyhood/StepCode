@@ -1,4 +1,4 @@
-﻿{
+{
   "id": "contest_py_mid_2024_r3_b03",
   "title": "Python 경시대회(중등) 3회차",
   "categoryId": "contest_py_w03_while_termination",
@@ -27,7 +27,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "conceptRef": "w03_c2"
     },
     {
       "id": "q2",
@@ -50,7 +51,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 3
+      "correctIndex": 3,
+      "conceptRef": "w03_c3"
     },
     {
       "id": "q3",
@@ -73,7 +75,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 3
+      "correctIndex": 3,
+      "conceptRef": "w03_c1"
     },
     {
       "id": "q4",
@@ -96,7 +99,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "conceptRef": "w03_c1"
     },
     {
       "id": "q5",
@@ -119,7 +123,25 @@
         "D",
         "E"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "conceptRef": "w03_c2"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w03_c1",
+      "title": "개념 1) `while True` + `break` 종료 추적",
+      "summary": "관련 이론: 개념 1) `while True` + `break` 종료 추적"
+    },
+    {
+      "id": "w03_c2",
+      "title": "개념 2) 호제법(`a, b = b, a % b`) 종료 구조",
+      "summary": "관련 이론: 개념 2) 호제법(`a, b = b, a % b`) 종료 구조"
+    },
+    {
+      "id": "w03_c3",
+      "title": "개념 3) 반복 제곱(mod)에서 `k //= 2` 의미",
+      "summary": "관련 이론: 개념 3) 반복 제곱(mod)에서 `k //= 2` 의미"
     }
   ]
 }

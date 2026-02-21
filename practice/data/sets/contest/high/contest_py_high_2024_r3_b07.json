@@ -1,13 +1,142 @@
-﻿{
+{
   "id": "contest_py_high_2024_r3_b07",
   "title": "Python 경시대회(고등) 7회차",
   "categoryId": "contest_py_w07_function_scope",
-  "availableLanguages": ["python"],
+  "availableLanguages": [
+    "python"
+  ],
   "problems": [
-    {"id":"q1","type":"mcq","level":"고","title":"문제 1","description":"다음 프로그램의 빈 칸에 값을 넣었을 때 가장 큰 값을 출력하는 코드를 고르시오.","code":"a = 0\ndef f(x):\n    global a\n    a += 1\n    if x == 1:\n        return\n    if x & 1 == 0:\n        f(x // 2)\n    else:\n        f(x * 3 + 1)\nf(9)\nprint(a)","options":["3","5","7","9","11"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
-    {"id":"q2","type":"mcq","level":"고","title":"문제 2","description":"다음 코드 실행 시 가장 타당한 결과를 고르시오.","code":"x = 5\n\ndef f():\n    x += 1\n    return x\n\nprint(f())","options":["6","5","1","None","오류 발생"],"optionLabels":["A","B","C","D","E"],"correctIndex":4},
-    {"id":"q3","type":"mcq","level":"고","title":"문제 3","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"x = 5\n\ndef f():\n    global x\n    x += 1\n\nf()\nprint(x)","options":["5","6","7","8","오류"],"optionLabels":["A","B","C","D","E"],"correctIndex":1},
-    {"id":"q4","type":"mcq","level":"고","title":"문제 4","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"def fact(n):\n    if n <= 1:\n        return 1\n    return n * fact(n - 1)\n\nprint(fact(5))","options":["24","60","120","240","720"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
-    {"id":"q5","type":"mcq","level":"고","title":"문제 5","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"a = 1\n\ndef f(x):\n    global a\n    if x == 0:\n        return\n    a *= 2\n    f(x - 1)\n\nf(4)\nprint(a)","options":["8","12","16","24","32"],"optionLabels":["A","B","C","D","E"],"correctIndex":2}
+    {
+      "id": "q1",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 1",
+      "description": "다음 프로그램의 빈 칸에 값을 넣었을 때 가장 큰 값을 출력하는 코드를 고르시오.",
+      "code": "a = 0\ndef f(x):\n    global a\n    a += 1\n    if x == 1:\n        return\n    if x & 1 == 0:\n        f(x // 2)\n    else:\n        f(x * 3 + 1)\nf(9)\nprint(a)",
+      "options": [
+        "3",
+        "5",
+        "7",
+        "9",
+        "11"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w07_c3"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 2",
+      "description": "다음 코드 실행 시 가장 타당한 결과를 고르시오.",
+      "code": "x = 5\n\ndef f():\n    x += 1\n    return x\n\nprint(f())",
+      "options": [
+        "6",
+        "5",
+        "1",
+        "None",
+        "오류 발생"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 4,
+      "conceptRef": "w07_c2"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 3",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "x = 5\n\ndef f():\n    global x\n    x += 1\n\nf()\nprint(x)",
+      "options": [
+        "5",
+        "6",
+        "7",
+        "8",
+        "오류"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 1,
+      "conceptRef": "w07_c2"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 4",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "def fact(n):\n    if n <= 1:\n        return 1\n    return n * fact(n - 1)\n\nprint(fact(5))",
+      "options": [
+        "24",
+        "60",
+        "120",
+        "240",
+        "720"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2,
+      "conceptRef": "w07_c3"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 5",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "a = 1\n\ndef f(x):\n    global a\n    if x == 0:\n        return\n    a *= 2\n    f(x - 1)\n\nf(4)\nprint(a)",
+      "options": [
+        "8",
+        "12",
+        "16",
+        "24",
+        "32"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2,
+      "conceptRef": "w07_c3"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w07_c2",
+      "title": "개념 2) 지역/전역 스코프 충돌 추적",
+      "summary": "관련 이론: 개념 2) 지역/전역 스코프 충돌 추적"
+    },
+    {
+      "id": "w07_c3",
+      "title": "개념 3) 재귀 호출 횟수 누적(`a += 1`)",
+      "summary": "관련 이론: 개념 3) 재귀 호출 횟수 누적(`a += 1`)"
+    }
   ]
 }

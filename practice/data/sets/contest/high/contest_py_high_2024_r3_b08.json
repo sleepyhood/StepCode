@@ -1,13 +1,142 @@
-﻿{
+{
   "id": "contest_py_high_2024_r3_b08",
   "title": "Python 경시대회(고등) 8회차",
   "categoryId": "contest_py_w08_recursion_base_case",
-  "availableLanguages": ["python"],
+  "availableLanguages": [
+    "python"
+  ],
   "problems": [
-    {"id":"q1","type":"mcq","level":"고","title":"문제 1","description":"다음 코드의 실행 결과로 올바른 값을 고르시오.","code":"def f(x, y, p, a):\n    if x < 0 or y < 0:\n        return 0\n    if x >= 4 or y >= 4:\n        return 0\n    if a[x][y]:\n        return 0\n    if x == 3 and y == 3:\n        return p + 1\n    a[x][y] = 1\n    k = 0\n    for i in range(3):\n        k += f(x + i // 2, y + i // 2, p, a)\n    a[x][y] = 0\n    return k\n\nprint(f(0, 0, 0, [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]))","options":["1","2","3","4","5"],"optionLabels":["A","B","C","D","E"],"correctIndex":0},
-    {"id":"q2","type":"mcq","level":"고","title":"문제 2","description":"다음 프로그램의 실행 결과는 무엇인가?","code":"def f(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    if n == 2:\n        return 8\n    return f(n - 1) + f(n - 3)\n\nprint(f(10))","options":["51","76","110","161","237"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
-    {"id":"q3","type":"mcq","level":"고","title":"문제 3","description":"다음 프로그램의 빈칸에 값을 넣었을 때 가장 큰 값을 가지는 코드를 고르시오.","code":"def f(a):\n    if a <= 0:\n        return 0\n    return (a % 7) * f(a // 7) + a % 7\n\nprint(f(223))","options":["14","89","168","223","512"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
-    {"id":"q4","type":"mcq","level":"고","title":"문제 4","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"def f(m, n):\n    if m == 0 or n == 0:\n        return 1\n    return f(m - 1, n) + f(m - 1, n - 1) + f(m, n - 1)\n\nprint(f(3, 3))","options":["31","43","55","63","75"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
-    {"id":"q5","type":"mcq","level":"고","title":"문제 5","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"def f(a, b):\n    if a == 1:\n        return 1\n    return b * f(a - 1, b)\n\nprint(f(5, 3))","options":["27","54","81","243","729"],"optionLabels":["A","B","C","D","E"],"correctIndex":2}
+    {
+      "id": "q1",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 1",
+      "description": "다음 코드의 실행 결과로 올바른 값을 고르시오.",
+      "code": "def f(x, y, p, a):\n    if x < 0 or y < 0:\n        return 0\n    if x >= 4 or y >= 4:\n        return 0\n    if a[x][y]:\n        return 0\n    if x == 3 and y == 3:\n        return p + 1\n    a[x][y] = 1\n    k = 0\n    for i in range(3):\n        k += f(x + i // 2, y + i // 2, p, a)\n    a[x][y] = 0\n    return k\n\nprint(f(0, 0, 0, [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]))",
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 0,
+      "conceptRef": "w08_c3"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 2",
+      "description": "다음 프로그램의 실행 결과는 무엇인가?",
+      "code": "def f(n):\n    if n == 0:\n        return 0\n    if n == 1:\n        return 1\n    if n == 2:\n        return 8\n    return f(n - 1) + f(n - 3)\n\nprint(f(10))",
+      "options": [
+        "51",
+        "76",
+        "110",
+        "161",
+        "237"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2,
+      "conceptRef": "w08_c3"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 3",
+      "description": "다음 프로그램의 빈칸에 값을 넣었을 때 가장 큰 값을 가지는 코드를 고르시오.",
+      "code": "def f(a):\n    if a <= 0:\n        return 0\n    return (a % 7) * f(a // 7) + a % 7\n\nprint(f(223))",
+      "options": [
+        "14",
+        "89",
+        "168",
+        "223",
+        "512"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w08_c1"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 4",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "def f(m, n):\n    if m == 0 or n == 0:\n        return 1\n    return f(m - 1, n) + f(m - 1, n - 1) + f(m, n - 1)\n\nprint(f(3, 3))",
+      "options": [
+        "31",
+        "43",
+        "55",
+        "63",
+        "75"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w08_c3"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 5",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "def f(a, b):\n    if a == 1:\n        return 1\n    return b * f(a - 1, b)\n\nprint(f(5, 3))",
+      "options": [
+        "27",
+        "54",
+        "81",
+        "243",
+        "729"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2,
+      "conceptRef": "w08_c1"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w08_c1",
+      "title": "개념 1) 종료조건 우선 확인",
+      "summary": "관련 이론: 개념 1) 종료조건 우선 확인"
+    },
+    {
+      "id": "w08_c3",
+      "title": "개념 3) 다중 초기값 점화식 계산",
+      "summary": "관련 이론: 개념 3) 다중 초기값 점화식 계산"
+    }
   ]
 }

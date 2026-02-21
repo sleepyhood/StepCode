@@ -110,6 +110,8 @@
   font-size: 0.8rem;
   font-weight: 700;
   padding: 5px 10px;
+  line-height: 1.25;
+  white-space: normal;
   cursor: pointer;
 }
 

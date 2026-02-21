@@ -1,4 +1,4 @@
-﻿# Python Contest Week 03 Elementary Problem Set
+# Python Contest Week 03 Elementary Problem Set
 
 ## 범위
 - while 반복
@@ -6,6 +6,7 @@
 - 반복 횟수/누적값 계산
 
 ## 문제 1
+연계 개념: 개념 1) `while True` + `break` 종료 추적
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 a = 0
@@ -24,6 +25,7 @@ print(a)
 ⓹ 18
 
 ## 문제 2
+연계 개념: 개념 1) `while True` + `break` 종료 추적
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 a = 1
@@ -42,6 +44,7 @@ print(a)
 ⓹ 729
 
 ## 문제 3
+연계 개념: 개념 2) 호제법(`a, b = b, a % b`) 종료 구조
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 a = 88
@@ -59,6 +62,7 @@ print(a)
 ⓹ 88
 
 ## 문제 4
+연계 개념: 개념 1) `while True` + `break` 종료 추적
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 cnt = 0
@@ -75,6 +79,7 @@ print(cnt)
 ⓹ 7
 
 ## 문제 5
+연계 개념: 개념 1) `while True` + `break` 종료 추적
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 s = 0

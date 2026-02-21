@@ -1,13 +1,142 @@
-﻿{
+{
   "id": "contest_py_elem_2024_r3_b11",
   "title": "Python 경시대회(초등) 11회차",
   "categoryId": "contest_py_w11_bit_oct_2d",
-  "availableLanguages": ["python"],
+  "availableLanguages": [
+    "python"
+  ],
   "problems": [
-    {"id":"q1","type":"mcq","level":"초","title":"문제 1","description":"다음 중 아래 코드의 빈 칸에 넣었을 때 출력 결과가 다른 값을 고르시오.","code":"print([빈 칸])","options":["9 * 8","37 ^ 109","9 << 3","(2 ^ 3) * (3 ^ 2)","(36 if 7*3 else 21) * 2"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
-    {"id":"q2","type":"mcq","level":"초","title":"문제 2","description":"다음 프로그램의 실행 결과에서 제일 오른쪽에 연속으로 나타나는 0의 개수는 몇 개인지 고르시오.","code":"a = 1\nfor i in range(1, 11):\n    a *= i\nprint('%o' % a)","options":["1개","2개","3개","4개","5개"],"optionLabels":["A","B","C","D","E"],"correctIndex":1},
-    {"id":"q3","type":"mcq","level":"초","title":"문제 3","description":"다음 코드의 실행 결과로 올바른 값을 고르시오.","code":"a = [7, 890, 1, 234, 5678, 901, 23, 45, 6]\ncnt = 0\nfor i in a:\n    b = (i & 1) | (i & 2)\n    if b > 0:\n        cnt += 1\nprint(cnt)","options":["6","7","8","9","10"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
-    {"id":"q4","type":"mcq","level":"초","title":"문제 4","description":"다음 프로그램의 실행 결과가 보기와 같을 때, 빈 칸에 들어갈 코드로 올바른 것을 고르시오.","code":"a = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]\nfor i in range(3):\n    for j in range(3):\n        print(a[2-j][i], end=' ')\n    print()","options":["a[2-i][j]","a[i][2-j]","a[j][2-i]","a[i][j]","a[2-j][i]"],"optionLabels":["A","B","C","D","E"],"correctIndex":4},
-    {"id":"q5","type":"mcq","level":"초","title":"문제 5","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"x = 13\ny = 10\nprint((x & y), (x | y), (x ^ y))","options":["8 15 7","10 13 7","8 13 5","10 15 5","8 15 5"],"optionLabels":["A","B","C","D","E"],"correctIndex":0}
+    {
+      "id": "q1",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 1",
+      "description": "다음 중 아래 코드의 빈 칸에 넣었을 때 출력 결과가 다른 값을 고르시오.",
+      "code": "print([빈 칸])",
+      "options": [
+        "9 * 8",
+        "37 ^ 109",
+        "9 << 3",
+        "(2 ^ 3) * (3 ^ 2)",
+        "(36 if 7*3 else 21) * 2"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w11_c1"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 2",
+      "description": "다음 프로그램의 실행 결과에서 제일 오른쪽에 연속으로 나타나는 0의 개수는 몇 개인지 고르시오.",
+      "code": "a = 1\nfor i in range(1, 11):\n    a *= i\nprint('%o' % a)",
+      "options": [
+        "1개",
+        "2개",
+        "3개",
+        "4개",
+        "5개"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 1,
+      "conceptRef": "w11_c1"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 3",
+      "description": "다음 코드의 실행 결과로 올바른 값을 고르시오.",
+      "code": "a = [7, 890, 1, 234, 5678, 901, 23, 45, 6]\ncnt = 0\nfor i in a:\n    b = (i & 1) | (i & 2)\n    if b > 0:\n        cnt += 1\nprint(cnt)",
+      "options": [
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w11_c1"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 4",
+      "description": "다음 프로그램의 실행 결과가 보기와 같을 때, 빈 칸에 들어갈 코드로 올바른 것을 고르시오.",
+      "code": "a = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]\nfor i in range(3):\n    for j in range(3):\n        print(a[2-j][i], end=' ')\n    print()",
+      "options": [
+        "a[2-i][j]",
+        "a[i][2-j]",
+        "a[j][2-i]",
+        "a[i][j]",
+        "a[2-j][i]"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 4,
+      "conceptRef": "w11_c2"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "level": "초",
+      "title": "문제 5",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "x = 13\ny = 10\nprint((x & y), (x | y), (x ^ y))",
+      "options": [
+        "8 15 7",
+        "10 13 7",
+        "8 13 5",
+        "10 15 5",
+        "8 15 5"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 0,
+      "conceptRef": "w11_c1"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w11_c1",
+      "title": "개념 1) 비트 연산과 값 판별",
+      "summary": "관련 이론: 개념 1) 비트 연산과 값 판별"
+    },
+    {
+      "id": "w11_c2",
+      "title": "개념 2) XOR 누적과 소거 성질",
+      "summary": "관련 이론: 개념 2) XOR 누적과 소거 성질"
+    }
   ]
 }

@@ -1,13 +1,147 @@
-﻿{
+{
   "id": "contest_py_high_2024_r3_b10",
   "title": "Python 경시대회(고등) 10회차",
   "categoryId": "contest_py_w10_module_datetime_re_collections",
-  "availableLanguages": ["python"],
+  "availableLanguages": [
+    "python"
+  ],
   "problems": [
-    {"id":"q1","type":"mcq","level":"고","title":"문제 1","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"from datetime import datetime\nd = datetime(2024, 2, 1, 9, 3)\nprint(d.strftime('%a %B %M %Y'))","options":["Thu February 03 2024","Feb Thursday 03 2024","Thu February 09 2024","Thu Feb 03 24","Thursday February 03 2024"],"optionLabels":["A","B","C","D","E"],"correctIndex":0},
-    {"id":"q2","type":"mcq","level":"고","title":"문제 2","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"import re\npattern = re.compile('o[gh]')\nvals = ['o', 'oh', 'dog', 'doggie', 'ogre']\nprint([v for v in vals if pattern.fullmatch(v)])","options":["[]","['o']","['oh']","['o', 'oh']","['og', 'oh']"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
-    {"id":"q3","type":"mcq","level":"고","title":"문제 3","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"from collections import deque\nq = deque([1, 2, 3])\nq.appendleft(0)\nq.pop()\nprint(list(q))","options":["[0, 1, 2]","[1, 2, 3]","[0, 1, 2, 3]","[0, 2, 3]","[1, 2]"],"optionLabels":["A","B","C","D","E"],"correctIndex":0},
-    {"id":"q4","type":"mcq","level":"고","title":"문제 4","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"from collections import Counter\nc = Counter('banana')\nprint(c['a'], c.most_common(1)[0][0])","options":["2 b","3 a","3 n","2 a","1 b"],"optionLabels":["A","B","C","D","E"],"correctIndex":1},
-    {"id":"q5","type":"mcq","level":"고","title":"문제 5","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"import os\nprint(hasattr(os, 'chdir'), hasattr(os, 'seekid'))","options":["True True","True False","False True","False False","오류"],"optionLabels":["A","B","C","D","E"],"correctIndex":1}
+    {
+      "id": "q1",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 1",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "from datetime import datetime\nd = datetime(2024, 2, 1, 9, 3)\nprint(d.strftime('%a %B %M %Y'))",
+      "options": [
+        "Thu February 03 2024",
+        "Feb Thursday 03 2024",
+        "Thu February 09 2024",
+        "Thu Feb 03 24",
+        "Thursday February 03 2024"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 0,
+      "conceptRef": "w10_c1"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 2",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "import re\npattern = re.compile('o[gh]')\nvals = ['o', 'oh', 'dog', 'doggie', 'ogre']\nprint([v for v in vals if pattern.fullmatch(v)])",
+      "options": [
+        "[]",
+        "['o']",
+        "['oh']",
+        "['o', 'oh']",
+        "['og', 'oh']"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2,
+      "conceptRef": "w10_c2"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 3",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "from collections import deque\nq = deque([1, 2, 3])\nq.appendleft(0)\nq.pop()\nprint(list(q))",
+      "options": [
+        "[0, 1, 2]",
+        "[1, 2, 3]",
+        "[0, 1, 2, 3]",
+        "[0, 2, 3]",
+        "[1, 2]"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 0,
+      "conceptRef": "w10_c3"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 4",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "from collections import Counter\nc = Counter('banana')\nprint(c['a'], c.most_common(1)[0][0])",
+      "options": [
+        "2 b",
+        "3 a",
+        "3 n",
+        "2 a",
+        "1 b"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 1,
+      "conceptRef": "w10_c3"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 5",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "import os\nprint(hasattr(os, 'chdir'), hasattr(os, 'seekid'))",
+      "options": [
+        "True True",
+        "True False",
+        "False True",
+        "False False",
+        "오류"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 1,
+      "conceptRef": "w10_c1"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w10_c1",
+      "title": "개념 1) 모듈-용도 매핑 규칙",
+      "summary": "관련 이론: 개념 1) 모듈-용도 매핑 규칙"
+    },
+    {
+      "id": "w10_c2",
+      "title": "개념 2) `os` 함수 존재 여부 판별",
+      "summary": "관련 이론: 개념 2) `os` 함수 존재 여부 판별"
+    },
+    {
+      "id": "w10_c3",
+      "title": "개념 3) `re.fullmatch` 전체 매칭",
+      "summary": "관련 이론: 개념 3) `re.fullmatch` 전체 매칭"
+    }
   ]
 }

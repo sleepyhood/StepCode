@@ -53,6 +53,8 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .tp-tool {
@@ -61,6 +63,40 @@ body {
   gap: 6px;
   font-size: 13px;
   font-weight: 700;
+}
+
+.tp-concept-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-left: 4px;
+}
+
+.tp-concept-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  margin-right: 2px;
+}
+
+.tp-concept-btn {
+  border: 1px solid #94a3b8;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.tp-concept-btn.is-active {
+  border-color: #0f766e;
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
 }
 
 .tp-tool select,

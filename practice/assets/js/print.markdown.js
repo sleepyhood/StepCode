@@ -3,8 +3,11 @@
 let currentSetData = null;
 const SLOTS_PER_PAGE = 2;
 let currentShowLineNumbers = false;
-const PRINT_PAGE_MARGIN_MM = 6;
+const PRINT_PAGE_MARGIN_MM = 3;
 const PRINT_PAGE_WIDTH_MM = 297;
+const PACKING_SAFETY_MM = 0;
+const FIT_TOLERANCE_MM = 3;
+const CODE_SPLIT_MIN_LINES = 24;
 
 function ymd(d = new Date()) {
   const y = d.getFullYear();
@@ -66,6 +69,34 @@ function typeLabel(q) {
   if (q.type === "short") return "단답";
   if (q.type === "code") return "코드";
   return q.type || "";
+}
+
+function getQuestionConceptRefsForPrint(q) {
+  if (!q || typeof q !== "object") return [];
+  const refs = [];
+  if (Array.isArray(q.conceptRefs)) {
+    q.conceptRefs.forEach((v) => {
+      const s = String(v || "").trim();
+      if (s) refs.push(s);
+    });
+  }
+  if (q.conceptRef) {
+    const s = String(q.conceptRef || "").trim();
+    if (s) refs.push(s);
+  }
+  return Array.from(new Set(refs));
+}
+
+function getQuestionConceptTitlesForPrint(set, q) {
+  const refs = getQuestionConceptRefsForPrint(q);
+  if (!refs.length) return [];
+  const concepts = Array.isArray(set?.concepts) ? set.concepts : [];
+  const byId = {};
+  concepts.forEach((c) => {
+    if (!c || !c.id) return;
+    byId[String(c.id)] = c;
+  });
+  return refs.map((id) => byId[id]?.title || id);
 }
 
 function isGridQuestion(q) {
@@ -1216,13 +1247,21 @@ function buildProblemCard(set, q, originalIndex, variant) {
   const card = el("section", "p-card");
 
   const head = el("div", "p-head");
-  head.appendChild(el("div", "p-no", `${originalIndex + 1}번`));
+  const headMain = el("div", "p-head-main");
+  const title = el("div", "p-head-title md md-inline");
+  setMD(title, `${originalIndex + 1}. ${q.title || "문제"}`, "inline");
+  headMain.appendChild(title);
+
+  const conceptTitles = getQuestionConceptTitlesForPrint(set, q);
+  if (conceptTitles.length) {
+    const conceptChip = el("div", "p-concept-chip md md-inline");
+    setMD(conceptChip, conceptTitles.join(", "), "inline");
+    headMain.appendChild(conceptChip);
+  }
+
+  head.appendChild(headMain);
   head.appendChild(el("div", "p-type", typeLabel(q)));
   card.appendChild(head);
-
-    const title = el("div", "p-title md md-inline");
-  setMD(title, q.title || "", "inline");
-  card.appendChild(title);
 
 
   const rawDesc = q.description || "";
@@ -1322,7 +1361,7 @@ if (q.type === "mcq") {
 if (q.type === "mcq") {
   answer.appendChild(el("div", "answer-label", "이유(간단히):"));
   const lines = el("div", "answer-lines");
-  lines.style.setProperty("--n", "1.5");
+  lines.style.setProperty("--n", "1.2");
   answer.appendChild(lines);
 
 } else if (q.type === "short") {
@@ -1373,6 +1412,57 @@ if (q.type === "mcq") {
 
   card.appendChild(answer);
   return card;
+}
+
+function buildProblemSplitCards(set, q, originalIndex, variant) {
+  const codeText = String(q?.code || "");
+  const codeLines = codeText ? codeText.replace(/\r\n?/g, "\n").split("\n") : [];
+  const useCodeContinuation = codeLines.length >= CODE_SPLIT_MIN_LINES;
+  const splitAt = useCodeContinuation ? Math.ceil(codeLines.length / 2) : codeLines.length;
+  const leftCode = useCodeContinuation ? codeLines.slice(0, splitAt).join("\n") : codeText;
+  const rightCode = useCodeContinuation ? codeLines.slice(splitAt).join("\n") : "";
+
+  const left = buildProblemCard(set, q, originalIndex, variant);
+  left.classList.add("p-card--split", "p-card--split-left");
+  if (useCodeContinuation) {
+    const leftCodeNode = left.querySelector("pre.p-code code");
+    if (leftCodeNode) leftCodeNode.textContent = leftCode;
+  }
+  left.querySelectorAll(".p-options, .answer-block").forEach((n) => n.remove());
+  const leftTeacher = left.querySelector(".teacher-note");
+  if (leftTeacher) leftTeacher.remove();
+
+  const right = buildProblemCard(set, q, originalIndex, variant);
+  right.classList.add("p-card--split", "p-card--split-right");
+  right.querySelectorAll(".p-desc, .p-view, .p-desc--table, .p-io, .media-block").forEach((n) => n.remove());
+  if (useCodeContinuation) {
+    const existingCodeWrap = right.querySelector(".p-code");
+    if (existingCodeWrap) existingCodeWrap.remove();
+    if (rightCode.trim()) {
+      const rightCodePre = buildHighlightedCodePre(set, "p-code p-code--cont", rightCode, true);
+      if (currentShowLineNumbers) {
+        rightCodePre.setAttribute("data-start", String(splitAt + 1));
+      }
+      const options = right.querySelector(".p-options");
+      if (options) right.insertBefore(rightCodePre, options);
+      else right.appendChild(rightCodePre);
+    }
+  } else {
+    right.querySelectorAll(".p-code").forEach((n) => n.remove());
+  }
+  const t = right.querySelector(".p-head-title");
+  if (t) t.textContent = `${originalIndex + 1}. 선택지`;
+  const chip = right.querySelector(".p-concept-chip");
+  if (chip) chip.remove();
+  const tp = right.querySelector(".p-type");
+  if (tp) tp.textContent = "분할";
+
+  return { left, right };
+}
+
+function buildProblemSplitCard(set, q, originalIndex, variant, side) {
+  const pair = buildProblemSplitCards(set, q, originalIndex, variant);
+  return side === "right" ? pair.right : pair.left;
 }
 
 function metaField(label, key, extraClass, defaultValue = "") {
@@ -1513,14 +1603,20 @@ async function renderAll({ setId, bucket, variant }) {
   // 1) "빈 페이지" 하나 만들어서 폭/높이 측정
   const probePage = buildPage(setId, currentSetData, 0, 1, [], indexMap, variant, bucket, "double");
   root.appendChild(probePage);
+  const probeSinglePage = buildPage(setId, currentSetData, 0, 1, [], indexMap, variant, bucket, "single");
+  root.appendChild(probeSinglePage);
 
   const grid = probePage.querySelector(".page-grid");
-  const bodyH = getBodyHeightPx(probePage);
+  const colProbe = probePage.querySelector(".page-col");
+  const singleColProbe = probeSinglePage.querySelector(".page-col");
 
   // 인쇄 폭(mm) 기준으로 측정 폭을 고정해 viewport 영향 제거
   const printableW = cssToPx(`calc(${PRINT_PAGE_WIDTH_MM}mm - ${PRINT_PAGE_MARGIN_MM * 2}mm)`);
   const gapPx = parseFloat(getComputedStyle(grid).gap || "0");
-  const colW = (printableW - gapPx) / 2;
+  const colW = colProbe ? colProbe.getBoundingClientRect().width : (printableW - gapPx) / 2;
+  const fullW = singleColProbe ? singleColProbe.getBoundingClientRect().width : printableW;
+  const packSafetyPx = cssToPx(`${PACKING_SAFETY_MM}mm`);
+  const fitTolerancePx = cssToPx(`${FIT_TOLERANCE_MM}mm`);
 
   // 측정용 숨김 컨테이너
   const meas = document.createElement("div");
@@ -1534,6 +1630,7 @@ async function renderAll({ setId, bucket, variant }) {
   // 2) 카드 높이 측정
   const heights = new Map();
   const heightsFull = new Map();
+  const splitHeights = new Map();
   for (const q of selected) {
     const originalIndex = indexMap.get(q.id) ?? 0;
     const card = buildProblemCard(currentSetData, q, originalIndex, variant);
@@ -1542,117 +1639,218 @@ async function renderAll({ setId, bucket, variant }) {
     applyPrismHighlight(card);
     const h = measureCardHeightPx(card, colW);
     heights.set(q.id, h);
-    const hf = measureCardHeightPx(card, printableW);
+    const hf = measureCardHeightPx(card, fullW);
     heightsFull.set(q.id, hf);
     meas.removeChild(card);
   }
   const colGapPx = parseFloat(getComputedStyle(probePage.querySelector(".page-col")).gap || "0");
 
+  const getSplitHeights = (q) => {
+    if (!q || q.type !== "mcq") return null;
+    if (splitHeights.has(q.id)) return splitHeights.get(q.id);
+    const originalIndex = indexMap.get(q.id) ?? 0;
+    const pair = buildProblemSplitCards(currentSetData, q, originalIndex, variant);
+    meas.appendChild(pair.left);
+    applyPrismHighlight(pair.left);
+    const lh = measureCardHeightPx(pair.left, colW);
+    meas.removeChild(pair.left);
+    meas.appendChild(pair.right);
+    applyPrismHighlight(pair.right);
+    const rh = measureCardHeightPx(pair.right, colW);
+    meas.removeChild(pair.right);
+    const v = { left: lh, right: rh };
+    splitHeights.set(q.id, v);
+    return v;
+  };
+
 
   // probe 제거
   root.removeChild(probePage);
+  root.removeChild(probeSinglePage);
   meas.remove();
 
     // ✅ vertical gap(열 내부 카드 간격) px 구하기
   // const colGapPx = parseFloat(getComputedStyle(probePage.querySelector(".page-col")).gap || "0");
 
-  // ✅ 3) 규칙 기반 패킹
-  // 1) 기본은 1행 2열(= 2문제)
-  // 2) 다음 2문제가 같은 페이지의 2행(= 총 4문제)으로 들어가면 합치기
+  // ✅ 3) 순차 배치 기반 패킹
+  // - 새 페이지는 1번(왼쪽 상단) -> 2번(오른쪽 상단) 우선
+  // - 이후는 "마지막 배치된 컬럼 아래" 우선
+  // - 단, 왼쪽 2행이 비어 있으면(좌 1개 + 우 1개) 왼쪽 아래 우선
   const pages = [];
-  let i = 0;
 
-  while (i < selected.length) {
-    const q1 = selected[i] ?? null;
-    const q2 = selected[i + 1] ?? null;
+  const makeDoublePage = () => ({
+    layout: "double",
+    left: [],
+    right: [],
+    leftH: 0,
+    rightH: 0,
+    lastCol: null
+  });
 
-    const bodyHPage = (pages.length === 0) ? bodyHFirst : bodyHOther;
-    const isWideCandidate = (q) => {
-      if (!q || q.type !== "mcq") return false;
-      const hCol = heights.get(q.id) ?? 0;
-      const hFull = heightsFull.get(q.id) ?? 0;
-      return hCol > bodyHPage && hFull <= bodyHPage;
-    };
+  const makeNormalItem = (q) => ({ kind: "normal", q });
+  const makeSplitItem = (q, side) => ({ kind: "split", q, side });
 
-    if (q1 && isWideCandidate(q1)) {
-      pages.push({ layout: "single", single: [q1] });
-      i += 1;
-      continue;
+  const pageFitLimit = (pageIndex) => {
+    const bodyHPage = pageIndex === 0 ? bodyHFirst : bodyHOther;
+    return Math.max(0, bodyHPage - packSafetyPx) + fitTolerancePx;
+  };
+
+  const colNextHeight = (curH, curCount, qh) => {
+    return curH + (curCount > 0 ? colGapPx : 0) + qh;
+  };
+
+  const isWideCandidate = (q, fitLimit) => {
+    if (!q) return false;
+    const hCol = heights.get(q.id) ?? 0;
+    const hFull = heightsFull.get(q.id) ?? 0;
+    return hCol > fitLimit && hFull <= fitLimit;
+  };
+
+  const canPlaceSplitPair = (page, q, fitLimit) => {
+    if (!q || q.type !== "mcq" || page.layout === "single") return false;
+    const sh = getSplitHeights(q);
+    if (!sh) return false;
+    const nextLeft = colNextHeight(page.leftH, page.left.length, sh.left);
+    const nextRight = colNextHeight(page.rightH, page.right.length, sh.right);
+    return nextLeft <= fitLimit && nextRight <= fitLimit;
+  };
+
+  const placeIntoColumn = (page, col, item, h) => {
+    if (col === "left") {
+      page.left.push(item);
+      page.leftH = colNextHeight(page.leftH, page.left.length - 1, h);
+      page.lastCol = "left";
+      return;
     }
+    page.right.push(item);
+    page.rightH = colNextHeight(page.rightH, page.right.length - 1, h);
+    page.lastCol = "right";
+  };
 
-    if (q2 && isWideCandidate(q2)) {
-      const page = { layout: "double", left: [], right: [] };
-      if (q1) page.left.push(q1);
-      pages.push(page);
-      i += 1;
-      continue;
-    }
+  for (let qi = 0; qi < selected.length; qi++) {
+    const q = selected[qi];
+    const isLastQuestion = qi === selected.length - 1;
+    let placed = false;
+    while (!placed) {
+      if (!pages.length) pages.push(makeDoublePage());
+      let page = pages[pages.length - 1];
+      const pageIndex = pages.length - 1;
+      const fitLimit = pageFitLimit(pageIndex);
+      const qh = heights.get(q.id) ?? 0;
 
-    const page = { layout: "double", left: [], right: [] };
-    if (q1) page.left.push(q1);
-    if (q2) page.right.push(q2);
-    i += q2 ? 2 : 1;
-
-    // 다음 2개를 "2행"으로 합칠지 판단
-    const q3 = selected[i] ?? null;
-    const q4 = selected[i + 1] ?? null;
-
-    // 다음 페이지가 "2문제" 형태로 있을 때만 합치기(네 요구와 동일)
-    if (q3 && q4 && !isWideCandidate(q3) && !isWideCandidate(q4)) {
-      const h1 = heights.get(q1.id) ?? 0;
-      const h2 = q2 ? (heights.get(q2.id) ?? 0) : 0;
-
-      const h3 = heights.get(q3.id) ?? 0;
-      const h4 = heights.get(q4.id) ?? 0;
-      
-      // AFTER
-      const fitLeft  = (h1 + colGapPx + h3) <= bodyHPage;
-      const fitRight = (h2 + colGapPx + h4) <= bodyHPage;
-
-      // 4칸(2행2열) 조건: q3는 왼쪽 아래, q4는 오른쪽 아래
-      const fitLeft3   = (h1 + colGapPx + h3) <= bodyHPage;
-      const fitRight4  = (h2 + colGapPx + h4) <= bodyHPage;
-
-      // 3칸 예외(오른쪽 아래에 q3만 넣기) 조건: q3가 오른쪽 아래에 실제로 들어가는지
-      const fitRight3  = (h2 + colGapPx + h3) <= bodyHPage;
-
-      if (fitLeft3 && fitRight4) {
-        // 1 2 / 3 4
-        page.left.push(q3);
-        page.right.push(q4);
-        i += 2;
-      } else if (fitLeft3) {
-        // 1 2 / 3 _
-        page.left.push(q3);
-        i += 1;
-      } else if (fitRight3) {
-        // 1 2 / _ 3
-        page.right.push(q3);
-        i += 1;
+      if (page.layout === "single") {
+        pages.push(makeDoublePage());
+        continue;
       }
 
-    }
-
-  // ✅ q4가 없고 q3만 남은 경우도 동일하게 처리 가능
-  else if (q3 && !isWideCandidate(q3)) {
-      const h1 = heights.get(q1.id) ?? 0;
-      const h2 = q2 ? (heights.get(q2.id) ?? 0) : 0;
-      const h3 = heights.get(q3.id) ?? 0;
-
-      const fitLeft  = (h1 + colGapPx + h3) <= bodyHPage;
-      const fitRight = (h2 + colGapPx + h3) <= bodyHPage;
-
-      if (fitLeft) {
-        page.left.push(q3);   // 1 2 / 3 _
-        i += 1;
-      } else if (fitRight) {
-        page.right.push(q3);  // ✅ 1 2 / _ 3
-        i += 1;
+      if (isWideCandidate(q, fitLimit)) {
+        if (!page.left.length && !page.right.length) {
+          pages[pages.length - 1] = { layout: "single", single: [q] };
+          placed = true;
+          break;
+        }
+        pages.push({ layout: "single", single: [q] });
+        placed = true;
+        break;
       }
+
+      const canLeft = colNextHeight(page.leftH, page.left.length, qh) <= fitLimit;
+      const canRight = colNextHeight(page.rightH, page.right.length, qh) <= fitLimit;
+      const canSplitPair = canPlaceSplitPair(page, q, fitLimit);
+
+      // 긴 문항: 1열로는 안 들어갈 때 split 우선, 그 다음 single(전체폭) 사용
+      if (!canLeft && !canRight) {
+        if (canSplitPair) {
+          const sh = getSplitHeights(q);
+          placeIntoColumn(page, "left", makeSplitItem(q, "left"), sh.left);
+          placeIntoColumn(page, "right", makeSplitItem(q, "right"), sh.right);
+          placed = true;
+          break;
+        }
+        if (isWideCandidate(q, fitLimit)) {
+          if (!page.left.length && !page.right.length) {
+            pages[pages.length - 1] = { layout: "single", single: [q] };
+          } else {
+            pages.push({ layout: "single", single: [q] });
+          }
+          placed = true;
+          break;
+        }
+      }
+
+      // 새 페이지 첫 행은 좌->우를 우선
+      if (!page.left.length && !page.right.length) {
+        if (canLeft) {
+          placeIntoColumn(page, "left", makeNormalItem(q), qh);
+          placed = true;
+          break;
+        }
+      }
+      if (page.left.length === 1 && page.right.length === 0) {
+        if (canRight) {
+          placeIntoColumn(page, "right", makeNormalItem(q), qh);
+          placed = true;
+          break;
+        }
+        if (canLeft) {
+          placeIntoColumn(page, "left", makeNormalItem(q), qh);
+          placed = true;
+          break;
+        }
+      } else {
+        let chosen = null;
+        const leftSecondRowEmpty = page.left.length === 1 && page.right.length >= 1;
+        if (leftSecondRowEmpty && canLeft) {
+          chosen = "left";
+        } else if (page.lastCol === "left") {
+          if (canLeft) chosen = "left";
+          else if (canRight) chosen = "right";
+        } else if (page.lastCol === "right") {
+          if (canRight) chosen = "right";
+          else if (canLeft) chosen = "left";
+        } else {
+          if (canLeft) chosen = "left";
+          else if (canRight) chosen = "right";
+        }
+
+        if (chosen) {
+          placeIntoColumn(page, chosen, makeNormalItem(q), qh);
+          placed = true;
+          break;
+        }
+      }
+
+      // 예외: 마지막 문항이고 단일 칸 배치가 안 되며, 현재 페이지 2행 양쪽이 모두 비어 있으면 분할 배치
+      if (
+        isLastQuestion &&
+        q.type === "mcq" &&
+        page.left.length === 1 &&
+        page.right.length === 1
+      ) {
+        const sh = getSplitHeights(q);
+        if (sh) {
+          const canSplitLeft = colNextHeight(page.leftH, page.left.length, sh.left) <= fitLimit;
+          const canSplitRight = colNextHeight(page.rightH, page.right.length, sh.right) <= fitLimit;
+          if (canSplitLeft && canSplitRight) {
+            placeIntoColumn(page, "left", makeSplitItem(q, "left"), sh.left);
+            placeIntoColumn(page, "right", makeSplitItem(q, "right"), sh.right);
+            placed = true;
+            break;
+          }
+        }
+      }
+
+      pages.push(makeDoublePage());
+      page = pages[pages.length - 1];
+      if (!page.left.length && !page.right.length) {
+        const nextFit = pageFitLimit(pages.length - 1);
+        if (isWideCandidate(q, nextFit)) {
+          pages[pages.length - 1] = { layout: "single", single: [q] };
+          placed = true;
+        }
+      }
+    }
   }
-  
-    pages.push(page);
-}
 
 
   // 4) 실제 렌더
@@ -1671,14 +1869,24 @@ async function renderAll({ setId, bucket, variant }) {
         colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
       });
     } else {
-      (p.left || []).forEach((q) => {
+      (p.left || []).forEach((it) => {
+        const q = it?.q || it;
         const originalIndex = indexMap.get(q.id) ?? 0;
-        colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+        if (it && it.kind === "split") {
+          colL.appendChild(buildProblemSplitCard(currentSetData, q, originalIndex, variant, "left"));
+        } else {
+          colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+        }
       });
 
-      (p.right || []).forEach((q) => {
+      (p.right || []).forEach((it) => {
+        const q = it?.q || it;
         const originalIndex = indexMap.get(q.id) ?? 0;
-        colR.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+        if (it && it.kind === "split") {
+          colR.appendChild(buildProblemSplitCard(currentSetData, q, originalIndex, variant, "right"));
+        } else {
+          colR.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+        }
       });
     }
 

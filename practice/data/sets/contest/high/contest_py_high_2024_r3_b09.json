@@ -1,13 +1,142 @@
-﻿{
+{
   "id": "contest_py_high_2024_r3_b09",
   "title": "Python 경시대회(고등) 9회차",
   "categoryId": "contest_py_w09_lambda_sort_ternary",
-  "availableLanguages": ["python"],
+  "availableLanguages": [
+    "python"
+  ],
   "problems": [
-    {"id":"q1","type":"mcq","level":"고","title":"문제 1","description":"아래 코드의 입력이 다음과 같을 때 실행 결과로 올바른 것을 고르시오.","code":"F = lambda A, B: A if A > B else B\nG = lambda A, B: A + B\nt = int(input())\np = 0\nwhile t:\n    t -= 1\n    m = 0\n    n, s = map(int, input().split())\n    k = list(map(int, input().split()))\n    for i in range(n - 1, -1, -1):\n        m = F(m, k[i])\n    p = G(p, (m * s + 999) // 1000)\nprint(p)","options":["-34","0","34","35","96"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
-    {"id":"q2","type":"mcq","level":"고","title":"문제 2","description":"아래 프로그램에 입력을 넣었을 때 출력되는 값을 고르시오.","code":"class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\nn = int(input())\ns = 0\np = [Point(0, 0)]\nfor i in range(n):\n    a, b = map(int, input().split())\n    p.append(Point(a, b))\n\np.append(Point(0, 0))\np.sort(key=lambda a: (a.x, a.y))\n\nfor i in range(1, n + 1):\n    tmp = 1000\n    if p[i - 1].y == p[i].y:\n        tmp = p[i].x - p[i - 1].x\n    if p[i].y == p[i + 1].y:\n        tmp = min(tmp, p[i + 1].x - p[i].x)\n    s += 0 if tmp == 1000 else tmp\nprint(s)","options":["0","1","2","3","4"],"optionLabels":["A","B","C","D","E"],"correctIndex":0},
-    {"id":"q3","type":"mcq","level":"고","title":"문제 3","description":"실행 결과로 올바른 것을 고르시오.","code":"f = lambda x: eval((str(x).replace(\"q\", \"4\") + \"*\" + (str(x).replace(\"q\", \"4\"))))\nprint(f(\"q\"), f(\"q+1\"), f(\"q+q\"))","options":["16 25 64","16 16 16","16 9 24","16 25 24","오류"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
-    {"id":"q4","type":"mcq","level":"고","title":"문제 4","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"data = [(2, 9), (2, 1), (1, 7), (3, 0)]\ndata.sort(key=lambda t: (t[0], -t[1]))\nprint(data)","options":["[(1, 7), (2, 9), (2, 1), (3, 0)]","[(3, 0), (2, 9), (2, 1), (1, 7)]","[(1, 7), (2, 1), (2, 9), (3, 0)]","[(2, 9), (2, 1), (1, 7), (3, 0)]","[(1, 7), (3, 0), (2, 9), (2, 1)]"],"optionLabels":["A","B","C","D","E"],"correctIndex":0},
-    {"id":"q5","type":"mcq","level":"고","title":"문제 5","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"x = [3, 10, 5, 2]\nf = lambda a, b: a if a > b else b\nm = 0\nfor v in x:\n    m = f(m, v)\nprint(m, m if m % 2 == 0 else -m)","options":["10 -10","10 10","5 -5","3 -3","2 2"],"optionLabels":["A","B","C","D","E"],"correctIndex":1}
+    {
+      "id": "q1",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 1",
+      "description": "아래 코드의 입력이 다음과 같을 때 실행 결과로 올바른 것을 고르시오.",
+      "code": "F = lambda A, B: A if A > B else B\nG = lambda A, B: A + B\nt = int(input())\np = 0\nwhile t:\n    t -= 1\n    m = 0\n    n, s = map(int, input().split())\n    k = list(map(int, input().split()))\n    for i in range(n - 1, -1, -1):\n        m = F(m, k[i])\n    p = G(p, (m * s + 999) // 1000)\nprint(p)",
+      "options": [
+        "-34",
+        "0",
+        "34",
+        "35",
+        "96"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w09_c1"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 2",
+      "description": "아래 프로그램에 입력을 넣었을 때 출력되는 값을 고르시오.",
+      "code": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\nn = int(input())\ns = 0\np = [Point(0, 0)]\nfor i in range(n):\n    a, b = map(int, input().split())\n    p.append(Point(a, b))\n\np.append(Point(0, 0))\np.sort(key=lambda a: (a.x, a.y))\n\nfor i in range(1, n + 1):\n    tmp = 1000\n    if p[i - 1].y == p[i].y:\n        tmp = p[i].x - p[i - 1].x\n    if p[i].y == p[i + 1].y:\n        tmp = min(tmp, p[i + 1].x - p[i].x)\n    s += 0 if tmp == 1000 else tmp\nprint(s)",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 0,
+      "conceptRef": "w09_c2"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 3",
+      "description": "실행 결과로 올바른 것을 고르시오.",
+      "code": "f = lambda x: eval((str(x).replace(\"q\", \"4\") + \"*\" + (str(x).replace(\"q\", \"4\"))))\nprint(f(\"q\"), f(\"q+1\"), f(\"q+q\"))",
+      "options": [
+        "16 25 64",
+        "16 16 16",
+        "16 9 24",
+        "16 25 24",
+        "오류"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2,
+      "conceptRef": "w09_c1"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 4",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "data = [(2, 9), (2, 1), (1, 7), (3, 0)]\ndata.sort(key=lambda t: (t[0], -t[1]))\nprint(data)",
+      "options": [
+        "[(1, 7), (2, 9), (2, 1), (3, 0)]",
+        "[(3, 0), (2, 9), (2, 1), (1, 7)]",
+        "[(1, 7), (2, 1), (2, 9), (3, 0)]",
+        "[(2, 9), (2, 1), (1, 7), (3, 0)]",
+        "[(1, 7), (3, 0), (2, 9), (2, 1)]"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 0,
+      "conceptRef": "w09_c2"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 5",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "x = [3, 10, 5, 2]\nf = lambda a, b: a if a > b else b\nm = 0\nfor v in x:\n    m = f(m, v)\nprint(m, m if m % 2 == 0 else -m)",
+      "options": [
+        "10 -10",
+        "10 10",
+        "5 -5",
+        "3 -3",
+        "2 2"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 1,
+      "conceptRef": "w09_c1"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w09_c1",
+      "title": "개념 1) 삼항 연산자 평가 순서",
+      "summary": "관련 이론: 개념 1) 삼항 연산자 평가 순서"
+    },
+    {
+      "id": "w09_c2",
+      "title": "개념 2) 람다 함수 값 추적",
+      "summary": "관련 이론: 개념 2) 람다 함수 값 추적"
+    }
   ]
 }

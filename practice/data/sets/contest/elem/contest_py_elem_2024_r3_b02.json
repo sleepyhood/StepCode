@@ -1,4 +1,4 @@
-﻿{
+{
   "id": "contest_py_elem_2024_r3_b02",
   "title": "Python 경시대회(초등) 2회차",
   "categoryId": "contest_py_w02_for_range_accum",
@@ -27,7 +27,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "conceptRef": "w02_c1"
     },
     {
       "id": "q2",
@@ -50,7 +51,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 3
+      "correctIndex": 3,
+      "conceptRef": "w02_c2"
     },
     {
       "id": "q3",
@@ -73,7 +75,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "conceptRef": "w02_c3"
     },
     {
       "id": "q4",
@@ -95,7 +98,8 @@
         "D",
         "E"
       ],
-      "correctIndex": 2
+      "correctIndex": 2,
+      "conceptRef": "w02_c1"
     },
     {
       "id": "q5",
@@ -118,7 +122,25 @@
         "D",
         "E"
       ],
-      "correctIndex": 3
+      "correctIndex": 3,
+      "conceptRef": "w02_c2"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w02_c1",
+      "title": "개념 1) `range` 반복 횟수 계산",
+      "summary": "관련 이론: 개념 1) `range` 반복 횟수 계산"
+    },
+    {
+      "id": "w02_c2",
+      "title": "개념 2) 누적합/카운트 분리 계산",
+      "summary": "관련 이론: 개념 2) 누적합/카운트 분리 계산"
+    },
+    {
+      "id": "w02_c3",
+      "title": "개념 3) 중첩 반복의 총 실행 횟수",
+      "summary": "관련 이론: 개념 3) 중첩 반복의 총 실행 횟수"
     }
   ]
 }

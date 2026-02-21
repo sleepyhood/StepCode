@@ -1,4 +1,4 @@
-﻿# Python Contest Week 10 High Problem Set
+# Python Contest Week 10 High Problem Set
 
 ## 범위
 - 모듈 혼합 해석
@@ -6,6 +6,7 @@
 - datetime 포맷 코드
 
 ## 문제 1
+연계 개념: 개념 1) 모듈-용도 매핑 규칙
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 from datetime import datetime
@@ -20,6 +21,7 @@ print(d.strftime('%a %B %M %Y'))
 ⓹ Thursday February 03 2024
 
 ## 문제 2
+연계 개념: 개념 2) `os` 함수 존재 여부 판별
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 import re
@@ -34,6 +36,7 @@ print([v for v in vals if pattern.fullmatch(v)])
 ⓹ ['og', 'oh']
 
 ## 문제 3
+연계 개념: 개념 3) `re.fullmatch` 전체 매칭
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 from collections import deque
@@ -49,6 +52,7 @@ print(list(q))
 ⓹ [1, 2]
 
 ## 문제 4
+연계 개념: 개념 3) `re.fullmatch` 전체 매칭
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 from collections import Counter
@@ -62,6 +66,7 @@ print(c['a'], c.most_common(1)[0][0])
 ⓹ 1 b
 
 ## 문제 5
+연계 개념: 개념 1) 모듈-용도 매핑 규칙
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 import os

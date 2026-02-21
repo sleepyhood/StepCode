@@ -1,4 +1,4 @@
-﻿# Python Contest Week 06 Middle Problem Set
+# Python Contest Week 06 Middle Problem Set
 
 ## 범위
 - 문자열 비교/탐색
@@ -6,6 +6,7 @@
 - 부분문자열 처리
 
 ## 문제 1
+연계 개념: 개념 1) 인접 문자 비교와 연속 구간 카운트
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 words = ["programming", "hoolly", "clanguage", "engineeriing", "kitpa"]
@@ -31,6 +32,7 @@ print(b)
 ⓹ kitpa
 
 ## 문제 2
+연계 개념: 개념 2) 부분문자열 스캔과 인덱스 점프
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 def g(s, t):
@@ -61,6 +63,7 @@ print(g("savefromtheavalanche", "av") + g("thathathathhtat", "tha"))
 ⓹ 28
 
 ## 문제 3
+연계 개념: 개념 3) 중첩 반복 문자열 비교 카운트
 다음 설명에 맞는 함수 이름을 순서대로 올바르게 나열한 것을 고르시오.
 1) 리스트 뒤에 값을 1개 추가
 2) 문자열이 특정 접미사로 종료되는지 확인
@@ -74,6 +77,7 @@ print(g("savefromtheavalanche", "av") + g("thathathathhtat", "tha"))
 ⓹ insert, endswith, zfill, pop
 
 ## 문제 4
+연계 개념: 개념 1) 인접 문자 비교와 연속 구간 카운트
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 def f():
@@ -97,6 +101,7 @@ print(b)
 ⓹ aabcde
 
 ## 문제 5
+연계 개념: 개념 3) 중첩 반복 문자열 비교 카운트
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 s = "banana"

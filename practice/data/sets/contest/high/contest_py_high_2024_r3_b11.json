@@ -1,14 +1,147 @@
-﻿{
+{
   "id": "contest_py_high_2024_r3_b11",
   "title": "Python 경시대회(고등) 11회차",
   "categoryId": "contest_py_w11_bit_oct_2d",
-  "availableLanguages": ["python"],
+  "availableLanguages": [
+    "python"
+  ],
   "problems": [
-    {"id":"q1","type":"mcq","level":"고","title":"문제 1","description":"다음 프로그램의 입력이 아래와 같을 때 실행 결과는 무엇인가?","code":"mapp = [[]]\nf = 0\ndy = [-1, 0, 1, 0]\ndx = [0, -1, 0, 1]\n\ndef func2(y, x):\n    if 1 <= y <= n and 1 <= x <= n:\n        return 1\n    else:\n        return 0\n\ndef func(y, x):\n    global mapp, dy, dx\n    global f\n    mapp[y][x] = f\n    qy = [0 for _ in range(200)]\n    qx = [0 for _ in range(200)]\n    qs, qe = 0, 0\n    qy[qe] = y\n    qx[qe] = x\n    qe += 1\n    while qs != qe:\n        qsy = qy[qs]\n        qsx = qx[qs]\n        qs += 1\n        for i in range(4):\n            nxy = qsy + dy[i]\n            nxx = qsx + dx[i]\n            if func2(nxy, nxx) == 1 and mapp[nxy][nxx] == -1:\n                mapp[nxy][nxx] = f\n                qy[qe] = nxy\n                qx[qe] = nxx\n                qe += 1\n\nn, m, k = map(int, input().split())\nfor i in range(1, n+1):\n    row = [0] + list(map(int, input().split()))\n    mapp.append(row)\n    for j in range(1, n+1):\n        if mapp[i][j] == 0:\n            mapp[i][j] = -1\n        else:\n            mapp[i][j] = 0\n\nfor i in range(1, n+1):\n    for j in range(1, n+1):\n        if mapp[i][j] == -1:\n            f += 1\n            func(i, j)\n\nfs = [0 for _ in range(110)]\nfor i in range(1, n+1):\n    for j in range(1, n+1):\n        if mapp[i][j] > 0:\n            fs[mapp[i][j]] += 1\n\nfor i in range(1, f+1):\n    m -= (fs[i] + k - 1) // k\n\nif m >= 0 and f > 0:\n    print(m)\nelse:\n    print(-1)","options":["90","92","94","96","-1"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
-    {"id":"q2","type":"mcq","level":"고","title":"문제 2","description":"다음 코드의 실행 결과로 올바른 값을 고르시오.","code":"def f(mapp, x, y, number, dep, answer):\n    if dep == 2:\n        answer.add(number)\n        return\n    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]\n    for dx, dy in dirs:\n        nxtx, nxty = x + dx, y + dy\n        if 0 <= nxtx < 2 and 0 <= nxty < 2:\n            f(mapp, nxtx, nxty, number + mapp[nxtx][nxty], dep + 1, answer)\n\nmapp = [['1', '2'], ['1', '3']]\nanswer = set()\nfor i in range(2):\n    for j in range(2):\n        f(mapp, i, j, mapp[i][j], 0, answer)\nprint(len(answer))","options":["12","13","14","15","16"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
-    {"id":"q3","type":"mcq","level":"고","title":"문제 3","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"def f(v):\n    if v > 0:\n        return v\n    return -v\n\na = [[10, 2], [0, 5]]\nt = [[0, 0], [0, 0]]\nn = 8\nfor m in range(n):\n    for i in range(2):\n        for j in range(2):\n            for k in range(2):\n                t[i][j] += a[i][k] * a[k][j]\np = f(t[0][0] * t[0][1] - t[1][0] * t[1][1]) % 5\nprint(p)","options":["0","1","2","3","4"],"optionLabels":["A","B","C","D","E"],"correctIndex":0},
-    {"id":"q4","type":"mcq","level":"고","title":"문제 4","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"a = [7, 890, 1, 234, 5678, 901, 23, 45, 6]\ncnt = 0\nfor i in a:\n    b = (i & 1) | (i & 2)\n    if b > 0:\n        cnt += 1\nprint(cnt)","options":["6","7","8","9","10"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
-    {"id":"q5","type":"mcq","level":"고","title":"문제 5","description":"다음 중 아래 코드의 빈 칸에 넣었을 때 출력 결과가 다른 값을 고르시오.","code":"print([빈 칸])","options":["9 * 8","37 ^ 109","9 << 3","(2 ^ 3) * (3 ^ 2)","(36 if 7*3 else 21) * 2"],"optionLabels":["A","B","C","D","E"],"correctIndex":3}
+    {
+      "id": "q1",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 1",
+      "description": "다음 프로그램의 입력이 아래와 같을 때 실행 결과는 무엇인가?",
+      "code": "mapp = [[]]\nf = 0\ndy = [-1, 0, 1, 0]\ndx = [0, -1, 0, 1]\n\ndef func2(y, x):\n    if 1 <= y <= n and 1 <= x <= n:\n        return 1\n    else:\n        return 0\n\ndef func(y, x):\n    global mapp, dy, dx\n    global f\n    mapp[y][x] = f\n    qy = [0 for _ in range(200)]\n    qx = [0 for _ in range(200)]\n    qs, qe = 0, 0\n    qy[qe] = y\n    qx[qe] = x\n    qe += 1\n    while qs != qe:\n        qsy = qy[qs]\n        qsx = qx[qs]\n        qs += 1\n        for i in range(4):\n            nxy = qsy + dy[i]\n            nxx = qsx + dx[i]\n            if func2(nxy, nxx) == 1 and mapp[nxy][nxx] == -1:\n                mapp[nxy][nxx] = f\n                qy[qe] = nxy\n                qx[qe] = nxx\n                qe += 1\n\nn, m, k = map(int, input().split())\nfor i in range(1, n+1):\n    row = [0] + list(map(int, input().split()))\n    mapp.append(row)\n    for j in range(1, n+1):\n        if mapp[i][j] == 0:\n            mapp[i][j] = -1\n        else:\n            mapp[i][j] = 0\n\nfor i in range(1, n+1):\n    for j in range(1, n+1):\n        if mapp[i][j] == -1:\n            f += 1\n            func(i, j)\n\nfs = [0 for _ in range(110)]\nfor i in range(1, n+1):\n    for j in range(1, n+1):\n        if mapp[i][j] > 0:\n            fs[mapp[i][j]] += 1\n\nfor i in range(1, f+1):\n    m -= (fs[i] + k - 1) // k\n\nif m >= 0 and f > 0:\n    print(m)\nelse:\n    print(-1)",
+      "options": [
+        "90",
+        "92",
+        "94",
+        "96",
+        "-1"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2,
+      "conceptRef": "w11_c3"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 2",
+      "description": "다음 코드의 실행 결과로 올바른 값을 고르시오.",
+      "code": "def f(mapp, x, y, number, dep, answer):\n    if dep == 2:\n        answer.add(number)\n        return\n    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]\n    for dx, dy in dirs:\n        nxtx, nxty = x + dx, y + dy\n        if 0 <= nxtx < 2 and 0 <= nxty < 2:\n            f(mapp, nxtx, nxty, number + mapp[nxtx][nxty], dep + 1, answer)\n\nmapp = [['1', '2'], ['1', '3']]\nanswer = set()\nfor i in range(2):\n    for j in range(2):\n        f(mapp, i, j, mapp[i][j], 0, answer)\nprint(len(answer))",
+      "options": [
+        "12",
+        "13",
+        "14",
+        "15",
+        "16"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w11_c3"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 3",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "def f(v):\n    if v > 0:\n        return v\n    return -v\n\na = [[10, 2], [0, 5]]\nt = [[0, 0], [0, 0]]\nn = 8\nfor m in range(n):\n    for i in range(2):\n        for j in range(2):\n            for k in range(2):\n                t[i][j] += a[i][k] * a[k][j]\np = f(t[0][0] * t[0][1] - t[1][0] * t[1][1]) % 5\nprint(p)",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 0,
+      "conceptRef": "w11_c2"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 4",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "a = [7, 890, 1, 234, 5678, 901, 23, 45, 6]\ncnt = 0\nfor i in a:\n    b = (i & 1) | (i & 2)\n    if b > 0:\n        cnt += 1\nprint(cnt)",
+      "options": [
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w11_c1"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 5",
+      "description": "다음 중 아래 코드의 빈 칸에 넣었을 때 출력 결과가 다른 값을 고르시오.",
+      "code": "print([빈 칸])",
+      "options": [
+        "9 * 8",
+        "37 ^ 109",
+        "9 << 3",
+        "(2 ^ 3) * (3 ^ 2)",
+        "(36 if 7*3 else 21) * 2"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w11_c1"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w11_c1",
+      "title": "개념 1) 비트 연산과 값 판별",
+      "summary": "관련 이론: 개념 1) 비트 연산과 값 판별"
+    },
+    {
+      "id": "w11_c2",
+      "title": "개념 2) XOR 누적과 소거 성질",
+      "summary": "관련 이론: 개념 2) XOR 누적과 소거 성질"
+    },
+    {
+      "id": "w11_c3",
+      "title": "개념 3) 팩토리얼 8진수 끝자리 0 개수",
+      "summary": "관련 이론: 개념 3) 팩토리얼 8진수 끝자리 0 개수"
+    }
   ]
 }
-

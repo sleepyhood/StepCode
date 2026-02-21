@@ -1441,6 +1441,30 @@ function normalizeText(str) {
   return (str || "").replace(/\s+/g, " ").trim().toLowerCase();
 }
 
+function formatConceptLabelText(raw) {
+  const text = String(raw || "").trim();
+  if (!text) return "";
+  return text;
+}
+
+function getQuestionConceptRefs(q) {
+  if (!q || typeof q !== "object") return [];
+
+  const refs = [];
+  if (Array.isArray(q.conceptRefs)) {
+    q.conceptRefs.forEach((v) => {
+      const s = String(v || "").trim();
+      if (s) refs.push(s);
+    });
+  }
+  if (q.conceptRef) {
+    const s = String(q.conceptRef || "").trim();
+    if (s) refs.push(s);
+  }
+
+  return Array.from(new Set(refs));
+}
+
 function computeConceptReport() {
   const concepts = Array.isArray(currentSetData?.concepts)
     ? currentSetData.concepts
@@ -1454,11 +1478,13 @@ function computeConceptReport() {
   const byQ = qGradeMeta?.byQ || {};
   const qs = currentSetData?.problems || [];
   qs.forEach((q) => {
-    const cid = q.conceptRef;
-    if (!cid || !byId[cid]) return;
-    byId[cid].total += 1;
-    if (byQ[q.id]?.lastIsCorrect === true) byId[cid].correct += 1;
-    else if (byQ[q.id]?.lastIsCorrect === false) byId[cid].wrong += 1;
+    const refs = getQuestionConceptRefs(q);
+    refs.forEach((cid) => {
+      if (!byId[cid]) return;
+      byId[cid].total += 1;
+      if (byQ[q.id]?.lastIsCorrect === true) byId[cid].correct += 1;
+      else if (byQ[q.id]?.lastIsCorrect === false) byId[cid].wrong += 1;
+    });
   });
 
   return Object.values(byId).filter((r) => r.total > 0);
@@ -1627,15 +1653,17 @@ function renderSet() {
     title.textContent = `${idx + 1}. ${q.title}`;
     headerLeft.appendChild(title);
 
-    if (q.conceptRef && conceptIndex.byId[q.conceptRef]) {
-      const c = conceptIndex.byId[q.conceptRef];
+    const conceptRefs = getQuestionConceptRefs(q);
+    conceptRefs.forEach((cid) => {
+      if (!conceptIndex.byId[cid]) return;
+      const c = conceptIndex.byId[cid];
       const chip = document.createElement("button");
       chip.type = "button";
       chip.className = "concept-chip";
-      chip.textContent = `개념: ${c.title || q.conceptRef}`;
-      chip.addEventListener("click", () => scrollToConcept(q.conceptRef));
+      chip.textContent = formatConceptLabelText(c.title || cid);
+      chip.addEventListener("click", () => scrollToConcept(cid));
       headerLeft.appendChild(chip);
-    }
+    });
 
     const headerRight = document.createElement("div");
     headerRight.className = "question-header-right";
@@ -2849,9 +2877,10 @@ function setupGrading() {
           feedbackEl.textContent = getWrongFeedbackMessage(q, userVal);
           feedbackEl.classList.remove("correct");
           feedbackEl.classList.add("incorrect");
-          if (q.conceptRef) {
-            scrollToConcept(q.conceptRef);
-            highlightConcept(q.conceptRef);
+          const refs = getQuestionConceptRefs(q);
+          if (refs.length) {
+            scrollToConcept(refs[0]);
+            highlightConcept(refs[0]);
           }
         }
       }

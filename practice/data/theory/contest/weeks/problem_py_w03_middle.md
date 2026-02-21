@@ -1,4 +1,4 @@
-﻿# Python Contest Week 03 Middle Problem Set
+# Python Contest Week 03 Middle Problem Set
 
 ## 범위
 - while 종료조건
@@ -6,6 +6,7 @@
 - 반복 제곱(mod)
 
 ## 문제 1
+연계 개념: 개념 2) 호제법(`a, b = b, a % b`) 종료 구조
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 a = 88
@@ -23,6 +24,7 @@ print(a)
 ⓹ 88
 
 ## 문제 2
+연계 개념: 개념 3) 반복 제곱(mod)에서 `k //= 2` 의미
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 n, m, k, a = 3, 10, 15, 1
@@ -41,6 +43,7 @@ print(a)
 ⓹ 9
 
 ## 문제 3
+연계 개념: 개념 1) `while True` + `break` 종료 추적
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 a = 1
@@ -59,6 +62,7 @@ print(a)
 ⓹ 729
 
 ## 문제 4
+연계 개념: 개념 1) `while True` + `break` 종료 추적
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 x = 0
@@ -76,6 +80,7 @@ print(x)
 ⓹ 36
 
 ## 문제 5
+연계 개념: 개념 2) 호제법(`a, b = b, a % b`) 종료 구조
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 a = 84

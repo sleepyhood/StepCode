@@ -1,15 +1,43 @@
-﻿{
+{
   "id": "contest_py_elem_2024_r3_b01",
   "title": "Python 경시대회(초등) 1회차",
   "categoryId": "contest_py_w01_diagnostic_io_casting",
   "availableLanguages": [
     "python"
   ],
+  "concepts": [
+    {
+      "id": "w01_c1",
+      "title": "개념 1) 연산/대입/나머지",
+      "summary": "관련 이론: 개념 1) 연산/대입/나머지"
+    },
+    {
+      "id": "w01_c2",
+      "title": "개념 2) 출력 포맷 `.format()`",
+      "summary": "관련 이론: 개념 2) 출력 포맷 `.format()`"
+    },
+    {
+      "id": "w01_c3",
+      "title": "개념 3) 함수 키워드/스코프",
+      "summary": "관련 이론: 개념 3) 함수 키워드/스코프"
+    },
+    {
+      "id": "w01_c4",
+      "title": "개념 4) 반올림 `round`",
+      "summary": "관련 이론: 개념 4) 반올림 `round`"
+    },
+    {
+      "id": "w01_c5",
+      "title": "개념 5) 조건식 truthy/falsy 판별",
+      "summary": "관련 이론: 개념 5) 조건식 truthy/falsy 판별"
+    }
+  ],
   "problems": [
     {
       "id": "q1",
       "type": "mcq",
       "level": "초",
+      "conceptRef": "w01_c1",
       "title": "문제 1",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "v = -9\nv %= 4\nprint(v)",
@@ -33,6 +61,7 @@
       "id": "q2",
       "type": "mcq",
       "level": "초",
+      "conceptRef": "w01_c3",
       "title": "문제 2",
       "description": "다음 중 함수 선언 키워드로 올바른 것을 고르시오.",
       "options": [
@@ -55,6 +84,7 @@
       "id": "q3",
       "type": "mcq",
       "level": "초",
+      "conceptRef": "w01_c4",
       "title": "문제 3",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "x = 12.34\nprint(round(x, 1))",
@@ -78,6 +108,7 @@
       "id": "q4",
       "type": "mcq",
       "level": "초",
+      "conceptRef": "w01_c2",
       "title": "문제 4",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오. (`·`는 공백)",
       "code": "print(\"|{:4s}|\".format(\"A\"))",
@@ -101,6 +132,7 @@
       "id": "q5",
       "type": "mcq",
       "level": "초",
+      "conceptRef": "w01_c5",
       "title": "문제 5",
       "description": "다음 중 조건식에서 거짓으로 판정되는 값을 고르시오.",
       "options": [

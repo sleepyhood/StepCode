@@ -1,4 +1,4 @@
-﻿# Python Contest Week 06 Elementary Problem Set
+# Python Contest Week 06 Elementary Problem Set
 
 ## 범위
 - 문자열 비교
@@ -6,6 +6,7 @@
 - 문자열 메서드
 
 ## 문제 1
+연계 개념: 개념 1) 인접 문자 비교와 연속 구간 카운트
 다음 프로그램의 실행 결과는 무엇인가?
 ```python
 a = "apple"
@@ -23,6 +24,7 @@ print(b)
 ⓹ 10
 
 ## 문제 2
+연계 개념: 개념 3) 중첩 반복 문자열 비교 카운트
 다음 중 문자열이 특정 접미사로 끝나는지 확인하는 메서드는 무엇인가?
 ⓵ append
 ⓶ endswith
@@ -31,6 +33,7 @@ print(b)
 ⓹ remove
 
 ## 문제 3
+연계 개념: 개념 2) 부분문자열 스캔과 인덱스 점프
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 s = "savefromtheavalanche"
@@ -60,6 +63,7 @@ print(r)
 ⓹ 20
 
 ## 문제 4
+연계 개념: 개념 1) 인접 문자 비교와 연속 구간 카운트
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 def f():
@@ -83,6 +87,7 @@ print(b)
 ⓹ aabbccddee
 
 ## 문제 5
+연계 개념: 개념 1) 인접 문자 비교와 연속 구간 카운트
 다음 코드의 실행 결과로 올바른 것을 고르시오.
 ```python
 s = "programming"

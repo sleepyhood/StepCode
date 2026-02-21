@@ -1,13 +1,147 @@
-﻿{
+{
   "id": "contest_py_high_2024_r3_b05",
   "title": "Python 경시대회(고등) 5회차",
   "categoryId": "contest_py_w05_nested_loop_array",
-  "availableLanguages": ["python"],
+  "availableLanguages": [
+    "python"
+  ],
   "problems": [
-    {"id":"q1","type":"mcq","level":"고","title":"문제 1","description":"다음 프로그램의 실행 결과는 무엇인가?","code":"for i in range(1, 10):\n    for j in range(10):\n        if i == j:\n            continue\n        for k in range(10):\n            if k in (i, j):\n                continue\n            for l in range(10):\n                if l in (i, j, k):\n                    continue\n                if int(str(i) + str(j) + str(k) + str(l)) * l == int(f\"{l}{k}{j}{i}\"):\n                    print(l)","options":["1","3","5","7","9"],"optionLabels":["A","B","C","D","E"],"correctIndex":4},
-    {"id":"q2","type":"mcq","level":"고","title":"문제 2","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"a = []\nb = []\ns = 0\nfor i in range(5):\n    a.append(i + 1)\n    b.append(2 * i - 3)\nfor i in range(5):\n    for j in range(5):\n        s += a[i] * b[j]\nprint(s)","options":["45","60","70","75","90"],"optionLabels":["A","B","C","D","E"],"correctIndex":3},
-    {"id":"q3","type":"mcq","level":"고","title":"문제 3","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"a, b, c = [], [], []\nd = 0\nfor i in range(4):\n    a.append(i + 1)\n    b.append(i * 2)\n    c.append(i)\nfor i in range(4):\n    for j in range(4):\n        for k in range(4):\n            d += a[i] + b[j] * c[k]\nprint(d)","options":["384","416","448","480","512"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
-    {"id":"q4","type":"mcq","level":"고","title":"문제 4","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"x = 0\nfor i in range(1, 10):\n    for j in range(1, 10):\n        if i == j:\n            continue\n        for k in range(1, 10):\n            if k in (i, j):\n                continue\n            if i + j == k:\n                x += 1\nprint(x)","options":["24","28","32","36","40"],"optionLabels":["A","B","C","D","E"],"correctIndex":2},
-    {"id":"q5","type":"mcq","level":"고","title":"문제 5","description":"다음 코드의 실행 결과로 올바른 것을 고르시오.","code":"a = 0\nfor i in range(1, 10):\n    for j in range(10):\n        if int(str(i) + str(j)) * 9 == int(f\"{j}{i}\"):\n            a += 1\nprint(a)","options":["0","1","2","3","4"],"optionLabels":["A","B","C","D","E"],"correctIndex":0}
+    {
+      "id": "q1",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 1",
+      "description": "다음 프로그램의 실행 결과는 무엇인가?",
+      "code": "for i in range(1, 10):\n    for j in range(10):\n        if i == j:\n            continue\n        for k in range(10):\n            if k in (i, j):\n                continue\n            for l in range(10):\n                if l in (i, j, k):\n                    continue\n                if int(str(i) + str(j) + str(k) + str(l)) * l == int(f\"{l}{k}{j}{i}\"):\n                    print(l)",
+      "options": [
+        "1",
+        "3",
+        "5",
+        "7",
+        "9"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 4,
+      "conceptRef": "w05_c3"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 2",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "a = []\nb = []\ns = 0\nfor i in range(5):\n    a.append(i + 1)\n    b.append(2 * i - 3)\nfor i in range(5):\n    for j in range(5):\n        s += a[i] * b[j]\nprint(s)",
+      "options": [
+        "45",
+        "60",
+        "70",
+        "75",
+        "90"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 3,
+      "conceptRef": "w05_c1"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 3",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "a, b, c = [], [], []\nd = 0\nfor i in range(4):\n    a.append(i + 1)\n    b.append(i * 2)\n    c.append(i)\nfor i in range(4):\n    for j in range(4):\n        for k in range(4):\n            d += a[i] + b[j] * c[k]\nprint(d)",
+      "options": [
+        "384",
+        "416",
+        "448",
+        "480",
+        "512"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2,
+      "conceptRef": "w05_c2"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 4",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "x = 0\nfor i in range(1, 10):\n    for j in range(1, 10):\n        if i == j:\n            continue\n        for k in range(1, 10):\n            if k in (i, j):\n                continue\n            if i + j == k:\n                x += 1\nprint(x)",
+      "options": [
+        "24",
+        "28",
+        "32",
+        "36",
+        "40"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 2,
+      "conceptRef": "w05_c3"
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "level": "고",
+      "title": "문제 5",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "code": "a = 0\nfor i in range(1, 10):\n    for j in range(10):\n        if int(str(i) + str(j)) * 9 == int(f\"{j}{i}\"):\n            a += 1\nprint(a)",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "correctIndex": 0,
+      "conceptRef": "w05_c3"
+    }
+  ],
+  "concepts": [
+    {
+      "id": "w05_c1",
+      "title": "개념 1) 이중합 분해 (`Σi Σj`)",
+      "summary": "관련 이론: 개념 1) 이중합 분해 (`Σi Σj`)"
+    },
+    {
+      "id": "w05_c2",
+      "title": "개념 2) 3중 반복에서 항 분리 계산",
+      "summary": "관련 이론: 개념 2) 3중 반복에서 항 분리 계산"
+    },
+    {
+      "id": "w05_c3",
+      "title": "개념 3) 배열 탐색 최댓값 갱신 패턴",
+      "summary": "관련 이론: 개념 3) 배열 탐색 최댓값 갱신 패턴"
+    }
   ]
 }
