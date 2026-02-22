@@ -1,0 +1,162 @@
+﻿{
+    "id":  "contest_c_elem_2024_r3_b07",
+    "title":  "C 경시대회(초등) 7회차",
+    "categoryId":  "contest_c_w07_preprocessor_macro_traps",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include\u003cstdio.h\u003e\n#define S(X) X*X\nint main()\n{\n    int q = 4;\n    printf(\"%d %d %d\", S(q), S(q+1), S(q+q));\n    return 0;\n}",
+                         "conceptRef":  "w07_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "16 25 64",
+                                         "16 16 16",
+                                         "16 9 24",
+                                         "16 25 24",
+                                         "오류가 발생한다"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w07_c1",
+                                             "w07_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n#define f(x) x*x\n\nint main()\n{\n    int a = 4;\n    printf(\"%d %d\\n\", f(a), f(a+1));\n    return 0;\n}",
+                         "conceptRef":  "w07_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "16 8",
+                                         "16 9",
+                                         "16 25",
+                                         "25 25",
+                                         "25 36"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w07_c1",
+                                             "w07_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n#define f(x) x+1\nint main()\n{\n    int a = 5;\n    printf(\"%d %d\\n\", f(a), f(a)*f(a));\n    return 0;\n}",
+                         "conceptRef":  "w07_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "5 10",
+                                         "6 10",
+                                         "6 11",
+                                         "6 25",
+                                         "51 5151"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w07_c1",
+                                             "w07_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include\u003cstdio.h\u003e\n#define S(X) X*X\nint main()\n{\n    int q = 4;\n    printf(\"%d %d %d\", S(q), S(q+1), S(q+q));\n    return 0;\n}",
+                         "conceptRef":  "w07_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "16 25 64",
+                                         "16 16 16",
+                                         "16 9 24",
+                                         "16 25 24",
+                                         "오류가 발생한다"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w07_c1",
+                                             "w07_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n#define f(x) x*x\n\nint main()\n{\n    int a = 4;\n    printf(\"%d %d\\n\", f(a), f(a+1));\n    return 0;\n}",
+                         "conceptRef":  "w07_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "16 8",
+                                         "16 9",
+                                         "16 25",
+                                         "25 25",
+                                         "25 36"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w07_c1",
+                                             "w07_c2"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w07_c1",
+                         "title":  "개념 1) `#define` 치환 규칙",
+                         "summary":  "관련 이론: `#define` 치환 규칙"
+                     },
+                     {
+                         "id":  "w07_c2",
+                         "title":  "개념 2) 매크로 괄호와 부작용",
+                         "summary":  "관련 이론: 매크로 괄호와 부작용"
+                     }
+                 ]
+}

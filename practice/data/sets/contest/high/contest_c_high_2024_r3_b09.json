@@ -1,0 +1,167 @@
+﻿{
+    "id":  "contest_c_high_2024_r3_b09",
+    "title":  "C 경시대회(고등) 9회차",
+    "categoryId":  "contest_c_w09_divide_conquer_call_order",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint f(int a, int b) {\n    return b * 2 - a;\n}\n\nint main()\n{\n    int a = 1;\n    for(int i=0 ; i\u003c12 ; i++) {\n        a = f(a, -i);\n        a = f(a, i);\n    }\n    printf(\"%d\\n\", a);\n    return 0;\n}",
+                         "conceptRef":  "w09_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "256",
+                                         "259",
+                                         "262",
+                                         "265",
+                                         "268"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRefs":  [
+                                             "w09_c2",
+                                             "w09_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = a + (b - a) / 4;\n    f(a, c);\n    f(c+1, b);\n}\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
+                         "conceptRef":  "w09_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "1",
+                                         "2",
+                                         "3",
+                                         "4",
+                                         "5"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w09_c1",
+                                             "w09_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = (a + b) / 2;\n    f(a, c);\n    f(c+1, b);\n}\n\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
+                         "conceptRef":  "w09_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "1",
+                                         "2",
+                                         "3",
+                                         "4",
+                                         "5"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w09_c1",
+                                             "w09_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint f(int a, int b) {\n    return b * 2 - a;\n}\n\nint main()\n{\n    int a = 1;\n    for(int i=0 ; i\u003c12 ; i++) {\n        a = f(a, -i);\n        a = f(a, i);\n    }\n    printf(\"%d\\n\", a);\n    return 0;\n}",
+                         "conceptRef":  "w09_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "256",
+                                         "259",
+                                         "262",
+                                         "265",
+                                         "268"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRefs":  [
+                                             "w09_c2",
+                                             "w09_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = a + (b - a) / 4;\n    f(a, c);\n    f(c+1, b);\n}\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
+                         "conceptRef":  "w09_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "1",
+                                         "2",
+                                         "3",
+                                         "4",
+                                         "5"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w09_c1",
+                                             "w09_c2"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w09_c1",
+                         "title":  "개념 1) 절반 분할 조건",
+                         "summary":  "관련 이론: 절반 분할 조건"
+                     },
+                     {
+                         "id":  "w09_c2",
+                         "title":  "개념 2) 호출 순서(전위/중위/후위)",
+                         "summary":  "관련 이론: 호출 순서(전위/중위/후위)"
+                     },
+                     {
+                         "id":  "w09_c3",
+                         "title":  "개념 3) 호출 트리 깊이 추정",
+                         "summary":  "관련 이론: 호출 트리 깊이 추정"
+                     }
+                 ]
+}

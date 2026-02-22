@@ -1,0 +1,43 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
+  <title id="title">2차원/3중 반복 조합 계산</title>
+  <desc id="desc">중첩 반복에서 전체 조합 수를 먼저 계산하고 누적식을 항 분해해 검산하는 흐름을 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 10; }
+    .accent { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; rx: 10; }
+    .ok { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 10; }
+    .warn { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 10; }
+    .t2 { font-size: 16px; font-weight: 700; }
+    .t3 { font-size: 14px; }
+  </style>
+
+  <rect x="24" y="24" width="220" height="84" class="accent"/>
+  <text x="44" y="54" class="t2">루프 길이</text>
+  <text x="44" y="78" class="t3">len(i), len(j), len(k)</text>
+
+  <rect x="270" y="24" width="220" height="84" class="box"/>
+  <text x="290" y="54" class="t2">조합 수</text>
+  <text x="290" y="78" class="t3">len(i)*len(j)*len(k)</text>
+
+  <rect x="516" y="24" width="220" height="84" class="ok"/>
+  <text x="536" y="54" class="t2">식 분해</text>
+  <text x="536" y="78" class="t3">a[i] + b[j]*c[k]</text>
+
+  <rect x="762" y="24" width="194" height="84" class="accent"/>
+  <text x="782" y="54" class="t2">총합 검산</text>
+  <text x="782" y="78" class="t3">항별로 재합성</text>
+
+  <rect x="24" y="126" width="620" height="206" class="box"/>
+  <text x="44" y="154" class="t2">빠른 검산 템플릿</text>
+  <text x="44" y="180" class="t3">1) 전체 조합 수를 먼저 계산한다.</text>
+  <text x="44" y="202" class="t3">2) 누적식을 독립 항으로 분해한다.</text>
+  <text x="44" y="224" class="t3">3) 각 항의 반복 횟수를 곱해 합성한다.</text>
+  <text x="44" y="246" class="t3">4) 샘플 1~2개 조합을 직접 대입해 방향성 점검한다.</text>
+  <text x="44" y="268" class="t3">5) 최종 누적 변수와 출력을 대조한다.</text>
+
+  <rect x="668" y="126" width="288" height="206" class="warn"/>
+  <text x="688" y="154" class="t2">오답 패턴</text>
+  <text x="688" y="180" class="t3">- 조합 수를 한 단계 덜 곱함</text>
+  <text x="688" y="202" class="t3">- 식 결합 우선순위를 바꿔 계산</text>
+  <text x="688" y="224" class="t3">- 중간 합 검산 없이 바로 최종값 추측</text>
+</svg>

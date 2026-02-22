@@ -1,0 +1,135 @@
+﻿{
+    "id":  "contest_c_high_2024_r3_b06",
+    "title":  "C 경시대회(고등) 6회차",
+    "categoryId":  "contest_c_w06_string_char_processing",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n#include \u003cstring.h\u003e\n\nint main()\n{\n    int a = (int)strlen(\"KITPA\\0\");\n    int b = (int)strlen(\"KITPA\\n\");\n    printf(\"%d %d\\n\", a, b);\n    return 0;\n}",
+                         "conceptRef":  "w06_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "5 5",
+                                         "5 6",
+                                         "5 7",
+                                         "6 5",
+                                         "6 6"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w06_c1"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과를 작성하시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nvoid f(char* str1, char* str2) {\n    int i, j;\n    for(i=0, j=0 ; str1[i] != 0 ; i++) {\n        if(str1[i] != str1[i+1]) {\n            str2[j] = str1[i];\n            j++;\n        }\n    }\n    str2[j] = 0;\n}\n\nint main()\n{\n    char a[20] = \"aaabbccccdeffff\", b[20];\n    f(a, b);\n    printf(\"%s\\n\", b);\n    return 0;\n}",
+                         "conceptRef":  "w06_c3",
+                         "type":  "short",
+                         "expectedText":  "abcdef",
+                         "conceptRefs":  [
+                                             "w06_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    char a[7] = \"banana\";\n    char b[7] = \"papaya\";\n    int c = 0;\n    for(int i=0 ; i\u003c6 ; i++) {\n        for(int j=0 ; j\u003c6 ; j++) {\n            if(a[i] != b[j]) c++;\n        }\n    }\n    printf(\"%d\", c);\n    return 0;\n}",
+                         "conceptRef":  "w06_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "12",
+                                         "17",
+                                         "22",
+                                         "27",
+                                         "32"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRefs":  [
+                                             "w06_c2",
+                                             "w06_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 출력 결과를 작성하시오.\n\n\u003c입력\u003e\n```text\nkitpaa afogai\n```",
+                         "code":  "#include \u003cstdio.h\u003e\n#include \u003cstring.h\u003e\n\nint cnt[26];\nchar str1[101], str2[101];\n\nint main()\n{\n    int i;\n    scanf(\"%s %s\", str1, str2);\n    for (i = 0; str1[i] != \u0027\\0\u0027; i++)\n        cnt[str1[i] - \u0027a\u0027] += 1;\n    for (i = 0; str2[i] != \u0027\\0\u0027; i++)\n        cnt[str2[i] - \u0027a\u0027] -= 1;\n    for (i = 0; i \u003c 26; i++) {\n        if (cnt[i]) {\n            printf(\"%s %d\", str1, i);\n            break;\n        }\n    }\n    if (i == 26)\n        printf(\"%s %d\", str2, i);\n    return 0;\n}",
+                         "conceptRef":  "w06_c2",
+                         "type":  "short",
+                         "expectedText":  "kitpaa 5",
+                         "conceptRefs":  [
+                                             "w06_c2",
+                                             "w06_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 중 문자열 함수 설명으로 올바르지 않은 것을 고르시오.",
+                         "conceptRef":  "w06_c3",
+                         "type":  "mcq",
+                         "options":  [
+                                         "strcpy – 문자열을 문자열에 복사한다 (destination, source)",
+                                         "strcmp – 두 문자열을 비교한다",
+                                         "strchr – 문자열에서 처음으로 특정 문자와 일치하는 문자의 주소를 반환한다",
+                                         "strstr – 문자열1에서 문자열2를 검색하여 가장 먼저 나타나는 곳의 위치를 반환한다",
+                                         "strcat – 문자열을 특정 문자들로 분리한다"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRefs":  [
+                                             "w06_c3"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w06_c1",
+                         "title":  "개념 1) 널 문자와 `strlen`",
+                         "summary":  "관련 이론: 널 문자와 `strlen`"
+                     },
+                     {
+                         "id":  "w06_c2",
+                         "title":  "개념 2) 문자 분류와 ASCII 이동",
+                         "summary":  "관련 이론: 문자 분류와 ASCII 이동"
+                     },
+                     {
+                         "id":  "w06_c3",
+                         "title":  "개념 3) 문자열 순회/치환",
+                         "summary":  "관련 이론: 문자열 순회/치환"
+                     }
+                 ]
+}

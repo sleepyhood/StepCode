@@ -1,0 +1,162 @@
+﻿{
+    "id":  "contest_c_mid_2024_r3_b08",
+    "title":  "C 경시대회(중등) 8회차",
+    "categoryId":  "contest_c_w08_recursion_base_return",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include\u003cstdio.h\u003e\nint f(int n) {\n    if(n == 0) return 1;\n    if(n == 1) return 4;\n    if(n == 2) return 9;\n    return f(n-1) + f(n-3);\n}\nint main()\n{\n    printf(\"%d\", f(9));\n    return 0;\n}",
+                         "conceptRef":  "w08_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "47",
+                                         "70",
+                                         "103",
+                                         "150",
+                                         "241"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w08_c1",
+                                             "w08_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include\u003cstdio.h\u003e\nint\tf(int v) {\n\tint\ts = 0;\n\tif (v == 1)\treturn 1;\n\treturn f(v / 2) + v;\n}\nint\tmain()\n{\n\tprintf(\"%d\", f(16));\n\treturn 0;\n}",
+                         "conceptRef":  "w08_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "15",
+                                         "30",
+                                         "31",
+                                         "62",
+                                         "63"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w08_c1",
+                                             "w08_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint f(int a, int b) {\n    if(a == 1) return 1;\n    else return b * f(a-1, b);\n}\n\nint main()\n{\n    printf(\"%d\\n\", f(5, 6));\n    return 0;\n}",
+                         "conceptRef":  "w08_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "216",
+                                         "625",
+                                         "1296",
+                                         "3125",
+                                         "7776"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w08_c1",
+                                             "w08_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint f(int a) {\n    if(a \u003c= 1) return 1;\n    return f(a-1) * 2 + f(a-3) * 5;\n}\n\nint main()\n{\n    printf(\"%d\\n\", f(4));\n}",
+                         "conceptRef":  "w08_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "42",
+                                         "43",
+                                         "44",
+                                         "45",
+                                         "46"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w08_c1",
+                                             "w08_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint f(int a) {\n    if(a == 0) return 0;\n    return f(a / 10) + a % 10;\n}\n\nint main()\n{\n    printf(\"%d\\n\", f(빈  칸));\n}",
+                         "conceptRef":  "w08_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "14",
+                                         "89",
+                                         "168",
+                                         "221",
+                                         "512"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w08_c1",
+                                             "w08_c2"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w08_c1",
+                         "title":  "개념 1) 기저 조건 설정",
+                         "summary":  "관련 이론: 기저 조건 설정"
+                     },
+                     {
+                         "id":  "w08_c2",
+                         "title":  "개념 2) 호출-복귀 순서",
+                         "summary":  "관련 이론: 호출-복귀 순서"
+                     }
+                 ]
+}

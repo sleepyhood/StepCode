@@ -1,0 +1,64 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
+  <title id="title">short 승격과 재대입 흐름</title>
+  <desc id="desc">s+1 계산은 int에서 이루어지고, s=s+1 대입 시 short 범위로 돌아오며 값이 순환되는 과정을 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 12; }
+    .accent { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; rx: 12; }
+    .warn { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 12; }
+    .ok { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 12; }
+    .t1 { font-size: 18px; font-weight: 700; }
+    .t2 { font-size: 16px; font-weight: 700; }
+    .t3 { font-size: 14px; }
+    .line { stroke: #334155; stroke-width: 2; marker-end: url(#arrow); }
+    .lineBlue { stroke: #0284c7; stroke-width: 2; marker-end: url(#arrowBlue); }
+    .lineRed { stroke: #dc2626; stroke-width: 2; marker-end: url(#arrowRed); }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#334155" />
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#0284c7" />
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#dc2626" />
+    </marker>
+  </defs>
+
+  <rect x="32" y="26" width="260" height="84" class="box" />
+  <text x="162" y="56" text-anchor="middle" class="t2">초기 상태</text>
+  <text x="162" y="80" text-anchor="middle" class="t3">short s = 32767</text>
+
+  <rect x="352" y="26" width="260" height="84" class="accent" />
+  <text x="482" y="56" text-anchor="middle" class="t2">연산 단계</text>
+  <text x="482" y="80" text-anchor="middle" class="t3">s + 1 은 int 승격 계산 -> 32768</text>
+
+  <rect x="672" y="26" width="276" height="84" class="ok" />
+  <text x="810" y="56" text-anchor="middle" class="t2">대입 없는 출력</text>
+  <text x="810" y="80" text-anchor="middle" class="t3">printf("%d", s + 1) -> 32768</text>
+
+  <line x1="292" y1="68" x2="352" y2="68" class="line" />
+  <line x1="612" y1="68" x2="672" y2="68" class="lineBlue" />
+
+  <rect x="32" y="180" width="260" height="140" class="warn" />
+  <text x="162" y="210" text-anchor="middle" class="t2">재대입 경로</text>
+  <text x="162" y="236" text-anchor="middle" class="t3">s = s + 1;</text>
+  <text x="162" y="258" text-anchor="middle" class="t3">int 결과 32768을 short에 저장</text>
+  <text x="162" y="280" text-anchor="middle" class="t3">범위 초과로 순환 발생</text>
+
+  <rect x="352" y="180" width="260" height="140" class="box" />
+  <text x="482" y="210" text-anchor="middle" class="t2">short 범위(16비트 기준)</text>
+  <text x="482" y="236" text-anchor="middle" class="t3">-32768 ~ 32767</text>
+  <text x="482" y="258" text-anchor="middle" class="t3">32767 다음 저장값 -> -32768</text>
+
+  <rect x="672" y="180" width="276" height="140" class="ok" />
+  <text x="810" y="210" text-anchor="middle" class="t2">대입 후 출력</text>
+  <text x="810" y="236" text-anchor="middle" class="t3">printf("%d", s) -> -32768</text>
+  <text x="810" y="262" text-anchor="middle" class="t3">핵심: 연산 타입과 저장 타입 분리</text>
+
+  <line x1="292" y1="250" x2="352" y2="250" class="lineRed" />
+  <line x1="612" y1="250" x2="672" y2="250" class="line" />
+
+  <text x="32" y="344" class="t3">범례: 파랑 화살표=승격 계산 결과 출력, 빨강 화살표=short 재대입(순환) 경로</text>
+</svg>

@@ -1,0 +1,33 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+  <title id="title">define 매크로 치환 전개 흐름</title>
+  <desc id="desc">함수형 매크로가 함수 호출이 아니라 텍스트 치환으로 먼저 전개된 뒤 연산 우선순위가 적용되는 과정을 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box{fill:#f8fafc;stroke:#334155;stroke-width:2;rx:10}
+    .accent{fill:#e0f2fe;stroke:#0284c7;stroke-width:2;rx:10}
+    .ok{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:10}
+    .warn{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:10}
+    .t2{font-size:16px;font-weight:700}.t3{font-size:14px}
+  </style>
+  <rect x="24" y="24" width="932" height="72" class="accent"/>
+  <text x="44" y="52" class="t2">1단계: 전처리 치환</text>
+  <text x="44" y="76" class="t3">매크로 호출식을 먼저 텍스트로 전개한다. (함수 실행 아님)</text>
+
+  <rect x="24" y="112" width="300" height="176" class="box"/>
+  <text x="44" y="140" class="t2">예시</text>
+  <text x="44" y="166" class="t3">#define S(x) x*x</text>
+  <text x="44" y="188" class="t3">S(q+1) -> q+1*q+1</text>
+  <text x="44" y="210" class="t3">S(q+q) -> q+q*q+q</text>
+
+  <rect x="352" y="112" width="300" height="176" class="ok"/>
+  <text x="372" y="140" class="t2">2단계: C 우선순위 계산</text>
+  <text x="372" y="166" class="t3">곱셈 먼저, 덧셈 나중</text>
+  <text x="372" y="188" class="t3">q=4이면 4+1*4+1 = 9</text>
+  <text x="372" y="210" class="t3">4+4*4+4 = 24</text>
+
+  <rect x="680" y="112" width="276" height="176" class="warn"/>
+  <text x="700" y="140" class="t2">오답 패턴</text>
+  <text x="700" y="166" class="t3">- 매크로를 함수처럼 계산</text>
+  <text x="700" y="188" class="t3">- 치환식 전개 생략</text>
+  <text x="700" y="210" class="t3">- 우선순위 적용 누락</text>
+</svg>

@@ -1,0 +1,54 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+  <title id="title">limits.h 자료형 범위 상수 맵</title>
+  <desc id="desc">limits.h의 대표 상수들을 자료형별로 묶고 범위를 함께 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 12; }
+    .accent { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; rx: 12; }
+    .warn { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 12; }
+    .ok { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 12; }
+    .t1 { font-size: 18px; font-weight: 700; }
+    .t2 { font-size: 16px; font-weight: 700; }
+    .t3 { font-size: 14px; }
+    .line { stroke: #334155; stroke-width: 2; marker-end: url(#arrow); }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#334155" />
+    </marker>
+  </defs>
+
+  <rect x="28" y="24" width="220" height="70" class="accent" />
+  <text x="138" y="52" text-anchor="middle" class="t2">헤더 포함</text>
+  <text x="138" y="76" text-anchor="middle" class="t3">#include &lt;limits.h&gt;</text>
+
+  <line x1="248" y1="59" x2="330" y2="59" class="line" />
+
+  <rect x="330" y="24" width="260" height="70" class="box" />
+  <text x="460" y="52" text-anchor="middle" class="t2">범위 상수 그룹</text>
+  <text x="460" y="76" text-anchor="middle" class="t3">SHRT_*, INT_*, LONG_*</text>
+
+  <rect x="36" y="130" width="285" height="152" class="ok" />
+  <text x="178" y="158" text-anchor="middle" class="t2">short</text>
+  <text x="178" y="184" text-anchor="middle" class="t3">SHRT_MIN = -32768</text>
+  <text x="178" y="206" text-anchor="middle" class="t3">SHRT_MAX = 32767</text>
+  <text x="178" y="234" text-anchor="middle" class="t3">핵심: W01 범위 상수 문항의 기준</text>
+  <text x="178" y="256" text-anchor="middle" class="t3">`SHRT_` 접두어로 자료형 연결</text>
+
+  <rect x="347" y="130" width="285" height="152" class="box" />
+  <text x="489" y="158" text-anchor="middle" class="t2">int</text>
+  <text x="489" y="184" text-anchor="middle" class="t3">INT_MIN, INT_MAX</text>
+  <text x="489" y="206" text-anchor="middle" class="t3">보통 INT_MAX = 2147483647</text>
+  <text x="489" y="234" text-anchor="middle" class="t3">주의: SHRT_MAX와 혼동 금지</text>
+
+  <rect x="658" y="130" width="285" height="152" class="warn" />
+  <text x="800" y="158" text-anchor="middle" class="t2">오답 구간</text>
+  <text x="800" y="184" text-anchor="middle" class="t3">상수 이름만 보고 감으로 선택</text>
+  <text x="800" y="206" text-anchor="middle" class="t3">SHRT_MAX vs INT_MAX 혼동</text>
+  <text x="800" y="228" text-anchor="middle" class="t3">limits.h 누락 상태로 해석 진행</text>
+  <text x="800" y="256" text-anchor="middle" class="t3">해결: 상수 접두어 -> 자료형 -> 값 순서</text>
+
+  <line x1="460" y1="94" x2="178" y2="130" class="line" />
+  <line x1="460" y1="94" x2="489" y2="130" class="line" />
+  <line x1="460" y1="94" x2="800" y2="130" class="line" />
+</svg>

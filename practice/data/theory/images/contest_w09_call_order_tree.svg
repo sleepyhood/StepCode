@@ -1,0 +1,37 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t{font-family:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;fill:#1f2937}
+      .b{font-size:16px;font-weight:600}
+      .s{font-size:14px}
+      .node{fill:#f8fafc;stroke:#94a3b8;stroke-width:2}
+      .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2}
+      .warn{fill:#fef2f2;stroke:#dc2626;stroke-width:2}
+      .line{stroke:#475569;stroke-width:2}
+    </style>
+  </defs>
+
+  <rect x="420" y="20" width="140" height="50" rx="10" class="accent"/>
+  <text x="458" y="50" class="t b">(0, 7)</text>
+
+  <rect x="210" y="110" width="140" height="50" rx="10" class="node"/>
+  <text x="248" y="140" class="t b">(0, 3)</text>
+  <rect x="630" y="110" width="140" height="50" rx="10" class="node"/>
+  <text x="668" y="140" class="t b">(4, 7)</text>
+
+  <rect x="90" y="200" width="120" height="44" rx="10" class="node"/><text x="130" y="228" class="t s">(0,1)</text>
+  <rect x="250" y="200" width="120" height="44" rx="10" class="node"/><text x="290" y="228" class="t s">(2,3)</text>
+  <rect x="590" y="200" width="120" height="44" rx="10" class="node"/><text x="630" y="228" class="t s">(4,5)</text>
+  <rect x="750" y="200" width="120" height="44" rx="10" class="node"/><text x="790" y="228" class="t s">(6,7)</text>
+
+  <line x1="490" y1="70" x2="280" y2="110" class="line"/>
+  <line x1="490" y1="70" x2="700" y2="110" class="line"/>
+  <line x1="280" y1="160" x2="150" y2="200" class="line"/>
+  <line x1="280" y1="160" x2="310" y2="200" class="line"/>
+  <line x1="700" y1="160" x2="650" y2="200" class="line"/>
+  <line x1="700" y1="160" x2="810" y2="200" class="line"/>
+
+  <rect x="20" y="272" width="940" height="72" rx="10" class="warn"/>
+  <text x="38" y="300" class="t b">출력 순서 판별 규칙</text>
+  <text x="38" y="326" class="t s">좌측 호출 우선이면 DFS 왼쪽부터 소진된다. 좌/우 호출을 바꾸면 같은 분할식이라도 k번째 출력값이 달라진다.</text>
+</svg>

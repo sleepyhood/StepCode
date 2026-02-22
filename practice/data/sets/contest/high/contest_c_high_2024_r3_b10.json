@@ -1,0 +1,107 @@
+﻿{
+    "id":  "contest_c_high_2024_r3_b10",
+    "title":  "C 경시대회(고등) 10회차",
+    "categoryId":  "contest_c_w10_dynamic_memory_pointer_struct",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과를 작성하시오.\n\n예를 들어 \u003c입력 1\u003e의 출력 결과가 ABC, \u003c입력2\u003e의 출력 결과가 DEF라면, \"ABC DEF\" 를 답안에 작성하시오.\n\n\u003c입력 1\u003e\n```text\n7\nD B C A C D P\n```\n\n\u003c입력 2\u003e\n```text\n11\nP R O G R A M M I N G\n```",
+                         "code":  "#include\u003cstdio.h\u003e\ntypedef struct datastructure {\n    int front;\n    int rear;\n    char q[101];\n} DS;\nint n;\nchar v;\nDS d;\n\nvoid f(char k) {\n    d.front = d.rear = 50;\n    d.q[50] = k;\n}\nvoid g(char k) {\n    d.q[--(d.front)] = k;\n}\nvoid h(char k) {\n    d.q[++(d.rear)] = k;\n}\nint main()\n{\n    scanf(\"%d\", \u0026n);\n    scanf(\" %c\", \u0026v);\n    f(v);\n\n    for(int i=0; i\u003cn-1; i++) {\n        scanf(\" %c\", \u0026v);\n        if(v \u003c= d.q[d.front]) g(v);\n        else                  h(v);\n    }\n    for(int i=d.front; i\u003c=d.rear; i++) {\n        printf(\"%c\", d.q[i]);\n    }\n    return 0;\n}",
+                         "conceptRef":  "w10_c3",
+                         "type":  "short",
+                         "expectedText":  "ABDCCDP AGOPRRMMING",
+                         "conceptRefs":  [
+                                             "w10_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과를 작성하시오.\n\n\u003c입력\u003e\n```text\n8\n4 6\n8 1\n4 1\n2 3\n4 7\n5 6\n1 3\n```",
+                         "code":  "#include\u003cstdio.h\u003e\nint n;\nint *link[10];\nint size[10], check[10], ans;\n\nvoid search(int c, int p) {\n    int count = 0;\n    check[c] = 1;\n    for(int i=0; i\u003csize[c]; i++) {\n        if(!check[ link[c][i] ]) {\n            search(link[c][i], p+1);\n            count++;\n        }\n    }\n    if(count == 0) ans += p;\n}\n\nint main()\n{\n    scanf(\"%d\", \u0026n);\n\n    for(int i=1; i\u003c=n; i++) {\n        link[i] = (int*)malloc(sizeof(int));\n        link[i][0] = 0;\n    }\n\n    int p, q;\n    for(int i=0; i\u003cn-1; i++) {\n        scanf(\"%d %d\", \u0026p, \u0026q);\n\n        link[p] = realloc(link[p], sizeof(int)*(size[p] + 1));\n        link[p][size[p]] = q;\n        size[p]++;\n\n        link[q] = realloc(link[q], sizeof(int)*(size[q] + 1));\n        link[q][size[q]] = p;\n        size[q]++;\n    }\n\n    search(1, 0);\n    printf(\"%d\", ans);\n    return 0;\n}",
+                         "conceptRef":  "w10_c1",
+                         "type":  "short",
+                         "expectedText":  "8",
+                         "conceptRefs":  [
+                                             "w10_c1",
+                                             "w10_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 중 동적 메모리 할당 함수로 올바른 것을 고르시오.",
+                         "conceptRef":  "w10_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "atoi",
+                                         "calloc",
+                                         "free",
+                                         "malloc",
+                                         "realloc"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w10_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과를 작성하시오.\n\n예를 들어 \u003c입력 1\u003e의 출력 결과가 ABC, \u003c입력2\u003e의 출력 결과가 DEF라면, \"ABC DEF\" 를 답안에 작성하시오.\n\n\u003c입력 1\u003e\n```text\n7\nD B C A C D P\n```\n\n\u003c입력 2\u003e\n```text\n11\nP R O G R A M M I N G\n```",
+                         "code":  "#include\u003cstdio.h\u003e\ntypedef struct datastructure {\n    int front;\n    int rear;\n    char q[101];\n} DS;\nint n;\nchar v;\nDS d;\n\nvoid f(char k) {\n    d.front = d.rear = 50;\n    d.q[50] = k;\n}\nvoid g(char k) {\n    d.q[--(d.front)] = k;\n}\nvoid h(char k) {\n    d.q[++(d.rear)] = k;\n}\nint main()\n{\n    scanf(\"%d\", \u0026n);\n    scanf(\" %c\", \u0026v);\n    f(v);\n\n    for(int i=0; i\u003cn-1; i++) {\n        scanf(\" %c\", \u0026v);\n        if(v \u003c= d.q[d.front]) g(v);\n        else                  h(v);\n    }\n    for(int i=d.front; i\u003c=d.rear; i++) {\n        printf(\"%c\", d.q[i]);\n    }\n    return 0;\n}",
+                         "conceptRef":  "w10_c3",
+                         "type":  "short",
+                         "expectedText":  "ABDCCDP AGOPRRMMING",
+                         "conceptRefs":  [
+                                             "w10_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과를 작성하시오.\n\n\u003c입력\u003e\n```text\n8\n4 6\n8 1\n4 1\n2 3\n4 7\n5 6\n1 3\n```",
+                         "code":  "#include\u003cstdio.h\u003e\nint n;\nint *link[10];\nint size[10], check[10], ans;\n\nvoid search(int c, int p) {\n    int count = 0;\n    check[c] = 1;\n    for(int i=0; i\u003csize[c]; i++) {\n        if(!check[ link[c][i] ]) {\n            search(link[c][i], p+1);\n            count++;\n        }\n    }\n    if(count == 0) ans += p;\n}\n\nint main()\n{\n    scanf(\"%d\", \u0026n);\n\n    for(int i=1; i\u003c=n; i++) {\n        link[i] = (int*)malloc(sizeof(int));\n        link[i][0] = 0;\n    }\n\n    int p, q;\n    for(int i=0; i\u003cn-1; i++) {\n        scanf(\"%d %d\", \u0026p, \u0026q);\n\n        link[p] = realloc(link[p], sizeof(int)*(size[p] + 1));\n        link[p][size[p]] = q;\n        size[p]++;\n\n        link[q] = realloc(link[q], sizeof(int)*(size[q] + 1));\n        link[q][size[q]] = p;\n        size[q]++;\n    }\n\n    search(1, 0);\n    printf(\"%d\", ans);\n    return 0;\n}",
+                         "conceptRef":  "w10_c1",
+                         "type":  "short",
+                         "expectedText":  "8",
+                         "conceptRefs":  [
+                                             "w10_c1",
+                                             "w10_c2"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w10_c1",
+                         "title":  "개념 1) 포인터 역참조와 주소 전달",
+                         "summary":  "관련 이론: 포인터 역참조와 주소 전달"
+                     },
+                     {
+                         "id":  "w10_c2",
+                         "title":  "개념 2) 동적 메모리 생명주기",
+                         "summary":  "관련 이론: 동적 메모리 생명주기"
+                     },
+                     {
+                         "id":  "w10_c3",
+                         "title":  "개념 3) 구조체 필드 접근",
+                         "summary":  "관련 이론: 구조체 필드 접근"
+                     }
+                 ]
+}

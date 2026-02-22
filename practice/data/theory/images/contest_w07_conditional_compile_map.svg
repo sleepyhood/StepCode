@@ -1,0 +1,34 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
+  <title id="title">조건부 컴파일 활성 블록 판별</title>
+  <desc id="desc">if, ifdef, ifndef 조건에 따라 실제 컴파일 대상이 되는 코드 블록만 남기는 과정을 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box{fill:#f8fafc;stroke:#334155;stroke-width:2;rx:10}
+    .accent{fill:#e0f2fe;stroke:#0284c7;stroke-width:2;rx:10}
+    .ok{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:10}
+    .warn{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:10}
+    .t2{font-size:16px;font-weight:700}.t3{font-size:14px}
+  </style>
+
+  <rect x="24" y="24" width="932" height="72" class="accent"/>
+  <text x="44" y="52" class="t2">전처리 단계에서 먼저 활성 블록을 확정한다</text>
+  <text x="44" y="76" class="t3">비활성 블록은 컴파일/실행 대상에서 제외된다.</text>
+
+  <rect x="24" y="112" width="300" height="214" class="box"/>
+  <text x="44" y="140" class="t2">#if MODE == 1</text>
+  <text x="44" y="166" class="t3">숫자식 참/거짓 평가</text>
+  <text x="44" y="188" class="t3">참: if 블록 활성</text>
+  <text x="44" y="210" class="t3">거짓: else 블록 활성</text>
+
+  <rect x="352" y="112" width="300" height="214" class="ok"/>
+  <text x="372" y="140" class="t2">#ifdef DEBUG</text>
+  <text x="372" y="166" class="t3">정의 여부만 검사</text>
+  <text x="372" y="188" class="t3">값과 무관하게 정의되면 참</text>
+  <text x="372" y="210" class="t3">#if DEBUG 와 의미가 다를 수 있음</text>
+
+  <rect x="680" y="112" width="276" height="214" class="warn"/>
+  <text x="700" y="140" class="t2">오답 패턴</text>
+  <text x="700" y="166" class="t3">- 실행 단계만 보고 추적</text>
+  <text x="700" y="188" class="t3">- 제거된 블록까지 계산</text>
+  <text x="700" y="210" class="t3">- ifdef / if 의미 혼동</text>
+</svg>

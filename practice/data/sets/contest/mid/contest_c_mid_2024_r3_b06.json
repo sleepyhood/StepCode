@@ -1,0 +1,150 @@
+﻿{
+    "id":  "contest_c_mid_2024_r3_b06",
+    "title":  "C 경시대회(중등) 6회차",
+    "categoryId":  "contest_c_w06_string_char_processing",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include\u003cstdio.h\u003e\n#include\u003cstring.h\u003e\nint\tmain()\n{\n\tchar s[50] = \"QQqqQQwwWeeEeeERRrrrrqqtYYyyYUIOP\";\n\tint\tk = 4, chk[27] = { 0 }, b = 0;\n\tfor (int i = 0; s[i] != 0; i++) {\n\t\tif (s[i] \u003c= \u0027Z\u0027) s[i] += 32;\n\t}\n\n\tchar a = s[0];\n\tint\tc = 1;\n\tfor (int i = 1; s[i] != 0; i++) {\n\t\tif (s[i] == a) {\n\t\t\tc++;\n\t\t}\n\t\telse {\n\t\t\tif (chk[a - \u0027a\u0027] == 0) {\n\t\t\t\tif (c \u003e= k)\tb++;\n\t\t\t\tchk[a - \u0027a\u0027] = 1;\n\t\t\t\ta = s[i];\n\t\t\t\tc = 1;\n\t\t\t}\n\t\t\telse {\n\t\t\t\ta = s[i];\n\t\t\t\tc = 1;\n\t\t\t}\n\t\t}\n\t}\n\tif (chk[a - \u0027a\u0027] == 0 \u0026\u0026 c \u003e= k) {\n\t\tb++;\n\t}\n\tprintf(\"%d\", b);\n\treturn\t0;\n}",
+                         "conceptRef":  "w06_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "3",
+                                         "4",
+                                         "5",
+                                         "6",
+                                         "7"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w06_c2",
+                                             "w06_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    char a[6] = \"banana\";\n    int b = 0;\n    for(int i = 0; i \u003c 5; i++){\n        for(int j = 0; j \u003c i; j++){\n            if(a[i] \u003e a[j]) b++;\n        }\n    }\n    printf(\"%d\", b);\n    return 0;\n}",
+                         "conceptRef":  "w06_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "1",
+                                         "2",
+                                         "3",
+                                         "4",
+                                         "5"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRefs":  [
+                                             "w06_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n#include \u003cstring.h\u003e\n\nint main()\n{\n    int a = (int)strlen(\"KITPA\\0\");\n    int b = (int)strlen(\"KITPA\\n\");\n    printf(\"%d %d\\n\", a, b);\n    return 0;\n}",
+                         "conceptRef":  "w06_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "5 5",
+                                         "5 6",
+                                         "5 7",
+                                         "6 5",
+                                         "6 6"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w06_c1"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과를 작성하시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nvoid f(char* str1, char* str2) {\n    int i, j;\n    for(i=0, j=0 ; str1[i] != 0 ; i++) {\n        if(str1[i] != str1[i+1]) {\n            str2[j] = str1[i];\n            j++;\n        }\n    }\n    str2[j] = 0;\n}\n\nint main()\n{\n    char a[20] = \"aaabbccccdeffff\", b[20];\n    f(a, b);\n    printf(\"%s\\n\", b);\n    return 0;\n}",
+                         "conceptRef":  "w06_c3",
+                         "type":  "short",
+                         "expectedText":  "abcdef",
+                         "conceptRefs":  [
+                                             "w06_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    char a[7] = \"banana\";\n    char b[7] = \"papaya\";\n    int c = 0;\n    for(int i=0 ; i\u003c6 ; i++) {\n        for(int j=0 ; j\u003c6 ; j++) {\n            if(a[i] != b[j]) c++;\n        }\n    }\n    printf(\"%d\", c);\n    return 0;\n}",
+                         "conceptRef":  "w06_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "12",
+                                         "17",
+                                         "22",
+                                         "27",
+                                         "32"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRefs":  [
+                                             "w06_c2",
+                                             "w06_c3"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w06_c1",
+                         "title":  "개념 1) 널 문자와 `strlen`",
+                         "summary":  "관련 이론: 널 문자와 `strlen`"
+                     },
+                     {
+                         "id":  "w06_c2",
+                         "title":  "개념 2) 문자 분류와 ASCII 이동",
+                         "summary":  "관련 이론: 문자 분류와 ASCII 이동"
+                     },
+                     {
+                         "id":  "w06_c3",
+                         "title":  "개념 3) 문자열 순회/치환",
+                         "summary":  "관련 이론: 문자열 순회/치환"
+                     }
+                 ]
+}

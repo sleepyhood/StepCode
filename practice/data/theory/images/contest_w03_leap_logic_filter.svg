@@ -1,0 +1,48 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+  <title id="title">윤년 논리식 필터 흐름</title>
+  <desc id="desc">윤년 판정식을 4의 배수, 100의 배수 예외, 400의 배수 예외복구 단계로 분해해 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 12; }
+    .accent { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; rx: 12; }
+    .warn { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 12; }
+    .ok { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 12; }
+    .t2 { font-size: 16px; font-weight: 700; }
+    .t3 { font-size: 14px; }
+    .line { stroke: #334155; stroke-width: 2; marker-end: url(#a); }
+  </style>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#334155"/></marker></defs>
+
+  <rect x="24" y="26" width="220" height="76" class="accent"/>
+  <text x="134" y="56" text-anchor="middle" class="t2">1차 필터</text>
+  <text x="134" y="78" text-anchor="middle" class="t3">y % 4 == 0</text>
+
+  <rect x="284" y="26" width="220" height="76" class="warn"/>
+  <text x="394" y="56" text-anchor="middle" class="t2">2차 예외</text>
+  <text x="394" y="78" text-anchor="middle" class="t3">y % 100 == 0 이면 제외</text>
+
+  <rect x="544" y="26" width="220" height="76" class="ok"/>
+  <text x="654" y="56" text-anchor="middle" class="t2">3차 복구</text>
+  <text x="654" y="78" text-anchor="middle" class="t3">y % 400 == 0 이면 윤년</text>
+
+  <rect x="804" y="26" width="152" height="76" class="box"/>
+  <text x="880" y="56" text-anchor="middle" class="t2">최종 판정</text>
+  <text x="880" y="78" text-anchor="middle" class="t3">1 또는 0</text>
+
+  <line x1="244" y1="64" x2="284" y2="64" class="line"/>
+  <line x1="504" y1="64" x2="544" y2="64" class="line"/>
+  <line x1="764" y1="64" x2="804" y2="64" class="line"/>
+
+  <rect x="24" y="130" width="450" height="160" class="box"/>
+  <text x="44" y="158" class="t2">식 형태</text>
+  <text x="44" y="184" class="t3">(y % 4 == 0 &amp;&amp; y % 100 != 0) || (y % 400 == 0)</text>
+  <text x="44" y="210" class="t3">- 왼쪽: 기본 규칙 + 100 배수 제외</text>
+  <text x="44" y="232" class="t3">- 오른쪽: 400 배수 예외 복구</text>
+  <text x="44" y="254" class="t3">검산: 1900=0, 2000=1, 2024=1</text>
+
+  <rect x="506" y="130" width="450" height="160" class="warn"/>
+  <text x="526" y="158" class="t2">오답 패턴</text>
+  <text x="526" y="184" class="t3">- 100 배수 예외만 적용하고 400 배수 복구를 누락한다.</text>
+  <text x="526" y="206" class="t3">- 조건 결합을 반대로 써서 거의 모든 해를 오판정한다.</text>
+  <text x="526" y="228" class="t3">- 괄호 없이 암산하다가 &amp;&amp;/|| 결합을 놓친다.</text>
+</svg>

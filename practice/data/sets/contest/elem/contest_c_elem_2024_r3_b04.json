@@ -1,0 +1,163 @@
+﻿{
+    "id":  "contest_c_elem_2024_r3_b04",
+    "title":  "C 경시대회(초등) 4회차",
+    "categoryId":  "contest_c_w04_loop_control_flow",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int a = 0;\n    for(int i=100 ; i\u003c=2024 ; i+=100) {\n        a += 2;\n    }\n    printf(\"%d\\n\", a);\n\n    return 0;\n}",
+                         "conceptRef":  "w04_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "36",
+                                         "38",
+                                         "40",
+                                         "42",
+                                         "44"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w04_c1"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int a = 20, b = 30;\n    while(a \u003e 0) {\n        a -= 6;\n        b *= 3;\n        b /= 2;\n    }\n    printf(\"%d\\n\", b);\n    return 0;\n}",
+                         "conceptRef":  "w04_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "100",
+                                         "101",
+                                         "150",
+                                         "151",
+                                         "200"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w04_c1"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int i, a = 0;\n    for(i=2 ; i\u003c62 ; i++) {\n        if(i % 2 == 0 \u0026\u0026 i % 3 == 0 \u0026\u0026 i % 5 == 0) {\n            a += i;\n        }\n    }\n    printf(\"%d\\n\", a);\n    return 0;\n}",
+                         "conceptRef":  "w04_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "15",
+                                         "30",
+                                         "45",
+                                         "60",
+                                         "90"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRefs":  [
+                                             "w04_c1"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int flag = 0;\n    for(int i=1 ; i\u003c10 ; i++) {\n        for(int j=0 ; j\u003c10 ; j++) {\n            for(int k=0 ; k\u003c10 ; k++) {\n                if(i == k || j == k) continue;\n                if((i * 10 + j) * k == (j * 10 + i)) {\n                    printf(\"%d\\n\", k);\n                    flag = 1;\n                    break;\n                }\n            }\n            if(flag == 1) break;\n        }\n        if(flag == 1) break;\n    }\n    return 0;\n}",
+                         "conceptRef":  "w04_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "1",
+                                         "3",
+                                         "5",
+                                         "7",
+                                         "9"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  0,
+                         "conceptRefs":  [
+                                             "w04_c2",
+                                             "w04_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int sum = 0;\n    for(int i=1 ; i\u003c=10 ; i++) {\n        if(i % 3 == 0) {\n            sum += i;\n        }\n    }\n    printf(\"%d\", sum);\n    return 0;\n}",
+                         "conceptRef":  "w04_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "14",
+                                         "16",
+                                         "18",
+                                         "20",
+                                         "22"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w04_c1"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w04_c1",
+                         "title":  "개념 1) for/while 종료 조건 추적",
+                         "summary":  "관련 이론: for/while 종료 조건 추적"
+                     },
+                     {
+                         "id":  "w04_c2",
+                         "title":  "개념 2) break/continue 영향 범위",
+                         "summary":  "관련 이론: break/continue 영향 범위"
+                     },
+                     {
+                         "id":  "w04_c3",
+                         "title":  "개념 3) 중첩 반복 총 실행 횟수",
+                         "summary":  "관련 이론: 중첩 반복 총 실행 횟수"
+                     }
+                 ]
+}

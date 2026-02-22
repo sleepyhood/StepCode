@@ -1,0 +1,34 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+  <title id="title">문자 분류와 ASCII 이동 규칙</title>
+  <desc id="desc">대소문자 변환과 문자 비교를 ASCII 코드 기준으로 처리하는 절차를 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box{fill:#f8fafc;stroke:#334155;stroke-width:2;rx:10}
+    .accent{fill:#e0f2fe;stroke:#0284c7;stroke-width:2;rx:10}
+    .ok{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:10}
+    .warn{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:10}
+    .t2{font-size:16px;font-weight:700}.t3{font-size:14px}
+  </style>
+
+  <rect x="24" y="24" width="932" height="76" class="accent"/>
+  <text x="44" y="52" class="t2">핵심 규칙: 'a' - 'A' = 32</text>
+  <text x="44" y="76" class="t3">대문자 -> 소문자: +32, 문자 비교(&gt;,&lt;)는 코드값 비교로 판단한다.</text>
+
+  <rect x="24" y="116" width="300" height="176" class="ok"/>
+  <text x="44" y="144" class="t2">변환 규칙</text>
+  <text x="44" y="170" class="t3">if ('A' &lt;= ch &amp;&amp; ch &lt;= 'Z') ch += 32;</text>
+  <text x="44" y="192" class="t3">예: 'C'(67) -> 'c'(99)</text>
+  <text x="44" y="214" class="t3">빈도배열: cnt[ch - 'a']</text>
+
+  <rect x="352" y="116" width="300" height="176" class="box"/>
+  <text x="372" y="144" class="t2">비교 누적</text>
+  <text x="372" y="170" class="t3">문자쌍 (a[i], b[j])마다</text>
+  <text x="372" y="192" class="t3">ASCII 비교 결과를 T/F로 기록</text>
+  <text x="372" y="214" class="t3">참일 때만 누적 변수 갱신</text>
+
+  <rect x="680" y="116" width="276" height="176" class="warn"/>
+  <text x="700" y="144" class="t2">오답 패턴</text>
+  <text x="700" y="170" class="t3">- 문자 순서를 사전식 직관으로만 판단</text>
+  <text x="700" y="192" class="t3">- 대소문자 차이를 코드로 환산하지 않음</text>
+  <text x="700" y="214" class="t3">- 누적 조건 중복 적용을 누락</text>
+</svg>

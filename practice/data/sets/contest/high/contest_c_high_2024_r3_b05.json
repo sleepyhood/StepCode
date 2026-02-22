@@ -1,0 +1,162 @@
+﻿{
+    "id":  "contest_c_high_2024_r3_b05",
+    "title":  "C 경시대회(고등) 5회차",
+    "categoryId":  "contest_c_w05_array_index_nested_loop",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int a[] = {6, 7, 1, 3, 2, 10, 5, 8, 4, 9};\n    int b = 0;\n    for(int i=0 ; i\u003c10 ; i++) {\n        if(a[i] % 2 == 1) b += a[i];\n        if(a[i] % 3 == 1) b -= a[i];\n    }\n    printf(\"%d\\n\", b);\n    return 0;\n}",
+                         "conceptRef":  "w05_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "1",
+                                         "2",
+                                         "3",
+                                         "4",
+                                         "5"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w05_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include\u003cstdio.h\u003e\n\nint main()\n{\n    int a[3], b[3], c[3];\n    int d = 0;\n    for(int i=0 ; i\u003c3 ; i++) {\n        a[i] = i + 2;\n        b[i] = i * 4;\n        c[i] = i * i;\n    }\n    for(int i=0 ; i\u003c3 ; i++) {\n        for(int j=0 ; j\u003c3 ; j++) {\n            for(int k=0 ; k\u003c3 ; k++) {\n                d += a[i] + b[j] * c[k];\n            }\n        }\n    }\n\n    printf(\"%d\", d);\n    return 0;\n}",
+                         "conceptRef":  "w05_c3",
+                         "type":  "mcq",
+                         "options":  [
+                                         "234",
+                                         "261",
+                                         "297",
+                                         "1089",
+                                         "1116"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRefs":  [
+                                             "w05_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int a[4] = {13, 8, 7, 11};\n    int b[4] = {2, 15, 3, 12};\n    int c = 0;\n\n    for(int i=0 ; i\u003c4 ; i++) {\n        for(int j=0 ; j\u003c4 ; j++) {\n            if(a[i] + b[j] \u003c= 16 \u0026\u0026 a[i] + b[j] \u003e c)\n            {\n                c = a[i] + b[j];\n            }\n        }\n    }\n    printf(\"%d\\n\", c);\n    return 0;\n}",
+                         "conceptRef":  "w05_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "8",
+                                         "11",
+                                         "13",
+                                         "16",
+                                         "28"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRefs":  [
+                                             "w05_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int a[] = {9, 10, 12, 3, 5, 1, 11, 6, 4, 2, 8, 7};\n    int b = 0;\n    for(int i=0 ; i\u003c12 ; i++) {\n        if(i % 2 == 1) b += a[i];\n        if(i % 3 == 2) b -= a[i];\n    }\n    printf(\"%d\", b);\n    return 0;\n}",
+                         "conceptRef":  "w05_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "1",
+                                         "2",
+                                         "3",
+                                         "4",
+                                         "5"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRefs":  [
+                                             "w05_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int arr1[4] = {13, 8, 7, 11};\n    int arr2[4] = {2, 15, 3, 12};\n    int ans = 0;\n    for(int i=0 ; i\u003c4 ; i++) {\n        for(int j=0 ; j\u003c4 ; j++) {\n            if((arr1[i] + arr2[j]) % 2 == 0 \u0026\u0026\n               arr1[i] + arr2[j] \u003e ans) {\n                ans = arr1[i] + arr2[j];\n            }\n        }\n    }\n    printf(\"%d\\n\", ans);\n    return 0;\n}",
+                         "conceptRef":  "w05_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "8",
+                                         "12",
+                                         "16",
+                                         "28",
+                                         "32"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRefs":  [
+                                             "w05_c2"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w05_c1",
+                         "title":  "개념 1) 배열 인덱스 경계",
+                         "summary":  "관련 이론: 배열 인덱스 경계"
+                     },
+                     {
+                         "id":  "w05_c2",
+                         "title":  "개념 2) 누적합/최댓값 추적",
+                         "summary":  "관련 이론: 누적합/최댓값 추적"
+                     },
+                     {
+                         "id":  "w05_c3",
+                         "title":  "개념 3) 2차원 배열 순회",
+                         "summary":  "관련 이론: 2차원 배열 순회"
+                     }
+                 ]
+}

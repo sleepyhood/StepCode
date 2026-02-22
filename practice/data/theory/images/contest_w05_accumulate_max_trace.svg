@@ -1,0 +1,36 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+  <title id="title">누적합과 최댓값 갱신 추적</title>
+  <desc id="desc">독립 if 조건에서 누적합 가감과 최대값 갱신을 동시에 추적하는 방법을 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 10; }
+    .accent { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; rx: 10; }
+    .ok { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 10; }
+    .warn { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 10; }
+    .t2 { font-size: 16px; font-weight: 700; }
+    .t3 { font-size: 14px; }
+  </style>
+
+  <rect x="24" y="24" width="932" height="76" class="accent"/>
+  <text x="44" y="52" class="t2">핵심 규칙</text>
+  <text x="44" y="76" class="t3">독립 if 두 개는 같은 원소에 모두 적용될 수 있다. (if ... if ... != if ... else if ...)</text>
+
+  <rect x="24" y="116" width="300" height="176" class="box"/>
+  <text x="44" y="144" class="t2">누적합 추적</text>
+  <text x="44" y="170" class="t3">- 초기값 s 확인</text>
+  <text x="44" y="192" class="t3">- 조건1 통과면 +</text>
+  <text x="44" y="214" class="t3">- 조건2 통과면 -</text>
+  <text x="44" y="236" class="t3">- 같은 i에서 두 연산 모두 가능</text>
+
+  <rect x="352" y="116" width="300" height="176" class="ok"/>
+  <text x="372" y="144" class="t2">최댓값 갱신</text>
+  <text x="372" y="170" class="t3">if (cand &lt;= limit &amp;&amp; cand &gt; best)</text>
+  <text x="372" y="192" class="t3">    best = cand;</text>
+  <text x="372" y="214" class="t3">best는 단조 증가(또는 유지)</text>
+
+  <rect x="680" y="116" width="276" height="176" class="warn"/>
+  <text x="700" y="144" class="t2">오답 패턴</text>
+  <text x="700" y="170" class="t3">- 두 if를 else-if로 오해</text>
+  <text x="700" y="192" class="t3">- 초기값(best/s) 확인 누락</text>
+  <text x="700" y="214" class="t3">- 조건 통과/미통과 기록 생략</text>
+</svg>

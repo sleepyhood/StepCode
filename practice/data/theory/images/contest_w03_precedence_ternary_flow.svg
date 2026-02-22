@@ -1,0 +1,50 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
+  <title id="title">연산자 우선순위와 삼항 분기 평가 흐름</title>
+  <desc id="desc">산술, 비교, 논리, 삼항 연산을 순서대로 평가해 최종 분기를 결정하는 절차를 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 12; }
+    .accent { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; rx: 12; }
+    .warn { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 12; }
+    .ok { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 12; }
+    .t2 { font-size: 16px; font-weight: 700; }
+    .t3 { font-size: 14px; }
+    .line { stroke: #334155; stroke-width: 2; marker-end: url(#a); }
+  </style>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#334155"/></marker></defs>
+
+  <rect x="24" y="24" width="180" height="76" class="accent"/>
+  <text x="114" y="52" text-anchor="middle" class="t2">식 분해</text>
+  <text x="114" y="74" text-anchor="middle" class="t3">연산자 종류 표시</text>
+
+  <rect x="236" y="24" width="180" height="76" class="box"/>
+  <text x="326" y="52" text-anchor="middle" class="t2">산술/비교</text>
+  <text x="326" y="74" text-anchor="middle" class="t3">중간값 계산</text>
+
+  <rect x="448" y="24" width="180" height="76" class="box"/>
+  <text x="538" y="52" text-anchor="middle" class="t2">논리 결합</text>
+  <text x="538" y="74" text-anchor="middle" class="t3">&amp;&amp; -&gt; || 순서</text>
+
+  <rect x="660" y="24" width="296" height="76" class="ok"/>
+  <text x="808" y="52" text-anchor="middle" class="t2">삼항 분기 선택</text>
+  <text x="808" y="74" text-anchor="middle" class="t3">조건 참/거짓에 따라 한쪽만 평가</text>
+
+  <line x1="204" y1="62" x2="236" y2="62" class="line"/>
+  <line x1="416" y1="62" x2="448" y2="62" class="line"/>
+  <line x1="628" y1="62" x2="660" y2="62" class="line"/>
+
+  <rect x="24" y="128" width="460" height="196" class="box"/>
+  <text x="44" y="156" class="t2">우선순위 체크 루틴</text>
+  <text x="44" y="182" class="t3">1) 괄호 내부를 먼저 계산한다.</text>
+  <text x="44" y="204" class="t3">2) 산술 -> 비교 -> 논리 순서로 중간값을 기록한다.</text>
+  <text x="44" y="226" class="t3">3) 삼항 조건을 불린으로 판정한다.</text>
+  <text x="44" y="248" class="t3">4) 선택된 분기만 계산해 최종 출력과 비교한다.</text>
+  <text x="44" y="280" class="t3">메모: 1 || 0 &amp;&amp; 0 은 1 || (0 &amp;&amp; 0) 으로 해석한다.</text>
+
+  <rect x="506" y="128" width="450" height="196" class="warn"/>
+  <text x="526" y="156" class="t2">오답 패턴</text>
+  <text x="526" y="182" class="t3">- &amp;&amp; 와 || 의 우선순위를 바꿔 계산한다.</text>
+  <text x="526" y="204" class="t3">- 삼항의 두 분기를 모두 계산해 값이 섞인다.</text>
+  <text x="526" y="226" class="t3">- 괄호 보강 없이 한 번에 계산해 중간값이 누락된다.</text>
+  <text x="526" y="248" class="t3">- 비교식 결과(0/1)를 숫자 계산과 혼동한다.</text>
+</svg>

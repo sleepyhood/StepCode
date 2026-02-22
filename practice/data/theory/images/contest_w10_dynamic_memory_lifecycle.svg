@@ -1,0 +1,40 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320">
+  <defs>
+    <style>
+      .t{font-family:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;fill:#1f2937}
+      .b{font-size:16px;font-weight:600}
+      .s{font-size:14px}
+      .box{fill:#f8fafc;stroke:#cbd5e1;stroke-width:2}
+      .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2}
+      .warn{fill:#fef2f2;stroke:#dc2626;stroke-width:2}
+      .line{stroke:#475569;stroke-width:2;marker-end:url(#m)}
+    </style>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker>
+  </defs>
+  <rect x="20" y="24" width="170" height="80" rx="10" class="box"/>
+  <text x="48" y="56" class="t b">malloc</text>
+  <text x="36" y="82" class="t s">할당만 수행</text>
+
+  <rect x="220" y="24" width="170" height="80" rx="10" class="accent"/>
+  <text x="250" y="56" class="t b">calloc</text>
+  <text x="236" y="82" class="t s">할당 + 0 초기화</text>
+
+  <rect x="420" y="24" width="170" height="80" rx="10" class="box"/>
+  <text x="448" y="56" class="t b">realloc</text>
+  <text x="436" y="82" class="t s">크기 재조정</text>
+
+  <rect x="620" y="24" width="170" height="80" rx="10" class="box"/>
+  <text x="664" y="56" class="t b">free</text>
+  <text x="638" y="82" class="t s">메모리 해제</text>
+
+  <line x1="190" y1="64" x2="218" y2="64" class="line"/>
+  <line x1="390" y1="64" x2="418" y2="64" class="line"/>
+  <line x1="590" y1="64" x2="618" y2="64" class="line"/>
+
+  <rect x="20" y="132" width="940" height="164" rx="12" class="warn"/>
+  <text x="38" y="164" class="t b">판별 체크</text>
+  <text x="38" y="190" class="t s">- 할당 함수 고를 때 free를 포함하면 오답이다.</text>
+  <text x="38" y="216" class="t s">- 0 초기화 조건이 있으면 calloc을 우선 확인한다.</text>
+  <text x="38" y="242" class="t s">- realloc 이후 포인터 기준으로 유효 범위를 다시 계산한다.</text>
+  <text x="38" y="268" class="t s">루틴: 요구 기능(할당/초기화/재조정/해제) 키워드를 함수와 1:1 대응시킨다.</text>
+</svg>

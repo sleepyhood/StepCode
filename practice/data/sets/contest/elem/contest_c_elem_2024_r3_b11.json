@@ -1,0 +1,138 @@
+﻿{
+    "id":  "contest_c_elem_2024_r3_b11",
+    "title":  "C 경시대회(초등) 11회차",
+    "categoryId":  "contest_c_w11_matrix_grid_search",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int a[3][3] = {{1, 2, 0}, {1, 0, 2}, {0, 1, 2}};\n    int b[3][3] = {{1, -1, 2}, {0, 1, 1}, {2, 0, 1}};\n    for(int i=0 ; i\u003c3 ; i++) {\n        for(int j=0 ; j\u003c3 ; j++) {\n            int c = 0;\n            for(int k=0 ; k\u003c3 ; k++) {\n                c += a[i][k] * b[k][j];\n            }\n            printf(\"%d \", c);\n        }\n    }\n    return 0;\n}",
+                         "conceptRef":  "w11_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "-1",
+                                         "1",
+                                         "3",
+                                         "5",
+                                         "6"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRefs":  [
+                                             "w11_c1"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과를 작성하시오.\n\n\u003c입력\u003e\n```text\n5 4\n1 0 1 0 0\n1 0 0 0 0\n1 0 1 0 1\n1 0 0 1 0\n```",
+                         "code":  "#include \u003cstdio.h\u003e\nint mapp[10][10], w, h;\nint ans;\nvoid f(int x, int y) {\n    if(x \u003c 1 || x \u003e w || y \u003c 1 || y \u003e h) return;\n    if(!mapp[x][y]) return;\n    mapp[x][y] = 0;\n    for(int i=-1 ; i\u003c=1 ; i++) {\n        for(int j=-1 ; j\u003c=1 ; j++) {\n            f(x+i, y+j);\n        }\n    }\n}\nint main()\n{\n    scanf(\"%d %d\", \u0026h, \u0026w);\n    for(int i=1 ; i\u003c=w ; i++) {\n        for(int j=1 ; j\u003c=h ; j++) {\n            scanf(\"%d\", \u0026mapp[i][j]);\n        }\n    }\n    for(int i=1 ; i\u003c=w ; i++) {\n        for(int j=1 ; j\u003c=h ; j++) {\n            if(mapp[i][j]) {\n                ans++;\n                f(i, j);\n            }\n        }\n    }\n    printf(\"%d\", ans);\n}",
+                         "conceptRef":  "w11_c1",
+                         "type":  "short",
+                         "expectedText":  "3",
+                         "conceptRefs":  [
+                                             "w11_c1",
+                                             "w11_c2",
+                                             "w11_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\n\nchar a[5][5] = {\"0010\", \"1111\", \"1100\", \"0111\"};\nint b;\n\nvoid f(int p, int q, int r) {\n    if(p \u003c 0 || q \u003c 0 || p \u003e= 4 || q \u003e= 4) return;\n    if(a[p][q] == \u00270\u0027) return;\n    b += r;\n\n    a[p][q] = \u00270\u0027;\n    f(p-1, q, r+1);\n    f(p+1, q, r+1);\n    f(p, q-1, r+1);\n    f(p, q+1, r+1);\n}\n\nint main()\n{\n    for(int i=0 ; i\u003c4 ; i++) {\n        for(int j=0 ; j\u003c4 ; j++) {\n            if(a[i][j] == \u00271\u0027) {\n                f(i, j, 1);\n            }\n        }\n    }\n    printf(\"%d\\n\", b);\n    return 0;\n}",
+                         "conceptRef":  "w11_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "8",
+                                         "14",
+                                         "36",
+                                         "42",
+                                         "68"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRefs":  [
+                                             "w11_c1",
+                                             "w11_c2",
+                                             "w11_c3"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과를 작성하시오.\n\n\u003c입력\u003e\n```text\n7 6\n123151\n315348\n999181\n994321\n386357\n617410\n320987\n```",
+                         "code":  "#include \u003cstdio.h\u003e\n\n#define M(A, B) (A \u003e B ? B : A)\n#define N(A, B) (A ^ B == 0)\n#define P(A, B) (A \u003e B ? A : B)\n\nint n, m;\nint mapp[8][8];\n\nint main(void) {\n    int f = 1;\n    scanf(\"%d %d\", \u0026n, \u0026m);\n    \n    for(int i=0 ; i\u003cn ; i++) {\n        for(int j=0 ; j\u003cm ; j++) {\n            scanf(\"%1d\", \u0026mapp[i][j]);\n        }\n    }\n\n    for(int k = M(n, m) ; k \u003e= 2 ; k--) {\n        for(int i=0 ; i\u003c=n-k ; i++) {\n            for(int j=0 ; j\u003c=m-k ; j++) {\n                if(N(N(mapp[i][j], mapp[i+k-1][j]),\n                    N(mapp[i][j+k-1], mapp[i+k-1][j+k-1]))) {\n                    f = P(f, k * k);\n                }\n            }\n        }\n    }\n\n    printf(\"%d\\n\", f);\n    return 0;\n}",
+                         "conceptRef":  "w11_c1",
+                         "type":  "short",
+                         "expectedText":  "36",
+                         "conceptRefs":  [
+                                             "w11_c1"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int a[3][3] = {{1, 2, 0}, {1, 0, 2}, {0, 1, 2}};\n    int b[3][3] = {{1, -1, 2}, {0, 1, 1}, {2, 0, 1}};\n    for(int i=0 ; i\u003c3 ; i++) {\n        for(int j=0 ; j\u003c3 ; j++) {\n            int c = 0;\n            for(int k=0 ; k\u003c3 ; k++) {\n                c += a[i][k] * b[k][j];\n            }\n            printf(\"%d \", c);\n        }\n    }\n    return 0;\n}",
+                         "conceptRef":  "w11_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "-1",
+                                         "1",
+                                         "3",
+                                         "5",
+                                         "6"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRefs":  [
+                                             "w11_c1"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w11_c1",
+                         "title":  "개념 1) 행/열 인덱스와 경계",
+                         "summary":  "관련 이론: 행/열 인덱스와 경계"
+                     },
+                     {
+                         "id":  "w11_c2",
+                         "title":  "개념 2) 인접 방향 벡터",
+                         "summary":  "관련 이론: 인접 방향 벡터"
+                     },
+                     {
+                         "id":  "w11_c3",
+                         "title":  "개념 3) 방문 체크와 중복 탐색 방지",
+                         "summary":  "관련 이론: 방문 체크와 중복 탐색 방지"
+                     }
+                 ]
+}

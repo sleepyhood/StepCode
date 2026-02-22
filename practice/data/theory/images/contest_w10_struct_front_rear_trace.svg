@@ -1,0 +1,40 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360">
+  <defs>
+    <style>
+      .t{font-family:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;fill:#1f2937}
+      .b{font-size:16px;font-weight:600}
+      .s{font-size:14px}
+      .box{fill:#f8fafc;stroke:#cbd5e1;stroke-width:2}
+      .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2}
+      .warn{fill:#fef2f2;stroke:#dc2626;stroke-width:2}
+      .line{stroke:#475569;stroke-width:2;marker-end:url(#m)}
+    </style>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker>
+  </defs>
+  <rect x="20" y="24" width="220" height="90" rx="12" class="box"/>
+  <text x="38" y="56" class="t b">초기 상태</text>
+  <text x="38" y="82" class="t s">front = rear = 시작 인덱스</text>
+
+  <rect x="280" y="24" width="220" height="90" rx="12" class="accent"/>
+  <text x="298" y="56" class="t b">왼쪽 삽입</text>
+  <text x="298" y="82" class="t s">q[--front] = 값</text>
+
+  <rect x="540" y="24" width="220" height="90" rx="12" class="accent"/>
+  <text x="558" y="56" class="t b">오른쪽 삽입</text>
+  <text x="558" y="82" class="t s">q[++rear] = 값</text>
+
+  <rect x="800" y="24" width="160" height="90" rx="12" class="box"/>
+  <text x="818" y="56" class="t b">출력 구간</text>
+  <text x="818" y="82" class="t s">[front..rear]</text>
+
+  <line x1="242" y1="69" x2="278" y2="69" class="line"/>
+  <line x1="502" y1="69" x2="538" y2="69" class="line"/>
+  <line x1="762" y1="69" x2="798" y2="69" class="line"/>
+
+  <rect x="20" y="150" width="940" height="180" rx="12" class="warn"/>
+  <text x="38" y="182" class="t b">오답 패턴</text>
+  <text x="38" y="208" class="t s">- --front와 front--를 바꿔 읽으면 저장 위치가 달라진다.</text>
+  <text x="38" y="234" class="t s">- front/rear 갱신 후에 출력 구간을 계산해야 한다.</text>
+  <text x="38" y="260" class="t s">- 분기 조건(v &lt;= q[front]) 판정을 이전 상태 값으로 혼동하면 문자열이 바뀐다.</text>
+  <text x="38" y="296" class="t s">루틴: 입력마다 front/rear 변화를 표로 기록하고 마지막에 [front..rear]를 출력한다.</text>
+</svg>

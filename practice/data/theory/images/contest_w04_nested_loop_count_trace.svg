@@ -1,0 +1,49 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
+  <title id="title">중첩 반복 실행 횟수 추적</title>
+  <desc id="desc">중첩 루프에서 가지치기와 플래그에 따라 실제 실행 횟수가 줄어드는 과정을 추적표 형태로 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 12; }
+    .accent { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; rx: 12; }
+    .ok { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 12; }
+    .warn { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 12; }
+    .t2 { font-size: 16px; font-weight: 700; }
+    .t3 { font-size: 14px; }
+    .line { stroke: #334155; stroke-width: 2; marker-end: url(#a); }
+  </style>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#334155"/></marker></defs>
+
+  <rect x="24" y="24" width="220" height="84" class="accent"/>
+  <text x="134" y="54" text-anchor="middle" class="t2">기본 횟수</text>
+  <text x="134" y="78" text-anchor="middle" class="t3">outer * inner * inner2</text>
+
+  <rect x="280" y="24" width="220" height="84" class="box"/>
+  <text x="390" y="54" text-anchor="middle" class="t2">가지치기</text>
+  <text x="390" y="78" text-anchor="middle" class="t3">continue로 일부 회차 제외</text>
+
+  <rect x="536" y="24" width="220" height="84" class="warn"/>
+  <text x="646" y="54" text-anchor="middle" class="t2">조기 종료</text>
+  <text x="646" y="78" text-anchor="middle" class="t3">break/flag로 남은 회차 차단</text>
+
+  <rect x="792" y="24" width="164" height="84" class="ok"/>
+  <text x="874" y="54" text-anchor="middle" class="t2">최종 출력</text>
+  <text x="874" y="78" text-anchor="middle" class="t3">실행 경로 기준</text>
+
+  <line x1="244" y1="66" x2="280" y2="66" class="line"/>
+  <line x1="500" y1="66" x2="536" y2="66" class="line"/>
+  <line x1="756" y1="66" x2="792" y2="66" class="line"/>
+
+  <rect x="24" y="132" width="620" height="196" class="box"/>
+  <text x="44" y="160" class="t2">추적표 권장 열</text>
+  <text x="44" y="186" class="t3">- (i, j, k) 현재 인덱스</text>
+  <text x="44" y="208" class="t3">- continue/break 발생 여부</text>
+  <text x="44" y="230" class="t3">- flag 값 변화 시점</text>
+  <text x="44" y="252" class="t3">- 누적 변수(cnt/ans) 변화</text>
+  <text x="44" y="274" class="t3">- 루프 탈출 후 다음 실행 위치</text>
+
+  <rect x="668" y="132" width="288" height="196" class="warn"/>
+  <text x="688" y="160" class="t2">오답 패턴</text>
+  <text x="688" y="186" class="t3">- break가 전체 루프 종료라고 착각</text>
+  <text x="688" y="208" class="t3">- flag 검사 위치를 빼먹음</text>
+  <text x="688" y="230" class="t3">- 실행 회차와 누적 회차를 혼동</text>
+</svg>

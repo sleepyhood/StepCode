@@ -1,0 +1,35 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
+  <title id="title">문자열 순회와 연속 치환</title>
+  <desc id="desc">문자열을 i 인덱스로 순회하며 조건에 맞는 문자만 결과 배열 j 인덱스에 기록하는 흐름을 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box{fill:#f8fafc;stroke:#334155;stroke-width:2;rx:10}
+    .accent{fill:#e0f2fe;stroke:#0284c7;stroke-width:2;rx:10}
+    .ok{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:10}
+    .warn{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:10}
+    .t2{font-size:16px;font-weight:700}.t3{font-size:14px}
+  </style>
+
+  <rect x="24" y="24" width="932" height="74" class="accent"/>
+  <text x="44" y="52" class="t2">순회 프레임: for (i=0, j=0; s[i] != '\0'; i++)</text>
+  <text x="44" y="76" class="t3">조건 통과 시만 t[j++] = s[i]; 반복 종료 후 t[j] = '\0';</text>
+
+  <rect x="24" y="114" width="300" height="214" class="box"/>
+  <text x="44" y="142" class="t2">중복 압축 조건</text>
+  <text x="44" y="168" class="t3">if (s[i] != s[i+1]) 기록</text>
+  <text x="44" y="190" class="t3">같은 문자 연속 구간의 마지막만 남김</text>
+  <text x="44" y="212" class="t3">입력: aaabbccccdeffff</text>
+  <text x="44" y="234" class="t3">출력: abcdef</text>
+
+  <rect x="352" y="114" width="300" height="214" class="ok"/>
+  <text x="372" y="142" class="t2">인덱스 분리</text>
+  <text x="372" y="168" class="t3">i: 원본 문자열 위치</text>
+  <text x="372" y="190" class="t3">j: 결과 문자열 저장 위치</text>
+  <text x="372" y="212" class="t3">i는 항상 증가, j는 조건 통과 시만 증가</text>
+
+  <rect x="680" y="114" width="276" height="214" class="warn"/>
+  <text x="700" y="142" class="t2">오답 패턴</text>
+  <text x="700" y="168" class="t3">- 종료 문자 '\0' 기록 누락</text>
+  <text x="700" y="190" class="t3">- i/j 역할을 섞어서 덮어쓰기 발생</text>
+  <text x="700" y="212" class="t3">- 문자열 함수 역할(strcmp/strcat) 혼동</text>
+</svg>

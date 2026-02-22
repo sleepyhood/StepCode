@@ -1,0 +1,53 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+  <title id="title">for while 종료 조건 추적 흐름</title>
+  <desc id="desc">반복문의 초기값, 조건, 증감을 기준으로 실제 반복 횟수와 누적값을 계산하는 절차를 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 12; }
+    .accent { fill: #e0f2fe; stroke: #0284c7; stroke-width: 2; rx: 12; }
+    .ok { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 12; }
+    .warn { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 12; }
+    .t2 { font-size: 16px; font-weight: 700; }
+    .t3 { font-size: 14px; }
+    .line { stroke: #334155; stroke-width: 2; marker-end: url(#a); }
+  </style>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#334155"/></marker></defs>
+
+  <rect x="24" y="28" width="180" height="76" class="accent"/>
+  <text x="114" y="58" text-anchor="middle" class="t2">초기값</text>
+  <text x="114" y="80" text-anchor="middle" class="t3">init / 변수 기록</text>
+
+  <rect x="236" y="28" width="180" height="76" class="box"/>
+  <text x="326" y="58" text-anchor="middle" class="t2">조건 검사</text>
+  <text x="326" y="80" text-anchor="middle" class="t3">참이면 본문 진입</text>
+
+  <rect x="448" y="28" width="180" height="76" class="ok"/>
+  <text x="538" y="58" text-anchor="middle" class="t2">본문 실행</text>
+  <text x="538" y="80" text-anchor="middle" class="t3">누적/갱신 적용</text>
+
+  <rect x="660" y="28" width="180" height="76" class="box"/>
+  <text x="750" y="58" text-anchor="middle" class="t2">증감/재검사</text>
+  <text x="750" y="80" text-anchor="middle" class="t3">step 후 조건으로 복귀</text>
+
+  <rect x="852" y="28" width="104" height="76" class="warn"/>
+  <text x="904" y="58" text-anchor="middle" class="t2">종료</text>
+  <text x="904" y="80" text-anchor="middle" class="t3">조건 거짓</text>
+
+  <line x1="204" y1="66" x2="236" y2="66" class="line"/>
+  <line x1="416" y1="66" x2="448" y2="66" class="line"/>
+  <line x1="628" y1="66" x2="660" y2="66" class="line"/>
+  <line x1="840" y1="66" x2="852" y2="66" class="line"/>
+
+  <rect x="24" y="132" width="450" height="152" class="box"/>
+  <text x="44" y="160" class="t2">검산 체크리스트</text>
+  <text x="44" y="186" class="t3">1) 방문값 목록을 직접 적는다.</text>
+  <text x="44" y="208" class="t3">2) &lt;= 와 &lt; 차이로 마지막 반복 포함 여부를 확인한다.</text>
+  <text x="44" y="230" class="t3">3) while은 진입 전 조건을 먼저 검사한다.</text>
+  <text x="44" y="252" class="t3">4) 누적값과 반복횟수를 분리해 기록한다.</text>
+
+  <rect x="506" y="132" width="450" height="152" class="warn"/>
+  <text x="526" y="160" class="t2">오답 패턴</text>
+  <text x="526" y="186" class="t3">- 종료 직전 반복을 빠뜨린다.</text>
+  <text x="526" y="208" class="t3">- 증감식 적용 시점을 본문 전으로 착각한다.</text>
+  <text x="526" y="230" class="t3">- 누적 변수와 제어 변수를 섞어 기록한다.</text>
+</svg>

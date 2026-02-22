@@ -1,0 +1,40 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320">
+  <defs>
+    <style>
+      .t{font-family:"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif;fill:#1f2937}
+      .b{font-size:16px;font-weight:600}
+      .s{font-size:14px}
+      .box{fill:#f8fafc;stroke:#cbd5e1;stroke-width:2}
+      .accent{fill:#eff6ff;stroke:#2563eb;stroke-width:2}
+      .warn{fill:#fef2f2;stroke:#dc2626;stroke-width:2}
+      .arrow{stroke:#475569;stroke-width:2;marker-end:url(#m)}
+    </style>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="20" y="26" width="290" height="92" rx="12" class="box"/>
+  <text x="38" y="58" class="t b">1회차 변환식 유도</text>
+  <text x="38" y="84" class="t s">a = f(a,-i) 후 a = f(a,i)를</text>
+  <text x="38" y="104" class="t s">한 회차 식으로 합쳐서 정리한다.</text>
+
+  <rect x="345" y="26" width="290" height="92" rx="12" class="accent"/>
+  <text x="363" y="58" class="t b">반복 적용</text>
+  <text x="363" y="84" class="t s">회차별 변화량(부호/상수)을</text>
+  <text x="363" y="104" class="t s">표로 누적해 계산한다.</text>
+
+  <rect x="670" y="26" width="290" height="92" rx="12" class="box"/>
+  <text x="688" y="58" class="t b">교차 검산</text>
+  <text x="688" y="84" class="t s">원식으로 1~2회차 직접 대입해</text>
+  <text x="688" y="104" class="t s">누적식과 일치 여부를 확인한다.</text>
+
+  <line x1="312" y1="72" x2="343" y2="72" class="arrow"/>
+  <line x1="637" y1="72" x2="668" y2="72" class="arrow"/>
+
+  <rect x="20" y="148" width="940" height="146" rx="12" class="warn"/>
+  <text x="38" y="180" class="t b">함정 포인트</text>
+  <text x="38" y="206" class="t s">- f를 두 번 호출하는 회차를 한 번 호출처럼 계산하면 누적식이 틀린다.</text>
+  <text x="38" y="232" class="t s">- 중간 갱신된 a를 다음 호출에서 다시 쓰는 순서를 놓치면 부호가 뒤집힌다.</text>
+  <text x="38" y="258" class="t s">- 큰 반복 횟수는 합성식으로 계산하고, 소수 회차 직접 대입으로 교차 검산한다.</text>
+</svg>

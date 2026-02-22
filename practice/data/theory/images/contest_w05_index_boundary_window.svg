@@ -1,0 +1,35 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+  <title id="title">배열 인덱스 경계와 안전 구간</title>
+  <desc id="desc">a[i-1], a[i], a[i+1] 접근에서 반복 인덱스의 안전 범위를 시각적으로 보여준다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box { fill: #f8fafc; stroke: #334155; stroke-width: 2; rx: 10; }
+    .ok { fill: #ecfdf5; stroke: #059669; stroke-width: 2; rx: 10; }
+    .warn { fill: #fee2e2; stroke: #dc2626; stroke-width: 2; rx: 10; }
+    .t2 { font-size: 16px; font-weight: 700; }
+    .t3 { font-size: 14px; }
+  </style>
+
+  <rect x="24" y="24" width="932" height="70" class="box"/>
+  <text x="44" y="52" class="t2">배열 크기 n, 유효 인덱스: 0 ~ n-1</text>
+  <text x="44" y="76" class="t3">접근식 a[i-1], a[i], a[i+1]를 동시에 쓰면 i의 안전 구간은 1 ~ n-2</text>
+
+  <rect x="24" y="112" width="300" height="176" class="warn"/>
+  <text x="44" y="140" class="t2">위험 구간</text>
+  <text x="44" y="166" class="t3">i = 0 이면 a[i-1] -> a[-1]</text>
+  <text x="44" y="188" class="t3">i = n-1 이면 a[i+1] -> a[n]</text>
+  <text x="44" y="210" class="t3">경계 밖 접근으로 조건식 자체가 깨진다.</text>
+
+  <rect x="352" y="112" width="300" height="176" class="ok"/>
+  <text x="372" y="140" class="t2">안전 구간</text>
+  <text x="372" y="166" class="t3">for (int i = 1; i &lt; n - 1; i++)</text>
+  <text x="372" y="188" class="t3">a[i-1], a[i], a[i+1] 모두 유효 범위</text>
+  <text x="372" y="210" class="t3">정점/이웃 비교형 문항의 기본 틀</text>
+
+  <rect x="680" y="112" width="276" height="176" class="box"/>
+  <text x="700" y="140" class="t2">검산 루틴</text>
+  <text x="700" y="166" class="t3">1) 접근식에서 최소/최대 인덱스 계산</text>
+  <text x="700" y="188" class="t3">2) 반복 시작/종료 인덱스와 대조</text>
+  <text x="700" y="210" class="t3">3) 첫 회차/마지막 회차를 직접 대입 확인</text>
+</svg>
+

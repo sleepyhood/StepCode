@@ -1,0 +1,34 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+  <title id="title">널 문자와 strlen 길이 계산</title>
+  <desc id="desc">문자열에서 첫 널 문자 이전까지만 길이에 포함되는 규칙과 이스케이프 문자의 길이 반영을 비교한다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box{fill:#f8fafc;stroke:#334155;stroke-width:2;rx:10}
+    .accent{fill:#e0f2fe;stroke:#0284c7;stroke-width:2;rx:10}
+    .ok{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:10}
+    .warn{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:10}
+    .t2{font-size:16px;font-weight:700}.t3{font-size:14px}
+  </style>
+
+  <rect x="24" y="24" width="932" height="70" class="accent"/>
+  <text x="44" y="52" class="t2">핵심 규칙: strlen은 첫 '\0' 직전 문자 개수만 센다</text>
+  <text x="44" y="76" class="t3">\n 은 문자 1개로 길이에 포함되지만, \0 이후 문자는 길이에 포함되지 않는다.</text>
+
+  <rect x="24" y="112" width="300" height="176" class="ok"/>
+  <text x="44" y="140" class="t2">예시 A: "ABC\0XYZ"</text>
+  <text x="44" y="166" class="t3">문자열 메모리: A B C \0 X Y Z</text>
+  <text x="44" y="188" class="t3">strlen 계산 종료 지점: 첫 \0</text>
+  <text x="44" y="210" class="t3">길이 판단: 3</text>
+
+  <rect x="352" y="112" width="300" height="176" class="box"/>
+  <text x="372" y="140" class="t2">예시 B: "ABC\n"</text>
+  <text x="372" y="166" class="t3">문자열 메모리: A B C \n \0</text>
+  <text x="372" y="188" class="t3">\n 은 문자 1개</text>
+  <text x="372" y="210" class="t3">길이 판단: 4</text>
+
+  <rect x="680" y="112" width="276" height="176" class="warn"/>
+  <text x="700" y="140" class="t2">오답 패턴</text>
+  <text x="700" y="166" class="t3">- \0 뒤 문자열도 길이에 포함한다고 착각</text>
+  <text x="700" y="188" class="t3">- \n 을 길이 0으로 오해</text>
+  <text x="700" y="210" class="t3">- 출력 모양과 메모리 길이를 혼동</text>
+</svg>

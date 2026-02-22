@@ -1,0 +1,28 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="980" height="320" viewBox="0 0 980 320" role="img" aria-labelledby="title desc">
+  <title id="title">매크로 괄호 유무 비교</title>
+  <desc id="desc">괄호 없는 매크로와 괄호를 보강한 매크로의 계산 결과 차이를 비교한다.</desc>
+  <style>
+    text { font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2937; }
+    .box{fill:#f8fafc;stroke:#334155;stroke-width:2;rx:10}
+    .ok{fill:#ecfdf5;stroke:#059669;stroke-width:2;rx:10}
+    .warn{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:10}
+    .accent{fill:#e0f2fe;stroke:#0284c7;stroke-width:2;rx:10}
+    .t2{font-size:16px;font-weight:700}.t3{font-size:14px}
+  </style>
+
+  <rect x="24" y="24" width="932" height="70" class="accent"/>
+  <text x="44" y="52" class="t2">안전 매크로 관례: 본문과 인자를 괄호로 감싼다</text>
+  <text x="44" y="76" class="t3">예: #define G(x) ((x)+1), #define SQ(x) ((x)*(x))</text>
+
+  <rect x="24" y="112" width="452" height="176" class="warn"/>
+  <text x="44" y="140" class="t2">괄호 없음</text>
+  <text x="44" y="166" class="t3">#define f(x) x+1</text>
+  <text x="44" y="188" class="t3">f(a)*f(a) -> a+1*a+1</text>
+  <text x="44" y="210" class="t3">a=5면 5+5+1 = 11</text>
+
+  <rect x="504" y="112" width="452" height="176" class="ok"/>
+  <text x="524" y="140" class="t2">괄호 보강</text>
+  <text x="524" y="166" class="t3">#define g(x) ((x)+1)</text>
+  <text x="524" y="188" class="t3">g(a)*g(a) -> ((a)+1)*((a)+1)</text>
+  <text x="524" y="210" class="t3">a=5면 6*6 = 36</text>
+</svg>

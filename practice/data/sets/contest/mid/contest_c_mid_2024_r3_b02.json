@@ -1,0 +1,164 @@
+﻿{
+    "id":  "contest_c_mid_2024_r3_b02",
+    "title":  "C 경시대회(중등) 2회차",
+    "categoryId":  "contest_c_w02_io_format_radix",
+    "availableLanguages":  [
+                               "c"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "level":  "초,중,고",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int a = 0x32;\n    int b = 030;\n    printf(\"%d\", a+b);\n    return 0;\n}",
+                         "conceptRef":  "w02_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "44",
+                                         "56",
+                                         "62",
+                                         "74",
+                                         "80"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRefs":  [
+                                             "w02_c1",
+                                             "w02_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q2",
+                         "level":  "초,중,고",
+                         "title":  "문제 2",
+                         "description":  "다음 중 `3.14` 출력 서식으로 적절하지 않은 것을 고르시오.",
+                         "conceptRef":  "w02_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "printf(\"%lf\", 3.14);",
+                                         "printf(\"%7.6lf\", 3.14);",
+                                         "printf(\"%-8.6lf\", 3.14);",
+                                         "printf(\"%6.4lf00\", 3.14);",
+                                         "printf(\"%-10.3lf000\", 3.14);"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRefs":  [
+                                             "w02_c1",
+                                             "w02_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q3",
+                         "level":  "초,중,고",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int a = 0x32;\n    int b = 030;\n    printf(\"%d\", a+b);\n    return 0;\n}",
+                         "conceptRef":  "w02_c2",
+                         "type":  "mcq",
+                         "options":  [
+                                         "44",
+                                         "56",
+                                         "62",
+                                         "74",
+                                         "80"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRefs":  [
+                                             "w02_c1",
+                                             "w02_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q4",
+                         "level":  "초,중,고",
+                         "title":  "문제 4",
+                         "description":  "다음 중 `3.14` 출력 서식으로 적절하지 않은 것을 고르시오.",
+                         "conceptRef":  "w02_c1",
+                         "type":  "mcq",
+                         "options":  [
+                                         "printf(\"%lf\", 3.14);",
+                                         "printf(\"%7.6lf\", 3.14);",
+                                         "printf(\"%-8.6lf\", 3.14);",
+                                         "printf(\"%6.4lf00\", 3.14);",
+                                         "printf(\"%-10.3lf000\", 3.14);"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRefs":  [
+                                             "w02_c1",
+                                             "w02_c2"
+                                         ]
+                     },
+                     {
+                         "id":  "q5",
+                         "level":  "초,중,고",
+                         "title":  "문제 5",
+                         "description":  "다음 코드와 입력이 주어질 때 출력값으로 올바른 것을 고르시오.",
+                         "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int n;\n    char ch;\n    scanf(\"%d\", \u0026n);\n    scanf(\"%c\", \u0026ch);\n    printf(\"%d\", ch);\n    return 0;\n}",
+                         "conceptRef":  "w02_c3",
+                         "type":  "mcq",
+                         "options":  [
+                                         "55",
+                                         "65",
+                                         "10",
+                                         "32",
+                                         "입력 오류"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRefs":  [
+                                             "w02_c3"
+                                         ]
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w02_c1",
+                         "title":  "개념 1) `printf` 폭(width)과 정렬",
+                         "summary":  "관련 이론: `printf` 폭(width)과 정렬"
+                     },
+                     {
+                         "id":  "w02_c2",
+                         "title":  "개념 2) 진법 표기(`0`, `0x`)",
+                         "summary":  "관련 이론: 진법 표기(`0`, `0x`)"
+                     },
+                     {
+                         "id":  "w02_c3",
+                         "title":  "개념 3) `scanf` 공백/개행 처리",
+                         "summary":  "관련 이론: 개념 3) `scanf` 공백/개행 처리"
+                     }
+                 ]
+}

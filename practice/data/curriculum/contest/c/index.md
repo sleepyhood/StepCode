@@ -1,4 +1,4 @@
-# C언어 경시대회 커리큘럼 (2023-1, 2024-2, 2024-3 기반)
+﻿# C언어 경시대회 커리큘럼 (2023-1, 2024-2, 2024-3 기반)
 
 ## 장별 목차
 1. C 언어 개요와 표준 라이브러리/헤더
@@ -35,4 +35,5 @@
 - 초등 기본 세트: `contest_c_elem_2024_r3_b01`
 - 중등 기본 세트: `contest_c_mid_2024_r3_b01`
 - 고등 기본 세트: `contest_c_high_2024_r3_b01`
-- 공통 이론: `./data/theory/contest/common/theory_contest_c_u01_flow_and_recursion.md`
+- 주차 이론(웹 노출): `./data/theory/contest/weeks/theory_contest_c_w01_diagnostic_headers_types.md` ~ `./data/theory/contest/weeks/theory_contest_c_w12_final_mock_transfer.md`
+
