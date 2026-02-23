@@ -1,51 +1,87 @@
-﻿{
-    "id":  "unity_u02_log_operator_c01",
-    "title":  "Unity U02 로그/연산자 챌린지 1회차",
-    "categoryId":  "unity_u02_log_operator",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "응용",
-                         "title":  "조건식 수정",
-                         "description":  "\"x가 10이거나 y가 20\" 조건식으로 올바른 것을 고르세요.",
-                         "options":  [
-                                         "if (x = 10 || y = 20)",
-                                         "if (x == 10 || y == 20)",
-                                         "if (x == 10 | y == 20)",
-                                         "if (x = = 10 || y = = 20)"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  1
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "응용",
-                         "title":  "나머지 계산",
-                         "description":  "17 % 5 결과를 쓰세요.",
-                         "expectedAnyOf":  [
-                                               "2"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "응용",
-                         "title":  "문자열 결합 로그",
-                         "description":  "\"Score: \" + score 를 출력하는 한 줄을 쓰세요.",
-                         "expectedAnyOf":  [
-                                               "Debug.Log(\"Score: \" + score);"
-                                           ],
-                         "expectedCode":  "Debug.Log(\"Score: \" + score);"
-                     }
-                 ]
+{
+    "id": "unity_u02_log_operator_c01",
+    "title": "Unity U02 로그/연산자 챌린지 1회차",
+    "categoryId": "unity_u02_log_operator",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p05",
+            "type": "short",
+            "level": "challenge",
+            "title": "명명 규칙 판별 1",
+            "description": "왼쪽 문장의 참/거짓을 오른쪽 답안 칸에 채우세요.",
+            "answerUi": {
+                "kind": "grid",
+                "rows": [
+                    "(1) `MonoBehaviour`는 대소문자를 정확히 맞춰야 한다.",
+                    "(2) 이벤트 함수명은 `ontriggerenter`처럼 소문자로 시작해도 정상 호출된다."
+                ],
+                "columns": [
+                    "답안(참/거짓)"
+                ],
+                "narrowAnswerColumn": true,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                [
+                    "참"
+                ],
+                [
+                    "거짓"
+                ]
+            ]
+        },
+        {
+            "id": "p06",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "명명 규칙 판별 2",
+            "description": "올바른 Unity API/키워드 조합을 고르세요.",
+            "options": [
+                "`compareTag`, `Enabled`, `Public`",
+                "`CompareTag`, `enabled`, `public`",
+                "`Comparetag`, `enabled`, `Public`",
+                "`comparetag`, `Enabled`, `public`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 1
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - 로그 + 판별 결과 출력",
+            "description": "`n`이 홀수인지 판별해 `isOdd=`와 함께 콘솔 출력하는 두 줄 코드를 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "예: `bool isOdd = (n % 2) != 0;` / `Debug.Log(\"isOdd=\" + isOdd);`"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - 대소문자 오류 찾기",
+            "description": "아래 중 컴파일 또는 호출 실패를 유발하는 코드를 고르세요.",
+            "options": [
+                "`other.CompareTag(\"Player\")`",
+                "`void OnTriggerEnter(Collider other)`",
+                "`void onTriggerEnter(Collider other)`",
+                "`Debug.Log(\"ok\")`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
+        }
+    ]
 }

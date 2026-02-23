@@ -569,6 +569,35 @@
             "unity_u10_material_color_c01"
         ],
         "prerequisites": [],
+        "nextConcepts": [
+            "unity_u11_ecs"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u11_ecs",
+        "title": "Unity U11 ECS",
+        "categoryId": "unity_u11_ecs",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u11_ecs.md",
+        "recommendedSetId": "unity_u11_ecs_b01",
+        "relatedSetIds": [
+            "unity_u11_ecs_b01",
+            "unity_u11_ecs_c01"
+        ],
+        "sourceProblemIds": [
+            5,
+            34
+        ],
+        "sourceSectionMap": {
+            "ecsConceptCheck": [
+                5,
+                34
+            ]
+        },
+        "prerequisites": [
+            "unity_u10_material_color"
+        ],
         "nextConcepts": [],
         "priority": 3
     },

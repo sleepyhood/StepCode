@@ -1,52 +1,59 @@
-﻿{
-    "id":  "unity_u03_function_syntax_c01",
-    "title":  "Unity U03 함수/static 챌린지 1회차",
-    "categoryId":  "unity_u03_function_syntax",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "응용",
-                         "title":  "static 호출 판단",
-                         "description":  "인스턴스 생성 없이 호출 가능한 멤버는 무엇인가요?",
-                         "options":  [
-                                         "인스턴스 필드",
-                                         "인스턴스 메서드",
-                                         "static 메서드",
-                                         "생성자만"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  2
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "응용",
-                         "title":  "함수 선언 빈칸",
-                         "description":  "private ___ SetMessageToDisplay(string msg) { ... } 빈칸을 채우세요.",
-                         "expectedAnyOf":  [
-                                               "void"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "응용",
-                         "title":  "메시지 함수 선언",
-                         "description":  "stringToDisplay 문자열 1개를 받아 반환값이 없는 선언 한 줄을 쓰세요.",
-                         "expectedAnyOf":  [
-                                               "private void SetMessageToDisplay(string stringToDisplay)",
-                                               "void SetMessageToDisplay(string stringToDisplay)"
-                                           ],
-                         "expectedCode":  "private void SetMessageToDisplay(string stringToDisplay)"
-                     }
-                 ]
+{
+    "id": "unity_u03_function_syntax_c01",
+    "title": "Unity U03 함수/static 챌린지 1회차",
+    "categoryId": "unity_u03_function_syntax",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "static 문맥 오류 수정",
+            "description": "`ThisStat()`이 static 메서드일 때, `statFloat` 선언 빈칸에 들어갈 키워드를 고르세요.",
+            "options": [
+                "`static`",
+                "`const`",
+                "`readonly`",
+                "`private`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 0
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - 함수 시그니처 완성",
+            "description": "`private static int Multiply(int a, int b)` 형태로 메서드 선언 한 줄을 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "private static int Multiply(int a, int b)"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - `void`/`return` 오개념 판별",
+            "description": "다음 중 틀린 설명을 고르세요.",
+            "options": [
+                "`void` 메서드는 값을 반환하지 않는다.",
+                "`int` 반환형 메서드는 적절한 값을 `return`해야 한다.",
+                "static 메서드는 인스턴스 필드를 직접 접근할 수 있다.",
+                "매개변수는 서로 다른 타입을 함께 사용할 수 있다."
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
+        }
+    ]
 }

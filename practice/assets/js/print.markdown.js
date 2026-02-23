@@ -211,6 +211,9 @@ function buildGridAnswerTable(q, variant) {
 
   const wrap = el("div", "grid-answer-wrap");
   const table = el("table", "grid-answer-table");
+  if (ui.narrowAnswerColumn === true && cols.length === 1) {
+    table.classList.add("grid-narrow-answer");
+  }
   let hasSkippedCell = false;
 
   const thead = document.createElement("thead");

@@ -1,51 +1,53 @@
 ﻿{
-    "id":  "unity_u07_spawn_physics_b01",
-    "title":  "Unity U07 Spawn and Physics Basic R1",
-    "categoryId":  "unity_u07_spawn_physics",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U07 Spawn and Physics concept check",
-                         "description":  "Choose the best answer based on the unit concept.",
-                         "code":  "// TODO replace with real scenario",
-                         "options":  [
-                                         "correct (draft)",
-                                         "wrong A",
-                                         "wrong B",
-                                         "wrong C"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  0
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U07 Spawn and Physics keyword",
-                         "description":  "Write one required keyword.",
-                         "expectedAnyOf":  [
-                                               "TODO",
-                                               "todo"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U07 Spawn and Physics one-line code",
-                         "description":  "Write one line that uses the target API.",
-                         "code":  "// TODO",
-                         "expectedCode":  "TODO"
-                     }
-                 ]
+    "id": "unity_u07_spawn_physics_b01",
+    "title": "Unity U07 Spawn and Physics Basic R1",
+    "categoryId": "unity_u07_spawn_physics",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p01",
+            "type": "short",
+            "level": "basic",
+            "title": "코드 설명 주석 2개 선택",
+            "description": "주어진 코드에 맞는 주석 2개를 쓰세요.",
+            "expectedAnyOf": [
+                "C, D",
+                "C D",
+                "C와 D"
+            ]
+        },
+        {
+            "id": "p02",
+            "type": "mcq",
+            "level": "basic",
+            "title": "rb 변수 타입 선택",
+            "description": "`rb = GetComponent<Rigidbody>();`와 `rb.MovePosition(...)`에 맞는 선언 타입을 고르세요.",
+            "options": [
+                "`Vector3`",
+                "`Collider`",
+                "`RigidBody`",
+                "`CharacterController`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
+        },
+        {
+            "id": "p03",
+            "type": "short",
+            "level": "basic",
+            "title": "AddForce 빈칸 2개 선택",
+            "description": "`rigidBody.AddForce([①] * [②]);`에서 ①, ②를 쓰세요.",
+            "expectedAnyOf": [
+                "① transform.forward, ② speedForce",
+                "transform.forward, speedForce"
+            ]
+        }
+    ]
 }

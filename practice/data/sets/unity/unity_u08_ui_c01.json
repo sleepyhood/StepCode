@@ -1,52 +1,52 @@
 ﻿{
-    "id":  "unity_u08_ui_c01",
-    "title":  "Unity U08 UI Challenge R1",
-    "categoryId":  "unity_u08_ui",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U08 UI scenario decision",
-                         "description":  "Pick the correct action for the scenario.",
-                         "code":  "// TODO replace with real code",
-                         "options":  [
-                                         "correct (draft)",
-                                         "wrong A",
-                                         "wrong B",
-                                         "wrong C"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  0
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U08 UI output prediction",
-                         "description":  "Write the expected output/result in one line.",
-                         "code":  "// TODO",
-                         "expectedAnyOf":  [
-                                               "TODO",
-                                               "todo"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U08 UI fix TODO",
-                         "description":  "Fill the TODO with the correct code.",
-                         "code":  "// TODO",
-                         "expectedCode":  "TODO"
-                     }
-                 ]
+  "id": "unity_u08_ui_c01",
+  "title": "Unity U08 UI Challenge R1",
+  "categoryId": "unity_u08_ui",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "p04",
+      "type": "short",
+      "level": "challenge",
+      "title": "버튼 이벤트 등록 위치 T/F",
+      "description": "1~3번 문장의 참/거짓을 순서대로 쓰세요.",
+      "expectedAnyOf": [
+        "참, 거짓, 참",
+        "1 참 2 거짓 3 참",
+        "T, F, T",
+        "true false true"
+      ]
+    },
+    {
+      "id": "x01",
+      "type": "code",
+      "level": "challenge",
+      "title": "변형 - UI 버튼 리스너 1회 등록 코드",
+      "description": "`button2` 클릭 시 `LightBulbOn`이 실행되도록 중복 등록 없이 1회 등록 코드를 작성하세요.",
+      "code": "// TODO",
+      "expectedCode": "void Start()\n{\n    button2.onClick.AddListener(LightBulbOn);\n}"
+    },
+    {
+      "id": "x02",
+      "type": "mcq",
+      "level": "challenge",
+      "title": "함정 - AddListener 등록 위치 선택",
+      "description": "일반적인 단일 버튼 리스너 등록 위치로 가장 적절한 것을 고르세요.",
+      "options": [
+        "`Update()`",
+        "`Start()`",
+        "`OnTriggerEnter2D()`",
+        "`LateUpdate()`"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    }
+  ]
 }

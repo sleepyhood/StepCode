@@ -1,52 +1,59 @@
 ﻿{
-    "id":  "unity_u06_input_c01",
-    "title":  "Unity U06 Input Challenge R1",
-    "categoryId":  "unity_u06_input",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U06 Input scenario decision",
-                         "description":  "Pick the correct action for the scenario.",
-                         "code":  "// TODO replace with real code",
-                         "options":  [
-                                         "correct (draft)",
-                                         "wrong A",
-                                         "wrong B",
-                                         "wrong C"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  0
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U06 Input output prediction",
-                         "description":  "Write the expected output/result in one line.",
-                         "code":  "// TODO",
-                         "expectedAnyOf":  [
-                                               "TODO",
-                                               "todo"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U06 Input fix TODO",
-                         "description":  "Fill the TODO with the correct code.",
-                         "code":  "// TODO",
-                         "expectedCode":  "TODO"
-                     }
-                 ]
+    "id": "unity_u06_input_c01",
+    "title": "Unity U06 Input Challenge R1",
+    "categoryId": "unity_u06_input",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "이동 메서드 선택",
+            "description": "`transform.[드롭다운](move * Time.deltaTime * speed);` 호출 형태에 맞는 메서드를 고르세요.",
+            "options": [
+                "`TransformVector`",
+                "`SetPositionAndRotation`",
+                "`Translate`",
+                "`TransformDirection`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - 축 입력 이동 코드 완성",
+            "description": "`Update()`에서 축 입력을 읽고 `Translate`로 이동시키는 핵심 코드를 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "move = new Vector3(Input.GetAxis(\"Horizontal\"), 0f, Input.GetAxis(\"Vertical\"));\ntransform.Translate(move * Time.deltaTime * speed);"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - GetKey 계열 오개념 판별",
+            "description": "다음 중 틀린 설명을 고르세요.",
+            "options": [
+                "`GetKey`는 누르는 동안 매 프레임 true다.",
+                "`GetKeyDown`은 누른 프레임에만 true다.",
+                "`GetKeyUp`은 누르는 동안 계속 true다.",
+                "`GetKeyUp`은 뗀 프레임에 true다."
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
+        }
+    ]
 }

@@ -1,51 +1,45 @@
 ﻿{
-    "id":  "unity_u09_animator_b01",
-    "title":  "Unity U09 Animator Basic R1",
-    "categoryId":  "unity_u09_animator",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U09 Animator concept check",
-                         "description":  "Choose the best answer based on the unit concept.",
-                         "code":  "// TODO replace with real scenario",
-                         "options":  [
-                                         "correct (draft)",
-                                         "wrong A",
-                                         "wrong B",
-                                         "wrong C"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  0
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U09 Animator keyword",
-                         "description":  "Write one required keyword.",
-                         "expectedAnyOf":  [
-                                               "TODO",
-                                               "todo"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U09 Animator one-line code",
-                         "description":  "Write one line that uses the target API.",
-                         "code":  "// TODO",
-                         "expectedCode":  "TODO"
-                     }
-                 ]
+  "id": "unity_u09_animator_b01",
+  "title": "Unity U09 Animator Basic R1",
+  "categoryId": "unity_u09_animator",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "p01",
+      "type": "short",
+      "level": "basic",
+      "title": "점프 상태 클립 배치",
+      "description": "Z1~Z4 배치 정답을 순서대로 쓰세요.",
+      "expectedAnyOf": [
+        "Z1 JumpApex, Z2 SlowFall, Z3 FastFall, Z4 FastLand",
+        "JumpApex, SlowFall, FastFall, FastLand"
+      ]
+    },
+    {
+      "id": "p02",
+      "type": "short",
+      "level": "basic",
+      "title": "Animator 상태 시스템 전환 T/F",
+      "description": "1~4번 문장의 참/거짓을 순서대로 쓰세요.",
+      "expectedAnyOf": [
+        "참, 거짓, 참, 거짓",
+        "1 참 2 거짓 3 참 4 거짓",
+        "T, F, T, F",
+        "true false true false"
+      ]
+    },
+    {
+      "id": "p03",
+      "type": "short",
+      "level": "basic",
+      "title": "Set 함수 매칭",
+      "description": "①~④에 들어갈 함수명을 순서대로 쓰세요.",
+      "expectedAnyOf": [
+        "SetInt, SetFloat, SetBool, SetTrigger",
+        "① SetInt ② SetFloat ③ SetBool ④ SetTrigger"
+      ]
+    }
+  ]
 }

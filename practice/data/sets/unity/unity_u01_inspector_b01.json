@@ -1,53 +1,88 @@
-﻿{
-    "id":  "unity_u01_inspector_b01",
-    "title":  "Unity U01 인스펙터 기초 1회차",
-    "categoryId":  "unity_u01_inspector",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "기초",
-                         "title":  "창 역할 구분",
-                         "description":  "현재 씬의 GameObject 목록이 표시되는 창은 무엇인가요?",
-                         "options":  [
-                                         "Project",
-                                         "Hierarchy",
-                                         "Inspector",
-                                         "Console"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  1
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "기초",
-                         "title":  "private 필드 노출",
-                         "description":  "private 필드를 Inspector에 노출하는 속성 이름을 쓰세요.",
-                         "expectedAnyOf":  [
-                                               "SerializeField",
-                                               "[SerializeField]"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "기초",
-                         "title":  "선언 한 줄 작성",
-                         "description":  "Inspector에 노출되는 private int speed 필드 선언 한 줄을 쓰세요.",
-                         "expectedAnyOf":  [
-                                               "[SerializeField] private int speed;",
-                                               "private [SerializeField] int speed;"
-                                           ],
-                         "expectedCode":  "[SerializeField] private int speed;"
-                     }
-                 ]
+{
+    "id": "unity_u01_inspector_b01",
+    "title": "Unity U01 인스펙터 기초 1회차",
+    "categoryId": "unity_u01_inspector",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p01",
+            "type": "short",
+            "level": "basic",
+            "title": "Inspector 기능 판별",
+            "description": "Inspector(검사기) 기본 기능에 대한 3개 문장의 참/거짓을 판별하세요. 각 행에 `참` 또는 `거짓`을 채우면 됩니다.",
+            "answerUi": {
+                "kind": "grid",
+                "rows": [
+                    "(1) Static 체크는 정적 최적화 워크플로에 활용된다.",
+                    "(2) Tag는 스크립트에서 같은 분류의 오브젝트를 찾는 데 사용할 수 있다.",
+                    "(3) Prefab은 Inspector에서 수정할 수 없다."
+                ],
+                "columns": [
+                    "답안"
+                ],
+                "narrowAnswerColumn": true,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                [
+                    "참"
+                ],
+                [
+                    "참"
+                ],
+                [
+                    "거짓"
+                ]
+            ]
+        },
+        {
+            "id": "p02",
+            "type": "short",
+            "level": "basic",
+            "title": "Unity 창 역할 매칭",
+            "description": "Unity 편집기 기본 창 4개를 기능 후보(A~D)와 1:1로 매칭하세요. 표의 각 행(Hierarchy/Scene/Project/Inspector)에 대응 문자를 입력합니다.\n기능 후보: A. 현재 씬 오브젝트 목록 B. 씬 배치/조작 작업 공간 C. 에셋 보관/탐색 D. 선택 대상 상세 설정",
+            "answerUi": {
+                "kind": "grid",
+                "rows": [
+                    "Hierarchy",
+                    "Scene",
+                    "Project",
+                    "Inspector"
+                ],
+                "columns": [
+                    "답안(A-D)"
+                ],
+                "narrowAnswerColumn": true,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                [
+                    "A"
+                ],
+                [
+                    "B"
+                ],
+                [
+                    "C"
+                ],
+                [
+                    "D"
+                ]
+            ]
+        },
+        {
+            "id": "p03",
+            "type": "short",
+            "level": "basic",
+            "title": "IDE 설정 위치",
+            "description": "Unity Preferences(또는 Edit > Preferences)에서 사용할 IDE를 지정할 때 쓰는 옵션명을 정확히 작성하세요. 정답은 메뉴 항목의 영문 이름입니다.",
+            "expectedAnyOf": [
+                "External Script Editor"
+            ]
+        }
+    ]
 }

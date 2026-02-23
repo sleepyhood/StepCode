@@ -1,51 +1,32 @@
 ﻿{
-    "id":  "unity_u10_material_color_b01",
-    "title":  "Unity U10 Material and Color Basic R1",
-    "categoryId":  "unity_u10_material_color",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U10 Material and Color concept check",
-                         "description":  "Choose the best answer based on the unit concept.",
-                         "code":  "// TODO replace with real scenario",
-                         "options":  [
-                                         "correct (draft)",
-                                         "wrong A",
-                                         "wrong B",
-                                         "wrong C"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  0
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U10 Material and Color keyword",
-                         "description":  "Write one required keyword.",
-                         "expectedAnyOf":  [
-                                               "TODO",
-                                               "todo"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U10 Material and Color one-line code",
-                         "description":  "Write one line that uses the target API.",
-                         "code":  "// TODO",
-                         "expectedCode":  "TODO"
-                     }
-                 ]
+  "id": "unity_u10_material_color_b01",
+  "title": "Unity U10 Material and Color Basic R1",
+  "categoryId": "unity_u10_material_color",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "p01",
+      "type": "short",
+      "level": "basic",
+      "title": "Color 변수 출력식 완성",
+      "description": "`Debug.Log(\"Color:\" + [드롭다운]);`의 정답을 쓰세요.",
+      "expectedAnyOf": [
+        "color"
+      ]
+    },
+    {
+      "id": "p02",
+      "type": "short",
+      "level": "basic",
+      "title": "SetColor 두 인자 완성",
+      "description": "`material.SetColor( ___ , ___ );`의 두 빈칸 정답을 순서대로 쓰세요.",
+      "expectedAnyOf": [
+        "\"_Color\", Color.red",
+        "(\"_Color\", Color.red)",
+        "material.SetColor(\"_Color\", Color.red);"
+      ]
+    }
+  ]
 }

@@ -1,51 +1,50 @@
 ﻿{
-    "id":  "unity_u06_input_b01",
-    "title":  "Unity U06 Input Basic R1",
-    "categoryId":  "unity_u06_input",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U06 Input concept check",
-                         "description":  "Choose the best answer based on the unit concept.",
-                         "code":  "// TODO replace with real scenario",
-                         "options":  [
-                                         "correct (draft)",
-                                         "wrong A",
-                                         "wrong B",
-                                         "wrong C"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  0
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U06 Input keyword",
-                         "description":  "Write one required keyword.",
-                         "expectedAnyOf":  [
-                                               "TODO",
-                                               "todo"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U06 Input one-line code",
-                         "description":  "Write one line that uses the target API.",
-                         "code":  "// TODO",
-                         "expectedCode":  "TODO"
-                     }
-                 ]
+    "id": "unity_u06_input_b01",
+    "title": "Unity U06 Input Basic R1",
+    "categoryId": "unity_u06_input",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p01",
+            "type": "short",
+            "level": "basic",
+            "title": "입력 메서드 매핑",
+            "description": "`KeyCode.LeftArrow` 기준으로 ① 누르는 동안 ② 누른 프레임 ③ 뗀 프레임에 해당하는 메서드를 쓰세요.",
+            "expectedAnyOf": [
+                "① GetKey(KeyCode.LeftArrow), ② GetKeyDown(KeyCode.LeftArrow), ③ GetKeyUp(KeyCode.LeftArrow)",
+                "GetKey / GetKeyDown / GetKeyUp"
+            ]
+        },
+        {
+            "id": "p02",
+            "type": "mcq",
+            "level": "basic",
+            "title": "이동 메서드 선택",
+            "description": "`transform.[드롭다운](move * Time.deltaTime * speed);`에 들어갈 올바른 메서드를 고르세요.",
+            "options": [
+                "`TransformVector`",
+                "`SetPositionAndRotation`",
+                "`Translate`",
+                "`TransformDirection`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "basic",
+            "title": "변형 - 축 입력 이동 코드 완성",
+            "description": "`Horizontal/Vertical` 축 입력으로 이동 벡터를 만들고 `Translate`로 적용하는 핵심 2줄을 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "move = new Vector3(Input.GetAxis(\"Horizontal\"), 0f, Input.GetAxis(\"Vertical\"));\ntransform.Translate(move * Time.deltaTime * speed);"
+        }
+    ]
 }

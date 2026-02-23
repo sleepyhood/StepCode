@@ -1,51 +1,45 @@
 ﻿{
-    "id":  "unity_u08_ui_b01",
-    "title":  "Unity U08 UI Basic R1",
-    "categoryId":  "unity_u08_ui",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U08 UI concept check",
-                         "description":  "Choose the best answer based on the unit concept.",
-                         "code":  "// TODO replace with real scenario",
-                         "options":  [
-                                         "correct (draft)",
-                                         "wrong A",
-                                         "wrong B",
-                                         "wrong C"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  0
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U08 UI keyword",
-                         "description":  "Write one required keyword.",
-                         "expectedAnyOf":  [
-                                               "TODO",
-                                               "todo"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "basic",
-                         "title":  "[Draft] Unity U08 UI one-line code",
-                         "description":  "Write one line that uses the target API.",
-                         "code":  "// TODO",
-                         "expectedCode":  "TODO"
-                     }
-                 ]
+  "id": "unity_u08_ui_b01",
+  "title": "Unity U08 UI Basic R1",
+  "categoryId": "unity_u08_ui",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "p01",
+      "type": "short",
+      "level": "basic",
+      "title": "점수 UI 코드 3요소 쓰기",
+      "description": "① using, ② Text 변수 선언, ③ .text 갱신 코드를 쓰세요.",
+      "expectedAnyOf": [
+        "using UnityEngine.UI; / public Text myText; / myText.text = (\"Score: \" + score.ToString());",
+        "using UnityEngine.UI; public Text myText; myText.text = (\"Score: \" + score.ToString());",
+        "using UnityEngine.UI;|public Text myText;|myText.text = (\"Score: \" + score.ToString());"
+      ]
+    },
+    {
+      "id": "p02",
+      "type": "short",
+      "level": "basic",
+      "title": "SetMessageToDisplay 선언 완성",
+      "description": "① 반환형 ② 메서드명 ③ 매개변수를 쓰세요.",
+      "expectedAnyOf": [
+        "void / SetMessageToDisplay / (string stringToDisplay)",
+        "void SetMessageToDisplay(string stringToDisplay)",
+        "private void SetMessageToDisplay(string stringToDisplay)"
+      ]
+    },
+    {
+      "id": "p03",
+      "type": "short",
+      "level": "basic",
+      "title": "OnMouseUp 함수 선언 완성",
+      "description": "① 접근 제한자 ② 반환형 ③ 메서드명을 쓰세요.",
+      "expectedAnyOf": [
+        "private / void / OnMouseUp()",
+        "private void OnMouseUp()"
+      ]
+    }
+  ]
 }

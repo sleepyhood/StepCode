@@ -1,53 +1,48 @@
 ﻿{
-    "id":  "unity_u04_null_exception_c01",
-    "title":  "Unity U04 Null/예외 챌린지 1회차",
-    "categoryId":  "unity_u04_null_exception",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "응용",
-                         "title":  "타입 불일치 비교",
-                         "description":  "타입 불일치로 컴파일 오류가 나는 비교식을 고르세요.",
-                         "options":  [
-                                         "myFloat \u003e myInt",
-                                         "myFloat \u003c= 100",
-                                         "dictionary == list",
-                                         "score == 10"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  2
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "응용",
-                         "title":  "오류 비교식 작성",
-                         "description":  "이 단원에서 나온 비교 불가능한 식 예시 1개를 쓰세요.",
-                         "expectedAnyOf":  [
-                                               "dictionary == myInt",
-                                               "myString == list",
-                                               "dictionary == list"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "응용",
-                         "title":  "Dictionary 채우기",
-                         "description":  "foreach(var gameObject in gameObjects) 내부에서 이름을 key로 추가하는 한 줄을 쓰세요.",
-                         "expectedAnyOf":  [
-                                               "dictionary.Add(gameObject.name, gameObject);"
-                                           ],
-                         "expectedCode":  "dictionary.Add(gameObject.name, gameObject);"
-                     }
-                 ]
+    "id": "unity_u04_null_exception_c01",
+    "title": "Unity U04 Null/예외 챌린지 1회차",
+    "categoryId": "unity_u04_null_exception",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p04",
+            "type": "code",
+            "level": "challenge",
+            "title": "Dictionary 초기화 순서",
+            "description": "`gameObjects`를 순회해 `dictionary`를 초기화하는 코드를 작성하세요. key=`gameObject.name`, value=`gameObject`.",
+            "code": "// TODO",
+            "expectedCode": "dictionary = new Dictionary<string, GameObject>();\nforeach (var gameObject in gameObjects)\n{\n    dictionary.Add(gameObject.name, gameObject);\n}"
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - null 안전 접근",
+            "description": "`projectile`이 null이면 0, 아니면 `projectile.transform.position.x`를 `xPos`에 담는 한 줄 코드를 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "float xPos = projectile == null ? 0f : projectile.transform.position.x;"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - 타입 비교 가능성 판별",
+            "description": "컴파일 오류 없이 비교 가능한 식을 고르세요.",
+            "options": [
+                "`dictionary == myInt`",
+                "`myString == list`",
+                "`dictionary == list`",
+                "`myFloat > myInt`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 3
+        }
+    ]
 }

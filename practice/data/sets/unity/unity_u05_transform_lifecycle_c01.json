@@ -1,52 +1,51 @@
 ﻿{
-    "id":  "unity_u05_transform_lifecycle_c01",
-    "title":  "Unity U05 Transform and Lifecycle Challenge R1",
-    "categoryId":  "unity_u05_transform_lifecycle",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U05 Transform and Lifecycle scenario decision",
-                         "description":  "Pick the correct action for the scenario.",
-                         "code":  "// TODO replace with real code",
-                         "options":  [
-                                         "correct (draft)",
-                                         "wrong A",
-                                         "wrong B",
-                                         "wrong C"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  0
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U05 Transform and Lifecycle output prediction",
-                         "description":  "Write the expected output/result in one line.",
-                         "code":  "// TODO",
-                         "expectedAnyOf":  [
-                                               "TODO",
-                                               "todo"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U05 Transform and Lifecycle fix TODO",
-                         "description":  "Fill the TODO with the correct code.",
-                         "code":  "// TODO",
-                         "expectedCode":  "TODO"
-                     }
-                 ]
+    "id": "unity_u05_transform_lifecycle_c01",
+    "title": "Unity U05 Transform and Lifecycle Challenge R1",
+    "categoryId": "unity_u05_transform_lifecycle",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p03",
+            "type": "short",
+            "level": "challenge",
+            "title": "Awake/OnEnable 블록 순서",
+            "description": "초기 데이터 읽기와 장착 동작의 올바른 블록 순서를 쓰세요. A: `OnEnable` 시작, B: 클래스+`Awake` 시작, C: `PropSpecs`로 `damage/durability` 세팅 후 `Awake` 닫기, D: `prop.parent/position/rotation` 부착 후 클래스 닫기",
+            "expectedAnyOf": [
+                "B, C, A, D",
+                "B -> C -> A -> D",
+                "B C A D"
+            ]
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - 자식 Transform 배열 유틸 함수 작성",
+            "description": "`Transform root`를 받아 직계 자식을 `Transform[]`로 반환하는 핵심 코드를 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "Transform[] result = new Transform[root.childCount];\nfor (int i = 0; i < root.childCount; ++i)\n{\n    result[i] = root.GetChild(i);\n}"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - 라이프사이클 배치 판별",
+            "description": "가장 적절한 배치를 고르세요.",
+            "options": [
+                "`OnEnable`에서 데이터 읽기, `Awake`에서 장착",
+                "`Awake`에서 데이터 읽기, `OnEnable`에서 장착",
+                "둘 다 `Start`에만 배치",
+                "둘 다 `Update`에 배치"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 1
+        }
+    ]
 }

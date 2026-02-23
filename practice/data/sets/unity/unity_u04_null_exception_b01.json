@@ -1,52 +1,71 @@
 ﻿{
-    "id":  "unity_u04_null_exception_b01",
-    "title":  "Unity U04 Null/예외 기초 1회차",
-    "categoryId":  "unity_u04_null_exception",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "기초",
-                         "title":  "NullReference 원인",
-                         "description":  "Book book = new Book(); int age = book.Author.Age;에서 직접 null인 대상은?",
-                         "options":  [
-                                         "book",
-                                         "Age",
-                                         "Author",
-                                         "int 변수"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  2
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "기초",
-                         "title":  "null 체크식",
-                         "description":  "projectile이 null인지 확인하는 조건식을 쓰세요.",
-                         "expectedAnyOf":  [
-                                               "projectile == null",
-                                               "(projectile == null)"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "기초",
-                         "title":  "Dictionary 초기화",
-                         "description":  "Dictionary\u003cstring, GameObject\u003e 초기화 한 줄을 쓰세요.",
-                         "expectedAnyOf":  [
-                                               "dictionary = new Dictionary\u003cstring, GameObject\u003e();"
-                                           ],
-                         "expectedCode":  "dictionary = new Dictionary\u003cstring, GameObject\u003e();"
-                     }
-                 ]
+    "id": "unity_u04_null_exception_b01",
+    "title": "Unity U04 Null/예외 기초 1회차",
+    "categoryId": "unity_u04_null_exception",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p01",
+            "type": "mcq",
+            "level": "basic",
+            "title": "NullReferenceException 원인",
+            "description": "`Book book = new Book(); int authorAge = book.Author.Age;` 실행 시 예외의 직접 원인을 고르세요.",
+            "options": [
+                "`book`이 null이다.",
+                "`Age`가 null이다.",
+                "`publisher`가 null이라서 예외가 난다.",
+                "`Author`가 null이다."
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 3
+        },
+        {
+            "id": "p02",
+            "type": "mcq",
+            "level": "basic",
+            "title": "null 비교 가능한 선언/조건식 선택",
+            "description": "아래 보기 중 선언 타입과 null 비교식이 모두 올바른 조합을 고르세요.",
+            "options": [
+                "① `public bool hasTurned;` + ② `(hasTurned == null)`",
+                "① `public int score;` + ② `(score == null)`",
+                "① `public GameObject projectile;` + ② `(projectile == null)`",
+                "① `public bool hasTurned;` + ② `(projectile == null)`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
+        },
+        {
+            "id": "p03",
+            "type": "mcq",
+            "level": "basic",
+            "title": "드롭영역에 들어갈 수 없는 비교식 3개 찾기",
+            "description": "아래 코드의 `if` 드롭영역 2개에 넣어 컴파일 가능한 비교식은 2개뿐입니다. 후보 중 드롭영역에 들어갈 수 없는 비교식 3개 조합을 고르세요.\n\n```csharp\npublic class MyClass : MonoBehaviour\n{\n    [SerializeField]\n    List<GameObject> gameObjects;\n\n    Dictionary<string, GameObject> dictionary;\n    int myInt;\n    string myString;\n    List<GameObject> list;\n    float myFloat;\n\n    private void Start()\n    {\n        if (/* [드롭영역 1] */)\n        {\n            // 작업을 수행합니다.\n        }\n\n        if (/* [드롭영역 2] */)\n        {\n            // 작업을 수행합니다.\n        }\n    }\n}\n```\n\n후보 비교식:\n- `dictionary == myInt`\n- `myFloat > myInt`\n- `myString == list`\n- `dictionary == list`\n- `myFloat <= 100`",
+            "options": [
+                "`myFloat > myInt`, `myFloat <= 100`, `dictionary == list`",
+                "`dictionary == myInt`, `myFloat > myInt`, `myString == list`",
+                "`dictionary == myInt`, `myString == list`, `dictionary == list`",
+                "`myFloat <= 100`, `myString == list`, `dictionary == list`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ]
+            ,
+            "correctIndex": 2
+        }
+    ]
 }

@@ -1,52 +1,39 @@
 ﻿{
-    "id":  "unity_u10_material_color_c01",
-    "title":  "Unity U10 Material and Color Challenge R1",
-    "categoryId":  "unity_u10_material_color",
-    "availableLanguages":  [
-                               "csharp"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "mcq1",
-                         "type":  "mcq",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U10 Material and Color scenario decision",
-                         "description":  "Pick the correct action for the scenario.",
-                         "code":  "// TODO replace with real code",
-                         "options":  [
-                                         "correct (draft)",
-                                         "wrong A",
-                                         "wrong B",
-                                         "wrong C"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D"
-                                          ],
-                         "correctIndex":  0
-                     },
-                     {
-                         "id":  "short1",
-                         "type":  "short",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U10 Material and Color output prediction",
-                         "description":  "Write the expected output/result in one line.",
-                         "code":  "// TODO",
-                         "expectedAnyOf":  [
-                                               "TODO",
-                                               "todo"
-                                           ]
-                     },
-                     {
-                         "id":  "code1",
-                         "type":  "code",
-                         "level":  "challenge",
-                         "title":  "[Draft] Unity U10 Material and Color fix TODO",
-                         "description":  "Fill the TODO with the correct code.",
-                         "code":  "// TODO",
-                         "expectedCode":  "TODO"
-                     }
-                 ]
+  "id": "unity_u10_material_color_c01",
+  "title": "Unity U10 Material and Color Challenge R1",
+  "categoryId": "unity_u10_material_color",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "x01",
+      "type": "code",
+      "level": "challenge",
+      "title": "변형 - 파란색으로 머티리얼 색 변경 코드",
+      "description": "`Material mat`이 있을 때 메인 색을 파란색으로 설정하는 1줄 코드를 작성하세요.",
+      "code": "// TODO",
+      "expectedCode": "mat.SetColor(\"_Color\", Color.blue);"
+    },
+    {
+      "id": "x02",
+      "type": "mcq",
+      "level": "challenge",
+      "title": "함정 - SetColor 첫 인자 선택",
+      "description": "`SetColor`의 첫 인자로 올바른 표현을 고르세요.",
+      "options": [
+        "`_Color`",
+        "`\"_Color\"`",
+        "`Color`",
+        "`\"Color\"`"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1
+    }
+  ]
 }

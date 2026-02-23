@@ -2386,6 +2386,9 @@ function renderGridAnswerField(field, q, savedValue) {
 
   const table = document.createElement("table");
   table.className = "grid-answer-table";
+  if (ui.narrowAnswerColumn === true && colCount === 1) {
+    table.classList.add("grid-narrow-answer");
+  }
   let hasSkippedCell = false;
 
   const thead = document.createElement("thead");

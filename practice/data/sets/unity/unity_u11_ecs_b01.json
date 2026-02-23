@@ -1,0 +1,36 @@
+﻿{
+  "id": "unity_u11_ecs_b01",
+  "title": "Unity U11 ECS Basic R1",
+  "categoryId": "unity_u11_ecs",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "p01",
+      "type": "short",
+      "level": "basic",
+      "title": "코드 3개 ECS 사용 여부 판별",
+      "description": "코드 1~3의 ECS 사용 여부를 순서대로 쓰세요.",
+      "expectedAnyOf": [
+        "거짓, 거짓, 참",
+        "코드1 거짓 코드2 거짓 코드3 참",
+        "F, F, T",
+        "false false true"
+      ]
+    },
+    {
+      "id": "p02",
+      "type": "short",
+      "level": "basic",
+      "title": "코드 조각 ECS 사용 여부 T/F",
+      "description": "코드 조각 1~3의 ECS 사용 여부를 순서대로 쓰세요.",
+      "expectedAnyOf": [
+        "거짓, 거짓, 거짓",
+        "코드1 거짓 코드2 거짓 코드3 거짓",
+        "F, F, F",
+        "false false false"
+      ]
+    }
+  ]
+}

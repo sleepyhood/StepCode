@@ -970,6 +970,17 @@ body {
   white-space: nowrap;
 }
 
+.grid-answer-table.grid-narrow-answer .grid-row-label {
+  width: 72%;
+  white-space: normal;
+  text-align: left;
+}
+
+.grid-answer-table.grid-narrow-answer .grid-col-label,
+.grid-answer-table.grid-narrow-answer td {
+  width: 28%;
+}
+
 .grid-answer-note {
   margin: 8px 10px 0;
   font-size: 0.8rem;
