@@ -25,6 +25,76 @@ function normalizeCodeLang(raw) {
   return v;
 }
 
+function normalizeContestLang(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (v === "c") return "c";
+  if (v === "py" || v === "python") return "py";
+  return "";
+}
+
+function normalizeContestLevel(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (v === "elem" || v === "elementary" || v === "초등" || v === "초") return "elementary";
+  if (v === "mid" || v === "middle" || v === "중등" || v === "중") return "middle";
+  if (v === "high" || v === "고등" || v === "고") return "high";
+  return "";
+}
+
+function inferContestLevelFromAudience(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (v === "elementary") return "elementary";
+  if (v === "middle") return "middle";
+  if (v === "high") return "high";
+  return "";
+}
+
+function inferContestModeArgs(params) {
+  const setId = String(params.get("set") || "");
+  const setMatch = setId.match(/^contest_(c|py)_(elem|mid|high)_\d{4}_r\d+_b\d+$/i);
+
+  const queryContestLang = normalizeContestLang(qp("contestLang"));
+  const queryContestLevel = normalizeContestLevel(qp("contestLevel"));
+  const queryLang = normalizeCodeLang(qp("lang"));
+  const queryAudience = String(params.get("audience") || "").toLowerCase();
+  const hasContestWeeks = !!qp("contestWeeks");
+
+  const contestLang =
+    queryContestLang ||
+    (setMatch ? String(setMatch[1]).toLowerCase() : "") ||
+    (queryLang === "python" ? "py" : queryLang === "c" ? "c" : "");
+  const contestLevel =
+    queryContestLevel ||
+    (setMatch
+      ? normalizeContestLevel(String(setMatch[2]).toLowerCase())
+      : "") ||
+    inferContestLevelFromAudience(queryAudience);
+
+  const contestWeeksRaw = Number(qp("contestWeeks") || "11");
+  const contestWeeks = Number.isFinite(contestWeeksRaw)
+    ? Math.max(1, Math.min(30, Math.floor(contestWeeksRaw)))
+    : 11;
+
+  const isContestSet = !!setMatch;
+  const wantsBatchByQuery = !!queryContestLang || !!queryContestLevel || hasContestWeeks;
+  const batchMode = !!contestLang && (wantsBatchByQuery || (isContestSet && hasContestWeeks));
+
+  return { batchMode, contestLang, contestLevel, contestWeeks };
+}
+
+function resolveContestTheoryEntries(theoryIndex, contestLang, maxWeeks) {
+  const langToken = contestLang === "py" ? "py" : "c";
+  const pat = new RegExp(`^contest_${langToken}_w(\\d{2})_`, "i");
+  return (theoryIndex || [])
+    .filter((it) => pat.test(String(it?.conceptId || "")))
+    .map((it) => {
+      const m = String(it.conceptId || "").match(/_w(\d{2})_/i);
+      return { entry: it, week: m ? Number(m[1]) : Number.MAX_SAFE_INTEGER };
+    })
+    .sort((a, b) => a.week - b.week)
+    .slice(0, Math.max(1, maxWeeks))
+    .map((v) => v.entry);
+}
+
 function normalizeLanguageList(raw) {
   return String(raw || "")
     .split(",")
@@ -826,7 +896,7 @@ function guessAudienceFromSet(setIdInQuery, setMap) {
   return "all";
 }
 
-function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, setMap) {
+function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, setMap, options) {
   const sel = document.getElementById("tp-lang-select");
   const audSel = document.getElementById("tp-audience-select");
   const viewSel = document.getElementById("tp-view-select");
@@ -881,9 +951,10 @@ function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, 
   layoutSel.value = initialLayout;
   document.body.classList.toggle("layout-double", initialLayout === "double");
 
+  const disableConceptToggle = !!options?.disableConceptToggle;
   if (conceptToggle) {
     conceptToggle.innerHTML = "";
-    if (availableConcepts.length) {
+    if (availableConcepts.length && !disableConceptToggle) {
       const label = document.createElement("span");
       label.className = "tp-concept-label";
       label.textContent = "개념";
@@ -952,7 +1023,7 @@ function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, 
     applyLanguageFilter(contentEl, selected);
     applyAudienceFilter(contentEl, selectedAudience);
     applyViewFilter(contentEl, selectedView);
-    applyConceptFilter(contentEl, selectedConceptSet);
+    applyConceptFilter(contentEl, disableConceptToggle ? null : selectedConceptSet);
     document.body.classList.toggle("layout-double", layout === "double");
   });
 }
@@ -1025,6 +1096,13 @@ function setupToolbarLinks(params, entry) {
   if (printBtn) printBtn.addEventListener("click", () => window.print());
 }
 
+function setupBatchToolbarLinks() {
+  const back = document.getElementById("tp-back-link");
+  if (back) back.href = "index.html?track=contest";
+  const printBtn = document.getElementById("tp-print-btn");
+  if (printBtn) printBtn.addEventListener("click", () => window.print());
+}
+
 function renderDenied(root) {
   root.innerHTML = `
     <section class="theory-print-denied">
@@ -1057,6 +1135,76 @@ async function initTheoryPrintPage() {
     ]);
     const lookup = buildTheoryLookup(theoryIndex);
     const setMap = toSetMap(sets);
+    const contestArgs = inferContestModeArgs(params);
+    const contestLang = contestArgs.contestLang;
+    const contestLevel = contestArgs.contestLevel || "all";
+    const contestWeeks = contestArgs.contestWeeks;
+
+    if (contestArgs.batchMode) {
+      const entries = resolveContestTheoryEntries(theoryIndex, contestLang, contestWeeks);
+      if (!entries.length) {
+        root.textContent = "출력할 경시대회 이론을 찾을 수 없습니다.";
+        return;
+      }
+
+      const title = document.getElementById("tp-title");
+      const subtitle = document.getElementById("tp-subtitle");
+      if (title) {
+        const langLabel = contestLang === "c" ? "C" : "PY";
+        const levelLabel =
+          contestLevel === "elementary"
+            ? "초등"
+            : contestLevel === "middle"
+              ? "중등"
+              : contestLevel === "high"
+                ? "고등"
+                : "전체";
+        title.textContent = `${langLabel} 경시대회 이론 ${levelLabel} ${entries.length}회차 출력`;
+      }
+      if (subtitle) subtitle.textContent = "범위: 주차별 이론 통합";
+
+      setupBatchToolbarLinks();
+      root.innerHTML = "";
+
+      for (let i = 0; i < entries.length; i += 1) {
+        const entry = entries[i];
+        const res = await fetch(entry.mdPath);
+        if (!res.ok) throw new Error(`failed to load markdown: ${entry.mdPath}`);
+        const mdText = await res.text();
+
+        const section = document.createElement("section");
+        section.className = "theory-batch-section";
+        const head = document.createElement("h1");
+        head.className = "theory-batch-title";
+        head.textContent = `${i + 1}회차 · ${entry.title || entry.conceptId || "이론"}`;
+        const body = document.createElement("article");
+        body.className = "theory-batch-body";
+        section.append(head, body);
+        root.appendChild(section);
+
+        renderTheoryMarkdown(body, mdText);
+        groupSectionBlocks(body);
+        groupConceptBlocks(body);
+        enhanceMiniCheckSection(body);
+        enhanceIoBlocks(body);
+        enhanceTraceGridBlocks(body);
+        enhanceMarkdownTables(body);
+        enhanceCodeBlocks(body);
+        enhanceExampleBlocks(body);
+        attachTrailingExampleBlocks(body);
+      }
+
+      setupLanguageSelect(
+        root,
+        contestLang === "c" ? "c" : "python",
+        params,
+        "",
+        setMap,
+        { disableConceptToggle: true }
+      );
+      return;
+    }
+
     const entry = pickEntry(params, lookup, setMap);
 
     if (!entry) {
@@ -1091,7 +1239,9 @@ async function initTheoryPrintPage() {
     enhanceCodeBlocks(root);
     enhanceExampleBlocks(root);
     attachTrailingExampleBlocks(root);
-    setupLanguageSelect(root, langInQuery || entry.lang, params, setIdInQuery, setMap);
+    setupLanguageSelect(root, langInQuery || entry.lang, params, setIdInQuery, setMap, {
+      disableConceptToggle: false,
+    });
   } catch (err) {
     console.error(err);
     root.textContent = "개념 출력 페이지를 불러오는 중 오류가 발생했습니다.";

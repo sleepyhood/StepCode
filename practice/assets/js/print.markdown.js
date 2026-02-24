@@ -8,6 +8,7 @@ const PRINT_PAGE_WIDTH_MM = 297;
 const PACKING_SAFETY_MM = 0;
 const FIT_TOLERANCE_MM = 3;
 const CODE_SPLIT_MIN_LINES = 24;
+const LIGHT_MODE_PAGE_SIZE = 6;
 
 function ymd(d = new Date()) {
   const y = d.getFullYear();
@@ -1553,14 +1554,132 @@ function updateToolbarTitle(set, bucket, variant) {
   if (s) s.textContent = `범위: ${bucket} · 유형: ${variant}`;
 }
 
+function parseSetIdList(raw) {
+  return String(raw || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function normalizeContestLang(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (v === "c") return "c";
+  if (v === "py" || v === "python") return "py";
+  return "";
+}
+
+function normalizeContestLevel(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (v === "elem" || v === "elementary" || v === "초등" || v === "초") return "elem";
+  if (v === "mid" || v === "middle" || v === "중등" || v === "중") return "mid";
+  if (v === "high" || v === "고등" || v === "고") return "high";
+  return "";
+}
+
+function parseRoundFromSetId(setId) {
+  const m = String(setId || "").match(/_b(\d+)$/i);
+  if (!m) return null;
+  const n = Number(m[1]);
+  return Number.isFinite(n) ? n : null;
+}
+
+function buildMergedSetTitle(sets) {
+  if (!Array.isArray(sets) || !sets.length) return "학습지";
+  if (sets.length === 1) return sets[0].title || "학습지";
+
+  const firstTitle = String(sets[0].title || "학습지");
+  const base = firstTitle.replace(/\s*\d+\s*회차\s*$/, "").trim() || firstTitle;
+  const rounds = sets
+    .map((s) => parseRoundFromSetId(s?.id))
+    .filter((n) => Number.isFinite(n));
+
+  if (rounds.length) {
+    const min = Math.min(...rounds);
+    const max = Math.max(...rounds);
+    return `${base} ${min}~${max}회차`;
+  }
+  return `${base} 통합`;
+}
+
+function mergeSetsForPrint(sets) {
+  const availableLanguages = [];
+  const seenLang = new Set();
+  const problems = [];
+
+  sets.forEach((set) => {
+    const round = parseRoundFromSetId(set?.id);
+    const roundLabel = Number.isFinite(round) ? `${round}회차` : "회차";
+
+    (set?.availableLanguages || []).forEach((lang) => {
+      const key = String(lang || "").toLowerCase();
+      if (seenLang.has(key)) return;
+      seenLang.add(key);
+      availableLanguages.push(lang);
+    });
+
+    (set?.problems || []).forEach((q, idx) => {
+      const title = String(q?.title || "문제");
+      problems.push({
+        ...q,
+        id: `${set.id}__${String(q?.id || idx + 1)}`,
+        title: `[${roundLabel}] ${title}`,
+      });
+    });
+  });
+
+  const mergedIdBase = String(sets[0]?.id || "merged")
+    .split("_")
+    .slice(0, 3)
+    .join("_");
+
+  return {
+    id: `${mergedIdBase}_merged_${sets.length}`,
+    title: buildMergedSetTitle(sets),
+    categoryId: sets[0]?.categoryId || "merged",
+    availableLanguages,
+    problems,
+    coreCount: Number.MAX_SAFE_INTEGER,
+  };
+}
+
+async function resolveSetIdsFromQuery() {
+  const explicitSets = parseSetIdList(qp("sets"));
+  if (explicitSets.length) return explicitSets;
+
+  const singleSet = qp("set");
+  if (singleSet) return [singleSet];
+
+  const contestLang = normalizeContestLang(qp("contestLang"));
+  const contestLevel = normalizeContestLevel(qp("contestLevel"));
+  if (!contestLang || !contestLevel) return [];
+
+  const requestedRounds = Number(qp("contestRounds") || "11");
+  const roundCount = Number.isFinite(requestedRounds)
+    ? Math.max(1, Math.min(30, Math.floor(requestedRounds)))
+    : 11;
+
+  const allSets = await ProblemService.listSets();
+  return allSets
+    .filter((s) =>
+      new RegExp(`^contest_${contestLang}_${contestLevel}_\\d{4}_r\\d+_b\\d+$`, "i").test(
+        String(s?.id || "")
+      )
+    )
+    .sort((a, b) => (Number(a?.round || 0) - Number(b?.round || 0)) || String(a?.id || "").localeCompare(String(b?.id || "")))
+    .slice(0, roundCount)
+    .map((s) => s.id);
+}
+
 /* [print.markdown.js] 위치: renderAll()에서 chunk(selected, 2) 부분을 "높이 기반 패킹"으로 교체 */
 
-async function renderAll({ setId, bucket, variant }) {
+async function renderAll({ setIds, bucket, variant }) {
   const root = document.getElementById("print-root");
   if (!root) return;
 
   root.innerHTML = "불러오는 중...";
-  currentSetData = await ProblemService.loadSet(setId);
+  const loadedSets = await Promise.all((setIds || []).map((id) => ProblemService.loadSet(id)));
+  currentSetData = loadedSets.length > 1 ? mergeSetsForPrint(loadedSets) : loadedSets[0];
+  const setId = currentSetData?.id || "";
 
   const indexMap = new Map();
   (currentSetData.problems || []).forEach((q, idx) => indexMap.set(q.id, idx));
@@ -1589,6 +1708,40 @@ async function renderAll({ setId, bucket, variant }) {
   root.innerHTML = "";
   root.classList.remove("variant-student", "variant-teacher");
   root.classList.add(variant === "teacher" ? "variant-teacher" : "variant-student");
+
+  const useLightLayout = (setIds || []).length > 1 || selected.length >= 30;
+  if (useLightLayout) {
+    const pages = chunk(selected, LIGHT_MODE_PAGE_SIZE);
+    const pageCount = pages.length;
+    pages.forEach((group, i) => {
+      const pageEl = buildPage(
+        setId,
+        currentSetData,
+        i,
+        pageCount,
+        [],
+        indexMap,
+        variant,
+        bucket,
+        "double"
+      );
+      const cols = pageEl.querySelectorAll(".page-col");
+      const colL = cols[0];
+      const colR = cols[1];
+
+      group.forEach((q, qIdx) => {
+        const idx = indexMap.get(q.id) ?? 0;
+        const card = buildProblemCard(currentSetData, q, idx, variant);
+        if (qIdx % 2 === 0) colL.appendChild(card);
+        else colR.appendChild(card);
+      });
+      root.appendChild(pageEl);
+    });
+
+    applyPrismHighlight(root);
+    updateToolbarTitle(currentSetData, bucket, variant);
+    return;
+  }
 
   // 문제 출력 화면은 문제만 렌더한다.
 
@@ -1939,9 +2092,9 @@ function setQp(name, value) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const setId = qp("set");
-  if (!setId) {
-    document.getElementById("print-root").textContent = "잘못된 접근입니다. (set 파라미터가 없습니다)";
+  const setIds = await resolveSetIdsFromQuery();
+  if (!setIds.length) {
+    document.getElementById("print-root").textContent = "잘못된 접근입니다. (set / sets / contestLang+contestLevel 파라미터가 없습니다)";
     return;
   }
 
@@ -2001,7 +2154,7 @@ if (applyBtn) {
     else setQp("range", "");
     setQp("lineNumbers", lineNumbers);
 
-    await renderAll({ setId, bucket, variant });
+    await renderAll({ setIds, bucket, variant });
   });
 }
 
@@ -2010,7 +2163,10 @@ if (applyBtn) {
   if (printBtn) printBtn.addEventListener("click", () => window.print());
 
   const back = document.getElementById("back-link");
-  if (back) back.href = `practice.html?set=${encodeURIComponent(setId)}`;
+  if (back) {
+    if (setIds.length === 1) back.href = `practice.html?set=${encodeURIComponent(setIds[0])}`;
+    else back.href = "index.html?track=contest";
+  }
 
-  await renderAll({ setId, bucket: (bucketSel ? bucketSel.value : "all"), variant: (variantSel ? variantSel.value : "student") });
+  await renderAll({ setIds, bucket: (bucketSel ? bucketSel.value : "all"), variant: (variantSel ? variantSel.value : "student") });
 });

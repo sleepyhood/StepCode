@@ -193,6 +193,70 @@ function createRoundChip(setMeta, viewState) {
   return a;
 }
 
+function createContestBatchPdfPanel() {
+  const section = document.createElement("section");
+  section.className = "part-card";
+
+  const head = document.createElement("div");
+  head.className = "part-card-head";
+
+  const title = document.createElement("h3");
+  title.className = "part-card-title";
+  title.textContent = "경시대회 묶음 PDF";
+
+  const meta = document.createElement("p");
+  meta.className = "part-card-meta";
+  meta.textContent = "언어/학년별 11회차 통합 출력";
+  head.append(title, meta);
+
+  const actions = document.createElement("div");
+  actions.className = "part-secondary-actions";
+
+  const combos = [
+    { lang: "c", level: "elem", label: "C 초등 11회차" },
+    { lang: "c", level: "mid", label: "C 중등 11회차" },
+    { lang: "c", level: "high", label: "C 고등 11회차" },
+    { lang: "py", level: "elem", label: "PY 초등 11회차" },
+    { lang: "py", level: "mid", label: "PY 중등 11회차" },
+    { lang: "py", level: "high", label: "PY 고등 11회차" },
+  ];
+
+  combos.forEach((combo) => {
+    const row = document.createElement("div");
+    row.className = "part-secondary-actions";
+
+    const qProblem = new URLSearchParams();
+    qProblem.set("contestLang", combo.lang);
+    qProblem.set("contestLevel", combo.level);
+    qProblem.set("contestRounds", "11");
+    qProblem.set("variant", "student");
+    qProblem.set("bucket", "all");
+    const problemLink = document.createElement("a");
+    problemLink.className = "part-action-link basic";
+    problemLink.href = `print.html?${qProblem.toString()}`;
+    problemLink.textContent = `${combo.label} 문제`;
+    row.appendChild(problemLink);
+
+    const qTheory = new URLSearchParams();
+    qTheory.set("contestLang", combo.lang);
+    qTheory.set("contestLevel", combo.level);
+    qTheory.set("contestWeeks", "11");
+    qTheory.set("lang", combo.lang === "c" ? "c" : "python");
+    qTheory.set("audience", combo.level === "elem" ? "elementary" : combo.level === "mid" ? "middle" : "high");
+    qTheory.set("view", "student");
+    const theoryLink = document.createElement("a");
+    theoryLink.className = "part-action-link theory";
+    theoryLink.href = `theory_print.html?${qTheory.toString()}`;
+    theoryLink.textContent = `${combo.label} 이론`;
+    row.appendChild(theoryLink);
+
+    actions.appendChild(row);
+  });
+
+  section.append(head, actions);
+  return section;
+}
+
 function setCardRoundsHidden(cardEl, hidden) {
   const rounds = cardEl.querySelector(".part-rounds");
   const toggle = cardEl.querySelector(".part-rounds-toggle");
@@ -521,6 +585,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderLanguageButtons(langs);
 
       list.innerHTML = "";
+      if (state.track === "contest") {
+        list.appendChild(createContestBatchPdfPanel());
+      }
       const activeCategories = categories.filter(
         (cat) => getTrackFromCategory(cat) === state.track
       );

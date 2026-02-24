@@ -60,7 +60,7 @@
       "level": "고",
       "title": "문제 3",
       "description": "다음 프로그램의 빈칸에 값을 넣었을 때 가장 큰 값을 가지는 코드를 고르시오.",
-      "code": "def f(a):\n    if a <= 0:\n        return 0\n    return (a % 7) * f(a // 7) + a % 7\n\nprint(f(223))",
+      "code": "def f(a):\n    if a <= 0:\n        return 0\n    return (a % 7) * f(a // 7) + a % 7\n\nprint(f(빈칸))",
       "options": [
         "14",
         "89",

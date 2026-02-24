@@ -131,6 +131,16 @@ body {
   line-height: 1.62;
 }
 
+.theory-batch-section {
+  margin-bottom: 20px;
+}
+
+.theory-batch-title {
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #cbd5e1;
+}
+
 body.layout-double .theory-print-root {
   column-count: 2;
   column-gap: 18px;
@@ -635,6 +645,15 @@ body.layout-double .theory-print-root .theory-mini-check-card p {
     border-radius: 0;
     box-shadow: none;
     padding: 0;
+  }
+
+  .theory-batch-section {
+    break-after: page;
+    page-break-after: always;
+  }
+  .theory-batch-section:last-child {
+    break-after: auto;
+    page-break-after: auto;
   }
 
   body.layout-double .theory-print-root {
