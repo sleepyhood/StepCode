@@ -967,7 +967,7 @@ function syncConceptsParam(selectedSet, availableConcepts) {
 }
 
 function updateTopActionQueryParam(name, value) {
-  ["theory-print-btn", "theory-combined-print-btn"].forEach((id) => {
+  ["theory-print-btn", "theory-batch-print-btn", "theory-combined-print-btn"].forEach((id) => {
     const btn = document.getElementById(id);
     if (!btn?.href) return;
     try {
@@ -1303,6 +1303,35 @@ async function apiIsHost() {
   }
 }
 
+function normalizeContestLang(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (v === "c") return "c";
+  if (v === "py" || v === "python") return "py";
+  return "";
+}
+
+function normalizeContestLevel(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (v === "elem" || v === "elementary") return "elementary";
+  if (v === "mid" || v === "middle") return "middle";
+  if (v === "high") return "high";
+  return "";
+}
+
+function inferContestLevelFromAudience(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (v === "elementary") return "elementary";
+  if (v === "middle") return "middle";
+  if (v === "high") return "high";
+  return "";
+}
+
+function inferContestLevelFromSetId(rawSetId) {
+  const m = String(rawSetId || "").toLowerCase().match(/^contest_(c|py)_(elem|mid|high)_/);
+  if (!m) return "";
+  return normalizeContestLevel(m[2]);
+}
+
 async function syncTheoryPrintButton(entry, params, setIdInQuery) {
   const btn = document.getElementById("theory-print-btn");
   if (!btn) return;
@@ -1324,6 +1353,40 @@ async function syncTheoryPrintButton(entry, params, setIdInQuery) {
   if (audience) q.set("audience", audience);
   if (view) q.set("view", view);
   if (concepts) q.set("concepts", concepts);
+
+  btn.href = `theory_print.html?${q.toString()}`;
+  btn.hidden = false;
+}
+
+function syncTheoryBatchPrintButton(entry, params, setIdInQuery, isHost) {
+  const btn = document.getElementById("theory-batch-print-btn");
+  if (!btn) return;
+  btn.hidden = true;
+  if (!isHost) return;
+
+  const contestMatch = String(entry?.conceptId || "").match(/^contest_(c|py)_w\d{2}_/i);
+  if (!contestMatch) return;
+
+  const contestLang =
+    normalizeContestLang(params.get("contestLang")) ||
+    normalizeContestLang(contestMatch[1]);
+  if (!contestLang) return;
+
+  const contestLevel =
+    normalizeContestLevel(params.get("contestLevel")) ||
+    inferContestLevelFromAudience(params.get("audience")) ||
+    inferContestLevelFromSetId(setIdInQuery) ||
+    inferContestLevelFromSetId(entry?.recommendedSetId) ||
+    "middle";
+
+  const q = new URLSearchParams();
+  q.set("contestLang", contestLang);
+  q.set("contestLevel", contestLevel);
+  q.set("contestWeeks", "11");
+  q.set("lang", contestLang === "c" ? "c" : "python");
+  q.set("audience", contestLevel);
+  q.set("view", params.get("view") || "student");
+  q.set("layout", "double");
 
   btn.href = `theory_print.html?${q.toString()}`;
   btn.hidden = false;
@@ -1410,6 +1473,7 @@ async function initTheoryPage() {
     updateTitle(entry);
     updateTopLinks(entry, setIdInQuery, params);
     await syncTheoryPrintButton(entry, params, setIdInQuery);
+    syncTheoryBatchPrintButton(entry, params, setIdInQuery, isHost);
     syncTheoryCombinedPrintButton(entry, params, setIdInQuery, setMap, isHost);
     renderRelatedList(entry, setMap, setIdInQuery);
 

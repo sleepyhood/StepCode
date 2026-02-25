@@ -95,6 +95,63 @@ function resolveContestTheoryEntries(theoryIndex, contestLang, maxWeeks) {
     .map((v) => v.entry);
 }
 
+function parseContestWeekFromConceptId(rawConceptId) {
+  const m = String(rawConceptId || "").match(/_w(\d{2})_/i);
+  return m ? Number(m[1]) : null;
+}
+
+function parseWeekSelection(raw, availableWeeks) {
+  const available = (availableWeeks || []).map((v) => Number(v)).filter((v) => Number.isFinite(v));
+  if (!available.length) return new Set();
+  const picked = String(raw || "")
+    .split(",")
+    .map((v) => Number(v.trim()))
+    .filter((v) => Number.isFinite(v) && available.includes(v));
+  return picked.length ? new Set(picked) : new Set(available);
+}
+
+function serializeWeekSelection(selectedWeeks, availableWeeks) {
+  const available = (availableWeeks || []).map((v) => Number(v)).filter((v) => Number.isFinite(v));
+  const picked = available.filter((w) => selectedWeeks && selectedWeeks.has(w));
+  if (!available.length || !picked.length || picked.length === available.length) return "";
+  return picked.join(",");
+}
+
+function parseBatchConceptSelection(raw, availableConceptsByWeek) {
+  const out = new Map();
+  const chunks = String(raw || "")
+    .split(";")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  chunks.forEach((chunk) => {
+    const m = chunk.match(/^(\d{1,2}):(.*)$/);
+    if (!m) return;
+    const week = Number(m[1]);
+    if (!Number.isFinite(week) || !availableConceptsByWeek.has(week)) return;
+    const available = new Set(availableConceptsByWeek.get(week) || []);
+    const picked = String(m[2] || "")
+      .split(",")
+      .map((v) => String(Number(v.trim())))
+      .filter((v) => /^\d+$/.test(v) && available.has(v));
+    out.set(week, new Set(picked));
+  });
+  return out;
+}
+
+function serializeBatchConceptSelection(selectedByWeek, availableConceptsByWeek, selectedWeeks) {
+  const rows = [];
+  const weeks = Array.from(availableConceptsByWeek.keys()).sort((a, b) => a - b);
+  weeks.forEach((week) => {
+    if (!selectedWeeks.has(week)) return;
+    const available = availableConceptsByWeek.get(week) || [];
+    const selected = Array.from(selectedByWeek.get(week) || []);
+    const picked = available.filter((v) => selected.includes(v));
+    if (!picked.length || picked.length === available.length) return;
+    rows.push(`${week}:${picked.join(",")}`);
+  });
+  return rows.join(";");
+}
+
 function normalizeLanguageList(raw) {
   return String(raw || "")
     .split(",")
@@ -833,7 +890,8 @@ function refreshSectionVisibility(block) {
   const byAudience = block.dataset.filterAudience !== "0";
   const byView = block.dataset.filterView !== "0";
   const byConcept = block.dataset.filterConcept !== "0";
-  block.style.display = byAudience && byView && byConcept ? "" : "none";
+  const byBatch = block.dataset.filterBatch !== "0";
+  block.style.display = byAudience && byView && byConcept && byBatch ? "" : "none";
 }
 
 function setSectionFilterState(block, key, visible) {
@@ -947,6 +1005,7 @@ function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, 
   applyAudienceFilter(contentEl, defaultAudience);
   applyViewFilter(contentEl, defaultView);
   applyConceptFilter(contentEl, selectedConceptSet);
+  if (typeof options?.onAfterFilter === "function") options.onAfterFilter();
   const initialLayout = normalizeLayout(qp("layout"));
   layoutSel.value = initialLayout;
   document.body.classList.toggle("layout-double", initialLayout === "double");
@@ -1018,12 +1077,13 @@ function setupLanguageSelect(contentEl, preferredLangRaw, params, setIdInQuery, 
     setQp("lang", selected === "all" ? "" : selected);
     setQp("audience", selectedAudience === "all" ? "" : selectedAudience);
     setQp("view", selectedView === "all" ? "" : selectedView);
-    setQp("concepts", concepts);
+    if (!disableConceptToggle || !options?.preserveConceptParam) setQp("concepts", concepts);
     setQp("layout", layout === "single" ? "" : layout);
     applyLanguageFilter(contentEl, selected);
     applyAudienceFilter(contentEl, selectedAudience);
     applyViewFilter(contentEl, selectedView);
     applyConceptFilter(contentEl, disableConceptToggle ? null : selectedConceptSet);
+    if (typeof options?.onAfterFilter === "function") options.onAfterFilter();
     document.body.classList.toggle("layout-double", layout === "double");
   });
 }
@@ -1096,6 +1156,331 @@ function setupToolbarLinks(params, entry) {
   if (printBtn) printBtn.addEventListener("click", () => window.print());
 }
 
+function applyBatchWeekConceptFilter(weekModels, selectedWeeks, selectedConceptsByWeek) {
+  (weekModels || []).forEach((weekModel) => {
+    const week = Number(weekModel.week);
+    const weekSelected = selectedWeeks.has(week);
+    const selectedConcepts = selectedConceptsByWeek.get(week) || new Set();
+    const sectionBlocks = Array.from(
+      weekModel.body.querySelectorAll(".theory-section-block")
+    );
+
+    sectionBlocks.forEach((section) => {
+      const conceptBlocks = Array.from(
+        section.querySelectorAll(":scope > .theory-concept-block[data-concept]")
+      );
+      if (!conceptBlocks.length) {
+        setSectionFilterState(section, "filterBatch", weekSelected);
+        return;
+      }
+
+      let hasVisibleConcept = false;
+      conceptBlocks.forEach((block) => {
+        const conceptNo = String(block.dataset.concept || "");
+        const visible = weekSelected && selectedConcepts.has(conceptNo);
+        block.style.display = visible ? "" : "none";
+        if (visible) hasVisibleConcept = true;
+      });
+      setSectionFilterState(section, "filterConcept", hasVisibleConcept);
+      setSectionFilterState(section, "filterBatch", weekSelected);
+    });
+
+    const hasVisibleSection = sectionBlocks.some((section) => section.style.display !== "none");
+    weekModel.section.style.display = weekSelected && hasVisibleSection ? "" : "none";
+  });
+}
+
+function setupContestBatchToolbar(weekModels) {
+  const panel = document.getElementById("tp-batch-controls");
+  if (!panel) return null;
+
+  const sortedWeeks = (weekModels || [])
+    .map((m) => Number(m.week))
+    .filter((w) => Number.isFinite(w))
+    .sort((a, b) => a - b);
+  if (!sortedWeeks.length) {
+    panel.hidden = true;
+    panel.innerHTML = "";
+    return null;
+  }
+
+  const params = new URLSearchParams(location.search);
+  const availableConceptsByWeek = new Map();
+  const conceptLabelByWeek = new Map();
+  const conceptDisplayLabelByNo = new Map();
+  weekModels.forEach((model) => {
+    const pairs = (model.conceptItems || []).map((it) => ({
+      no: String(it.no),
+      label: String(it.label || `개념 ${it.no}`),
+    }));
+    availableConceptsByWeek.set(
+      Number(model.week),
+      pairs.map((it) => it.no)
+    );
+    const weekLabelMap = new Map();
+    pairs.forEach((it) => {
+      weekLabelMap.set(it.no, it.label);
+      if (!conceptDisplayLabelByNo.has(it.no)) conceptDisplayLabelByNo.set(it.no, it.label);
+    });
+    conceptLabelByWeek.set(Number(model.week), weekLabelMap);
+  });
+
+  const selectedWeeks = parseWeekSelection(params.get("weeks"), sortedWeeks);
+  const selectedByWeek = new Map();
+  sortedWeeks.forEach((week) => {
+    selectedByWeek.set(week, new Set(availableConceptsByWeek.get(week) || []));
+  });
+
+  const parsedByWeek = parseBatchConceptSelection(params.get("concepts"), availableConceptsByWeek);
+  parsedByWeek.forEach((pickedSet, week) => {
+    selectedByWeek.set(week, new Set(pickedSet));
+  });
+
+  sortedWeeks.forEach((week) => {
+    const available = availableConceptsByWeek.get(week) || [];
+    const selected = selectedByWeek.get(week) || new Set();
+    if (!available.length || !selected.size) selectedWeeks.delete(week);
+  });
+
+  const unionConceptNos = Array.from(
+    new Set(
+      sortedWeeks.flatMap((week) => availableConceptsByWeek.get(week) || [])
+    )
+  ).sort((a, b) => Number(a) - Number(b));
+  let bulkSelectedSet = new Set(unionConceptNos);
+
+  panel.hidden = false;
+  panel.innerHTML = "";
+
+  const weeksRow = document.createElement("div");
+  weeksRow.className = "tp-batch-row";
+  const weeksTitle = document.createElement("span");
+  weeksTitle.className = "tp-batch-row-title";
+  weeksTitle.textContent = "주차 선택";
+  weeksRow.appendChild(weeksTitle);
+
+  const weekAllBtn = document.createElement("button");
+  weekAllBtn.type = "button";
+  weekAllBtn.className = "tp-batch-btn secondary";
+  weekAllBtn.textContent = "전체 선택";
+  weeksRow.appendChild(weekAllBtn);
+
+  const weekClearBtn = document.createElement("button");
+  weekClearBtn.type = "button";
+  weekClearBtn.className = "tp-batch-btn secondary";
+  weekClearBtn.textContent = "전체 해제";
+  weeksRow.appendChild(weekClearBtn);
+
+  const weekButtons = new Map();
+  sortedWeeks.forEach((week) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "tp-batch-btn";
+    btn.dataset.week = String(week);
+    btn.textContent = `${week}주차`;
+    weekButtons.set(week, btn);
+    weeksRow.appendChild(btn);
+  });
+  panel.appendChild(weeksRow);
+
+  const bulkRow = document.createElement("div");
+  bulkRow.className = "tp-batch-row";
+  const bulkTitle = document.createElement("span");
+  bulkTitle.className = "tp-batch-row-title";
+  bulkTitle.textContent = "일괄 동작";
+  bulkRow.appendChild(bulkTitle);
+
+  const bulkConceptButtons = [];
+  unionConceptNos.forEach((conceptNo) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "tp-batch-btn";
+    btn.dataset.concept = conceptNo;
+    btn.textContent = conceptDisplayLabelByNo.get(conceptNo) || `개념 ${conceptNo}`;
+    bulkConceptButtons.push(btn);
+    bulkRow.appendChild(btn);
+  });
+
+  const bulkApplyBtn = document.createElement("button");
+  bulkApplyBtn.type = "button";
+  bulkApplyBtn.className = "tp-batch-btn secondary";
+  bulkApplyBtn.textContent = "선택 주차 동일 적용";
+  bulkRow.appendChild(bulkApplyBtn);
+
+  const bulkClearBtn = document.createElement("button");
+  bulkClearBtn.type = "button";
+  bulkClearBtn.className = "tp-batch-btn secondary";
+  bulkClearBtn.textContent = "모두 해제";
+  bulkRow.appendChild(bulkClearBtn);
+  panel.appendChild(bulkRow);
+
+  const editorTitle = document.createElement("div");
+  editorTitle.className = "tp-batch-row-title";
+  editorTitle.textContent = "개념 선택 편집";
+  panel.appendChild(editorTitle);
+
+  const editorList = document.createElement("div");
+  editorList.className = "tp-week-editor-list";
+  panel.appendChild(editorList);
+
+  const rowRefs = new Map();
+  sortedWeeks.forEach((week) => {
+    const item = document.createElement("div");
+    item.className = "tp-week-editor-item";
+    const label = document.createElement("span");
+    label.className = "tp-week-editor-label";
+    label.textContent = `${week}주차`;
+    item.appendChild(label);
+
+    const allBtn = document.createElement("button");
+    allBtn.type = "button";
+    allBtn.className = "tp-batch-btn";
+    allBtn.dataset.week = String(week);
+    allBtn.textContent = "전체";
+    item.appendChild(allBtn);
+
+    const conceptBtns = [];
+    (availableConceptsByWeek.get(week) || []).forEach((conceptNo) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tp-batch-btn";
+      btn.dataset.week = String(week);
+      btn.dataset.concept = conceptNo;
+      btn.textContent =
+        conceptLabelByWeek.get(week)?.get(conceptNo) || `개념 ${conceptNo}`;
+      conceptBtns.push(btn);
+      item.appendChild(btn);
+    });
+
+    rowRefs.set(week, { item, allBtn, conceptBtns });
+    editorList.appendChild(item);
+  });
+
+  function syncBatchQuery() {
+    setQp("weeks", serializeWeekSelection(selectedWeeks, sortedWeeks));
+    setQp(
+      "concepts",
+      serializeBatchConceptSelection(selectedByWeek, availableConceptsByWeek, selectedWeeks)
+    );
+  }
+
+  function apply() {
+    applyBatchWeekConceptFilter(weekModels, selectedWeeks, selectedByWeek);
+    syncBatchQuery();
+  }
+
+  function renderState() {
+    sortedWeeks.forEach((week) => {
+      const isWeekSelected = selectedWeeks.has(week);
+      const refs = rowRefs.get(week);
+      const picked = selectedByWeek.get(week) || new Set();
+      const available = availableConceptsByWeek.get(week) || [];
+      const weekBtn = weekButtons.get(week);
+      if (weekBtn) weekBtn.classList.toggle("is-active", isWeekSelected);
+      refs.item.classList.toggle("is-off", !isWeekSelected);
+      refs.allBtn.classList.toggle("is-active", !!available.length && picked.size === available.length);
+      refs.conceptBtns.forEach((btn) => {
+        const c = String(btn.dataset.concept || "");
+        btn.classList.toggle("is-active", picked.has(c));
+      });
+    });
+
+    bulkConceptButtons.forEach((btn) => {
+      const c = String(btn.dataset.concept || "");
+      btn.classList.toggle("is-active", bulkSelectedSet.has(c));
+    });
+  }
+
+  weekAllBtn.addEventListener("click", () => {
+    sortedWeeks.forEach((week) => {
+      selectedWeeks.add(week);
+      selectedByWeek.set(week, new Set(availableConceptsByWeek.get(week) || []));
+    });
+    renderState();
+    apply();
+  });
+
+  weekClearBtn.addEventListener("click", () => {
+    selectedWeeks.clear();
+    sortedWeeks.forEach((week) => selectedByWeek.set(week, new Set()));
+    renderState();
+    apply();
+  });
+
+  weekButtons.forEach((btn, week) => {
+    btn.addEventListener("click", () => {
+      if (selectedWeeks.has(week)) {
+        selectedWeeks.delete(week);
+      } else {
+        selectedWeeks.add(week);
+        if (!(selectedByWeek.get(week) || new Set()).size) {
+          selectedByWeek.set(week, new Set(availableConceptsByWeek.get(week) || []));
+        }
+      }
+      renderState();
+      apply();
+    });
+  });
+
+  bulkConceptButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const c = String(btn.dataset.concept || "");
+      if (bulkSelectedSet.has(c)) bulkSelectedSet.delete(c);
+      else bulkSelectedSet.add(c);
+      renderState();
+    });
+  });
+
+  bulkApplyBtn.addEventListener("click", () => {
+    sortedWeeks.forEach((week) => {
+      if (!selectedWeeks.has(week)) return;
+      const available = availableConceptsByWeek.get(week) || [];
+      const picked = available.filter((c) => bulkSelectedSet.has(c));
+      const next = new Set(picked);
+      selectedByWeek.set(week, next);
+      if (!next.size) selectedWeeks.delete(week);
+    });
+    renderState();
+    apply();
+  });
+
+  bulkClearBtn.addEventListener("click", () => {
+    selectedWeeks.clear();
+    sortedWeeks.forEach((week) => selectedByWeek.set(week, new Set()));
+    renderState();
+    apply();
+  });
+
+  rowRefs.forEach((refs, week) => {
+    refs.allBtn.addEventListener("click", () => {
+      selectedWeeks.add(week);
+      selectedByWeek.set(week, new Set(availableConceptsByWeek.get(week) || []));
+      renderState();
+      apply();
+    });
+    refs.conceptBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const c = String(btn.dataset.concept || "");
+        const picked = new Set(selectedByWeek.get(week) || []);
+        if (picked.has(c)) picked.delete(c);
+        else picked.add(c);
+        selectedByWeek.set(week, picked);
+        if (picked.size) selectedWeeks.add(week);
+        else selectedWeeks.delete(week);
+        renderState();
+        apply();
+      });
+    });
+  });
+
+  renderState();
+  apply();
+
+  return {
+    applyFilters: () => applyBatchWeekConceptFilter(weekModels, selectedWeeks, selectedByWeek),
+  };
+}
+
 function setupBatchToolbarLinks() {
   const back = document.getElementById("tp-back-link");
   if (back) back.href = "index.html?track=contest";
@@ -1165,18 +1550,21 @@ async function initTheoryPrintPage() {
 
       setupBatchToolbarLinks();
       root.innerHTML = "";
+      const weekModels = [];
 
       for (let i = 0; i < entries.length; i += 1) {
         const entry = entries[i];
         const res = await fetch(entry.mdPath);
         if (!res.ok) throw new Error(`failed to load markdown: ${entry.mdPath}`);
         const mdText = await res.text();
+        const weekNo = parseContestWeekFromConceptId(entry.conceptId) || i + 1;
 
         const section = document.createElement("section");
         section.className = "theory-batch-section";
+        section.dataset.week = String(weekNo);
         const head = document.createElement("h1");
         head.className = "theory-batch-title";
-        head.textContent = `${i + 1}회차 · ${entry.title || entry.conceptId || "이론"}`;
+        head.textContent = `${weekNo}회차 · ${entry.title || entry.conceptId || "이론"}`;
         const body = document.createElement("article");
         body.className = "theory-batch-body";
         section.append(head, body);
@@ -1192,7 +1580,16 @@ async function initTheoryPrintPage() {
         enhanceCodeBlocks(body);
         enhanceExampleBlocks(body);
         attachTrailingExampleBlocks(body);
+
+        weekModels.push({
+          week: weekNo,
+          section,
+          body,
+          conceptItems: extractConceptItems(body),
+        });
       }
+
+      const batchController = setupContestBatchToolbar(weekModels);
 
       setupLanguageSelect(
         root,
@@ -1200,7 +1597,13 @@ async function initTheoryPrintPage() {
         params,
         "",
         setMap,
-        { disableConceptToggle: true }
+        {
+          disableConceptToggle: true,
+          preserveConceptParam: true,
+          onAfterFilter: () => {
+            if (batchController) batchController.applyFilters();
+          },
+        }
       );
       return;
     }

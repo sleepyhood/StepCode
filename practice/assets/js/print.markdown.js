@@ -1605,6 +1605,7 @@ function mergeSetsForPrint(sets) {
   const availableLanguages = [];
   const seenLang = new Set();
   const problems = [];
+  const conceptsById = new Map();
 
   sets.forEach((set) => {
     const round = parseRoundFromSetId(set?.id);
@@ -1625,6 +1626,18 @@ function mergeSetsForPrint(sets) {
         title: `[${roundLabel}] ${title}`,
       });
     });
+
+    (set?.concepts || []).forEach((c) => {
+      const id = String(c?.id || "").trim();
+      if (!id) return;
+      // Keep first seen order, but merge sparse fields from later entries.
+      if (!conceptsById.has(id)) {
+        conceptsById.set(id, { ...c });
+        return;
+      }
+      const prev = conceptsById.get(id) || {};
+      conceptsById.set(id, { ...c, ...prev });
+    });
   });
 
   const mergedIdBase = String(sets[0]?.id || "merged")
@@ -1637,6 +1650,7 @@ function mergeSetsForPrint(sets) {
     title: buildMergedSetTitle(sets),
     categoryId: sets[0]?.categoryId || "merged",
     availableLanguages,
+    concepts: Array.from(conceptsById.values()),
     problems,
     coreCount: Number.MAX_SAFE_INTEGER,
   };

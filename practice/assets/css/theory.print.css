@@ -119,6 +119,84 @@ body {
   color: #fff;
 }
 
+.tp-batch-controls {
+  border-bottom: 1px solid #cbd5e1;
+  background: #ffffff;
+  padding: 10px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tp-batch-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.tp-batch-row-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-right: 4px;
+}
+
+.tp-batch-btn {
+  border: 1px solid #94a3b8;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.tp-batch-btn.is-active {
+  border-color: #0f766e;
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
+}
+
+.tp-batch-btn.secondary {
+  border-radius: 8px;
+}
+
+.tp-week-editor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tp-week-editor-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.tp-week-editor-item.is-off {
+  opacity: 0.62;
+}
+
+.tp-week-editor-label {
+  min-width: 58px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.tp-week-editor-item .tp-batch-btn {
+  background: #ffffff;
+}
+
 .theory-print-root {
   max-width: 980px;
   margin: 20px auto 36px;
