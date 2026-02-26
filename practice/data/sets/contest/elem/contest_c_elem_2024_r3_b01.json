@@ -13,6 +13,7 @@
       "description": "다음 중 C 소스 코드를 실행 가능한 형태로 변환하는 프로그램은 무엇인가?",
       "conceptRef": "w01_c1",
       "type": "mcq",
+      "teacherExplainMd": "C 소스 코드를 기계어(또는 목적 코드)로 번역하는 도구는 **컴파일러**입니다. 링커는 번역된 여러 목적 파일/라이브러리를 연결하는 단계이므로 정답이 아닙니다.",
       "options": [
         "가상 머신",
         "인터프리터",
@@ -36,6 +37,7 @@
       "description": "다음 중 `short` 자료형의 최댓값을 나타내는 상수는 무엇인가?",
       "conceptRef": "w01_c2",
       "type": "mcq",
+      "teacherExplainMd": "`short`의 최댓값 매크로는 `SHRT_MAX`이며 `<limits.h>`에 정의됩니다. `INT_MAX`, `LONG_MAX`는 각각 `int`, `long`용 상수입니다.",
       "options": [
         "INT_MAX",
         "CHAR_MAX",
@@ -60,6 +62,7 @@
       "code": "#include <stdio.h>\nint main() {\n    short s = 32767;\n    s = s + 1;\n    printf(\"%d\", s);\n    return 0;\n}",
       "conceptRef": "w01_c3",
       "type": "mcq",
+      "teacherExplainMd": "`short` 오버플로우 과정을 단계별로 보면 다음과 같습니다.\n\n| 단계 | 값 |\n|---|---:|\n| 초기 `s` | 32767 |\n| `s + 1` 계산값 | 32768 |\n| `short`에 다시 저장(16비트 2의 보수 일반 환경) | -32768 |\n\n따라서 출력은 `-32768`입니다.",
       "options": [
         "-32768",
         "-1",
@@ -83,6 +86,7 @@
       "description": "다음 중 `SHRT_MAX`를 사용하기 위해 포함해야 하는 헤더는 무엇인가?",
       "conceptRef": "w01_c1",
       "type": "mcq",
+      "teacherExplainMd": "`SHRT_MAX`는 정수형 한계값 매크로이므로 `<limits.h>`를 포함해야 사용할 수 있습니다.",
       "options": [
         "stdio.h",
         "limits.h",
@@ -110,6 +114,7 @@
       "description": "다음 중 헤더와 설명의 연결이 올바르지 않은 것을 고르시오.",
       "conceptRef": "w01_c1",
       "type": "mcq",
+      "teacherExplainMd": "보기별 헤더-기능을 비교하면 다음과 같습니다.\n\n| 보기 | 내용 | 판정 |\n|---|---|---|\n| A | `stdio.h`: 표준 입출력 | 맞음 |\n| B | `time.h`: 날짜/시간 | 맞음 |\n| C | `assert.h`: 검증 매크로 | 맞음 |\n| D | `stdarg.h`: 문자열 길이 계산 | 틀림 (`strlen`은 `string.h`) |\n| E | `stddef.h`: 공통 타입/매크로 | 맞음 |\n\n따라서 올바르지 않은 연결은 D입니다.",
       "options": [
         "stdio.h: 표준 입출력 함수 제공",
         "time.h: 날짜/시간 관련 기능 제공",

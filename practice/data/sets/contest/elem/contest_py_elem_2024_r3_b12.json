@@ -1,6 +1,6 @@
 ﻿{
     "id":  "contest_py_elem_2024_r3_b12",
-    "title": "Python 경시대회(초등) 12회차",
+    "title":  "Python 경시대회(초등) 12회차",
     "categoryId":  "contest_py_w12_final_mock",
     "availableLanguages":  [
                                "python"
@@ -13,7 +13,8 @@
                          "title":  "Trace 1. 중첩 반복 횟수",
                          "description":  "다음 코드의 출력값을 쓰세요.",
                          "code":  "a = 0\nfor i in range(1, 30, 2):\n    for j in range(2, 20, 3):\n        a += 1\nprint(a)",
-                         "expectedText":  "90"
+                         "expectedText":  "90",
+                         "teacherExplainMd":  "중첩 반복 횟수는 바깥 횟수 x 안쪽 횟수로 계산합니다.\n\n| 반복 | 값 | 횟수 |\n|---|---|---:|\n| 바깥 `range(1, 30, 2)` | 1, 3, ..., 29 | 15 |\n| 안쪽 `range(2, 20, 3)` | 2, 5, 8, 11, 14, 17 | 6 |\n| 총 `a += 1` 실행 횟수 |  | 90 |\n\n따라서 출력은 `90`입니다."
                      },
                      {
                          "id":  "trace2",
@@ -22,7 +23,8 @@
                          "title":  "Trace 2. 조건 누적",
                          "description":  "다음 코드의 출력값을 쓰세요.",
                          "code":  "b = 0\nfor i in [1, 2, 3, 4, 5, 6, 7]:\n    if i % 2 == 1:\n        b += i\n    if i % 3 == 1:\n        b -= i\nprint(b)",
-                         "expectedText":  "4"
+                         "expectedText":  "4",
+                         "teacherExplainMd":  "조건별 누적값을 분리하면 계산이 쉽습니다.\n\n| 조건 | 해당 값 | 합계 |\n|---|---|---:|\n| `i % 2 == 1` (더함) | 1, 3, 5, 7 | +16 |\n| `i % 3 == 1` (뺌) | 1, 4, 7 | -12 |\n| 최종 b |  | 4 |\n\n따라서 출력은 `4`입니다."
                      },
                      {
                          "id":  "theory1",
@@ -30,6 +32,7 @@
                          "level":  "초,중,고",
                          "title":  "Theory 1. collections 모듈",
                          "description":  "`collections` 모듈의 특수 컨테이너가 직접 대체 대상으로 두지 않는 내장 타입을 고르세요.",
+                         "teacherExplainMd":  "`collections`의 특수 컨테이너(`deque`, `defaultdict`, `Counter`, `namedtuple`)는 주로 리스트/딕셔너리/튜플 계열 사용을 보완합니다.\n\n문자열 `str`은 직접 대체 대상으로 보지 않으므로 정답은 `str`입니다.",
                          "options":  [
                                          "list",
                                          "dict",
@@ -53,7 +56,8 @@
                          "title":  "Trace 3. while 반복",
                          "description":  "다음 코드의 출력값을 쓰세요.",
                          "code":  "a = 1\ni = 1\nwhile True:\n    if i \u003e 10:\n        break\n    i += 2\n    a *= 3\nprint(a)",
-                         "expectedText":  "243"
+                         "expectedText":  "243",
+                         "teacherExplainMd":  "반복마다 `i`와 `a`를 표로 추적하면 됩니다.\n\n| 반복 번호 | 시작 i | 실행 후 i | 실행 후 a |\n|---:|---:|---:|---:|\n| 1 | 1 | 3 | 3 |\n| 2 | 3 | 5 | 9 |\n| 3 | 5 | 7 | 27 |\n| 4 | 7 | 9 | 81 |\n| 5 | 9 | 11 | 243 |\n\n다음 반복 시작 시 `i=11`로 종료되므로 출력은 `243`입니다."
                      }
                  ]
 }

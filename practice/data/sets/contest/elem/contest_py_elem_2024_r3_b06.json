@@ -1,146 +1,151 @@
-{
-  "id": "contest_py_elem_2024_r3_b06",
-  "title": "Python 경시대회(초등) 6회차",
-  "categoryId": "contest_py_w06_string_compare_methods",
-  "availableLanguages": [
-    "python"
-  ],
-  "problems": [
-    {
-      "id": "q1",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 1",
-      "description": "다음 프로그램의 실행 결과는 무엇인가?",
-      "code": "a = \"apple\"\nb = 0\nfor i in range(5):\n    for j in range(i):\n        if a[i] != a[j]:\n            b += 1\nprint(b)",
-      "options": [
-        "6",
-        "7",
-        "8",
-        "9",
-        "10"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w06_c1"
-    },
-    {
-      "id": "q2",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 2",
-      "description": "다음 중 문자열이 특정 접미사로 끝나는지 확인하는 메서드는 무엇인가?",
-      "options": [
-        "append",
-        "endswith",
-        "split",
-        "replace",
-        "remove"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w06_c3"
-    },
-    {
-      "id": "q3",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 3",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "s = \"savefromtheavalanche\"\nt = \"av\"\nr = len(s)\np = len(t)\ni = 0\nwhile i <= len(s) - p:\n    j, u = 0, 0\n    if s[i] == t[j]:\n        for j in range(1, p):\n            if s[i + j] != t[j]:\n                u = 1\n                i += 1\n                break\n        if not u:\n            i += p\n            r -= p - 1\n    else:\n        i += 1\nprint(r)",
-      "options": [
-        "16",
-        "17",
-        "18",
-        "19",
-        "20"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w06_c2"
-    },
-    {
-      "id": "q4",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 4",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "def f():\n    global a, b\n    i = 0\n    j = 0\n    while i < len(a) - 1:\n        if a[i] != a[i + 1]:\n            b = b[:j] + a[i] + b[j+1:]\n            j += 1\n        i += 1\na = \"aaabbccccdefffff\"\nb = \"\"\nf()\nprint(b)",
-      "options": [
-        "abc",
-        "abcd",
-        "abcde",
-        "abccde",
-        "aabbccddee"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w06_c1"
-    },
-    {
-      "id": "q5",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "s = \"programming\"\nprint(s[2:8:2])",
-      "options": [
-        "prg",
-        "oag",
-        "orm",
-        "rmi",
-        "pgm"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w06_c1"
-    }
-  ],
-  "concepts": [
-    {
-      "id": "w06_c1",
-      "title": "개념 1) 인접 문자 비교와 연속 구간 카운트",
-      "summary": "관련 이론: 개념 1) 인접 문자 비교와 연속 구간 카운트"
-    },
-    {
-      "id": "w06_c2",
-      "title": "개념 2) 부분문자열 스캔과 인덱스 점프",
-      "summary": "관련 이론: 개념 2) 부분문자열 스캔과 인덱스 점프"
-    },
-    {
-      "id": "w06_c3",
-      "title": "개념 3) 중첩 반복 문자열 비교 카운트",
-      "summary": "관련 이론: 개념 3) 중첩 반복 문자열 비교 카운트"
-    }
-  ]
+﻿{
+    "id":  "contest_py_elem_2024_r3_b06",
+    "title":  "Python 경시대회(초등) 6회차",
+    "categoryId":  "contest_py_w06_string_compare_methods",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 1",
+                         "description":  "다음 프로그램의 실행 결과는 무엇인가?",
+                         "code":  "a = \"apple\"\nb = 0\nfor i in range(5):\n    for j in range(i):\n        if a[i] != a[j]:\n            b += 1\nprint(b)",
+                         "teacherExplainMd":  "앞쪽 문자와 비교해 `a[i] != a[j]`가 참인 횟수를 i별로 세면 됩니다.\n\n| i | a[i] | 비교한 j | 참 개수 |\n|---:|---|---|---:|\n| 1 | p | 0(a) | 1 |\n| 2 | p | 0(a), 1(p) | 1 |\n| 3 | l | 0(a), 1(p), 2(p) | 3 |\n| 4 | e | 0(a), 1(p), 2(p), 3(l) | 4 |\n\n총합은 `1+1+3+4 = 9`이므로 출력은 `9`입니다.",
+                         "options":  [
+                                         "6",
+                                         "7",
+                                         "8",
+                                         "9",
+                                         "10"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w06_c1"
+                     },
+                     {
+                         "id":  "q2",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 2",
+                         "description":  "다음 중 문자열이 특정 접미사로 끝나는지 확인하는 메서드는 무엇인가?",
+                         "teacherExplainMd":  "문자열이 특정 끝부분(접미사)으로 끝나는지 확인하는 메서드는 `endswith()`입니다.\n\n예: `\"python\".endswith(\"hon\")` -\u003e `True`",
+                         "options":  [
+                                         "append",
+                                         "endswith",
+                                         "split",
+                                         "replace",
+                                         "remove"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w06_c3"
+                     },
+                     {
+                         "id":  "q3",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "s = \"savefromtheavalanche\"\nt = \"av\"\nr = len(s)\np = len(t)\ni = 0\nwhile i \u003c= len(s) - p:\n    j, u = 0, 0\n    if s[i] == t[j]:\n        for j in range(1, p):\n            if s[i + j] != t[j]:\n                u = 1\n                i += 1\n                break\n        if not u:\n            i += p\n            r -= p - 1\n    else:\n        i += 1\nprint(r)",
+                         "teacherExplainMd":  "`\"av\"`가 매칭될 때마다 `r`이 1씩 감소합니다(`p-1=1`).\n\n| 매칭 번호 | 시작 위치 i | 부분문자열 |\n|---:|---:|---|\n| 1 | 1 | `s[1:3] = \"av\"` |\n| 2 | 11 | `s[11:13] = \"av\"` |\n\n초기 `r=20`에서 2회 감소하여 최종 `r=18`이므로 출력은 `18`입니다.",
+                         "options":  [
+                                         "16",
+                                         "17",
+                                         "18",
+                                         "19",
+                                         "20"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w06_c2"
+                     },
+                     {
+                         "id":  "q4",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "def f():\n    global a, b\n    i = 0\n    j = 0\n    while i \u003c len(a) - 1:\n        if a[i] != a[i + 1]:\n            b = b[:j] + a[i] + b[j+1:]\n            j += 1\n        i += 1\na = \"aaabbccccdefffff\"\nb = \"\"\nf()\nprint(b)",
+                         "teacherExplainMd":  "`a[i] != a[i+1]`인 위치는 연속 구간의 끝입니다.\n\n| 구간 | 구간 마지막 문자 | b에 추가 |\n|---|---|---|\n| `aaa` | a | a |\n| `bb` | b | b |\n| `cccc` | c | c |\n| `d` | d | d |\n| `e` | e | e |\n| `fffff` | f | (루프 종료 조건상 경계 없음) |\n\n따라서 최종 출력은 `abcde`입니다.",
+                         "options":  [
+                                         "abc",
+                                         "abcd",
+                                         "abcde",
+                                         "abccde",
+                                         "aabbccddee"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w06_c1"
+                     },
+                     {
+                         "id":  "q5",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "s = \"programming\"\nprint(s[2:8:2])",
+                         "teacherExplainMd":  "슬라이싱 `s[2:8:2]`는 인덱스 2, 4, 6 문자를 가져옵니다.\n\n| 인덱스 | 문자 |\n|---:|---|\n| 2 | o |\n| 4 | r |\n| 6 | m |\n\n따라서 결과는 `orm`입니다.",
+                         "options":  [
+                                         "prg",
+                                         "oag",
+                                         "orm",
+                                         "rmi",
+                                         "pgm"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w06_c1"
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w06_c1",
+                         "title":  "개념 1) 인접 문자 비교와 연속 구간 카운트",
+                         "summary":  "관련 이론: 개념 1) 인접 문자 비교와 연속 구간 카운트"
+                     },
+                     {
+                         "id":  "w06_c2",
+                         "title":  "개념 2) 부분문자열 스캔과 인덱스 점프",
+                         "summary":  "관련 이론: 개념 2) 부분문자열 스캔과 인덱스 점프"
+                     },
+                     {
+                         "id":  "w06_c3",
+                         "title":  "개념 3) 중첩 반복 문자열 비교 카운트",
+                         "summary":  "관련 이론: 개념 3) 중첩 반복 문자열 비교 카운트"
+                     }
+                 ]
 }

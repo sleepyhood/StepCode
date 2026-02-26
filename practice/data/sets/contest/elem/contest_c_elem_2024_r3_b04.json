@@ -14,6 +14,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int a = 0;\n    for(int i=100 ; i\u003c=2024 ; i+=100) {\n        a += 2;\n    }\n    printf(\"%d\\n\", a);\n\n    return 0;\n}",
                          "conceptRef":  "w04_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`i`는 100부터 2000까지 100씩 증가하므로 총 20번 반복됩니다. 매 반복마다 `a`에 2를 더하므로 `a = 20 * 2 = 40`입니다.",
                          "options":  [
                                          "36",
                                          "38",
@@ -41,6 +42,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int a = 20, b = 30;\n    while(a \u003e 0) {\n        a -= 6;\n        b *= 3;\n        b /= 2;\n    }\n    printf(\"%d\\n\", b);\n    return 0;\n}",
                          "conceptRef":  "w04_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`while` 반복 상태를 추적하면 다음과 같습니다.\n\n| 반복 | a(시작) | `a -= 6` 후 | b(시작) | `b*=3` 후 | `b/=2` 후 |\n|---:|---:|---:|---:|---:|---:|\n| 1 | 20 | 14 | 30 | 90 | 45 |\n| 2 | 14 | 8 | 45 | 135 | 67 |\n| 3 | 8 | 2 | 67 | 201 | 100 |\n| 4 | 2 | -4 | 100 | 300 | 150 |\n\n총 4회 실행 후 종료되므로 출력은 `150`입니다.",
                          "options":  [
                                          "100",
                                          "101",
@@ -68,6 +70,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int i, a = 0;\n    for(i=2 ; i\u003c62 ; i++) {\n        if(i % 2 == 0 \u0026\u0026 i % 3 == 0 \u0026\u0026 i % 5 == 0) {\n            a += i;\n        }\n    }\n    printf(\"%d\\n\", a);\n    return 0;\n}",
                          "conceptRef":  "w04_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "세 조건을 모두 만족하려면 2,3,5의 공배수여야 하므로 30의 배수입니다. `2 <= i < 62` 범위에서 해당 값은 `30, 60` 두 개이므로 합은 `90`입니다.",
                          "options":  [
                                          "15",
                                          "30",
@@ -95,6 +98,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n\nint main()\n{\n    int flag = 0;\n    for(int i=1 ; i\u003c10 ; i++) {\n        for(int j=0 ; j\u003c10 ; j++) {\n            for(int k=0 ; k\u003c10 ; k++) {\n                if(i == k || j == k) continue;\n                if((i * 10 + j) * k == (j * 10 + i)) {\n                    printf(\"%d\\n\", k);\n                    flag = 1;\n                    break;\n                }\n            }\n            if(flag == 1) break;\n        }\n        if(flag == 1) break;\n    }\n    return 0;\n}",
                          "conceptRef":  "w04_c2",
                          "type":  "mcq",
+                         "teacherExplainMd":  "코드는 `(10i+j)*k == (10j+i)`를 만족하는 **첫 번째** `k`를 찾고, `flag`로 바깥 루프까지 차례로 종료합니다.\n\n| 핵심 조건 | 의미 |\n|---|---|\n| `if(i==k || j==k) continue;` | 같은 숫자 `k`는 건너뜀 |\n| 식 성립 시 | `printf(k)`, `flag=1`, `break` |\n| 이후 | `flag==1`이면 j 루프, i 루프도 종료 |\n\n처음 성립하는 경우는 `i=2, j=2, k=1` (`22*1 = 22`)이므로 출력은 `1`입니다.\n\n시각화: ![중첩 break 흐름](assets/diagrams/contest_c_elem_w04_q4_break_flow.svg)",
                          "options":  [
                                          "1",
                                          "3",
@@ -123,6 +127,7 @@
                          "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int sum = 0;\n    for(int i=1 ; i\u003c=10 ; i++) {\n        if(i % 3 == 0) {\n            sum += i;\n        }\n    }\n    printf(\"%d\", sum);\n    return 0;\n}",
                          "conceptRef":  "w04_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "1부터 10까지 3의 배수는 `3, 6, 9`이고 합은 `3+6+9=18`입니다. 따라서 출력은 `18`입니다.",
                          "options":  [
                                          "14",
                                          "16",

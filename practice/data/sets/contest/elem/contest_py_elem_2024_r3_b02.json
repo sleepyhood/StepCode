@@ -1,146 +1,151 @@
-{
-  "id": "contest_py_elem_2024_r3_b02",
-  "title": "Python 경시대회(초등) 2회차",
-  "categoryId": "contest_py_w02_for_range_accum",
-  "availableLanguages": [
-    "python"
-  ],
-  "problems": [
-    {
-      "id": "q1",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 1",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "p = 5\nfor i in range(3, 35, 2):\n    p += 2\nprint(p)",
-      "options": [
-        "35",
-        "36",
-        "37",
-        "38",
-        "39"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w02_c1"
-    },
-    {
-      "id": "q2",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 2",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "b = 0\nfor i in [1, 2, 3, 4, 5, 6, 7]:\n    if i % 2 == 1:\n        b += i\n    if i % 3 == 1:\n        b -= i\nprint(b)",
-      "options": [
-        "-9",
-        "-4",
-        "0",
-        "4",
-        "9"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w02_c2"
-    },
-    {
-      "id": "q3",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 3",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = 0\nfor i in range(1, 30, 2):\n    for j in range(2, 20, 3):\n        a += 1\nprint(a)",
-      "options": [
-        "30",
-        "60",
-        "90",
-        "120",
-        "150"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w02_c3"
-    },
-    {
-      "id": "q4",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 4",
-      "description": "다음 중 range(100, 2024, 150)의 반복 횟수로 올바른 것을 고르시오.",
-      "options": [
-        "11회",
-        "12회",
-        "13회",
-        "14회",
-        "15회"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w02_c1"
-    },
-    {
-      "id": "q5",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = 0\nfor i in range(100, 551, 150):\n    a += i\nprint(a)",
-      "options": [
-        "850",
-        "1000",
-        "1150",
-        "1300",
-        "1450"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w02_c2"
-    }
-  ],
-  "concepts": [
-    {
-      "id": "w02_c1",
-      "title": "개념 1) `range` 반복 횟수 계산",
-      "summary": "관련 이론: 개념 1) `range` 반복 횟수 계산"
-    },
-    {
-      "id": "w02_c2",
-      "title": "개념 2) 누적합/카운트 분리 계산",
-      "summary": "관련 이론: 개념 2) 누적합/카운트 분리 계산"
-    },
-    {
-      "id": "w02_c3",
-      "title": "개념 3) 중첩 반복의 총 실행 횟수",
-      "summary": "관련 이론: 개념 3) 중첩 반복의 총 실행 횟수"
-    }
-  ]
+﻿{
+    "id":  "contest_py_elem_2024_r3_b02",
+    "title":  "Python 경시대회(초등) 2회차",
+    "categoryId":  "contest_py_w02_for_range_accum",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "p = 5\nfor i in range(3, 35, 2):\n    p += 2\nprint(p)",
+                         "teacherExplainMd":  "반복 횟수와 증가량을 표로 계산하면 됩니다.\n\n| 항목 | 값 |\n|---|---:|\n| 시작값 `p` | 5 |\n| 반복 값 | 3, 5, 7, ..., 33 |\n| 반복 횟수 | 16 |\n| 반복당 증가량 | +2 |\n| 총 증가량 | 32 |\n| 최종값 | 37 |\n\n따라서 출력은 `37`입니다.",
+                         "options":  [
+                                         "35",
+                                         "36",
+                                         "37",
+                                         "38",
+                                         "39"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w02_c1"
+                     },
+                     {
+                         "id":  "q2",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "b = 0\nfor i in [1, 2, 3, 4, 5, 6, 7]:\n    if i % 2 == 1:\n        b += i\n    if i % 3 == 1:\n        b -= i\nprint(b)",
+                         "teacherExplainMd":  "두 조건의 효과를 분리해서 계산하면 쉽습니다.\n\n- 홀수일 때 더함: `1+3+5+7 = 16`\n- `i % 3 == 1`일 때 뺌: `i=1,4,7`이라 `1+4+7 = 12`\n\n최종값은 `16-12=4`이므로 출력은 `4`입니다.",
+                         "options":  [
+                                         "-9",
+                                         "-4",
+                                         "0",
+                                         "4",
+                                         "9"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w02_c2"
+                     },
+                     {
+                         "id":  "q3",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = 0\nfor i in range(1, 30, 2):\n    for j in range(2, 20, 3):\n        a += 1\nprint(a)",
+                         "teacherExplainMd":  "중첩 반복의 총 실행 횟수는 바깥 횟수 x 안쪽 횟수입니다.\n\n| 반복 | 값 | 횟수 |\n|---|---|---:|\n| 바깥 `range(1, 30, 2)` | 1, 3, ..., 29 | 15 |\n| 안쪽 `range(2, 20, 3)` | 2, 5, 8, 11, 14, 17 | 6 |\n| 총 `a += 1` 실행 횟수 |  | 90 |\n\n따라서 출력은 `90`입니다.",
+                         "options":  [
+                                         "30",
+                                         "60",
+                                         "90",
+                                         "120",
+                                         "150"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w02_c3"
+                     },
+                     {
+                         "id":  "q4",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 4",
+                         "description":  "다음 중 range(100, 2024, 150)의 반복 횟수로 올바른 것을 고르시오.",
+                         "teacherExplainMd":  "`range(100, 2024, 150)`의 항을 표로 보면 반복 횟수를 정확히 셀 수 있습니다.\n\n| 순번 | 값 |\n|---:|---:|\n| 1 | 100 |\n| 2 | 250 |\n| 3 | 400 |\n| ... | ... |\n| 13 | 1900 |\n\n`2024` 미만까지만 포함되므로 반복 횟수는 `13회`입니다.",
+                         "options":  [
+                                         "11회",
+                                         "12회",
+                                         "13회",
+                                         "14회",
+                                         "15회"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w02_c1"
+                     },
+                     {
+                         "id":  "q5",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = 0\nfor i in range(100, 551, 150):\n    a += i\nprint(a)",
+                         "teacherExplainMd":  "`range(100, 551, 150)`은 `100, 250, 400, 550`입니다.\n\n누적합은 `100+250+400+550 = 1300`이므로 출력은 `1300`입니다.",
+                         "options":  [
+                                         "850",
+                                         "1000",
+                                         "1150",
+                                         "1300",
+                                         "1450"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w02_c2"
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w02_c1",
+                         "title":  "개념 1) `range` 반복 횟수 계산",
+                         "summary":  "관련 이론: 개념 1) `range` 반복 횟수 계산"
+                     },
+                     {
+                         "id":  "w02_c2",
+                         "title":  "개념 2) 누적합/카운트 분리 계산",
+                         "summary":  "관련 이론: 개념 2) 누적합/카운트 분리 계산"
+                     },
+                     {
+                         "id":  "w02_c3",
+                         "title":  "개념 3) 중첩 반복의 총 실행 횟수",
+                         "summary":  "관련 이론: 개념 3) 중첩 반복의 총 실행 횟수"
+                     }
+                 ]
 }

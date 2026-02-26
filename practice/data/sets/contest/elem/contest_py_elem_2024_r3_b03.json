@@ -1,142 +1,147 @@
-{
-  "id": "contest_py_elem_2024_r3_b03",
-  "title": "Python 경시대회(초등) 3회차",
-  "categoryId": "contest_py_w03_while_termination",
-  "availableLanguages": [
-    "python"
-  ],
-  "problems": [
-    {
-      "id": "q1",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 1",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = 0\ni = 0\nwhile True:\n    if i > 10:\n        break\n    i += 2\n    a += 3\nprint(a)",
-      "options": [
-        "6",
-        "9",
-        "12",
-        "15",
-        "18"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 4,
-      "conceptRef": "w03_c1"
-    },
-    {
-      "id": "q2",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 2",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = 1\ni = 1\nwhile True:\n    if i > 10:\n        break\n    i += 2\n    a *= 3\nprint(a)",
-      "options": [
-        "9",
-        "27",
-        "81",
-        "243",
-        "729"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w03_c1"
-    },
-    {
-      "id": "q3",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 3",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = 88\nb = 132\nwhile b > 0:\n    c = a % b\n    a = b\n    b = c\nprint(a)",
-      "options": [
-        "11",
-        "22",
-        "44",
-        "66",
-        "88"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w03_c2"
-    },
-    {
-      "id": "q4",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 4",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "cnt = 0\ni = 1\nwhile i <= 9:\n    cnt += 1\n    i += 2\nprint(cnt)",
-      "options": [
-        "3",
-        "4",
-        "5",
-        "6",
-        "7"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w03_c1"
-    },
-    {
-      "id": "q5",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "s = 0\ni = 2\nwhile i < 12:\n    s += i\n    i += 3\nprint(s)",
-      "options": [
-        "20",
-        "23",
-        "25",
-        "26",
-        "29"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w03_c1"
-    }
-  ],
-  "concepts": [
-    {
-      "id": "w03_c1",
-      "title": "개념 1) `while True` + `break` 종료 추적",
-      "summary": "관련 이론: 개념 1) `while True` + `break` 종료 추적"
-    },
-    {
-      "id": "w03_c2",
-      "title": "개념 2) 호제법(`a, b = b, a % b`) 종료 구조",
-      "summary": "관련 이론: 개념 2) 호제법(`a, b = b, a % b`) 종료 구조"
-    }
-  ]
+﻿{
+    "id":  "contest_py_elem_2024_r3_b03",
+    "title":  "Python 경시대회(초등) 3회차",
+    "categoryId":  "contest_py_w03_while_termination",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = 0\ni = 0\nwhile True:\n    if i \u003e 10:\n        break\n    i += 2\n    a += 3\nprint(a)",
+                         "teacherExplainMd":  "반복마다 `i`와 `a`를 추적하면 결과를 바로 확인할 수 있습니다.\n\n| 반복 시작 i | `i > 10` 여부 | 실행 후 i | 실행 후 a |\n|---:|---|---:|---:|\n| 0 | False | 2 | 3 |\n| 2 | False | 4 | 6 |\n| 4 | False | 6 | 9 |\n| 6 | False | 8 | 12 |\n| 8 | False | 10 | 15 |\n| 10 | False | 12 | 18 |\n| 12 | True(종료) | - | - |\n\n따라서 출력은 `18`입니다.",
+                         "options":  [
+                                         "6",
+                                         "9",
+                                         "12",
+                                         "15",
+                                         "18"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRef":  "w03_c1"
+                     },
+                     {
+                         "id":  "q2",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = 1\ni = 1\nwhile True:\n    if i \u003e 10:\n        break\n    i += 2\n    a *= 3\nprint(a)",
+                         "teacherExplainMd":  "`a *= 3`이 몇 번 실행되는지 표로 세면 됩니다.\n\n| 반복 번호 | 시작 i | 실행 후 i | 실행 후 a |\n|---:|---:|---:|---:|\n| 1 | 1 | 3 | 3 |\n| 2 | 3 | 5 | 9 |\n| 3 | 5 | 7 | 27 |\n| 4 | 7 | 9 | 81 |\n| 5 | 9 | 11 | 243 |\n\n다음 반복 시작 시 `i=11`이라 종료되어 출력은 `243`입니다.",
+                         "options":  [
+                                         "9",
+                                         "27",
+                                         "81",
+                                         "243",
+                                         "729"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w03_c1"
+                     },
+                     {
+                         "id":  "q3",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = 88\nb = 132\nwhile b \u003e 0:\n    c = a % b\n    a = b\n    b = c\nprint(a)",
+                         "teacherExplainMd":  "호제법(유클리드 알고리즘) 진행을 표로 정리하면 다음과 같습니다.\n\n| a | b | c = a % b | 다음 (a, b) |\n|---:|---:|---:|---|\n| 88 | 132 | 88 | (132, 88) |\n| 132 | 88 | 44 | (88, 44) |\n| 88 | 44 | 0 | (44, 0) |\n\n`b=0`이 되면 `a`가 최대공약수이므로 출력은 `44`입니다.",
+                         "options":  [
+                                         "11",
+                                         "22",
+                                         "44",
+                                         "66",
+                                         "88"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w03_c2"
+                     },
+                     {
+                         "id":  "q4",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "cnt = 0\ni = 1\nwhile i \u003c= 9:\n    cnt += 1\n    i += 2\nprint(cnt)",
+                         "teacherExplainMd":  "`i`는 `1,3,5,7,9`일 때만 반복 본문을 실행합니다.\n\n반복할 때마다 `cnt`가 1씩 증가하므로 총 5번 증가해서 `cnt=5`가 됩니다.",
+                         "options":  [
+                                         "3",
+                                         "4",
+                                         "5",
+                                         "6",
+                                         "7"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w03_c1"
+                     },
+                     {
+                         "id":  "q5",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "s = 0\ni = 2\nwhile i \u003c 12:\n    s += i\n    i += 3\nprint(s)",
+                         "teacherExplainMd":  "더해지는 항을 표로 보면 누적합이 분명합니다.\n\n| 더한 i | 누적 s |\n|---:|---:|\n| 2 | 2 |\n| 5 | 7 |\n| 8 | 15 |\n| 11 | 26 |\n\n다음 값 14는 조건 `i < 12`를 만족하지 않아 종료됩니다. 따라서 출력은 `26`입니다.",
+                         "options":  [
+                                         "20",
+                                         "23",
+                                         "25",
+                                         "26",
+                                         "29"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w03_c1"
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w03_c1",
+                         "title":  "개념 1) `while True` + `break` 종료 추적",
+                         "summary":  "관련 이론: 개념 1) `while True` + `break` 종료 추적"
+                     },
+                     {
+                         "id":  "w03_c2",
+                         "title":  "개념 2) 호제법(`a, b = b, a % b`) 종료 구조",
+                         "summary":  "관련 이론: 개념 2) 호제법(`a, b = b, a % b`) 종료 구조"
+                     }
+                 ]
 }

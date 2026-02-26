@@ -1,142 +1,147 @@
-{
-  "id": "contest_py_elem_2024_r3_b05",
-  "title": "Python 경시대회(초등) 5회차",
-  "categoryId": "contest_py_w05_nested_loop_array",
-  "availableLanguages": [
-    "python"
-  ],
-  "problems": [
-    {
-      "id": "q1",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 1",
-      "description": "다음 프로그램의 실행 결과는 무엇인가?",
-      "code": "a = [13, 8, 7, 11]\nb = [2, 15, 3, 12]\nc = 0\nfor i in a:\n    for j in b:\n        if i + j > c:\n            c = i + j\nprint(c)",
-      "options": [
-        "15",
-        "23",
-        "25",
-        "26",
-        "28"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 4,
-      "conceptRef": "w05_c1"
-    },
-    {
-      "id": "q2",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 2",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a, b, c = [], [], []\nd = 0\nfor i in range(3):\n    a.append(i + 2)\n    b.append(i * 4)\n    c.append(i * i)\nfor i in range(3):\n    for j in range(3):\n        for k in range(3):\n            d += a[i] + b[j] * c[k]\nprint(d)",
-      "options": [
-        "234",
-        "261",
-        "297",
-        "1089",
-        "1116"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w05_c2"
-    },
-    {
-      "id": "q3",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 3",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "cnt = 0\nfor i in range(1, 4):\n    for j in range(2):\n        cnt += i + j\nprint(cnt)",
-      "options": [
-        "9",
-        "12",
-        "15",
-        "18",
-        "21"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w05_c1"
-    },
-    {
-      "id": "q4",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 4",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = [2, 4, 6]\nb = [1, 3, 5]\nm = 0\nfor i in a:\n    for j in b:\n        if i * j > m:\n            m = i * j\nprint(m)",
-      "options": [
-        "18",
-        "24",
-        "27",
-        "30",
-        "36"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w05_c1"
-    },
-    {
-      "id": "q5",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "s = 0\nfor i in range(3):\n    for j in range(3):\n        s += i * j\nprint(s)",
-      "options": [
-        "6",
-        "9",
-        "12",
-        "15",
-        "18"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w05_c1"
-    }
-  ],
-  "concepts": [
-    {
-      "id": "w05_c1",
-      "title": "개념 1) 이중합 분해 (`Σi Σj`)",
-      "summary": "관련 이론: 개념 1) 이중합 분해 (`Σi Σj`)"
-    },
-    {
-      "id": "w05_c2",
-      "title": "개념 2) 3중 반복에서 항 분리 계산",
-      "summary": "관련 이론: 개념 2) 3중 반복에서 항 분리 계산"
-    }
-  ]
+﻿{
+    "id":  "contest_py_elem_2024_r3_b05",
+    "title":  "Python 경시대회(초등) 5회차",
+    "categoryId":  "contest_py_w05_nested_loop_array",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 1",
+                         "description":  "다음 프로그램의 실행 결과는 무엇인가?",
+                         "code":  "a = [13, 8, 7, 11]\nb = [2, 15, 3, 12]\nc = 0\nfor i in a:\n    for j in b:\n        if i + j \u003e c:\n            c = i + j\nprint(c)",
+                         "teacherExplainMd":  "코드는 `a`와 `b`의 모든 조합에서 `i+j`의 최댓값을 찾습니다.\n\n최댓값은 각 리스트의 최댓값끼리 더한 값입니다.\n- `max(a)=13`, `max(b)=15`\n- 최대 합 `= 13+15 = 28`\n\n따라서 출력은 `28`입니다.",
+                         "options":  [
+                                         "15",
+                                         "23",
+                                         "25",
+                                         "26",
+                                         "28"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRef":  "w05_c1"
+                     },
+                     {
+                         "id":  "q2",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 2",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a, b, c = [], [], []\nd = 0\nfor i in range(3):\n    a.append(i + 2)\n    b.append(i * 4)\n    c.append(i * i)\nfor i in range(3):\n    for j in range(3):\n        for k in range(3):\n            d += a[i] + b[j] * c[k]\nprint(d)",
+                         "teacherExplainMd":  "리스트를 먼저 정리하고 3중 합을 항별로 분리하면 계산이 빠릅니다.\n\n| 리스트 | 값 | 합 |\n|---|---|---:|\n| a | [2, 3, 4] | 9 |\n| b | [0, 4, 8] | 12 |\n| c | [0, 1, 4] | 5 |\n\n- `a[i]` 항: (j, k) 9조합씩 반복 -> `9 * 9 = 81`\n- `b[j]*c[k]` 항: i가 3번 반복 -> `3 * (12*5) = 180`\n\n따라서 `d = 81 + 180 = 261`입니다.",
+                         "options":  [
+                                         "234",
+                                         "261",
+                                         "297",
+                                         "1089",
+                                         "1116"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w05_c2"
+                     },
+                     {
+                         "id":  "q3",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "cnt = 0\nfor i in range(1, 4):\n    for j in range(2):\n        cnt += i + j\nprint(cnt)",
+                         "teacherExplainMd":  "모든 `(i, j)` 조합의 `i+j`를 표로 쓰면 다음과 같습니다.\n\n| i | j | i+j |\n|---:|---:|---:|\n| 1 | 0 | 1 |\n| 1 | 1 | 2 |\n| 2 | 0 | 2 |\n| 2 | 1 | 3 |\n| 3 | 0 | 3 |\n| 3 | 1 | 4 |\n\n총합은 `15`이므로 출력은 `15`입니다.",
+                         "options":  [
+                                         "9",
+                                         "12",
+                                         "15",
+                                         "18",
+                                         "21"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w05_c1"
+                     },
+                     {
+                         "id":  "q4",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = [2, 4, 6]\nb = [1, 3, 5]\nm = 0\nfor i in a:\n    for j in b:\n        if i * j \u003e m:\n            m = i * j\nprint(m)",
+                         "teacherExplainMd":  "모든 곱 `i*j` 중 최댓값을 찾는 코드입니다.\n\n양수 리스트에서는 최댓값끼리 곱하면 최대가 됩니다.\n- `max(a)=6`, `max(b)=5`\n- 최대 곱 `= 6*5 = 30`\n\n따라서 출력은 `30`입니다.",
+                         "options":  [
+                                         "18",
+                                         "24",
+                                         "27",
+                                         "30",
+                                         "36"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w05_c1"
+                     },
+                     {
+                         "id":  "q5",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "s = 0\nfor i in range(3):\n    for j in range(3):\n        s += i * j\nprint(s)",
+                         "teacherExplainMd":  "`i*j` 값을 3x3 표로 정리하면 합을 쉽게 구할 수 있습니다.\n\n| i\\\\j | 0 | 1 | 2 | 행 합 |\n|---:|---:|---:|---:|---:|\n| 0 | 0 | 0 | 0 | 0 |\n| 1 | 0 | 1 | 2 | 3 |\n| 2 | 0 | 2 | 4 | 6 |\n| 열 합 | 0 | 3 | 6 | 9 |\n\n따라서 출력은 `9`입니다.",
+                         "options":  [
+                                         "6",
+                                         "9",
+                                         "12",
+                                         "15",
+                                         "18"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w05_c1"
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w05_c1",
+                         "title":  "개념 1) 이중합 분해 (`Σi Σj`)",
+                         "summary":  "관련 이론: 개념 1) 이중합 분해 (`Σi Σj`)"
+                     },
+                     {
+                         "id":  "w05_c2",
+                         "title":  "개념 2) 3중 반복에서 항 분리 계산",
+                         "summary":  "관련 이론: 개념 2) 3중 반복에서 항 분리 계산"
+                     }
+                 ]
 }

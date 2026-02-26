@@ -1,0 +1,28 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="900" height="260" viewBox="0 0 900 260">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="20" y="30" font-family="Arial" font-size="20" fill="#111">b04 q1 state transition (b = a[b])</text>
+  <g font-family="Arial" font-size="16" fill="#111" stroke="#222" stroke-width="1.5">
+    <circle cx="80" cy="120" r="26" fill="#f6f6f6"/><text x="74" y="126">0</text>
+    <circle cx="180" cy="60" r="26" fill="#f6f6f6"/><text x="174" y="66">6</text>
+    <circle cx="300" cy="60" r="26" fill="#f6f6f6"/><text x="294" y="66">4</text>
+    <circle cx="420" cy="120" r="26" fill="#f6f6f6"/><text x="414" y="126">2</text>
+    <circle cx="300" cy="180" r="26" fill="#f6f6f6"/><text x="294" y="186">5</text>
+    <circle cx="180" cy="180" r="26" fill="#f6f6f6"/><text x="174" y="186">3</text>
+    <circle cx="560" cy="120" r="26" fill="#eef7ff"/><text x="554" y="126">1</text>
+  </g>
+  <g stroke="#0b5" stroke-width="2" fill="none" marker-end="url(#a)">
+    <path d="M106 108 L154 76"/>
+    <path d="M206 60 L274 60"/>
+    <path d="M326 72 L394 108"/>
+    <path d="M394 132 L326 168"/>
+    <path d="M274 180 L206 180"/>
+    <path d="M154 168 L106 132"/>
+    <path d="M534 120 L534 120"/>
+  </g>
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#0b5"/>
+    </marker>
+  </defs>
+  <text x="20" y="235" font-family="Arial" font-size="15" fill="#444">cycle: 0 → 6 → 4 → 2 → 5 → 3 → 0, fixed point: 1 → 1</text>
+</svg>

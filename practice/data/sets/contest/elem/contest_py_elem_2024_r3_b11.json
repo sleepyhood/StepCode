@@ -1,142 +1,147 @@
-{
-  "id": "contest_py_elem_2024_r3_b11",
-  "title": "Python 경시대회(초등) 11회차",
-  "categoryId": "contest_py_w11_bit_oct_2d",
-  "availableLanguages": [
-    "python"
-  ],
-  "problems": [
-    {
-      "id": "q1",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 1",
-      "description": "다음 중 아래 코드의 빈 칸에 넣었을 때 출력 결과가 다른 값을 고르시오.",
-      "code": "print([빈 칸])",
-      "options": [
-        "9 * 8",
-        "37 ^ 109",
-        "9 << 3",
-        "(2 ^ 3) * (3 ^ 2)",
-        "(36 if 7*3 else 21) * 2"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w11_c1"
-    },
-    {
-      "id": "q2",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 2",
-      "description": "다음 프로그램의 실행 결과에서 제일 오른쪽에 연속으로 나타나는 0의 개수는 몇 개인지 고르시오.",
-      "code": "a = 1\nfor i in range(1, 11):\n    a *= i\nprint('%o' % a)",
-      "options": [
-        "1개",
-        "2개",
-        "3개",
-        "4개",
-        "5개"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w11_c1"
-    },
-    {
-      "id": "q3",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 3",
-      "description": "다음 코드의 실행 결과로 올바른 값을 고르시오.",
-      "code": "a = [7, 890, 1, 234, 5678, 901, 23, 45, 6]\ncnt = 0\nfor i in a:\n    b = (i & 1) | (i & 2)\n    if b > 0:\n        cnt += 1\nprint(cnt)",
-      "options": [
-        "6",
-        "7",
-        "8",
-        "9",
-        "10"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w11_c1"
-    },
-    {
-      "id": "q4",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 4",
-      "description": "다음 프로그램의 실행 결과가 보기와 같을 때, 빈 칸에 들어갈 코드로 올바른 것을 고르시오.",
-      "code": "a = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]\nfor i in range(3):\n    for j in range(3):\n        print(a[2-j][i], end=' ')\n    print()",
-      "options": [
-        "a[2-i][j]",
-        "a[i][2-j]",
-        "a[j][2-i]",
-        "a[i][j]",
-        "a[2-j][i]"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 4,
-      "conceptRef": "w11_c2"
-    },
-    {
-      "id": "q5",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "x = 13\ny = 10\nprint((x & y), (x | y), (x ^ y))",
-      "options": [
-        "8 15 7",
-        "10 13 7",
-        "8 13 5",
-        "10 15 5",
-        "8 15 5"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 0,
-      "conceptRef": "w11_c1"
-    }
-  ],
-  "concepts": [
-    {
-      "id": "w11_c1",
-      "title": "개념 1) 비트 연산과 값 판별",
-      "summary": "관련 이론: 개념 1) 비트 연산과 값 판별"
-    },
-    {
-      "id": "w11_c2",
-      "title": "개념 2) XOR 누적과 소거 성질",
-      "summary": "관련 이론: 개념 2) XOR 누적과 소거 성질"
-    }
-  ]
+﻿{
+    "id":  "contest_py_elem_2024_r3_b11",
+    "title":  "Python 경시대회(초등) 11회차",
+    "categoryId":  "contest_py_w11_bit_oct_2d",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 1",
+                         "description":  "다음 중 아래 코드의 빈 칸에 넣었을 때 출력 결과가 다른 값을 고르시오.",
+                         "code":  "print([빈 칸])",
+                         "teacherExplainMd":  "각 보기 값을 계산하면\n- `9*8 = 72`\n- `37 ^ 109 = 72` (XOR)\n- `9 \u003c\u003c 3 = 72`\n- `(2 ^ 3) * (3 ^ 2) = 1 * 1 = 1`\n- `(36 if 7*3 else 21) * 2 = 72`\n\n다른 값은 1을 만드는 4번 보기입니다.",
+                         "options":  [
+                                         "9 * 8",
+                                         "37 ^ 109",
+                                         "9 \u003c\u003c 3",
+                                         "(2 ^ 3) * (3 ^ 2)",
+                                         "(36 if 7*3 else 21) * 2"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w11_c1"
+                     },
+                     {
+                         "id":  "q2",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 2",
+                         "description":  "다음 프로그램의 실행 결과에서 제일 오른쪽에 연속으로 나타나는 0의 개수는 몇 개인지 고르시오.",
+                         "code":  "a = 1\nfor i in range(1, 11):\n    a *= i\nprint(\u0027%o\u0027 % a)",
+                         "teacherExplainMd":  "`10!`을 계산한 뒤 8진수로 바꿔 끝자리 0 개수를 확인하면 됩니다.\n\n| 항목 | 값 |\n|---|---|\n| `10!` | 3628800 |\n| 8진수 표현 | 15657400 |\n| 오른쪽 연속 0 개수 | 2 |\n\n따라서 정답은 `2개`입니다.",
+                         "options":  [
+                                         "1개",
+                                         "2개",
+                                         "3개",
+                                         "4개",
+                                         "5개"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w11_c1"
+                     },
+                     {
+                         "id":  "q3",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 값을 고르시오.",
+                         "code":  "a = [7, 890, 1, 234, 5678, 901, 23, 45, 6]\ncnt = 0\nfor i in a:\n    b = (i \u0026 1) | (i \u0026 2)\n    if b \u003e 0:\n        cnt += 1\nprint(cnt)",
+                         "teacherExplainMd":  "`(i\u00261)|(i\u00262)`는 하위 2비트 중 하나라도 1이면 0보다 커집니다.\n즉 `i`가 4의 배수일 때만 0입니다.\n\n주어진 수들 `7, 890, 1, 234, 5678, 901, 23, 45, 6`은 모두 4의 배수가 아니므로 모두 카운트됩니다.\n총 9개이므로 출력은 `9`입니다.",
+                         "options":  [
+                                         "6",
+                                         "7",
+                                         "8",
+                                         "9",
+                                         "10"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w11_c1"
+                     },
+                     {
+                         "id":  "q4",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 4",
+                         "description":  "다음 프로그램의 실행 결과가 보기와 같을 때, 빈 칸에 들어갈 코드로 올바른 것을 고르시오.",
+                         "code":  "a = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]\nfor i in range(3):\n    for j in range(3):\n        print(a[2-j][i], end=\u0027 \u0027)\n    print()",
+                         "teacherExplainMd":  "이 인덱싱은 각 열을 아래에서 위로 읽어 출력하는 방식입니다. 따라서 첫 줄은 `6 3 0`, 둘째 줄은 `7 4 1`, 셋째 줄은 `8 5 2`가 됩니다.\n\n시각화: ![행렬 인덱스 변환](assets/diagrams/contest_py_elem_w11_q4_matrix.svg)",
+                         "options":  [
+                                         "a[2-i][j]",
+                                         "a[i][2-j]",
+                                         "a[j][2-i]",
+                                         "a[i][j]",
+                                         "a[2-j][i]"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRef":  "w11_c2"
+                     },
+                     {
+                         "id":  "q5",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "x = 13\ny = 10\nprint((x \u0026 y), (x | y), (x ^ y))",
+                         "teacherExplainMd":  "비트 연산은 이진수 표로 계산하면 정확합니다.\n\n| 값 | 이진수 |\n|---|---|\n| `x=13` | 1101 |\n| `y=10` | 1010 |\n\n| 연산 | 결과(이진) | 결과(10진) |\n|---|---|---:|\n| `x & y` | 1000 | 8 |\n| `x | y` | 1111 | 15 |\n| `x ^ y` | 0111 | 7 |\n\n따라서 출력은 `8 15 7`입니다.",
+                         "options":  [
+                                         "8 15 7",
+                                         "10 13 7",
+                                         "8 13 5",
+                                         "10 15 5",
+                                         "8 15 5"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  0,
+                         "conceptRef":  "w11_c1"
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w11_c1",
+                         "title":  "개념 1) 비트 연산과 값 판별",
+                         "summary":  "관련 이론: 개념 1) 비트 연산과 값 판별"
+                     },
+                     {
+                         "id":  "w11_c2",
+                         "title":  "개념 2) XOR 누적과 소거 성질",
+                         "summary":  "관련 이론: 개념 2) XOR 누적과 소거 성질"
+                     }
+                 ]
 }

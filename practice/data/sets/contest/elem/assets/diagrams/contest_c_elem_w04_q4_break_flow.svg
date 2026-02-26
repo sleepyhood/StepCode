@@ -1,0 +1,21 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="920" height="280" viewBox="0 0 920 280">
+  <rect width="100%" height="100%" fill="#fff"/>
+  <text x="20" y="30" font-family="Arial" font-size="20" fill="#111">b04 q4: 중첩 루프 break 전파 흐름</text>
+  <g font-family="Arial" font-size="15" fill="#111" stroke="#333" stroke-width="1.2">
+    <rect x="40" y="60" width="180" height="46" fill="#f7fbff"/><text x="60" y="88">for i = 1..9</text>
+    <rect x="280" y="60" width="180" height="46" fill="#f7fbff"/><text x="300" y="88">for j = 0..9</text>
+    <rect x="520" y="60" width="180" height="46" fill="#f7fbff"/><text x="540" y="88">for k = 0..9</text>
+    <rect x="520" y="140" width="330" height="52" fill="#fff8ef"/><text x="540" y="171">if ((10i+j)*k == (10j+i)) 성립 시</text>
+    <rect x="520" y="214" width="330" height="40" fill="#eefaf1"/><text x="540" y="238">printf(k); flag=1; break(k 루프)</text>
+  </g>
+  <g stroke="#0a6" stroke-width="2" fill="none" marker-end="url(#a)">
+    <path d="M220 83 L280 83"/>
+    <path d="M460 83 L520 83"/>
+    <path d="M610 106 L610 140"/>
+    <path d="M610 192 L610 214"/>
+    <path d="M540 234 L420 234 L420 106"/>
+    <path d="M420 106 L180 106 L180 106"/>
+  </g>
+  <text x="40" y="268" font-family="Arial" font-size="14" fill="#444">flag==1이면 j 루프 break, 이어서 i 루프도 break되어 가장 첫 해의 k만 출력</text>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0a6"/></marker></defs>
+</svg>

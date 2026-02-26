@@ -1,142 +1,147 @@
-{
-  "id": "contest_py_elem_2024_r3_b09",
-  "title": "Python 경시대회(초등) 9회차",
-  "categoryId": "contest_py_w09_lambda_sort_ternary",
-  "availableLanguages": [
-    "python"
-  ],
-  "problems": [
-    {
-      "id": "q1",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 1",
-      "description": "다음 프로그램의 실행 결과는 무엇인가?",
-      "code": "x = 12\ny = 15\nprint(x + y if x > y else x * y)",
-      "options": [
-        "3",
-        "12",
-        "15",
-        "27",
-        "180"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 4,
-      "conceptRef": "w09_c1"
-    },
-    {
-      "id": "q2",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 2",
-      "description": "다음 프로그램의 실행 결과는 무엇인가?",
-      "code": "f = lambda x: x + 1\na = 4\nprint(f(a), f(a) * f(a + 1))",
-      "options": [
-        "4 16",
-        "4 20",
-        "4 24",
-        "5 25",
-        "5 30"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 4,
-      "conceptRef": "w09_c1"
-    },
-    {
-      "id": "q3",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 3",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "f = lambda x: x * 2 if x % 2 == 0 else x + 1\nprint(f(5), f(6))",
-      "options": [
-        "5 6",
-        "6 12",
-        "10 7",
-        "12 6",
-        "6 6"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w09_c1"
-    },
-    {
-      "id": "q4",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 4",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = [3, 1, 2]\na.sort(key=lambda x: -x)\nprint(a)",
-      "options": [
-        "[1, 2, 3]",
-        "[3, 2, 1]",
-        "[2, 1, 3]",
-        "[3, 1, 2]",
-        "[1, 3, 2]"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w09_c2"
-    },
-    {
-      "id": "q5",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "arr = [(2, 3), (1, 5), (2, 1)]\narr.sort(key=lambda p: (p[0], p[1]))\nprint(arr[0], arr[-1])",
-      "options": [
-        "(1, 5) (2, 3)",
-        "(2, 1) (2, 3)",
-        "(1, 5) (2, 1)",
-        "(2, 3) (1, 5)",
-        "(2, 3) (2, 1)"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 0,
-      "conceptRef": "w09_c2"
-    }
-  ],
-  "concepts": [
-    {
-      "id": "w09_c1",
-      "title": "개념 1) 삼항 연산자 평가 순서",
-      "summary": "관련 이론: 개념 1) 삼항 연산자 평가 순서"
-    },
-    {
-      "id": "w09_c2",
-      "title": "개념 2) 람다 함수 값 추적",
-      "summary": "관련 이론: 개념 2) 람다 함수 값 추적"
-    }
-  ]
+﻿{
+    "id":  "contest_py_elem_2024_r3_b09",
+    "title":  "Python 경시대회(초등) 9회차",
+    "categoryId":  "contest_py_w09_lambda_sort_ternary",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 1",
+                         "description":  "다음 프로그램의 실행 결과는 무엇인가?",
+                         "code":  "x = 12\ny = 15\nprint(x + y if x \u003e y else x * y)",
+                         "teacherExplainMd":  "삼항 연산자 `A if 조건 else B`에서 조건이 거짓이면 `B`를 사용합니다.\n\n`x \u003e y`는 `12 \u003e 15`로 거짓이므로 `x * y`를 계산합니다.\n`12 * 15 = 180`이므로 출력은 `180`입니다.",
+                         "options":  [
+                                         "3",
+                                         "12",
+                                         "15",
+                                         "27",
+                                         "180"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRef":  "w09_c1"
+                     },
+                     {
+                         "id":  "q2",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 2",
+                         "description":  "다음 프로그램의 실행 결과는 무엇인가?",
+                         "code":  "f = lambda x: x + 1\na = 4\nprint(f(a), f(a) * f(a + 1))",
+                         "teacherExplainMd":  "`f(x)=x+1`의 중간값을 표로 정리하면 계산이 명확합니다.\n\n| 식 | 값 |\n|---|---:|\n| `f(a)` (`a=4`) | 5 |\n| `f(a+1)` | 6 |\n| `f(a) * f(a+1)` | 30 |\n\n따라서 출력은 `5 30`입니다.",
+                         "options":  [
+                                         "4 16",
+                                         "4 20",
+                                         "4 24",
+                                         "5 25",
+                                         "5 30"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRef":  "w09_c1"
+                     },
+                     {
+                         "id":  "q3",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "f = lambda x: x * 2 if x % 2 == 0 else x + 1\nprint(f(5), f(6))",
+                         "teacherExplainMd":  "람다식은 짝수면 `x*2`, 홀수면 `x+1`을 반환합니다.\n\n- `f(5)`: 홀수 -\u003e `5+1=6`\n- `f(6)`: 짝수 -\u003e `6*2=12`\n\n출력은 `6 12`입니다.",
+                         "options":  [
+                                         "5 6",
+                                         "6 12",
+                                         "10 7",
+                                         "12 6",
+                                         "6 6"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w09_c1"
+                     },
+                     {
+                         "id":  "q4",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = [3, 1, 2]\na.sort(key=lambda x: -x)\nprint(a)",
+                         "teacherExplainMd":  "정렬 키가 `-x`이므로 값이 클수록 키가 작아져 내림차순 정렬과 같은 효과가 납니다.\n\n`[3,1,2]` -\u003e `[3,2,1]`",
+                         "options":  [
+                                         "[1, 2, 3]",
+                                         "[3, 2, 1]",
+                                         "[2, 1, 3]",
+                                         "[3, 1, 2]",
+                                         "[1, 3, 2]"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w09_c2"
+                     },
+                     {
+                         "id":  "q5",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "arr = [(2, 3), (1, 5), (2, 1)]\narr.sort(key=lambda p: (p[0], p[1]))\nprint(arr[0], arr[-1])",
+                         "teacherExplainMd":  "정렬 키 `(p[0], p[1])`는 첫 번째 값 오름차순, 같으면 두 번째 값 오름차순입니다.\n\n| 원소 | 키 |\n|---|---|\n| (2, 3) | (2, 3) |\n| (1, 5) | (1, 5) |\n| (2, 1) | (2, 1) |\n\n정렬 결과는 `[(1, 5), (2, 1), (2, 3)]`이고, 따라서 출력은 `(1, 5) (2, 3)`입니다.",
+                         "options":  [
+                                         "(1, 5) (2, 3)",
+                                         "(2, 1) (2, 3)",
+                                         "(1, 5) (2, 1)",
+                                         "(2, 3) (1, 5)",
+                                         "(2, 3) (2, 1)"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  0,
+                         "conceptRef":  "w09_c2"
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w09_c1",
+                         "title":  "개념 1) 삼항 연산자 평가 순서",
+                         "summary":  "관련 이론: 개념 1) 삼항 연산자 평가 순서"
+                     },
+                     {
+                         "id":  "w09_c2",
+                         "title":  "개념 2) 람다 함수 값 추적",
+                         "summary":  "관련 이론: 개념 2) 람다 함수 값 추적"
+                     }
+                 ]
 }

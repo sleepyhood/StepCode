@@ -14,6 +14,7 @@
                          "code":  "#include\u003cstdio.h\u003e\n#define S(X) X*X\nint main()\n{\n    int q = 4;\n    printf(\"%d %d %d\", S(q), S(q+1), S(q+q));\n    return 0;\n}",
                          "conceptRef":  "w07_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "매크로 확장을 표로 보면 계산 실수를 줄일 수 있습니다.\n\n| 호출 | 치환 결과 | 계산값 |\n|---|---|---:|\n| `S(q)` | `q*q` | 16 |\n| `S(q+1)` | `q+1*q+1` | 9 |\n| `S(q+q)` | `q+q*q+q` | 24 |\n\n따라서 출력은 `16 9 24`입니다.",
                          "options":  [
                                          "16 25 64",
                                          "16 16 16",
@@ -42,6 +43,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n#define f(x) x*x\n\nint main()\n{\n    int a = 4;\n    printf(\"%d %d\\n\", f(a), f(a+1));\n    return 0;\n}",
                          "conceptRef":  "w07_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`#define f(x) x*x`는 괄호가 없어 단순 치환됩니다.\n\n| 식 | 실제 치환 | 값 |\n|---|---|---:|\n| `f(a)` | `a*a` | 16 |\n| `f(a+1)` | `a+1*a+1` | 9 |\n\n따라서 출력은 `16 9`입니다.",
                          "options":  [
                                          "16 8",
                                          "16 9",
@@ -70,6 +72,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n#define f(x) x+1\nint main()\n{\n    int a = 5;\n    printf(\"%d %d\\n\", f(a), f(a)*f(a));\n    return 0;\n}",
                          "conceptRef":  "w07_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`#define f(x) x+1`에서 곱셈과 함께 쓰면 우선순위 함정이 생깁니다.\n\n| 식 | 치환 결과 | 값 |\n|---|---|---:|\n| `f(a)` | `a+1` | 6 |\n| `f(a)*f(a)` | `a+1*a+1` | 11 |\n\n따라서 출력은 `6 11`입니다.",
                          "options":  [
                                          "5 10",
                                          "6 10",
@@ -98,6 +101,7 @@
                          "code":  "#include\u003cstdio.h\u003e\n#define S(X) X*X\nint main()\n{\n    int q = 4;\n    printf(\"%d %d %d\", S(q), S(q+1), S(q+q));\n    return 0;\n}",
                          "conceptRef":  "w07_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`S(X)` 매크로가 괄호 없이 치환되므로 `S(q)=16`, `S(q+1)=9`, `S(q+q)=24`가 되어 출력은 `16 9 24`입니다.",
                          "options":  [
                                          "16 25 64",
                                          "16 16 16",
@@ -126,6 +130,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n#define f(x) x*x\n\nint main()\n{\n    int a = 4;\n    printf(\"%d %d\\n\", f(a), f(a+1));\n    return 0;\n}",
                          "conceptRef":  "w07_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`f(a)=16`, `f(a+1)=a+1*a+1=9`(단순 치환)입니다. 따라서 출력은 `16 9`입니다.",
                          "options":  [
                                          "16 8",
                                          "16 9",

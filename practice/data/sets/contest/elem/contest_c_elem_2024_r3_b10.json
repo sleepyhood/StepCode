@@ -13,6 +13,7 @@
                          "description":  "다음 중 동적 메모리 할당 함수로 올바른 것을 고르시오.",
                          "conceptRef":  "w10_c2",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`calloc`은 동적 메모리를 할당하면서 0으로 초기화까지 수행하는 표준 함수입니다. 따라서 정답은 `calloc`입니다.",
                          "options":  [
                                          "atoi",
                                          "calloc",
@@ -40,6 +41,7 @@
                          "code":  "#include\u003cstdio.h\u003e\ntypedef struct datastructure {\n    int front;\n    int rear;\n    char q[101];\n} DS;\nint n;\nchar v;\nDS d;\n\nvoid f(char k) {\n    d.front = d.rear = 50;\n    d.q[50] = k;\n}\nvoid g(char k) {\n    d.q[--(d.front)] = k;\n}\nvoid h(char k) {\n    d.q[++(d.rear)] = k;\n}\nint main()\n{\n    scanf(\"%d\", \u0026n);\n    scanf(\" %c\", \u0026v);\n    f(v);\n\n    for(int i=0; i\u003cn-1; i++) {\n        scanf(\" %c\", \u0026v);\n        if(v \u003c= d.q[d.front]) g(v);\n        else                  h(v);\n    }\n    for(int i=d.front; i\u003c=d.rear; i++) {\n        printf(\"%c\", d.q[i]);\n    }\n    return 0;\n}",
                          "conceptRef":  "w10_c3",
                          "type":  "short",
+                         "teacherExplainMd":  "삽입 규칙을 표로 보면 결과 문자열이 명확합니다.\n\n| 규칙 | 동작 |\n|---|---|\n| `v <= q[front]` | 앞쪽(`front`)에 삽입 |\n| 그 외 | 뒤쪽(`rear`)에 삽입 |\n\n| 입력 케이스 | 출력 |\n|---|---|\n| `D B C A C D P` | `ABDCCDP` |\n| `P R O G R A M M I N G` | `AGOPRRMMING` |\n\n따라서 정답은 `ABDCCDP AGOPRRMMING`입니다.",
                          "expectedText":  "ABDCCDP AGOPRRMMING",
                          "conceptRefs":  [
                                              "w10_c3"
@@ -53,6 +55,7 @@
                          "code":  "#include\u003cstdio.h\u003e\nint n;\nint *link[10];\nint size[10], check[10], ans;\n\nvoid search(int c, int p) {\n    int count = 0;\n    check[c] = 1;\n    for(int i=0; i\u003csize[c]; i++) {\n        if(!check[ link[c][i] ]) {\n            search(link[c][i], p+1);\n            count++;\n        }\n    }\n    if(count == 0) ans += p;\n}\n\nint main()\n{\n    scanf(\"%d\", \u0026n);\n\n    for(int i=1; i\u003c=n; i++) {\n        link[i] = (int*)malloc(sizeof(int));\n        link[i][0] = 0;\n    }\n\n    int p, q;\n    for(int i=0; i\u003cn-1; i++) {\n        scanf(\"%d %d\", \u0026p, \u0026q);\n\n        link[p] = realloc(link[p], sizeof(int)*(size[p] + 1));\n        link[p][size[p]] = q;\n        size[p]++;\n\n        link[q] = realloc(link[q], sizeof(int)*(size[q] + 1));\n        link[q][size[q]] = p;\n        size[q]++;\n    }\n\n    search(1, 0);\n    printf(\"%d\", ans);\n    return 0;\n}",
                          "conceptRef":  "w10_c1",
                          "type":  "short",
+                         "teacherExplainMd":  "DFS로 리프 노드의 깊이(`p`)를 누적하는 코드입니다.\n\n| 처리 요소 | 의미 |\n|---|---|\n| `check[c]=1` | 방문 표시 |\n| `count==0` | 리프 노드 |\n| `ans += p` | 리프 깊이 누적 |\n\n주어진 입력 그래프에서 루트 1 기준 리프 깊이 합은 `8`이므로 출력은 `8`입니다.",
                          "expectedText":  "8",
                          "conceptRefs":  [
                                              "w10_c1",
@@ -66,6 +69,7 @@
                          "description":  "다음 중 동적 메모리 할당 함수로 올바른 것을 고르시오.",
                          "conceptRef":  "w10_c2",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`calloc`은 동적 메모리 할당 함수이며 할당된 메모리를 0으로 초기화합니다. 따라서 정답은 `calloc`입니다.",
                          "options":  [
                                          "atoi",
                                          "calloc",
@@ -93,6 +97,7 @@
                          "code":  "#include\u003cstdio.h\u003e\ntypedef struct datastructure {\n    int front;\n    int rear;\n    char q[101];\n} DS;\nint n;\nchar v;\nDS d;\n\nvoid f(char k) {\n    d.front = d.rear = 50;\n    d.q[50] = k;\n}\nvoid g(char k) {\n    d.q[--(d.front)] = k;\n}\nvoid h(char k) {\n    d.q[++(d.rear)] = k;\n}\nint main()\n{\n    scanf(\"%d\", \u0026n);\n    scanf(\" %c\", \u0026v);\n    f(v);\n\n    for(int i=0; i\u003cn-1; i++) {\n        scanf(\" %c\", \u0026v);\n        if(v \u003c= d.q[d.front]) g(v);\n        else                  h(v);\n    }\n    for(int i=d.front; i\u003c=d.rear; i++) {\n        printf(\"%c\", d.q[i]);\n    }\n    return 0;\n}",
                          "conceptRef":  "w10_c3",
                          "type":  "short",
+                         "teacherExplainMd":  "q2와 동일한 규칙을 적용합니다.\n\n| 입력 케이스 | 출력 |\n|---|---|\n| `D B C A C D P` | `ABDCCDP` |\n| `P R O G R A M M I N G` | `AGOPRRMMING` |\n\n따라서 최종 답은 `ABDCCDP AGOPRRMMING`입니다.",
                          "expectedText":  "ABDCCDP AGOPRRMMING",
                          "conceptRefs":  [
                                              "w10_c3"

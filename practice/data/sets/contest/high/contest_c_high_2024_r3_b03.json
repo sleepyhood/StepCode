@@ -1,163 +1,168 @@
 ﻿{
-    "id":  "contest_c_high_2024_r3_b03",
-    "title":  "C 경시대회(고등) 3회차",
-    "categoryId":  "contest_c_w03_operator_precedence_logic_bit",
-    "availableLanguages":  [
-                               "c"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "q1",
-                         "level":  "초,중,고",
-                         "title":  "문제 1",
-                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-                         "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int x = 12;\n    int y = 15;\n    int z = 18;\n    printf(\"%d\", (x*y)\u003e(y\u0026z)?(x+y):(y+z));\n    return 0;\n}",
-                         "conceptRef":  "w03_c3",
-                         "type":  "mcq",
-                         "options":  [
-                                         "0",
-                                         "27",
-                                         "30",
-                                         "33",
-                                         "180"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  1,
-                         "conceptRefs":  [
-                                             "w03_c1",
-                                             "w03_c3"
-                                         ]
-                     },
-                     {
-                         "id":  "q2",
-                         "level":  "초,중,고",
-                         "title":  "문제 2",
-                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-                         "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int a[5] = {빈 칸};\n    int b = 0;\n    for(int i=0 ; i\u003c5 ; i++) {\n        b ^= a[i];\n    }\n    printf(\"%d\\n\", b);\n    return 0;\n}",
-                         "conceptRef":  "w03_c3",
-                         "type":  "mcq",
-                         "options":  [
-                                         "0, 1, 2, 3, 4",
-                                         "1, 2, 3, 4, 4",
-                                         "1, 3, 1, 3, 1",
-                                         "0, 0, 0, 1, 1",
-                                         "10, -10, 10, -10, 10"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  2,
-                         "conceptRefs":  [
-                                             "w03_c3"
-                                         ]
-                     },
-                     {
-                         "id":  "q3",
-                         "level":  "초,중,고",
-                         "title":  "문제 3",
-                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-                         "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int x = 12;\n    int y = 15;\n    printf(\"%d\", x\u003ey?(x+y):(x*y));\n    return 0;\n}",
-                         "conceptRef":  "w03_c1",
-                         "type":  "mcq",
-                         "options":  [
-                                         "3",
-                                         "12",
-                                         "15",
-                                         "27",
-                                         "180"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  4,
-                         "conceptRefs":  [
-                                             "w03_c1"
-                                         ]
-                     },
-                     {
-                         "id":  "q4",
-                         "level":  "초,중,고",
-                         "title":  "문제 4",
-                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-                         "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int a = (25 / 4) * 3;\n    int b = (a * a) / a;\n    printf(\"%d %d\", a+b, a-b);\n}",
-                         "conceptRef":  "w03_c1",
-                         "type":  "mcq",
-                         "options":  [
-                                         "36 0",
-                                         "35 1",
-                                         "35 0",
-                                         "34 1",
-                                         "37 0"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  0,
-                         "conceptRefs":  [
-                                             "w03_c1"
-                                         ]
-                     },
-                     {
-                         "id":  "q5",
-                         "level":  "초,중,고",
-                         "title":  "문제 5",
-                         "description":  "다음 조건식으로 빈 칸을 채울 때 올바른 것을 고르시오.",
-                         "code":  "int leapYear(int y) {\n    if([빈 칸]) return 0;  // 빈 칸\n    else return 1;\n}",
-                         "conceptRef":  "w03_c2",
-                         "type":  "mcq",
-                         "options":  [
-                                         "(y % 4 == 0 \u0026\u0026 y % 100 != 0) \u0026\u0026 y % 400 == 0",
-                                         "(y % 4 == 0 \u0026\u0026 y % 100 != 0) || y % 400 == 0",
-                                         "(y % 4 != 0 \u0026\u0026 y % 100 == 0) || y % 400 != 0",
-                                         "(y % 4 != 0 || y % 100 == 0) || y % 400 != 0",
-                                         "(y % 4 != 0 || y % 100 == 0) \u0026\u0026 y % 400 != 0"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  1,
-                         "conceptRefs":  [
-                                             "w03_c2"
-                                         ]
-                     }
-                 ],
-    "concepts":  [
-                     {
-                         "id":  "w03_c1",
-                         "title":  "개념 1) 우선순위와 괄호 전략",
-                         "summary":  "관련 이론: 우선순위와 괄호 전략"
-                     },
-                     {
-                         "id":  "w03_c2",
-                         "title":  "개념 2) 논리 연산 단락 평가",
-                         "summary":  "관련 이론: 논리 연산 단락 평가"
-                     },
-                     {
-                         "id":  "w03_c3",
-                         "title":  "개념 3) 비트 연산 마스크",
-                         "summary":  "관련 이론: 비트 연산 마스크"
-                     }
-                 ]
+    "id": "contest_c_high_2024_r3_b03",
+    "title": "C 경시대회(고등) 3회차",
+    "categoryId": "contest_c_w03_operator_precedence_logic_bit",
+    "availableLanguages": [
+        "c"
+    ],
+    "problems": [
+        {
+            "id": "q1",
+            "level": "초,중,고",
+            "title": "문제 1",
+            "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+            "code": "#include<stdio.h>\nint main()\n{\n    int x = 12;\n    int y = 15;\n    int z = 18;\n    printf(\"%d\", (x*y)>(y&z)?(x+y):(y+z));\n    return 0;\n}",
+            "teacherExplainMd": "정답 기준: **B**\n\n연산을 순서대로 계산합니다.\n\n- `x*y = 12*15 = 180`\n- `y&z = 15 & 18 = 2`\n- 조건 `180 > 2`는 참\n\n삼항 연산자는 참일 때 `(x+y)`를 선택하므로 `12+15=27`이 출력됩니다.\n\n### 정리 표\n| 항목 | 내용 |\n|---|---|\n| 문제 | 문제 1 |\n| 정답 기준 | B (27) |\n| 핵심 포인트 | 조건식 판단 순서와 중간값을 단계별로 추적하면 같은 결론이 나온다. |",
+            "conceptRef": "w03_c3",
+            "type": "mcq",
+            "options": [
+                "0",
+                "27",
+                "30",
+                "33",
+                "180"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 1,
+            "conceptRefs": [
+                "w03_c1",
+                "w03_c3"
+            ]
+        },
+        {
+            "id": "q2",
+            "level": "초,중,고",
+            "title": "문제 2",
+            "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+            "code": "#include <stdio.h>\nint main()\n{\n    int a[5] = {빈 칸};\n    int b = 0;\n    for(int i=0 ; i<5 ; i++) {\n        b ^= a[i];\n    }\n    printf(\"%d\\n\", b);\n    return 0;\n}",
+            "teacherExplainMd": "정답 기준: **C**\n\n`b ^= a[i]`는 누적 XOR입니다. 제시된 선택지 중 C를 넣으면\n\n`1 ^ 3 ^ 1 ^ 3 ^ 1 = (1^1) ^ (3^3) ^ 1 = 0 ^ 0 ^ 1 = 1`\n\n이 되어 출력값은 `1`입니다.\n\nXOR의 성질(같은 수 두 번 XOR하면 0)을 이용하면 빠르게 계산할 수 있습니다.\n\n### 정리 표\n| 항목 | 내용 |\n|---|---|\n| 문제 | 문제 2 |\n| 정답 기준 | C (1, 3, 1, 3, 1) |\n| 핵심 포인트 | 조건식 판단 순서와 중간값을 단계별로 추적하면 같은 결론이 나온다. |",
+            "conceptRef": "w03_c3",
+            "type": "mcq",
+            "options": [
+                "0, 1, 2, 3, 4",
+                "1, 2, 3, 4, 4",
+                "1, 3, 1, 3, 1",
+                "0, 0, 0, 1, 1",
+                "10, -10, 10, -10, 10"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 2,
+            "conceptRefs": [
+                "w03_c3"
+            ]
+        },
+        {
+            "id": "q3",
+            "level": "초,중,고",
+            "title": "문제 3",
+            "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+            "code": "#include<stdio.h>\nint main()\n{\n    int x = 12;\n    int y = 15;\n    printf(\"%d\", x>y?(x+y):(x*y));\n    return 0;\n}",
+            "teacherExplainMd": "정답 기준: **E**\n\n조건 `x>y`는 `12>15`이므로 거짓입니다. 따라서 삼항 연산자의 거짓 분기 `(x*y)`가 실행됩니다.\n\n- `12*15 = 180`\n\n출력은 `180`입니다.\n\n### 정리 표\n| 항목 | 내용 |\n|---|---|\n| 문제 | 문제 3 |\n| 정답 기준 | E (180) |\n| 핵심 포인트 | 조건식 판단 순서와 중간값을 단계별로 추적하면 같은 결론이 나온다. |",
+            "conceptRef": "w03_c1",
+            "type": "mcq",
+            "options": [
+                "3",
+                "12",
+                "15",
+                "27",
+                "180"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 4,
+            "conceptRefs": [
+                "w03_c1"
+            ]
+        },
+        {
+            "id": "q4",
+            "level": "초,중,고",
+            "title": "문제 4",
+            "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+            "code": "#include<stdio.h>\nint main()\n{\n    int a = (25 / 4) * 3;\n    int b = (a * a) / a;\n    printf(\"%d %d\", a+b, a-b);\n}",
+            "teacherExplainMd": "정답 기준: **A**\n\n정수 나눗셈을 먼저 계산합니다.\n\n- `25/4 = 6` (소수점 버림)\n- `a = 6*3 = 18`\n- `b = (a*a)/a = 324/18 = 18`\n\n따라서 `a+b = 36`, `a-b = 0`이므로 출력은 `36 0`입니다.\n\n### 정리 표\n| 항목 | 내용 |\n|---|---|\n| 문제 | 문제 4 |\n| 정답 기준 | A (36 0) |\n| 핵심 포인트 | 조건식 판단 순서와 중간값을 단계별로 추적하면 같은 결론이 나온다. |",
+            "conceptRef": "w03_c1",
+            "type": "mcq",
+            "options": [
+                "36 0",
+                "35 1",
+                "35 0",
+                "34 1",
+                "37 0"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 0,
+            "conceptRefs": [
+                "w03_c1"
+            ]
+        },
+        {
+            "id": "q5",
+            "level": "초,중,고",
+            "title": "문제 5",
+            "description": "다음 조건식으로 빈 칸을 채울 때 올바른 것을 고르시오.",
+            "code": "int leapYear(int y) {\n    if([빈 칸]) return 0;  // 빈 칸\n    else return 1;\n}",
+            "teacherExplainMd": "정답 기준: **E**\n\n함수는 `if(조건) return 0; else return 1;` 구조이므로, 빈칸에는 **평년 조건(윤년이 아닌 조건)**이 들어가야 합니다.\n\n윤년 규칙:\n- 4의 배수이면서 100의 배수가 아니면 윤년\n- 또는 400의 배수면 윤년\n\n이를 부정한 평년 조건은\n\n`(y % 4 != 0 || y % 100 == 0) && y % 400 != 0`\n\n이므로 정답은 E입니다.\n\n### 정리 표\n| 항목 | 내용 |\n|---|---|\n| 문제 | 문제 5 |\n| 정답 기준 | E ((y % 4 != 0 || y % 100 == 0) && y % 400 != 0) |\n| 핵심 포인트 | 조건식 판단 순서와 중간값을 단계별로 추적하면 같은 결론이 나온다. |",
+            "conceptRef": "w03_c2",
+            "type": "mcq",
+            "options": [
+                "(y % 4 == 0 && y % 100 != 0) && y % 400 == 0",
+                "(y % 4 == 0 && y % 100 != 0) || y % 400 == 0",
+                "(y % 4 != 0 && y % 100 == 0) || y % 400 != 0",
+                "(y % 4 != 0 || y % 100 == 0) || y % 400 != 0",
+                "(y % 4 != 0 || y % 100 == 0) && y % 400 != 0"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 4,
+            "conceptRefs": [
+                "w03_c2"
+            ]
+        }
+    ],
+    "concepts": [
+        {
+            "id": "w03_c1",
+            "title": "개념 1) 우선순위와 괄호 전략",
+            "summary": "관련 이론: 우선순위와 괄호 전략"
+        },
+        {
+            "id": "w03_c2",
+            "title": "개념 2) 논리 연산 단락 평가",
+            "summary": "관련 이론: 논리 연산 단락 평가"
+        },
+        {
+            "id": "w03_c3",
+            "title": "개념 3) 비트 연산 마스크",
+            "summary": "관련 이론: 비트 연산 마스크"
+        }
+    ]
 }

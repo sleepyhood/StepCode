@@ -1,144 +1,149 @@
-{
-  "id": "contest_c_high_2024_r3_b01",
-  "title": "C 경시대회(고등) 1회차",
-  "categoryId": "contest_c_w01_diagnostic_headers_types",
-  "availableLanguages": [
-    "c"
-  ],
-  "problems": [
-    {
-      "id": "q1",
-      "level": "초,중,고",
-      "title": "문제 1",
-      "description": "다음 중 올바르지 않게 짝지어진 것을 고르시오.",
-      "conceptRef": "w01_c1",
-      "type": "mcq",
-      "options": [
-        "stdio.h: 입출력",
-        "time.h: 날짜/시간",
-        "assert.h: 검증 매크로",
-        "stdarg.h: 가변 인자 처리",
-        "stddef.h: 문자열 복사 함수 제공"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 4
-    },
-    {
-      "id": "q2",
-      "level": "초,중,고",
-      "title": "문제 2",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "#include <stdio.h>\nint main() {\n    short s = 32767;\n    printf(\"%d \", s + 1);\n    s = s + 1;\n    printf(\"%d\", s);\n    return 0;\n}",
-      "conceptRef": "w01_c3",
-      "type": "mcq",
-      "options": [
-        "32768 -32768",
-        "-32768 32768",
-        "-1 -32768",
-        "32768 32768",
-        "오류"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 0
-    },
-    {
-      "id": "q3",
-      "level": "초,중,고",
-      "title": "문제 3",
-      "description": "다음 중 `limits.h`에 정의된 상수가 아닌 것을 고르시오.",
-      "conceptRef": "w01_c2",
-      "type": "mcq",
-      "options": [
-        "SHRT_MAX",
-        "INT_MAX",
-        "CHAR_MAX",
-        "FLT_MAX",
-        "LONG_MAX"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3
-    },
-    {
-      "id": "q4",
-      "level": "초,중,고",
-      "title": "문제 4",
-      "description": "다음 중 컴파일러의 설명으로 가장 알맞은 것을 고르시오.",
-      "conceptRef": "w01_c1",
-      "type": "mcq",
-      "options": [
-        "한 줄씩 즉시 실행한다",
-        "소스 없이도 실행 파일만 생성한다",
-        "고급 언어를 기계가 실행 가능한 형태로 번역한다",
-        "런타임 오류만 탐지한다",
-        "입력 장치를 제어한다"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2
-    },
-    {
-      "id": "q5",
-      "level": "초,중,고",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "#include <stdio.h>\nint main() {\n    short s = 32766;\n    s = s + 1;\n    s = s + 1;\n    printf(\"%d\", s);\n    return 0;\n}",
-      "conceptRef": "w01_c3",
-      "type": "mcq",
-      "options": [
-        "32767",
-        "32768",
-        "-32768",
-        "-32767",
-        "오류"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2
-    }
-  ],
-  "concepts": [
-    {
-      "id": "w01_c1",
-      "title": "개념 1) 컴파일러/링커/인터프리터 구분",
-      "summary": "관련 이론: 컴파일러/링커/인터프리터 구분"
-    },
-    {
-      "id": "w01_c2",
-      "title": "개념 2) 헤더-상수 매핑 (`limits.h`, `float.h`)",
-      "summary": "관련 이론: 헤더-상수 매핑 (`limits.h`, `float.h`)"
-    },
-    {
-      "id": "w01_c3",
-      "title": "개념 3) `short` 오버플로우와 정수 승격",
-      "summary": "관련 이론: `short` 오버플로우와 정수 승격"
-    }
-  ]
+﻿{
+    "id": "contest_c_high_2024_r3_b01",
+    "title": "C 경시대회(고등) 1회차",
+    "categoryId": "contest_c_w01_diagnostic_headers_types",
+    "availableLanguages": [
+        "c"
+    ],
+    "problems": [
+        {
+            "id": "q1",
+            "level": "초,중,고",
+            "title": "문제 1",
+            "description": "다음 중 올바르지 않게 짝지어진 것을 고르시오.",
+            "teacherExplainMd": "정답 기준: **E**\n\n`stddef.h`는 `size_t`, `ptrdiff_t`, `NULL` 같은 기본 타입/매크로를 제공합니다. 문자열 복사 함수 `strcpy`는 `string.h`에 있습니다.\n\n- `stdio.h`: 표준 입출력 함수(`printf`, `scanf`) 제공\n- `time.h`: 시간 관련 타입/함수 제공\n- `assert.h`: `assert` 매크로 제공\n- `stdarg.h`: 가변 인자 처리(`va_list`) 제공\n\n따라서 잘못 짝지어진 것은 E입니다.\n\n### 정리 표\n| 항목 | 내용 |\n|---|---|\n| 문제 | 문제 1 |\n| 정답 기준 | E (stddef.h: 문자열 복사 함수 제공) |\n| 핵심 포인트 | 조건식 판단 순서와 중간값을 단계별로 추적하면 같은 결론이 나온다. |",
+            "conceptRef": "w01_c1",
+            "type": "mcq",
+            "options": [
+                "stdio.h: 입출력",
+                "time.h: 날짜/시간",
+                "assert.h: 검증 매크로",
+                "stdarg.h: 가변 인자 처리",
+                "stddef.h: 문자열 복사 함수 제공"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 4
+        },
+        {
+            "id": "q2",
+            "level": "초,중,고",
+            "title": "문제 2",
+            "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+            "code": "#include <stdio.h>\nint main() {\n    short s = 32767;\n    printf(\"%d \", s + 1);\n    s = s + 1;\n    printf(\"%d\", s);\n    return 0;\n}",
+            "teacherExplainMd": "정답 기준: **A**\n\n핵심은 `s+1` 계산 시 `short`가 `int`로 정수 승격된다는 점입니다.\n\n1. 처음 `s=32767`\n2. `printf(\"%d \", s+1)`에서 `s+1`은 `int` 연산으로 `32768` 출력\n3. `s = s+1`은 `32768`을 다시 `short`에 대입하는 단계이고, 일반적인 16비트 2의 보수 환경에서는 `-32768`으로 저장\n4. 두 번째 출력은 `-32768`\n\n따라서 출력은 `32768 -32768`입니다.\n\n### 정리 표\n| 항목 | 내용 |\n|---|---|\n| 문제 | 문제 2 |\n| 정답 기준 | A (32768 -32768) |\n| 핵심 포인트 | 조건식 판단 순서와 중간값을 단계별로 추적하면 같은 결론이 나온다. |",
+            "conceptRef": "w01_c3",
+            "type": "mcq",
+            "options": [
+                "32768 -32768",
+                "-32768 32768",
+                "-1 -32768",
+                "32768 32768",
+                "오류"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 0
+        },
+        {
+            "id": "q3",
+            "level": "초,중,고",
+            "title": "문제 3",
+            "description": "다음 중 `limits.h`에 정의된 상수가 아닌 것을 고르시오.",
+            "teacherExplainMd": "정답 기준: **D**\n\n`limits.h`는 정수형 범위 상수를 제공합니다.\n\n| 상수 | 소속 헤더 |\n|---|---|\n| `SHRT_MAX` | `limits.h` |\n| `INT_MAX` | `limits.h` |\n| `CHAR_MAX` | `limits.h` |\n| `LONG_MAX` | `limits.h` |\n| `FLT_MAX` | `float.h` |\n\n따라서 `limits.h`에 없는 것은 `FLT_MAX`입니다.",
+            "conceptRef": "w01_c2",
+            "type": "mcq",
+            "options": [
+                "SHRT_MAX",
+                "INT_MAX",
+                "CHAR_MAX",
+                "FLT_MAX",
+                "LONG_MAX"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 3
+        },
+        {
+            "id": "q4",
+            "level": "초,중,고",
+            "title": "문제 4",
+            "description": "다음 중 컴파일러의 설명으로 가장 알맞은 것을 고르시오.",
+            "teacherExplainMd": "정답 기준: **C**\n\n컴파일러는 C 같은 고급 언어 소스 코드를 목적 코드/실행 가능한 형태로 번역하는 도구입니다.\n\n- A는 인터프리터 성격에 가깝습니다.\n- B는 소스 없이 생성 불가입니다.\n- D는 컴파일러 설명이 아니라 디버깅/검사 도구 설명에 가깝습니다.\n- E는 컴파일러 역할이 아닙니다.\n\n따라서 C가 맞습니다.\n\n### 정리 표\n| 항목 | 내용 |\n|---|---|\n| 문제 | 문제 4 |\n| 정답 기준 | C (고급 언어를 기계가 실행 가능한 형태로 번역한다) |\n| 핵심 포인트 | 조건식 판단 순서와 중간값을 단계별로 추적하면 같은 결론이 나온다. |",
+            "conceptRef": "w01_c1",
+            "type": "mcq",
+            "options": [
+                "한 줄씩 즉시 실행한다",
+                "소스 없이도 실행 파일만 생성한다",
+                "고급 언어를 기계가 실행 가능한 형태로 번역한다",
+                "런타임 오류만 탐지한다",
+                "입력 장치를 제어한다"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 2
+        },
+        {
+            "id": "q5",
+            "level": "초,중,고",
+            "title": "문제 5",
+            "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+            "code": "#include <stdio.h>\nint main() {\n    short s = 32766;\n    s = s + 1;\n    s = s + 1;\n    printf(\"%d\", s);\n    return 0;\n}",
+            "teacherExplainMd": "정답 기준: **C**\n\n`short` 최대값 근처에서 1씩 두 번 증가합니다.\n\n- 시작: `32766`\n- 1회 증가 후: `32767`\n- 2회 증가 후: `32768`을 `short`에 저장해야 하므로, 일반적인 16비트 2의 보수 환경에서 `-32768`\n\n따라서 출력은 `-32768`입니다.\n\n### 정리 표\n| 항목 | 내용 |\n|---|---|\n| 문제 | 문제 5 |\n| 정답 기준 | C (-32768) |\n| 핵심 포인트 | 조건식 판단 순서와 중간값을 단계별로 추적하면 같은 결론이 나온다. |",
+            "conceptRef": "w01_c3",
+            "type": "mcq",
+            "options": [
+                "32767",
+                "32768",
+                "-32768",
+                "-32767",
+                "오류"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 2
+        }
+    ],
+    "concepts": [
+        {
+            "id": "w01_c1",
+            "title": "개념 1) 컴파일러/링커/인터프리터 구분",
+            "summary": "관련 이론: 컴파일러/링커/인터프리터 구분"
+        },
+        {
+            "id": "w01_c2",
+            "title": "개념 2) 헤더-상수 매핑 (`limits.h`, `float.h`)",
+            "summary": "관련 이론: 헤더-상수 매핑 (`limits.h`, `float.h`)"
+        },
+        {
+            "id": "w01_c3",
+            "title": "개념 3) `short` 오버플로우와 정수 승격",
+            "summary": "관련 이론: `short` 오버플로우와 정수 승격"
+        }
+    ]
 }

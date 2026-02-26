@@ -1,141 +1,146 @@
 ﻿{
-    "id":  "contest_c_high_2024_r3_b12",
-    "title":  "C 경시대회(고등) 12회차",
-    "categoryId":  "contest_c_w12_final_mock_transfer",
-    "availableLanguages":  [
-                               "c"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "q1",
-                         "level":  "초,중,고",
-                         "title":  "문제 1",
-                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.\n\n\u003c다음\u003e\n```text\n4\n66\n20\n95\n5\n```",
-                         "code":  "#include\u003cstdio.h\u003e\n#define K(A,B) (A\u003eB?B:A)\n\nint a[1300], ac;\n\nvoid f() {\n    a[0] = 2;\n    ac = 1;\n    for(int i=3; i\u003c=111; i+=2) {\n        int c = 0;\n        for(int j=3; j*j\u003c=i; j++) {\n            if(i % j == 0) {\n                c = 1;\n                break;\n            }\n        }\n        if(c == 1) continue;\n        a[ac++] = i;\n    }\n}\nint main()\n{\n    int t, p, v = 0;\n    f();\n    scanf(\"%d\", \u0026t);\n    while(t--) {\n        int n;\n        scanf(\"%d\", \u0026n);\n        for(int i=0; i\u003cac; i++) {\n            if(a[i] == n) {\n                v += 0;\n                break;\n            }\n            if(a[i] \u003c n \u0026\u0026 n \u003c a[i+1]) {\n                v += K(a[i+1]-n, n-a[i]);\n            }\n        }\n    }\n    printf(\"%d\", v);\n    return 0;\n}",
-                         "conceptRef":  "w12_c1",
-                         "type":  "mcq",
-                         "options":  [
-                                         "1",
-                                         "2",
-                                         "3",
-                                         "4",
-                                         "5"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  3,
-                         "conceptRefs":  [
-                                             "w12_c1",
-                                             "w12_c2"
-                                         ]
-                     },
-                     {
-                         "id":  "q2",
-                         "level":  "초,중,고",
-                         "title":  "문제 2",
-                         "description":  "다음 코드의 실행 결과를 작성하시오.\n\n\u003c입력 1\u003e\n```text\n8 3\n3 4 5 6 7 8 9 10\n```\n\n\u003c입력 2\u003e\n```text\n12 4\n10 20 30 40 30 40 20 30 40 50 10 20\n```",
-                         "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int n, m, a[20];\n    int s = 0;\n    scanf(\"%d %d\", \u0026n, \u0026m);\n    for(int i=0; i\u003cn; i++) {\n        scanf(\"%d\", \u0026a[i]);\n        s += a[i];\n    }\n\n    int l = 0, r = s;\n    int ans = -1;\n    while(l \u003c= r) {\n        int c = (l + r) / 2;\n        int cnt = 1, t = 0, flg = 0;\n        for(int i=0; i\u003cn; i++) {\n            if(t + a[i] \u003c= c) {\n                t += a[i];\n            } else {\n                if(a[i] \u003c= c) {\n                    t = a[i];\n                    cnt++;\n                } else {\n                    flg = 1;\n                    break;\n                }\n            }\n        }\n        if(flg || cnt \u003e m) {\n            l = c + 1;\n        } else {\n            r = c - 1;\n            ans = c;\n        }\n    }\n    printf(\"%d\", ans);\n    return 0;\n}",
-                         "conceptRef":  "w12_c1",
-                         "type":  "short",
-                         "expectedText":  "119",
-                         "conceptRefs":  [
-                                             "w12_c1",
-                                             "w12_c2",
-                                             "w12_c3"
-                                         ]
-                     },
-                     {
-                         "id":  "q3",
-                         "level":  "초,중,고",
-                         "title":  "문제 3",
-                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.\n\n\u003c다음\u003e\n```text\n4\n66\n20\n95\n5\n```",
-                         "code":  "#include\u003cstdio.h\u003e\n#define K(A,B) (A\u003eB?B:A)\n\nint a[1300], ac;\n\nvoid f() {\n    a[0] = 2;\n    ac = 1;\n    for(int i=3; i\u003c=111; i+=2) {\n        int c = 0;\n        for(int j=3; j*j\u003c=i; j++) {\n            if(i % j == 0) {\n                c = 1;\n                break;\n            }\n        }\n        if(c == 1) continue;\n        a[ac++] = i;\n    }\n}\nint main()\n{\n    int t, p, v = 0;\n    f();\n    scanf(\"%d\", \u0026t);\n    while(t--) {\n        int n;\n        scanf(\"%d\", \u0026n);\n        for(int i=0; i\u003cac; i++) {\n            if(a[i] == n) {\n                v += 0;\n                break;\n            }\n            if(a[i] \u003c n \u0026\u0026 n \u003c a[i+1]) {\n                v += K(a[i+1]-n, n-a[i]);\n            }\n        }\n    }\n    printf(\"%d\", v);\n    return 0;\n}",
-                         "conceptRef":  "w12_c1",
-                         "type":  "mcq",
-                         "options":  [
-                                         "1",
-                                         "2",
-                                         "3",
-                                         "4",
-                                         "5"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  3,
-                         "conceptRefs":  [
-                                             "w12_c1",
-                                             "w12_c2"
-                                         ]
-                     },
-                     {
-                         "id":  "q4",
-                         "level":  "초,중,고",
-                         "title":  "문제 4",
-                         "description":  "다음 코드의 실행 결과를 작성하시오.\n\n\u003c입력 1\u003e\n```text\n8 3\n3 4 5 6 7 8 9 10\n```\n\n\u003c입력 2\u003e\n```text\n12 4\n10 20 30 40 30 40 20 30 40 50 10 20\n```",
-                         "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int n, m, a[20];\n    int s = 0;\n    scanf(\"%d %d\", \u0026n, \u0026m);\n    for(int i=0; i\u003cn; i++) {\n        scanf(\"%d\", \u0026a[i]);\n        s += a[i];\n    }\n\n    int l = 0, r = s;\n    int ans = -1;\n    while(l \u003c= r) {\n        int c = (l + r) / 2;\n        int cnt = 1, t = 0, flg = 0;\n        for(int i=0; i\u003cn; i++) {\n            if(t + a[i] \u003c= c) {\n                t += a[i];\n            } else {\n                if(a[i] \u003c= c) {\n                    t = a[i];\n                    cnt++;\n                } else {\n                    flg = 1;\n                    break;\n                }\n            }\n        }\n        if(flg || cnt \u003e m) {\n            l = c + 1;\n        } else {\n            r = c - 1;\n            ans = c;\n        }\n    }\n    printf(\"%d\", ans);\n    return 0;\n}",
-                         "conceptRef":  "w12_c1",
-                         "type":  "short",
-                         "expectedText":  "119",
-                         "conceptRefs":  [
-                                             "w12_c1",
-                                             "w12_c2",
-                                             "w12_c3"
-                                         ]
-                     },
-                     {
-                         "id":  "q5",
-                         "level":  "초,중,고",
-                         "title":  "문제 5",
-                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.\n\n\u003c다음\u003e\n```text\n4\n66\n20\n95\n5\n```",
-                         "code":  "#include\u003cstdio.h\u003e\n#define K(A,B) (A\u003eB?B:A)\n\nint a[1300], ac;\n\nvoid f() {\n    a[0] = 2;\n    ac = 1;\n    for(int i=3; i\u003c=111; i+=2) {\n        int c = 0;\n        for(int j=3; j*j\u003c=i; j++) {\n            if(i % j == 0) {\n                c = 1;\n                break;\n            }\n        }\n        if(c == 1) continue;\n        a[ac++] = i;\n    }\n}\nint main()\n{\n    int t, p, v = 0;\n    f();\n    scanf(\"%d\", \u0026t);\n    while(t--) {\n        int n;\n        scanf(\"%d\", \u0026n);\n        for(int i=0; i\u003cac; i++) {\n            if(a[i] == n) {\n                v += 0;\n                break;\n            }\n            if(a[i] \u003c n \u0026\u0026 n \u003c a[i+1]) {\n                v += K(a[i+1]-n, n-a[i]);\n            }\n        }\n    }\n    printf(\"%d\", v);\n    return 0;\n}",
-                         "conceptRef":  "w12_c1",
-                         "type":  "mcq",
-                         "options":  [
-                                         "1",
-                                         "2",
-                                         "3",
-                                         "4",
-                                         "5"
-                                     ],
-                         "optionLabels":  [
-                                              "A",
-                                              "B",
-                                              "C",
-                                              "D",
-                                              "E"
-                                          ],
-                         "correctIndex":  3,
-                         "conceptRefs":  [
-                                             "w12_c1",
-                                             "w12_c2"
-                                         ]
-                     }
-                 ],
-    "concepts":  [
-                     {
-                         "id":  "w12_c1",
-                         "title":  "개념 1) 복합 조건 분해",
-                         "summary":  "관련 이론: 복합 조건 분해"
-                     },
-                     {
-                         "id":  "w12_c2",
-                         "title":  "개념 2) 추적표 기반 검산",
-                         "summary":  "관련 이론: 추적표 기반 검산"
-                     },
-                     {
-                         "id":  "w12_c3",
-                         "title":  "개념 3) 시간 안배와 선택 전략",
-                         "summary":  "관련 이론: 시간 안배와 선택 전략"
-                     }
-                 ]
+    "id": "contest_c_high_2024_r3_b12",
+    "title": "C 경시대회(고등) 12회차",
+    "categoryId": "contest_c_w12_final_mock_transfer",
+    "availableLanguages": [
+        "c"
+    ],
+    "problems": [
+        {
+            "id": "q1",
+            "level": "초,중,고",
+            "title": "문제 1",
+            "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.\n\n<다음>\n```text\n4\n66\n20\n95\n5\n```",
+            "code": "#include<stdio.h>\n#define K(A,B) (A>B?B:A)\n\nint a[1300], ac;\n\nvoid f() {\n    a[0] = 2;\n    ac = 1;\n    for(int i=3; i<=111; i+=2) {\n        int c = 0;\n        for(int j=3; j*j<=i; j++) {\n            if(i % j == 0) {\n                c = 1;\n                break;\n            }\n        }\n        if(c == 1) continue;\n        a[ac++] = i;\n    }\n}\nint main()\n{\n    int t, p, v = 0;\n    f();\n    scanf(\"%d\", &t);\n    while(t--) {\n        int n;\n        scanf(\"%d\", &n);\n        for(int i=0; i<ac; i++) {\n            if(a[i] == n) {\n                v += 0;\n                break;\n            }\n            if(a[i] < n && n < a[i+1]) {\n                v += K(a[i+1]-n, n-a[i]);\n            }\n        }\n    }\n    printf(\"%d\", v);\n    return 0;\n}",
+            "conceptRef": "w12_c1",
+            "type": "mcq",
+            "options": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 3,
+            "conceptRefs": [
+                "w12_c1",
+                "w12_c2"
+            ],
+            "teacherExplainMd": "`f()`는 111 이하 소수를 배열 `a`에 저장합니다. 이후 각 입력값 `n`에 대해\n\n- `n`이 소수면 거리 0\n- 소수 사이에 있으면 양쪽 소수와의 거리 중 작은 값을 더함\n\n입력값별 최소 거리:\n\n| n | 인접 소수 | 최소 거리 |\n|---:|---|---:|\n| 66 | 61, 67 | 1 |\n| 20 | 19, 23 | 1 |\n| 95 | 89, 97 | 2 |\n| 5 | 소수 | 0 |\n\n합계 `1+1+2+0=4`이므로 정답은 `4`(D)입니다."
+        },
+        {
+            "id": "q2",
+            "level": "초,중,고",
+            "title": "문제 2",
+            "description": "다음 코드의 실행 결과를 작성하시오.\n\n<입력 1>\n```text\n8 3\n3 4 5 6 7 8 9 10\n```\n\n<입력 2>\n```text\n12 4\n10 20 30 40 30 40 20 30 40 50 10 20\n```",
+            "code": "#include<stdio.h>\nint main()\n{\n    int n, m, a[20];\n    int s = 0;\n    scanf(\"%d %d\", &n, &m);\n    for(int i=0; i<n; i++) {\n        scanf(\"%d\", &a[i]);\n        s += a[i];\n    }\n\n    int l = 0, r = s;\n    int ans = -1;\n    while(l <= r) {\n        int c = (l + r) / 2;\n        int cnt = 1, t = 0, flg = 0;\n        for(int i=0; i<n; i++) {\n            if(t + a[i] <= c) {\n                t += a[i];\n            } else {\n                if(a[i] <= c) {\n                    t = a[i];\n                    cnt++;\n                } else {\n                    flg = 1;\n                    break;\n                }\n            }\n        }\n        if(flg || cnt > m) {\n            l = c + 1;\n        } else {\n            r = c - 1;\n            ans = c;\n        }\n    }\n    printf(\"%d\", ans);\n    return 0;\n}",
+            "conceptRef": "w12_c1",
+            "type": "short",
+            "expectedText": "19 100",
+            "conceptRefs": [
+                "w12_c1",
+                "w12_c2",
+                "w12_c3"
+            ],
+            "teacherExplainMd": "이분 탐색으로 \"구간합 최댓값의 최소값\"을 구합니다.\n\n| 입력 | 결과 |\n|---|---:|\n| `8 3` / `3 4 5 6 7 8 9 10` | 19 |\n| `12 4` / `10 20 30 40 30 40 20 30 40 50 10 20` | 100 |\n\n문항 지시대로 두 결과를 공백으로 쓰면 정답은 `19 100`입니다."
+        },
+        {
+            "id": "q3",
+            "level": "초,중,고",
+            "title": "문제 3",
+            "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.\n\n<다음>\n```text\n4\n66\n20\n95\n5\n```",
+            "code": "#include<stdio.h>\n#define K(A,B) (A>B?B:A)\n\nint a[1300], ac;\n\nvoid f() {\n    a[0] = 2;\n    ac = 1;\n    for(int i=3; i<=111; i+=2) {\n        int c = 0;\n        for(int j=3; j*j<=i; j++) {\n            if(i % j == 0) {\n                c = 1;\n                break;\n            }\n        }\n        if(c == 1) continue;\n        a[ac++] = i;\n    }\n}\nint main()\n{\n    int t, p, v = 0;\n    f();\n    scanf(\"%d\", &t);\n    while(t--) {\n        int n;\n        scanf(\"%d\", &n);\n        for(int i=0; i<ac; i++) {\n            if(a[i] == n) {\n                v += 0;\n                break;\n            }\n            if(a[i] < n && n < a[i+1]) {\n                v += K(a[i+1]-n, n-a[i]);\n            }\n        }\n    }\n    printf(\"%d\", v);\n    return 0;\n}",
+            "conceptRef": "w12_c1",
+            "type": "mcq",
+            "options": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 3,
+            "conceptRefs": [
+                "w12_c1",
+                "w12_c2"
+            ],
+            "teacherExplainMd": "`f()`는 111 이하 소수를 배열 `a`에 저장합니다. 이후 각 입력값 `n`에 대해\n\n- `n`이 소수면 거리 0\n- 소수 사이에 있으면 양쪽 소수와의 거리 중 작은 값을 더함\n\n입력값별 최소 거리:\n\n| n | 인접 소수 | 최소 거리 |\n|---:|---|---:|\n| 66 | 61, 67 | 1 |\n| 20 | 19, 23 | 1 |\n| 95 | 89, 97 | 2 |\n| 5 | 소수 | 0 |\n\n합계 `1+1+2+0=4`이므로 정답은 `4`(D)입니다."
+        },
+        {
+            "id": "q4",
+            "level": "초,중,고",
+            "title": "문제 4",
+            "description": "다음 코드의 실행 결과를 작성하시오.\n\n<입력 1>\n```text\n8 3\n3 4 5 6 7 8 9 10\n```\n\n<입력 2>\n```text\n12 4\n10 20 30 40 30 40 20 30 40 50 10 20\n```",
+            "code": "#include<stdio.h>\nint main()\n{\n    int n, m, a[20];\n    int s = 0;\n    scanf(\"%d %d\", &n, &m);\n    for(int i=0; i<n; i++) {\n        scanf(\"%d\", &a[i]);\n        s += a[i];\n    }\n\n    int l = 0, r = s;\n    int ans = -1;\n    while(l <= r) {\n        int c = (l + r) / 2;\n        int cnt = 1, t = 0, flg = 0;\n        for(int i=0; i<n; i++) {\n            if(t + a[i] <= c) {\n                t += a[i];\n            } else {\n                if(a[i] <= c) {\n                    t = a[i];\n                    cnt++;\n                } else {\n                    flg = 1;\n                    break;\n                }\n            }\n        }\n        if(flg || cnt > m) {\n            l = c + 1;\n        } else {\n            r = c - 1;\n            ans = c;\n        }\n    }\n    printf(\"%d\", ans);\n    return 0;\n}",
+            "conceptRef": "w12_c1",
+            "type": "short",
+            "expectedText": "19 100",
+            "conceptRefs": [
+                "w12_c1",
+                "w12_c2",
+                "w12_c3"
+            ],
+            "teacherExplainMd": "이분 탐색으로 \"구간합 최댓값의 최소값\"을 구합니다.\n\n| 입력 | 결과 |\n|---|---:|\n| `8 3` / `3 4 5 6 7 8 9 10` | 19 |\n| `12 4` / `10 20 30 40 30 40 20 30 40 50 10 20` | 100 |\n\n문항 지시대로 두 결과를 공백으로 쓰면 정답은 `19 100`입니다."
+        },
+        {
+            "id": "q5",
+            "level": "초,중,고",
+            "title": "문제 5",
+            "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.\n\n<다음>\n```text\n4\n66\n20\n95\n5\n```",
+            "code": "#include<stdio.h>\n#define K(A,B) (A>B?B:A)\n\nint a[1300], ac;\n\nvoid f() {\n    a[0] = 2;\n    ac = 1;\n    for(int i=3; i<=111; i+=2) {\n        int c = 0;\n        for(int j=3; j*j<=i; j++) {\n            if(i % j == 0) {\n                c = 1;\n                break;\n            }\n        }\n        if(c == 1) continue;\n        a[ac++] = i;\n    }\n}\nint main()\n{\n    int t, p, v = 0;\n    f();\n    scanf(\"%d\", &t);\n    while(t--) {\n        int n;\n        scanf(\"%d\", &n);\n        for(int i=0; i<ac; i++) {\n            if(a[i] == n) {\n                v += 0;\n                break;\n            }\n            if(a[i] < n && n < a[i+1]) {\n                v += K(a[i+1]-n, n-a[i]);\n            }\n        }\n    }\n    printf(\"%d\", v);\n    return 0;\n}",
+            "conceptRef": "w12_c1",
+            "type": "mcq",
+            "options": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E"
+            ],
+            "correctIndex": 3,
+            "conceptRefs": [
+                "w12_c1",
+                "w12_c2"
+            ],
+            "teacherExplainMd": "`f()`는 111 이하 소수를 배열 `a`에 저장합니다. 이후 각 입력값 `n`에 대해\n\n- `n`이 소수면 거리 0\n- 소수 사이에 있으면 양쪽 소수와의 거리 중 작은 값을 더함\n\n입력값별 최소 거리:\n\n| n | 인접 소수 | 최소 거리 |\n|---:|---|---:|\n| 66 | 61, 67 | 1 |\n| 20 | 19, 23 | 1 |\n| 95 | 89, 97 | 2 |\n| 5 | 소수 | 0 |\n\n합계 `1+1+2+0=4`이므로 정답은 `4`(D)입니다."
+        }
+    ],
+    "concepts": [
+        {
+            "id": "w12_c1",
+            "title": "개념 1) 복합 조건 분해",
+            "summary": "관련 이론: 복합 조건 분해"
+        },
+        {
+            "id": "w12_c2",
+            "title": "개념 2) 추적표 기반 검산",
+            "summary": "관련 이론: 추적표 기반 검산"
+        },
+        {
+            "id": "w12_c3",
+            "title": "개념 3) 시간 안배와 선택 전략",
+            "summary": "관련 이론: 시간 안배와 선택 전략"
+        }
+    ]
 }

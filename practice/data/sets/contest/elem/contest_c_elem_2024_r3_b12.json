@@ -14,6 +14,7 @@
                          "code":  "#include\u003cstdio.h\u003e\n#define K(A,B) (A\u003eB?B:A)\n\nint a[1300], ac;\n\nvoid f() {\n    a[0] = 2;\n    ac = 1;\n    for(int i=3; i\u003c=111; i+=2) {\n        int c = 0;\n        for(int j=3; j*j\u003c=i; j++) {\n            if(i % j == 0) {\n                c = 1;\n                break;\n            }\n        }\n        if(c == 1) continue;\n        a[ac++] = i;\n    }\n}\nint main()\n{\n    int t, p, v = 0;\n    f();\n    scanf(\"%d\", \u0026t);\n    while(t--) {\n        int n;\n        scanf(\"%d\", \u0026n);\n        for(int i=0; i\u003cac; i++) {\n            if(a[i] == n) {\n                v += 0;\n                break;\n            }\n            if(a[i] \u003c n \u0026\u0026 n \u003c a[i+1]) {\n                v += K(a[i+1]-n, n-a[i]);\n            }\n        }\n    }\n    printf(\"%d\", v);\n    return 0;\n}",
                          "conceptRef":  "w12_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "각 수에 대해 가장 가까운 소수까지의 거리를 누적합니다.\n\n| 입력값 n | 인접 소수 | 최소 거리 |\n|---:|---|---:|\n| 66 | 61, 67 | 1 |\n| 20 | 19, 23 | 1 |\n| 95 | 89, 97 | 2 |\n| 5 | 소수 자체 | 0 |\n\n거리 합은 `1+1+2+0=4`이므로 출력은 `4`입니다.",
                          "options":  [
                                          "1",
                                          "2",
@@ -42,7 +43,8 @@
                          "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int n, m, a[20];\n    int s = 0;\n    scanf(\"%d %d\", \u0026n, \u0026m);\n    for(int i=0; i\u003cn; i++) {\n        scanf(\"%d\", \u0026a[i]);\n        s += a[i];\n    }\n\n    int l = 0, r = s;\n    int ans = -1;\n    while(l \u003c= r) {\n        int c = (l + r) / 2;\n        int cnt = 1, t = 0, flg = 0;\n        for(int i=0; i\u003cn; i++) {\n            if(t + a[i] \u003c= c) {\n                t += a[i];\n            } else {\n                if(a[i] \u003c= c) {\n                    t = a[i];\n                    cnt++;\n                } else {\n                    flg = 1;\n                    break;\n                }\n            }\n        }\n        if(flg || cnt \u003e m) {\n            l = c + 1;\n        } else {\n            r = c - 1;\n            ans = c;\n        }\n    }\n    printf(\"%d\", ans);\n    return 0;\n}",
                          "conceptRef":  "w12_c1",
                          "type":  "short",
-                         "expectedText":  "119",
+                         "teacherExplainMd":  "이분 탐색으로 \"구간합 최댓값의 최소값\"을 구합니다.\n\n| 입력 | 결과 |\n|---|---:|\n| `8 3` / `3 4 5 6 7 8 9 10` | 19 |\n| `12 4` / `10 20 30 40 30 40 20 30 40 50 10 20` | 100 |\n\n문항 지시대로 두 결과를 공백으로 쓰면 정답은 `19 100`입니다.",
+                         "expectedText":  "19 100",
                          "conceptRefs":  [
                                              "w12_c1",
                                              "w12_c2",
@@ -57,6 +59,7 @@
                          "code":  "#include\u003cstdio.h\u003e\n#define K(A,B) (A\u003eB?B:A)\n\nint a[1300], ac;\n\nvoid f() {\n    a[0] = 2;\n    ac = 1;\n    for(int i=3; i\u003c=111; i+=2) {\n        int c = 0;\n        for(int j=3; j*j\u003c=i; j++) {\n            if(i % j == 0) {\n                c = 1;\n                break;\n            }\n        }\n        if(c == 1) continue;\n        a[ac++] = i;\n    }\n}\nint main()\n{\n    int t, p, v = 0;\n    f();\n    scanf(\"%d\", \u0026t);\n    while(t--) {\n        int n;\n        scanf(\"%d\", \u0026n);\n        for(int i=0; i\u003cac; i++) {\n            if(a[i] == n) {\n                v += 0;\n                break;\n            }\n            if(a[i] \u003c n \u0026\u0026 n \u003c a[i+1]) {\n                v += K(a[i+1]-n, n-a[i]);\n            }\n        }\n    }\n    printf(\"%d\", v);\n    return 0;\n}",
                          "conceptRef":  "w12_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "q1과 동일한 코드/입력입니다. 각 수와 인접 소수 사이 최소 거리의 누적합이 `4`이므로 정답은 `4`(D)입니다.",
                          "options":  [
                                          "1",
                                          "2",
@@ -85,7 +88,8 @@
                          "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int n, m, a[20];\n    int s = 0;\n    scanf(\"%d %d\", \u0026n, \u0026m);\n    for(int i=0; i\u003cn; i++) {\n        scanf(\"%d\", \u0026a[i]);\n        s += a[i];\n    }\n\n    int l = 0, r = s;\n    int ans = -1;\n    while(l \u003c= r) {\n        int c = (l + r) / 2;\n        int cnt = 1, t = 0, flg = 0;\n        for(int i=0; i\u003cn; i++) {\n            if(t + a[i] \u003c= c) {\n                t += a[i];\n            } else {\n                if(a[i] \u003c= c) {\n                    t = a[i];\n                    cnt++;\n                } else {\n                    flg = 1;\n                    break;\n                }\n            }\n        }\n        if(flg || cnt \u003e m) {\n            l = c + 1;\n        } else {\n            r = c - 1;\n            ans = c;\n        }\n    }\n    printf(\"%d\", ans);\n    return 0;\n}",
                          "conceptRef":  "w12_c1",
                          "type":  "short",
-                         "expectedText":  "119",
+                         "teacherExplainMd":  "q2와 동일 코드/입력입니다.\n\n| 입력 케이스 | 출력 |\n|---|---:|\n| 입력 1 | 19 |\n| 입력 2 | 100 |\n\n따라서 답안 형식은 `19 100`입니다.",
+                         "expectedText":  "19 100",
                          "conceptRefs":  [
                                              "w12_c1",
                                              "w12_c2",
@@ -100,6 +104,7 @@
                          "code":  "#include\u003cstdio.h\u003e\n#define K(A,B) (A\u003eB?B:A)\n\nint a[1300], ac;\n\nvoid f() {\n    a[0] = 2;\n    ac = 1;\n    for(int i=3; i\u003c=111; i+=2) {\n        int c = 0;\n        for(int j=3; j*j\u003c=i; j++) {\n            if(i % j == 0) {\n                c = 1;\n                break;\n            }\n        }\n        if(c == 1) continue;\n        a[ac++] = i;\n    }\n}\nint main()\n{\n    int t, p, v = 0;\n    f();\n    scanf(\"%d\", \u0026t);\n    while(t--) {\n        int n;\n        scanf(\"%d\", \u0026n);\n        for(int i=0; i\u003cac; i++) {\n            if(a[i] == n) {\n                v += 0;\n                break;\n            }\n            if(a[i] \u003c n \u0026\u0026 n \u003c a[i+1]) {\n                v += K(a[i+1]-n, n-a[i]);\n            }\n        }\n    }\n    printf(\"%d\", v);\n    return 0;\n}",
                          "conceptRef":  "w12_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "q1, q3과 동일 유형입니다. 입력값들에 대해 최소 소수 거리 합을 계산하면 `4`가 됩니다. 따라서 정답은 D입니다.",
                          "options":  [
                                          "1",
                                          "2",

@@ -1,144 +1,149 @@
-{
-  "id": "contest_py_elem_2024_r3_b10",
-  "title": "Python 경시대회(초등) 10회차",
-  "categoryId": "contest_py_w10_module_datetime_re_collections",
-  "availableLanguages": [
-    "python"
-  ],
-  "problems": [
-    {
-      "id": "q1",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 1",
-      "description": "다음은 파이썬 모듈에 대한 설명이다. 올바르지 않게 짝지어진 것을 고르시오.",
-      "options": [
-        "datetime - 날짜를 다루기 위한 모듈",
-        "math - 수학과 관련된 함수가 포함된 모듈",
-        "os - 환경변수나 디렉터리 등을 제어하는 모듈",
-        "pickle - 특정 디렉터리에 있는 파일 이름을 모두 알아야 할 때 사용하는 모듈",
-        "traceback - 프로그램 실행 중 발생한 오류를 추적하는 모듈"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w10_c1"
-    },
-    {
-      "id": "q2",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 2",
-      "description": "다음 중 os 모듈에 정의되어 있지 않은 함수를 고르시오.",
-      "options": [
-        "getpid",
-        "setregid",
-        "read",
-        "chdir",
-        "seekid"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 4,
-      "conceptRef": "w10_c1"
-    },
-    {
-      "id": "q3",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 3",
-      "description": "다음 프로그램의 실행 결과에서 None을 출력하지 않는 줄은 몇 번 줄인가?",
-      "code": "import re\npattern = re.compile('o[gh]')\nprint(pattern.fullmatch('o'))\nprint(pattern.fullmatch('oh'))\nprint(pattern.fullmatch('dog'))\nprint(pattern.fullmatch('doggie'))\nprint(pattern.fullmatch('ogre'))",
-      "options": [
-        "1번 줄",
-        "2번 줄",
-        "3번 줄",
-        "4번 줄",
-        "5번 줄"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w10_c2"
-    },
-    {
-      "id": "q4",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 4",
-      "description": "다음 중 collections 모듈의 특수 컨테이너가 직접 대체 대상으로 두지 않는 내장 타입을 고르시오.",
-      "options": [
-        "list",
-        "dict",
-        "set",
-        "str",
-        "tuple"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 3,
-      "conceptRef": "w10_c3"
-    },
-    {
-      "id": "q5",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "from datetime import datetime\nd = datetime(2024, 2, 1, 9, 3)\nprint(d.strftime('%Y-%m-%d %H:%M'))",
-      "options": [
-        "24-02-01 09:03",
-        "2024-02-01 09:03",
-        "2024-2-1 9:3",
-        "2024/02/01 09:03",
-        "2024-02-01 09:30"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w10_c1"
-    }
-  ],
-  "concepts": [
-    {
-      "id": "w10_c1",
-      "title": "개념 1) 모듈-용도 매핑 규칙",
-      "summary": "관련 이론: 개념 1) 모듈-용도 매핑 규칙"
-    },
-    {
-      "id": "w10_c2",
-      "title": "개념 2) `os` 함수 존재 여부 판별",
-      "summary": "관련 이론: 개념 2) `os` 함수 존재 여부 판별"
-    },
-    {
-      "id": "w10_c3",
-      "title": "개념 3) `re.fullmatch` 전체 매칭",
-      "summary": "관련 이론: 개념 3) `re.fullmatch` 전체 매칭"
-    }
-  ]
+﻿{
+    "id":  "contest_py_elem_2024_r3_b10",
+    "title":  "Python 경시대회(초등) 10회차",
+    "categoryId":  "contest_py_w10_module_datetime_re_collections",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 1",
+                         "description":  "다음은 파이썬 모듈에 대한 설명이다. 올바르지 않게 짝지어진 것을 고르시오.",
+                         "teacherExplainMd":  "`pickle`은 객체를 직렬화/역직렬화하는 모듈입니다.\n\n\"특정 디렉터리의 파일 이름을 모두 확인\"은 보통 `os.listdir()` 같은 `os` 모듈 기능에 해당합니다.\n따라서 올바르지 않은 짝은 `pickle - 파일 이름 조회`입니다.",
+                         "options":  [
+                                         "datetime - 날짜를 다루기 위한 모듈",
+                                         "math - 수학과 관련된 함수가 포함된 모듈",
+                                         "os - 환경변수나 디렉터리 등을 제어하는 모듈",
+                                         "pickle - 특정 디렉터리에 있는 파일 이름을 모두 알아야 할 때 사용하는 모듈",
+                                         "traceback - 프로그램 실행 중 발생한 오류를 추적하는 모듈"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w10_c1"
+                     },
+                     {
+                         "id":  "q2",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 2",
+                         "description":  "다음 중 os 모듈에 정의되어 있지 않은 함수를 고르시오.",
+                         "teacherExplainMd":  "`os`에는 `getpid`, `setregid`(일부 환경), `read`, `chdir` 같은 함수가 있습니다.\n\n`seekid`라는 이름의 함수는 `os` 모듈에 없습니다.\n따라서 정답은 `seekid`입니다.",
+                         "options":  [
+                                         "getpid",
+                                         "setregid",
+                                         "read",
+                                         "chdir",
+                                         "seekid"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  4,
+                         "conceptRef":  "w10_c1"
+                     },
+                     {
+                         "id":  "q3",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 3",
+                         "description":  "다음 프로그램의 실행 결과에서 None을 출력하지 않는 줄은 몇 번 줄인가?",
+                         "code":  "import re\npattern = re.compile(\u0027o[gh]\u0027)\nprint(pattern.fullmatch(\u0027o\u0027))\nprint(pattern.fullmatch(\u0027oh\u0027))\nprint(pattern.fullmatch(\u0027dog\u0027))\nprint(pattern.fullmatch(\u0027doggie\u0027))\nprint(pattern.fullmatch(\u0027ogre\u0027))",
+                         "teacherExplainMd":  "`re.fullmatch`는 문자열 전체가 패턴과 정확히 일치해야 성공합니다.\n\n| 줄 번호 | 입력 | `o[gh]` 매칭 결과 |\n|---:|---|---|\n| 1 | `o` | None |\n| 2 | `oh` | match |\n| 3 | `dog` | None |\n| 4 | `doggie` | None |\n| 5 | `ogre` | None |\n\n따라서 `None`이 아닌 값이 출력되는 줄은 `2번 줄`입니다.",
+                         "options":  [
+                                         "1번 줄",
+                                         "2번 줄",
+                                         "3번 줄",
+                                         "4번 줄",
+                                         "5번 줄"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w10_c2"
+                     },
+                     {
+                         "id":  "q4",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 4",
+                         "description":  "다음 중 collections 모듈의 특수 컨테이너가 직접 대체 대상으로 두지 않는 내장 타입을 고르시오.",
+                         "teacherExplainMd":  "`collections`의 주요 특수 컨테이너(`deque`, `defaultdict`, `namedtuple`, `Counter`)는 리스트/딕셔너리/튜플 계열 사용을 보완하는 성격이 강합니다.\n\n문자열 `str`을 직접 대체하는 특수 컨테이너는 대표적으로 두지 않으므로 정답은 `str`입니다.",
+                         "options":  [
+                                         "list",
+                                         "dict",
+                                         "set",
+                                         "str",
+                                         "tuple"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  3,
+                         "conceptRef":  "w10_c3"
+                     },
+                     {
+                         "id":  "q5",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "from datetime import datetime\nd = datetime(2024, 2, 1, 9, 3)\nprint(d.strftime(\u0027%Y-%m-%d %H:%M\u0027))",
+                         "teacherExplainMd":  "포맷 코드 의미:\n- `%Y`: 4자리 연도\n- `%m`: 2자리 월\n- `%d`: 2자리 일\n- `%H`: 2자리 시(24시간)\n- `%M`: 2자리 분\n\n따라서 출력은 `2024-02-01 09:03`입니다.",
+                         "options":  [
+                                         "24-02-01 09:03",
+                                         "2024-02-01 09:03",
+                                         "2024-2-1 9:3",
+                                         "2024/02/01 09:03",
+                                         "2024-02-01 09:30"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w10_c1"
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w10_c1",
+                         "title":  "개념 1) 모듈-용도 매핑 규칙",
+                         "summary":  "관련 이론: 개념 1) 모듈-용도 매핑 규칙"
+                     },
+                     {
+                         "id":  "w10_c2",
+                         "title":  "개념 2) `os` 함수 존재 여부 판별",
+                         "summary":  "관련 이론: 개념 2) `os` 함수 존재 여부 판별"
+                     },
+                     {
+                         "id":  "w10_c3",
+                         "title":  "개념 3) `re.fullmatch` 전체 매칭",
+                         "summary":  "관련 이론: 개념 3) `re.fullmatch` 전체 매칭"
+                     }
+                 ]
 }

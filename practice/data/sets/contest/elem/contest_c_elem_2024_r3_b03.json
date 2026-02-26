@@ -14,6 +14,7 @@
                          "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int x = 12;\n    int y = 15;\n    printf(\"%d\", x\u003ey?(x+y):(x*y));\n    return 0;\n}",
                          "conceptRef":  "w03_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`x > y`는 `12 > 15`이므로 거짓입니다. 삼항 연산자에서 거짓이면 뒤 식 `(x*y)`를 선택하므로 출력은 `180`입니다.",
                          "options":  [
                                          "3",
                                          "12",
@@ -41,6 +42,7 @@
                          "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int a = (25 / 4) * 3;\n    int b = (a * a) / a;\n    printf(\"%d %d\", a+b, a-b);\n}",
                          "conceptRef":  "w03_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "식을 순서대로 계산하면 다음과 같습니다.\n\n| 항목 | 계산 | 값 |\n|---|---|---:|\n| `25/4` | 정수 나눗셈 | 6 |\n| `a` | `6*3` | 18 |\n| `b` | `(18*18)/18` | 18 |\n| `a+b` | `18+18` | 36 |\n| `a-b` | `18-18` | 0 |\n\n따라서 출력은 `36 0`입니다.",
                          "options":  [
                                          "36 0",
                                          "35 1",
@@ -68,6 +70,7 @@
                          "code":  "int leapYear(int y) {\n    if([빈 칸]) return 0;  // 빈 칸\n    else return 1;\n}",
                          "conceptRef":  "w03_c2",
                          "type":  "mcq",
+                         "teacherExplainMd":  "함수 형태가 `if(조건) return 0; else return 1;`이므로 `if`에는 평년 조건이 들어가야 합니다.\n\n| 분류 | 조건 |\n|---|---|\n| 윤년 | `(y % 4 == 0 && y % 100 != 0) || (y % 400 == 0)` |\n| 평년 | `(y % 4 != 0) || (y % 100 == 0 && y % 400 != 0)` |\n\n보기 E가 평년 조건과 일치하므로 정답은 E입니다.",
                          "options":  [
                                          "(y % 4 == 0 \u0026\u0026 y % 100 != 0) \u0026\u0026 y % 400 == 0",
                                          "(y % 4 == 0 \u0026\u0026 y % 100 != 0) || y % 400 == 0",
@@ -82,7 +85,7 @@
                                               "D",
                                               "E"
                                           ],
-                         "correctIndex":  1,
+                         "correctIndex":  4,
                          "conceptRefs":  [
                                              "w03_c2"
                                          ]
@@ -95,6 +98,7 @@
                          "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int a = 0;\n    for(int i=2 ; i\u003c15 ; i++) {\n        if(i % 2 == 0 || i % 3 == 0 \u0026\u0026 i % 5 == 0) {\n            a++;\n        }\n    }\n    printf(\"%d\", a);\n    return 0;\n}",
                          "conceptRef":  "w03_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "연산자 우선순위에 따라 조건은 `i%2==0 || (i%3==0 && i%5==0)`입니다.\n\n| i 범위 | 만족 조건 | 개수 |\n|---|---|---:|\n| 2~14의 짝수 | `i%2==0` | 7 |\n| 2~14에서 3과 5 동시 배수 | `i%3==0 && i%5==0` | 0 |\n| 총 카운트 |  | 7 |\n\n따라서 출력은 `7`입니다.",
                          "options":  [
                                          "6",
                                          "7",
@@ -123,6 +127,7 @@
                          "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int x = 12;\n    int y = 15;\n    int z = 18;\n    printf(\"%d\", (x*y)\u003e(y\u0026z)?(x+y):(y+z));\n    return 0;\n}",
                          "conceptRef":  "w03_c3",
                          "type":  "mcq",
+                         "teacherExplainMd":  "비트연산과 삼항 조건을 순서대로 계산하면 됩니다.\n\n| 항목 | 계산 | 값 |\n|---|---|---:|\n| `y & z` | `15 & 18` | 2 |\n| `x*y` | `12*15` | 180 |\n| 조건식 | `180 > 2` | 참 |\n| 선택 식 | `(x+y)` | 27 |\n\n따라서 출력은 `27`입니다.",
                          "options":  [
                                          "0",
                                          "27",

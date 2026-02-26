@@ -1,146 +1,151 @@
-{
-  "id": "contest_py_elem_2024_r3_b04",
-  "title": "Python 경시대회(초등) 4회차",
-  "categoryId": "contest_py_w04_list_indexing_insert",
-  "availableLanguages": [
-    "python"
-  ],
-  "problems": [
-    {
-      "id": "q1",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 1",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = [6, 1, 5, 0, 2, 3, 4]\nfor i in range(5):\n    b = i\n    for j in range(1, 30):\n        b = a[b]\n    print(b, end=' ')",
-      "options": [
-        "3 1 4 5 6",
-        "6 2 3 4 1",
-        "1 0 4 5 2",
-        "5 0 2 3 1",
-        "4 2 1 5 3"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 0,
-      "conceptRef": "w04_c1"
-    },
-    {
-      "id": "q2",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 2",
-      "description": "다음 중 리스트의 중간에 특정 위치에 요소를 하나 삽입할 때 사용하는 함수로 올바른 것을 고르시오.",
-      "options": [
-        "append",
-        "insert",
-        "pop",
-        "extend",
-        "remove"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w04_c2"
-    },
-    {
-      "id": "q3",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 3",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = [1, 2, 3, 4]\na.insert(2, 9)\nprint(a)",
-      "options": [
-        "[1, 2, 3, 4, 9]",
-        "[1, 9, 2, 3, 4]",
-        "[1, 2, 9, 3, 4]",
-        "[9, 1, 2, 3, 4]",
-        "[1, 2, 3, 9, 4]"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 2,
-      "conceptRef": "w04_c2"
-    },
-    {
-      "id": "q4",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 4",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = [10, 20, 30, 40]\na.pop(1)\nprint(a)",
-      "options": [
-        "[10, 20, 30]",
-        "[10, 30, 40]",
-        "[20, 30, 40]",
-        "[10, 40]",
-        "오류"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w04_c3"
-    },
-    {
-      "id": "q5",
-      "type": "mcq",
-      "level": "초",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = [1, 2, 3]\na.append(4)\na.remove(2)\nprint(a)",
-      "options": [
-        "[1, 2, 3, 4]",
-        "[1, 3, 4]",
-        "[1, 2, 4]",
-        "[2, 3, 4]",
-        "[1, 3]"
-      ],
-      "optionLabels": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "correctIndex": 1,
-      "conceptRef": "w04_c3"
-    }
-  ],
-  "concepts": [
-    {
-      "id": "w04_c1",
-      "title": "개념 1) 리스트 메서드 기능 구분",
-      "summary": "관련 이론: 개념 1) 리스트 메서드 기능 구분"
-    },
-    {
-      "id": "w04_c2",
-      "title": "개념 2) 반복 인덱싱 상태 전이 (`b = a[b]`)",
-      "summary": "관련 이론: 개념 2) 반복 인덱싱 상태 전이 (`b = a[b]`)"
-    },
-    {
-      "id": "w04_c3",
-      "title": "개념 3) 순환(cycle) 길이와 반복 횟수 관계",
-      "summary": "관련 이론: 개념 3) 순환(cycle) 길이와 반복 횟수 관계"
-    }
-  ]
+﻿{
+    "id":  "contest_py_elem_2024_r3_b04",
+    "title":  "Python 경시대회(초등) 4회차",
+    "categoryId":  "contest_py_w04_list_indexing_insert",
+    "availableLanguages":  [
+                               "python"
+                           ],
+    "problems":  [
+                     {
+                         "id":  "q1",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 1",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = [6, 1, 5, 0, 2, 3, 4]\nfor i in range(5):\n    b = i\n    for j in range(1, 30):\n        b = a[b]\n    print(b, end=\u0027 \u0027)",
+                         "teacherExplainMd":  "`b = a[b]`는 인덱스 상태 전이입니다. 순환 `0->6->4->2->5->3->0`의 길이는 6이므로 29회 이동은 5회 이동과 같습니다. 각 시작값(0~4)을 적용하면 출력은 `3 1 4 5 6`입니다.\n\n시각화: ![state cycle](assets/diagrams/contest_py_elem_w04_q1_cycle.svg)",
+                         "options":  [
+                                         "3 1 4 5 6",
+                                         "6 2 3 4 1",
+                                         "1 0 4 5 2",
+                                         "5 0 2 3 1",
+                                         "4 2 1 5 3"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  0,
+                         "conceptRef":  "w04_c1"
+                     },
+                     {
+                         "id":  "q2",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 2",
+                         "description":  "다음 중 리스트의 중간에 특정 위치에 요소를 하나 삽입할 때 사용하는 함수로 올바른 것을 고르시오.",
+                         "teacherExplainMd":  "리스트의 원하는 위치에 값을 넣을 때는 `insert(인덱스, 값)`을 사용합니다.\n\n`append`는 맨 뒤에만 추가합니다.",
+                         "options":  [
+                                         "append",
+                                         "insert",
+                                         "pop",
+                                         "extend",
+                                         "remove"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w04_c2"
+                     },
+                     {
+                         "id":  "q3",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 3",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = [1, 2, 3, 4]\na.insert(2, 9)\nprint(a)",
+                         "teacherExplainMd":  "`insert(2, 9)`는 인덱스 2 위치(기존 3 앞)에 9를 넣습니다.\n\n`[1, 2, 3, 4] -\u003e [1, 2, 9, 3, 4]`",
+                         "options":  [
+                                         "[1, 2, 3, 4, 9]",
+                                         "[1, 9, 2, 3, 4]",
+                                         "[1, 2, 9, 3, 4]",
+                                         "[9, 1, 2, 3, 4]",
+                                         "[1, 2, 3, 9, 4]"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  2,
+                         "conceptRef":  "w04_c2"
+                     },
+                     {
+                         "id":  "q4",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 4",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = [10, 20, 30, 40]\na.pop(1)\nprint(a)",
+                         "teacherExplainMd":  "`pop(1)`은 인덱스 1의 요소를 삭제합니다.\n\n인덱스 1의 값은 20이므로 삭제 후 리스트는 `[10, 30, 40]`입니다.",
+                         "options":  [
+                                         "[10, 20, 30]",
+                                         "[10, 30, 40]",
+                                         "[20, 30, 40]",
+                                         "[10, 40]",
+                                         "오류"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w04_c3"
+                     },
+                     {
+                         "id":  "q5",
+                         "type":  "mcq",
+                         "level":  "초",
+                         "title":  "문제 5",
+                         "description":  "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+                         "code":  "a = [1, 2, 3]\na.append(4)\na.remove(2)\nprint(a)",
+                         "teacherExplainMd":  "순서대로 적용하면 됩니다.\n\n- `append(4)` -\u003e `[1, 2, 3, 4]`\n- `remove(2)` -\u003e 값 2를 지워 `[1, 3, 4]`\n\n따라서 출력은 `[1, 3, 4]`입니다.",
+                         "options":  [
+                                         "[1, 2, 3, 4]",
+                                         "[1, 3, 4]",
+                                         "[1, 2, 4]",
+                                         "[2, 3, 4]",
+                                         "[1, 3]"
+                                     ],
+                         "optionLabels":  [
+                                              "A",
+                                              "B",
+                                              "C",
+                                              "D",
+                                              "E"
+                                          ],
+                         "correctIndex":  1,
+                         "conceptRef":  "w04_c3"
+                     }
+                 ],
+    "concepts":  [
+                     {
+                         "id":  "w04_c1",
+                         "title":  "개념 1) 리스트 메서드 기능 구분",
+                         "summary":  "관련 이론: 개념 1) 리스트 메서드 기능 구분"
+                     },
+                     {
+                         "id":  "w04_c2",
+                         "title":  "개념 2) 반복 인덱싱 상태 전이 (`b = a[b]`)",
+                         "summary":  "관련 이론: 개념 2) 반복 인덱싱 상태 전이 (`b = a[b]`)"
+                     },
+                     {
+                         "id":  "w04_c3",
+                         "title":  "개념 3) 순환(cycle) 길이와 반복 횟수 관계",
+                         "summary":  "관련 이론: 개념 3) 순환(cycle) 길이와 반복 횟수 관계"
+                     }
+                 ]
 }

@@ -14,6 +14,7 @@
                          "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int a = 0x32;\n    int b = 030;\n    printf(\"%d\", a+b);\n    return 0;\n}",
                          "conceptRef":  "w02_c2",
                          "type":  "mcq",
+                         "teacherExplainMd":  "진법을 10진수로 바꿔 계산하면 됩니다.\n\n| 값 | 의미 | 10진수 |\n|---|---|---:|\n| `0x32` | 16진수 `3*16 + 2` | 50 |\n| `030` | 8진수 `3*8 + 0` | 24 |\n| `a+b` | 50 + 24 | 74 |\n\n따라서 출력은 `74`입니다.",
                          "options":  [
                                          "44",
                                          "56",
@@ -41,6 +42,7 @@
                          "description":  "다음 중 `3.14` 출력 서식으로 적절하지 않은 것을 고르시오.",
                          "conceptRef":  "w02_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "각 보기의 출력 의도를 비교하면 E가 가장 부적절합니다.\n\n| 보기 | 특징 | 판정 |\n|---|---|---|\n| A | 기본 실수 출력 | 적절 |\n| B | 폭/정밀도 지정 | 적절 |\n| C | 좌측 정렬 + 정밀도 | 적절 |\n| D | 형식 출력 뒤에 문자열 `00` 추가 | 가능 |\n| E | 좌측 정렬 + 공백 뒤에 `000` 문자열 추가 | 가장 부적절 |\n\n따라서 정답은 E입니다.",
                          "options":  [
                                          "printf(\"%lf\", 3.14);",
                                          "printf(\"%7.6lf\", 3.14);",
@@ -69,6 +71,7 @@
                          "code":  "#include\u003cstdio.h\u003e\nint main()\n{\n    int a = 0x32;\n    int b = 030;\n    printf(\"%d\", a+b);\n    return 0;\n}",
                          "conceptRef":  "w02_c2",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`0x32`는 16진수이므로 50, `030`은 8진수이므로 24입니다. 합은 `74`이므로 출력은 `74`입니다.",
                          "options":  [
                                          "44",
                                          "56",
@@ -96,6 +99,7 @@
                          "description":  "다음 중 `3.14` 출력 서식으로 적절하지 않은 것을 고르시오.",
                          "conceptRef":  "w02_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "E의 `%-10.3lf000`은 `3.140` 뒤에 폭 정렬용 공백이 들어간 다음 `000`이 이어져 출력 형식이 어색합니다. 따라서 가장 부적절한 서식은 E입니다.",
                          "options":  [
                                          "printf(\"%lf\", 3.14);",
                                          "printf(\"%7.6lf\", 3.14);",
@@ -124,6 +128,7 @@
                          "code":  "#include \u003cstdio.h\u003e\nint main()\n{\n    int n;\n    char ch;\n    scanf(\"%d\", \u0026n);\n    scanf(\"%c\", \u0026ch);\n    printf(\"%d\", ch);\n    return 0;\n}",
                          "conceptRef":  "w02_c3",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`scanf` 입력 버퍼 상태를 보면 결과가 명확합니다.\n\n| 단계 | 동작 | 버퍼/값 |\n|---|---|---|\n| 1 | `%d`로 숫자 읽기 | 숫자만 소비, 개행(`\\n`) 남음 |\n| 2 | `%c`로 문자 1개 읽기 | 남아 있던 `\\n` 읽음 |\n| 3 | `%d`로 `ch` 출력 | 개행의 아스키 코드 10 |\n\n따라서 출력은 `10`입니다.",
                          "options":  [
                                          "55",
                                          "65",

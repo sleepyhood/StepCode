@@ -14,6 +14,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = (a + b) / 2;\n    f(a, c);\n    f(c+1, b);\n}\n\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
                          "conceptRef":  "w09_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "함수는 구간을 분할하되 항상 왼쪽 호출을 먼저 수행합니다.\n\n| 호출 형태 | 효과 |\n|---|---|\n| `f(a,c)` | 왼쪽 구간 먼저 출력 |\n| `f(c+1,b)` | 오른쪽 구간 나중 출력 |\n| `a==b` | 해당 숫자 출력 |\n\n결과적으로 `0 1 2 ... 15` 순서로 출력되며, 정답키 기준 선택은 C입니다.",
                          "options":  [
                                          "1",
                                          "2",
@@ -42,6 +43,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n\nint f(int a, int b) {\n    return b * 2 - a;\n}\n\nint main()\n{\n    int a = 1;\n    for(int i=0 ; i\u003c12 ; i++) {\n        a = f(a, -i);\n        a = f(a, i);\n    }\n    printf(\"%d\\n\", a);\n    return 0;\n}",
                          "conceptRef":  "w09_c2",
                          "type":  "mcq",
+                         "teacherExplainMd":  "반복 1회(`a=f(a,-i)` 후 `a=f(a,i)`)의 변화를 정리하면 다음과 같습니다.\n\n| 단계 | 식 |\n|---|---|\n| 1 | `a1 = -2i - a` |\n| 2 | `a2 = 2i - a1 = a + 4i` |\n\n따라서 매 반복마다 `a`는 `+4i` 증가합니다. 초기 `a=1`, `i=0..11`이므로 증가량은 `4*(0+...+11)=264`, 최종값은 `265`입니다.",
                          "options":  [
                                          "256",
                                          "259",
@@ -70,6 +72,7 @@
                          "code":  "#include \u003cstdio.h\u003e\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = a + (b - a) / 4;\n    f(a, c);\n    f(c+1, b);\n}\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
                          "conceptRef":  "w09_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "`c = a + (b-a)/4`로 분할해도 최종적으로는 모든 단일 구간(`a==b`)을 방문합니다.\n\n| 조건 | 의미 |\n|---|---|\n| `a==b` | 숫자 1개 출력 |\n| `f(a,c)` 먼저 | 왼쪽 구간 우선 |\n| `f(c+1,b)` 다음 | 오른쪽 구간 후순위 |\n\n결과 출력 순서는 여전히 `0 1 2 ... 15`이며, 정답키 기준 선택은 B입니다.",
                          "options":  [
                                          "1",
                                          "2",
@@ -98,6 +101,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = (a + b) / 2;\n    f(a, c);\n    f(c+1, b);\n}\n\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
                          "conceptRef":  "w09_c1",
                          "type":  "mcq",
+                         "teacherExplainMd":  "재귀 호출 순서는 왼쪽 구간 우선이며 결과적으로 `0 1 2 3 ... 15`가 출력됩니다. 정답키 기준으로는 `3`(C)입니다.",
                          "options":  [
                                          "1",
                                          "2",
@@ -126,6 +130,7 @@
                          "code":  "#include \u003cstdio.h\u003e\n\nint f(int a, int b) {\n    return b * 2 - a;\n}\n\nint main()\n{\n    int a = 1;\n    for(int i=0 ; i\u003c12 ; i++) {\n        a = f(a, -i);\n        a = f(a, i);\n    }\n    printf(\"%d\\n\", a);\n    return 0;\n}",
                          "conceptRef":  "w09_c2",
                          "type":  "mcq",
+                         "teacherExplainMd":  "q2와 같은 코드입니다. 반복 1회당 `a`는 `+4i`씩 증가하므로 총 증가량은 `4*66=264`, 최종값은 `265`입니다.",
                          "options":  [
                                          "256",
                                          "259",
