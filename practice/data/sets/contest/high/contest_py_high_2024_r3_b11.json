@@ -13,6 +13,7 @@
       "title": "문제 1",
       "description": "다음 프로그램의 입력이 아래와 같을 때 실행 결과는 무엇인가?",
       "code": "mapp = [[]]\nf = 0\ndy = [-1, 0, 1, 0]\ndx = [0, -1, 0, 1]\n\ndef func2(y, x):\n    if 1 <= y <= n and 1 <= x <= n:\n        return 1\n    else:\n        return 0\n\ndef func(y, x):\n    global mapp, dy, dx\n    global f\n    mapp[y][x] = f\n    qy = [0 for _ in range(200)]\n    qx = [0 for _ in range(200)]\n    qs, qe = 0, 0\n    qy[qe] = y\n    qx[qe] = x\n    qe += 1\n    while qs != qe:\n        qsy = qy[qs]\n        qsx = qx[qs]\n        qs += 1\n        for i in range(4):\n            nxy = qsy + dy[i]\n            nxx = qsx + dx[i]\n            if func2(nxy, nxx) == 1 and mapp[nxy][nxx] == -1:\n                mapp[nxy][nxx] = f\n                qy[qe] = nxy\n                qx[qe] = nxx\n                qe += 1\n\nn, m, k = map(int, input().split())\nfor i in range(1, n+1):\n    row = [0] + list(map(int, input().split()))\n    mapp.append(row)\n    for j in range(1, n+1):\n        if mapp[i][j] == 0:\n            mapp[i][j] = -1\n        else:\n            mapp[i][j] = 0\n\nfor i in range(1, n+1):\n    for j in range(1, n+1):\n        if mapp[i][j] == -1:\n            f += 1\n            func(i, j)\n\nfs = [0 for _ in range(110)]\nfor i in range(1, n+1):\n    for j in range(1, n+1):\n        if mapp[i][j] > 0:\n            fs[mapp[i][j]] += 1\n\nfor i in range(1, f+1):\n    m -= (fs[i] + k - 1) // k\n\nif m >= 0 and f > 0:\n    print(m)\nelse:\n    print(-1)",
+      "teacherExplainMd": "입력 격자에서 `0`을 **빈 칸(-1)**, `1`을 **벽(0)** 으로 바꾼 뒤, BFS(`func`)로 빈 칸의 연결 요소를 번호(`f`)로 라벨링합니다.\n\n그 다음 각 연결 요소 크기 `size`에 대해 `ceil(size / k)`만큼 `m`에서 차감하고, 최종 `m`을 출력합니다.\n\n라벨링 결과(벽=■, 숫자=컴포넌트 id):\n\n| y\\\\x | 1 | 2 | 3 | 4 | 5 |\n|---:|---:|---:|---:|---:|---:|\n| 1 | ■ | ■ | ■ | 1 | 1 |\n| 2 | ■ | 2 | ■ | 1 | 1 |\n| 3 | 2 | 2 | ■ | ■ | ■ |\n| 4 | ■ | ■ | 3 | 3 | 3 |\n| 5 | 4 | ■ | ■ | 3 | ■ |\n\n컴포넌트별 크기와 차감량(`k=3`):\n\n| f | fs[f] | ceil(fs[f]/3) |\n|---:|---:|---:|\n| 1 | 4 | 2 |\n| 2 | 3 | 1 |\n| 3 | 4 | 2 |\n| 4 | 1 | 1 |\n| 합 | 12 | 6 |\n\n따라서 `m = 100 - 6 = 94`가 출력됩니다.\n\n![BFS components](assets/diagrams/contest_py_high_w11_q1_components.svg)",
       "options": [
         "90",
         "92",
@@ -37,6 +38,7 @@
       "title": "문제 2",
       "description": "다음 코드의 실행 결과로 올바른 값을 고르시오.",
       "code": "def f(mapp, x, y, number, dep, answer):\n    if dep == 2:\n        answer.add(number)\n        return\n    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]\n    for dx, dy in dirs:\n        nxtx, nxty = x + dx, y + dy\n        if 0 <= nxtx < 2 and 0 <= nxty < 2:\n            f(mapp, nxtx, nxty, number + mapp[nxtx][nxty], dep + 1, answer)\n\nmapp = [['1', '2'], ['1', '3']]\nanswer = set()\nfor i in range(2):\n    for j in range(2):\n        f(mapp, i, j, mapp[i][j], 0, answer)\nprint(len(answer))",
+      "teacherExplainMd": "`dep==2`가 될 때까지 4방향으로 2번 이동하며, 시작 숫자 + 이동한 두 칸의 숫자를 이어붙인 **길이 3 문자열**을 `set`에 모읍니다.\n\n2x2 격자에서 각 시작점은 항상 인접칸이 2개라서 총 경로 수는 `4 * 2 * 2 = 16`입니다.\n\n시작점별 생성 문자열(중복 제거 전):\n\n| 시작 좌표 | 시작값 | 생성되는 길이 3 문자열 |\n|---|---:|---|\n| (0,0) | 1 | 111, 113, 121, 123 |\n| (0,1) | 2 | 211, 212, 231, 232 |\n| (1,0) | 1 | 111, 112, 131, 132 |\n| (1,1) | 3 | 311, 313, 321, 323 |\n\n`111`이 두 번 나오므로 `set`의 고유 원소 수는 `16-1 = 15`이고, 출력은 `15`입니다.\n\n![2x2 grid moves](assets/diagrams/contest_py_high_2x2_paths.svg)",
       "options": [
         "12",
         "13",
@@ -61,6 +63,7 @@
       "title": "문제 3",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "def f(v):\n    if v > 0:\n        return v\n    return -v\n\na = [[10, 2], [0, 5]]\nt = [[0, 0], [0, 0]]\nn = 8\nfor m in range(n):\n    for i in range(2):\n        for j in range(2):\n            for k in range(2):\n                t[i][j] += a[i][k] * a[k][j]\np = f(t[0][0] * t[0][1] - t[1][0] * t[1][1]) % 5\nprint(p)",
+      "teacherExplainMd": "안쪽 합 `Σ_k a[i][k]*a[k][j]`는 행렬 곱 `A^2`의 (i,j) 성분입니다.\n\n이 값을 `n=8`번 누적하므로 `t = 8 * A^2` 입니다.\n\n1) `A^2` 계산(2x2라 표로 빠르게 끝납니다):\n\n| (i,j) | 계산 | 값 |\n|---|---|---:|\n| (0,0) | 10*10 + 2*0 | 100 |\n| (0,1) | 10*2 + 2*5 | 30 |\n| (1,0) | 0*10 + 5*0 | 0 |\n| (1,1) | 0*2 + 5*5 | 25 |\n\n따라서 `A^2 = [[100, 30], [0, 25]]`.\n\n2) `t = 8 * A^2`:\n\n- `t = [[800, 240], [0, 200]]`\n\n3) 마지막 계산:\n\n- `t00*t01 - t10*t11 = 800*240 - 0*200 = 192000`\n- `abs(...) % 5 = 0`\n\n따라서 출력은 `0`입니다.",
       "options": [
         "0",
         "1",
@@ -85,6 +88,7 @@
       "title": "문제 4",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = [7, 890, 1, 234, 5678, 901, 23, 45, 6]\ncnt = 0\nfor i in a:\n    b = (i & 1) | (i & 2)\n    if b > 0:\n        cnt += 1\nprint(cnt)",
+      "teacherExplainMd": "`(i & 1) | (i & 2)`는 하위 2비트만 보는 연산으로 사실상 `i & 3`과 같습니다.\n\n- 하위 2비트가 `00`이면(= `i % 4 == 0`) b=0\n- 그 외에는 b>0\n\n주어진 리스트에서 4의 배수인 값이 없으므로 모두 카운트되어 `9`가 출력됩니다.",
       "options": [
         "6",
         "7",
@@ -109,6 +113,7 @@
       "title": "문제 5",
       "description": "다음 중 아래 코드의 빈 칸에 넣었을 때 출력 결과가 다른 값을 고르시오.",
       "code": "print([빈 칸])",
+      "teacherExplainMd": "각 보기의 값을 계산해 비교합니다. (파이썬에서 `^`는 XOR, `<<`는 비트 시프트)\n\n- ① `9*8 = 72`\n- ② `37 ^ 109 = 72` (XOR 결과)\n- ③ `9 << 3 = 9*2^3 = 72`\n- ④ `(2 ^ 3) * (3 ^ 2) = 1 * 1 = 1`\n- ⑤ `(36 if 7*3 else 21) * 2 = 36*2 = 72` (`7*3`은 0이 아니므로 참)\n\n따라서 유일하게 다른 값(1)을 만드는 ④가 정답입니다.",
       "options": [
         "9 * 8",
         "37 ^ 109",

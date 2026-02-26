@@ -13,6 +13,7 @@
       "title": "문제 1",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "words = [\"programming\", \"hoolly\", \"clanguage\", \"engineeriing\", \"kitpa\"]\nmx = -1\nb = ''\nfor a in words:\n    cnt = 0\n    c = a[0]\n    for j in range(1, len(a)):\n        if c == a[j] and c in \"aeiou\":\n            cnt += 1\n        else:\n            c = a[j]\n    if mx < cnt:\n        mx = cnt\n        b = a\nprint(b)",
+      "teacherExplainMd": "각 단어에서 **연속으로 같은 모음이 반복되는 횟수**를 셉니다.\n\n루프 의미:\n- `c`는 직전 문자\n- 다음 문자 `a[j]`가 `c`와 같고(`c==a[j]`) 그 문자가 모음이면(`c in \"aeiou\"`) `cnt += 1`\n- 아니면 `c`를 현재 문자로 갱신\n\n즉 예를 들어 `\"engineeriing\"`에는 `ee`(1회) + `ii`(1회)처럼 연속 모음 반복이 존재해 카운트가 가장 크게 나옵니다.\n\n최대 `cnt`를 가진 단어가 출력되므로 결과는 `engineeriing`입니다.",
       "options": [
         "programming",
         "hoolly",
@@ -37,6 +38,7 @@
       "title": "문제 2",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "def g(s, t):\n    r = len(s)\n    p = len(t)\n    i = 0\n    while i <= len(s) - p:\n        u = 0\n        if s[i] == t[0]:\n            for j in range(1, p):\n                if s[i + j] != t[j]:\n                    u = 1\n                    i += 1\n                    break\n            if not u:\n                i += p\n                r -= p - 1\n        else:\n            i += 1\n    return r\n\nprint(g(\"savefromtheavalanche\", \"av\") + g(\"thathathathhtat\", \"tha\"))",
+      "teacherExplainMd": "함수 `g(s,t)`는 문자열 `s`에서 부분문자열 `t`를 스캔하면서, `t`가 매칭되면 인덱스를 `p=len(t)`만큼 점프하고 `r`을 `p-1`만큼 줄입니다.\n\n핵심은 **매칭되면 `i += p`로 점프**하므로 매칭 구간이 서로 겹치지 않는다는 점입니다.\n\n매칭 위치와 `r` 변화만 표로 정리하면 빠릅니다.\n\n| 호출 | s | t | len(s) | p | 매칭 시작 i | 매칭 횟수 | r 최종 |\n|---|---|---|---:|---:|---|---:|---:|\n| 1 | savefromtheavalanche | av | 20 | 2 | 1, 11 | 2 | 18 |\n| 2 | thathathathhtat | tha | 15 | 3 | 0, 3, 6 | 3 | 9 |\n\n`print(g(...) + g(...))` 이므로 `18 + 9 = 27`이 출력됩니다.",
       "options": [
         "24",
         "25",
@@ -61,6 +63,7 @@
       "title": "문제 3",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "s = \"mississippi\"\nprint(s.replace(\"ss\", \"S\", 1), s[1:8:2], s.count(\"si\"))",
+      "teacherExplainMd": "각 항을 따로 계산합니다.\n\n1) `replace(\"ss\",\"S\",1)`\n- `\"mississippi\"`에서 **첫 번째 `ss`만** `S`로 바꿈 → `miSissippi`\n\n2) `s[1:8:2]`\n- 인덱스 1부터 7까지(8 미포함), 2칸씩: `s[1], s[3], s[5], s[7]`\n\n| idx | 1 | 3 | 5 | 7 |\n|---:|---:|---:|---:|---:|\n| s[idx] | i | s | s | i |\n\n따라서 결과는 `issi`입니다.\n\n3) `count(\"si\")`\n- `\"si\"`가 시작되는 위치를 보면 2번입니다.\n\n| 시작 idx | 부분문자열 |\n|---:|---|\n| 3 | s[3:5] = \"si\" |\n| 6 | s[6:8] = \"si\" |\n\n따라서 `s.count(\"si\") == 2`.\n\n최종 출력은 `miSissippi issi 2`입니다.",
       "options": [
         "miSissippi issi 2",
         "miSissippi ispi 2",
@@ -85,6 +88,7 @@
       "title": "문제 4",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "d = {\"a\": 1, \"b\": 2, \"c\": 3}\nx = d.pop(\"b\")\nprint(x, len(d), \"b\" in d)",
+      "teacherExplainMd": "`dict.pop(key)`는 해당 키의 값을 반환하면서 키를 삭제합니다.\n\n- 시작: `d={'a':1,'b':2,'c':3}`\n- `x = d.pop('b')` → `x=2`, `d`는 `{'a':1,'c':3}`\n- `len(d)=2`\n- `'b' in d`는 삭제됐으므로 `False`\n\n따라서 `2 2 False`가 출력됩니다.",
       "options": [
         "1 3 False",
         "2 2 False",
@@ -109,6 +113,7 @@
       "title": "문제 5",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "s = \"thathathathhtat\"\nt = \"tha\"\nr = len(s)\np = len(t)\ni = 0\nwhile i <= len(s) - p:\n    u = 0\n    if s[i] == t[0]:\n        for j in range(1, p):\n            if s[i + j] != t[j]:\n                u = 1\n                i += 1\n                break\n        if not u:\n            i += p\n            r -= p - 1\n    else:\n        i += 1\nprint(r)",
+      "teacherExplainMd": "`q2`의 `g(s,t)`와 동일 로직을 메인에서 그대로 풀어쓴 형태입니다.\n\n`s=\"thathathathhtat\"`에서 `t=\"tha\"`를 찾으면:\n- 매칭될 때마다 `i`는 3칸 점프(`i+=p`)\n- 동시에 `r`은 `p-1=2`만큼 감소\n\n이 문자열에는 `\"tha\"`가 앞쪽에 연속으로 여러 번 등장하지만 중간에 `\"hht\"` 때문에 끊깁니다.\n\n실행 결과로 `r`이 최종 `9`가 되어 출력됩니다.",
       "options": [
         "7",
         "8",

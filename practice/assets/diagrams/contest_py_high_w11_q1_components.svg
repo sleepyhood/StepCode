@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="360" viewBox="0 0 520 360">
+  <defs>
+    <style>
+      .title { font: 16px sans-serif; fill: #111; }
+      .label { font: 14px sans-serif; fill: #111; }
+      .cell  { stroke: #222; stroke-width: 1; }
+      .wall  { fill: #666; }
+      .c1 { fill: #cfe8ff; }
+      .c2 { fill: #d7f5dc; }
+      .c3 { fill: #fff0c9; }
+      .c4 { fill: #ffd6d6; }
+    </style>
+  </defs>
+
+  <text x="20" y="28" class="title">Week11 Q1: BFS Components (0-cells labeled)</text>
+
+  <!-- 5x5 grid, cell size 56 -->
+  <!-- Legend: wall = original 1, numbers = connected component id among original 0 -->
+  <g transform="translate(20,50)">
+    <!-- Row 1: 0 0 0 1 1  (wall wall wall c1 c1) -->
+    <rect class="cell wall" x="0"   y="0"   width="56" height="56"/>
+    <rect class="cell wall" x="56"  y="0"   width="56" height="56"/>
+    <rect class="cell wall" x="112" y="0"   width="56" height="56"/>
+    <rect class="cell c1"   x="168" y="0"   width="56" height="56"/><text class="label" x="196" y="34" text-anchor="middle">1</text>
+    <rect class="cell c1"   x="224" y="0"   width="56" height="56"/><text class="label" x="252" y="34" text-anchor="middle">1</text>
+
+    <!-- Row 2: 0 2 0 1 1 -->
+    <rect class="cell wall" x="0"   y="56" width="56" height="56"/>
+    <rect class="cell c2"   x="56"  y="56" width="56" height="56"/><text class="label" x="84"  y="90" text-anchor="middle">2</text>
+    <rect class="cell wall" x="112" y="56" width="56" height="56"/>
+    <rect class="cell c1"   x="168" y="56" width="56" height="56"/><text class="label" x="196" y="90" text-anchor="middle">1</text>
+    <rect class="cell c1"   x="224" y="56" width="56" height="56"/><text class="label" x="252" y="90" text-anchor="middle">1</text>
+
+    <!-- Row 3: 2 2 0 0 0 -->
+    <rect class="cell c2"   x="0"   y="112" width="56" height="56"/><text class="label" x="28"  y="146" text-anchor="middle">2</text>
+    <rect class="cell c2"   x="56"  y="112" width="56" height="56"/><text class="label" x="84"  y="146" text-anchor="middle">2</text>
+    <rect class="cell wall" x="112" y="112" width="56" height="56"/>
+    <rect class="cell wall" x="168" y="112" width="56" height="56"/>
+    <rect class="cell wall" x="224" y="112" width="56" height="56"/>
+
+    <!-- Row 4: 0 0 3 3 3 -->
+    <rect class="cell wall" x="0"   y="168" width="56" height="56"/>
+    <rect class="cell wall" x="56"  y="168" width="56" height="56"/>
+    <rect class="cell c3"   x="112" y="168" width="56" height="56"/><text class="label" x="140" y="202" text-anchor="middle">3</text>
+    <rect class="cell c3"   x="168" y="168" width="56" height="56"/><text class="label" x="196" y="202" text-anchor="middle">3</text>
+    <rect class="cell c3"   x="224" y="168" width="56" height="56"/><text class="label" x="252" y="202" text-anchor="middle">3</text>
+
+    <!-- Row 5: 4 0 0 3 0 -->
+    <rect class="cell c4"   x="0"   y="224" width="56" height="56"/><text class="label" x="28"  y="258" text-anchor="middle">4</text>
+    <rect class="cell wall" x="56"  y="224" width="56" height="56"/>
+    <rect class="cell wall" x="112" y="224" width="56" height="56"/>
+    <rect class="cell c3"   x="168" y="224" width="56" height="56"/><text class="label" x="196" y="258" text-anchor="middle">3</text>
+    <rect class="cell wall" x="224" y="224" width="56" height="56"/>
+  </g>
+
+  <g transform="translate(330,70)">
+    <rect x="0" y="0" width="170" height="170" fill="#fff" stroke="#bbb"/>
+    <text x="12" y="26" class="label">Legend</text>
+    <rect x="12" y="40" width="18" height="18" class="cell wall"/><text x="40" y="54" class="label">wall (input 1)</text>
+    <rect x="12" y="68" width="18" height="18" class="cell c1"/><text x="40" y="82" class="label">component 1</text>
+    <rect x="12" y="96" width="18" height="18" class="cell c2"/><text x="40" y="110" class="label">component 2</text>
+    <rect x="12" y="124" width="18" height="18" class="cell c3"/><text x="40" y="138" class="label">component 3</text>
+    <rect x="12" y="152" width="18" height="18" class="cell c4"/><text x="40" y="166" class="label">component 4</text>
+  </g>
+</svg>
+

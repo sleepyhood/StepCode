@@ -1371,10 +1371,13 @@ if (q.type === "mcq") {
   const answer = el("div", "answer-block");
 
 if (q.type === "mcq") {
-  answer.appendChild(el("div", "answer-label", "이유(간단히):"));
-  const lines = el("div", "answer-lines");
-  lines.style.setProperty("--n", "1.2");
-  answer.appendChild(lines);
+  // 선생님용은 해설을 별도로 제공하므로 "이유(간단히)" 입력란을 생략
+  if (variant !== "teacher") {
+    answer.appendChild(el("div", "answer-label", "이유(간단히):"));
+    const lines = el("div", "answer-lines");
+    lines.style.setProperty("--n", "1.2");
+    answer.appendChild(lines);
+  }
 
 } else if (q.type === "short") {
   if (isGridQuestion(q)) {
@@ -1409,6 +1412,12 @@ if (q.type === "mcq") {
       const v = el("span", "", a.replace(/^정답:\s*/, ""));
       note.appendChild(k);
       note.appendChild(v);
+    }
+    const explainRaw = q.teacherExplainMd || q.teacherExplain || "";
+    if (explainRaw) {
+      const box = el("div", "teacher-explain md");
+      setMD(box, String(explainRaw), "block");
+      note.appendChild(box);
     }
     if (q.hint) {
       const br = document.createElement("div");

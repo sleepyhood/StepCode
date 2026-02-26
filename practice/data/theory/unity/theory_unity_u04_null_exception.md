@@ -5,6 +5,53 @@
 ## 범위
 - 출처 매핑: `practice/temp/유니티 1차 문제 풀이.md`의 1, 10, 37, 39번
 - 키워드: null, NullReferenceException, Dictionary, 타입 불일치
+## 문항 핵심 포인트
+### 1) 객체를 선언하는 방법
+- 아래와 같이 Example 이라는 클래스가 있을 때 이 클래스에 해당하는 객체를 선언하려면 Example ex = new Example(); 라고 해줘야 한다.<br>
+Example ex는 Example이라는 클래스에 맞게 공간을 만드는 것이고 이름을 ex라 붙인 것이다. new Example() 까지 해줘야 그 공간에 객체가(값이) 들어가게 된다. 
+
+```csharp
+class Example{
+    ...
+}
+```
+ 
+### 2) 비교할 때는 자료형이 동일해야 한다.
+- ==, <, > 와 같이 비교연산을 할 때에는 서로 자료형(타입)이 같은 것 끼리 비교를 해야한다. int는 int끼리, float는 float끼리, Example은 Example끼리.<br>
+서로 타입이 다른 것 끼리 비교를 하려고 하면 오류가 발생한다. 
+
+### 3) Dictionary
+- Dictionary는 간단하게 말하면 배열과 비슷한데 배열보다 조금 더 자유롭게 쓸 수 있다. 
+예를 들어, 배열은 아래와 같이 사용할 수 있다.(C와 C#에서 배열 선언 방식이 조금 다르다.)<br>
+int[] a = new int[10]; a[5] = 3;<br>
+이렇게 하면 a라는 배열의 5번 인덱스의 값이 3이 된다. 여기서 **값**의 자료형을 바꾸려면 int를 float로 바꾸는 방식으로 가능하다.<br>
+하지만 배열의 **인덱스**는 항상 자료형이 고정이다. (0, 1, 2, 3...)항상 0을 포함한 자연수이다.<br>
+반면에 dictionary는 인덱스의 자료형을 바꾸는게 가능하다. (dictionary에서는 인덱스가 아니라 **key** 라고 표현한다) dictionary는 아래와 같이 사용한다.<br>
+Dictionary<string, int> d = new Dictionary<string, int>();<br>
+위와 같이 작성하면 인덱스(key)의 자료형은 string이고 값의 자료형은 int가 된다. d["ABCD"] = 5; 이런게 가능해진다.<br>
+"ABCD"라는 위치에 5가 들어간 것이다. "ABCD"라는 자리가 기존에 존재했으면 5로 값이 바뀌는거고 없었다면 새로 만들면서 5를 집어넣는다.<br><br>
+추가) string, int와 같은 일반적인 자료형 대신에 class가 들어가는 것도 가능하다.
+
+### 4) var
+- 우리는 변수를 만들 때 보통 다음과 같이 했다. int a = 3; float b = 3.14f; string c = "abcd";<br>
+변수 안에 들어갈 값에 맞게 적절하게 자료형을 적어줘야 했는데 var은 아래와 같이 아무데나 사용이 가능하다.<br>
+var a = 3; var b = 3.14; var c = "abcd";<br>
+**=** 의 오른쪽을 보고 알아서 해석해서 자료형을 결정해준다.<br>
+주의할 점은 <br>
+var a;<br> 
+a = 3;<br> 
+이런건 안 된다. var a; 가 실행되는 시점에 a에 무슨 값이 들어가는지가 정해져 있지 않아서 오류가 발생한다. 
+var a = 3; 이렇게 한 줄에 써줘야 한다.
+### 5) foreach
+- for문과 비슷한데 조금 다르다. 기본적인 사용법은 아래와 같다.
+```csharp
+int[] arr = {1,2,3};
+foreach(int i in arr){
+    // i의 값에 1, 2, 3이 순서대로 들어가면서 반복된다.
+}
+```
+in 뒤에는 배열뿐만 아니라 위에서 배운 dictionary 같이 **여러개의 값을 갖는 자료**가 올 수 있다.<br>
+여러개의 값이 순서대로 i에 들어가면서 반복문이 실행된다. 마지막 값이 i에 들어간 상태에서 foreach 내부 코드가 실행되고 반복은 끝나게 된다.
 ## 핵심 패턴
 ~~~csharp
 private Dictionary<string, GameObject> dictionary;

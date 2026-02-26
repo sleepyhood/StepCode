@@ -13,6 +13,7 @@
       "title": "문제 1",
       "description": "다음 프로그램의 실행 결과는 무엇인가?",
       "code": "for i in range(1, 10):\n    for j in range(10):\n        if i == j:\n            continue\n        for k in range(10):\n            if k in (i, j):\n                continue\n            for l in range(10):\n                if l in (i, j, k):\n                    continue\n                if int(str(i) + str(j) + str(k) + str(l)) * l == int(f\"{l}{k}{j}{i}\"):\n                    print(l)",
+      "teacherExplainMd": "완전탐색이지만, 손풀이로도 **자릿수(모듈러)로 후보를 줄일 수** 있습니다.\n\n조건식은 아래와 같은 “역순 곱”입니다.\n\n```text\n(1000*i + 100*j + 10*k + l) * l == (1000*l + 100*k + 10*j + i)\n```\n\n### 1) 1의 자리(10으로 나눈 나머지)\n좌변의 1의 자리는 `l*l`의 1의 자리이고, 우변의 1의 자리는 `i`입니다. 즉\n\n- `i ≡ l^2 (mod 10)`\n\n따라서 가능한 `(l, i)`는 아래 5가지 뿐입니다.\n\n| l | l^2 (끝자리) | i |\n|---:|---:|---:|\n| 1 | 1 | 1 |\n| 4 | 6 | 6 |\n| 5 | 5 | 5 |\n| 6 | 6 | 6 |\n| 9 | 1 | 1 |\n\n여기서 `i`는 1~9이고 `i,j,k,l`이 서로 달라야 하므로 후보가 크게 줄어듭니다.\n\n### 2) 실제 해(이 세트에서는 유일)\n이 조건을 만족하는 조합을 확인하면 유일한 해가\n\n| i j k l | ijkl | ijkl * l | 역순(lkji) |\n|---|---:|---:|---:|\n| 1 0 8 9 | 1089 | 9801 | 9801 |\n\n즉 `l=9`만 출력되며, 정답은 `9`입니다.\n\n### 3) (추가) 자리수 비교로 바로 `i=1`, `l=9`\n아래처럼 “자리수 비교”로도 핵심 후보를 빠르게 좁힐 수 있습니다.\n\n1. 천의 자리에서 결과가 `l`이 되려면, `i*l`이 천의 자리로 올라오는 구조상 `i=1`이 가장 자연스럽게 강제됩니다.\n2. 일의 자리에서 `l*l`의 끝자리가 `1`이어야 하므로 `l`은 `1` 또는 `9`인데, `l=1`은 `i`와 같아져 제외 → `l=9`.\n3. 나머지 자리까지 맞추면 유일하게 `1089 * 9 = 9801`이 성립.\n\n(지도 포인트) 이런 유형은 전수조사 대신, 1의 자리/올림(carry) 규칙이나 자리수 비교로 `l`과 `i` 후보부터 줄이면 학생 체감 난이도를 크게 낮춥니다.",
       "options": [
         "1",
         "3",
@@ -37,6 +38,7 @@
       "title": "문제 2",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = []\nb = []\ns = 0\nfor i in range(5):\n    a.append(i + 1)\n    b.append(2 * i - 3)\nfor i in range(5):\n    for j in range(5):\n        s += a[i] * b[j]\nprint(s)",
+      "teacherExplainMd": "이중합은 분해하면 빠릅니다.\n\n`a = [1,2,3,4,5]`, `b = [-3,-1,1,3,5]` 입니다.\n\n합은\n\n```text\nΣ_i Σ_j a[i]*b[j] = (Σ_i a[i]) * (Σ_j b[j])\n```\n\n- `Σ a = 1+2+3+4+5 = 15`\n- `Σ b = (-3)+(-1)+1+3+5 = 5`\n\n따라서 `s = 15 * 5 = 75` 입니다.",
       "options": [
         "45",
         "60",
@@ -61,6 +63,7 @@
       "title": "문제 3",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a, b, c = [], [], []\nd = 0\nfor i in range(4):\n    a.append(i + 1)\n    b.append(i * 2)\n    c.append(i)\nfor i in range(4):\n    for j in range(4):\n        for k in range(4):\n            d += a[i] + b[j] * c[k]\nprint(d)",
+      "teacherExplainMd": "`d += a[i] + b[j]*c[k]`는 합을 항별로 분리할 수 있습니다.\n\n리스트는\n- `a=[1,2,3,4]`\n- `b=[0,2,4,6]`\n- `c=[0,1,2,3]`\n\n전체 합:\n\n```text\nΣ_i Σ_j Σ_k a[i]  +  Σ_i Σ_j Σ_k b[j]*c[k]\n```\n\n1) `a[i]` 항:\n- 각 `i`가 `(j,k)` 16번씩 반복 → `16 * Σ a = 16 * 10 = 160`\n\n2) `b[j]*c[k]` 항:\n- `i`가 4번 반복 → `4 * (Σ_j b[j]) * (Σ_k c[k])`\n- `Σ b = 0+2+4+6 = 12`, `Σ c = 0+1+2+3 = 6`\n- → `4 * 12 * 6 = 288`\n\n총합 `160 + 288 = 448` 입니다.",
       "options": [
         "384",
         "416",
@@ -85,6 +88,7 @@
       "title": "문제 4",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "x = 0\nfor i in range(1, 10):\n    for j in range(1, 10):\n        if i == j:\n            continue\n        for k in range(1, 10):\n            if k in (i, j):\n                continue\n            if i + j == k:\n                x += 1\nprint(x)",
+      "teacherExplainMd": "`k`는 `i+j`로 **유일하게 결정**됩니다. 따라서 (i,j) 쌍 중에서 조건을 만족하는 개수를 세면 됩니다.\n\n조건:\n- `i,j`는 1~9\n- `i != j`\n- `k = i+j`가 1~9 범위에 있어야 함 → `i+j <= 9`\n- `k`는 `i`나 `j`와 같으면 안 됨\n  - `i+j != i`는 `j!=0`이라 항상 참\n  - `i+j != j`는 `i!=0`이라 항상 참\n  - 즉 별도 제약이 되지 않습니다.\n\n이제 합 `s=i+j(=2..9)`별로 (i,j) 가능한 개수를 세면 됩니다.\n\n| s=i+j | 양의 해 개수 (s-1) | i=j 존재? | 제외 후 |\n|---:|---:|---:|---:|\n| 2 | 1 | O | 0 |\n| 3 | 2 | X | 2 |\n| 4 | 3 | O | 2 |\n| 5 | 4 | X | 4 |\n| 6 | 5 | O | 4 |\n| 7 | 6 | X | 6 |\n| 8 | 7 | O | 6 |\n| 9 | 8 | X | 8 |\n| 합 | 36 | - | 32 |\n\n따라서 `x=32`가 출력됩니다.",
       "options": [
         "24",
         "28",
@@ -109,6 +113,7 @@
       "title": "문제 5",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = 0\nfor i in range(1, 10):\n    for j in range(10):\n        if int(str(i) + str(j)) * 9 == int(f\"{j}{i}\"):\n            a += 1\nprint(a)",
+      "teacherExplainMd": "두 자리 수 `10*i + j`에 대해 조건은:\n\n```text\n9*(10*i + j) == 10*j + i\n=> 90*i + 9*j == 10*j + i\n=> 89*i == j\n```\n\n그런데 `i`는 1~9이고 `j`는 0~9라서 `j = 89*i`는 절대 성립할 수 없습니다.\n\n따라서 카운트는 0이고 출력은 `0`입니다.",
       "options": [
         "0",
         "1",

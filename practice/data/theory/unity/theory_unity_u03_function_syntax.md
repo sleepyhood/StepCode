@@ -17,33 +17,47 @@ void는 아무것도 없다는 뜻이다.
 <br>
 null은 공간은 있는데 그 공간이 텅 비어있음을 의미한다.
 
-### 2) 유니티의 특별함수
+### 2) 유니티의 특별한 함수
+- 일반적인 함수들은 내가 직접 호출을 해줘야 실행이 된다.  
+그러나, 유니티에서 사용하는 특별한 함수들은 내가 직접 호출하지 않아도 유니티가 상황에 맞춰서 자동으로 실행해준다.
+<br>
+유니티의 특별한 함수(유니티 공식문서에서는 이벤트 함수라 부른다)는 아래와 같은 것들이 있다.<br>
+Start, Update, OnMousedown, OnCollisionEnter 등등
 
 ### 3) static
+- 클래스 안에 있는 변수와 함수를 각각 필드와 메서드라고 부르기도 한다.<br> 필드와 메서드를 사용하려면 먼저 그 클래스에 해당하는 객체를 생성해야 한다. <br>
+그러나 static이 붙어있는 필드와 메서드는 그 클래스에 해당하는 객체를 생성하지 않아도 사용이 가능하다. 생성된 객체와는 독립적으로 사용된다.<br><br>
+객체를 생성하지 않아도 사용이 가능하다라는 것은 반대로 생각해보면 객체를 생성했을 때만 쓸 수 있는 (static이 안 붙어있는) 필드와 메서드를 static이 붙어있는 곳에서는 쓸 수 없다는 걸 의미한다.
+<br><br>
+추가) 유니티에서 클래스에 해당하는 객체를 생성하지 않았고, 함수와 변수 앞에 static을 붙이지 않았는데도 사용이 가능한 것은 스크립트를 Scene에 있는 오브젝트에 추가하면 유니티가 객체를 생성해주기 때문이다.
 
 
 ## 핵심 패턴
 ~~~csharp
-private static int Add(int a, int b)
-{
-    return a + b;
+public class exmaple{
+    int x = 3;
+    private static int Add(int a, int b)
+    {   
+        // 이곳에서 x에 접근하려고 하면 오류가 발생한다. x는 static이 아니기 때문.
+        return a + b;
+    }
+    private void ShowMessage(string msg)
+    {
+        Debug.Log(msg);
+    }
 }
 
-private void ShowMessage(string msg)
-{
-    Debug.Log(msg);
-}
 ~~~
 ### 패턴 해설
-- `private static int Add(int a, int b)`는 "접근제어자 + static + 반환형 + 함수명 + 매개변수"의 기본 시그니처 구조를 보여준다.
-- 반환형이 `int`이면 모든 실행 경로에서 `return`으로 값을 돌려줘야 한다.
-- `private void ShowMessage(string msg)`는 반환값 없는 함수 패턴이며, 외부 입력(`msg`)을 받아 내부 동작(로그 출력)을 수행한다.
-- static 함수는 인스턴스 없이 호출 가능하지만, 인스턴스 필드/메서드를 직접 접근할 수 없다.
+- `private static int Add(int a, int b)`는 "접근제어자 + static + 반환형 + 함수명 + 매개변수"의 기본 구조를 보여준다.
+- 반환형이 `int`이면 반드시 int형을 `return`해야 한다.
+- static 함수는 인스턴스 없이 호출 가능하지만, 인스턴스 필드/메서드를 직접 접근할 수 없다.(위 코드에서 Add 함수 내부에서는 x에 접근할 수 없다)
+- `private void ShowMessage(string msg)`는 반환값 없는 함수이며, 외부 입력(`msg`)을 받아 내부 동작(로그 출력)을 수행한다.
 - 즉, "유틸성 계산 함수(Add)는 static", "오브젝트 상태를 다루는 함수(ShowMessage)는 instance"처럼 역할을 분리하는 것이 핵심이다.
+이 부분은 뺄까?
 ## 자주 하는 실수
 - 반환형이 있는데 `return`을 누락함
 - static 문맥에서 인스턴스 멤버를 직접 접근함
-- 메서드 이름 대소문자를 틀려 호출이 깨짐
 ## 미니 체크
 ### Q1
 반환값이 없는 함수의 반환형은?

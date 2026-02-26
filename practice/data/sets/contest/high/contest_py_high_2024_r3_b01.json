@@ -45,6 +45,7 @@
       "title": "문제 1",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "s = -20\ns += 7\ns %= 6\nans = \"\"\nif s:\n    ans += \"T\"\nif []:\n    ans += \"F\"\nprint(s, ans)",
+      "teacherExplainMd": "핵심은 `%= (나머지)`와 truthy/falsy 판별입니다.\n\n1. `s = -20`, `s += 7` → `s = -13`\n2. 파이썬에서 `%`는 **나눗셈의 몫을 내림(floor) 기준**으로 나머지를 만들기 때문에 결과가 0~(divisor-1) 범위로 나옵니다.\n\n```text\n-13 % 6 = 5   (왜냐하면 -13 = 6 * (-3) + 5)\n```\n\n3. `if s:`는 `s != 0`이면 참 → `ans`에 `T` 추가\n4. `if []:`는 빈 리스트는 거짓 → `F`는 추가되지 않음\n\n따라서 출력은 `5 T`입니다.",
       "options": [
         "-1 T",
         "5 T",
@@ -69,6 +70,7 @@
       "title": "문제 2",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오. (`·`는 공백)",
       "code": "print(\"A{:6d}B{:5s}C\".format(81, \"K\"))",
+      "teacherExplainMd": "포맷 폭(width)과 기본 정렬만 알면 됩니다.\n\n- `{:6d}`: 정수, 폭 6, 기본은 **오른쪽 정렬** → `'    81'`\n- `{:5s}`: 문자열, 폭 5, 기본은 **왼쪽 정렬** → `'K    '`\n\n조각별로 보면(공백은 `_`로 표시):\n\n| 조각 | 결과 |\n|---|---|\n| `A{:6d}` | `A____81` |\n| `B{:5s}` | `BK____` |\n| `C` | `C` |\n\n따라서 최종 출력은 `A    81BK    C` 입니다.",
       "options": [
         "A····81BK····C",
         "A···81BK····C",
@@ -93,6 +95,7 @@
       "title": "문제 3",
       "description": "다음 코드 실행 시 가장 타당한 결과를 고르시오.",
       "code": "p = 10\n\ndef g():\n    p = p + 1\n\ng()\nprint(p)",
+      "teacherExplainMd": "`g()` 안에서 `p = ...` 대입이 등장하면 **p는 지역변수로 취급**됩니다.\n\n그래서 이 줄은:\n\n```python\np = p + 1\n```\n\n- 오른쪽 `p`를 읽으려는데, 지역변수 `p`는 아직 값이 없음 → `UnboundLocalError`가 발생합니다.\n\n해결하려면 `global p`를 선언하거나, `p`를 인자로 받아 반환값으로 갱신해야 합니다.",
       "options": [
         "11",
         "10",
@@ -115,7 +118,8 @@
       "level": "고",
       "conceptRef": "w01_c4",
       "title": "문제 4",
-      "description": "다음 중 출력이 88.0이 되는 코드를 고르시오. (a = 87.6)",
+      "description": "다음 중 출력이 90.0이 되는 코드를 고르시오. (a = 87.6)",
+      "teacherExplainMd": "음수 자리수 `round(x, -1)`는 **십의 자리로 반올림**합니다.\n\n- `round(87.6)` → `88` (정수로 반올림, 출력은 `88`)\n- `round(87.6, 1)` / `round(87.6, 2)` → `87.6` (소수 자릿수 유지)\n- `round(87.6, -1)` → `90.0` (십의 자리로 반올림)\n- `round(87.6, -2)` → `100.0` (백의 자리로 반올림)\n\n따라서 `print(round(a, -1))`가 정답입니다.",
       "options": [
         "print(round(a))",
         "print(round(a, 1))",
@@ -130,7 +134,7 @@
         "D",
         "E"
       ],
-      "correctIndex": 0
+      "correctIndex": 2
     },
     {
       "id": "q5",
@@ -140,6 +144,7 @@
       "title": "문제 5",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "x = \"False\"\ny = 0\nz = None\nk = \"\"\ncnt = 0\nfor v in [x, y, z, k, 3]:\n    if v:\n        cnt += 1\nprint(cnt)",
+      "teacherExplainMd": "파이썬의 truthy/falsy 규칙만 적용하면 됩니다.\n\n- `\"False\"`: **문자열이 비어있지 않으므로** 참(truthy)\n- `0`: 거짓(falsy)\n- `None`: 거짓(falsy)\n- `\"\"`: 빈 문자열 → 거짓(falsy)\n- `3`: 0이 아닌 정수 → 참(truthy)\n\n참인 값은 2개이므로 `cnt = 2`가 출력됩니다.",
       "options": [
         "1",
         "2",

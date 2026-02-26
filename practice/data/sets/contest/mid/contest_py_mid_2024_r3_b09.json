@@ -13,6 +13,7 @@
       "title": "문제 1",
       "description": "실행 결과로 올바른 것을 고르시오.",
       "code": "f = lambda x: eval((str(x).replace(\"q\", \"4\") + \"*\" + (str(x).replace(\"q\", \"4\"))))\nprint(f(\"q\"), f(\"q+1\"), f(\"q+q\"))",
+      "teacherExplainMd": "`replace(\"q\",\"4\")`로 문자열을 치환한 뒤, `expr + \"*\" + expr`를 `eval`합니다.\n\n중요: 괄호가 없어서 **곱셈이 덧셈보다 먼저 계산**됩니다.\n\n| 입력 x | expr = x.replace(\"q\",\"4\") | eval 문자열 | 결과 |\n|---|---|---|---:|\n| \"q\" | \"4\" | \"4*4\" | 16 |\n| \"q+1\" | \"4+1\" | \"4+1*4+1\" | 9 |\n| \"q+q\" | \"4+4\" | \"4+4*4+4\" | 24 |\n\n따라서 출력은 `16 9 24`입니다.",
       "options": [
         "16 25 64",
         "16 16 16",
@@ -37,6 +38,7 @@
       "title": "문제 2",
       "description": "다음 프로그램의 실행 결과는 무엇인가?",
       "code": "x = 12\ny = 15\nprint(x + y if x > y else x * y)",
+      "teacherExplainMd": "삼항 연산자 `A if cond else B`에서 `cond`가 False이면 `B`가 실행됩니다.\n\n여기서는 `x>y`가 `12>15`로 False이므로 `x*y`를 출력합니다.\n\n- `12 * 15 = 180`\n\n따라서 출력은 `180`입니다.",
       "options": [
         "3",
         "12",
@@ -61,6 +63,7 @@
       "title": "문제 3",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "arr = [\"aa\", \"b\", \"cccc\", \"ddd\"]\narr.sort(key=lambda s: (len(s), s))\nprint(arr)",
+      "teacherExplainMd": "정렬 키가 `(len(s), s)`이므로\n\n1. 길이 오름차순\n2. 길이가 같으면 사전순(문자열) 오름차순\n\n각 원소의 키:\n\n- \"b\" → (1,\"b\")\n- \"aa\" → (2,\"aa\")\n- \"ddd\" → (3,\"ddd\")\n- \"cccc\" → (4,\"cccc\")\n\n따라서 결과는 `['b', 'aa', 'ddd', 'cccc']`입니다.",
       "options": [
         "['b', 'aa', 'ddd', 'cccc']",
         "['aa', 'b', 'ddd', 'cccc']",
@@ -85,6 +88,7 @@
       "title": "문제 4",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "f = lambda a, b: a if a > b else b\ng = lambda a, b: a + b\nprint(f(3, 7), g(f(2, 5), 4))",
+      "teacherExplainMd": "`f(a,b)`는 큰 값을 반환하고, `g(a,b)`는 합을 반환합니다.\n\n- `f(3,7)=7`\n- `f(2,5)=5`, 따라서 `g(5,4)=9`\n\n그래서 출력은 `7 9`입니다.",
       "options": [
         "3 6",
         "7 9",
@@ -109,6 +113,7 @@
       "title": "문제 5",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "pts = [(3, 2), (1, 9), (3, 1), (2, 5)]\npts.sort(key=lambda p: (p[0], -p[1]))\nprint(pts[0], pts[-1])",
+      "teacherExplainMd": "정렬 키 `(p[0], -p[1])`는\n\n- x좌표 오름차순\n- x가 같으면 y좌표 내림차순(−y 오름차순)\n\n정렬 결과:\n\n`[(1,9), (2,5), (3,2), (3,1)]`\n\n따라서 `pts[0]`은 `(1, 9)`, `pts[-1]`은 `(3, 1)`이고 출력은 `(1, 9) (3, 1)`입니다.",
       "options": [
         "(1, 9) (3, 1)",
         "(1, 9) (3, 2)",

@@ -12,7 +12,8 @@
       "level": "고",
       "title": "문제 1",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
-      "code": "a = [6, 1, 5, 0, 2, 3, 4]\nfor i in range(5):\n    b = i\n    for j in range(1, 30):\n        b = a[b]\n    print(b, end=' ')",
+      "code": "a = [6, 1, 5, 0, 2, 3, 4]\nfor i in range(5):\n    b = i\n    for j in range(1, 30):\n        b = a[b]\n    print(b, end='' if i == 4 else ' ')",
+      "teacherExplainMd": "`b = a[b]`는 **인덱스 상태가 다음 상태로 이동**하는 함수 반복입니다.\n\n매핑 `f(x)=a[x]`를 보면:\n- `1 -> 1` (고정점)\n- `0 -> 6 -> 4 -> 2 -> 5 -> 3 -> 0` (길이 6 cycle)\n\n안쪽 루프는 29번 적용이므로, cycle에서는 `29 mod 6 = 5`번 이동한 것과 같습니다.\n\n- 시작 `b=0` → 5번 이동하면 `3`\n- `b=1` → 항상 `1`\n- `b=2` → 5번 이동하면 `4`\n- `b=3` → 5번 이동하면 `5`\n- `b=4` → 5번 이동하면 `6`\n\n따라서 출력은 `3 1 4 5 6` 입니다.",
       "options": [
         "3 1 4 5 6",
         "6 2 3 4 1",
@@ -37,6 +38,7 @@
       "title": "문제 2",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = [9, 8, 7, 6, 5]\na.insert(2, 4)\na.remove(8)\na.pop(3)\nprint(a)",
+      "teacherExplainMd": "리스트 메서드의 대상이 각각 다릅니다. (`insert`는 인덱스, `remove`는 값, `pop`은 인덱스)\n\n1. 시작: `[9, 8, 7, 6, 5]`\n2. `insert(2, 4)` → 인덱스 2에 4 삽입: `[9, 8, 4, 7, 6, 5]`\n3. `remove(8)` → 값 8(첫 번째)을 삭제: `[9, 4, 7, 6, 5]`\n4. `pop(3)` → 인덱스 3의 값(6)을 꺼내며 삭제: `[9, 4, 7, 5]`\n\n따라서 출력은 `[9, 4, 7, 5]` 입니다.",
       "options": [
         "[9, 4, 7, 5]",
         "[9, 7, 4, 5]",
@@ -51,7 +53,7 @@
         "D",
         "E"
       ],
-      "correctIndex": 2,
+      "correctIndex": 0,
       "conceptRef": "w04_c2",
       "conceptRefs": [
         "w04_c2",
@@ -65,6 +67,7 @@
       "title": "문제 3",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = [1, 3, 5, 7, 9, 11]\nprint(a[-4:-1])",
+      "teacherExplainMd": "슬라이싱은 `start` 포함, `end` 미포함입니다.\n\n리스트 길이 6에서:\n- `-4`는 `6-4=2` (값 5)\n- `-1`은 `6-1=5` 이지만 end는 미포함이므로 인덱스 5 직전까지\n\n즉 `a[2:5]` → `[5, 7, 9]` 입니다.",
       "options": [
         "[1, 3, 5]",
         "[3, 5, 7]",
@@ -89,6 +92,7 @@
       "title": "문제 4",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = [0, 1, 2, 3, 4]\nfor i in range(3):\n    a.insert(i, a.pop())\nprint(a)",
+      "teacherExplainMd": "`a.pop()`은 마지막 원소를 꺼내고, `insert(i, x)`는 i 위치에 삽입합니다.\n\n순서대로 추적:\n\n- 시작: `[0,1,2,3,4]`\n- i=0: pop→4, insert(0,4) → `[4,0,1,2,3]`\n- i=1: pop→3, insert(1,3) → `[4,3,0,1,2]`\n- i=2: pop→2, insert(2,2) → `[4,3,2,0,1]`\n\n따라서 출력은 `[4, 3, 2, 0, 1]` 입니다.",
       "options": [
         "[4, 3, 2, 0, 1]",
         "[2, 3, 4, 0, 1]",
@@ -113,6 +117,7 @@
       "title": "문제 5",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = [2, 4, 6, 8, 10]\nb = a[1:4]\nb.append(a[-1])\nprint(sum(b))",
+      "teacherExplainMd": "슬라이싱 `a[1:4]`는 인덱스 1~3을 뽑습니다.\n\n- `b = [4, 6, 8]`\n- `a[-1]`은 마지막 원소 `10`\n- `b.append(10)` → `b = [4, 6, 8, 10]`\n- 합: `4+6+8+10 = 28`\n\n따라서 출력은 `28`입니다.",
       "options": [
         "24",
         "26",
@@ -127,7 +132,7 @@
         "D",
         "E"
       ],
-      "correctIndex": 3,
+      "correctIndex": 2,
       "conceptRef": "w04_c1"
     }
   ],

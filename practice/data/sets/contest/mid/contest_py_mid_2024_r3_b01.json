@@ -41,6 +41,7 @@
       "title": "문제 1",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = -14\na += 5\na %= 6\nprint(a)",
+      "teacherExplainMd": "`a += 5`로 `a=-9`가 되고, `a %= 6`은 파이썬의 나머지 연산 규칙(결과가 `0..5` 범위)으로 계산됩니다.\n\n- `-9 % 6 = 3`  (왜냐하면 `-9 = 6*(-2) + 3`)\n\n따라서 출력은 `3`입니다.",
       "options": [
         "-3",
         "1",
@@ -65,6 +66,7 @@
       "title": "문제 2",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오. (`·`는 공백)",
       "code": "print(\"X{:5d}Y{:4s}Z\".format(27, \"AB\"))",
+      "teacherExplainMd": "포맷 폭(width)과 기본 정렬만 보면 됩니다. (`·`는 공백)\n\n- `{:5d}`: 정수 27을 폭 5로 **오른쪽 정렬** → `···27`\n- `{:4s}`: 문자열 \"AB\"를 폭 4로 **왼쪽 정렬** → `AB··`\n\n따라서 전체는 `X···27YAB··Z` 입니다.",
       "options": [
         "X···27YAB··Z",
         "X··27Y··ABZ",
@@ -89,6 +91,7 @@
       "title": "문제 3",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "t = 2\n\ndef f():\n    global t\n    t += 3\n\nf()\nprint(t)",
+      "teacherExplainMd": "`global t` 때문에 함수 안의 `t += 3`은 지역변수가 아니라 **전역 t**를 수정합니다.\n\n- 시작 `t=2`\n- `f()` 호출 후 `t=5`\n\n따라서 출력은 `5`입니다.",
       "options": [
         "2",
         "3",
@@ -113,6 +116,7 @@
       "title": "문제 4",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "ans = \"\"\nif \"\":\n    ans += \"A\"\nif \"NO\":\n    ans += \"B\"\nif 0:\n    ans += \"C\"\nif [1]:\n    ans += \"D\"\nprint(ans)",
+      "teacherExplainMd": "truthy/falsy 규칙만 정리하면 됩니다.\n\n- `\"\"`(빈 문자열) → False\n- `\"NO\"`(비어있지 않은 문자열) → True\n- `0` → False\n- `[1]`(비어있지 않은 리스트) → True\n\n따라서 `ans`에는 `B`, `D`만 붙어서 출력은 `BD`입니다.",
       "options": [
         "A",
         "B",
@@ -136,6 +140,7 @@
       "conceptRef": "w01_c4",
       "title": "문제 5",
       "description": "다음 중 결과가 70.0이 되는 코드를 고르시오. (x = 74.9)",
+      "teacherExplainMd": "`round(x, ndigits)`에서 `ndigits`가 음수면 **10의 자리/100의 자리로 반올림**합니다.\n\n- `round(74.9, -1)`은 10의 자리로 반올림 → `70.0`\n\n따라서 정답은 `print(round(x, -1))` 입니다.",
       "options": [
         "print(round(x))",
         "print(round(x, 1))",

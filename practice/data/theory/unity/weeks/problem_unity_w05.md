@@ -9,20 +9,36 @@
 - 이 문서의 `n번` 표기는 `practice/temp/유니티 1차 문제 풀이.md` 기준 문제 번호입니다.
 
 ## 원문 대응 문항
-### [P01] `Transform` 멤버 오류 수정
+### [P01] 빈칸 채우기
 - 출처: 원문 4번
 - 유형: 객관식
 - 문제:
-  - 아래 코드의 빈칸 ①, ②에 들어갈 타입을 고르세요.
-  - ```csharp
+  - 아래 코드의 ①, ②에 들어갈 타입을 고르세요. 
+  - 드롭다운에서 올바른 옵션을 선택해 **오류가 나지 않도록 배열 타입과 생성 타입을 수정**하세요.
+
+### 자료(코드)
+
+```csharp
+using UnityEngine;
+
+public class WeaponControl : MonoBehaviour
+{
+    [System.Serializable]
     public class Mount
     {
         public Transform turretMount;
         public Transform turretCache;
     }
 
-    public [①][] tMounts = new [②][2];
-    ```
+    public ①[] tMounts = new ②[2];
+
+    public void Start()
+    {
+        tMounts[0].turretMount = null;
+        tMounts[1].turretMount = null;
+    }
+}
+```
 - 보기:
   - A. ① `Transform`, ② `Transform`
   - B. ① `Mount`, ② `Mount`
@@ -35,7 +51,7 @@
 - 문제:
   - 다음 메서드의 반환 타입으로 올바른 것을 고르세요.
   - ```csharp
-    public [반환 타입] GetChildren(Transform tr)
+    public 반환 타입 GetChildren(Transform tr)
     {
         int childCount = tr.childCount;
         Transform[] result = new Transform[childCount];
@@ -56,13 +72,53 @@
 - 출처: 원문 26번
 - 유형: 단답
 - 문제:
-  - 코드 블록 A/B/C/D의 올바른 배치 순서를 쓰세요.
-  - 블록 요약:
-    - A: `private void OnEnable() {`
-    - B: 클래스 선언 + `Awake()` 시작부
-    - C: `PropSpecs`를 읽어 `damage/durability` 세팅 후 `Awake` 닫기
-    - D: `prop.parent/position/rotation` 부착 로직 + 클래스 닫기
-  - 힌트: 초기 데이터 읽기는 `Awake`, 손 장착은 `OnEnable`
+  - 플레이어가 아닌 캐릭터의 손 오브젝트에 **소품(Prop)** 을 연결하는 구성 요소를 만들고 있습니다.
+  - 소품 오브젝트에는 `PropSpecs` 컴포넌트가 붙어 있으며, 여기서 **damage / durability** 같은 데이터를 가져옵니다.
+  - 장면이 시작될 때 소품과 소품 데이터가 준비되어야 하므로, **초기 데이터 읽기**가 필요합니다.
+  - 이 구성 요소가 활성화(Enable)된 경우에만 소품을 캐릭터 손(`transform`)에 **부착(Parent 설정 + 위치/회전 맞춤)** 해야 합니다.
+  - 아래 **코드 블록들을**, 올바른 순서로 배치해 스크립트를 완성하세요.
+  ### 코드 블록(섞여 있음)
+
+**블록 A**
+
+```csharp
+private void OnEnable() {
+```
+
+**블록 B**
+
+```csharp
+public class AttachProp : MonoBehaviour {
+
+    public Transform prop;
+
+    private PropSpecs propSpecs;
+
+    private float damage;
+    private float durability;
+
+    private void Awake () {
+```
+
+**블록 C**
+
+```csharp
+        propSpecs = prop.GetComponent<PropSpecs>();
+
+        this.damage = propSpecs.damage;
+        this.durability = propSpecs.durability;
+    }
+```
+
+**블록 D**
+
+```csharp
+        prop.parent = transform;
+        prop.position = transform.localPosition;
+        prop.rotation = transform.localRotation;
+    }
+}
+```
 
 ## 확장 문항 (변형/함정/응용)
 ### [X01] 변형 - 자식 Transform 배열 유틸 함수 작성

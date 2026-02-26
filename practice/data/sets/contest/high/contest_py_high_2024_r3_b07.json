@@ -11,13 +11,14 @@
       "type": "mcq",
       "level": "고",
       "title": "문제 1",
-      "description": "다음 프로그램의 빈 칸에 값을 넣었을 때 가장 큰 값을 출력하는 코드를 고르시오.",
+      "description": "다음 프로그램의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = 0\ndef f(x):\n    global a\n    a += 1\n    if x == 1:\n        return\n    if x & 1 == 0:\n        f(x // 2)\n    else:\n        f(x * 3 + 1)\nf(9)\nprint(a)",
+      "teacherExplainMd": "`a`는 `f()`가 호출될 때마다 1씩 증가합니다. 따라서 출력은 **재귀 호출 횟수**입니다.\n\n`f(9)`는 콜라츠 규칙을 따릅니다.\n\n- 짝수: `x = x//2`\n- 홀수: `x = 3x+1`\n\n아래는 호출 흐름을 표로 정리한 것입니다. (각 행이 `f(x)` 1번 호출)\n\n| call# | x | 홀/짝 | 다음 x |\n|---:|---:|---:|---:|\n| 1 | 9 | 홀 | 28 |\n| 2 | 28 | 짝 | 14 |\n| 3 | 14 | 짝 | 7 |\n| 4 | 7 | 홀 | 22 |\n| 5 | 22 | 짝 | 11 |\n| 6 | 11 | 홀 | 34 |\n| 7 | 34 | 짝 | 17 |\n| 8 | 17 | 홀 | 52 |\n| 9 | 52 | 짝 | 26 |\n| 10 | 26 | 짝 | 13 |\n| 11 | 13 | 홀 | 40 |\n| 12 | 40 | 짝 | 20 |\n| 13 | 20 | 짝 | 10 |\n| 14 | 10 | 짝 | 5 |\n| 15 | 5 | 홀 | 16 |\n| 16 | 16 | 짝 | 8 |\n| 17 | 8 | 짝 | 4 |\n| 18 | 4 | 짝 | 2 |\n| 19 | 2 | 짝 | 1 |\n| 20 | 1 | 종료 | - |\n\n총 20번 호출되므로 `a=20`이 출력됩니다.",
       "options": [
         "3",
         "5",
         "7",
-        "9",
+        "20",
         "11"
       ],
       "optionLabels": [
@@ -37,6 +38,7 @@
       "title": "문제 2",
       "description": "다음 코드 실행 시 가장 타당한 결과를 고르시오.",
       "code": "x = 5\n\ndef f():\n    x += 1\n    return x\n\nprint(f())",
+      "teacherExplainMd": "함수 안에 `x += 1`이 있으면 `x`는 **지역변수로 간주**됩니다.\n\n그런데 지역변수 `x`는 값을 대입하기 전에 읽히므로(`x = x + 1` 형태), 실행 시 `UnboundLocalError`가 발생합니다.\n\n해결하려면 `global x`(전역 수정) 또는 `nonlocal x`(바깥 함수의 지역 수정)가 필요합니다.",
       "options": [
         "6",
         "5",
@@ -61,6 +63,7 @@
       "title": "문제 3",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "x = 5\n\ndef f():\n    global x\n    x += 1\n\nf()\nprint(x)",
+      "teacherExplainMd": "`global x`로 `f()` 내부의 `x`가 전역 `x`를 가리키게 됩니다.\n\n- 시작 `x=5`\n- `f()`에서 `x += 1` → 전역 `x=6`\n- 마지막 `print(x)`는 `6`\n\n따라서 출력은 `6`입니다.",
       "options": [
         "5",
         "6",
@@ -85,6 +88,7 @@
       "title": "문제 4",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "def fact(n):\n    if n <= 1:\n        return 1\n    return n * fact(n - 1)\n\nprint(fact(5))",
+      "teacherExplainMd": "재귀 팩토리얼입니다.\n\n- `fact(5) = 5*fact(4)`\n- `fact(4) = 4*fact(3)`\n- `fact(3) = 3*fact(2)`\n- `fact(2) = 2*fact(1)`\n- `fact(1) = 1` (기저 조건)\n\n따라서 `5*4*3*2*1 = 120`이 출력됩니다.",
       "options": [
         "24",
         "60",
@@ -109,6 +113,7 @@
       "title": "문제 5",
       "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "a = 1\n\ndef f(x):\n    global a\n    if x == 0:\n        return\n    a *= 2\n    f(x - 1)\n\nf(4)\nprint(a)",
+      "teacherExplainMd": "`x`가 0이 될 때까지 재귀를 돌며 매번 `a *= 2`가 실행됩니다.\n\n`f(4)`는 `a`를 4번 두 배로 만듭니다:\n\n- 시작 `a=1`\n- 1→2→4→8→16\n\n따라서 출력은 `16`입니다.",
       "options": [
         "8",
         "12",

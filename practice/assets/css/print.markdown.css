@@ -110,6 +110,22 @@ body{
 }
 .is-hidden{ display:none !important; }
 
+.teacher-explain{
+  margin-top: 1.2mm;
+  padding-top: 1.2mm;
+  border-top: 1px dashed var(--line);
+  font-size: 11px;
+  line-height: 1.35;
+}
+.teacher-explain .md-p{ margin: 0 0 1.2mm 0; }
+.teacher-explain pre.md-fence{
+  border: 1px solid var(--box);
+  border-radius: 8px;
+  padding: 2mm 3mm;
+  background: #f8fafc;
+  white-space: pre-wrap;
+}
+
 
 /* print root */
 .print-root{
