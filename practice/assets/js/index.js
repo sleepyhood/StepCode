@@ -588,6 +588,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (state.track === "contest") {
         list.appendChild(createContestBatchPdfPanel());
       }
+
       const activeCategories = categories.filter(
         (cat) => getTrackFromCategory(cat) === state.track
       );

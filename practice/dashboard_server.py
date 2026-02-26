@@ -20,13 +20,13 @@ from pathlib import Path
 import hmac
 import hashlib
 import base64
-import secrets
 
 from aiohttp import web, WSMsgType
 
 BASE_DIR = Path(__file__).resolve().parent  # practice 폴더에서 실행하는 걸 전제로 함
 
-HOST_PIN_FILE = BASE_DIR / ".host_token"
+# 교사 PIN(teacher.html에서 입력하는 값)은 토큰과 분리해서 저장
+HOST_PIN_FILE = BASE_DIR / ".host_pin"
 HOST_COOKIE_NAME = "stepcode_host"
 HOST_SESSION_TTL_SEC = 60 * 60 * 8  # 8시간 (원하면 조절)
 
@@ -39,8 +39,33 @@ def load_host_pin() -> str:
     print(f"[StepCode] HOST_PIN created: {pin} (saved to {HOST_PIN_FILE.name})")
     return pin
 
-HOST_PIN = load_host_pin()
-HOST_SIGN_KEY = hashlib.sha256(HOST_PIN.encode("utf-8")).digest()
+def _env_truthy(name: str) -> bool:
+    return (os.environ.get(name) or "").strip().lower() in ("1", "true", "yes", "y", "on")
+
+# 기본값: 교사 인증 없이 열림(요청대로)
+# 필요하면 `STEPCODE_REQUIRE_HOST_PIN=1`로 PIN 인증을 강제할 수 있음.
+OPEN_HOST = not _env_truthy("STEPCODE_REQUIRE_HOST_PIN")
+# 레거시 호환(강제 인증 모드에서도 수동으로 열어두고 싶으면 이걸 켬)
+if _env_truthy("STEPCODE_OPEN_HOST"):
+    OPEN_HOST = True
+
+_HOST_PIN: str | None = None
+_HOST_SIGN_KEY: bytes | None = None
+
+def get_host_pin() -> str:
+    global _HOST_PIN, _HOST_SIGN_KEY
+    if _HOST_PIN is None:
+        _HOST_PIN = load_host_pin()
+        _HOST_SIGN_KEY = hashlib.sha256(_HOST_PIN.encode("utf-8")).digest()
+    return _HOST_PIN
+
+def get_host_sign_key() -> bytes:
+    global _HOST_SIGN_KEY
+    if _HOST_SIGN_KEY is None:
+        get_host_pin()
+    # mypy/pyright 방어용
+    assert _HOST_SIGN_KEY is not None
+    return _HOST_SIGN_KEY
 
 def _b64url_encode(b: bytes) -> str:
     return base64.urlsafe_b64encode(b).decode("utf-8").rstrip("=")
@@ -52,12 +77,16 @@ def _b64url_decode(s: str) -> bytes:
 def make_host_cookie() -> str:
     exp = int(time.time()) + HOST_SESSION_TTL_SEC
     payload = str(exp).encode("utf-8")
-    sig = hmac.new(HOST_SIGN_KEY, payload, hashlib.sha256).hexdigest().encode("utf-8")
+    sig = hmac.new(get_host_sign_key(), payload, hashlib.sha256).hexdigest().encode("utf-8")
     return _b64url_encode(payload + b"." + sig)
 
 # [dashboard_server.py] (상단쪽) "쿠키 검증"으로 되어있는 첫 번째 is_host_request()를 아래로 교체
 
 def is_host_request(request: web.Request) -> bool:
+    # 개발/테스트용: 호스트 인증 완전 해제
+    if OPEN_HOST:
+        return True
+
     # 1) 쿠키 기반(teacher에서 PIN 로그인 후 발급되는 쿠키)
     token = request.cookies.get(HOST_COOKIE_NAME) or ""
     if token:
@@ -66,7 +95,7 @@ def is_host_request(request: web.Request) -> bool:
             exp_b, sig_b = raw.split(b".", 1)
             exp = int(exp_b.decode("utf-8"))
             if exp >= int(time.time()):
-                expected = hmac.new(HOST_SIGN_KEY, exp_b, hashlib.sha256).hexdigest().encode("utf-8")
+                expected = hmac.new(get_host_sign_key(), exp_b, hashlib.sha256).hexdigest().encode("utf-8")
                 if hmac.compare_digest(sig_b, expected):
                     return True
         except Exception:
@@ -153,7 +182,7 @@ async def host_login(request: web.Request):
         body = {}
 
     pin = str(body.get("pin") or "").strip()
-    if pin != HOST_PIN:
+    if pin != get_host_pin():
         return web.json_response({"ok": False, "error": "invalid_pin"}, status=403, dumps=lambda x: json.dumps(x, ensure_ascii=False))
 
     resp = web.json_response({"ok": True}, dumps=lambda x: json.dumps(x, ensure_ascii=False))
@@ -373,6 +402,9 @@ def main():
     print("[StepCode] HOST_TOKEN:", HOST_TOKEN)
     print("[StepCode] Host mode URL example:")
     print("          http://<host>:8000/practice.html?set=...&room=...&host=1&token=<HOST_TOKEN>")
+    if OPEN_HOST:
+        print("[StepCode] OPEN HOST MODE (default): teacher 인증이 비활성화되었습니다.")
+        print("[StepCode] To require PIN: set STEPCODE_REQUIRE_HOST_PIN=1")
 
     web.run_app(app, host="0.0.0.0", port=8000)
 

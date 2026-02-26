@@ -63,6 +63,29 @@ body{
   height: 14px;
 }
 
+.tool-weeks .weeks-buttons{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 520px;
+}
+.tool-weeks .week-btn{
+  padding: 6px 10px;
+  border-radius: 999px;
+  border:1px solid #d1d5db;
+  background:#fff;
+  cursor:pointer;
+  font-weight: 800;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1;
+}
+.tool-weeks .week-btn.is-active{
+  background:#0f766e;
+  border-color:#0f766e;
+  color:#fff;
+}
+
 /* [print.markdown.css] 위치: .toolbar-right / .tool 스타일 근처에 추가 */
 
 .tool-range input{

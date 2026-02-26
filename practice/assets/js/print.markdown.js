@@ -265,6 +265,14 @@ function el(tag, cls, text) {
   return x;
 }
 
+function normalizeInlineHtmlToText(raw) {
+  // 문제 데이터 일부가 `<br>` / `&nbsp;`로 줄바꿈/들여쓰기를 표현합니다.
+  // 이 페이지의 markdown 렌더러는 Raw HTML을 이스케이프하므로, 그대로 두면 문자열로 노출됩니다.
+  return String(raw ?? "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/&nbsp;/gi, " ");
+}
+
 function detectPrismLanguage(set) {
   const raw = String(
     (set && Array.isArray(set.availableLanguages) ? set.availableLanguages[0] : "") || ""
@@ -307,7 +315,7 @@ function shouldMcqOptionsUseTwoColumns(q) {
   const MAX_ROW_CHARS = 12;
 
   const normalize = (s) =>
-    String(s ?? "")
+    normalizeInlineHtmlToText(s)
       .replace(/\r\n/g, "\n")
       .trim();
 
@@ -1221,7 +1229,7 @@ function shouldMcqCodeOptionsUseTwoColumns(q) {
   const MAX_PHYSICAL_LINES = 18; // 실제 개행 줄 수 하드캡
 
   const normalize = (s) =>
-    String(s ?? "")
+    normalizeInlineHtmlToText(s)
       .replace(/\r\n/g, "\n")
       .trim();
 
@@ -1327,7 +1335,7 @@ if (q.type === "mcq") {
   const opts = el("div", "p-options");
 
   // ✅ 이미 있는 코드: 옵션에 줄바꿈이 하나라도 있으면 코드박스 모드
-  const forceOptCodeBox = (q.options || []).some(v => String(v ?? "").includes("\n"));
+  const forceOptCodeBox = (q.options || []).some(v => normalizeInlineHtmlToText(v).includes("\n"));
 
   // ✅ (추가) grid2 판단: 텍스트면 기존 룰, 코드박스면 코드박스 전용 룰
   const useGrid2 = forceOptCodeBox
@@ -1344,7 +1352,7 @@ if (q.type === "mcq") {
     row.appendChild(el("div", "bullet", `◯ ${letter}`));
 
     const tdiv = el("div", "text md");
-    const opt = String(t ?? "");
+    const opt = normalizeInlineHtmlToText(t);
 
     if (forceOptCodeBox || opt.includes("\n")) {
       const pre = buildHighlightedCodePre(set, "p-code opt-code", opt, false);
@@ -1673,15 +1681,23 @@ async function resolveSetIdsFromQuery() {
     : 11;
 
   const allSets = await ProblemService.listSets();
-  return allSets
-    .filter((s) =>
-      new RegExp(`^contest_${contestLang}_${contestLevel}_\\d{4}_r\\d+_b\\d+$`, "i").test(
-        String(s?.id || "")
-      )
-    )
-    .sort((a, b) => (Number(a?.round || 0) - Number(b?.round || 0)) || String(a?.id || "").localeCompare(String(b?.id || "")))
-    .slice(0, roundCount)
-    .map((s) => s.id);
+  const rx = new RegExp(`^contest_${contestLang}_${contestLevel}_\\d{4}_r\\d+_b\\d+$`, "i");
+  const items = allSets
+    .filter((s) => rx.test(String(s?.id || "")))
+    .sort(
+      (a, b) =>
+        (Number(a?.round || 0) - Number(b?.round || 0)) ||
+        String(a?.id || "").localeCompare(String(b?.id || ""))
+    );
+
+  const availableWeeks = Array.from(
+    new Set(items.map((s) => Number(s?.round || 0)).filter((v) => Number.isFinite(v) && v >= 1 && v <= 30))
+  ).sort((a, b) => a - b);
+  const selectedWeeks = parseWeekSelection(qp("weeks"), availableWeeks);
+
+  return (selectedWeeks ? items.filter((s) => selectedWeeks.has(Number(s?.round || 0))) : items.slice(0, roundCount)).map(
+    (s) => s.id
+  );
 }
 
 /* [print.markdown.js] 위치: renderAll()에서 chunk(selected, 2) 부분을 "높이 기반 패킹"으로 교체 */
@@ -2101,15 +2117,155 @@ function qp(name) {
 }
 function setQp(name, value) {
   const url = new URL(location.href);
-  url.searchParams.set(name, value);
+  const v = value == null ? "" : String(value);
+  if (!v) url.searchParams.delete(name);
+  else url.searchParams.set(name, v);
   history.replaceState(null, "", url.toString());
 }
 
+function parseWeekSelection(raw, availableWeeks) {
+  const available = new Set((availableWeeks || []).map((v) => Number(v)));
+  if (!raw) return undefined;
+  const picked = String(raw)
+    .split(",")
+    .map((v) => Number(v.trim()))
+    .filter((v) => Number.isFinite(v) && available.has(v));
+  if (!picked.length) return undefined;
+  return new Set(picked);
+}
+
+function serializeWeekSelection(selected, availableWeeks) {
+  if (!selected || !selected.size) return "";
+  const available = (availableWeeks || []).map((v) => Number(v)).filter((v) => Number.isFinite(v));
+  const picked = available.filter((w) => selected.has(w));
+  return picked.join(",");
+}
+
+function getContestArgsFromQuery() {
+  const contestLang = normalizeContestLang(qp("contestLang"));
+  const contestLevel = normalizeContestLevel(qp("contestLevel"));
+  if (!contestLang || !contestLevel) return null;
+
+  const requestedRounds = Number(qp("contestRounds") || "11");
+  const roundCount = Number.isFinite(requestedRounds)
+    ? Math.max(1, Math.min(30, Math.floor(requestedRounds)))
+    : 11;
+
+  return { contestLang, contestLevel, roundCount };
+}
+
+function resolveContestSetIdsFromIndex(allSets, contestLang, contestLevel, selectedWeeks, roundCount) {
+  const rx = new RegExp(`^contest_${contestLang}_${contestLevel}_\\d{4}_r\\d+_b\\d+$`, "i");
+  const items = (allSets || [])
+    .filter((s) => rx.test(String(s?.id || "")))
+    .sort(
+      (a, b) =>
+        (Number(a?.round || 0) - Number(b?.round || 0)) ||
+        String(a?.id || "").localeCompare(String(b?.id || ""))
+    );
+
+  const filtered = selectedWeeks && selectedWeeks.size
+    ? items.filter((s) => selectedWeeks.has(Number(s?.round || 0)))
+    : items.slice(0, roundCount);
+
+  return filtered.map((s) => s.id);
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
-  const setIds = await resolveSetIdsFromQuery();
+  let setIds = await resolveSetIdsFromQuery();
   if (!setIds.length) {
     document.getElementById("print-root").textContent = "잘못된 접근입니다. (set / sets / contestLang+contestLevel 파라미터가 없습니다)";
     return;
+  }
+
+  const weeksWrap = document.getElementById("weeks-wrap");
+  const weeksButtons = document.getElementById("weeks-buttons");
+  const contestArgs = getContestArgsFromQuery();
+  const isContestQueryMode = !qp("set") && !qp("sets") && !!contestArgs;
+
+  let contestAllSets = null;
+  let contestAvailableWeeks = [];
+  let selectedWeeks = undefined; // undefined => default(1~contestRounds), Set => explicit selection
+
+  function renderWeekButtons() {
+    if (!weeksButtons) return;
+    weeksButtons.innerHTML = "";
+
+    const baseWeeks = contestArgs ? contestAvailableWeeks.slice(0, contestArgs.roundCount) : [];
+    const baseSet = new Set(baseWeeks);
+
+    const allBtn = document.createElement("button");
+    allBtn.type = "button";
+    allBtn.className = "week-btn";
+    allBtn.dataset.week = "all";
+    allBtn.textContent = "전체";
+    if (selectedWeeks && selectedWeeks.size === contestAvailableWeeks.length) allBtn.classList.add("is-active");
+    weeksButtons.appendChild(allBtn);
+
+    contestAvailableWeeks.forEach((w) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "week-btn";
+      btn.dataset.week = String(w);
+      btn.textContent = `${w}주차`;
+      const active = selectedWeeks ? selectedWeeks.has(w) : baseSet.has(w);
+      if (active) btn.classList.add("is-active");
+      weeksButtons.appendChild(btn);
+    });
+  }
+
+  if (isContestQueryMode && weeksWrap && contestArgs) {
+    weeksWrap.classList.remove("is-hidden");
+    contestAllSets = await ProblemService.listSets();
+    contestAvailableWeeks = Array.from(
+      new Set(
+        contestAllSets
+          .filter((s) =>
+            new RegExp(
+              `^contest_${contestArgs.contestLang}_${contestArgs.contestLevel}_\\d{4}_r\\d+_b\\d+$`,
+              "i"
+            ).test(String(s?.id || ""))
+          )
+          .map((s) => Number(s?.round || 0))
+          .filter((v) => Number.isFinite(v) && v >= 1 && v <= 30)
+      )
+    ).sort((a, b) => a - b);
+
+    // 초기 선택: weeks 파라미터가 있으면 그걸, 없으면 기존 로직(1~roundCount)
+    const weeksFromQuery = qp("weeks");
+    selectedWeeks = parseWeekSelection(weeksFromQuery, contestAvailableWeeks);
+
+    renderWeekButtons();
+
+    weeksButtons?.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-week]");
+      if (!btn) return;
+      const v = String(btn.dataset.week || "");
+      if (v === "all") {
+        selectedWeeks = new Set(contestAvailableWeeks);
+        renderWeekButtons();
+        return;
+      }
+      const w = Number(v);
+      if (!Number.isFinite(w)) return;
+      const available = contestAvailableWeeks;
+      const baseWeeks = contestArgs ? available.slice(0, contestArgs.roundCount) : available;
+      const baseSet = new Set(baseWeeks);
+      const next = selectedWeeks ? new Set(selectedWeeks) : new Set(baseWeeks);
+      if (next.has(w)) next.delete(w);
+      else next.add(w);
+
+      if (!next.size) {
+        selectedWeeks = undefined;
+        renderWeekButtons();
+        return;
+      }
+
+      const isBase =
+        next.size === baseSet.size && Array.from(baseSet.values()).every((x) => next.has(x));
+      selectedWeeks = isBase ? undefined : next;
+      renderWeekButtons();
+    });
   }
 
   const variantSel = document.getElementById("variant-select");
@@ -2167,6 +2323,18 @@ if (applyBtn) {
     if (bucket === "custom") setQp("range", range);
     else setQp("range", "");
     setQp("lineNumbers", lineNumbers);
+
+    if (isContestQueryMode && contestArgs && contestAllSets) {
+      const weeksParam = serializeWeekSelection(selectedWeeks, contestAvailableWeeks);
+      setQp("weeks", weeksParam);
+      setIds = resolveContestSetIdsFromIndex(
+        contestAllSets,
+        contestArgs.contestLang,
+        contestArgs.contestLevel,
+        selectedWeeks,
+        contestArgs.roundCount
+      );
+    }
 
     await renderAll({ setIds, bucket, variant });
   });

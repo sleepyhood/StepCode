@@ -2152,6 +2152,15 @@ function setupBackToListButton() {
 }
 
 // ====== MCQ 렌더링 ======
+function normalizeInlineHtmlToText(raw) {
+  // 일부 데이터가 `<br>` / `&nbsp;` 같은 "HTML 조각"으로 줄바꿈/들여쓰기를 표현합니다.
+  // 이 값들을 그대로 `textContent`에 넣으면 브라우저는 HTML로 파싱하지 않으므로 문자열 그대로 노출됩니다.
+  // 안전하게 "텍스트"로만 보이게 하려면 필요한 것만 치환해서 개행/공백으로 바꿉니다.
+  return String(raw ?? "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/&nbsp;/gi, " ");
+}
+
 function shouldMcqOptionsUseTwoColumns(q) {
   // 2열은 "짧은 보기"에서만:
   // - 단순 1줄 제한은 너무 빡빡하므로, (대략) 5줄 이내까지 허용
@@ -2165,7 +2174,7 @@ function shouldMcqOptionsUseTwoColumns(q) {
   const MAX_ROW_CHARS = 8; // n: 한 행(줄)의 최대 글자 수(경험적으로 조절)
 
   const normalize = (s) =>
-    String(s ?? "")
+    normalizeInlineHtmlToText(s)
       .replace(/\r\n/g, "\n")
       .trim();
 
@@ -2242,7 +2251,7 @@ function renderMcqOptions(card, q) {
     codePre.className = "option-code";
     const codeEl = document.createElement("code");
     codeEl.className = `language-${currentLang}`;
-    codeEl.textContent = opt;
+    codeEl.textContent = normalizeInlineHtmlToText(opt);
     codePre.appendChild(codeEl);
 
     label.appendChild(letter);
