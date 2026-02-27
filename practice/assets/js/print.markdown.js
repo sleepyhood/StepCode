@@ -1489,7 +1489,7 @@ if (q.type === "mcq") {
     card.appendChild(note);
   }
 
-  if (variant === "teacher" && !includeTeacherNote) {
+  if (variant === "teacher" && opts.showQuickAnswer === true) {
     const quick = correctForTeacher(q);
     if (quick) {
       const quickRow = el("div", "teacher-quick-answer");
@@ -1831,7 +1831,7 @@ async function resolveSetIdsFromQuery() {
 
 /* [print.markdown.js] 위치: renderAll()에서 chunk(selected, 2) 부분을 "높이 기반 패킹"으로 교체 */
 
-async function renderAll({ setIds, bucket, variant }, repackRetry = 0) {
+async function renderAll({ setIds, bucket, variant, teacherOpts }, repackRetry = 0) {
   const root = document.getElementById("print-root");
   if (!root) return;
 
@@ -1839,8 +1839,18 @@ async function renderAll({ setIds, bucket, variant }, repackRetry = 0) {
   const loadedSets = await Promise.all((setIds || []).map((id) => ProblemService.loadSet(id)));
   currentSetData = loadedSets.length > 1 ? mergeSetsForPrint(loadedSets) : loadedSets[0];
   const setId = currentSetData?.id || "";
-  const teacherAppendixMode = variant === "teacher";
-  const problemCardOpts = teacherAppendixMode ? { includeTeacherNote: false } : {};
+  
+  // 선생님 판단 로직
+  const isTeacher = variant === "teacher";
+  const showProblems = !isTeacher || (teacherOpts?.problem !== "0");
+  const teacherAppendixMode = isTeacher && (teacherOpts?.explain === "1");
+  const showQuickAnswer = isTeacher; // 선생님 모드면 무조건 짧은 정답 보이기
+  
+  // 빠른 정답(약식)을 달아줄지 옵션 세팅 (기존 로직이 includeTeacherNote를 false로 하면 약식 답안을 노출하도록 되어 있었음)
+  const problemCardOpts = {
+    includeTeacherNote: false,   // 어쨌든 문제 바로 밑에 길게 해설 다는 기존 기능은 쓰지 않음
+    showQuickAnswer: showQuickAnswer
+  };
 
   const indexMap = new Map();
   (currentSetData.problems || []).forEach((q, idx) => indexMap.set(q.id, idx));
@@ -1870,18 +1880,19 @@ async function renderAll({ setIds, bucket, variant }, repackRetry = 0) {
   root.classList.remove("variant-student", "variant-teacher");
   root.classList.add(variant === "teacher" ? "variant-teacher" : "variant-student");
 
-  const useLightLayout = (setIds || []).length > 1 || selected.length >= 30;
+  const useLightLayout = (setIds || []).length > 1 || selected.length >= 30 || !showProblems;
   if (useLightLayout) {
-    const problemPages = chunk(selected, LIGHT_MODE_PAGE_SIZE);
+    const problemPages = showProblems ? chunk(selected, LIGHT_MODE_PAGE_SIZE) : [];
     let appendixPages = [];
     if (teacherAppendixMode) {
       const explainQuestions = selected.filter((q) => hasTeacherAppendixContent(q));
       if (explainQuestions.length) {
+        const basePageIdx = showProblems ? Math.max(1, problemPages.length) : 0;
         const probeAppendixPage = buildPage(
           setId,
           currentSetData,
-          Math.max(1, problemPages.length),
-          Math.max(1, problemPages.length),
+          basePageIdx,
+          basePageIdx,
           [],
           indexMap,
           variant,
@@ -1995,7 +2006,7 @@ async function renderAll({ setIds, bucket, variant }, repackRetry = 0) {
     updateToolbarTitle(currentSetData, bucket, variant);
     await waitForImagesReady(root);
     if (hasRenderedPageOverflow(root) && repackRetry < MAX_REPACK_RETRY) {
-      return renderAll({ setIds, bucket, variant }, repackRetry + 1);
+      return renderAll({ setIds, bucket, variant, teacherOpts }, repackRetry + 1);
     }
     return;
   }
@@ -2443,7 +2454,7 @@ async function renderAll({ setIds, bucket, variant }, repackRetry = 0) {
   applyPrismHighlight(root);
   await waitForImagesReady(root);
   if (hasRenderedPageOverflow(root) && repackRetry < MAX_REPACK_RETRY) {
-    return renderAll({ setIds, bucket, variant }, repackRetry + 1);
+    return renderAll({ setIds, bucket, variant, teacherOpts }, repackRetry + 1);
   }
   updateToolbarTitle(currentSetData, bucket, variant);
 }
@@ -2636,6 +2647,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const variantSel = document.getElementById("variant-select");
   const bucketSel = document.getElementById("bucket-select");
   const lineNumbersCheck = document.getElementById("line-numbers-check");
+  const teacherOptsWrap = document.getElementById("teacher-opts-wrap");
+  const tProblemCheck = document.getElementById("t-problem-check");
+  const tExplainCheck = document.getElementById("t-explain-check");
 
 const rangeWrap = document.getElementById("range-wrap");
 const rangeInput = document.getElementById("range-input");
@@ -2647,6 +2661,9 @@ const initRange = qp("range") || "";
 const initLineNumbers = qp("lineNumbers");
 const hasInitLineNumbers = initLineNumbers === "1" || initLineNumbers === "0";
 
+const initTProblem = qp("tProblem") || "1";
+const initTExplain = qp("tExplain") || "1";
+
 if (bucketSel) bucketSel.value = (["all","core","supp","custom"].includes(initBucket) ? initBucket : "all");
 if (rangeInput) rangeInput.value = initRange;
 if (lineNumbersCheck) {
@@ -2656,7 +2673,17 @@ if (lineNumbersCheck) {
     lineNumbersCheck.checked = !!(variantSel && variantSel.value === "teacher");
   }
 }
+if (tProblemCheck) tProblemCheck.checked = initTProblem === "1";
+if (tExplainCheck) tExplainCheck.checked = initTExplain === "1";
+
 currentShowLineNumbers = !!(lineNumbersCheck && lineNumbersCheck.checked);
+
+function syncVariantUI() {
+  const isTeacher = (variantSel && variantSel.value === "teacher");
+  if (teacherOptsWrap) teacherOptsWrap.classList.toggle("is-hidden", !isTeacher);
+}
+if (variantSel) variantSel.addEventListener("change", syncVariantUI);
+syncVariantUI();
 
 if (variantSel && lineNumbersCheck && !hasInitLineNumbers) {
   variantSel.addEventListener("change", () => {
@@ -2681,6 +2708,10 @@ if (applyBtn) {
     const bucket = bucketSel ? bucketSel.value : "all";
     const range = (rangeInput ? rangeInput.value : "").trim();
     const lineNumbers = lineNumbersCheck && lineNumbersCheck.checked ? "1" : "0";
+    
+    const tProblem = tProblemCheck && tProblemCheck.checked ? "1" : "0";
+    const tExplain = tExplainCheck && tExplainCheck.checked ? "1" : "0";
+
     currentShowLineNumbers = lineNumbers === "1";
 
     setQp("variant", variant);
@@ -2688,6 +2719,8 @@ if (applyBtn) {
     if (bucket === "custom") setQp("range", range);
     else setQp("range", "");
     setQp("lineNumbers", lineNumbers);
+    setQp("tProblem", tProblem);
+    setQp("tExplain", tExplain);
 
     if (isContestQueryMode && contestArgs && contestAllSets) {
       const weeksParam = serializeWeekSelection(selectedWeeks, contestAvailableWeeks);
@@ -2701,7 +2734,8 @@ if (applyBtn) {
       );
     }
 
-    await renderAll({ setIds, bucket, variant });
+    const teacherOpts = { problem: tProblem, explain: tExplain };
+    await renderAll({ setIds, bucket, variant, teacherOpts });
   });
 }
 
@@ -2723,7 +2757,11 @@ if (applyBtn) {
     else back.href = "index.html?track=contest";
   }
 
-  await renderAll({ setIds, bucket: (bucketSel ? bucketSel.value : "all"), variant: (variantSel ? variantSel.value : "student") });
+  const teacherOpts = {
+    problem: tProblemCheck && tProblemCheck.checked ? "1" : "0",
+    explain: tExplainCheck && tExplainCheck.checked ? "1" : "0"
+  };
+  await renderAll({ setIds, bucket: (bucketSel ? bucketSel.value : "all"), variant: (variantSel ? variantSel.value : "student"), teacherOpts });
 
   window.addEventListener("beforeprint", () => {
     const printRoot = document.getElementById("print-root");
