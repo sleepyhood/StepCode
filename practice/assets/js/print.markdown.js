@@ -5,8 +5,10 @@ const SLOTS_PER_PAGE = 2;
 let currentShowLineNumbers = false;
 const PRINT_PAGE_MARGIN_MM = 3;
 const PRINT_PAGE_WIDTH_MM = 297;
-const PACKING_SAFETY_MM = 0;
-const FIT_TOLERANCE_MM = 3;
+const PACKING_SAFETY_MM = 3;
+const FIT_TOLERANCE_MM = 0;
+const REPACK_STEP_MM = 4;
+const MAX_REPACK_RETRY = 4;
 const CODE_SPLIT_MIN_LINES = 24;
 const LIGHT_MODE_PAGE_SIZE = 6;
 
@@ -43,6 +45,22 @@ function getBodyHeightPx(pageEl) {
   const h = header ? header.getBoundingClientRect().height : 0;
   const mb = header ? parseFloat(getComputedStyle(header).marginBottom || "0") : 0;
   return pageH - h - mb;
+}
+
+function hasRenderedPageOverflow(root) {
+  if (!root) return false;
+  const pages = Array.from(root.querySelectorAll(".print-page"));
+  for (const page of pages) {
+    const bodyLimit = getBodyHeightPx(page);
+    if (!Number.isFinite(bodyLimit) || bodyLimit <= 0) continue;
+    const cols = Array.from(page.querySelectorAll(".page-col"));
+    for (const col of cols) {
+      if (!col) continue;
+      const contentHeight = Math.max(col.scrollHeight, Math.ceil(col.getBoundingClientRect().height));
+      if (contentHeight > bodyLimit + 1) return true;
+    }
+  }
+  return false;
 }
 
 /** 카드 하나의 "실제 렌더 높이" 측정 (같은 폭에서) */
@@ -356,6 +374,11 @@ function escapeHtml(s) {
 function mdInline(raw) {
   let s = escapeHtml(raw);
 
+  // images
+  s = s.replace(/\!\[([^\]]*)\]\(([^)]+)\)/g, (_m, alt, url) =>
+    `<img class="md-image" src="${url}" alt="${alt}" loading="eager" decoding="async">`
+  );
+
   // links
   s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, txt, url) =>
     `<a class="md-link" href="${url}" target="_blank" rel="noopener">${txt}</a>`
@@ -518,6 +541,40 @@ function mdBlock(raw) {
 
 function setMD(node, raw, mode = "block") {
   node.innerHTML = mode === "inline" ? mdInline(raw) : mdBlock(raw);
+}
+
+function stabilizeMarkdownImages(root) {
+  if (!root) return;
+  const images = Array.from(root.querySelectorAll("img.md-image"));
+  images.forEach((img) => {
+    const applyIntrinsicSize = () => {
+      const width = Number(img.naturalWidth || 0);
+      const height = Number(img.naturalHeight || 0);
+      if (!width || !height) return;
+      if (!img.hasAttribute("width")) img.setAttribute("width", String(width));
+      if (!img.hasAttribute("height")) img.setAttribute("height", String(height));
+      img.style.aspectRatio = `${width} / ${height}`;
+    };
+    if (img.complete) applyIntrinsicSize();
+    else img.addEventListener("load", applyIntrinsicSize, { once: true });
+  });
+}
+
+async function waitForImagesReady(root) {
+  if (!root) return;
+  const images = Array.from(root.querySelectorAll("img"));
+  if (!images.length) return;
+  await Promise.all(
+    images.map((img) => {
+      if (img.complete) return Promise.resolve();
+      return new Promise((resolve) => {
+        const done = () => resolve();
+        img.addEventListener("load", done, { once: true });
+        img.addEventListener("error", done, { once: true });
+      });
+    })
+  );
+  stabilizeMarkdownImages(root);
 }
 
 function buildMediaBlock(media) {
@@ -1255,7 +1312,8 @@ function shouldMcqCodeOptionsUseTwoColumns(q) {
 }
 
 
-function buildProblemCard(set, q, originalIndex, variant) {
+function buildProblemCard(set, q, originalIndex, variant, opts = {}) {
+  const includeTeacherNote = opts.includeTeacherNote !== false;
   const card = el("section", "p-card");
 
   const head = el("div", "p-head");
@@ -1404,7 +1462,7 @@ if (q.type === "mcq") {
   }
 }
 
-  if (variant === "teacher") {
+  if (variant === "teacher" && includeTeacherNote) {
     const note = el("div", "teacher-note");
     const a = correctForTeacher(q);
     if (a) {
@@ -1431,7 +1489,20 @@ if (q.type === "mcq") {
     card.appendChild(note);
   }
 
+  if (variant === "teacher" && !includeTeacherNote) {
+    const quick = correctForTeacher(q);
+    if (quick) {
+      const quickRow = el("div", "teacher-quick-answer");
+      const k = el("span", "k", "정답/기준: ");
+      const v = el("span", "", quick.replace(/^정답:\s*/, ""));
+      quickRow.appendChild(k);
+      quickRow.appendChild(v);
+      card.appendChild(quickRow);
+    }
+  }
+
   card.appendChild(answer);
+  stabilizeMarkdownImages(card);
   return card;
 }
 
@@ -1484,6 +1555,55 @@ function buildProblemSplitCards(set, q, originalIndex, variant) {
 function buildProblemSplitCard(set, q, originalIndex, variant, side) {
   const pair = buildProblemSplitCards(set, q, originalIndex, variant);
   return side === "right" ? pair.right : pair.left;
+}
+
+function hasTeacherExplainContent(q) {
+  if (!q || typeof q !== "object") return false;
+  return !!String(q.teacherExplainMd || q.teacherExplain || "").trim();
+}
+
+function hasTeacherAppendixContent(q) {
+  if (!q || typeof q !== "object") return false;
+  const answer = String(correctForTeacher(q) || "").trim();
+  const explain = String(q.teacherExplainMd || q.teacherExplain || "").trim();
+  const hint = String(q.hint || "").trim();
+  return !!(answer || explain || hint);
+}
+
+function hasTeacherExplainImage(q) {
+  if (!q || typeof q !== "object") return false;
+  const raw = String(q.teacherExplainMd || q.teacherExplain || "");
+  return /\!\[[^\]]*\]\(([^)]+)\)/.test(raw);
+}
+
+function buildTeacherExplainSplitCards(set, q, originalIndex, variant) {
+  const left = buildProblemCard(set, q, originalIndex, variant);
+  left.classList.add("p-card--split", "p-card--split-left", "p-card--split-problem");
+  left.querySelectorAll(".teacher-note").forEach((n) => n.remove());
+
+  const right = buildProblemCard(set, q, originalIndex, variant);
+  right.classList.add("p-card--split", "p-card--split-right", "p-card--split-explain");
+  right.querySelectorAll(".p-desc, .p-view, .p-desc--table, .p-code, .p-io, .media-block, .p-options, .answer-block").forEach((n) => n.remove());
+  const title = right.querySelector(".p-head-title");
+  if (title) {
+    const rawTitle = String(q?.title || "").trim();
+    title.textContent = rawTitle ? `${rawTitle} · 해설` : `${originalIndex + 1}. 해설`;
+  }
+  const chip = right.querySelector(".p-concept-chip");
+  if (chip) chip.remove();
+  const tp = right.querySelector(".p-type");
+  if (tp) tp.textContent = "해설";
+
+  return { left, right };
+}
+
+function buildTeacherExplainSplitCard(set, q, originalIndex, variant, side) {
+  const pair = buildTeacherExplainSplitCards(set, q, originalIndex, variant);
+  return side === "right" ? pair.right : pair.left;
+}
+
+function buildTeacherExplainOnlyCard(set, q, originalIndex) {
+  return buildTeacherExplainSplitCard(set, q, originalIndex, "teacher", "right");
 }
 
 function metaField(label, key, extraClass, defaultValue = "") {
@@ -1711,7 +1831,7 @@ async function resolveSetIdsFromQuery() {
 
 /* [print.markdown.js] 위치: renderAll()에서 chunk(selected, 2) 부분을 "높이 기반 패킹"으로 교체 */
 
-async function renderAll({ setIds, bucket, variant }) {
+async function renderAll({ setIds, bucket, variant }, repackRetry = 0) {
   const root = document.getElementById("print-root");
   if (!root) return;
 
@@ -1719,6 +1839,8 @@ async function renderAll({ setIds, bucket, variant }) {
   const loadedSets = await Promise.all((setIds || []).map((id) => ProblemService.loadSet(id)));
   currentSetData = loadedSets.length > 1 ? mergeSetsForPrint(loadedSets) : loadedSets[0];
   const setId = currentSetData?.id || "";
+  const teacherAppendixMode = variant === "teacher";
+  const problemCardOpts = teacherAppendixMode ? { includeTeacherNote: false } : {};
 
   const indexMap = new Map();
   (currentSetData.problems || []).forEach((q, idx) => indexMap.set(q.id, idx));
@@ -1750,9 +1872,80 @@ async function renderAll({ setIds, bucket, variant }) {
 
   const useLightLayout = (setIds || []).length > 1 || selected.length >= 30;
   if (useLightLayout) {
-    const pages = chunk(selected, LIGHT_MODE_PAGE_SIZE);
-    const pageCount = pages.length;
-    pages.forEach((group, i) => {
+    const problemPages = chunk(selected, LIGHT_MODE_PAGE_SIZE);
+    let appendixPages = [];
+    if (teacherAppendixMode) {
+      const explainQuestions = selected.filter((q) => hasTeacherAppendixContent(q));
+      if (explainQuestions.length) {
+        const probeAppendixPage = buildPage(
+          setId,
+          currentSetData,
+          Math.max(1, problemPages.length),
+          Math.max(1, problemPages.length),
+          [],
+          indexMap,
+          variant,
+          bucket,
+          "single"
+        );
+        root.appendChild(probeAppendixPage);
+        const appendixCol = probeAppendixPage.querySelector(".page-col");
+        const appendixBodyH = getBodyHeightPx(probeAppendixPage);
+        const appendixColW = appendixCol
+          ? appendixCol.getBoundingClientRect().width
+          : cssToPx(`calc(${PRINT_PAGE_WIDTH_MM}mm - ${PRINT_PAGE_MARGIN_MM * 2}mm)`);
+        const appendixGap = appendixCol
+          ? parseFloat(getComputedStyle(appendixCol).gap || "0")
+          : 0;
+        const packSafetyMm = PACKING_SAFETY_MM + repackRetry * REPACK_STEP_MM;
+        const appendixFitLimit =
+          Math.max(0, appendixBodyH - cssToPx(`${packSafetyMm}mm`)) + cssToPx(`${FIT_TOLERANCE_MM}mm`);
+
+        const meas = document.createElement("div");
+        meas.style.position = "absolute";
+        meas.style.visibility = "hidden";
+        meas.style.left = "-10000px";
+        meas.style.top = "0";
+        meas.style.width = `${appendixColW}px`;
+        document.body.appendChild(meas);
+
+        const explainHeights = new Map();
+        for (const q of explainQuestions) {
+          const idx = indexMap.get(q.id) ?? 0;
+          const card = buildTeacherExplainOnlyCard(currentSetData, q, idx);
+          meas.appendChild(card);
+          await waitForImagesReady(card);
+          applyPrismHighlight(card);
+          const h = measureCardHeightPx(card, appendixColW);
+          explainHeights.set(q.id, h);
+          meas.removeChild(card);
+        }
+
+        const packed = [];
+        let current = [];
+        let currentH = 0;
+        for (const q of explainQuestions) {
+          const qh = explainHeights.get(q.id) ?? 0;
+          const nextH = currentH + (current.length > 0 ? appendixGap : 0) + qh;
+          if (current.length > 0 && nextH > appendixFitLimit) {
+            packed.push(current);
+            current = [q];
+            currentH = qh;
+          } else {
+            current.push(q);
+            currentH = current.length === 1 ? qh : nextH;
+          }
+        }
+        if (current.length) packed.push(current);
+        appendixPages = packed;
+
+        document.body.removeChild(meas);
+        root.removeChild(probeAppendixPage);
+      }
+    }
+    const pageCount = problemPages.length + appendixPages.length;
+
+    problemPages.forEach((group, i) => {
       const pageEl = buildPage(
         setId,
         currentSetData,
@@ -1770,15 +1963,40 @@ async function renderAll({ setIds, bucket, variant }) {
 
       group.forEach((q, qIdx) => {
         const idx = indexMap.get(q.id) ?? 0;
-        const card = buildProblemCard(currentSetData, q, idx, variant);
+        const card = buildProblemCard(currentSetData, q, idx, variant, problemCardOpts);
         if (qIdx % 2 === 0) colL.appendChild(card);
         else colR.appendChild(card);
       });
       root.appendChild(pageEl);
     });
 
+    appendixPages.forEach((group, idx) => {
+      const pageIndex = problemPages.length + idx;
+      const pageEl = buildPage(
+        setId,
+        currentSetData,
+        pageIndex,
+        pageCount,
+        [],
+        indexMap,
+        variant,
+        bucket,
+        "single"
+      );
+      const col = pageEl.querySelector(".page-col");
+      group.forEach((q) => {
+        const originalIndex = indexMap.get(q.id) ?? 0;
+        col.appendChild(buildTeacherExplainOnlyCard(currentSetData, q, originalIndex));
+      });
+      root.appendChild(pageEl);
+    });
+
     applyPrismHighlight(root);
     updateToolbarTitle(currentSetData, bucket, variant);
+    await waitForImagesReady(root);
+    if (hasRenderedPageOverflow(root) && repackRetry < MAX_REPACK_RETRY) {
+      return renderAll({ setIds, bucket, variant }, repackRetry + 1);
+    }
     return;
   }
 
@@ -1810,7 +2028,8 @@ async function renderAll({ setIds, bucket, variant }) {
   const gapPx = parseFloat(getComputedStyle(grid).gap || "0");
   const colW = colProbe ? colProbe.getBoundingClientRect().width : (printableW - gapPx) / 2;
   const fullW = singleColProbe ? singleColProbe.getBoundingClientRect().width : printableW;
-  const packSafetyPx = cssToPx(`${PACKING_SAFETY_MM}mm`);
+  const packSafetyMm = PACKING_SAFETY_MM + repackRetry * REPACK_STEP_MM;
+  const packSafetyPx = cssToPx(`${packSafetyMm}mm`);
   const fitTolerancePx = cssToPx(`${FIT_TOLERANCE_MM}mm`);
 
   // 측정용 숨김 컨테이너
@@ -1826,10 +2045,13 @@ async function renderAll({ setIds, bucket, variant }) {
   const heights = new Map();
   const heightsFull = new Map();
   const splitHeights = new Map();
+  const explainSplitHeights = new Map();
+  const explainOnlyHeights = new Map();
   for (const q of selected) {
     const originalIndex = indexMap.get(q.id) ?? 0;
-    const card = buildProblemCard(currentSetData, q, originalIndex, variant);
+    const card = buildProblemCard(currentSetData, q, originalIndex, variant, problemCardOpts);
     meas.appendChild(card);
+    await waitForImagesReady(card);
     // Measure with the same Prism-rendered DOM shape used in final output.
     applyPrismHighlight(card);
     const h = measureCardHeightPx(card, colW);
@@ -1837,6 +2059,33 @@ async function renderAll({ setIds, bucket, variant }) {
     const hf = measureCardHeightPx(card, fullW);
     heightsFull.set(q.id, hf);
     meas.removeChild(card);
+
+    if (teacherAppendixMode && hasTeacherAppendixContent(q)) {
+      const explainCard = buildTeacherExplainOnlyCard(currentSetData, q, originalIndex);
+      meas.appendChild(explainCard);
+      await waitForImagesReady(explainCard);
+      applyPrismHighlight(explainCard);
+      const explainH = measureCardHeightPx(explainCard, fullW);
+      explainOnlyHeights.set(q.id, explainH);
+      meas.removeChild(explainCard);
+    }
+
+    if (!teacherAppendixMode && variant === "teacher" && hasTeacherExplainContent(q)) {
+      const explainPair = buildTeacherExplainSplitCards(currentSetData, q, originalIndex, variant);
+      meas.appendChild(explainPair.left);
+      await waitForImagesReady(explainPair.left);
+      applyPrismHighlight(explainPair.left);
+      const leftH = measureCardHeightPx(explainPair.left, colW);
+      meas.removeChild(explainPair.left);
+
+      meas.appendChild(explainPair.right);
+      await waitForImagesReady(explainPair.right);
+      applyPrismHighlight(explainPair.right);
+      const rightH = measureCardHeightPx(explainPair.right, colW);
+      meas.removeChild(explainPair.right);
+
+      explainSplitHeights.set(q.id, { left: leftH, right: rightH });
+    }
   }
   const colGapPx = parseFloat(getComputedStyle(probePage.querySelector(".page-col")).gap || "0");
 
@@ -1883,7 +2132,7 @@ async function renderAll({ setIds, bucket, variant }) {
   });
 
   const makeNormalItem = (q) => ({ kind: "normal", q });
-  const makeSplitItem = (q, side) => ({ kind: "split", q, side });
+  const makeSplitItem = (q, side, splitMode = "mcq") => ({ kind: "split", q, side, splitMode });
 
   const pageFitLimit = (pageIndex) => {
     const bodyHPage = pageIndex === 0 ? bodyHFirst : bodyHOther;
@@ -1902,12 +2151,36 @@ async function renderAll({ setIds, bucket, variant }) {
   };
 
   const canPlaceSplitPair = (page, q, fitLimit) => {
+    if (teacherAppendixMode) return false;
     if (!q || q.type !== "mcq" || page.layout === "single") return false;
     const sh = getSplitHeights(q);
     if (!sh) return false;
     const nextLeft = colNextHeight(page.leftH, page.left.length, sh.left);
     const nextRight = colNextHeight(page.rightH, page.right.length, sh.right);
     return nextLeft <= fitLimit && nextRight <= fitLimit;
+  };
+
+  const getExplainSplitHeights = (q) => {
+    if (teacherAppendixMode) return null;
+    if (!q || variant !== "teacher" || !hasTeacherExplainContent(q)) return null;
+    return explainSplitHeights.get(q.id) || null;
+  };
+
+  const canPlaceExplainSplitPair = (page, q, fitLimit) => {
+    if (!q || page.layout === "single") return false;
+    const sh = getExplainSplitHeights(q);
+    if (!sh) return false;
+    const nextLeft = colNextHeight(page.leftH, page.left.length, sh.left);
+    const nextRight = colNextHeight(page.rightH, page.right.length, sh.right);
+    return nextLeft <= fitLimit && nextRight <= fitLimit;
+  };
+
+  const isTeacherExplainOverflowRisk = (q, fitLimit) => {
+    if (teacherAppendixMode) return false;
+    if (!q || variant !== "teacher" || !hasTeacherExplainContent(q)) return false;
+    if (hasTeacherExplainImage(q)) return true;
+    const qh = heights.get(q.id) ?? 0;
+    return qh >= fitLimit * 0.72;
   };
 
   const placeIntoColumn = (page, col, item, h) => {
@@ -1952,13 +2225,29 @@ async function renderAll({ setIds, bucket, variant }) {
       const canLeft = colNextHeight(page.leftH, page.left.length, qh) <= fitLimit;
       const canRight = colNextHeight(page.rightH, page.right.length, qh) <= fitLimit;
       const canSplitPair = canPlaceSplitPair(page, q, fitLimit);
+      const canExplainSplitPair = canPlaceExplainSplitPair(page, q, fitLimit);
+
+      if (isTeacherExplainOverflowRisk(q, fitLimit) && canExplainSplitPair) {
+        const sh = getExplainSplitHeights(q);
+        placeIntoColumn(page, "left", makeSplitItem(q, "left", "explain"), sh.left);
+        placeIntoColumn(page, "right", makeSplitItem(q, "right", "explain"), sh.right);
+        placed = true;
+        break;
+      }
 
       // 긴 문항: 1열로는 안 들어갈 때 split 우선, 그 다음 single(전체폭) 사용
       if (!canLeft && !canRight) {
+        if (canExplainSplitPair) {
+          const sh = getExplainSplitHeights(q);
+          placeIntoColumn(page, "left", makeSplitItem(q, "left", "explain"), sh.left);
+          placeIntoColumn(page, "right", makeSplitItem(q, "right", "explain"), sh.right);
+          placed = true;
+          break;
+        }
         if (canSplitPair) {
           const sh = getSplitHeights(q);
-          placeIntoColumn(page, "left", makeSplitItem(q, "left"), sh.left);
-          placeIntoColumn(page, "right", makeSplitItem(q, "right"), sh.right);
+          placeIntoColumn(page, "left", makeSplitItem(q, "left", "mcq"), sh.left);
+          placeIntoColumn(page, "right", makeSplitItem(q, "right", "mcq"), sh.right);
           placed = true;
           break;
         }
@@ -2016,21 +2305,29 @@ async function renderAll({ setIds, bucket, variant }) {
       }
 
       // 예외: 마지막 문항이고 단일 칸 배치가 안 되며, 현재 페이지 2행 양쪽이 모두 비어 있으면 분할 배치
-      if (
-        isLastQuestion &&
-        q.type === "mcq" &&
-        page.left.length === 1 &&
-        page.right.length === 1
-      ) {
-        const sh = getSplitHeights(q);
-        if (sh) {
-          const canSplitLeft = colNextHeight(page.leftH, page.left.length, sh.left) <= fitLimit;
-          const canSplitRight = colNextHeight(page.rightH, page.right.length, sh.right) <= fitLimit;
+      if (isLastQuestion && page.left.length === 1 && page.right.length === 1) {
+        const explainSh = getExplainSplitHeights(q);
+        if (explainSh) {
+          const canSplitLeft = colNextHeight(page.leftH, page.left.length, explainSh.left) <= fitLimit;
+          const canSplitRight = colNextHeight(page.rightH, page.right.length, explainSh.right) <= fitLimit;
           if (canSplitLeft && canSplitRight) {
-            placeIntoColumn(page, "left", makeSplitItem(q, "left"), sh.left);
-            placeIntoColumn(page, "right", makeSplitItem(q, "right"), sh.right);
+            placeIntoColumn(page, "left", makeSplitItem(q, "left", "explain"), explainSh.left);
+            placeIntoColumn(page, "right", makeSplitItem(q, "right", "explain"), explainSh.right);
             placed = true;
             break;
+          }
+        }
+        if (q.type === "mcq") {
+          const sh = getSplitHeights(q);
+          if (sh) {
+            const canSplitLeft = colNextHeight(page.leftH, page.left.length, sh.left) <= fitLimit;
+            const canSplitRight = colNextHeight(page.rightH, page.right.length, sh.right) <= fitLimit;
+            if (canSplitLeft && canSplitRight) {
+              placeIntoColumn(page, "left", makeSplitItem(q, "left", "mcq"), sh.left);
+              placeIntoColumn(page, "right", makeSplitItem(q, "right", "mcq"), sh.right);
+              placed = true;
+              break;
+            }
           }
         }
       }
@@ -2049,8 +2346,51 @@ async function renderAll({ setIds, bucket, variant }) {
 
 
   // 4) 실제 렌더
-  const pageCount = pages.length;
-  pages.forEach((p, i) => {
+  const renderPages = pages.slice();
+  if (teacherAppendixMode) {
+    const explainQuestions = selected.filter((q) => hasTeacherAppendixContent(q));
+    const explainPlans = [];
+    let currentPlan = null;
+
+    const ensureExplainPlan = (pageIndex) => {
+      if (currentPlan) return currentPlan;
+      currentPlan = {
+        layout: "single",
+        explainAppendix: true,
+        single: [],
+        h: 0,
+        pageIndexForFit: pageIndex
+      };
+      explainPlans.push(currentPlan);
+      return currentPlan;
+    };
+
+    explainQuestions.forEach((q) => {
+      const startIndex = renderPages.length + explainPlans.length;
+      const plan = ensureExplainPlan(startIndex);
+      const fitLimit = pageFitLimit(plan.pageIndexForFit);
+      const qh = explainOnlyHeights.get(q.id) ?? 0;
+      const nextH = plan.h + (plan.single.length > 0 ? colGapPx : 0) + qh;
+
+      if (plan.single.length > 0 && nextH > fitLimit) {
+        currentPlan = null;
+        const nextPlan = ensureExplainPlan(renderPages.length + explainPlans.length);
+        nextPlan.single.push(q);
+        nextPlan.h = qh;
+        return;
+      }
+
+      plan.single.push(q);
+      plan.h = plan.single.length === 1 ? qh : nextH;
+    });
+
+    explainPlans.forEach((plan) => {
+      renderPages.push({ layout: "single", explainAppendix: true, single: plan.single });
+    });
+  }
+
+  const pageCount = renderPages.length;
+  renderPages.forEach((p, i) => {
     const layout = p.layout || "double";
     const pageEl = buildPage(setId, currentSetData, i, pageCount, [], indexMap, variant, bucket, layout);
 
@@ -2061,16 +2401,24 @@ async function renderAll({ setIds, bucket, variant }) {
     if (layout === "single") {
       (p.single || []).forEach((q) => {
         const originalIndex = indexMap.get(q.id) ?? 0;
-        colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+        if (p.explainAppendix) {
+          colL.appendChild(buildTeacherExplainOnlyCard(currentSetData, q, originalIndex));
+        } else {
+          colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant, problemCardOpts));
+        }
       });
     } else {
       (p.left || []).forEach((it) => {
         const q = it?.q || it;
         const originalIndex = indexMap.get(q.id) ?? 0;
         if (it && it.kind === "split") {
-          colL.appendChild(buildProblemSplitCard(currentSetData, q, originalIndex, variant, "left"));
+          if (it.splitMode === "explain") {
+            colL.appendChild(buildTeacherExplainSplitCard(currentSetData, q, originalIndex, variant, "left"));
+          } else {
+            colL.appendChild(buildProblemSplitCard(currentSetData, q, originalIndex, variant, "left"));
+          }
         } else {
-          colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+          colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant, problemCardOpts));
         }
       });
 
@@ -2078,9 +2426,13 @@ async function renderAll({ setIds, bucket, variant }) {
         const q = it?.q || it;
         const originalIndex = indexMap.get(q.id) ?? 0;
         if (it && it.kind === "split") {
-          colR.appendChild(buildProblemSplitCard(currentSetData, q, originalIndex, variant, "right"));
+          if (it.splitMode === "explain") {
+            colR.appendChild(buildTeacherExplainSplitCard(currentSetData, q, originalIndex, variant, "right"));
+          } else {
+            colR.appendChild(buildProblemSplitCard(currentSetData, q, originalIndex, variant, "right"));
+          }
         } else {
-          colR.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant));
+          colR.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant, problemCardOpts));
         }
       });
     }
@@ -2089,6 +2441,10 @@ async function renderAll({ setIds, bucket, variant }) {
   });
 
   applyPrismHighlight(root);
+  await waitForImagesReady(root);
+  if (hasRenderedPageOverflow(root) && repackRetry < MAX_REPACK_RETRY) {
+    return renderAll({ setIds, bucket, variant }, repackRetry + 1);
+  }
   updateToolbarTitle(currentSetData, bucket, variant);
 }
 
@@ -2351,7 +2707,15 @@ if (applyBtn) {
 
 
   const printBtn = document.getElementById("print-btn");
-  if (printBtn) printBtn.addEventListener("click", () => window.print());
+  if (printBtn) {
+    printBtn.addEventListener("click", async () => {
+      const printRoot = document.getElementById("print-root");
+      await waitForImagesReady(printRoot);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => window.print());
+      });
+    });
+  }
 
   const back = document.getElementById("back-link");
   if (back) {
@@ -2360,4 +2724,9 @@ if (applyBtn) {
   }
 
   await renderAll({ setIds, bucket: (bucketSel ? bucketSel.value : "all"), variant: (variantSel ? variantSel.value : "student") });
+
+  window.addEventListener("beforeprint", () => {
+    const printRoot = document.getElementById("print-root");
+    stabilizeMarkdownImages(printRoot);
+  });
 });

@@ -137,6 +137,7 @@ body{
   break-after: page;
   page-break-after: always;
   padding: 0;
+  overflow: hidden;
 }
 
 .concept-page{
@@ -863,6 +864,18 @@ body{
   font-weight: 900;
 }
 
+.teacher-quick-answer{
+  margin-top: 1.5mm;
+  padding-top: 1.2mm;
+  border-top: 1px dashed var(--box);
+  font-size: 10px;
+  color: #0f172a;
+}
+.teacher-quick-answer .k{
+  color: var(--muted);
+  font-weight: 900;
+}
+
 /* print rules */
 @page {
   size: A4 landscape;
@@ -877,6 +890,34 @@ body{
   .print-root{ padding: 0; }
   .print-page{ padding: 0; }
   input, select{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* Teacher mode: keep cards atomic as well (split is handled by JS placement). */
+  .print-root.variant-teacher .p-card{
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  .print-root.variant-teacher .teacher-note,
+  .print-root.variant-teacher .teacher-explain,
+  .print-root.variant-teacher .md .md-p,
+  .print-root.variant-teacher .md img.md-image{
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .print-root.variant-teacher .md img.md-image{
+    display: block !important;
+    position: static !important;
+    float: none !important;
+    clear: both !important;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Student mode: keep each problem card atomic; move whole card to next page if needed. */
+  .print-root.variant-student .p-card{
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
 }
 
 
@@ -945,6 +986,12 @@ body{
 .md strong{ font-weight: 900; }
 .md em{ font-style: italic; }
 .md a.md-link{ color: inherit; text-decoration: underline; }
+.md img.md-image{
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.2mm 0;
+}
 
 
 .p-desc.md{ white-space: normal; }

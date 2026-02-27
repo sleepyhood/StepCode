@@ -84,6 +84,13 @@ function escapeHtml(s) {
 function mdInline(raw) {
   let s = escapeHtml(raw);
 
+  // images
+  s = s.replace(
+    /\!\[([^\]]*)\]\(([^)]+)\)/g,
+    (_m, alt, url) =>
+      `<img class="md-image" src="${url}" alt="${alt}" loading="eager" decoding="async">`
+  );
+
   // links
   s = s.replace(
     /\[([^\]]+)\]\(([^)]+)\)/g,

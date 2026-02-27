@@ -1,10 +1,12 @@
 ﻿# Unity U05 Transform and Lifecycle
-## Goal
+## 학습 목표
 - Understand the core idea of this unit before solving problems.
 - Review common mistakes first.
-## Scope
+## 범위
 - Topic: Transform hierarchy, Awake/OnEnable
 - Source map: from practice/temp/유니티 목차.md
+
+## 문항 핵심 포인트
 ## Core Pattern
 ~~~csharp
 // TODO: add 2-4 representative code snippets for this unit
