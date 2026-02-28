@@ -12,6 +12,12 @@ try:
 except OSError:
     print("Pandoc 엔진을 다운로드 중입니다. 잠시만 기다려주세요...")
     pypandoc.download_pandoc()
+
+# 명시적으로 pypandoc 경로를 환경 변수에 설정 (에러 방지용)
+import os
+import pypandoc
+pandoc_path = pypandoc.get_pandoc_path()
+os.environ.setdefault("PYPANDOC_PANDOC", pandoc_path)
 # -----------------------------
 
 def convert_to_word():
@@ -24,8 +30,10 @@ def convert_to_word():
     
     try:
         # 2. 시스템의 임시 폴더에 docx 파일 저장 경로 설정
+        import time
         temp_dir = tempfile.gettempdir()
-        output_path = os.path.join(temp_dir, "converted_markdown.docx")
+        unique_filename = f"converted_markdown_{int(time.time())}.docx"
+        output_path = os.path.join(temp_dir, unique_filename)
         
         # 3. pypandoc을 사용해 마크다운을 docx로 변환
         pypandoc.convert_text(md_text, 'docx', format='md', outputfile=output_path)
