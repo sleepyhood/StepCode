@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Export</title>
+    <!-- 인쇄용 스타일 CSS (스크립트에서 주입됨) -->
+    <style>
+        {
+                {
+                css_content
+            }
+        }
+    </style>
+
+    <!-- KaTeX 수식 렌더러 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- PrismJS (코드 블록 하이라이팅: VS Code와 유사한 Tomorrow Night 테마) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 1. 단순 마크다운 구조를 프리미엄 카드(p-card) 레이아웃으로 변환
+            const container = document.querySelector('.page-content');
+            const children = Array.from(container.children);
+
+            let cards = [];
+            let tempGroup = [];
+
+            // H3 제목(📝 문항) 기준으로 블록을 그룹화
+            children.forEach(el => {
+                if (el.tagName === 'H3' && el.textContent.includes('📝')) {
+                    if (tempGroup.length > 0) cards.push(tempGroup);
+                    tempGroup = [el];
+                } else if (el.tagName === 'HR') {
+                    if (tempGroup.length > 0) cards.push(tempGroup);
+                    tempGroup = [];
+                    el.remove(); // 가로선(HR)은 카드 디자인을 덮어씌울 거라 제거
+                } else {
+                    tempGroup.push(el);
+                }
+            });
+            if (tempGroup.length > 0) cards.push(tempGroup);
+
+            container.innerHTML = ''; // 기존 컨테이너 비우기
+
+            cards.forEach(group => {
+                if (group.length === 0) return;
+
+                // 문항이 아닌 단순히 상단에 적힌 텍스트 (예: **<진수>**)
+                if (group[0].tagName !== 'H3') {
+                    group.forEach(el => {
+                        // <진수> 같은 카테고리 태그 예쁘게 꾸미기
+                        if (el.tagName === 'P' && el.children.length === 1 && el.children[0].tagName === 'STRONG') {
+                            let text = el.children[0].textContent.trim();
+                            if (text.startsWith('&lt;') && text.endsWith('&gt;')) {
+                                el.className = 'category-title';
+                                el.children[0].textContent = text.substring(4, text.length - 4); // &lt; &gt; 파싱
+                            }
+                            else if (text.startsWith('<') && text.endsWith('>')) {
+                                el.className = 'category-title';
+                                el.children[0].textContent = text.substring(1, text.length - 1);
+                            }
+                        }
+                        container.appendChild(el);
+                    });
+                    return;
+                }
+
+                // ------------------
+                // 문항(Problem) 카드 생성 
+                // ------------------
+                const card = document.createElement('div');
+                card.className = 'p-card';
+
+                const problemSection = document.createElement('div');
+                problemSection.className = 'p-problem';
+
+                let solutionSection = null;
+
+                group.forEach(el => {
+                    // 해설 영역의 시작점 ("💡 선생님을 위한")
+                    if (el.tagName === 'P' && el.innerHTML.includes('💡 선생님')) {
+                        solutionSection = document.createElement('div');
+                        solutionSection.className = 'p-solution';
+
+                        // 해설 타이틀 포맷팅
+                        let htmlStr = el.innerHTML;
+                        htmlStr = htmlStr.replace('<strong>💡 선생님을 위한 풀이 가이드:</strong>', '<div class="solution-header">💡 선생님을 위한 꿀팁 해설</div>');
+                        htmlStr = htmlStr.replace('<strong>💡 선생님을 위한 풀이 가이드 :</strong>', '<div class="solution-header">💡 선생님을 위한 꿀팁 해설</div>');
+                        el.innerHTML = htmlStr;
+                        solutionSection.appendChild(el);
+                    }
+                    // 한 번 해설 영역으로 들어왔으면 계속 해설 박스에 추가
+                    else if (solutionSection) {
+                        solutionSection.appendChild(el);
+                    }
+                    // 문제 영역
+                    else {
+                        if (el.tagName === 'P') {
+                            // "문제:" -> 예쁜 배지 파란색
+                            if (el.innerHTML.startsWith('<strong>문제:</strong>')) {
+                                el.innerHTML = el.innerHTML.replace('<strong>문제:</strong>', '<span class="badge badge-prob">문제</span>');
+                                el.classList.add('prob-text');
+                            }
+                            // "선택지:" -> 예쁜 배지 회색
+                            else if (el.innerHTML.startsWith('<strong>선택지:</strong>')) {
+                                el.innerHTML = el.innerHTML.replace('<strong>선택지:</strong>', '<span class="badge badge-opt">선택지</span>');
+                                el.classList.add('opt-text');
+                            }
+                            // "✅ 정답:" -> 붉은색 강렬한 박스
+                            else if (el.innerHTML.includes('✅ 정답:')) {
+                                el.classList.add('p-answer');
+                            }
+                        }
+                        problemSection.appendChild(el);
+                    }
+                });
+
+                card.appendChild(problemSection);
+                if (solutionSection) card.appendChild(solutionSection);
+                container.appendChild(card);
+            });
+
+            // 2. KaTeX 수학 수식 렌더링
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ],
+                throwOnError: false
+            });
+
+            // 3. Prism JS 렌더링
+            if (window.Prism) Prism.highlightAll();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="page-content">
+        {{content}}
+    </div>
+</body>
+
+</html>
