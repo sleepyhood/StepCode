@@ -387,23 +387,26 @@ p>strong:only-child {
 .p-answer {
     display: inline-flex;
     align-items: center;
-    gap: 2mm;
-    font-size: 13.5px;
+    gap: 3mm;
+    /* ANSWER와 정답 숫자 사이의 확실한 간격 */
+    font-size: 14.5px;
     font-weight: 900;
     color: var(--warning-base);
     background-color: var(--warning-light);
-    padding: 2mm 4.5mm;
+    padding: 2.5mm 5.5mm;
     border-radius: 999px;
     margin: 2mm 0 4mm 0;
     box-shadow: 0 4px 10px rgba(244, 63, 94, 0.15);
 }
 
-.p-answer span {
+.p-answer .ans-label {
     font-size: 9px;
     color: #fb7185;
     font-weight: 800;
-    letter-spacing: 0.8px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
+    /* 작은 글자라서 시각적 무게중심이 아래로 쏠리는 것을 완벽히 보정 */
+    transform: translateY(-0.5px);
 }
 
 /* -------------------------------------

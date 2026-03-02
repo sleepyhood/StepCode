@@ -144,8 +144,10 @@
                                 el.classList.add('opt-text');
                             }
                             else if (el.innerHTML.includes('✅ 정답:')) {
-                                el.innerHTML = el.innerHTML.replace('✅ 정답:', '<span>ANSWER</span>');
-                                el.classList.add('p-answer');
+                                let htmlStr = el.innerHTML.replace(/<\/?strong>/g, '');
+                                htmlStr = htmlStr.replace('✅ 정답:', '<span class="ans-label">ANSWER</span>');
+                                el.innerHTML = htmlStr;
+                                el.className = 'p-answer';
                             }
                         }
                         problemSection.appendChild(el);
