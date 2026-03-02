@@ -39,8 +39,8 @@ def convert_md_to_pdf(md_path, output_pdf=None, status_callback=None):
         css_content = f.read()
     
     # 데이터 주입
-    final_html = template.replace("{{css_content}}", css_content)
-    final_html = final_html.replace("{{content}}", html_content)
+    final_html = template.replace("/* CSS_CONTENT_PLACEHOLDER */", css_content)
+    final_html = final_html.replace("<!-- CONTENT_PLACEHOLDER -->", html_content)
     
     if status_callback: status_callback("PDF로 굽는 중... (화면 렌더링)")
     
@@ -59,7 +59,7 @@ def convert_md_to_pdf(md_path, output_pdf=None, status_callback=None):
             path=output_pdf,
             format="A4",
             print_background=True,
-            margin={"top": "15mm", "bottom": "15mm", "left": "15mm", "right": "15mm"}
+            margin={"top": "0", "bottom": "0", "left": "0", "right": "0"}
         )
         browser.close()
 

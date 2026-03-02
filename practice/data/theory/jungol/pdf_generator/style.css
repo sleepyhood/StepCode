@@ -1,264 +1,536 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 :root {
-    --ink: #0f172a;
-    --muted: #475569;
-    --line: rgba(15, 23, 42, .18);
-    --box: rgba(15, 23, 42, .12);
-    --pre-bg: #f8fafc;
-    --accent: #0f766e;
+    /* 2026 Modern Premium UI Colors */
+    --ink-primary: #0f172a;
+    --ink-secondary: #475569;
+    --ink-tertiary: #94a3b8;
+
+    --bg-app: #f8fafc;
+    /* 최외곽 배경 */
+    --bg-surface: #ffffff;
+    /* 카드/콘텐츠 배경 */
+    --bg-surface-alt: #f1f5f9;
+    /* 카드 내 영역 구분 배경 */
+
+    --border-subtle: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --accent-base: #4f46e5;
+    /* 깊은 인디고 */
+    --accent-light: #eef2ff;
+    --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+
+    --success-base: #10b981;
+    --success-light: #d1fae5;
+
+    --warning-base: #f43f5e;
+    --warning-light: #ffe4e6;
 }
 
 body {
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    color: var(--ink);
-    line-height: 1.5;
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink-primary);
+    line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #fff;
-    word-break: keep-all;
+    /* 인쇄될 때 배경색이 적용되도록 설정 */
+    background-color: var(--bg-app);
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
     font-size: 11.5px;
+    word-break: keep-all;
 }
 
-.page-content {
+/* -------------------------------------
+   2026 Web Wrapper System 
+   -------------------------------------*/
+.app-wrapper {
+    position: relative;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Margin Table Layout for PDF Padding */
+.layout-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0;
+    border: none;
+}
+
+.layout-table th,
+.layout-table td {
+    border: none;
+    background: transparent;
+}
+
+.layout-header,
+.layout-footer {
+    height: 15mm;
+    padding: 0;
+}
+
+.layout-body {
+    padding: 0 15mm;
+    vertical-align: top;
+}
+
+/* 2026년 특유의 블러/유리 텍스처 배경 데코 */
+.bg-deco {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    opacity: 0.15;
+}
+
+.bg-deco-1 {
+    width: 400px;
+    height: 400px;
+    background: #7c3aed;
+    top: -100px;
+    right: -100px;
+}
+
+.bg-deco-2 {
+    width: 300px;
+    height: 300px;
+    background: #3b82f6;
+    bottom: 100px;
+    left: -50px;
+}
+
+.app-content-box {
+    position: relative;
+    z-index: 10;
     max-width: 100%;
 }
 
-/* ---------------
-   문항 카드 구조 (웹사이트처럼 예쁜 박스)
-   --------------- */
-.p-card {
-    border: 1px solid #cbd5e1;
-    border-radius: 12px;
-    background-color: #fff;
-    margin-bottom: 8mm;
-    /* 카드 간 간격 */
-    break-inside: avoid;
-    page-break-inside: avoid;
-    /* PDF 출력시 문항 중간에 잘림 방지 (가장 중요) */
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    /* 은은한 그림자 */
+/* -------------------------------------
+   Typography & Inline
+   -------------------------------------*/
+p {
+    margin: 0 0 2.5mm 0;
 }
 
-/* 문제(상단) 영역 */
-.p-problem {
-    padding: 4mm 6mm 2mm 6mm;
+ul,
+ol {
+    margin: 0 0 2.5mm 0;
+    padding-left: 5mm;
 }
 
-/* 해설(하단) 영역 */
-.p-solution {
-    padding: 5mm 6mm 4mm 6mm;
-    background-color: #f8fafc;
-    /* 연한 회색/푸른빛 배경 */
-    border-top: 2px dashed #cbd5e1;
+li {
+    margin-bottom: 1.5mm;
+    color: var(--ink-secondary);
 }
 
-/* ---------------
-   진수, 지수 등 카테고리 머리말
-   --------------- */
-.category-title {
-    font-size: 16px !important;
-    color: var(--accent);
-    margin: 8mm 0 4mm 0;
-    padding-left: 3mm;
-    border-left: 5px solid var(--accent);
-    letter-spacing: 1px;
-}
-
-.category-title strong {
-    font-weight: 900;
-}
-
-/* ---------------
-   문항 번호 (예: 📝 1. 진법의 변환)
-   --------------- */
-h3 {
-    font-size: 14px;
+strong {
     font-weight: 800;
-    color: #1e293b;
-    margin-top: 0;
-    margin-bottom: 3mm;
-    padding-bottom: 2mm;
-    border-bottom: 1px solid #e2e8f0;
+    color: var(--ink-primary);
 }
 
-/* ---------------
-   특수 배지 (문제 / 선택지)
-   --------------- */
-.badge {
-    display: inline-block;
-    padding: 0.8mm 2mm;
-    border-radius: 4px;
+/* 인라인 리스트 숫자나 굵은 글씨 (예: **3.**) */
+p>strong:only-child {
+    display: inline-flex;
+    margin: 1.5mm 0 1mm;
+    padding: 1mm 2.5mm;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    color: var(--ink-primary);
     font-size: 10px;
     font-weight: 900;
-    margin-right: 2mm;
-    vertical-align: text-bottom;
 }
 
+/* -------------------------------------
+   Category Banner (진수, 지수 등)
+   -------------------------------------*/
+.category-wrapper {
+    margin: 10mm 0 4mm 0;
+    display: flex;
+    align-items: center;
+    break-after: avoid;
+}
+
+.category-title {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    font-size: 16px !important;
+    font-weight: 900;
+    color: var(--ink-primary);
+    letter-spacing: -0.3px;
+    width: 100%;
+}
+
+.cat-icon {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 14px;
+}
+
+.cat-line {
+    flex-grow: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border-strong) 0%, transparent 100%);
+    margin-left: 2mm;
+    opacity: 0.5;
+}
+
+/* -------------------------------------
+   Table of Contents (TOC) View
+   -------------------------------------*/
+.toc-wrapper {
+    background: var(--bg-surface);
+    border-radius: 20px;
+    padding: 10mm;
+    margin-bottom: 20mm;
+    box-shadow: 0 10px 40px -10px rgba(15, 23, 42, 0.08);
+    border: 1px solid var(--border-subtle);
+    break-after: page;
+    /* 첫 목차 페이지 후 페이지 넘김 */
+}
+
+.toc-header h2 {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--ink-primary);
+    margin: 0 0 1mm 0;
+    letter-spacing: -0.5px;
+}
+
+.toc-header p {
+    font-size: 13px;
+    color: var(--ink-secondary);
+    margin-bottom: 6mm;
+    border-bottom: 2px solid var(--bg-app);
+    padding-bottom: 4mm;
+}
+
+.toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5mm;
+}
+
+.toc-section-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--accent-base);
+    margin-top: 5mm;
+    margin-bottom: 1.5mm;
+    padding-left: 2mm;
+    border-left: 3px solid var(--accent-base);
+}
+
+.toc-item-link {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    padding: 2.5mm 4mm;
+    background: var(--bg-app);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.toc-item-link:hover {
+    background: #fff;
+    border-color: var(--accent-light);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transform: translateX(2px);
+}
+
+.toc-item-badge {
+    background: var(--ink-primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 1mm 2.5mm;
+    border-radius: 8px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.toc-item-text {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+}
+
+/* -------------------------------------
+   Premium 2026 Card Layout
+   -------------------------------------*/
+.card-outer {
+    margin-bottom: 8mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    /* 부드러운 드롭 섀도우 연출 (Glassmorphism 응용) */
+    box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05),
+        0 4px 6px -2px rgba(15, 23, 42, 0.02);
+    border-radius: 20px;
+    background: var(--bg-surface);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    /* 흰 빛 반사 테두리 */
+}
+
+/* 약간의 이너 보더를 주어 깊이감 형성 */
+.p-card {
+    border-radius: 20px;
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+    background: var(--bg-surface);
+}
+
+/* 상단 문제 공간 */
+.p-problem {
+    padding: 6mm 7mm 4mm 7mm;
+}
+
+/* 하단 해설 공간 (선생님 가이드) */
+.p-solution {
+    padding: 5mm 7mm 6mm 7mm;
+    background-color: var(--bg-surface-alt);
+    border-top: 1px solid var(--border-subtle);
+}
+
+/* -------------------------------------
+   Card Headers & Badges
+   -------------------------------------*/
+.modern-h3 {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5mm;
+    margin-bottom: 3.5mm;
+    padding-bottom: 3mm;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.h3-badge-wrap {
+    display: flex;
+}
+
+/* 모던 Question 칩 */
+.h3-num {
+    background: var(--accent-gradient);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 900;
+    padding: 1.5mm 3.5mm;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.h3-text {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ink-primary);
+    line-height: 1.35;
+}
+
+/* "문제:" 뱃지 대체 */
 .badge-prob {
-    background-color: #e0f2fe;
-    color: #0369a1;
-    border: 1px solid #bae6fd;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    background-color: var(--accent-light);
+    color: var(--accent-base);
+    font-size: 10px;
+    font-weight: 900;
+    margin-right: 2.5mm;
+    vertical-align: top;
+    margin-top: 1px;
 }
 
-.badge-opt {
-    background-color: #f1f5f9;
-    color: #475569;
-    border: 1px solid #e2e8f0;
-}
-
-/* 문제 본문 */
 .prob-text {
     font-size: 12.5px;
-    line-height: 1.5;
-    color: #0f172a;
-    margin-bottom: 3mm;
+    line-height: 1.6;
+    color: var(--ink-primary);
 }
 
-/* 선택지 */
-.opt-text {
-    font-size: 11.5px;
-    color: #334155;
-    margin-bottom: 3mm;
-}
-
-/* ---------------
-   정답 
-   --------------- */
-.p-answer {
+/* "선택지:" 뱃지 대체 */
+.opt-label {
     display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--ink-tertiary);
+    letter-spacing: 0.5px;
+    margin-right: 2.5mm;
+    vertical-align: middle;
+}
+
+.opt-text {
+    display: flex;
+    align-items: center;
+    font-size: 11.5px;
+    color: var(--ink-secondary);
+    background: rgba(241, 245, 249, 0.4);
+    border-radius: 12px;
+    padding: 2.5mm 3.5mm;
+    border: 1px dashed var(--border-strong);
+    margin-top: 3.5mm;
+    margin-bottom: 3.5mm;
+    line-height: 1.4;
+}
+
+/* 정답 강조 박스 */
+.p-answer {
+    display: inline-flex;
+    align-items: center;
+    gap: 2mm;
+    font-size: 13.5px;
+    font-weight: 900;
+    color: var(--warning-base);
+    background-color: var(--warning-light);
+    padding: 2mm 4.5mm;
+    border-radius: 999px;
+    margin: 2mm 0 4mm 0;
+    box-shadow: 0 4px 10px rgba(244, 63, 94, 0.15);
+}
+
+.p-answer span {
+    font-size: 9px;
+    color: #fb7185;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+/* -------------------------------------
+   Solution Layout
+   -------------------------------------*/
+.solution-header {
     font-size: 12px;
     font-weight: 800;
-    color: #b91c1c;
-    /* 도장 같은 붉은색 */
-    background-color: #fef2f2;
-    border: 1px solid #fecaca;
-    padding: 1.5mm 3mm;
-    border-radius: 6px;
-    margin: 1.5mm 0 3mm 0;
+    color: var(--accent-base);
+    margin-bottom: 3mm;
+    display: flex;
+    align-items: center;
+    gap: 1.5mm;
 }
 
-/* ---------------
-   해설 영역 (선생님 꿀팁)
-   --------------- */
-.solution-header {
-    font-size: 11.5px;
-    font-weight: 900;
-    color: var(--accent);
-    margin-bottom: 2mm;
+.sol-icon {
+    font-size: 14px;
+}
+
+.sol-first-p {
+    margin-top: 0 !important;
 }
 
 .p-solution p,
 .p-solution ul,
 .p-solution ol {
-    font-size: 11px;
-    line-height: 1.45;
-    color: #334155;
-    margin-bottom: 2mm;
+    font-size: 11.5px;
+    color: var(--ink-secondary);
 }
 
-.p-solution li {
-    margin-bottom: 1.5mm;
-}
-
-/* 인라인 강조 (예: *출제 의도:*) */
-.p-solution strong {
-    color: #1e293b;
-    font-weight: 800;
-}
-
-/* ---------------
-   Blockquotes / 팁 박스
-   --------------- */
+/* -------------------------------------
+   Components (Tables, Quotes, Code)
+   -------------------------------------*/
 blockquote {
-    margin: 2.5mm 0;
-    padding: 2mm 3mm;
-    border-left: 3px solid var(--accent);
-    background-color: #fff;
-    /* 해설지가 회색이므로 투명도 조절 */
-    border-radius: 4px;
-    color: var(--muted);
+    margin: 3mm 0;
+    padding: 3mm 4mm;
+    border-left: 4px solid var(--accent-base);
+    background-color: var(--bg-surface);
+    border-radius: 0 12px 12px 0;
+    color: var(--ink-secondary);
     font-size: 11px;
-    font-style: italic;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-/* ---------------
-   Tables 
-   --------------- */
 table {
     width: 100%;
-    border-collapse: collapse;
-    margin: 2.5mm 0;
-    font-size: 10.5px;
-    border: 1px solid var(--box);
+    border-collapse: separate;
+    /* 모던 둥근 모서리 표 */
+    border-spacing: 0;
+    margin: 3.5mm 0;
+    font-size: 11px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 th,
 td {
-    padding: 1.5mm 2mm;
-    border: 1px solid var(--box);
+    padding: 2mm 3mm;
+    border-bottom: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
     text-align: left;
-    vertical-align: top;
 }
 
 th {
-    background-color: #ebeff3;
+    background-color: #f8fafc;
     font-weight: 800;
-    color: var(--ink);
+    color: var(--ink-primary);
 }
 
-/* ---------------
-   Code Blocks
-   --------------- */
-code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    background-color: #f1f5f9;
-    padding: 0.5mm 1mm;
-    border-radius: 4px;
-    font-size: 10.5px;
-    color: #0f766e;
+tr:last-child td {
+    border-bottom: none;
 }
 
+th:last-child,
+td:last-child {
+    border-right: none;
+}
+
+/* 코드 하이라이트 컨테이너 */
 pre {
-    background-color: #ffffff !important;
-    border: 1px solid var(--box);
-    padding: 2.5mm 3.5mm;
-    border-radius: 8px;
+    background-color: #1e293b !important;
+    /* 다크 모드 코드박스 */
+    padding: 3.5mm 4mm;
+    border-radius: 12px;
     overflow-x: auto;
-    margin: 2.5mm 0;
-    white-space: pre-wrap;
-    word-break: break-word;
+    margin: 3.5mm 0;
+    font-size: 10.5px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+code {
+    font-family: 'D2Coding', 'Consolas', monospace;
+    background: var(--bg-surface-alt);
+    padding: 0.5mm 1.5mm;
+    border-radius: 6px;
+    color: var(--warning-base);
+    font-weight: 600;
 }
 
 pre code {
-    background-color: transparent !important;
-    padding: 0;
     color: inherit;
-    font-size: 10px;
-    line-height: 1.35;
+    background: transparent;
+    padding: 0;
 }
 
-/* ---------------
-   Images
-   --------------- */
 img {
     max-width: 100%;
-    max-height: 250px;
-    height: auto;
-    display: block;
-    margin: 2.5mm auto;
-    border-radius: 8px;
-    border: 1px solid var(--box);
-    padding: 1mm;
+    border-radius: 12px;
+    margin: 3mm auto;
+    border: 1px solid var(--border-subtle);
+    padding: 2mm;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-/* ---------------
+/* -------------------------------------
    인쇄 / PDF 최적화 설정
-   --------------- */
+   -------------------------------------*/
+@page {
+    /* 여백 영역까지 배경이 가득 차도록 PDF 용지 자체 여백은 0으로 날립니다. */
+    margin: 0;
+}
+
 @media print {
     body {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 }
