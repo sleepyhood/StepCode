@@ -25,10 +25,9 @@ def convert_md_to_pdf(md_path, output_pdf=None, status_callback=None):
     with open(md_path, "r", encoding="utf-8") as f:
         md_text = f.read()
 
-    # Markdown을 HTML로 변환
     html_content = markdown.markdown(
         md_text,
-        extensions=['fenced_code', 'tables', 'sane_lists', 'nl2br', 'mdx_math']
+        extensions=['fenced_code', 'tables', 'sane_lists', 'nl2br']
     )
 
     # 템플릿과 CSS 읽기
