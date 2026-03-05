@@ -1,6 +1,6 @@
-{
+﻿{
   "id": "contest_py_high_2024_r3_b10",
-  "title": "Python 경시대회(고등) 10회차",
+  "title": "Python 寃쎌떆???怨좊벑) 10?뚯감",
   "categoryId": "contest_py_w10_module_datetime_re_collections",
   "availableLanguages": [
     "python"
@@ -9,11 +9,11 @@
     {
       "id": "q1",
       "type": "mcq",
-      "level": "고",
-      "title": "문제 1",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "level": "怨?",
+      "title": "臾몄젣 1",
+      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
       "code": "from datetime import datetime\nd = datetime(2024, 2, 1, 9, 3)\nprint(d.strftime('%a %B %M %Y'))",
-      "teacherExplainMd": "`strftime('%a %B %M %Y')` 포맷 의미:\n\n- `%a`: 요일 약어(Thu)\n- `%B`: 월 이름(February)\n- `%M`: 분(00~59, 2자리)\n- `%Y`: 4자리 연도\n\n`datetime(2024,2,1,9,3)`은 2024-02-01 09:03이고, 2024-02-01은 목요일이므로 `Thu February 03 2024`가 출력됩니다.",
+      "teacherExplainMd": "`strftime('%a %B %M %Y')` ?щ㎎ ?섎?:\n\n- `%a`: ?붿씪 ?쎌뼱(Thu)\n- `%B`: ???대쫫(February)\n- `%M`: 遺?00~59, 2?먮━)\n- `%Y`: 4?먮━ ?곕룄\n\n`datetime(2024,2,1,9,3)`? 2024-02-01 09:03?닿퀬, 2024-02-01? 紐⑹슂?쇱씠誘濡?`Thu February 03 2024`媛 異쒕젰?⑸땲??",
       "options": [
         "Thu February 03 2024",
         "Feb Thursday 03 2024",
@@ -34,11 +34,11 @@
     {
       "id": "q2",
       "type": "mcq",
-      "level": "고",
-      "title": "문제 2",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "level": "怨?",
+      "title": "臾몄젣 2",
+      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
       "code": "import re\npattern = re.compile('o[gh]')\nvals = ['o', 'oh', 'dog', 'doggie', 'ogre']\nprint([v for v in vals if pattern.fullmatch(v)])",
-      "teacherExplainMd": "`fullmatch`는 문자열 **전체가** 패턴과 정확히 일치해야 합니다.\n\n패턴 `o[gh]`는 길이 2이고, `o` 다음에 `g` 또는 `h` 한 글자가 와야 합니다.\n- `'oh'`는 일치\n- `'o'`는 너무 짧음\n- `'dog'`, `'doggie'`, `'ogre'`는 전체 일치가 아님\n\n따라서 결과는 `['oh']`입니다.",
+      "teacherExplainMd": "`fullmatch`??臾몄옄??**?꾩껜媛** ?⑦꽩怨??뺥솗???쇱튂?댁빞 ?⑸땲??\n\n?⑦꽩 `o[gh]`??湲몄씠 2?닿퀬, `o` ?ㅼ쓬??`g` ?먮뒗 `h` ??湲?먭? ????⑸땲??\n- `'oh'`???쇱튂\n- `'o'`???덈Т 吏㏃쓬\n- `'dog'`, `'doggie'`, `'ogre'`???꾩껜 ?쇱튂媛 ?꾨떂\n\n?곕씪??寃곌낵??`['oh']`?낅땲??",
       "options": [
         "[]",
         "['o']",
@@ -59,11 +59,11 @@
     {
       "id": "q3",
       "type": "mcq",
-      "level": "고",
-      "title": "문제 3",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "level": "怨?",
+      "title": "臾몄젣 3",
+      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
       "code": "from collections import deque\nq = deque([1, 2, 3])\nq.appendleft(0)\nq.pop()\nprint(list(q))",
-      "teacherExplainMd": "`deque([1,2,3])`에서\n\n- `appendleft(0)` → 왼쪽에 0 추가: `[0,1,2,3]`\n- `pop()` → 오른쪽 끝 3 제거: `[0,1,2]`\n\n따라서 출력은 `[0, 1, 2]`입니다.",
+      "teacherExplainMd": "`deque([1,2,3])`?먯꽌\n\n- `appendleft(0)` ???쇱そ??0 異붽?: `[0,1,2,3]`\n- `pop()` ???ㅻⅨ履???3 ?쒓굅: `[0,1,2]`\n\n?곕씪??異쒕젰? `[0, 1, 2]`?낅땲??",
       "options": [
         "[0, 1, 2]",
         "[1, 2, 3]",
@@ -84,11 +84,11 @@
     {
       "id": "q4",
       "type": "mcq",
-      "level": "고",
-      "title": "문제 4",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "level": "怨?",
+      "title": "臾몄젣 4",
+      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
       "code": "from collections import Counter\nc = Counter('banana')\nprint(c['a'], c.most_common(1)[0][0])",
-      "teacherExplainMd": "`Counter('banana')`는 문자 빈도를 셉니다.\n\n- `'banana'`에서 `a`는 3번 → `c['a'] == 3`\n- `most_common(1)`은 가장 많이 나온 항목 1개를 `(문자, 횟수)`로 주고, 그 문자는 `a`\n\n따라서 `3 a`가 출력됩니다.",
+      "teacherExplainMd": "`Counter('banana')`??臾몄옄 鍮덈룄瑜??됰땲??\n\n- `'banana'`?먯꽌 `a`??3踰???`c['a'] == 3`\n- `most_common(1)`? 媛??留롮씠 ?섏삩 ??ぉ 1媛쒕? `(臾몄옄, ?잛닔)`濡?二쇨퀬, 洹?臾몄옄??`a`\n\n?곕씪??`3 a`媛 異쒕젰?⑸땲??",
       "options": [
         "2 b",
         "3 a",
@@ -109,17 +109,17 @@
     {
       "id": "q5",
       "type": "mcq",
-      "level": "고",
-      "title": "문제 5",
-      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
+      "level": "怨?",
+      "title": "臾몄젣 5",
+      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
       "code": "import os\nprint(hasattr(os, 'chdir'), hasattr(os, 'seekid'))",
-      "teacherExplainMd": "`hasattr(obj, name)`은 해당 속성/함수가 존재하면 `True`, 없으면 `False`입니다.\n\n- `os.chdir`는 디렉터리 변경 함수로 존재 → `True`\n- `os.seekid`는 존재하지 않는 이름 → `False`\n\n따라서 `True False`가 출력됩니다.",
+      "teacherExplainMd": "`hasattr(obj, name)`? ?대떦 ?띿꽦/?⑥닔媛 議댁옱?섎㈃ `True`, ?놁쑝硫?`False`?낅땲??\n\n- `os.chdir`???붾젆?곕━ 蹂寃??⑥닔濡?議댁옱 ??`True`\n- `os.seekid`??議댁옱?섏? ?딅뒗 ?대쫫 ??`False`\n\n?곕씪??`True False`媛 異쒕젰?⑸땲??",
       "options": [
         "True True",
         "True False",
         "False True",
         "False False",
-        "오류"
+        "?ㅻ쪟"
       ],
       "optionLabels": [
         "A",
@@ -135,18 +135,18 @@
   "concepts": [
     {
       "id": "w10_c1",
-      "title": "개념 1) 모듈-용도 매핑 규칙",
-      "summary": "관련 이론: 개념 1) 모듈-용도 매핑 규칙"
+      "title": "媛쒕뀗 1) 紐⑤뱢-?⑸룄 留ㅽ븨 洹쒖튃",
+      "summary": "愿???대줎: 媛쒕뀗 1) 紐⑤뱢-?⑸룄 留ㅽ븨 洹쒖튃"
     },
     {
       "id": "w10_c2",
-      "title": "개념 2) `os` 함수 존재 여부 판별",
-      "summary": "관련 이론: 개념 2) `os` 함수 존재 여부 판별"
+      "title": "媛쒕뀗 2) `os` ?⑥닔 議댁옱 ?щ? ?먮퀎",
+      "summary": "愿???대줎: 媛쒕뀗 2) `os` ?⑥닔 議댁옱 ?щ? ?먮퀎"
     },
     {
       "id": "w10_c3",
-      "title": "개념 3) `re.fullmatch` 전체 매칭",
-      "summary": "관련 이론: 개념 3) `re.fullmatch` 전체 매칭"
+      "title": "媛쒕뀗 3) `re.fullmatch` ?꾩껜 留ㅼ묶",
+      "summary": "愿???대줎: 媛쒕뀗 3) `re.fullmatch` ?꾩껜 留ㅼ묶"
     }
   ]
 }
