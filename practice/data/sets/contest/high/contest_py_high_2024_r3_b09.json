@@ -36,7 +36,7 @@
       "type": "mcq",
       "level": "고",
       "title": "문제 2",
-      "description": "아래 프로그램에 입력을 넣었을 때 출력되는 값을 고르시오.",
+      "description": "아래 프로그램에 다음 입력을 넣었을 때 출력되는 값을 고르시오.\n\n<입력>\n```text\n7\n2 6\n3 10\n4 4\n5 2\n8 3\n9 5\n10 3\n```",
       "code": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\nn = int(input())\ns = 0\np = [Point(0, 0)]\nfor i in range(n):\n    a, b = map(int, input().split())\n    p.append(Point(a, b))\n\np.append(Point(0, 0))\np.sort(key=lambda a: (a.x, a.y))\n\nfor i in range(1, n + 1):\n    tmp = 1000\n    if p[i - 1].y == p[i].y:\n        tmp = p[i].x - p[i - 1].x\n    if p[i].y == p[i + 1].y:\n        tmp = min(tmp, p[i + 1].x - p[i].x)\n    s += 0 if tmp == 1000 else tmp\nprint(s)",
       "teacherExplainMd": "포인트를 `(x,y)` 기준으로 정렬한 뒤, 각 점 `p[i]`에 대해 **바로 앞/뒤 점과 y가 같을 때만** 가로거리 차이를 후보로 잡아 `s`에 더합니다.\n\n주어진 입력(점 7개)에 대해, 정렬된 전체 목록은 아래와 같습니다. (양 끝에 `(0,0)`이 추가되어 총 9개)\n\n| idx | (x,y) |\n|---:|---|\n| 0 | (0,0) |\n| 1 | (0,0) |\n| 2 | (2,6) |\n| 3 | (3,10) |\n| 4 | (4,4) |\n| 5 | (5,2) |\n| 6 | (8,3) |\n| 7 | (9,5) |\n| 8 | (10,3) |\n\n이제 루프는 `i=1..7`에 대해 인접한 점들만 확인합니다.\n\n| i | prev | cur | next | y(prev)==y(cur)? | y(cur)==y(next)? | 더해지는 값 |\n|---:|---|---|---|---:|---:|---:|\n| 1 | (0,0) | (0,0) | (2,6) | O | X | 0 |\n| 2 | (0,0) | (2,6) | (3,10) | X | X | 0 |\n| 3 | (2,6) | (3,10) | (4,4) | X | X | 0 |\n| 4 | (3,10) | (4,4) | (5,2) | X | X | 0 |\n| 5 | (4,4) | (5,2) | (8,3) | X | X | 0 |\n| 6 | (5,2) | (8,3) | (9,5) | X | X | 0 |\n| 7 | (8,3) | (9,5) | (10,3) | X | X | 0 |\n\n`y=3`인 점이 두 개 있지만, 정렬상으로 서로 인접하지 않아서 거리 계산에 참여하지 않습니다.\n\n따라서 `s=0`이고 출력은 `0`입니다.\n\n![sorted order](assets/diagrams/contest_py_high_w09_q2_sorted_points.svg)",
       "options": [
