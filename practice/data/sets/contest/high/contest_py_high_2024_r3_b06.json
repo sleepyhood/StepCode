@@ -1,6 +1,6 @@
-﻿{
+{
   "id": "contest_py_high_2024_r3_b06",
-  "title": "Python 寃쎌떆???怨좊벑) 6?뚯감",
+  "title": "Python 경시대회(고등) 6회차",
   "categoryId": "contest_py_w06_string_compare_methods",
   "availableLanguages": [
     "python"
@@ -9,11 +9,11 @@
     {
       "id": "q1",
       "type": "mcq",
-      "level": "怨?",
-      "title": "臾몄젣 1",
-      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
+      "level": "고",
+      "title": "문제 1",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "words = [\"programming\", \"hoolly\", \"clanguage\", \"engineeriing\", \"kitpa\"]\nmx = -1\nb = ''\nfor a in words:\n    cnt = 0\n    c = a[0]\n    for j in range(1, len(a)):\n        if c == a[j] and c in \"aeiou\":\n            cnt += 1\n        else:\n            c = a[j]\n    if mx < cnt:\n        mx = cnt\n        b = a\nprint(b)",
-      "teacherExplainMd": "媛??⑥뼱?먯꽌 **?곗냽?쇰줈 媛숈? 紐⑥쓬??諛섎났?섎뒗 ?잛닔**瑜??됰땲??\n\n猷⑦봽 ?섎?:\n- `c`??吏곸쟾 臾몄옄\n- ?ㅼ쓬 臾몄옄 `a[j]`媛 `c`? 媛숆퀬(`c==a[j]`) 洹?臾몄옄媛 紐⑥쓬?대㈃(`c in \"aeiou\"`) `cnt += 1`\n- ?꾨땲硫?`c`瑜??꾩옱 臾몄옄濡?媛깆떊\n\n利??덈? ?ㅼ뼱 `\"engineeriing\"`?먮뒗 `ee`(1?? + `ii`(1??泥섎읆 ?곗냽 紐⑥쓬 諛섎났??議댁옱??移댁슫?멸? 媛???ш쾶 ?섏샃?덈떎.\n\n理쒕? `cnt`瑜?媛吏??⑥뼱媛 異쒕젰?섎?濡?寃곌낵??`engineeriing`?낅땲??",
+      "teacherExplainMd": "각 단어에서 **연속으로 같은 모음이 반복되는 횟수**를 셉니다.\n\n루프 의미:\n- `c`는 직전 문자\n- 다음 문자 `a[j]`가 `c`와 같고(`c==a[j]`) 그 문자가 모음이면(`c in \"aeiou\"`) `cnt += 1`\n- 아니면 `c`를 현재 문자로 갱신\n\n즉 예를 들어 `\"engineeriing\"`에는 `ee`(1회) + `ii`(1회)처럼 연속 모음 반복이 존재해 카운트가 가장 크게 나옵니다.\n\n최대 `cnt`를 가진 단어가 출력되므로 결과는 `engineeriing`입니다.",
       "options": [
         "programming",
         "hoolly",
@@ -34,11 +34,11 @@
     {
       "id": "q2",
       "type": "mcq",
-      "level": "怨?",
-      "title": "臾몄젣 2",
-      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
+      "level": "고",
+      "title": "문제 2",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "def g(s, t):\n    r = len(s)\n    p = len(t)\n    i = 0\n    while i <= len(s) - p:\n        u = 0\n        if s[i] == t[0]:\n            for j in range(1, p):\n                if s[i + j] != t[j]:\n                    u = 1\n                    i += 1\n                    break\n            if not u:\n                i += p\n                r -= p - 1\n        else:\n            i += 1\n    return r\n\nprint(g(\"savefromtheavalanche\", \"av\") + g(\"thathathathhtat\", \"tha\"))",
-      "teacherExplainMd": "?⑥닔 `g(s,t)`??臾몄옄??`s`?먯꽌 遺遺꾨Ц?먯뿴 `t`瑜??ㅼ틪?섎㈃?? `t`媛 留ㅼ묶?섎㈃ ?몃뜳?ㅻ? `p=len(t)`留뚰겮 ?먰봽?섍퀬 `r`??`p-1`留뚰겮 以꾩엯?덈떎.\n\n?듭떖? **留ㅼ묶?섎㈃ `i += p`濡??먰봽**?섎?濡?留ㅼ묶 援ш컙???쒕줈 寃뱀튂吏 ?딅뒗?ㅻ뒗 ?먯엯?덈떎.\n\n留ㅼ묶 ?꾩튂? `r` 蹂?붾쭔 ?쒕줈 ?뺣━?섎㈃ 鍮좊쫭?덈떎.\n\n| ?몄텧 | s | t | len(s) | p | 留ㅼ묶 ?쒖옉 i | 留ㅼ묶 ?잛닔 | r 理쒖쥌 |\n|---|---|---|---:|---:|---|---:|---:|\n| 1 | savefromtheavalanche | av | 20 | 2 | 1, 11 | 2 | 18 |\n| 2 | thathathathhtat | tha | 15 | 3 | 0, 3, 6 | 3 | 9 |\n\n`print(g(...) + g(...))` ?대?濡?`18 + 9 = 27`??異쒕젰?⑸땲??",
+      "teacherExplainMd": "함수 `g(s,t)`는 문자열 `s`에서 부분문자열 `t`를 스캔하면서, `t`가 매칭되면 인덱스를 `p=len(t)`만큼 점프하고 `r`을 `p-1`만큼 줄입니다.\n\n핵심은 **매칭되면 `i += p`로 점프**하므로 매칭 구간이 서로 겹치지 않는다는 점입니다.\n\n매칭 위치와 `r` 변화만 표로 정리하면 빠릅니다.\n\n| 호출 | s | t | len(s) | p | 매칭 시작 i | 매칭 횟수 | r 최종 |\n|---|---|---|---:|---:|---|---:|---:|\n| 1 | savefromtheavalanche | av | 20 | 2 | 1, 11 | 2 | 18 |\n| 2 | thathathathhtat | tha | 15 | 3 | 0, 3, 6 | 3 | 9 |\n\n`print(g(...) + g(...))` 이므로 `18 + 9 = 27`이 출력됩니다.",
       "options": [
         "24",
         "25",
@@ -59,11 +59,11 @@
     {
       "id": "q3",
       "type": "mcq",
-      "level": "怨?",
-      "title": "臾몄젣 3",
-      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
+      "level": "고",
+      "title": "문제 3",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "s = \"mississippi\"\nprint(s.replace(\"ss\", \"S\", 1), s[1:8:2], s.count(\"si\"))",
-      "teacherExplainMd": "媛???쓣 ?곕줈 怨꾩궛?⑸땲??\n\n1) `replace(\"ss\",\"S\",1)`\n- `\"mississippi\"`?먯꽌 **泥?踰덉㎏ `ss`留?* `S`濡?諛붽퓞 ??`miSissippi`\n\n2) `s[1:8:2]`\n- ?몃뜳??1遺??7源뚯?(8 誘명룷??, 2移몄뵫: `s[1], s[3], s[5], s[7]`\n\n| idx | 1 | 3 | 5 | 7 |\n|---:|---:|---:|---:|---:|\n| s[idx] | i | s | s | i |\n\n?곕씪??寃곌낵??`issi`?낅땲??\n\n3) `count(\"si\")`\n- `\"si\"`媛 ?쒖옉?섎뒗 ?꾩튂瑜?蹂대㈃ 2踰덉엯?덈떎.\n\n| ?쒖옉 idx | 遺遺꾨Ц?먯뿴 |\n|---:|---|\n| 3 | s[3:5] = \"si\" |\n| 6 | s[6:8] = \"si\" |\n\n?곕씪??`s.count(\"si\") == 2`.\n\n理쒖쥌 異쒕젰? `miSissippi issi 2`?낅땲??",
+      "teacherExplainMd": "각 항을 따로 계산합니다.\n\n1) `replace(\"ss\",\"S\",1)`\n- `\"mississippi\"`에서 **첫 번째 `ss`만** `S`로 바꿈 → `miSissippi`\n\n2) `s[1:8:2]`\n- 인덱스 1부터 7까지(8 미포함), 2칸씩: `s[1], s[3], s[5], s[7]`\n\n| idx | 1 | 3 | 5 | 7 |\n|---:|---:|---:|---:|---:|\n| s[idx] | i | s | s | i |\n\n따라서 결과는 `issi`입니다.\n\n3) `count(\"si\")`\n- `\"si\"`가 시작되는 위치를 보면 2번입니다.\n\n| 시작 idx | 부분문자열 |\n|---:|---|\n| 3 | s[3:5] = \"si\" |\n| 6 | s[6:8] = \"si\" |\n\n따라서 `s.count(\"si\") == 2`.\n\n최종 출력은 `miSissippi issi 2`입니다.",
       "options": [
         "miSissippi issi 2",
         "miSissippi ispi 2",
@@ -84,11 +84,11 @@
     {
       "id": "q4",
       "type": "mcq",
-      "level": "怨?",
-      "title": "臾몄젣 4",
-      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
+      "level": "고",
+      "title": "문제 4",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "d = {\"a\": 1, \"b\": 2, \"c\": 3}\nx = d.pop(\"b\")\nprint(x, len(d), \"b\" in d)",
-      "teacherExplainMd": "`dict.pop(key)`???대떦 ?ㅼ쓽 媛믪쓣 諛섑솚?섎㈃???ㅻ? ??젣?⑸땲??\n\n- ?쒖옉: `d={'a':1,'b':2,'c':3}`\n- `x = d.pop('b')` ??`x=2`, `d`??`{'a':1,'c':3}`\n- `len(d)=2`\n- `'b' in d`????젣?먯쑝誘濡?`False`\n\n?곕씪??`2 2 False`媛 異쒕젰?⑸땲??",
+      "teacherExplainMd": "`dict.pop(key)`는 해당 키의 값을 반환하면서 키를 삭제합니다.\n\n- 시작: `d={'a':1,'b':2,'c':3}`\n- `x = d.pop('b')` → `x=2`, `d`는 `{'a':1,'c':3}`\n- `len(d)=2`\n- `'b' in d`는 삭제됐으므로 `False`\n\n따라서 `2 2 False`가 출력됩니다.",
       "options": [
         "1 3 False",
         "2 2 False",
@@ -109,11 +109,11 @@
     {
       "id": "q5",
       "type": "mcq",
-      "level": "怨?",
-      "title": "臾몄젣 5",
-      "description": "?ㅼ쓬 肄붾뱶???ㅽ뻾 寃곌낵濡??щ컮瑜?寃껋쓣 怨좊Ⅴ?쒖삤.",
+      "level": "고",
+      "title": "문제 5",
+      "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
       "code": "s = \"thathathathhtat\"\nt = \"tha\"\nr = len(s)\np = len(t)\ni = 0\nwhile i <= len(s) - p:\n    u = 0\n    if s[i] == t[0]:\n        for j in range(1, p):\n            if s[i + j] != t[j]:\n                u = 1\n                i += 1\n                break\n        if not u:\n            i += p\n            r -= p - 1\n    else:\n        i += 1\nprint(r)",
-      "teacherExplainMd": "`q2`??`g(s,t)`? ?숈씪 濡쒖쭅??硫붿씤?먯꽌 洹몃?濡???댁벖 ?뺥깭?낅땲??\n\n`s=\"thathathathhtat\"`?먯꽌 `t=\"tha\"`瑜?李얠쑝硫?\n- 留ㅼ묶???뚮쭏??`i`??3移??먰봽(`i+=p`)\n- ?숈떆??`r`? `p-1=2`留뚰겮 媛먯냼\n\n??臾몄옄?댁뿉??`\"tha\"`媛 ?욎そ???곗냽?쇰줈 ?щ윭 踰??깆옣?섏?留?以묎컙??`\"hht\"` ?뚮Ц???딄퉩?덈떎.\n\n?ㅽ뻾 寃곌낵濡?`r`??理쒖쥌 `9`媛 ?섏뼱 異쒕젰?⑸땲??",
+      "teacherExplainMd": "`q2`의 `g(s,t)`와 동일 로직을 메인에서 그대로 풀어쓴 형태입니다.\n\n`s=\"thathathathhtat\"`에서 `t=\"tha\"`를 찾으면:\n- 매칭될 때마다 `i`는 3칸 점프(`i+=p`)\n- 동시에 `r`은 `p-1=2`만큼 감소\n\n이 문자열에는 `\"tha\"`가 앞쪽에 연속으로 여러 번 등장하지만 중간에 `\"hht\"` 때문에 끊깁니다.\n\n실행 결과로 `r`이 최종 `9`가 되어 출력됩니다.",
       "options": [
         "7",
         "8",
@@ -135,18 +135,18 @@
   "concepts": [
     {
       "id": "w06_c1",
-      "title": "媛쒕뀗 1) ?몄젒 臾몄옄 鍮꾧탳? ?곗냽 援ш컙 移댁슫??",
-      "summary": "愿???대줎: 媛쒕뀗 1) ?몄젒 臾몄옄 鍮꾧탳? ?곗냽 援ш컙 移댁슫??"
+      "title": "개념 1) 인접 문자 비교와 연속 구간 카운트",
+      "summary": "관련 이론: 개념 1) 인접 문자 비교와 연속 구간 카운트"
     },
     {
       "id": "w06_c2",
-      "title": "媛쒕뀗 2) 遺遺꾨Ц?먯뿴 ?ㅼ틪怨??몃뜳???먰봽",
-      "summary": "愿???대줎: 媛쒕뀗 2) 遺遺꾨Ц?먯뿴 ?ㅼ틪怨??몃뜳???먰봽"
+      "title": "개념 2) 부분문자열 스캔과 인덱스 점프",
+      "summary": "관련 이론: 개념 2) 부분문자열 스캔과 인덱스 점프"
     },
     {
       "id": "w06_c3",
-      "title": "媛쒕뀗 3) 以묒꺽 諛섎났 臾몄옄??鍮꾧탳 移댁슫??",
-      "summary": "愿???대줎: 媛쒕뀗 3) 以묒꺽 諛섎났 臾몄옄??鍮꾧탳 移댁슫??"
+      "title": "개념 3) 중첩 반복 문자열 비교 카운트",
+      "summary": "관련 이론: 개념 3) 중첩 반복 문자열 비교 카운트"
     }
   ]
 }
