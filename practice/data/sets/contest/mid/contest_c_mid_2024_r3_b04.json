@@ -1,4 +1,4 @@
-﻿{
+{
     "id": "contest_c_mid_2024_r3_b04",
     "title": "C 경시대회(중등) 4회차",
     "categoryId": "contest_c_w04_loop_control_flow",
@@ -14,7 +14,6 @@
             "code": "#include <stdio.h>\n\nint main()\n{\n    int i, a = 0;\n    for(i=2 ; i<62 ; i++) {\n        if(i % 2 == 0 && i % 3 == 0 && i % 5 == 0) {\n            a += i;\n        }\n    }\n    printf(\"%d\\n\", a);\n    return 0;\n}",
             "conceptRef": "w04_c1",
             "type": "mcq",
-            "teacherExplainMd": "세 조건을 모두 만족하려면 2, 3, 5의 공배수(30의 배수)여야 합니다. 범위 `2 <= i < 62`에서 해당 값은 `30, 60`이고 합은 `90`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 1 |\n| ?? ?? | E (90) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "15",
                 "30",
@@ -42,7 +41,6 @@
             "code": "#include <stdio.h>\n\nint main()\n{\n    int flag = 0;\n    for(int i=1 ; i<10 ; i++) {\n        for(int j=0 ; j<10 ; j++) {\n            for(int k=0 ; k<10 ; k++) {\n                if(i == k || j == k) continue;\n                if((i * 10 + j) * k == (j * 10 + i)) {\n                    printf(\"%d\\n\", k);\n                    flag = 1;\n                    break;\n                }\n            }\n            if(flag == 1) break;\n        }\n        if(flag == 1) break;\n    }\n    return 0;\n}",
             "conceptRef": "w04_c2",
             "type": "mcq",
-            "teacherExplainMd": "가장 먼저 성립하는 `(10i+j)*k = (10j+i)`를 찾으면 됩니다. 루프 순서상 최초 해는 `i=2, j=2, k=1`이며 `22*1=22`를 만족합니다. 따라서 출력은 `1`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 2 |\n| ?? ?? | A (1) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "1",
                 "3",
@@ -71,7 +69,6 @@
             "code": "#include <stdio.h>\nint main()\n{\n    int sum = 0;\n    for(int i=1 ; i<=10 ; i++) {\n        if(i % 3 == 0) {\n            sum += i;\n        }\n    }\n    printf(\"%d\", sum);\n    return 0;\n}",
             "conceptRef": "w04_c1",
             "type": "mcq",
-            "teacherExplainMd": "1부터 10까지 3의 배수는 `3, 6, 9`입니다. 합은 `3+6+9 = 18`이므로 출력은 `18`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 3 |\n| ?? ?? | C (18) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "14",
                 "16",
@@ -99,7 +96,6 @@
             "code": "#include <stdio.h>\nint main()\n{\n    int a = 20, b = 30;\n    while(a > 0) {\n        a -= 6;\n        b += 3;\n    }\n    printf(\"%d\\n\", b);\n    return 0;\n}",
             "conceptRef": "w04_c1",
             "type": "mcq",
-            "teacherExplainMd": "`a`는 `20 -> 14 -> 8 -> 2 -> -4`가 되어 while 본문이 4번 실행됩니다. `b`는 매번 3씩 증가하므로 `30 + 4*3 = 42`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 4 |\n| ?? ?? | C (42) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "30",
                 "36",
@@ -127,7 +123,6 @@
             "code": "#include <stdio.h>\nint f(int a, int b) {\n    return a - b * 3;\n}\nint main()\n{\n    int a = 3;\n    for(int i=0 ; i<4 ; i++) {\n        a = f(a, -i);\n        a = f(a, i);\n    }\n    printf(\"%d\\n\", a);\n    return 0;\n}",
             "conceptRef": "w04_c1",
             "type": "mcq",
-            "teacherExplainMd": "한 반복에서 `a=f(a,-i)` 후 `a=f(a,i)`를 적용하면 변화량이 상쇄되어 `a`는 그대로 유지됩니다. 초기값이 3이므로 4번 반복 후에도 출력은 `3`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 5 |\n| ?? ?? | D (3) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "0",
                 "1",

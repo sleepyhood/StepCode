@@ -1,4 +1,4 @@
-﻿{
+{
     "id": "contest_c_mid_2024_r3_b07",
     "title": "C 경시대회(중등) 7회차",
     "categoryId": "contest_c_w07_preprocessor_macro_traps",
@@ -14,7 +14,6 @@
             "code": "#include <stdio.h>\n#define f(x) x+1\nint main()\n{\n    int a = 5;\n    printf(\"%d %d\\n\", f(a), f(a)*f(a));\n    return 0;\n}",
             "conceptRef": "w07_c1",
             "type": "mcq",
-            "teacherExplainMd": "`f(a)`는 `a+1`로 치환되어 6입니다. `f(a)*f(a)`는 `(a+1)*(a+1)`이 아니라 `a+1*a+1`로 치환되므로 `5+5+1=11`입니다. 따라서 출력은 `6 11`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 1 |\n| ?? ?? | C (6 11) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "5 10",
                 "6 10",
@@ -43,7 +42,6 @@
             "code": "#include<stdio.h>\n#define S(X) X*X\nint main()\n{\n    int q = 4;\n    printf(\"%d %d %d\", S(q), S(q+1), S(q+q));\n    return 0;\n}",
             "conceptRef": "w07_c1",
             "type": "mcq",
-            "teacherExplainMd": "매크로가 괄호 없이 치환됩니다. `S(q)=16`, `S(q+1)=q+1*q+1=9`, `S(q+q)=q+q*q+q=24`이므로 출력은 `16 9 24`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 2 |\n| ?? ?? | C (16 9 24) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "16 25 64",
                 "16 16 16",
@@ -72,7 +70,6 @@
             "code": "#include <stdio.h>\n#define f(x) x*x\n\nint main()\n{\n    int a = 4;\n    printf(\"%d %d\\n\", f(a), f(a+1));\n    return 0;\n}",
             "conceptRef": "w07_c1",
             "type": "mcq",
-            "teacherExplainMd": "`f(a)=a*a=16`입니다. `f(a+1)`은 `a+1*a+1`로 치환되어 `4+4+1=9`가 되므로 출력은 `16 9`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 3 |\n| ?? ?? | B (16 9) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "16 8",
                 "16 9",
@@ -101,7 +98,6 @@
             "code": "#include <stdio.h>\n#define f(x) x+1\nint main()\n{\n    int a = 5;\n    printf(\"%d %d\\n\", f(a), f(a)*f(a));\n    return 0;\n}",
             "conceptRef": "w07_c1",
             "type": "mcq",
-            "teacherExplainMd": "q1과 동일 코드입니다. `f(a)=6`, `f(a)*f(a)`는 치환 후 `11`이므로 출력은 `6 11`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 4 |\n| ?? ?? | C (6 11) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "5 10",
                 "6 10",
@@ -130,7 +126,6 @@
             "code": "#include<stdio.h>\n#define S(X) X*X\nint main()\n{\n    int q = 4;\n    printf(\"%d %d %d\", S(q), S(q+1), S(q+q));\n    return 0;\n}",
             "conceptRef": "w07_c1",
             "type": "mcq",
-            "teacherExplainMd": "q2와 동일 코드입니다. 매크로 치환 결과에 따라 `16 9 24`가 출력됩니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 5 |\n| ?? ?? | C (16 9 24) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "16 25 64",
                 "16 16 16",

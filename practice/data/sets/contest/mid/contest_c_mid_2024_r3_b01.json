@@ -1,4 +1,4 @@
-﻿{
+{
     "id": "contest_c_mid_2024_r3_b01",
     "title": "C 경시대회(중등) 1회차",
     "categoryId": "contest_c_w01_diagnostic_headers_types",
@@ -13,7 +13,6 @@
             "description": "다음 중 C 표준 헤더와 기능 연결이 올바르지 않은 것을 고르시오.",
             "conceptRef": "w01_c1",
             "type": "mcq",
-            "teacherExplainMd": "`stdarg.h`는 가변 인자 함수(`va_list`, `va_start`, `va_arg`, `va_end`)를 위한 헤더입니다. 예외 처리는 C 표준 헤더의 역할이 아니므로 D가 잘못된 연결입니다.",
             "options": [
                 "stdio.h: 입출력",
                 "time.h: 시간 처리",
@@ -38,7 +37,6 @@
             "code": "#include <stdio.h>\nint main() {\n    short s = 32767;\n    s = s + 1;\n    printf(\"%d\", s);\n    return 0;\n}",
             "conceptRef": "w01_c3",
             "type": "mcq",
-            "teacherExplainMd": "`s+1`은 계산 시 `int`로 승격되지만, 다시 `short` 변수 `s`에 대입됩니다. 일반적인 16비트 2의 보수 환경에서는 최댓값 다음 값이 `-32768`로 순환해 출력됩니다. 따라서 정답은 A입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 2 |\n| ?? ?? | A (-32768) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "-32768",
                 "-1",
@@ -63,7 +61,6 @@
             "code": "#include <stdio.h>\n#include <limits.h>\nint main() {\n    printf(\"%d\", SHRT_MAX);\n    return 0;\n}",
             "conceptRef": "w01_c2",
             "type": "mcq",
-            "teacherExplainMd": "`SHRT_MAX`는 `short`의 최대값 매크로이며 `<limits.h>`에 정의됩니다. 보통 16비트 `short` 기준 값은 `32767`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 3 |\n| ?? ?? | C (32767) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "127",
                 "255",
@@ -87,7 +84,6 @@
             "description": "다음 설명으로 가장 알맞은 용어를 고르시오.\n\"고급 언어 코드를 기계가 실행 가능한 코드로 번역하는 과정\"",
             "conceptRef": "w01_c1",
             "type": "mcq",
-            "teacherExplainMd": "고급 언어 소스 코드를 목적 코드(기계가 다룰 수 있는 형태)로 변환하는 과정은 **컴파일**입니다. 따라서 정답은 D입니다.",
             "options": [
                 "인터프리팅",
                 "디버깅",
@@ -112,7 +108,6 @@
             "code": "#include <stdio.h>\nint main() {\n    short s = 32767;\n    printf(\"%d\", s + 1);\n    return 0;\n}",
             "conceptRef": "w01_c3",
             "type": "mcq",
-            "teacherExplainMd": "여기서는 `s+1` 결과를 `short`에 다시 저장하지 않고 바로 출력합니다. `short`는 식 계산에서 `int`로 승격되므로 `32767 + 1 = 32768`이 그대로 출력됩니다. 정답은 D입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 5 |\n| ?? ?? | D (32768) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "options": [
                 "-32768",
                 "-1",

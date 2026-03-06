@@ -1,4 +1,4 @@
-﻿{
+{
     "id": "contest_c_mid_2024_r3_b09",
     "title": "C 경시대회(중등) 9회차",
     "categoryId": "contest_c_w09_divide_conquer_call_order",
@@ -12,7 +12,6 @@
             "title": "문제 1",
             "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
             "code": "#include <stdio.h>\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = a + (b - a) / 4;\n    f(a, c);\n    f(c+1, b);\n}\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
-            "teacherExplainMd": "기저 조건은 `a==b`일 때 해당 값을 출력하는 것입니다. 즉, 재귀는 결국 길이 1 구간 `[k,k]`를 만들고 `k`를 출력합니다.\n\n이 함수는 구간을 `[a,c]`, `[c+1,b]`로 나눈 뒤 **왼쪽 재귀를 먼저** 호출하므로, 최종 출력 순서는 항상 작은 수에서 큰 수 순서가 됩니다.\n\n| 단계 | 분할 예시 |\n|---|---|\n| 시작 | `[0,15]` |\n| 1차 | `[0,3]`, `[4,15]` |\n| 2차 | 왼쪽 구간부터 계속 분할 |\n| 기저 도달 | `[0,0]`, `[1,1]`, ..., `[15,15]` |\n\n따라서 출력은 `0 1 2 ... 15` 형태입니다.",
             "conceptRef": "w09_c1",
             "type": "mcq",
             "options": [
@@ -41,7 +40,6 @@
             "title": "문제 2",
             "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
             "code": "#include <stdio.h>\n\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = (a + b) / 2;\n    f(a, c);\n    f(c+1, b);\n}\n\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
-            "teacherExplainMd": "중앙값 `c=(a+b)/2`로 절반 분할한 뒤, `f(a,c)`를 먼저 호출하고 `f(c+1,b)`를 호출합니다.\n\n기저 조건 `a==b`에서 숫자를 출력하므로, 왼쪽(작은 값 구간)부터 출력이 쌓여 결과는 오름차순이 됩니다.\n\n| 큰 흐름 |\n|---|\n| `[0,15] -> [0,7],[8,15]` |\n| `[0,7] -> [0,3],[4,7]` |\n| ... 반복 ... |\n| `[0,0],[1,1],...,[15,15]` 출력 |\n\n따라서 출력은 `0 1 2 ... 15`입니다.",
             "conceptRef": "w09_c1",
             "type": "mcq",
             "options": [
@@ -70,7 +68,6 @@
             "title": "문제 3",
             "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
             "code": "#include <stdio.h>\n\nint f(int a, int b) {\n    return b * 2 - a;\n}\n\nint main()\n{\n    int a = 1;\n    for(int i=0 ; i<12 ; i++) {\n        a = f(a, -i);\n        a = f(a, i);\n    }\n    printf(\"%d\\n\", a);\n    return 0;\n}",
-            "teacherExplainMd": "`f(a,b)=2b-a`입니다.\n\n반복 한 번(`i` 고정)에서\n\n1. `a1 = f(a,-i) = -2i-a`\n2. `a2 = f(a1,i) = 2i-a1 = 2i-(-2i-a)=a+4i`\n\n즉, 매 반복마다 `a <- a+4i`가 됩니다.\n\n초기값 `a=1`, `i=0..11`이므로\n\n`a = 1 + 4*(0+1+...+11) = 1 + 4*66 = 265`\n\n따라서 정답은 `265`입니다.\n\n### ?? ?\n| ?? | ?? |\n|---|---|\n| ?? | 문제 3 |\n| ?? ?? | D (265) |\n| ?? ?? | ??/??/?? ??? ? ??? ???? ??? ??? ???. |",
             "conceptRef": "w09_c2",
             "type": "mcq",
             "options": [
@@ -99,7 +96,6 @@
             "title": "문제 4",
             "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
             "code": "#include <stdio.h>\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = a + (b - a) / 4;\n    f(a, c);\n    f(c+1, b);\n}\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
-            "teacherExplainMd": "문제 1과 동일한 코드입니다.\n\n분할 비율이 1/4이더라도, 항상 `[a,c]`를 먼저 처리한 뒤 `[c+1,b]`를 처리하므로 출력 순서는 변하지 않습니다. 기저 조건은 `[k,k]`에서 `k` 출력이므로 최종적으로 `0`부터 `15`까지 순서대로 출력됩니다.\n\n따라서 출력은 `0 1 2 ... 15`입니다.\n\n### ??? (SVG)\n<svg width=\"520\" height=\"170\" viewBox=\"0 0 520 170\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"?? ???\"><rect x=\"10\" y=\"20\" width=\"120\" height=\"48\" rx=\"8\" fill=\"#eef6ff\" stroke=\"#5b8def\"/><text x=\"70\" y=\"49\" text-anchor=\"middle\" font-size=\"13\">??/???</text><rect x=\"200\" y=\"20\" width=\"120\" height=\"48\" rx=\"8\" fill=\"#eefcf1\" stroke=\"#4aa96c\"/><text x=\"260\" y=\"49\" text-anchor=\"middle\" font-size=\"13\">?? ??</text><rect x=\"390\" y=\"20\" width=\"120\" height=\"48\" rx=\"8\" fill=\"#fff6ea\" stroke=\"#e39b3a\"/><text x=\"450\" y=\"49\" text-anchor=\"middle\" font-size=\"13\">? ??</text><line x1=\"130\" y1=\"44\" x2=\"200\" y2=\"44\" stroke=\"#444\" marker-end=\"url(#a)\"/><line x1=\"320\" y1=\"44\" x2=\"390\" y2=\"44\" stroke=\"#444\" marker-end=\"url(#a)\"/><rect x=\"155\" y=\"102\" width=\"210\" height=\"48\" rx=\"8\" fill=\"#f8f8f8\" stroke=\"#777\"/><text x=\"260\" y=\"131\" text-anchor=\"middle\" font-size=\"13\">?? ??: B (2)</text><line x1=\"450\" y1=\"68\" x2=\"285\" y2=\"102\" stroke=\"#444\" marker-end=\"url(#a)\"/><defs><marker id=\"a\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#444\"/></marker></defs></svg>",
             "conceptRef": "w09_c1",
             "type": "mcq",
             "options": [
@@ -128,7 +124,6 @@
             "title": "문제 5",
             "description": "다음 코드의 실행 결과로 올바른 것을 고르시오.",
             "code": "#include <stdio.h>\n\nvoid f(int a, int b) {\n    if(a == b) {\n        printf(\"%d \", a);\n        return;\n    }\n    int c = (a + b) / 2;\n    f(a, c);\n    f(c+1, b);\n}\n\nint main()\n{\n    f(0, 15);\n    return 0;\n}",
-            "teacherExplainMd": "문제 2와 동일한 코드입니다.\n\n이진 분할을 하되 왼쪽 재귀 호출이 먼저이므로, 리프(기저 구간) 출력 순서는 작은 값에서 큰 값으로 정렬된 형태가 됩니다.\n\n결과적으로 `0 1 2 ... 15`가 출력됩니다.\n\n### ??? (SVG)\n<svg width=\"520\" height=\"170\" viewBox=\"0 0 520 170\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"?? ???\"><rect x=\"10\" y=\"20\" width=\"120\" height=\"48\" rx=\"8\" fill=\"#eef6ff\" stroke=\"#5b8def\"/><text x=\"70\" y=\"49\" text-anchor=\"middle\" font-size=\"13\">??/???</text><rect x=\"200\" y=\"20\" width=\"120\" height=\"48\" rx=\"8\" fill=\"#eefcf1\" stroke=\"#4aa96c\"/><text x=\"260\" y=\"49\" text-anchor=\"middle\" font-size=\"13\">?? ??</text><rect x=\"390\" y=\"20\" width=\"120\" height=\"48\" rx=\"8\" fill=\"#fff6ea\" stroke=\"#e39b3a\"/><text x=\"450\" y=\"49\" text-anchor=\"middle\" font-size=\"13\">? ??</text><line x1=\"130\" y1=\"44\" x2=\"200\" y2=\"44\" stroke=\"#444\" marker-end=\"url(#a)\"/><line x1=\"320\" y1=\"44\" x2=\"390\" y2=\"44\" stroke=\"#444\" marker-end=\"url(#a)\"/><rect x=\"155\" y=\"102\" width=\"210\" height=\"48\" rx=\"8\" fill=\"#f8f8f8\" stroke=\"#777\"/><text x=\"260\" y=\"131\" text-anchor=\"middle\" font-size=\"13\">?? ??: C (3)</text><line x1=\"450\" y1=\"68\" x2=\"285\" y2=\"102\" stroke=\"#444\" marker-end=\"url(#a)\"/><defs><marker id=\"a\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M 0 0 L 10 5 L 0 10 z\" fill=\"#444\"/></marker></defs></svg>",
             "conceptRef": "w09_c1",
             "type": "mcq",
             "options": [
