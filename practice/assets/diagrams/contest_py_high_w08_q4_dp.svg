@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="620" height="360" viewBox="0 0 620 360">
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="340" viewBox="0 0 390 340">
   <defs>
     <style>
-      .title { font: 16px sans-serif; fill: #111; }
       .txt { font: 13px sans-serif; fill: #111; }
       .cell { fill: #fafafa; stroke: #333; stroke-width: 1; }
       .head { fill: #e9f6ff; }
@@ -13,11 +12,8 @@
     </marker>
   </defs>
 
-  <text x="20" y="28" class="title">Week08 Q4: DP table for f(m,n)</text>
-  <text x="20" y="50" class="txt">Each cell uses left (m,n-1), up (m-1,n), and diag-up-left (m-1,n-1).</text>
-
   <!-- Table 4x4 (m,n = 0..3), cell size 70 -->
-  <g transform="translate(20,80)">
+  <g transform="translate(20,20)">
     <!-- headers -->
     <rect class="cell head" x="0" y="0" width="70" height="40"/><text class="txt" x="35" y="26" text-anchor="middle">m\\n</text>
     <rect class="cell head" x="70" y="0" width="70" height="40"/><text class="txt" x="105" y="26" text-anchor="middle">0</text>
@@ -59,4 +55,3 @@
     <path class="arrow" d="M 245 222 L 304 281"/> <!-- from (2,2) -->
   </g>
 </svg>
-

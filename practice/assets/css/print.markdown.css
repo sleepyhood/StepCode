@@ -908,7 +908,7 @@ body{
     position: static !important;
     float: none !important;
     clear: both !important;
-    width: 100%;
+    width: auto;
     max-width: 100%;
     height: auto;
   }
@@ -988,9 +988,20 @@ body{
 .md a.md-link{ color: inherit; text-decoration: underline; }
 .md img.md-image{
   display: block;
+  width: auto;
   max-width: 100%;
   height: auto;
   margin: 1.2mm 0;
+}
+
+/* SVG should keep natural scale; avoid filling/cropping a whole page area */
+.md img.md-image[src$=".svg"],
+.md img.md-image[src*=".svg?"]{
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 95mm;
+  object-fit: contain;
 }
 
 

@@ -1486,7 +1486,9 @@ if (q.type === "mcq") {
       br.appendChild(h);
       note.appendChild(br);
     }
-    card.appendChild(note);
+    if (note.childElementCount > 0) {
+      card.appendChild(note);
+    }
   }
 
   if (variant === "teacher" && opts.showQuickAnswer === true) {
@@ -1593,6 +1595,7 @@ function buildTeacherExplainSplitCards(set, q, originalIndex, variant) {
   if (chip) chip.remove();
   const tp = right.querySelector(".p-type");
   if (tp) tp.textContent = "해설";
+  relaxAppendixCardPageBreak(right);
 
   return { left, right };
 }
@@ -1604,6 +1607,21 @@ function buildTeacherExplainSplitCard(set, q, originalIndex, variant, side) {
 
 function buildTeacherExplainOnlyCard(set, q, originalIndex) {
   return buildTeacherExplainSplitCard(set, q, originalIndex, "teacher", "right");
+}
+
+function relaxAppendixCardPageBreak(card) {
+  if (!card) return;
+  card.classList.add("p-card--appendix");
+  card.style.breakInside = "auto";
+  card.style.pageBreakInside = "auto";
+
+  const relaxTargets = card.querySelectorAll(
+    ".teacher-note, .teacher-explain, .md .md-p, .md pre.md-fence, .md .md-table, .md img.md-image, .md li"
+  );
+  relaxTargets.forEach((node) => {
+    node.style.breakInside = "auto";
+    node.style.pageBreakInside = "auto";
+  });
 }
 
 function metaField(label, key, extraClass, defaultValue = "") {
