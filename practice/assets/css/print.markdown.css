@@ -876,6 +876,45 @@ body{
   font-weight: 900;
 }
 
+.teacher-nav-row{
+  margin-top: 1.5mm;
+  font-size: 10px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+}
+.teacher-nav-row--to-explain{
+  border-top: 1px dashed var(--box);
+  padding-top: 1.2mm;
+}
+.teacher-nav-row--to-problem{
+  margin-bottom: 1.2mm;
+}
+.teacher-nav-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #0f3a8a;
+  text-decoration: none;
+  border: 1px solid rgba(15, 58, 138, 0.28);
+  border-radius: 999px;
+  padding: 1px 8px;
+  background: #f8fafc;
+  font-weight: 700;
+}
+.teacher-nav-row--to-explain .teacher-nav-link::before{
+  content: "↳";
+  font-weight: 700;
+}
+.teacher-nav-row--to-problem .teacher-nav-link::before{
+  content: "↰";
+  font-weight: 700;
+}
+.teacher-nav-link:hover{
+  background: #eef2ff;
+  border-color: rgba(15, 58, 138, 0.4);
+}
+
 /* print rules */
 @page {
   size: A4 landscape;
@@ -1154,18 +1193,22 @@ pre.opt-code.line-numbers > code {
 .print-root.variant-student .token.keyword,
 .print-root.variant-student .token.selector,
 .print-root.variant-student .token.atrule{
-  color: #1f2937;
+  color: #1d4ed8;
   font-weight: 700;
 }
 .print-root.variant-student .token.string,
 .print-root.variant-student .token.char,
 .print-root.variant-student .token.attr-value{
-  color: #374151;
+  color: #047857;
 }
 .print-root.variant-student .token.number,
 .print-root.variant-student .token.boolean,
 .print-root.variant-student .token.constant{
-  color: #111827;
+  color: #b45309;
+  font-weight: 700;
+}
+.print-root.variant-student .token.function{
+  color: #4338ca;
   font-weight: 700;
 }
 

@@ -315,12 +315,108 @@ function buildHighlightedCodePre(set, className, source, withLineNumbers = true)
   return pre;
 }
 
+function detectCodeLangFromNode(codeEl) {
+  const classes = Array.from(codeEl?.classList || []);
+  for (const cls of classes) {
+    if (!cls.startsWith("language-")) continue;
+    return cls.replace("language-", "").toLowerCase();
+  }
+  return "clike";
+}
+
+function getFallbackKeywordList(lang) {
+  if (lang === "python") {
+    return [
+      "and", "as", "assert", "break", "class", "continue", "def", "del", "elif", "else",
+      "except", "False", "finally", "for", "from", "global", "if", "import", "in", "is",
+      "lambda", "None", "nonlocal", "not", "or", "pass", "raise", "return", "True", "try",
+      "while", "with", "yield"
+    ];
+  }
+  if (lang === "java") {
+    return [
+      "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class",
+      "const", "continue", "default", "do", "double", "else", "enum", "extends", "final",
+      "finally", "float", "for", "if", "implements", "import", "instanceof", "int",
+      "interface", "long", "native", "new", "package", "private", "protected", "public",
+      "return", "short", "static", "strictfp", "super", "switch", "synchronized", "this",
+      "throw", "throws", "transient", "try", "void", "volatile", "while"
+    ];
+  }
+  if (lang === "csharp") {
+    return [
+      "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "class",
+      "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum",
+      "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach",
+      "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long",
+      "namespace", "new", "null", "object", "operator", "out", "override", "params",
+      "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed",
+      "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this",
+      "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort",
+      "using", "virtual", "void", "volatile", "while"
+    ];
+  }
+  return [
+    "auto", "break", "case", "char", "const", "continue", "default", "do", "double",
+    "else", "enum", "extern", "float", "for", "goto", "if", "inline", "int", "long",
+    "register", "restrict", "return", "short", "signed", "sizeof", "static", "struct",
+    "switch", "typedef", "union", "unsigned", "void", "volatile", "while"
+  ];
+}
+
+function escapeRegExp(s) {
+  return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function applyFallbackHighlight(codeEl) {
+  if (!codeEl || codeEl.dataset.fallbackHighlighted === "1") return;
+  const lang = detectCodeLangFromNode(codeEl);
+  let src = String(codeEl.textContent ?? "");
+  const slots = [];
+
+  const stash = (regex, cls) => {
+    src = src.replace(regex, (m) => {
+      const key = `___TOK${slots.length}___`;
+      slots.push({
+        key,
+        html: `<span class="token ${cls}">${escapeHtml(m)}</span>`
+      });
+      return key;
+    });
+  };
+
+  if (lang === "python") stash(/#[^\n]*/g, "comment");
+  else stash(/\/\/[^\n]*|\/\*[\s\S]*?\*\//g, "comment");
+
+  stash(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, "string");
+  stash(/\b\d+(?:\.\d+)?\b/g, "number");
+
+  const kws = getFallbackKeywordList(lang);
+  if (kws.length) {
+    const kwRegex = new RegExp(`\\b(?:${kws.map(escapeRegExp).join("|")})\\b`, "g");
+    stash(kwRegex, "keyword");
+  }
+
+  let html = escapeHtml(src);
+  slots.forEach((slot) => {
+    html = html.replaceAll(slot.key, slot.html);
+  });
+  codeEl.innerHTML = html;
+  codeEl.dataset.fallbackHighlighted = "1";
+}
+
 function applyPrismHighlight(scopeEl) {
   const prism = window.Prism;
-  if (!prism || typeof prism.highlightElement !== "function") return;
   const root = scopeEl || document;
-  root.querySelectorAll("pre.p-code code, pre.opt-code code").forEach((node) => {
-    prism.highlightElement(node);
+  const nodes = root.querySelectorAll("pre.p-code code, pre.opt-code code");
+  if (prism && typeof prism.highlightElement === "function") {
+    nodes.forEach((node) => {
+      prism.highlightElement(node);
+    });
+    return;
+  }
+  nodes.forEach((node) => {
+    applyFallbackHighlight(node);
   });
 }
 
@@ -1609,6 +1705,73 @@ function buildTeacherExplainOnlyCard(set, q, originalIndex) {
   return buildTeacherExplainSplitCard(set, q, originalIndex, "teacher", "right");
 }
 
+function makeQuestionNavKey(q, originalIndex) {
+  const raw = String(q?.id || `q${originalIndex + 1}`);
+  const cleaned = raw.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
+  return cleaned || `q${originalIndex + 1}`;
+}
+
+function markProblemNavCard(card, q, originalIndex) {
+  if (!card) return;
+  card.dataset.navRole = "problem";
+  card.dataset.navKey = makeQuestionNavKey(q, originalIndex);
+}
+
+function markExplainNavCard(card, q, originalIndex) {
+  if (!card) return;
+  card.dataset.navRole = "explain";
+  card.dataset.navKey = makeQuestionNavKey(q, originalIndex);
+}
+
+function makeTeacherNavRow(text, href, extraClass = "") {
+  const row = el("div", `teacher-nav-row ${extraClass}`.trim());
+  const link = document.createElement("a");
+  link.className = "teacher-nav-link";
+  link.href = href;
+  link.textContent = text;
+  row.appendChild(link);
+  return row;
+}
+
+function wireTeacherAppendixLinks(root) {
+  if (!root) return;
+  const cards = Array.from(root.querySelectorAll(".p-card[data-nav-role][data-nav-key]"));
+  if (!cards.length) return;
+
+  const problemByKey = new Map();
+  const explainByKey = new Map();
+
+  cards.forEach((card) => {
+    const role = String(card.dataset.navRole || "");
+    const key = String(card.dataset.navKey || "");
+    if (!key) return;
+    if (role === "problem" && !problemByKey.has(key)) problemByKey.set(key, card);
+    if (role === "explain" && !explainByKey.has(key)) explainByKey.set(key, card);
+  });
+
+  problemByKey.forEach((problemCard, key) => {
+    const explainCard = explainByKey.get(key);
+    if (!explainCard) return;
+
+    if (!problemCard.id) problemCard.id = `problem-${key}`;
+    if (!explainCard.id) explainCard.id = `explain-${key}`;
+
+    if (!problemCard.querySelector(".teacher-nav-row--to-explain")) {
+      const row = makeTeacherNavRow("해설로 이동", `#${explainCard.id}`, "teacher-nav-row--to-explain");
+      const answer = problemCard.querySelector(".answer-block");
+      if (answer && answer.parentNode === problemCard) problemCard.insertBefore(row, answer);
+      else problemCard.appendChild(row);
+    }
+
+    if (!explainCard.querySelector(".teacher-nav-row--to-problem")) {
+      const row = makeTeacherNavRow("문제로 돌아가기", `#${problemCard.id}`, "teacher-nav-row--to-problem");
+      const head = explainCard.querySelector(".p-head");
+      if (head && head.nextSibling) explainCard.insertBefore(row, head.nextSibling);
+      else explainCard.appendChild(row);
+    }
+  });
+}
+
 function relaxAppendixCardPageBreak(card) {
   if (!card) return;
   card.classList.add("p-card--appendix");
@@ -1993,6 +2156,7 @@ async function renderAll({ setIds, bucket, variant, teacherOpts }, repackRetry =
       group.forEach((q, qIdx) => {
         const idx = indexMap.get(q.id) ?? 0;
         const card = buildProblemCard(currentSetData, q, idx, variant, problemCardOpts);
+        if (teacherAppendixMode) markProblemNavCard(card, q, idx);
         if (qIdx % 2 === 0) colL.appendChild(card);
         else colR.appendChild(card);
       });
@@ -2015,11 +2179,14 @@ async function renderAll({ setIds, bucket, variant, teacherOpts }, repackRetry =
       const col = pageEl.querySelector(".page-col");
       group.forEach((q) => {
         const originalIndex = indexMap.get(q.id) ?? 0;
-        col.appendChild(buildTeacherExplainOnlyCard(currentSetData, q, originalIndex));
+        const explainCard = buildTeacherExplainOnlyCard(currentSetData, q, originalIndex);
+        markExplainNavCard(explainCard, q, originalIndex);
+        col.appendChild(explainCard);
       });
       root.appendChild(pageEl);
     });
 
+    if (teacherAppendixMode && showProblems) wireTeacherAppendixLinks(root);
     applyPrismHighlight(root);
     updateToolbarTitle(currentSetData, bucket, variant);
     await waitForImagesReady(root);
@@ -2431,9 +2598,13 @@ async function renderAll({ setIds, bucket, variant, teacherOpts }, repackRetry =
       (p.single || []).forEach((q) => {
         const originalIndex = indexMap.get(q.id) ?? 0;
         if (p.explainAppendix) {
-          colL.appendChild(buildTeacherExplainOnlyCard(currentSetData, q, originalIndex));
+          const explainCard = buildTeacherExplainOnlyCard(currentSetData, q, originalIndex);
+          markExplainNavCard(explainCard, q, originalIndex);
+          colL.appendChild(explainCard);
         } else {
-          colL.appendChild(buildProblemCard(currentSetData, q, originalIndex, variant, problemCardOpts));
+          const problemCard = buildProblemCard(currentSetData, q, originalIndex, variant, problemCardOpts);
+          if (teacherAppendixMode) markProblemNavCard(problemCard, q, originalIndex);
+          colL.appendChild(problemCard);
         }
       });
     } else {
@@ -2469,6 +2640,7 @@ async function renderAll({ setIds, bucket, variant, teacherOpts }, repackRetry =
     root.appendChild(pageEl);
   });
 
+  if (teacherAppendixMode && showProblems) wireTeacherAppendixLinks(root);
   applyPrismHighlight(root);
   await waitForImagesReady(root);
   if (hasRenderedPageOverflow(root) && repackRetry < MAX_REPACK_RETRY) {

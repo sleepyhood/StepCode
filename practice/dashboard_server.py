@@ -16,6 +16,8 @@ import time
 import asyncio
 import os
 import secrets
+import socket
+import webbrowser
 from pathlib import Path
 import hmac
 import hashlib
@@ -149,6 +151,38 @@ EXPIRE_SEC = 180  # 학생이 이 시간 이상 업데이트 없으면 목록에
 
 def now_ms() -> int:
     return int(time.time() * 1000)
+
+
+def get_local_ip() -> str:
+    """현재 PC의 LAN IP를 추정한다."""
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # 실제 트래픽 전송 없이 라우팅 기준 IP를 얻는다.
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        return ip or "127.0.0.1"
+    except Exception:
+        return "127.0.0.1"
+    finally:
+        s.close()
+
+
+def auto_open_dashboard_page():
+    # 필요 시 끌 수 있게 옵션 제공
+    if _env_truthy("STEPCODE_NO_AUTO_OPEN"):
+        return
+
+    ip = get_local_ip()
+    path = (os.environ.get("STEPCODE_AUTO_OPEN_PATH") or "/index.html").strip()
+    if not path.startswith("/"):
+        path = "/" + path
+    url = f"http://{ip}:8000{path}"
+    print(f"[StepCode] Auto open: {url}")
+
+    try:
+        webbrowser.open(url, new=2)
+    except Exception:
+        pass
 
 
 def get_room(room_id: str):
@@ -318,6 +352,9 @@ async def gc_task(app: web.Application):
 
 async def on_startup(app: web.Application):
     app["gc"] = asyncio.create_task(gc_task(app))
+    # 서버가 뜬 직후 브라우저를 열도록 약간 지연
+    loop = asyncio.get_running_loop()
+    loop.call_later(0.8, auto_open_dashboard_page)
 
 
 async def on_cleanup(app: web.Application):
