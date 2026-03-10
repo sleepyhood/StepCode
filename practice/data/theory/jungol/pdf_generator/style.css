@@ -170,6 +170,7 @@ p>strong:only-child {
 .cat-icon {
     background: var(--accent-gradient);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 14px;
 }
@@ -194,6 +195,19 @@ p>strong:only-child {
     border: 1px solid var(--border-subtle);
     break-after: page;
     /* 첫 목차 페이지 후 페이지 넘김 */
+}
+
+.doc-main-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent-base);
+    margin: 0 0 4mm 0;
+    padding-bottom: 3mm;
+    border-bottom: 2px solid var(--accent-light);
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 2mm;
 }
 
 .toc-header h2 {
@@ -304,16 +318,47 @@ p>strong:only-child {
    Card Headers & Badges
    -------------------------------------*/
 .modern-h3 {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5mm;
     margin-bottom: 3.5mm;
     padding-bottom: 3mm;
     border-bottom: 1px solid var(--border-subtle);
 }
 
+.h3-header-spread {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3mm;
+}
+
+.h3-header-spread>div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5mm;
+}
+
 .h3-badge-wrap {
     display: flex;
+}
+
+.back-to-toc-btn {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--ink-secondary);
+    background: var(--bg-surface-alt);
+    padding: 1.5mm 3mm;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--border-subtle);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    margin-top: 1mm;
+}
+
+.back-to-toc-btn:hover {
+    background: #ffffff;
+    color: var(--accent-base);
+    border-color: var(--accent-light);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* 모던 Question 칩 */

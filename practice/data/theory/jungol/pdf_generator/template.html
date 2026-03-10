@@ -31,9 +31,13 @@
             let cards = [];
             let tempGroup = [];
             let tocData = [];
+            let docTitleHTML = null;
 
             children.forEach(el => {
-                if (el.tagName === 'H3' && el.textContent.includes('📝')) {
+                if (el.tagName === 'H1') {
+                    docTitleHTML = el.innerHTML;
+                    el.remove();
+                } else if (el.tagName === 'H3' && el.textContent.includes('📝')) {
                     if (tempGroup.length > 0) cards.push(tempGroup);
                     tempGroup = [el];
                 } else if (el.tagName === 'HR') {
@@ -126,10 +130,15 @@
                                 cardOuter.id = itemId;
 
                                 el.innerHTML = `
-                                    <div class="h3-badge-wrap">
-                                        <div class="h3-num">Question ${match[1]}</div>
+                                    <div class="h3-header-spread">
+                                        <div>
+                                            <div class="h3-badge-wrap">
+                                                <div class="h3-num">Question ${match[1]}</div>
+                                            </div>
+                                            <div class="h3-text">${match[2]}</div>
+                                        </div>
+                                        <a href="#toc-top" class="back-to-toc-btn">목차 ⬆</a>
                                     </div>
-                                    <div class="h3-text">${match[2]}</div>
                                 `;
                                 el.className = 'modern-h3';
                             }
@@ -169,10 +178,16 @@
             if (tocData.length > 0) {
                 const tocWrapper = document.createElement('div');
                 tocWrapper.className = 'toc-wrapper';
+                tocWrapper.id = 'toc-top';
 
                 const tocHeader = document.createElement('div');
                 tocHeader.className = 'toc-header';
-                tocHeader.innerHTML = '<h2>Table of Contents</h2><p>해설지 문항 한눈에 보기</p>';
+                let headerContent = '';
+                if (docTitleHTML) {
+                    headerContent += `<h1 class="doc-main-title">${docTitleHTML}</h1>`;
+                }
+                headerContent += '<h2>Table of Contents</h2><p>해설지 문항 한눈에 보기</p>';
+                tocHeader.innerHTML = headerContent;
                 tocWrapper.appendChild(tocHeader);
 
                 const tocList = document.createElement('div');
