@@ -1,0 +1,150 @@
+문제 -> 이론
+
+3주~11주까지 (1,2주도 어색하면 변경 가능)
+theory_unity_u*
+
+problem_unity_w*가 진짜로 올바른지, 
+
+`guide_unity_theory` 문서를 참조해서 쓰게끔
+(단, 각 주차에 맞는 내용으로만)
+
+1. 글 -> 2. 표로 표현하면 좋을 데이터있으면 추가/수정
+-> 3. 이미지 자료 필요한거 있으면 추가해
+(이미지가 필요한 지점을 체크해서, 해당 위치에 적절한 이미지를 자동으로 다운로드해줘)
+
+----------------------
+problem_unity_w*_map.md = 각 주차별로 무슨 문제 풀건지
+problem_unity_w*.md = 각 주차별에 해당하는 실제 문제
+theory_unity_u* = 각 주차별 문제에 대한 개념
+
+이미지 넣을거면 images 폴더 안에
+
+------------------------
+학습 목표, 범위.. 이런 부분은 사실 잘 모르겠고 일단은 
+문항 핵심 포인트 << 여기에 문제 푸는데 필요한 내용을 다 넣었음.
+
+1~3 주차 어딘가에서 접근지정자 설명을 한 번 해야될 것 같기도
+
+3주차
+static 설명
+
+
+4주차
+1번
+클래스 안에 다른 클래스가 있을 때
+프로퍼티에 대해서도 설명해야 되나?
+10번
+else 부분에 GameObject.Find.... 부분을 보고 projectile이 GameObject 자료형이어야겠구나 라는걸 알아채고 if 부분은 그냥 느낌있게 
+37번 문제
+서로 타입이 다른것들을 비교하려고 하면 오류가 난다는 것을 묻는 문제
+(int, float는 왜 비교가 되는가)
+39번 문제
+Dictionary 자료형에 대한 설명
+foreach에 대한 설명
+var에 대한 설명
+
+5주차
+4번
+C#에서 배열 선언하는 방법(안해도 될듯 앞에서 해서) 
+14번
+함수의 반환형을 지켜라!(반환형에서 실수하기 쉬운부분 이라고 하면 될듯 [] << 이런거 붙여야 되는거)
+26번
+OnEnable, Awake컴포넌트(용어)에 대한 기본적인 설명
+다른 클래스(스크립트)에서 만든 걸 가져와서 쓸 수 있음을 설명
+(여기서 접근지정자에 대해서 설명할까?)
+
+
+6주차
+38번
+GetKey, GetKeyDown, GetKeyUp
+누르는 동안, 눌렀을 때, 뗐을 때 구분
+22번
+이동에 사용하는 함수 
+transform.Translate
+Vector3.MoveTowards
+transform.position
+rigidbody.moveposition
+rigidbody.addforce
+rigidbody.velocity
+
+Time.deltaTime
+
+7주차
+36번
+instantiate 설명
+rigidbody.velocity 설명
+TransformDirection 설명하면서
+rigidbody.velocity에 TransformDirection을 넣어서
+속도와 방향을 설정할 수 있음을 예시 코드로 보여주기
+
+11번
+이 문제에 대해서 별도로 설명할 건 없고
+유니티에서 component가 무엇인지에 대해서
+기본적인 개념을 앞쪽에서 설명하는게 나을듯
+
+24번
+rigidbody.addforce 설명
+##public으로 설정하면 inspector창에서 보인다..##
+vector2.facing << 요딴건 없다.
+
+
+23번
+오브젝트 풀링 기법을 설명해야 되나..?z
+oncollisionenter, ontriggerenter..
+Init 함수(Start는 최초의 활성화시 딱 한 번만 실행.
+이후 활성화,비활성화,활성화.... 여러 번 해도 실행 안됨.)
+
+8주차
+
+6번
+대소문자 구분 주의...
+UI와 텍스트에 대해서
+using UnityEngine.UI;
+public Text myText;
+myText.text =  ("Score: " + score.ToString());
+간단하게 UI Text 넣는법 시연 보여주기
+
+7번
+이거는 사실.. 그냥 함수.. 음.. 설명이 딱히 필요없을듯..
+
+16번
+유니티 시험문제에서 클릭 = 눌렀을 때와 뗐을 때 모두를 의미한다.. 라고 알려줘야 할듯
+
+30번
+Button.onClick.AddListener
+
+9주차
+15번
+애니메이션 배치하는 방법(기본)
+이거는 svg파일이나 그림이 꼭 있어야 문제를 풀 수 있을듯
+31번
+문제에 해당하는 부분들 설명하면 될듯
+32번
+애니메이션 전환하는 SetFloat, SetInt.. 이런거 설명하면 됨
+33번
+코드에서 SetFloat, SetInt 이거 하는 법 설명
+35번
+문제 번역이 좀 이상함.. 현재 상태가 friendly이고  
+어떤 매개변수를 어떻게 조정해야 reset상태로 유지할 수 있는지... 가 문제인거 같은데.. 그런 설명이 부족함..
+
+10주차
+20번
+
+40번
+실습 방식을 보여주면 그냥 빠를듯.
+
+
+11주차
+5번
+
+34번
+
+
+문제 8주차 부터 원문 제대로 들어가있는지 확인
+
+
+
+
+
+
+
