@@ -121,9 +121,9 @@
                     else {
                         if (el.tagName === 'H3') {
                             let raw = el.textContent.trim();
-                            let match = raw.match(/📝\s*([\w\d]+)\.\s*(.*)/);
+                            let match = raw.match(/📝\s*([^.]+)\.\s*(.*)/);
                             if (match) {
-                                itemId = `question-${match[1]}`;
+                                itemId = `question-${match[1].replace(/\s+/g, '-')}`;
                                 itemTitle = match[2];
 
                                 // ID 부여 (앵커용)
