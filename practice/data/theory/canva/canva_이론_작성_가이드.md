@@ -6,9 +6,12 @@
 - `언어 수업`, `유니티 수업`, `경시대회 수업`과 분리된 별도 트랙 문서로 관리
 
 ## 파일/리소스 규칙
-- 본문 파일: `practice/data/theory/canva/theory_canva_<topic>.md`
-- 이미지 파일: `practice/data/theory/images/canva_<topic>_<purpose>.png` 또는 `.svg`
-- 문서 내 이미지 경로: `../images/<file>`
+- 본문 파일: `practice/data/theory/canva/theory_canva_<topic>.md` (또는 주차별 체계: `01_1차검수_1차시...md`)
+- 일반 이미지 파일: `practice/data/theory/images/canva_<topic>_<purpose>.png` 또는 `.svg`
+- **[NEW] 스캔 PDF 기반 이미지 파일**: 방대한 책(PDF) 기반 교안 작성 시 폴더 분리 관리
+  - 저장 위치: 주차별 하위 폴더 생성 (예: `practice/data/theory/canva/images/week01/`)
+  - 네이밍 규칙: 페이지 번호 기준 명명법 적용 (예: `p017_01.png`, `p017_mission.png`)
+  - 문서 내 이미지 경로: `![설명](images/week01/p017_01.png)`
 - Canva 원본 링크는 문서 하단 `출처/작업 링크` 섹션에 기록
 - 라이선스 메모는 문서 하단 `출처/라이선스 기록` 섹션에 차시별로 기록
 
