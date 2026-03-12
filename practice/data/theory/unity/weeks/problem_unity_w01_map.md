@@ -17,8 +17,8 @@
 ## 확장 문항 매핑
 | 문제지 ID | 유형 | 기반 개념 | 원문 참조 번호 | 확장 의도 |
 |---|---|---|---:|---|
-| X01 | 변형 | Tag 검색 API (`FindGameObjectsWithTag`) | 2 | 기능 설명을 코드 작성으로 전이 |
-| X02 | 함정 | 필드 노출 조건(public/private/SerializeField) | 13 | 빈출 오답 패턴을 선지형으로 점검 |
+| X01 | 변형 | Tag 검색 API (`FindGameObjectsWithTag`) | 2 | Tag 기반 대량 검색 패턴을 코드로 전이하여 C# API 활용도 검증 |
+| X02 | 함정 | 필드 노출 조건(public/private/SerializeField) | 13 | public / private / SerializeField의 직렬화 노출 속성 규칙의 명확한 구분 확인 |
 
 ## 커버리지 점검
 - 주차 원문 번호 목록: 2, 9, 18, 29, 13

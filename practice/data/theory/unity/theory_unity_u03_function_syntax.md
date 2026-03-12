@@ -1,70 +1,105 @@
-﻿# Unity U03 함수/static 기초
+# Unity U03 함수/static 기초
+
 ## 학습 목표
 - 올바른 함수 선언 형식을 작성한다.
 - static 멤버의 사용 규칙을 이해한다.
+
 ## 범위
-- 출처 매핑: `practice/temp/유니티 1차 문제 풀이.md`의 25, 28번
 - 키워드: 반환형, 매개변수, static 메서드, static 필드
 
-## 문항 핵심 포인트
-### 1) 함수의 반환형과 매개변수
-- 함수는 반환형과 매개변수를 가진다.  
-반환형은 return 하는 값의 자료형과 일치해야 한다.  
-매개변수 또한 함수를 호출할 때 각 매개변수의 자료형에 맞게 호출해줘야 한다.  
-<br>
-함수의 반환형이 void라면 return 하는 값이 없음을 의미한다. 
-void는 아무것도 없다는 뜻이다.
-<br>
-null은 공간은 있는데 그 공간이 텅 비어있음을 의미한다.
-
-### 2) 유니티의 특별한 함수
-- 일반적인 함수들은 내가 직접 호출을 해줘야 실행이 된다.  
-그러나, 유니티에서 사용하는 특별한 함수들은 내가 직접 호출하지 않아도 유니티가 상황에 맞춰서 자동으로 실행해준다.
-<br>
-유니티의 특별한 함수(유니티 공식문서에서는 이벤트 함수라 부른다)는 아래와 같은 것들이 있다.<br>
-Start, Update, OnMousedown, OnCollisionEnter 등등
-
-### 3) static
-- 클래스 안에 있는 변수와 함수를 각각 필드와 메서드라고 부르기도 한다.<br> 필드와 메서드를 사용하려면 먼저 그 클래스에 해당하는 객체를 생성해야 한다. <br>
-그러나 static이 붙어있는 필드와 메서드는 그 클래스에 해당하는 객체를 생성하지 않아도 사용이 가능하다. 생성된 객체와는 독립적으로 사용된다.<br><br>
-객체를 생성하지 않아도 사용이 가능하다라는 것은 반대로 생각해보면 객체를 생성했을 때만 쓸 수 있는 (static이 안 붙어있는) 필드와 메서드를 static이 붙어있는 곳에서는 쓸 수 없다는 걸 의미한다.
-<br><br>
-추가) 유니티에서 클래스에 해당하는 객체를 생성하지 않았고, 함수와 변수 앞에 static을 붙이지 않았는데도 사용이 가능한 것은 스크립트를 Scene에 있는 오브젝트에 추가하면 유니티가 객체를 생성해주기 때문이다.
-
-
 ## 핵심 패턴
-~~~csharp
-public class exmaple{
+```csharp
+public class Example
+{
     int x = 3;
+
+    // 예시 (기본): static 함수
     private static int Add(int a, int b)
-    {   
-        // 이곳에서 x에 접근하려고 하면 오류가 발생한다. x는 static이 아니기 때문.
+    {
         return a + b;
     }
+
+    // 예시 (함정): static 함수에서 인스턴스 변수 접근 (오류 발생)
+    private static void WrongAccess()
+    {
+        // x += 1; // 오류: static 메서드에서 인스턴스 변수 x에 접근할 수 없음
+    }
+
+    // 예시 (기본): 인스턴스 함수
     private void ShowMessage(string msg)
     {
         Debug.Log(msg);
     }
 }
+```
 
-~~~
-### 패턴 해설
-- `private static int Add(int a, int b)`는 "접근제어자 + static + 반환형 + 함수명 + 매개변수"의 기본 구조를 보여준다.
-- 반환형이 `int`이면 반드시 int형을 `return`해야 한다.
-- static 함수는 인스턴스 없이 호출 가능하지만, 인스턴스 필드/메서드를 직접 접근할 수 없다.(위 코드에서 Add 함수 내부에서는 x에 접근할 수 없다)
-- `private void ShowMessage(string msg)`는 반환값 없는 함수이며, 외부 입력(`msg`)을 받아 내부 동작(로그 출력)을 수행한다.
-- 즉, "유틸성 계산 함수(Add)는 static", "오브젝트 상태를 다루는 함수(ShowMessage)는 instance"처럼 역할을 분리하는 것이 핵심이다.
-이 부분은 뺄까?
+
+## 문항 핵심 포인트
+### 1) 함수의 반환형과 매개변수
+- 개념: 함수는 반환형과 매개변수를 가진다. 반환형은 `return`하는 값의 자료형과 일치해야 하며, 매개변수는 함수 호출 시 전달하는 값의 자료형과 일치해야 한다. 반환형이 `void`라면 `return`하는 값이 없음을 의미한다.
+- 오답 포인트: 반환형이 명시된 함수(예: `int`, `float`)에서 `return`을 누락하거나, 반환형과 다른 자료형을 반환하는 경우이다. 
+- 정답 판별: 함수의 선언부(반환형, 매개변수)와 내부의 `return` 문, 그리고 호출부의 인자가 모두 일치하는지 확인한다.
+
+![함수 반환형 및 매개변수 오류](./data/theory/images/unity_u03_function_return_error.svg)
+*캡션: 반환형이나 매개변수가 일치하지 않을 때 IDE에서 발생하는 컴파일 오류 화면 예시. 출처: [Microsoft C# 문서 - Compiler Errors](https://learn.microsoft.com/ko-kr/dotnet/csharp/language-reference/compiler-messages/)*
+
+### 2) 유니티의 특별한 함수 (이벤트 함수)
+- 개념: 일반적인 함수는 직접 호출해야 실행되지만, `Start()`, `Update()` 등의 이벤트 함수는 유니티 엔진이 상황에 맞춰 자동으로 실행한다.
+- 오답 포인트: 유니티 이벤트 함수를 임의로 직접 호출하려고 하거나, 발생 조건을 잘못 인지하는 경우이다.
+- 정답 판별: 해당 함수가 어떤 조건(예: 시작 시 1회, 매 프레임 등)에서 유니티에 의해 자동 호출되는지 판단한다.
+```csharp
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    // 스크립트가 활성화될 때 1회 자동 호출
+    void Start()
+    {
+        Debug.Log("Game Start!");
+    }
+
+    // 매 프레임마다 자동 호출
+    void Update()
+    {
+        // 이동 로직 등
+    }
+}
+```
+
+![유니티 이벤트 함수 호출 시점](./data/theory/images/unity_u03_function_event_execution_order.svg)
+*캡션: MonoBehaviour 스크립트의 Start 및 Update 함수 자동 실행 흐름도 다이어그램. 출처: [Unity Manual - Order of execution for event functions](https://docs.unity3d.com/Manual/ExecutionOrder.html)*
+
+### 3) static 필드와 메서드
+- 개념: `static` 키워드가 붙은 멤버(필드, 메서드)는 클래스의 인스턴스(객체)를 생성하지 않아도 클래스 이름을 통해 바로 접근할 수 있다. 반면 `static`이 없는 멤버는 반드시 객체를 생성해야 사용할 수 있다.
+- 오답 포인트: `static` 메서드 내부에서 `static`이 아닌 인스턴스 필드나 메서드에 직접 접근하려고 시도하는 경우이다.
+- 정답 판별: 접근하려는 대상이 `static`인지 인스턴스인지 확인하고, 현재 속한 메서드가 `static`인지 여부를 통해 접근 가능성을 판단한다.
+
+![static 멤버 접근 오류](./data/theory/images/unity_u03_function_static_access_error.svg)
+*캡션: static 메서드 내부에서 객체 생성 없이 인스턴스 변수에 접근하려 할 때 발생하는 C# 에러 구문. 출처: [Microsoft C# 문서 - Static Classes](https://learn.microsoft.com/ko-kr/dotnet/csharp/programming-guide/classes-and-structs/static-classes-and-static-class-members)*
+
 ## 자주 하는 실수
-- 반환형이 있는데 `return`을 누락함
-- static 문맥에서 인스턴스 멤버를 직접 접근함
+- 반환형이 명시된 함수에서 `return`을 누락하는 경우
+- `static` 문맥(메서드) 내에서 인스턴스 멤버를 객체 생성 없이 직접 접근하는 경우
+- 매개변수의 타입이나 개수에 맞지 않게 함수를 호출하는 경우
+
+## 빠른 체크리스트
+- 반환형이 `void`가 아니라면 `return` 문이 존재하는지 확인했는가?
+- `static` 메서드 안에서 인스턴스 변수를 사용하고 있지 않은지 점검했는가?
+- 유니티 이벤트 함수(Start, Update 등)의 자동 호출 시점을 정확히 이해하고 있는가?
+
 ## 미니 체크
 ### Q1
-반환값이 없는 함수의 반환형은?
-- 정답: void
+반환값이 없는 함수의 반환형은 무엇인가?
+- 정답: `void`
+
 ### Q2
-static 메서드가 인스턴스 필드를 바로 접근할 수 있나요?
-- 정답: 아니오
+`static` 메서드가 인스턴스 필드를 바로 접근할 수 있는가?
+- 정답: 아니오. 인스턴스 필드는 객체를 생성한 후에만 접근 가능하므로 `static` 메서드에서 직접 접근할 수 없다.
+
+### Q3
+유니티 스크립트에서 매 프레임마다 유니티 엔진에 의해 자동으로 호출되는 함수는 무엇인가?
+- 정답: `Update` 함수
+
 ## 연결 세트
 - 기초: unity_u03_function_syntax_b01
 - 챌린지: unity_u03_function_syntax_c01

@@ -1,0 +1,31 @@
+<svg width="650" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="650" height="200" fill="#1E1E1E" rx="8" />
+  <rect width="650" height="30" fill="#333333" rx="8" />
+  <circle cx="15" cy="15" r="6" fill="#FF5F56" />
+  <circle cx="35" cy="15" r="6" fill="#FFBD2E" />
+  <circle cx="55" cy="15" r="6" fill="#27C93F" />
+  <text x="325" y="20" fill="#CCCCCC" font-family="monospace" font-size="12" text-anchor="middle">Data.cs - IDE</text>
+
+  <text x="30" y="60" fill="#569CD6" font-family="monospace" font-size="14">int</text>
+  <text x="65" y="60" fill="#DCDCAA" font-family="monospace" font-size="14">CreateArray</text><text x="155" y="60" fill="#D4D4D4" font-family="monospace" font-size="14">() {</text>
+  
+  <text x="50" y="85" fill="#569CD6" font-family="monospace" font-size="14">int</text><text x="75" y="85" fill="#D4D4D4" font-family="monospace" font-size="14">[]</text>
+  <text x="100" y="85" fill="#9CDCFE" font-family="monospace" font-size="14">arr</text>
+  <text x="135" y="85" fill="#D4D4D4" font-family="monospace" font-size="14">=</text>
+  <text x="155" y="85" fill="#569CD6" font-family="monospace" font-size="14">new</text>
+  <text x="190" y="85" fill="#569CD6" font-family="monospace" font-size="14">int</text><text x="215" y="85" fill="#D4D4D4" font-family="monospace" font-size="14">[</text><text x="225" y="85" fill="#B5CEA8" font-family="monospace" font-size="14">5</text><text x="235" y="85" fill="#D4D4D4" font-family="monospace" font-size="14">];</text>
+
+  <text x="50" y="110" fill="#C586C0" font-family="monospace" font-size="14">return</text>
+  <text x="105" y="110" fill="#9CDCFE" font-family="monospace" font-size="14">arr</text><text x="135" y="110" fill="#D4D4D4" font-family="monospace" font-size="14">;</text>
+
+  <text x="30" y="135" fill="#D4D4D4" font-family="monospace" font-size="14">}</text>
+
+  <!-- Red squiggly line under arr in return -->
+  <path d="M 105 114 Q 109 118, 113 114 T 121 114 T 129 114" fill="none" stroke="#F44336" stroke-width="2" />
+  
+  <!-- Tooltip for error -->
+  <rect x="70" y="140" width="530" height="40" fill="#252526" stroke="#454545" stroke-width="1" rx="4" />
+  <text x="80" y="163" fill="#F44336" font-family="monospace" font-size="14">CS0029</text>
+  <text x="135" y="163" fill="#CCCCCC" font-family="monospace" font-size="14">: Cannot implicitly convert type 'int[]'</text>
+  <text x="80" y="186" fill="#CCCCCC" font-family="monospace" font-size="14">to 'int'</text>
+</svg>

@@ -1,0 +1,38 @@
+<svg width="650" height="240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="650" height="240" fill="#2D2D30" rx="8" />
+  
+  <text x="325" y="30" fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">Collision vs Trigger 방식 비교</text>
+  
+  <!-- Collision (Is Trigger = false) -->
+  <rect x="20" y="50" width="290" height="170" fill="#1E1E1E" rx="4" />
+  <text x="165" y="75" fill="#4CAF50" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Is Trigger 체크 해제 (Collision)</text>
+  <text x="165" y="95" fill="#CCCCCC" font-family="sans-serif" font-size="12" text-anchor="middle">물리적 충돌 발생 O (벽, 바닥)</text>
+  
+  <rect x="70" y="140" width="80" height="50" fill="#607D8B" stroke="#B0BEC5" stroke-width="2" />
+  <circle cx="210" cy="165" r="25" fill="#FFC107" />
+  
+  <!-- Movement arrow and bounce -->
+  <path d="M 235 165 L 160 165" stroke="#FFC107" stroke-width="3" fill="none" marker-end="url(#arrow-yellow)" stroke-dasharray="5,5"/>
+  <path d="M 152 165 L 152 140" stroke="#F44336" stroke-width="4" fill="none"/>
+  <text x="152" y="130" fill="#F44336" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">충돌(막힘)!</text>
+  
+  <defs>
+    <marker id="arrow-yellow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFC107" />
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#03A9F4" />
+    </marker>
+  </defs>
+
+  <!-- Trigger (Is Trigger = true) -->
+  <rect x="330" y="50" width="300" height="170" fill="#1E1E1E" rx="4" />
+  <text x="480" y="75" fill="#03A9F4" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Is Trigger 체크 (Trigger)</text>
+  <text x="480" y="95" fill="#CCCCCC" font-family="sans-serif" font-size="12" text-anchor="middle">물리 충돌 없이 감지용 (코인, 포탈)</text>
+  
+  <rect x="380" y="140" width="80" height="50" fill="rgba(96, 125, 139, 0.3)" stroke="#03A9F4" stroke-width="2" stroke-dasharray="4,4" />
+  <circle cx="520" cy="165" r="25" fill="#FFC107" />
+  
+  <path d="M 545 165 L 360 165" stroke="#FFC107" stroke-width="3" fill="none" marker-end="url(#arrow-yellow)" stroke-dasharray="5,5"/>
+  <text x="420" y="150" fill="#03A9F4" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">통과함 (이벤트 감지)</text>
+</svg>

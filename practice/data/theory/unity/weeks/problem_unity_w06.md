@@ -1,35 +1,31 @@
-﻿# Unity 주차 문제지 W06
+# Unity 주차 문제지 W06
 
 ## 주차 주제
 - 유닛: U06 Input
-- 핵심 개념: GetKey/Down/Up 구분, Translate 기반 이동
+- 핵심 개념: GetKey/Down/Up 타이밍 구분, Translate 기반 좌표 이동 제어
 
 ## 안내
 - 아래 문항은 원문 대응 문항과 확장 문항으로 구성되어 있습니다.
 - 이 문서의 `n번` 표기는 `practice/temp/유니티 1차 문제 풀이.md` 기준 문제 번호입니다.
 
 ## 원문 대응 문항
-### [P01] 입력 메서드 매핑
+### [P01] 입력 이벤트 메서드 매핑
 - 출처: 원문 38번
 - 유형: 단답
 - 문제:
-  - 아래 동작 설명에 맞는 메서드를 쓰세요.
-  - ① 누르고 있는 동안
-  - ② 한 번 눌린 순간
-  - ③ 뗀 순간
-  - (모두 `KeyCode.LeftArrow` 기준)
-  - 답안 형식 예: `① GetKey(...), ② GetKeyDown(...), ③ GetKeyUp(...)`
+  - 플레이어가 키보드의 왼쪽 화살표 키(`KeyCode.LeftArrow`)를 조작할 때, 유니티 엔진의 `Input` 클래스에서 다음과 같은 특정 타이밍 조건을 만족할 때만 `true`를 반환해 주는 정확한 메서드 3가지를 각각 쓰세요.
+  - 조건 1: 키보드를 꾹 **누르고 있는 동안** 매 프레임 계속 연속해서 `true`를 반환
+  - 조건 2: 키보드를 최초로 **딱 한 번 꾹 누른 그 순간의 프레임**에만 `true`를 반환
+  - 조건 3: 키보드를 누르고 있다가 **손을 뗀 순간의 프레임**에만 단발성으로 `true`를 반환
+  - 답안 형식 예: `조건 1: Input.GetKey(...), 조건 2: Input.GetKeyDown(...), 조건 3: Input.GetKeyUp(...)`
 
 ### [P02] 이동 메서드 선택
 - 출처: 원문 22번
 - 유형: 객관식
 - 문제:
-  - 아래 코드의 빈칸 `transform.[드롭다운](move * Time.deltaTime * speed);`에 들어갈 올바른 메서드를 고르세요.
-  - 후보 API:
-    - `SetPositionAndRotation(Vector3, Quaternion)`
-    - `TransformDirection(Vector3)`
-    - `TransformVector(Vector3)`
-    - `Translate(Vector3)`
+  - 오브젝트의 이동 스크립트를 작성 중입니다. 아래 코드의 빈칸 `transform.[드롭다운](move * Time.deltaTime * speed);`에 들어가서, 벡터 파라미터 값만큼 오브젝트의 **실제 로컬 위치 좌표(Position)를 연속적으로 이동시켜 주는 함수**로 올바른 것을 고르세요.
+  - 후보 기능 설명:
+    - 벡터의 좌표축 방향만 변환해 돌려줄 뿐 실제 위치는 바꾸지 않는 기능 등 함정이 포함되어 있습니다.
 - 보기:
   - A. `TransformVector`
   - B. `SetPositionAndRotation`
@@ -37,24 +33,25 @@
   - D. `TransformDirection`
 
 ## 확장 문항 (변형/함정/응용)
-### [X01] 변형 - 축 입력 이동 코드 완성
+### [X01] 변형 - 축(Axis) 입력 기반 연속 이동 코드 작성
 - 출처 개념: U06 Input
 - 유형: 코드
 - 문제:
-  - `Update()`에서 `Horizontal/Vertical` 축 입력으로 이동 벡터를 만들고, `transform.Translate(...)`로 적용하는 핵심 2줄을 작성하세요.
-- 의도: 입력 읽기 + 이동 적용 루틴을 직접 구성
+  - 유니티의 구형 Input Manager에서 화살표 키나 WASD 키를 누르면 반환하는 가상의 `Horizontal`과 `Vertical` 축(Axis) 실수형 값을 활용하여 3D 환경에서의 이동 벡터를 만들고, 기기의 초당 프레임 수 변화에 영향받지 않도록 `Time.deltaTime`과 `speed`를 곱해 실제 오브젝트를 위치 이동시키는 전체 프레임 흐름 제어 로직을 작성하세요.
+  - 작성 조건: `Update()` 함수 내부에서 축 입력(`Input.GetAxis`)을 받아 `move`라는 `Vector3` 변수에 할당하는 줄과, 만들어진 방향 벡터를 `transform.Translate(...)`를 사용해 이동에 적용하는 핵심 로직 2줄을 정확히 작성하세요. (Y축 이동은 0으로 고정)
+- 의도: 축(Axis) 입력 읽기, 프레임 독립적인 deltaTime 보정, 그리고 위치 갱신(Translate) 적용이라는 유니티 이동의 표준 루틴을 직접 통합 구성하도록 훈련합니다.
 
 ### [X02] 함정 - GetKey 계열 오개념 판별
 - 출처 개념: U06 Input
 - 유형: 객관식
 - 문제:
-  - 다음 중 틀린 설명을 고르세요.
+  - `Input.GetKey`, `Input.GetKeyDown`, `Input.GetKeyUp`의 리턴 타이밍 원리에 대해 설명한 다음 보기 항목 중, **근본적으로 완전히 틀린 오개념(거짓 설명)**을 고르세요.
 - 보기:
-  - A. `GetKey`는 누르는 동안 매 프레임 true다.
-  - B. `GetKeyDown`은 누른 프레임에만 true다.
-  - C. `GetKeyUp`은 누르는 동안 계속 true다.
-  - D. `GetKeyUp`은 뗀 프레임에 true다.
-- 의도: Down/Up 조건 혼동 제거
+  - A. `Input.GetKey`는 사용자가 대상 키를 누르고 있는 1초 동안 60프레임이 지나갔다면, 60번 내내 `true`를 반환한다.
+  - B. `Input.GetKeyDown`은 사용자가 대상 키를 처음 누른 그 순간의 단 1프레임 동안에만 `true`를 반환한다.
+  - C. `Input.GetKeyUp`은 사용자가 대상 키를 깊이 꾹 누르고 있는 연속적인 그 유지 상황 전체 동안 계속해서 `true`를 반환하도록 설계되었다.
+  - D. `Input.GetKeyUp`은 키보드에서 손가락을 완전히 떼어 올린 순간의 해제 프레임 딱 한 번만 단발성으로 잡아서 `true`를 알려준다.
+- 의도: 누르고 있는 유지 과정(Hold)과 떼는 순간(Up) 상황을 혼동하는 흔한 단어 착각 오개념을 제거합니다.
 
 ## 주차 체크
 - 원문 대응 문항 수: 2

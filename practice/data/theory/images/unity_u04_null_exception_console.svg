@@ -1,0 +1,14 @@
+<svg width="650" height="150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="650" height="150" fill="#252526" rx="8" />
+  <rect width="650" height="30" fill="#333333" rx="8" />
+  <circle cx="15" cy="15" r="6" fill="#FF5F56" />
+  <circle cx="35" cy="15" r="6" fill="#FFBD2E" />
+  <circle cx="55" cy="15" r="6" fill="#27C93F" />
+  <text x="325" y="20" fill="#CCCCCC" font-family="monospace" font-size="12" text-anchor="middle">Console - Unity</text>
+  
+  <rect x="15" y="45" width="20" height="20" fill="#F44336" rx="4" />
+  <text x="21" y="60" fill="white" font-family="monospace" font-size="14" font-weight="bold">!</text>
+  <text x="45" y="60" fill="#F44336" font-family="monospace" font-size="14" font-weight="bold">NullReferenceException: Object reference not set to an instance of an object</text>
+  <text x="45" y="80" fill="#CCCCCC" font-family="monospace" font-size="12">GameManager.Start () (at Assets/Scripts/GameManager.cs:12)</text>
+  <path d="M 15 95 L 635 95" stroke="#333333" stroke-width="1" />
+</svg>

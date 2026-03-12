@@ -1,4 +1,4 @@
-﻿# Unity 주차 정답지 W06
+# Unity 주차 정답지 W06
 
 ## 메타
 - 대상 문제지: `problem_unity_w06.md`
@@ -7,32 +7,32 @@
 ## 정답표
 | 문항 ID | 정답 | 한 줄 근거 |
 |---|---|---|
-| P01 | ① `GetKey(KeyCode.LeftArrow)` / ② `GetKeyDown(KeyCode.LeftArrow)` / ③ `GetKeyUp(KeyCode.LeftArrow)` | 입력 상태(유지/눌림/뗌)별 API가 다름 |
-| P02 | C | `Translate(Vector3)`가 실제 이동 수행 |
-| X01 | 예: `move = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));` + `transform.Translate(move * Time.deltaTime * speed);` | 축 입력 벡터를 이동에 적용 |
-| X02 | C | `GetKeyUp`은 떼는 프레임에만 true |
+| P01 | 조건 1: `Input.GetKey(KeyCode.LeftArrow)` / 조건 2: `Input.GetKeyDown(KeyCode.LeftArrow)` / 조건 3: `Input.GetKeyUp(KeyCode.LeftArrow)` | 입력 상태(유지/최초 눌림/해제)별 전용 API의 정확한 역할 구분 |
+| P02 | C | 주어진 유니티 함수 후보들 중 객체의 실제 로컬 좌표 위치를 이동(Translate)시켜주는 것은 `Translate(Vector3)` 메서드뿐임 |
+| X01 | 예: `Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));`<br>`transform.Translate(move * Time.deltaTime * speed);` | XZ축 입력 데이터 수집 -> 벡터화 -> deltaTime 곱연산을 통한 프레임 보정의 정석 이동 루틴 완성 |
+| X02 | C | `GetKeyUp` 메서드의 Up 단어는 누르는 것(지속)의 반대인 손가락으로 키를 떼어내는(해제, Up) 단 한 번의 순간을 의미함 |
 
 ## 해설
 ### P01
-- 개념 정의: `GetKey/Down/Up`은 입력 상태 타이밍이 서로 다릅니다.
-- 오답 포인트: Down과 Up을 이름만 보고 반대로 고르는 경우가 많습니다.
-- 판별 기준: "누르고 있는 동안"인지 "그 프레임 한 번"인지 먼저 구분합니다.
+- 개념 정의: 유니티 `Input` 시스템은 키보드 입력을 3가지 타이밍(`GetKey` 지속 유지, `GetKeyDown` 눌린 첫 프레임, `GetKeyUp` 떨어진 첫 프레임)으로 세분화해 제공합니다.
+- 오답 포인트: 키보드를 밑으로 강하게 지속해서 누르고 있는 물리적 상황(Down)과, 영어 단어 적으로 손가락을 떼라는 의미의 위쪽 이동(Up)을 이름만 보고 혼동하여 오용하는 사례가 많습니다.
+- 판별 기준: "누르고 있는 동안(연속적 프레임)"인지, 아니면 "단발적으로 최초 발생한 тот 프레임 한 번"인지 문제에서 요구하는 시점 타이밍 빈도를 문맥에서 먼저 구분해냅니다.
 
 ### P02
-- 개념 정의: `Translate`는 Transform 위치를 이동시키는 메서드입니다.
-- 오답 포인트: `TransformDirection`/`TransformVector`도 이동 함수로 오해합니다.
-- 판별 기준: 반환값 변환 함수인지, 실제 위치를 바꾸는 함수인지 확인합니다.
+- 개념 정의: `Transform` 컴포넌트의 위치 이동을 제어하는 대표적이고 가장 간편한 내장 메서드는 `Translate(Vector3)`입니다. 이 함수는 넘겨받은 수치 좌표(벡터)만큼 현재 로컬 축을 기준으로 누적해서 대상 좌표를 이동시킵니다.
+- 오답 포인트: 얼핏 외관상 물리적인 회전 이동이나 변환 방향을 의미할 것 같이 착각을 불러일으키는 비슷한 이름의 수학 연산 변환 함수 `TransformDirection` / `TransformVector` 등을 헷갈려 선택하는 실수가 존재합니다.
+- 판별 기준: `Translate`처럼 내부 좌표 자체(Position)를 직접 갱신시켜 주는 이동 액션 함수인지, 아니면 위치 이동 없이 단순히 지역 벡터를 월드 벡터 수치로 변환만 해서 결과값 변수로 돌려주는 함수인지 그 용도를 파악합니다.
 
 ### X01
-- 개념 정의: 입력 처리 기본 루틴은 "축 읽기 -> 이동 적용" 순서입니다.
-- 오답 포인트: `deltaTime`을 빼먹어 프레임 의존 이동이 됩니다.
-- 판별 기준: 축 입력 벡터와 `Translate(move * Time.deltaTime * speed)`가 모두 있어야 합니다.
+- 개념 정의: 3D 캐릭터가 땅 위를 가장 매끄럽게 걷게 하려면, `Input.GetAxis` API를 통해 상하/좌우 방향키의 가중치(-1.0 ~ 1.0)를 받아와 X와 Z축의 `Vector3` 방향 이동 변수에 담은 후, 프레임 레이트에 구애받지 않도록 보정 계수인 `Time.deltaTime`과 오브젝트 속도 `speed`를 모두 함께 스칼라 곱연산으로 더해주어야 합니다.
+- 오답 포인트: `Vector3` Y축 위치에 아무 생각 없이 입력 값을 대입해 캐릭터를 갑자기 하늘로 띄워버리거나, 가장 중요한 `Time.deltaTime` 보정을 이동 연산에 빼먹어 기기가 좋을수록 비상식적인 초고속 스피드로 튈 위험이 있게 만들어 버립니다.
+- 판별 기준: `Transform.Translate` 이동 함수의 파라미터가 축 방향 벡터(`move`) X 프레임 보정(`Time.deltaTime`) X 속력 상수(`speed`) 의 3요소를 완벽히 포함했는지, 그리고 축 방향도 직관적으로 맞물렸는지 봅니다.
 
 ### X02
-- 개념 정의: `GetKeyUp`은 해제 순간 이벤트성 true를 반환합니다.
-- 오답 포인트: 누르는 동안 true라고 혼동합니다.
-- 판별 기준: "held"와 "released"를 영어 키워드 기준으로 매칭합니다.
+- 개념 정의: `GetKeyUp` 명령은 총을 쏘기 위해 마우스를 누르다가(지속) 마지막 떼어내는 손가락 찰나(Up Trigger) 순간의 이벤트 1회성 동작 반응을 확인하기 위한 함수 타입입니다.
+- 오답 포인트: Up이라는 단어를 눌러서 유지하고 있는 "위로 올라간 지속 상태" 뉘앙스로 잘못 해석하여, 누르는 동안의 `GetKey`와 기능이 똑같이 연속적일 것이라 착각하는 함정 항목입니다.
+- 판별 기준: 유지 상황인 `Held` 와 순간 해제인 `Released(Up)` 타이밍 의미를 명확한 모국어와 영어 키워드 베이스로 매칭하여 가려냅니다.
 
 ## 운영 메모
-- 다음 주차 이월 보강 포인트: U07에서 입력-발사 타이밍과 물리 적용(velocity/AddForce) 연결
-- 반복 오답 키워드: GetKeyDown/GetKeyUp 혼동, Translate와 벡터 변환 함수 혼동
+- 다음 주차 이월 보강 포인트: U07 물리 이벤트(물리 엔진 강제 적용, Rigidbody, AddForce 처리) 환경 하에서의 `Input` 활용 타이밍 차이(FixedUpdate 연계)로 발전 연계
+- 반복 오답 키워드: `GetKeyDown` 및 `GetKeyUp` 상태 1회성 혼동 실수, `Translate` 액션과 방향 변환 벡터 함수의 혼동

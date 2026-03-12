@@ -1,0 +1,28 @@
+$ErrorActionPreference = "Stop"
+
+$root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$srcDir = Join-Path $root "practice/data/theory/unity/수정본/사진"
+$outDir = Join-Path $root "practice/data/theory/images"
+
+# 1. 파일 복사 및 이름 매핑 규칙 (적절한 이미지 검증 후 복사 진행)
+$map = @{
+    "OnEnable.png" = "unity_u05_transform_lifecycle_onenable.png"
+    "Awake.png" = "unity_u05_transform_lifecycle_awake.png"
+    "다른스크립트1.png" = "unity_u05_transform_lifecycle_getcomponent.png"
+    "서로다른오브젝트3.png" = "unity_u05_transform_lifecycle_reference3.png"
+}
+
+Write-Host "Checking and copying valid images from user provided directory..."
+foreach ($key in $map.Keys) {
+    $srcPath = Join-Path $srcDir $key
+    $targetPath = Join-Path $outDir $map[$key]
+    
+    if (Test-Path $srcPath) {
+        Copy-Item $srcPath $targetPath -Force
+        Write-Host "[OK] Copied valid image $key -> $($map[$key])"
+    } else {
+        Write-Warning "[FAIL] Source image not found: $srcPath"
+    }
+}
+
+Write-Host "U05 Image copy and script validation complete."
