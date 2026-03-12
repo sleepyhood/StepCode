@@ -42,17 +42,7 @@
     
     Update 같은 곳에서 AddListner를 할 필요없이 Start에서 한 번 해주면 버튼에 해당하는 기능이 생기는거라고 보면 된다.
 
-## Core Pattern
-~~~csharp
-// TODO: add 2-4 representative code snippets for this unit
-~~~
-## Common Mistakes
-- TODO: add at least 3 mistakes learners make
-## Mini Check
-### Q1
-- TODO
-### Q2
-- TODO
+
 ## Linked Sets
 - Basic: unity_u08_ui_b01
 - Challenge: unity_u08_ui_c01

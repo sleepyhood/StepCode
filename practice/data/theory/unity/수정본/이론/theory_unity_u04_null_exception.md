@@ -104,13 +104,7 @@ void Start()
 - null 객체(`book.Author`)의 멤버를 바로 접근함
 - 비교 불가능한 타입을 `==`로 비교함
 - Dictionary를 초기화하지 않고 바로 사용함
-## 미니 체크
-### Q1
-NullReferenceException의 직접 원인은?
-- 정답: null 참조 역참조
-### Q2
-`projectile` null 체크 식을 쓰세요.
-- 정답: `projectile == null`
+
 ## 연결 세트
 - 기초: unity_u04_null_exception_b01
 - 챌린지: unity_u04_null_exception_c01

@@ -60,17 +60,6 @@ void Update() {
 ``` 
 이 코드는 예시코드로 스페이스바를 누르면 parameter의 값을 위와 같이 설정하게 됩니다. 한 줄만 남겨놓고 주석처리를 한 뒤 실행을 해보며 parameter의 값이 잘 바뀌는지 확인해 봅시다.
 
-## Core Pattern
-~~~csharp
-// TODO: add 2-4 representative code snippets for this unit
-~~~
-## Common Mistakes
-- TODO: add at least 3 mistakes learners make
-## Mini Check
-### Q1
-- TODO
-### Q2
-- TODO
 ## Linked Sets
 - Basic: unity_u09_animator_b01
 - Challenge: unity_u09_animator_c01

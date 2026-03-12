@@ -127,17 +127,6 @@ transform.TransformDirection은 매개변수로 Vector값을 넣어주면 그 �
     그런데 관례적으로 Init이라는 이름의 함수를 많이 사용하고, 이게 시험 문제로도 나오곤 합니다.<br>
 
 
-## Core Pattern
-~~~csharp
-// TODO: add 2-4 representative code snippets for this unit
-~~~
-## Common Mistakes
-- TODO: add at least 3 mistakes learners make
-## Mini Check
-### Q1
-- TODO
-### Q2
-- TODO
 ## Linked Sets
 - Basic: unity_u07_spawn_physics_b01
 - Challenge: unity_u07_spawn_physics_c01

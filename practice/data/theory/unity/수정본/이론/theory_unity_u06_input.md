@@ -145,17 +145,6 @@ rigidbody를 이용하는 방식은 뒤에서 배운다.
     transform.position = new Vector3(1,2,3);// 오브젝트의 위치나 방향과 관계없이 절대좌표 1,2,3으로 이동시킨다.
     ```
 
-## Core Pattern
-~~~csharp
-// TODO: add 2-4 representative code snippets for this unit
-~~~
-## Common Mistakes
-- TODO: add at least 3 mistakes learners make
-## Mini Check
-### Q1
-- TODO
-### Q2
-- TODO
 ## Linked Sets
 - Basic: unity_u06_input_b01
 - Challenge: unity_u06_input_c01

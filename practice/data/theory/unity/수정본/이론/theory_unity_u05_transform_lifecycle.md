@@ -100,17 +100,7 @@ Test라는 하나의 오브젝트에 A,B 두 개의 스크립트가 적용되어
 
     결론) 다른 스크립트에도 접근이 가능하다. 주어진 코드를 읽고 이 코드는 다른 스크립트에 접근하려고 하는거구나 라는 것만 알아챌 수 있으면 된다.
 
-## Core Pattern
-~~~csharp
-// TODO: add 2-4 representative code snippets for this unit
-~~~
-## Common Mistakes
-- TODO: add at least 3 mistakes learners make
-## Mini Check
-### Q1
-- TODO
-### Q2
-- TODO
+
 ## Linked Sets
 - Basic: unity_u05_transform_lifecycle_b01
 - Challenge: unity_u05_transform_lifecycle_c01
