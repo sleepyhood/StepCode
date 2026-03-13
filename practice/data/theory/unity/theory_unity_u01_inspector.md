@@ -73,6 +73,7 @@ void Start()
   - 원리: Unity는 직렬화 가능한 필드를 Inspector에 표시합니다. `[SerializeField]`는 `private` 필드도 표시 대상이 되게 돕습니다.
   - 화면 변화: 이 속성을 붙인 뒤 저장하면, 이전에는 안 보이던 필드가 Inspector에 나타납니다.
 - `GameObject.FindGameObjectsWithTag("Enemy")`
+  <!-- conceptId: u01_c6 -->
   - 같은 Tag의 오브젝트를 한 번에 배열로 가져옵니다.
   - 반환 타입은 `GameObject[]`(배열)입니다.
   - 명시적으로 쓰면 다음과 같다.
@@ -91,6 +92,7 @@ void Start()
 ## 문항 핵심 포인트
 
 ### 1) Inspector 기본 기능
+<!-- conceptId: u01_c1 -->
 
 이 개념을 알면 무엇이 쉬워지나?
 
@@ -124,6 +126,7 @@ void Start()
 - 정답 판단: 거짓
 
 ### 2) 창 매칭
+<!-- conceptId: u01_c2 -->
 
 이 개념을 알면 무엇이 쉬워지나?
 
@@ -153,6 +156,7 @@ void Start()
 현재 씬에 없는 프리팹 파일도 보인다면, 그 창은 왜 `Hierarchy`가 아닐까?
 
 ### 3) IDE 선택
+<!-- conceptId: u01_c3 -->
 
 이 개념을 알면 무엇이 쉬워지나?
 
@@ -180,6 +184,7 @@ void Start()
 - 정답 판단: 옵션 이름을 물으면 `External Script Editor`
 
 ### 4) Scene 배치 T/F
+<!-- conceptId: u01_c4 -->
 
 이 개념을 알면 무엇이 쉬워지나?
 
@@ -213,6 +218,7 @@ void Start()
 같은 "스냅"이라는 말이 들어가도, 왜 Vertex Snapping과 Grid Snapping은 완전히 같은 기능이 아닐까?
 
 ### 5) Inspector에 변수 안 보임
+<!-- conceptId: u01_c5 -->
 
 이 개념을 알면 무엇이 쉬워지나?
 

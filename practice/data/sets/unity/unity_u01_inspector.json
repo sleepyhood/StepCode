@@ -8,6 +8,10 @@
     "problems": [
         {
             "id": "p01",
+            "conceptRef": "u01_c1",
+            "conceptRefs": [
+                "u01_c1"
+            ],
             "type": "short",
             "level": "basic",
             "title": "Inspector 기능 판별",
@@ -41,6 +45,10 @@
         },
         {
             "id": "p02",
+            "conceptRef": "u01_c2",
+            "conceptRefs": [
+                "u01_c2"
+            ],
             "type": "short",
             "level": "basic",
             "title": "Unity 창 역할 매칭",
@@ -78,6 +86,10 @@
         },
         {
             "id": "p03",
+            "conceptRef": "u01_c3",
+            "conceptRefs": [
+                "u01_c3"
+            ],
             "type": "short",
             "level": "basic",
             "title": "IDE 설정 위치",
@@ -89,6 +101,10 @@
         },
         {
             "id": "p04",
+            "conceptRef": "u01_c4",
+            "conceptRefs": [
+                "u01_c4"
+            ],
             "type": "short",
             "level": "basic",
             "title": "Scene 배치 설명 참/거짓",
@@ -126,6 +142,10 @@
         },
         {
             "id": "p05",
+            "conceptRef": "u01_c5",
+            "conceptRefs": [
+                "u01_c5"
+            ],
             "type": "code",
             "level": "challenge",
             "title": "Inspector 변수 노출",
@@ -136,6 +156,11 @@
         },
         {
             "id": "x01",
+            "conceptRef": "u01_c6",
+            "conceptRefs": [
+                "u01_c6",
+                "u01_c1"
+            ],
             "type": "code",
             "level": "challenge",
             "title": "Tag 검색 API 작성",
@@ -146,6 +171,10 @@
         },
         {
             "id": "x02",
+            "conceptRef": "u01_c5",
+            "conceptRefs": [
+                "u01_c5"
+            ],
             "type": "mcq",
             "level": "challenge",
             "title": "함정 - 필드 노출 가능 여부 판단",
@@ -164,6 +193,74 @@
             ],
             "correctIndex": 2,
             "teacherExplainMd": "### X02 해설\n- **노출 조건**:\n  - `public` 필드: 기본적으로 노출됨 (A, D)\n  - `private` + `[SerializeField]`: 명시적 요청으로 노출됨 (B)\n  - **단순 `private` 필드**: 외부 및 에디터에서 모두 감춰짐 (C)\n- **정답**: `private int score;`는 인스펙터에 나타나지 않습니다."
+        }
+    ],
+    "concepts": [
+        {
+            "id": "u01_c1",
+            "label": "Inspector 기본 기능",
+            "summary": "Static, Tag, Prefab의 역할과 오답 포인트",
+            "badge": "Inspector",
+            "aliases": [
+                "Static",
+                "Tag",
+                "Prefab"
+            ]
+        },
+        {
+            "id": "u01_c2",
+            "label": "Unity 주요 창 역할",
+            "summary": "Hierarchy, Scene, Project, Inspector의 역할 구분",
+            "badge": "Editor",
+            "aliases": [
+                "Hierarchy",
+                "Scene",
+                "Project",
+                "Inspector"
+            ]
+        },
+        {
+            "id": "u01_c3",
+            "label": "External Script Editor 설정",
+            "summary": "External Tools와 External Script Editor 옵션 구분",
+            "badge": "IDE",
+            "aliases": [
+                "External Tools",
+                "External Script Editor"
+            ]
+        },
+        {
+            "id": "u01_c4",
+            "label": "Scene 배치 도구와 좌표계",
+            "summary": "Local/Global, Universal Tool, Vertex Snapping, Transform 수치 입력",
+            "badge": "Scene",
+            "aliases": [
+                "Local",
+                "Global",
+                "Universal Tool",
+                "Vertex Snapping"
+            ]
+        },
+        {
+            "id": "u01_c5",
+            "label": "Inspector 필드 노출",
+            "summary": "public, private, [SerializeField]에 따른 Inspector 노출 규칙",
+            "badge": "SerializeField",
+            "aliases": [
+                "public",
+                "private",
+                "[SerializeField]"
+            ]
+        },
+        {
+            "id": "u01_c6",
+            "label": "Tag 검색 API",
+            "summary": "FindGameObjectsWithTag와 배열 반환 패턴",
+            "badge": "Tag",
+            "aliases": [
+                "FindGameObjectsWithTag",
+                "GameObject[]"
+            ]
         }
     ]
 }

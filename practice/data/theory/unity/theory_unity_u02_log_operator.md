@@ -49,6 +49,8 @@ Debug.Log("isEven=" + isEven);
 
 ## 문항 핵심 포인트
 ### 1) 로그 출력과 기본 연산자 구분
+<!-- conceptId: u02_c1 -->
+<!-- conceptId: u02_c2 -->
 이 개념을 알면 무엇이 쉬워지나?
 - 콘솔 출력 API 문제, 연산자 매칭 문제, 문자열 결합 문제를 한 번에 정리할 수 있습니다.
 
@@ -89,6 +91,7 @@ Debug.Log("isEven=" + isEven);
 - 정답 판단: 아닙니다. 비교라면 `==`가 필요합니다.
 
 ### 2) OR 조건식과 짝수/홀수 판별
+<!-- conceptId: u02_c3 -->
 이 개념을 알면 무엇이 쉬워지나?
 - OR 조건식 문제, `%`를 이용한 짝수 판별 문제, 확장 문항의 로그 조립 문제를 함께 풀기 쉬워집니다.
 
@@ -129,6 +132,7 @@ Debug.Log("isEven=" + isEven);
 *캡션: Console에서 로그를 선택해 상세 정보와 호출 위치를 더 자세히 확인하는 예시입니다. 출처: [Unity Manual - Console](https://docs.unity.cn/2018.2/Documentation/uploads/Main/ConsoleStackTrace.png)*
 
 ### 3) Unity/C# 명명 규칙과 대소문자
+<!-- conceptId: u02_c4 -->
 이 개념을 알면 무엇이 쉬워지나?
 - `MonoBehaviour`, `OnTriggerEnter`, `CompareTag`, `enabled`, `public`처럼 대소문자를 정확히 고르는 문제를 빠르게 해결할 수 있습니다.
 

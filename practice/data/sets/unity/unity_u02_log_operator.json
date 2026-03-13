@@ -8,6 +8,10 @@
     "problems": [
         {
             "id": "p01",
+            "conceptRef": "u02_c1",
+            "conceptRefs": [
+                "u02_c1"
+            ],
             "type": "mcq",
             "level": "basic",
             "title": "콘솔 출력 API",
@@ -24,6 +28,11 @@
         },
         {
             "id": "p02",
+            "conceptRef": "u02_c2",
+            "conceptRefs": [
+                "u02_c2",
+                "u02_c1"
+            ],
             "type": "short",
             "level": "basic",
             "title": "연산자 의미 매칭",
@@ -47,6 +56,11 @@
         },
         {
             "id": "p03",
+            "conceptRef": "u02_c3",
+            "conceptRefs": [
+                "u02_c3",
+                "u02_c2"
+            ],
             "type": "mcq",
             "level": "basic",
             "title": "OR 조건식 판별",
@@ -63,6 +77,11 @@
         },
         {
             "id": "p04",
+            "conceptRef": "u02_c3",
+            "conceptRefs": [
+                "u02_c3",
+                "u02_c2"
+            ],
             "type": "short",
             "level": "basic",
             "title": "나머지 연산",
@@ -72,6 +91,10 @@
         },
         {
             "id": "p05",
+            "conceptRef": "u02_c4",
+            "conceptRefs": [
+                "u02_c4"
+            ],
             "type": "short",
             "level": "challenge",
             "title": "명명 규칙 판별 1",
@@ -92,6 +115,10 @@
         },
         {
             "id": "p06",
+            "conceptRef": "u02_c4",
+            "conceptRefs": [
+                "u02_c4"
+            ],
             "type": "mcq",
             "level": "challenge",
             "title": "명명 규칙 판별 2",
@@ -108,6 +135,12 @@
         },
         {
             "id": "x01",
+            "conceptRef": "u02_c3",
+            "conceptRefs": [
+                "u02_c3",
+                "u02_c1",
+                "u02_c2"
+            ],
             "type": "code",
             "level": "challenge",
             "title": "변형 - 로그 + 판별 결과 출력",
@@ -118,6 +151,10 @@
         },
         {
             "id": "x02",
+            "conceptRef": "u02_c4",
+            "conceptRefs": [
+                "u02_c4"
+            ],
             "type": "mcq",
             "level": "challenge",
             "title": "함정 - 대소문자 오류 찾기",
@@ -131,6 +168,56 @@
             "optionLabels": ["A", "B", "C", "D"],
             "correctIndex": 2,
             "teacherExplainMd": "### X02 해설\n- **정답**: C\n- **설명**: `OnTriggerEnter`에서 `O`가 소문자가 되면 유니티 엔진이 이를 이벤트 함수로 인식하지 못해 충돌 처리가 일어나지 않습니다. 이는 컴파일 에러가 아니라 논리 에러로 이어집니다."
+        }
+    ],
+    "concepts": [
+        {
+            "id": "u02_c1",
+            "label": "Debug.Log와 콘솔 출력",
+            "summary": "Unity 콘솔 출력 API와 문자열 결합 기본형",
+            "badge": "Debug.Log",
+            "aliases": [
+                "Debug.Log",
+                "Console"
+            ]
+        },
+        {
+            "id": "u02_c2",
+            "label": "기본 연산자 구분",
+            "summary": "=, ==, !=, ++, +의 역할 구분",
+            "badge": "Operators",
+            "aliases": [
+                "=",
+                "==",
+                "!=",
+                "++",
+                "+"
+            ]
+        },
+        {
+            "id": "u02_c3",
+            "label": "OR 조건식과 나머지 연산",
+            "summary": "||, %, ==, !=를 이용한 조건식과 짝수/홀수 판별",
+            "badge": "Conditions",
+            "aliases": [
+                "||",
+                "%",
+                "짝수",
+                "홀수"
+            ]
+        },
+        {
+            "id": "u02_c4",
+            "label": "Unity/C# 명명 규칙",
+            "summary": "MonoBehaviour, OnTriggerEnter, CompareTag, enabled, public의 대소문자 규칙",
+            "badge": "Naming",
+            "aliases": [
+                "MonoBehaviour",
+                "OnTriggerEnter",
+                "CompareTag",
+                "enabled",
+                "public"
+            ]
         }
     ]
 }
