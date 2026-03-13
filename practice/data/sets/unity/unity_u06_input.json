@@ -10,61 +10,64 @@
             "id": "p01",
             "type": "short",
             "level": "basic",
-            "title": "입력 메서드 매핑",
-            "description": "`KeyCode.LeftArrow` 기준으로 ① 누르는 동안 ② 누른 프레임 ③ 뗀 프레임에 해당하는 메서드를 쓰세요.",
-            "expectedAnyOf": [
-                "① GetKey(KeyCode.LeftArrow), ② GetKeyDown(KeyCode.LeftArrow), ③ GetKeyUp(KeyCode.LeftArrow)",
-                "GetKey / GetKeyDown / GetKeyUp"
-            ]
+            "title": "Input 시스템 타이밍 구분",
+            "description": "왼쪽 화살표 키(`KeyCode.LeftArrow`)를 기준으로, 유니티의 `Input` 클래스에서 제공하는 키보드 입력 메서드 3가지를 상황에 맞게 매칭하세요.\n\n(1) 키를 누르는 동안 매 프레임 계속해서 true를 반환한다.\n(2) 키를 처음 누른 첫 번째 프레임에만 딱 한 번 true를 반환한다.\n(3) 누르고 있던 키를 손가락에서 떼는 순간의 프레임에 딱 한 번 true를 반환한다.",
+            "answerUi": {
+                "kind": "grid",
+                "rows": ["(1) 키 누름 유지", "(2) 최초 눌림 발생", "(3) 키 해제(뗌)"],
+                "columns": ["메서드 호출 예시"],
+                "narrowAnswerColumn": false,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                ["Input.GetKey(KeyCode.LeftArrow)"],
+                ["Input.GetKeyDown(KeyCode.LeftArrow)"],
+                ["Input.GetKeyUp(KeyCode.LeftArrow)"]
+            ],
+            "teacherExplainMd": "### P01 해설\n- **GetKey**: 'Down'이나 'Up' 없이 쓰이며, 키를 꾹 누르고 있는 연속적인 입력(이동 등)을 처리할 때 씁니다.\n- **GetKeyDown**: 눌리는 찰나 한 번만 반응하므로 점프, 공격, 대화창 넘기기 등에 적합합니다.\n- **GetKeyUp**: 키를 뗄 때 반응하므로 폭탄의 게이지를 모으다 던지거나, 특정 행동을 중단할 때 주로 활용됩니다."
         },
         {
             "id": "p02",
             "type": "mcq",
             "level": "basic",
             "title": "이동 메서드 선택",
-            "description": "`transform.[드롭다운](move * Time.deltaTime * speed);`에 들어갈 올바른 메서드를 고르세요.",
+            "description": "다음 코드에서 이동 벡터(`move`)에 프레임 보정 수치 등을 곱하여 대상 오브젝트의 좌표를 실제로 누적 이동시켜주는 최적의 메서드를 고르세요.\n\n`transform.[ 드롭다운 ](move * Time.deltaTime * speed);`",
             "options": [
                 "`TransformVector`",
                 "`SetPositionAndRotation`",
                 "`Translate`",
                 "`TransformDirection`"
             ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 2
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 2,
+            "teacherExplainMd": "### P02 해설\n- **정답**: C. `Translate` \n- **설명**: `Translate` 메서드는 인자로 전달된 Vector3 값만큼 현재 오브젝트의 위치를 물리적 좌표상에서 이동시킵니다. `TransformDirection` 등은 방향 수치만 변환해줄 뿐 실제 이동을 시키지는 못합니다."
         },
         {
             "id": "x01",
             "type": "code",
-            "level": "basic",
-            "title": "변형 - 축 입력 이동 코드 완성",
-            "description": "`Horizontal/Vertical` 축 입력으로 이동 벡터를 만들고 `Translate`로 적용하는 핵심 2줄을 작성하세요.",
-            "code": "// TODO",
-            "expectedCode": "move = new Vector3(Input.GetAxis(\"Horizontal\"), 0f, Input.GetAxis(\"Vertical\"));\ntransform.Translate(move * Time.deltaTime * speed);"
+            "level": "challenge",
+            "title": "변형 - 축 입력 기반 이동 로직 완성",
+            "description": "표준 Input 축(`Horizontal`, `Vertical`)을 읽어 캐릭터를 XZ 평면(바닥)에서 이동시키기 위한 핵심 2줄의 코드를 완성하세요. 프레임 보정(`Time.deltaTime`)과 이동 속도(`speed`) 변수도 공식에 포함되어야 합니다.",
+            "code": "// 1. 입력 축을 읽어 move 벡터 생성(Y축은 0f)\nVector3 move = \n// 2. Translate를 이용해 실제 이동 적용\ntransform.Translate(",
+            "expectedCode": "Vector3 move = new Vector3(Input.GetAxis(\"Horizontal\"), 0f, Input.GetAxis(\"Vertical\"));\ntransform.Translate(move * Time.deltaTime * speed);",
+            "teacherExplainMd": "### X01 해설\n- **축 입력**: `Input.GetAxis`를 통해 조이스틱이나 WASD 가중치를 받아옵니다.\n- **프레임 보정**: `Time.deltaTime`을 곱해주지 않으면 컴퓨터 사양에 따라 이동 속도가 제각각이 되므로, 실시간 게임 개발에서는 필수적인 요소입니다."
         },
         {
             "id": "x02",
             "type": "mcq",
             "level": "challenge",
-            "title": "함정 - GetKey 계열 오개념 판별",
-            "description": "다음 중 틀린 설명을 고르세요.",
+            "title": "함정 - Input API 오개념 판별",
+            "description": "유니티 `Input` 클래스의 메서드 작동 방식 중 **잘못 설명하고 있는 것**을 고르세요.",
             "options": [
-                "`GetKey`는 누르는 동안 매 프레임 true다.",
-                "`GetKeyDown`은 누른 프레임에만 true다.",
-                "`GetKeyUp`은 누르는 동안 계속 true다.",
-                "`GetKeyUp`은 뗀 프레임에 true다."
+                "`GetKey`는 키보드 하드웨어를 누르고 있는 모든 순간 참이다.",
+                "`GetKeyDown`은 버튼이 끝까지 들어간 최초 1프레임에만 동작한다.",
+                "`GetKeyUp`은 키를 계속 누르고 있는 동안에도 매 프레임 참을 반환한다.",
+                "`Translate` 메서드에 0을 넘겨주면 오브젝트는 이동하지 않는다."
             ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 2
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 2,
+            "teacherExplainMd": "### X02 해설\n- **정답**: C\n- **설명**: `GetKeyUp`은 누르고 있는 동안에는 거짓(`false`)이다가, 키에서 손가락을 떼는 **그 순간 단 한 번의 프레임**에서만 참(`true`)이 됩니다. 누르는 동안 참인 것은 `GetKey`입니다."
         }
     ]
 }

@@ -8,86 +8,79 @@
     "problems": [
         {
             "id": "p01",
-            "type": "short",
+            "type": "mcq",
             "level": "basic",
-            "title": "코드 설명 주석 2개 선택",
-            "description": "주어진 코드에 맞는 주석 2개를 쓰세요.",
-            "expectedAnyOf": [
+            "title": "발사체 생성 코드 설명 매칭",
+            "description": "아래 코드가 수행하는 구체적인 동작을 가장 정확히 설명한 보기 2개를 고르세요.\n\n```csharp\nRigidbody clone = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);\nclone.velocity = transform.forward * speed;\n```\n\n**보기:**\nA. 원본 프리팹(`projectile`) 오브젝트를 씬에서 영구적으로 삭제한다.\nB. `spawnPoint`의 위치와 회전 정보를 본떠서 새로운 물체 사본을 생성한다.\nC. 생성된 물체에 로컬 전방(Z축) 방향으로 일정한 물리 속도를 부여한다.\nD. 발사체가 적에게 명중할 때까지 자동으로 경로를 추적하여 이동시킨다.",
+            "options": [
+                "A, B",
+                "B, C",
                 "C, D",
-                "C D",
-                "C와 D"
-            ]
+                "A, D"
+            ],
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 1,
+            "teacherExplainMd": "### P01 해설\n- **정답**: B, C\n- **설명**: `Instantiate`는 프리팹의 복제본을 특정 위치/회전에 생성하는 함수입니다(B). 복제된 객체의 `velocity` 속성에 벡터를 대입하면 해당 방향과 속력으로 즉시 등속 운동을 시작하게 됩니다(C)."
         },
         {
             "id": "p02",
             "type": "mcq",
             "level": "basic",
-            "title": "rb 변수 타입 선택",
-            "description": "`rb = GetComponent<Rigidbody>();`와 `rb.MovePosition(...)`에 맞는 선언 타입을 고르세요.",
+            "title": "Rigidbody 컴포넌트 참조 타입",
+            "description": "다음 코드에서 `rb` 변수가 에러 없이 `GetComponent` 결과를 담고 물리 메서드를 호출할 수 있도록 빈칸에 들어갈 알맞은 자료형을 고르세요.\n\n```csharp\n(  ①  ) rb;\n\nvoid Start() {\n    rb = GetComponent<Rigidbody>();\n}\n\nvoid FixedUpdate() {\n    rb.MovePosition(rb.position + transform.forward * Time.fixedDeltaTime);\n}\n```",
             "options": [
                 "`Vector3`",
                 "`Collider`",
-                "`RigidBody`",
+                "`Rigidbody`",
                 "`CharacterController`"
             ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 2
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 2,
+            "teacherExplainMd": "### P02 해설\n- **정답**: `Rigidbody` \n- **설명**: `GetComponent<Rigidbody>()`는 대상 객체에서 `Rigidbody` 컴포넌트를 찾아 반환합니다. 따라서 이를 저장하는 변수의 타입도 반드시 `Rigidbody`여야 합니다. (C#은 타입에 매우 엄격합니다.)"
         },
         {
             "id": "p03",
             "type": "short",
             "level": "basic",
-            "title": "AddForce 빈칸 2개 선택",
-            "description": "`rigidBody.AddForce([①] * [②]);`에서 ①, ②를 쓰세요.",
-            "expectedAnyOf": [
-                "① transform.forward, ② speedForce",
-                "transform.forward, speedForce"
-            ]
+            "title": "AddForce 힘의 방향과 크기",
+            "description": "오브젝트가 현재 바라보고 있는 앞쪽 방향으로, 인스펙터에서 설정한 힘(`speedForce`)만큼 밀어내고자 합니다. 빈칸 ①, ②에 들어갈 올바른 변수/속성을 순서대로 쓰세요.\n\n```csharp\npublic float speedForce = 10f;\nprivate Rigidbody rigidBody;\n\nvoid Update() {\n    if (Input.GetKeyDown(KeyCode.Space)) {\n        rigidBody.AddForce([ ① ] * [ ② ]);\n    }\n}\n```",
+            "expectedAnyOf": ["transform.forward, speedForce", "① transform.forward, ② speedForce"],
+            "teacherExplainMd": "### P03 해설\n- **① 방향**: `transform.forward`는 오브젝트의 로컬 앞쪽 방향(Z축)을 나타내는 단위 벡터입니다.\n- **② 크기**: `public`으로 선언되어 인스펙터에 노출된 `speedForce`를 곱하여 힘의 세기를 결정합니다."
         },
         {
             "id": "p04",
             "type": "short",
             "level": "challenge",
-            "title": "풀링 발사체 함수 선택",
-            "description": "빈칸 함수명 ①(초기화), ②(Trigger 충돌)을 쓰세요.",
-            "expectedAnyOf": [
-                "① Init, ② OnTriggerEnter",
-                "Init, OnTriggerEnter"
-            ]
+            "title": "오브젝트 풀링용 발사체 함수",
+            "description": "오브젝트 풀링(Pooling) 방식으로 재사용되는 발사체 스크립트입니다. 빈칸 ①(재사용 시 호출할 초기화 함수), ②(Trigger 충돌 감지 이벤트)에 들어갈 이름을 쓰세요.\n\n```csharp\npublic void [ ① ](Vector3 pos) {\n    transform.position = pos;\n    hp = 3;\n}\n\nvoid [ ② ] (Collider other) {\n    if (other.CompareTag(\"Enemy\")) { \n        // 데미지 처리\n    }\n}\n```",
+            "expectedAnyOf": ["Init, OnTriggerEnter", "① Init, ② OnTriggerEnter"],
+            "teacherExplainMd": "### P04 해설\n- **① Init**: 풀링된 객체는 `Destroy`되지 않고 껐다 켜지므로, `Start` 대신 매번 호출할 수 있는 커스텀 초기화 함수(`Init` 등)가 필요합니다.\n- **② OnTriggerEnter**: 뚫고 지나가는(Trigger) 콜라이더와 충돌했을 때 엔진이 자동으로 호출해주는 이벤트 함수 이름입니다. 파라미터가 `Collider`인 점이 포인트입니다."
         },
         {
             "id": "x01",
             "type": "code",
             "level": "challenge",
-            "title": "변형 - 발사체 생성 + 전방 속도 부여 코드 작성",
-            "description": "`Fire1` 입력 시 생성된 `Rigidbody`에 전방 초기 속도를 주는 핵심 코드를 작성하세요.",
-            "code": "// TODO",
-            "expectedCode": "Rigidbody clone = Instantiate(projectile, transform.position, transform.rotation);\nclone.velocity = transform.TransformDirection(Vector3.forward * 10);"
+            "title": "변형 - 입력 기반 발사 로직",
+            "description": "`Fire1` 마우스 왼쪽 버튼을 눌렀을 때, `projectile` 프리팹을 현재 위치에 생성하고 앞쪽 방향으로 `10f`의 속도를 부여하는 코드를 작성하세요.",
+            "code": "if (Input.GetButtonDown(\"Fire1\")) {\n    // 여기에 2줄 작성\n}",
+            "expectedCode": "Rigidbody clone = Instantiate(projectile, transform.position, transform.rotation);\nclone.velocity = transform.forward * 10f;",
+            "teacherExplainMd": "### X01 해설\n- **1단계**: `Instantiate`로 클론을 생성하고 변수에 담습니다.\n- **2단계**: 담겨진 변수(`clone`)의 `velocity`에 `방향 * 속력` 값을 대입하여 움직이게 합니다."
         },
         {
             "id": "x02",
             "type": "mcq",
             "level": "challenge",
             "title": "함정 - Trigger/Collision 이벤트 구분",
-            "description": "`IsTrigger = true`인 Collider를 사용하는 발사체에 적절한 이벤트를 고르세요.",
+            "description": "총알의 Collider 컴포넌트에서 `IsTrigger`가 **체크(True)**되어 있을 때, 적과 부딪히는 순간 유니티 엔진이 스크립트에서 찾아 실행시키는 이벤트 함수는?",
             "options": [
                 "`OnCollisionEnter(Collision other)`",
                 "`OnTriggerEnter(Collider other)`",
                 "`Update()`",
-                "`LateUpdate()`"
+                "`OnCollisionStay(Collision other)`"
             ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 1
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 1,
+            "teacherExplainMd": "### X02 해설\n- **정답**: B\n- **설명**: `IsTrigger`가 켜져 있으면 물리적인 반발력은 사라지고 '겹침'만 감지합니다. 이때는 `Collision` 계열이 아닌 `Trigger` 계열 이벤트가 발생하며, 매개변수도 `Collider` 타입을 받게 됩니다."
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "id": "unity_u03_function_syntax",
-    "title": "Unity U03 함수/static",
+    "title": "Unity U03 함수/static 기초",
     "categoryId": "unity_u03_function_syntax",
     "availableLanguages": [
         "csharp"
@@ -11,85 +11,71 @@
             "type": "short",
             "level": "basic",
             "title": "함수 설명 참/거짓",
-            "description": "왼쪽 문장의 참/거짓을 오른쪽 답안 칸에 채우세요.",
+            "description": "다음은 C# 프로그래밍에서 함수의 시그니처와 반환형, 그리고 매개변수 사용에 대한 설명입니다. 각 문장의 참/거짓을 판별하세요.\n\n(1) `void` 키워드는 함수가 아무런 결괏값을 반환하지 않는다는 것을 의미하므로, `null` 객체를 반환한다는 뜻과 문법적으로 동일하다.\n(2) 하나의 함수(메서드) 선언부 안에서 `int` 타입과 `string` 타입 등, 서로 다른 자료형의 매개변수를 여러 개 함께 전달받도록 구성할 수 있다.\n(3) 작성된 일반 함수(메서드) 코드는 프로그램 실행 중에 다른 코드 블록에 의해 명시적으로 호출(Call)되지 않으면 내부 로직이 절대 스스로 실행되지 않는다.\n(4) 반환형이 `void`가 아닌 구체적인 자료형(예: `int`, `float`)으로 선언된 함수는, 본문 종료 전에 반드시 해당 타입에 맞는 결괏값을 `return` 키워드로 반환해야만 컴파일 오류가 나지 않는다.",
             "answerUi": {
                 "kind": "grid",
                 "rows": [
-                    "(1) `void`는 `null`을 반환한다.",
-                    "(2) 서로 다른 타입의 매개변수를 함께 전달할 수 있다.",
-                    "(3) 일반 함수는 호출되지 않으면 실행되지 않는다.",
-                    "(4) 비-void 함수는 `return`이 필요하다."
+                    "(1) void와 null 반환의 동일성",
+                    "(2) 매개변수 자료형 중첩 허용",
+                    "(3) 함수의 명시적 호출 필요성",
+                    "(4) 비-void형의 return 지시 의무"
                 ],
                 "columns": [
-                    "답안(참/거짓)"
+                    "참/거짓"
                 ],
                 "narrowAnswerColumn": true,
                 "rowSep": "\n",
                 "colSep": " "
             },
             "expectedGrid": [
-                [
-                    "거짓"
-                ],
-                [
-                    "참"
-                ],
-                [
-                    "참"
-                ],
-                [
-                    "참"
-                ]
-            ]
+                ["거짓"],
+                ["참"],
+                ["참"],
+                ["참"]
+            ],
+            "teacherExplainMd": "### P01 해설\n- **(1) 거짓**: `void`는 반환할 데이터가 아예 없음을 뜻하는 '상태'이고, `null`은 어떤 객체라도 담을 수 있는 '값'입니다. 의미가 다릅니다.\n- **(2) 참**: 함수의 괄호 안에는 콤마(`,`)를 사용하여 각기 다른 타입의 변수를 여러 개 선언할 수 있습니다.\n- **(3) 참**: 유니티 이벤트 함수(Update 등)가 아닌 사용자가 직접 만든 일반 함수는 호출 구문이 있어야만 실행됩니다.\n- **(4) 참**: 반환형이 지정된 경우, 모든 실행 경로에서 적절한 값을 돌려주어야 컴파일 에러가 발생하지 않습니다."
         },
         {
             "id": "p02",
             "type": "mcq",
             "level": "basic",
             "title": "static 문맥 오류 수정",
-            "description": "아래 코드의 `[ ① ] float statFloat = 0;` 빈칸에 들어갈 키워드를 고르세요. `ThisStat()`은 static 메서드입니다.",
+            "description": "다음 유니티 C# 스크립트에서 컴파일 에러가 발생하고 있습니다. `ThisStat()` 메서드가 `static`으로 선언되어 있기 때문입니다.\n메서드 내부에서 `statFloat` 변수를 정상적으로 수정할 수 있도록 ①번 빈칸에 들어갈 알맞은 키워드를 고르세요.\n\n```csharp\npublic class Example : MonoBehaviour\n{\n    [ ① ] float statFloat = 0;\n    private static void ThisStat()\n    {\n        statFloat = 1;\n    }\n}\n```",
             "options": [
                 "`static`",
                 "`const`",
                 "`readonly`",
                 "`private`"
             ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 0
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 0,
+            "teacherExplainMd": "### P02 해설\n- **정답**: A. `static` \n- **설명**: 정적(`static`) 메서드는 객체가 생성되기 전부터 메모리에 상주합니다. 따라서 이 메서드 안에서 클래스의 필드에 접근하려면, 해당 필드 역시 정적(`static`) 메모리 영역에 같이 있어야 합니다. 일반 인스턴스 변수(static이 없는 변수)는 어떤 객체의 변수인지 특정할 수 없어서 static 메서드에서 직접 건드릴 수 없습니다."
         },
         {
             "id": "x01",
             "type": "code",
-            "level": "basic",
+            "level": "challenge",
             "title": "변형 - 함수 시그니처 완성",
-            "description": "요구사항( `private`, `static`, 반환형 `int`, 메서드명 `Multiply`, 매개변수 `int a, int b` )을 만족하는 메서드 선언 한 줄을 작성하세요.",
+            "description": "다음의 5가지 요구사항을 모두 만족하는 C# 메서드 선언부(첫 줄)를 작성하세요.\n1. 클래스 외부 접근 제어: `private`\n2. 인스턴스 없이 호출 가능한 정적(`static`) 메서드일 것\n3. 정수형 결괏값을 반환(`int`)\n4. 이름은 `Multiply`로 지정\n5. 정수형 매개변수 `a`와 `b`를 받을 것",
             "code": "// TODO",
-            "expectedCode": "private static int Multiply(int a, int b)"
+            "expectedCode": "private static int Multiply(int a, int b)",
+            "teacherExplainMd": "### X01 해설\n- **조립 순서**: `접근제어자` -> `지정자` -> `반환형` -> `메서드이름` -> `(매개변수목록)`\n- **주의**: `static`과 `int`의 위치를 바꾸지 않도록 주의하세요. 데이터 타입(반환형)은 항상 이름 바로 앞에 옵니다."
         },
         {
             "id": "x02",
             "type": "mcq",
             "level": "challenge",
-            "title": "함정 - `void`/`return` 오개념 판별",
-            "description": "다음 중 틀린 설명을 고르세요.",
+            "title": "함정 - 함수/static 오개념 종합 판별",
+            "description": "C# 및 유니티의 함수 반환형과 정적(Static) 문맥 규칙 중 **잘못 설명하고 있는 것**을 고르세요.",
             "options": [
-                "`void` 메서드는 값을 반환하지 않는다.",
-                "`int` 반환형 메서드는 적절한 값을 `return`해야 한다.",
-                "static 메서드는 인스턴스 필드를 직접 접근할 수 있다.",
-                "매개변수는 서로 다른 타입을 함께 사용할 수 있다."
+                "반환형이 `void`로 지정된 함수는 어떠한 값도 반환하지 않는다.",
+                "`int`나 `float` 등을 반환형으로 선언하면 반드시 `return` 문으로 응답해야 한다.",
+                "`static` 메서드 내부에서는 같은 클래스의 일반 멤버 변수에 별도 객체 생성 없이 곧바로 접근 가능하다.",
+                "함수 괄호 안에는 서로 다른 자료형의 매개변수를 여러 개 선언할 수 있다."
             ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 2
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 2,
+            "teacherExplainMd": "### X02 해설\n- **정답**: C\n- **설명**: static 메서드는 특정 인스턴스에 소속되지 않으므로, '누구의 것인지 알 수 없는' 일반 변수(인스턴스 필드)를 직접 수정할 수 없습니다. 인스턴스 멤버에 접근하려면 반드시 `new` 등으로 만들어진 대상 객체를 통해 접근해야 합니다."
         }
     ]
 }

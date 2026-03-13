@@ -11,87 +11,84 @@
             "type": "short",
             "level": "basic",
             "title": "점프 상태 클립 배치",
-            "description": "Z1~Z4 배치 정답을 순서대로 쓰세요.",
-            "expectedAnyOf": [
-                "Z1 JumpApex, Z2 SlowFall, Z3 FastFall, Z4 FastLand",
-                "JumpApex, SlowFall, FastFall, FastLand"
-            ]
+            "description": "애니메이터 컨트롤러에서 점프 궤적을 처리하는 4가지 상태(State) 노드에 알맞은 애니메이션 클립명을 순서대로 나열하세요.\n\n궤적 단계: [Z1: 정점] → [Z2: 느린 낙하] → [Z3: 빠른 낙하] → [Z4: 착지]",
+            "answerUi": {
+                "kind": "grid",
+                "rows": ["Z1 (정점)", "Z2 (느린 낙하)", "Z3 (빠른 낙하)", "Z4 (착지)"],
+                "columns": ["클립 이름"],
+                "narrowAnswerColumn": false,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                ["JumpApex"],
+                ["SlowFall"],
+                ["FastFall"],
+                ["FastLand"]
+            ],
+            "teacherExplainMd": "### P01 해설\n- **물리적 정렬**: 캐릭터의 움직임 흐름에 따라 클립을 배치해야 끊김 없는 자연스러운 애니메이션이 완성됩니다.\n- **JumpApex**: 상승의 최고점,\n- **SlowFall**: 중력이 작용하기 시작하는 초기 낙하,\n- **FastFall**: 가속도가 붙은 빠른 낙하,\n- **FastLand**: 지면에 닿는 동작 순으로 연결합니다."
         },
         {
             "id": "p02",
             "type": "short",
             "level": "basic",
-            "title": "Animator 상태 시스템 전환 T/F",
-            "description": "1~4번 문장의 참/거짓을 순서대로 쓰세요.",
-            "expectedAnyOf": [
-                "참, 거짓, 참, 거짓",
-                "1 참 2 거짓 3 참 4 거짓",
-                "T, F, T, F",
-                "true false true false"
-            ]
+            "title": "Animator 상태 시스템 규칙 T/F",
+            "description": "Animator 컨트롤러의 상태 머신 설계에 대한 설명의 참/거짓을 순서대로 쓰세요.\n\n1. Entry 노드에서 어떤 상태로든 기본 전환(Default Transition)을 연결할 수 있다.\n2. 애니메이터에 기본 상태(주황색 노드)를 하나도 설정하지 않고도 전체 머신을 작동시킬 수 있다.\n3. Sub-State Machine을 사용하여 복잡한 상태 그룹을 계층적으로 관리할 수 있다.\n4. 개별 상태(State) 노드에서 Sub-State Machine 덩어리로는 어떤 전환도 연결할 수 없다.",
+            "expectedAnyOf": ["참, 거짓, 참, 거짓", "참 거짓 참 거짓", "1 참 2 거짓 3 참 4 거짓"],
+            "teacherExplainMd": "### P02 해설\n- **1 참**: Entry는 씬 시작 시 첫 상태를 결정합니다.\n- **2 거짓**: 유니티 애니메이터는 반드시 하나 이상의 기본 상태(주황색)가 있어야 합니다.\n- **3 참**: 상태가 너무 많아질 때 이를 그룹화하여 '서브 상태 머신'으로 관리하는 것은 대규모 개발의 필수입니다.\n- **4 거짓**: 일반 상태에서 다른 서브 상태 머신 그룹으로의 전환 연결은 당연히 지원됩니다."
         },
         {
             "id": "p03",
             "type": "short",
             "level": "basic",
-            "title": "Set 함수 매칭",
-            "description": "①~④에 들어갈 함수명을 순서대로 쓰세요.",
-            "expectedAnyOf": [
-                "SetInt, SetFloat, SetBool, SetTrigger",
-                "① SetInt ② SetFloat ③ SetBool ④ SetTrigger"
-            ]
+            "title": "전용 Set 함수 매칭",
+            "description": "C# 스크립트에서 애니메이터 파라미터의 타입에 맞춰 사용하는 함수 ①, ②, ③, ④를 순서대로 쓰세요.\n\n1. `animator.(  ①  )(\"Level\", 5);` \n2. `animator.(  ②  )(\"Weight\", 0.5f);` \n3. `animator.(  ③  )(\"isAlive\", false);` \n4. `animator.(  ④  )(\"StartAction\");` ",
+            "expectedAnyOf": ["SetInteger, SetFloat, SetBool, SetTrigger", "SetInt, SetFloat, SetBool, SetTrigger"],
+            "teacherExplainMd": "### P03 해설\n- **타입 대응**: C#의 자료형과 완벽히 일치해야 합니다.\n- **SetInteger**: 정수(int) \n- **SetFloat**: 실수(float) \n- **SetBool**: 논리값(bool) \n- **SetTrigger**: 값 없이 신호만 보낼 때"
         },
         {
             "id": "p04",
             "type": "short",
             "level": "challenge",
-            "title": "SetBool 코드 완성",
-            "description": "① 호출 주체와 ② 인수 형태를 쓰세요.",
-            "expectedAnyOf": [
-                "① animator, ② (\"Attacking\", false);",
-                "animator / (\"Attacking\", false);",
-                "animator.SetBool(\"Attacking\", false);"
-            ]
+            "title": "SetBool 호출 코드 완성",
+            "description": "애니메이터 인스턴스 변수 `animator`를 사용하여 `Attacking` 파라미터(Bool 타입)를 `false`로 바꾸는 한 줄 코드를 완성하세요.\n\n```csharp\n(  ①  ).SetBool(  ②  );\n```",
+            "expectedAnyOf": ["animator.SetBool(\"Attacking\", false);", "① animator, ② (\"Attacking\", false)"],
+            "teacherExplainMd": "### P04 해설\n- **인스턴스 호출**: 클래스 이름(`Animator`)이 아니라 내가 선언한 변수 이름(`animator`)을 사용해야 합니다.\n- **쌍따옴표**: 파라미터 이름은 반드시 문자열(`\" \"`)로 감싸야 하며, 두 번째 인자로 바꿀 목표 값(`false`)을 전달합니다."
         },
         {
             "id": "p05",
             "type": "short",
             "level": "challenge",
-            "title": "reset 전환 파라미터 선택",
-            "description": "문장 빈칸 ①, ② 정답을 쓰세요.",
-            "expectedAnyOf": [
-                "① Search, ② Friendly",
-                "Search, Friendly"
-            ]
+            "title": "Reset 전환 파라미터 설계",
+            "description": "Animator에서 `reset` 전환 조건을 설계할 때, Trigger 타입인 [ ① ] 파라미터는 발동시키고, Bool 타입인 [ ② ] 파라미터는 false로 만드는 코드를 작성하고자 합니다. ①, ②에 들어갈 적절한 파라미터 이름을 쓰세요.\n(힌트: Search, Friendly 중 선택)",
+            "expectedAnyOf": ["Search, Friendly", "① Search, ② Friendly"],
+            "teacherExplainMd": "### P05 해설\n- **정답**: ① Search, ② Friendly\n- **설명**: `Search`는 초기화 시 다시 찾기를 시작하는 일시적 신호(Trigger)로 쓰고, `Friendly`는 지속적인 우호 상태 여부(Bool)를 나타내는 용도로 사용합니다."
         },
         {
             "id": "x01",
             "type": "code",
             "level": "challenge",
-            "title": "변형 - 이동 속도 파라미터 갱신 코드",
-            "description": "float 파라미터 `\"Speed\"`를 `playerSpeed`로 갱신하는 1줄 코드를 작성하세요.",
-            "code": "// TODO",
-            "expectedCode": "animator.SetFloat(\"Speed\", playerSpeed);"
+            "title": "변형 - 이동 속도 파라미터 동기화",
+            "description": "플레이어의 이동 속도 변수인 `playerSpeed` 값을 애니메이터의 `\"Speed\"` 파라미터(Float 타입)에 실시간으로 전달하는 코드를 한 줄로 작성하세요.",
+            "code": "animator.",
+            "expectedCode": "animator.SetFloat(\"Speed\", playerSpeed);",
+            "teacherExplainMd": "### X01 해설\n- **핵심**: 실수형 변수를 애니메이터에 연결할 때는 `SetFloat` API를 사용합니다. 파라미터 이름의 대소문자가 애니메이터 컨트롤러 창에 설정된 것과 똑같아야 정상 작동합니다."
         },
         {
             "id": "x02",
             "type": "mcq",
             "level": "challenge",
-            "title": "함정 - Trigger 호출 문법 선택",
-            "description": "Trigger 파라미터 `Search`를 발동하는 올바른 코드를 고르세요.",
+            "title": "함정 - Trigger 호출 문법",
+            "description": "애니메이터에 등록된 Trigger 타입 파라미터인 `Search`를 발동시키는 올바른 C# 호출 문법은?",
             "options": [
                 "`animator.SetBool(\"Search\", true);`",
                 "`animator.SetTrigger(\"Search\");`",
                 "`animator.SetInt(\"Search\", 1);`",
                 "`animator.SetFloat(\"Search\", 1f);`"
             ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 1
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 1,
+            "teacherExplainMd": "### X02 해설\n- **정답**: B\n- **설명**: Trigger는 True/False 상태를 저장하는 것이 아니라 '신호를 보낸 후 즉시 소멸'하는 특수한 타입입니다. 따라서 전용 메서드인 `SetTrigger`를 사용하며, 추가적인 값 인수 없이 이름만 넘겨줍니다."
         }
     ]
 }

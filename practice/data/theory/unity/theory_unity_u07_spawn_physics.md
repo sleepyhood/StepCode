@@ -106,7 +106,7 @@ public class Bullet : MonoBehaviour
 ## 빠른 체크리스트
 - `Instantiate`로 생성된 반환값을 곧바로 저장하여 재가공할 수 있는가?
 - 공간 이동(`Translate`, `position`)과 물리 이동(`AddForce`, `velocity`)의 차이와 부작용을 아는가?
-- 메모리 부하 방지를 위해 재활용(활성화/비활성화)하는 디자인 패턴이 **오브젝트 풀링(Object Pooling)**임을 아는가?
+- 메모리 부하 방지를 위해 재활용(활성화/비활성화)하는 디자인 패턴이 **오브젝트 풀링(Object Pooling)** 임을 아는가?
 - `OnCollision` 계열과 `OnTrigger` 계열의 매개변수 타입(`Collision`/`Collider`)과 통과 허용 범위 차이를 명확하게 대답할 수 있는가?
 - 풀링 기법에서 꺼냈을 때마다 변수를 초기값으로 돌려주는 `Init` 사용자 지정 함수의 용도를 파악했는가?
 

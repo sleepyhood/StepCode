@@ -10,78 +10,75 @@
             "id": "p01",
             "type": "short",
             "level": "basic",
-            "title": "점수 UI 코드 3요소 쓰기",
-            "description": "① using, ② Text 변수 선언, ③ .text 갱신 코드를 쓰세요.",
-            "expectedAnyOf": [
-                "using UnityEngine.UI; / public Text myText; / myText.text = (\"Score: \" + score.ToString());",
-                "using UnityEngine.UI; public Text myText; myText.text = (\"Score: \" + score.ToString());",
-                "using UnityEngine.UI;|public Text myText;|myText.text = (\"Score: \" + score.ToString());"
-            ]
+            "title": "점수 UI 표시 코드 3요소",
+            "description": "유니티 UI의 `Text` 컴포넌트를 사용하여 점수(`score`)를 화면에 갱신하려고 합니다. 다음 코드를 완성하기 위한 3가지 요소를 순서대로 쓰세요.\n\n```csharp\n// ① 필요한 네임스페이스 가져오기\nusing (  ①  );\n\npublic class ScoreBoard : MonoBehaviour {\n    // ② 인스펙터에 노출할 텍스트 컴포넌트 변수 선언\n    (  ②  );\n    \n    public void UpdateScore(int score) {\n        // ③ 텍스트 UI의 내용을 \"Score: 점수\" 형태로 갱신\n        (  ③  );\n    }\n}\n```",
+            "answerUi": {
+                "kind": "grid",
+                "rows": ["① 네임스페이스", "② 변수 선언", "③ 갱신 코드"],
+                "columns": ["작성 내용"],
+                "narrowAnswerColumn": false,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                ["UnityEngine.UI"],
+                ["public Text myText"],
+                ["myText.text = \"Score: \" + score.ToString()"]
+            ],
+            "teacherExplainMd": "### P01 해설\n- **① UnityEngine.UI**: UI 관련 클래스들을 사용하기 위해 필수적으로 import해야 합니다.\n- **② public Text myText**: 인스펙터에서 드래그 앤 드롭으로 연결할 수 있도록 `public` 변수를 만듭니다.\n- **③ .text 속성**: 텍스트의 실제 내용을 바꾸려면 `.text` 프로퍼티를 사용하며, 숫자는 `.ToString()`으로 문자열화하여 연결해야 합니다."
         },
         {
             "id": "p02",
             "type": "short",
             "level": "basic",
-            "title": "SetMessageToDisplay 선언 완성",
-            "description": "① 반환형 ② 메서드명 ③ 매개변수를 쓰세요.",
-            "expectedAnyOf": [
-                "void / SetMessageToDisplay / (string stringToDisplay)",
-                "void SetMessageToDisplay(string stringToDisplay)",
-                "private void SetMessageToDisplay(string stringToDisplay)"
-            ]
+            "title": "메시지 표시 메서드 선언 완성",
+            "description": "다음 외부 호출부와 본문을 참고하여 메서드 선언부의 빈칸 ①, ②, ③을 채우세요.\n\n호출부: `SetMessageToDisplay(\"게임 시작!\");` \n본문: `textUI.text = stringToDisplay;` \n\n```csharp\n( ① ) ( ② ) ( ③ ) \n{\n    textUI.text = stringToDisplay;\n}\n```",
+            "expectedAnyOf": ["void SetMessageToDisplay(string stringToDisplay)", "① void ② SetMessageToDisplay ③ (string stringToDisplay)"],
+            "teacherExplainMd": "### P02 해설\n- **① void**: 텍스트를 바꿀 뿐 돌려주는 값이 없으므로 반환형은 `void`입니다.\n- **② 이름**: 호출 코드에서 사용한 이름과 대소문자까지 정확히 일치해야 합니다.\n- **③ 매개변수**: 문자열인 \"게임 시작!\"을 받으므로 `string` 타입이며, 본문에서 사용하는 `stringToDisplay`와 이름이 같아야 합니다."
         },
         {
             "id": "p03",
             "type": "short",
             "level": "basic",
             "title": "OnMouseUp 함수 선언 완성",
-            "description": "① 접근 제한자 ② 반환형 ③ 메서드명을 쓰세요.",
-            "expectedAnyOf": [
-                "private / void / OnMouseUp()",
-                "private void OnMouseUp()"
-            ]
+            "description": "마우스 버튼을 눌렀다가 **떼는 순간** 유니티 엔진이 자동으로 호출해주는 이벤트 메서드를 작성하세요.\n\n```csharp\n( ① ) ( ② ) ( ③ )() \n{\n    Debug.Log(\"마우스 버튼 뗌!\");\n}\n```",
+            "expectedAnyOf": ["private void OnMouseUp", "① private ② void ③ OnMouseUp"],
+            "teacherExplainMd": "### P03 해설\n- **정답**: `private void OnMouseUp()`\n- **설명**: 유니티의 콜백 메서드는 엔진이 직접 부르기 때문에 `private`으로 두는 것이 관례입니다. `OnMouseUp`은 마우스 버튼 해제 시점을 정확히 감지하는 약속된 이름입니다."
         },
         {
             "id": "p04",
             "type": "short",
             "level": "challenge",
             "title": "버튼 이벤트 등록 위치 T/F",
-            "description": "1~3번 문장의 참/거짓을 순서대로 쓰세요.",
-            "expectedAnyOf": [
-                "참, 거짓, 참",
-                "1 참 2 거짓 3 참",
-                "T, F, T",
-                "true false true"
-            ]
+            "description": "버튼의 `AddListener`를 통한 이벤트 등록 방식에 대한 설명의 참/거짓을 순서대로 쓰세요.\n\n1. `Start()` 메서드 안에서 등록하면 게임 시작 시 한 번만 등록되어 정상 작동한다.\n2. `OnTriggerEnter2D()` 안에서 등록하면 버튼을 클릭할 때마다 충돌 이벤트가 발생한다.\n3. `Update()` 메서드 안에서 등록하면 동작은 하지만 매 프레임 리스너가 누적 등록되어 성능 문제가 생긴다.",
+            "expectedAnyOf": ["참, 거짓, 참", "참 거짓 참", "1 참 2 거짓 3 참"],
+            "teacherExplainMd": "### P04 해설\n- **1 참**: 초기화 시점에 1회 등록하는 정석적인 방법입니다.\n- **2 거짓**: `OnTriggerEnter2D`는 UI 버튼 클릭과는 전혀 무관한 물리 충돌 이벤트입니다.\n- **3 참**: `Update`는 매 프레임 돌기 때문에 초당 수십 개씩 중복된 리스너가 붙어, 나중에 한 번 클릭 시 수백 번의 기능이 연쇄 호출되는 버그를 일으킵니다."
         },
         {
             "id": "x01",
             "type": "code",
             "level": "challenge",
-            "title": "변형 - UI 버튼 리스너 1회 등록 코드",
-            "description": "`button2` 클릭 시 `LightBulbOn`이 실행되도록 중복 등록 없이 1회 등록 코드를 작성하세요.",
-            "code": "// TODO",
-            "expectedCode": "void Start()\n{\n    button2.onClick.AddListener(LightBulbOn);\n}"
+            "title": "변형 - UI 버튼 리스너 등록 코드",
+            "description": "`button2` 클릭 시 `LightBulbOn` 메서드가 실행되도록 하는 안전한 등록 코드를 작성하세요.",
+            "code": "void Start() {\n    // 여기에 한 줄 작성\n}",
+            "expectedCode": "button2.onClick.AddListener(LightBulbOn);",
+            "teacherExplainMd": "### X01 해설\n- **핵심 포인트**: `onClick` 프로퍼티의 `AddListener` 메서드를 사용합니다. 이때 등록할 메서드 이름 뒤에 괄호 `()`를 붙이지 않고 이름만 전달하는 것에 유의하세요."
         },
         {
             "id": "x02",
             "type": "mcq",
             "level": "challenge",
-            "title": "함정 - AddListener 등록 위치 선택",
-            "description": "일반적인 단일 버튼 리스너 등록 위치로 가장 적절한 것을 고르세요.",
+            "title": "함정 - AddListener 최적 등록 위치",
+            "description": "버튼 리스너(`AddListener`)를 단 한 번만 안전하게 등록하기 위해 가장 적절한 장소를 고르세요.",
             "options": [
                 "`Update()`",
                 "`Start()`",
                 "`OnTriggerEnter2D()`",
                 "`LateUpdate()`"
             ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 1
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 1,
+            "teacherExplainMd": "### X02 해설\n- **정답**: B\n- **설명**: `Start` 메서드는 씬이 시작될 때 단 한 번만 호출되므로 리스너 등록과 같은 초기화 작업을 수행하기에 가장 완벽한 위치입니다."
         }
     ]
 }

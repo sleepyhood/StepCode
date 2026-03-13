@@ -10,56 +10,45 @@
             "id": "p01",
             "type": "short",
             "level": "basic",
-            "title": "코드 3개 ECS 사용 여부 판별",
-            "description": "코드 1~3의 ECS 사용 여부를 순서대로 쓰세요.",
-            "expectedAnyOf": [
-                "거짓, 거짓, 참",
-                "코드1 거짓 코드2 거짓 코드3 참",
-                "F, F, T",
-                "false false true"
-            ]
+            "title": "ECS 실사용 여부 판별 (클래스 구조)",
+            "description": "다음 세 가지 코드 예시를 읽고, 유니티 ECS(Entity Component System)를 **실제로 사용하고 있는 코드인지** 참/거짓을 순서대로 판별하세요.\n\n- **코드 1**: `using UnityEngine;`만 선언된 일반적인 스피드 제어 스크립트\n- **코드 2**: `using Unity.Entities;`는 선언되어 있으나, 클래스 본문은 `MonoBehaviour`를 상속한 단순 로그 출력 스크립트\n- **코드 3**: `using Unity.Entities;`를 선언하고, `ComponentSystem`을 상속하여 `Entities.ForEach`로 데이터를 처리하는 스크립트",
+            "expectedAnyOf": ["거짓, 거짓, 참", "거짓 거짓 참", "1 거짓 2 거짓 3 참"],
+            "teacherExplainMd": "### P01 해설\n- **코드 1 (거짓)**: ECS 라이브러리 참조조차 없는 고전적인 방식입니다.\n- **코드 2 (거짓)**: 상단에 `using` 선언만 있고, 실제 알맹이는 전통적인 `MonoBehaviour` 방식이므로 ECS 실사용으로 보지 않습니다.\n- **코드 3 (참)**: ECS 전용 클래스(`ComponentSystem`)를 상속하고 전용 반복문(`Entities.ForEach`)을 사용했으므로 실사용 판정입니다."
         },
         {
             "id": "p02",
             "type": "short",
             "level": "basic",
-            "title": "코드 조각 ECS 사용 여부 T/F",
-            "description": "코드 조각 1~3의 ECS 사용 여부를 순서대로 쓰세요.",
-            "expectedAnyOf": [
-                "거짓, 거짓, 거짓",
-                "코드1 거짓 코드2 거짓 코드3 거짓",
-                "F, F, F",
-                "false false false"
-            ]
+            "title": "코드 조각 ECS 판별 T/F",
+            "description": "다음 코드 조각 3개가 각각 ECS 기반의 코드인지 참/거짓을 순서대로 쓰세요.\n\n1. `public class PlayerScore : MonoBehaviour { ... }` \n2. `using Unity.Entities;` (단, 본문은 점수 증가 로직만 있는 MonoBehaviour임)\n3. `gameObject.SetActive(false);` (전통적인 오브젝트 활성화 제어 코드)",
+            "expectedAnyOf": ["거짓, 거짓, 거짓", "거짓 거짓 거짓", "1 거짓 2 거짓 3 거짓"],
+            "teacherExplainMd": "### P02 해述\n- **전부 거짓**: 위 세 가지 모두 유니티의 전통적인 객체 지향(OOP) 방식인 `MonoBehaviour`와 `GameObject` 기반의 코드입니다. `using` 선언 하나만으로는 ECS 시스템의 일부가 될 수 없습니다."
         },
         {
             "id": "x01",
             "type": "code",
             "level": "challenge",
-            "title": "변형 - ECS 실사용 최소 예시 작성",
-            "description": "ECS를 실제로 사용하는 최소 1줄의 타입 선언 코드를 작성하세요.",
-            "code": "// TODO",
-            "expectedCode": "public partial class EnemyMoveSystem : SystemBase {}"
+            "title": "변형 - ECS 시스템 선언문 작성",
+            "description": "ECS를 실제로 사용한다는 것을 증명할 수 있는 '시스템' 클래스의 선언부 한 줄을 작성하세요. (단, `SystemBase`를 상속할 것)",
+            "code": "using Unity.Entities;\n// 여기에 클래스 선언부 작성",
+            "expectedCode": "public partial class EnemyMoveSystem : SystemBase",
+            "teacherExplainMd": "### X01 해설\n- **설명**: ECS에서 로직을 처리하는 'System'을 만들려면 `SystemBase`를 상속받아야 합니다. 이때 성능 최적화를 위한 소스 생성기 활용을 위해 `partial` 키워드를 붙여주는 것이 최신 ECS의 표준 문법입니다."
         },
         {
             "id": "x02",
             "type": "mcq",
             "level": "challenge",
-            "title": "함정 - `using Unity.Entities;`만 있을 때 판정",
-            "description": "`using Unity.Entities;`만 있는 경우 ECS 사용 판정에 대한 올바른 설명을 고르세요.",
+            "title": "함정 - using 선언과 실사용의 차이",
+            "description": "어떤 스크립트 상단에 `using Unity.Entities;`가 적혀 있을 때, 이를 'ECS 코드를 사용했다'고 단정할 수 없는 가장 정확한 이유는?",
             "options": [
-                "`using Unity.Entities;`만 있으면 ECS 사용으로 본다.",
-                "`using Unity.Entities;`가 있고 클래스가 `MonoBehaviour`면 자동으로 ECS다.",
-                "ECS 타입(`IComponentData`, `SystemBase` 등) 또는 엔티티 처리 코드가 실제로 있어야 ECS 사용으로 본다.",
-                "파일명에 ECS가 들어가면 ECS 사용으로 본다."
+                "`using` 선언은 해당 네임스페이스를 가져올 뿐, 실제 기능을 활성화하는 것은 아니기 때문이다.",
+                "`using`이 있어도 클래스 이름이 ECS로 시작하지 않으면 무효이기 때문이다.",
+                "파일의 확장자가 `.ecs`가 아닌 `.cs`이기 때문이다.",
+                "엔진 버전이 낮으면 `using` 문구 자체가 무시되기 때문이다."
             ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 2
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 0,
+            "teacherExplainMd": "### X02 해설\n- **정답**: A\n- **설명**: `using` 지시문은 단지 특정 라이브러리의 타입들에 접근하기 쉽게 경로를 열어주는 도구일 뿐입니다. 실제 ECS 코드가 되려면 `IComponentData`, `SystemBase` 등을 상속받거나 적용하는 실제 로직이 본문에 존재해야 합니다."
         }
     ]
 }

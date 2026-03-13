@@ -35,7 +35,7 @@ public partial class MovementSystem : SystemBase
 ### 1) ECS의 도입 목적 (대규모 성능 최적화)
 - 개념: 기존의 `MonoBehaviour` 방식은 좀비 1만 마리가 있다면 좀비마다 `Update` 함수를 1만 번 따로 불러야 해서 오버헤드(비효율)가 크다. ECS(Entity Component System)는 눈에 보이는 껍데기(Entity), 순수 데이터들의 조합(Component), 그리고 이 데이터들을 한꺼번에 묶어서 병렬로 일괄 처리하는 공장장(System)으로 역할을 철저히 분리하여 메모리 효율과 대규모 연산(디펜스 게임, 군집 시뮬레이션 등) 성능을 극대화시킨 차세대 구조이다.
 - 오답 포인트: 몬스터 10만 마리가 등장하는 게임을 제작하는데, ECS 대신 기존 `Instantiate`와 `MonoBehaviour`의 `Update`만을 활용해도 거뜬하다고 섣불리 오판하는 경우이다.
-- 정답 판별: **수만 개 이상의 엄청난 수의 객체 배치, CPU 멀티코어 병렬 연산, 극강의 성능 최적화** 라는 요구 목적 키워드가 나왔을 때, 이를 해결할 기술로 **ECS(Entities)**를 올바로 매칭시킬 수 있는지 확인한다.
+- 정답 판별: **수만 개 이상의 엄청난 수의 객체 배치, CPU 멀티코어 병렬 연산, 극강의 성능 최적화** 라는 요구 목적 키워드가 나왔을 때, 이를 해결할 기술로 **ECS(Entities)** 를 올바로 매칭시킬 수 있는지 확인한다.
 
 ![ECS 1만 개 렌더링 한계 극복](../images/unity_u11_ecs_massive_entities.png)
 *캡션: MonoBehaviour로는 프레임 저하가 일어나는 엄청난 수의 비행체(Entity)들을 ECS로 60프레임에 무리 없이 그려내는 기술 데모. 출처: 자체 촬영*

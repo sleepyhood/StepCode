@@ -11,10 +11,14 @@
             "id": "297b380a1ba1d40c",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "그래프 뷰"
+              "type": "markdown",
+              "state": {
+                "file": "unity/theory_unity_u01_inspector.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "theory_unity_u01_inspector"
             }
           }
         ]
@@ -90,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "unity/theory_unity_u01_inspector.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "백링크"
+              "title": "theory_unity_u01_inspector 의 백링크"
             }
           },
           {
@@ -108,11 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "unity/theory_unity_u01_inspector.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "나가는 링크"
+              "title": "theory_unity_u01_inspector 의 나가는 링크"
             }
           },
           {
@@ -150,12 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "unity/theory_unity_u01_inspector.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "개요"
+              "title": "theory_unity_u01_inspector 의 개요"
             }
           }
         ]
@@ -179,6 +186,13 @@
   },
   "active": "297b380a1ba1d40c",
   "lastOpenFiles": [
+    "images/unity_u01_inspector_serializefield_compare.png",
+    "unity/theory_unity_u01_inspector.md",
+    "unity/theory_unity_u03_function_syntax.md",
+    "unity/theory_unity_u11_ecs.md",
+    "unity/theory_unity_u09_animator.md",
+    "unity/theory_unity_u07_spawn_physics.md",
+    "unity/theory_unity_u02_log_operator.md",
     "canva/강민승/이론(개념, 진도)/theory_canva_l01.md",
     "canva/강민승/이론(개념, 진도)/theory_canva_index.md",
     "canva/theory_canva_index.md",
@@ -197,11 +211,8 @@
     "Excalidraw/Drawing 2026-03-13 14.53.31.excalidraw.md",
     "images/unity_u01_inspector_editor_overview.png",
     "unity/theory_unity_u04_null_exception.md",
-    "unity/theory_unity_u03_function_syntax.md",
-    "unity/theory_unity_u01_inspector.md",
     "Excalidraw/Drawing 2026-03-13 14.51.15.excalidraw.md",
     "Excalidraw",
-    "unity/theory_unity_u02_log_operator.md",
     "unity/guide_unity_theory.md",
     "unity/theory_unity_u06_input.md",
     "무제.base",
