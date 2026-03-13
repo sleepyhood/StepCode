@@ -1,79 +1,157 @@
 # Unity U10 Material and Color
 
 ## 학습 목표
-- 머티리얼(Material)을 통해 게임 오브젝트의 외형(색깔)이 적용되는 원리를 이해한다.
-- `Renderer` 컴포넌트에서 코드로 `Material`에 접근하여 색상(`Color`) 값을 동적으로 변경한다.
-- 런타임에 색상 변환과 `Time.deltaTime`을 엮어 주기적인 비주얼 이벤트를 작성할 수 있다.
+- `Color` 타입 변수와 실제 변수명을 구분하여 디버그 출력할 수 있습니다.
+- `Material.SetColor(string, Color)`의 두 인자 구조를 정확히 이해합니다.
+- Standard Shader의 메인 색상 프로퍼티명 `"_Color"` 규칙을 기억합니다.
+- `Color.red`, `Color.blue` 같은 정적 상수를 활용해 머티리얼 색을 바꾸는 코드를 작성할 수 있습니다.
 
 ## 범위
-- 키워드: Material, Renderer, SetColor, Color 타입
+- 키워드: `Color`, `Debug.Log`, `Material`, `SetColor`, `"_Color"`, `Color.red`, `Color.blue`
+
+## 먼저 큰 그림
+이번 단원은 "색상 변수 값을 어떻게 출력하는가", "머티리얼 색상을 바꾸는 `SetColor`는 어떤 모양인가"를 묻는 문제를 풀기 위한 단원입니다.
+
+W10에서는 특히 아래 4가지를 바로 연결할 수 있어야 합니다.
+- `public Color color;`가 있으면 출력할 때는 `Color`가 아니라 `color`를 써야 합니다.
+- `Material.SetColor`의 첫 번째 인자는 문자열입니다.
+- Standard Shader의 메인 색상 프로퍼티명은 보통 `"_Color"`입니다.
+- 빨간색, 파란색은 `Color.red`, `Color.blue`처럼 정적 상수로 씁니다.
+
+![머티리얼 컴포넌트 체인](../images/unity_u10_material_color_renderer.svg)
+*캡션: 오브젝트의 색상은 Renderer가 사용하는 Material을 통해 바뀐다는 구조를 보여 주는 그림입니다. 출처: 자체 제작*
 
 ## 핵심 패턴
 ```csharp
 public class ColorChanger : MonoBehaviour
 {
-    private Material mat;
+    public Color color;
+    public Material mat;
 
     void Start()
     {
-        // 1. 오브젝트 외형을 담당하는 Renderer 컴포넌트 가져오기
-        Renderer myRenderer = GetComponent<Renderer>();
-        
-        // 2. 렌더러가 현재 쓰고 있는 머티리얼 참초 연결
-        mat = myRenderer.material;     
-
-        // 3. 머티리얼의 메인 컬러 속성("_Color" 또는 "_BaseColor")을 코드로 칠하기
-        mat.SetColor("_BaseColor", Color.red);          
+        Debug.Log("Color:" + color);
+        mat.SetColor("_Color", Color.red);
     }
 }
 ```
 
+이 패턴 안에는 W10의 핵심 답안 요소가 거의 다 들어 있습니다.
+- `Debug.Log("Color:" + color);`
+- `mat.SetColor("_Color", Color.red);`
+
+색상만 바꾸면 같은 규칙으로 다른 답도 바로 만들 수 있습니다.
+
+```csharp
+mat.SetColor("_Color", Color.blue);
+```
+
 ## 문항 핵심 포인트
 
-### 1) 오브젝트의 색상(Material) 조작 원리
-- 개념: 유니티에서 게임오브젝트 겉면의 색상이나 질감은 `Material` 에셋 파일이 결정하고, 이 머티리얼을 오브젝트 표면에 씌워주는 코팅지 역할을 하는 것이 `Renderer(MeshRenderer 등)` 컴포넌트다. 따라서 코드로 오브젝트 큐브의 색깔을 파란색으로 스크립트 도중 바꾸려면, 먼저 해당 오브젝트에 붙은 `Renderer`를 받아온 뒤(`.GetComponent<Renderer>()`), 그 렌더러가 사용하는 `.material` 속성에 다시 접근하여 `Color` 객체를 덮어씌워 줘야 한다.
-- 오답 포인트: `Renderer`를 거치지 않고 게임오브젝트(`.gameObject.color = ...`) 자체나 `Transform`에 대고 곧바로 색상 변경을 시도해서 컴파일 오류가 발생하는 경우이다.
-- 정답 판별: **`Renderer` -> `.material` -> `.color (또는 SetColor)`** 의 접근 3단계 체인 방식을 코드 단에서 올바르게 호출했는지 확인한다.
+### 1) `Color` 타입과 변수명 `color` 구분
+이 개념을 알면 무엇이 쉬워지나?
+- P01에서 드롭다운 빈칸을 바로 채울 수 있습니다.
 
-![머티리얼 컴포넌트 체인](../images/unity_u10_material_color_renderer.svg)
-*캡션: Cube 오브젝트 안의 MeshRenderer 컴포넌트를 거쳐 Materials 배열의 Main Color 속성에 도달해야 색상이 변경된다는 구조 모식도. 출처: 자체 제작*
+- 개념: `public Color color;`에서 앞의 `Color`는 자료형 이름이고, 뒤의 `color`는 실제 값이 저장되는 변수명입니다. `Debug.Log`에 넣어야 하는 것은 타입명이 아니라 변수명입니다.
+- 왜 헷갈리나?: 둘 다 같은 단어라서 대소문자 차이를 놓치기 쉽습니다. `Color`는 타입이고, `color`는 실제 데이터입니다.
+- 어떻게 구별하나?: `Debug.Log("Color:" + [빈칸]);`처럼 값을 출력하려면, 실제 값이 들어 있는 소문자 변수명을 찾으면 됩니다.
+- 짧은 유사 예시:
+  ```csharp
+  public int score;
+  Debug.Log(score);
+  ```
+  여기서도 `int`가 아니라 `score`를 출력하는 것과 같습니다.
 
-### 2) Color 클래스와 SetColor 함수 사용법
-- **Color 변수 출력과 디버깅 (P01 대비)**:
-  - `Debug.Log` 등으로 색상을 출력할 때에는 타입 이름(`Color`)이 아니라 실제 데이터가 담긴 **인스턴스 변수명**을 사용해야 한다.
-  - 예: `public Color myColor;` -> `Debug.Log(myColor);` (RGBA 수치 출력)
-  - 만약 `Debug.Log(Color);` 라고 적으면 타입명 자체를 출력하려 하므로 오류가 나거나 의미 없는 값이 나온다.
+정답 판단:
+- `Debug.Log("Color:" + color);`처럼 `color`를 넣어야 합니다.
 
-### 3) SetColor 함수와 문자열 프로퍼티명 (P02, X02 대비)
-- 개념: `mat.SetColor(속성명, 색상)` 함수를 쓸 때 첫 번째 인자인 '속성명'은 반드시 **쌍따옴표로 감싼 문자열("_Color")** 형태여야 한다.
-- **문자열의 중요성**:
-  - `mat.SetColor(_Color, ...)` — (X) 따옴표가 없으면 C#은 `_Color`라는 이름의 변수를 찾으려다 컴파일 에러를 낸다.
-  - `mat.SetColor("_Color", ...)` — (O) 문자열로 넘겨야 셰이더 내부의 이름을 검색할 수 있다.
-- **언더스코어`_` 관례**: 유니티 기본 셰이더(Standard)의 메인 색상 프로퍼티명은 관례적으로 언더스코어로 시작하는 `"_Color"`이다. (`"Color"`라고 쓰면 셰이더가 인식하지 못해 색이 안 바뀔 수 있다.)
-- 정답 판별: 미리 정의된 색상 상수는 `Color.xxx` 형식을 지켰는지 판단하며, 접근 키워드가 **쌍따옴표 + 언더스코어**를 포함한 문자열 형태인지 식별한다.
+10초 점검:
+- `Debug.Log("Color:" + Color);`가 왜 틀릴까요?
+- 답: `Color`는 타입 이름이지, 현재 값이 들어 있는 변수명이 아니기 때문입니다.
 
-### 4) 런타임 주기적 색상 변경 (응용)
-- 개념: `Update` 문 안에서 타이머 변수(`m_Time += Time.deltaTime`)를 활용해 일정 초가 지날 때마다 색상 배열이나 랜덤 Color 값을 렌더러에 대입하게 되면, 클러빙 효과나 무적 상태(깜빡임) 비주얼 처리를 매우 손쉽게 코딩 단 한 줄로 구현할 수 있다.
-- 오답 포인트: `Time.deltaTime`을 업데이트 문에서 쓰는데 실수로 `+=`가 아니라 `=`으로 대입해서 타이머가 영원히 특정 시간(예: `0.01초`)에만 머물러 색이 안 바뀌는 루프.
-- 정답 판별: 시간 축적(누적 변수)과 머티리얼 속성 조작 코드가 연결될 때 문법적 결함을 체크한다.
+### 2) `Material.SetColor(string, Color)`의 두 인자
+이 개념을 알면 무엇이 쉬워지나?
+- P02와 X01을 바로 해결할 수 있습니다.
+
+- 개념: `SetColor`는 첫 번째 인자로 셰이더 프로퍼티 이름을 문자열로 받고, 두 번째 인자로 적용할 색상을 `Color` 값으로 받습니다.
+- 왜 헷갈리나?: 둘 다 "색 관련 값"처럼 보여서 첫 번째 인자도 색을 넣는 자리라고 착각하기 쉽습니다.
+- 어떻게 구별하나?: 첫 번째 자리는 "어느 칸을 바꿀지", 두 번째 자리는 "무슨 색으로 바꿀지"라고 생각하면 쉽습니다.
+- 짧은 유사 예시:
+  ```csharp
+  mat.SetColor("_Color", Color.red);
+  ```
+  메인 색상 칸을 빨간색으로 바꾸는 예시입니다.
+
+정답 판단:
+- ① `"_Color"`
+- ② `Color.red`
+
+생각 질문:
+- 두 번째 인자에 `"red"`처럼 문자열을 넣으면 왜 안 될까요?
+
+### 3) `"_Color"`는 왜 문자열이어야 할까?
+이 개념을 알면 무엇이 쉬워지나?
+- X02의 함정 보기를 바로 걸러낼 수 있습니다.
+
+- 개념: 셰이더 프로퍼티명은 C# 코드에서 문자열 리터럴로 전달해야 합니다. 그래서 `_Color`가 아니라 `"_Color"`처럼 따옴표로 감싸야 합니다.
+- 왜 헷갈리나?: `_Color`가 이름처럼 보여서 변수명처럼 적고 싶어집니다. 또 `"Color"`라고만 쓰면 비슷해 보여서 맞아 보일 수 있습니다.
+- 어떻게 구별하나?: W10에서는 두 조건을 동시에 봐야 합니다. `쌍따옴표가 있는가?` 그리고 `언더스코어로 시작하는가?`
+- 짧은 유사 예시:
+  - `_Color` -> 변수명처럼 보이므로 틀리기 쉽습니다.
+  - `"_Color"` -> 문자열 리터럴이라서 맞습니다.
+  - `"Color"` -> 문자열이긴 하지만 Standard Shader의 관례적 메인 프로퍼티명과 다릅니다.
+
+정답 판단:
+- 올바른 형식은 `"_Color"`입니다.
+- `_Color`는 따옴표가 없어서 C# 코드에서 변수처럼 해석됩니다.
+- `"Color"`는 언더스코어가 없어 의도한 프로퍼티와 맞지 않을 수 있습니다.
+
+### 4) 색상 상수 바꿔 쓰기
+이 개념을 알면 무엇이 쉬워지나?
+- X01에서 빨간색 패턴을 파란색으로 자연스럽게 바꿀 수 있습니다.
+
+- 개념: `Color.red`, `Color.blue`, `Color.green`처럼 유니티는 자주 쓰는 색을 정적 상수로 제공합니다.
+- 왜 헷갈리나?: 색이 바뀌면 첫 번째 인자도 같이 바꿔야 한다고 생각하기 쉽습니다. 하지만 메인 색상 프로퍼티명은 그대로 두고, 두 번째 인자만 바꾸면 됩니다.
+- 어떻게 구별하나?: `SetColor("_Color", Color.red)`를 알고 있으면, 다른 색 문제에서는 `Color.red` 자리만 바꾸면 됩니다.
+- 짧은 유사 예시:
+  ```csharp
+  mat.SetColor("_Color", Color.blue);
+  ```
+  파란색으로 바꾸는 완전한 코드입니다.
+
+실무 팁:
+- 색 이름이 바뀌어도 첫 번째 인자 `"_Color"`는 그대로인 경우가 많습니다. 셰이더의 "메인 색상 슬롯"을 가리키는 이름이기 때문입니다.
 
 ## 자주 하는 실수
-- MeshRenderer에서 머티리얼 참조본(`.material`)을 안 따오고 원본 에셋(`.sharedMaterial`)을 바꾸려다가 씬(Scene) 전체의 큐브 색깔이 단체로 다 같이 시뻘겋게 변해버림
-- `new Color(255f, 0, 0)` 로 포토샵 색칠하듯이 숫자를 부어버림. (유니티 퍼센트 비율 체계는 0.0f ~ 1.0f가 100% 임)
+- `Debug.Log("Color:" + Color);`처럼 타입명을 출력하려고 합니다.
+- `mat.SetColor(_Color, Color.red);`처럼 첫 번째 인자에 따옴표를 빼먹습니다.
+- `mat.SetColor("Color", Color.red);`처럼 언더스코어를 빼먹습니다.
+- `mat.SetColor("_Color", "red");`처럼 두 번째 인자에 문자열을 넣습니다.
+- 파란색 문제인데 첫 번째 인자까지 다른 이름으로 바꾸려 합니다.
 
 ## 빠른 체크리스트
-- `GetComponent<Renderer>()` 계열을 거치지 않으면 에셋의 색상 프로퍼티 조작이 불가함을 배웠는가?
-- 유니티 자체의 상수형 `Color` 목록을 알고 활용할 준비가 되었는가?
+- `Color` 타입명과 `color` 변수명을 구분할 수 있는가?
+- `Debug.Log`에 실제 값을 가진 변수명을 넣을 수 있는가?
+- `SetColor` 첫 번째 인자가 문자열이라는 점을 설명할 수 있는가?
+- `"_Color"`가 쌍따옴표와 언더스코어를 모두 가져야 함을 기억하는가?
+- `Color.red`와 `Color.blue`를 상황에 맞게 바꿔 쓸 수 있는가?
 
 ## 미니 체크
 ### Q1
-`Renderer.material` 프로퍼티는 해당 오브젝트만의 복사된 개별 머티리얼 인스턴스를 반환하여 다른 큐브들에게 영향을 주지 않는가?
-- 정답: 예. `.material` 속성을 호출하면 그 오브젝트만의 독자적인 매터리얼 복사본을 메모리에 생성하여 칠하므로 아주 안전하다.
+`public Color color;`가 있을 때, 콘솔에 현재 색상 값을 출력하려면 무엇을 넣어야 할까요?
+
+- 정답: `color`입니다.
 
 ### Q2
-유니티의 `Color` 객체를 생성할 때 `new Color(1f, 1f, 1f)`가 뜻하는 RGB 완전 혼합 색상은 무슨 색인가?
-- 정답: 흰색(White)
+머티리얼 메인 색상을 빨간색으로 바꾸는 핵심 한 줄은 무엇일까요?
+
+- 정답: `mat.SetColor("_Color", Color.red);`
+
+### Q3
+파란색으로 바꾸는 문제에서는 무엇만 바꾸면 될까요?
+
+- 정답: 두 번째 인자의 색상 상수를 `Color.blue`로 바꾸면 됩니다.
 
 ## 연결 세트
-- 기초: unity_u10_material_color_b01
-- 챌린지: unity_u10_material_color_c01
+- 기초: `unity_u10_material_color_b01`
+- 챌린지: `unity_u10_material_color_c01`

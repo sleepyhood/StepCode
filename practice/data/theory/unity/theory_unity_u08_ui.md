@@ -1,113 +1,203 @@
 # Unity U08 UI
 
 ## 학습 목표
-- Text, Image 등 UI 요소의 프로퍼티에 코드로 접근하고 값을 변경할 수 있다.
-- 버튼 UI의 OnClick 이벤트를 인스펙터가 아닌 스크립트 코드(`AddListener`)로 연결하는 방법을 익힌다.
+- UI `Text` 컴포넌트를 코드로 연결하고, 문자열을 화면에 표시하는 기본 흐름을 이해합니다.
+- 메서드 선언 시그니처에서 `반환형 + 메서드명 + 매개변수`를 정확히 맞추는 법을 익힙니다.
+- `OnMouseUp()` 같은 유니티 내장 메시지 함수의 역할과 선언 형태를 구분합니다.
+- `Button.onClick.AddListener(...)`를 어디에서 등록해야 안전한지 판단할 수 있습니다.
 
 ## 범위
-- 키워드: Text (또는 TextMeshPro), UI 렌더링 파이프라인 기초, Button, onClick.AddListener, UnityEngine.UI
+- 키워드: `UnityEngine.UI`, `Text`, `.text`, `ToString()`, `Button`, `onClick.AddListener`, `OnMouseUp`, `Start`
+
+## 먼저 큰 그림
+이번 단원은 "UI 글자를 바꾸는 코드", "문자열을 받는 메서드 선언", "마우스 메시지 함수", "버튼 리스너 등록 위치"를 묻는 문제를 풀기 위한 단원입니다.
+
+W08에서는 특히 아래 4가지를 바로 연결할 수 있어야 합니다.
+- UI `Text`를 쓰려면 `using UnityEngine.UI;`, `public Text 변수;`, `.text = 문자열`이 필요합니다.
+- `SetMessageToDisplay("게임 오버!")`가 되려면 선언부도 같은 이름과 매개변수를 가져야 합니다.
+- 마우스를 눌렀다가 뗐을 때 자동 호출되는 함수는 `private void OnMouseUp()`입니다.
+- `button.onClick.AddListener(콜백)`은 `Start()` 같은 1회성 초기화 구간에 등록해야 안전합니다.
+
+![Text 컴포넌트 연결 구조](../images/unity_u08_ui_text_inspector.png)
+*캡션: `Text` 컴포넌트를 스크립트의 public 변수에 Inspector로 연결하는 예시입니다. 출처: 직접 캡처*
 
 ## 핵심 패턴
 ```csharp
 using UnityEngine;
-using UnityEngine.UI; // UI를 다루기 위한 필수 네임스페이스
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public Text scoreText;  // TextMeshProUGUI를 더 자주 씁니다.
-    public Button startButton;
+    public Text myText;
+    public Button button2;
 
     void Start()
     {
-        // 1. 텍스트 값 변경
-        scoreText.text = "Score: 100";
-
-        // 2. 버튼 클릭 이벤트 코드로 연결 (콜백 함수 등록)
-        startButton.onClick.AddListener(OnStartButtonClicked);
+        int score = 50;
+        myText.text = "Score: " + score.ToString();
+        button2.onClick.AddListener(LightBulbOn);
     }
 
-    // 버튼이 클릭될 때 실행될 함수
-    void OnStartButtonClicked()
-    {
-        Debug.Log("게임 시작 됨!");
-    }
-
-    // 3. 외부에서 메시지를 전달받아 UI를 갱신하는 함수 예시 (P02 대비)
     public void SetMessageToDisplay(string stringToDisplay)
     {
-        scoreText.text = stringToDisplay;
+        myText.text = stringToDisplay;
+    }
+
+    private void OnMouseUp()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
+    }
+
+    void LightBulbOn()
+    {
+        Debug.Log("Light On");
     }
 }
 ```
 
+이 패턴 안에는 W08의 핵심 답안 요소가 거의 다 들어 있습니다.
+- `using UnityEngine.UI;`
+- `public Text myText;`
+- `myText.text = "Score: " + score.ToString();`
+- `public void SetMessageToDisplay(string stringToDisplay)`
+- `private void OnMouseUp()`
+- `button2.onClick.AddListener(LightBulbOn);`
+
 ## 문항 핵심 포인트
 
-### 1) 텍스트 UI 컴포넌트 접근
-- 개념: 화면에 글씨를 띄워주는 `Text` 요소(최신 버전에서는 `TextMeshPro` 권장)의 내용을 코드로 수정하려면, 이 스크립트 상단에 반드시 `using UnityEngine.UI;` (또는 `TMPro`) 네임스페이스를 선언하고, 해당 컴포넌트의 `.text` 프로퍼티에 문자열 `string` 타입 값을 대입해야 한다.
-- 오답 포인트: 숫자를 대입할 때 `.text = 100;` 으로 숫자형을 곧바로 넣어버려 형 변환 에러가 나거나, 변수 이름 자체만 적어두는 경우(`scoreText = "Hello";`)이다.
-- 정답 판별: 요소의 `.text` 멤버 참조가 정확하고, 값으로 대입되는 우항이 완전한 `string` 타입 구문(예: `.ToString()`, `"문자"`)인지 확인한다.
+### 1) UI Text에 점수 표시하는 3요소
+이 개념을 알면 무엇이 쉬워지나?
+- P01에서 요구하는 3개 코드를 한 번에 적을 수 있습니다.
 
-![Text 컴포넌트 연결 구조](../images/unity_u08_ui_text_inspector.png)
-*캡션: 인스펙터의 Text(Legacy) 컴포넌트에 스크립트의 public Text 변수를 드래그 앤 드롭으로 연결한 모습. 출처: 직접 캡처*
-
-### 2) Button.onClick.AddListener() 활용
-- 개념: 버튼이 클릭될 때 어떤 동작을 할지 지정하는 방법에는 '인스펙터의 On Click () 항목에서 직접 객체와 함수를 선택하는 방식(에디터 기반)'과 '코드에서 `AddListener`를 써서 함수를 주입해주는 방식(코드 기반)'이 있다. 후자는 실행 도중에 동적으로 버튼 역할을 바꿔줄 수 있어 강력하다.
-- **등록 위치의 중요성** (Start vs Update):
-  - `AddListener`는 **호출될 때마다 리스너가 누적 등록**된다. 따라서 반드시 **1회만 실행되는 초기화 메서드**(`Start`, `Awake`, `OnEnable`) 안에서 호출해야 한다.
-  - `Update()`나 `LateUpdate()` 안에 넣으면 60fps 기준 **1초에 60개의 동일 리스너가 누적**되어, 버튼 1번 클릭에 콜백이 수백 번 실행되는 치명적 부작용이 생긴다.
-  - `OnTriggerEnter2D` 같은 물리 이벤트는 **UI 버튼 클릭과 완전히 무관**하므로 리스너 등록 장소로 적합하지 않다.
+- 개념: UI 글자를 코드로 바꾸려면 3단계가 필요합니다. 먼저 `using UnityEngine.UI;`로 UI 네임스페이스를 불러오고, 그다음 `Text` 변수를 선언해 Inspector에서 연결하며, 마지막으로 `.text`에 문자열을 넣어 화면을 갱신합니다.
+- 왜 헷갈리나?: `Text` 타입 선언만 기억하고, 네임스페이스나 문자열 변환을 빠뜨리는 경우가 많습니다. 특히 `score`가 정수인데 그대로 넣으려다 에러가 나는 경우가 자주 나옵니다.
+- 어떻게 구별하나?: 문제에서 "UI Text에 점수를 표시"하라고 하면 `네임스페이스`, `컴포넌트 변수`, `문자열 대입` 3요소가 모두 있는지 확인합니다.
+- 짧은 유사 예시:
   ```csharp
-  // ⭕ 올바른 예: Start에서 1회 등록
-  void Start() {
-      button.onClick.AddListener(OnButtonClicked);
-  }
-  // ❌ 위험한 예: Update에서 매 프레임 등록 (중복 누적!)
-  void Update() {
-      button.onClick.AddListener(OnButtonClicked); // 매 프레임 1개씩 쌓임
+  using UnityEngine.UI;
+  public Text hpText;
+  hpText.text = "HP: " + hp.ToString();
+  ```
+  점수 대신 체력을 표시하는 같은 구조입니다.
+
+정답 판단:
+- ① `using UnityEngine.UI;`
+- ② `public Text myText;`
+- ③ `myText.text = ("Score: " + score.ToString());`
+
+10초 점검:
+- `myText.text = score;`가 왜 틀릴까요?
+- 답: `.text`에는 문자열이 들어가야 하므로 `score.ToString()` 같은 변환이 필요합니다.
+
+### 2) 메서드 선언 시그니처 맞추기
+이 개념을 알면 무엇이 쉬워지나?
+- P02에서 `void`, `SetMessageToDisplay`, `(string stringToDisplay)`를 정확히 쓸 수 있습니다.
+
+- 개념: 메서드가 컴파일 오류 없이 동작하려면 선언부의 `반환형`, `메서드명`, `매개변수`가 호출 코드와 본문에서 쓰는 이름에 모두 맞아야 합니다.
+- 왜 헷갈리나?: 메서드 이름의 대소문자를 조금만 틀려도 다른 함수가 됩니다. 또 본문에서 `stringToDisplay`를 쓰는데 선언부 매개변수 이름을 다르게 적으면 연결이 끊깁니다.
+- 어떻게 구별하나?: 호출부와 본문을 같이 봅니다. `SetMessageToDisplay("게임 오버!")`라고 호출하고, 본문에서 `stringToDisplay`를 쓴다면 선언은 그대로 맞춰야 합니다.
+- 짧은 유사 예시:
+  ```csharp
+  public void ShowName(string playerName)
+  {
+      nameText.text = playerName;
   }
   ```
-- 오답 포인트: `AddListener`의 괄호 안에 들어가야 하는 것은 "실행될 함수 그 자체(메서드 이름)"여야 하는데, 함수의 반환 결과를 넣듯 `()`를 붙여서 `AddListener(function())` 형식으로 넘겨주어 문법 오류를 유발하는 경우이다.
-- 정답 판별: 콜백으로 넘겨주는 인자가 함수 호출 구문 `()` 없이 함수의 이름(식별자) 원형 그대로 잘 넘겨졌는지 판별한다.
+  호출부와 본문이 같은 이름을 공유해야 하는 예시입니다.
 
-### 3) 마우스 이벤트 내장 메시지 함수 (OnMouse~ 계열)
-- 개념: 유니티 엔진은 3D/2D 오브젝트 위에서 마우스 조작이 발생할 때 특정 이름의 함수를 **자동으로 호출**해 준다. 개발자가 직접 호출하지 않으므로 `private`으로 선언하는 것이 설계 원칙이다.
-  - `OnMouseDown()`: 마우스 버튼을 **누르는 순간** 1회 호출
-  - `OnMouseUp()`: 마우스 버튼을 누르고 있다가 **떼 순간** 1회 호출
-  - `OnMouseEnter()`: 마우스 커서가 오브젝트 위로 **올라온 순간** 1회 호출
-- 예시:
+정답 판단:
+- 반환형: `void`
+- 메서드명: `SetMessageToDisplay`
+- 매개변수: `(string stringToDisplay)`
+
+생각 질문:
+- 메서드명이 `setMessageToDisplay`처럼 소문자로 시작하면 왜 안 될까요?
+
+### 3) `OnMouseUp()` 내장 메시지 함수
+이 개념을 알면 무엇이 쉬워지나?
+- P03에서 3칸을 `private`, `void`, `OnMouseUp`으로 바로 채울 수 있습니다.
+
+- 개념: `OnMouseUp()`은 오브젝트 위에서 마우스 버튼을 눌렀다가 뗐을 때 유니티 엔진이 자동으로 호출하는 내장 메시지 함수입니다.
+- 왜 헷갈리나?: `OnMouseDown`, `OnMouseEnter`, `OnMouseUp` 이름이 비슷해서 타이밍을 섞어 외우기 쉽습니다. 또 엔진이 알아서 호출해 주는 함수인데 `public`으로 써야 한다고 착각하기도 합니다.
+- 어떻게 구별하나?: 문제에서 "눌렀다가 뗐을 때", "외부 스크립트에서 직접 호출할 필요 없음", "가장 좁은 접근 범위"가 보이면 `private void OnMouseUp()`입니다.
+- 짧은 유사 예시:
   ```csharp
   private void OnMouseUp()
   {
       panelObject.SetActive(!panelObject.activeSelf);
   }
   ```
-- 오답 포인트: `OnMouseDown`(누르는 순간)과 `OnMouseUp`(떼 순간)을 혼동하거나, 접근 제한자를 `public`으로 놓아 불필요하게 외부에 노출한다.
-- 정답 판별: `private void OnMouseUp()` 형태가 정확한지 확인한다.
+  패널 표시 상태를 토글하는 전형적인 예시입니다.
+
+정답 판단:
+- 접근 제한자: `private`
+- 반환형: `void`
+- 메서드명: `OnMouseUp`
+
+자주 헷갈리는 비교:
+- `OnMouseDown()`: 누르는 순간
+- `OnMouseUp()`: 떼는 순간
+- `OnMouseEnter()`: 마우스가 올라온 순간
+
+### 4) `AddListener` 등록 위치와 중복 누적
+이 개념을 알면 무엇이 쉬워지나?
+- P04의 참거짓과 X01, X02를 동시에 해결할 수 있습니다.
+
+- 개념: `button.onClick.AddListener(콜백)`은 호출될 때마다 리스너가 하나씩 추가됩니다. 그래서 `Start()`처럼 1회만 실행되는 초기화 메서드에 두는 것이 안전합니다.
+- 왜 헷갈리나?: `Update()`가 가장 익숙한 반복 함수라서 거기에 넣고 싶어지기 쉽습니다. 하지만 이 경우 버튼을 클릭하기도 전에 리스너가 계속 쌓입니다.
+- 어떻게 구별하나?: 문제에서 "1회만 등록", "중복 실행 방지", "가장 안전한 위치"를 묻는다면 `Start()`를 먼저 떠올립니다. `OnTriggerEnter2D()`는 물리 이벤트라서 UI 버튼 클릭과는 무관합니다.
+- 짧은 유사 예시:
+  ```csharp
+  void Start()
+  {
+      button2.onClick.AddListener(LightBulbOn);
+  }
+  ```
+  가장 기본적인 안전 등록 패턴입니다.
 
 ![AddListener 동작 원리 다이어그램](../images/unity_u08_ui_button_addlistener.svg)
-*캡션: 버튼 컨트롤러가 클릭 이벤트를 감지하면, AddListener로 등록해둔 사용자 함수들을 차례대로 호출해주는 콜백 시스템의 원리. 출처: 자체 제작*
+*캡션: `AddListener`를 반복 호출하면 리스너가 누적되고, 1회 등록이면 클릭마다 콜백이 1번씩 실행되는 구조를 나타낸 그림입니다. 출처: 자체 제작*
+
+직접 연결:
+- `Start()`에서 등록하면 정상적으로 1번씩 실행됩니다.
+- `OnTriggerEnter2D()`는 물리 충돌 이벤트이므로 UI 클릭과 같은 효과를 대신하지 못합니다.
+- `Update()`에서 등록하면 동작은 하지만 리스너가 중복 누적되어 클릭 1회에 함수가 여러 번 실행됩니다.
+
+실무 팁:
+- `AddListener` 안에는 `LightBulbOn`처럼 메서드 이름만 넣습니다. `LightBulbOn()`처럼 괄호를 붙이면 "클릭할 때 실행할 함수"가 아니라 "지금 즉시 실행한 결과"를 넘기려는 형태가 됩니다.
 
 ## 자주 하는 실수
-- 스크립트 상단에 `using UnityEngine.UI;`를 적지 않아 `Text` 데이터 타입을 인식하지 못해 컴파일 에러 발생
-- `Text.text` 에 점수 변수를 넣으면서 `ToString()` 연산을 까먹어 형변환 에러 발생
-- `button.onClick.AddListener( PlayGame() );` 처럼 괄호를 넣어, 클릭할 때 실행되는 게 아니라 그 줄을 읽는 즉시 미리 함수가 실행되어 버림
+- `using UnityEngine.UI;`를 빼먹어 `Text` 타입을 인식하지 못합니다.
+- `myText.text = score;`처럼 정수를 문자열 변환 없이 직접 넣습니다.
+- `SetMessageToDisplay`의 대소문자를 틀려 호출과 선언이 서로 맞지 않습니다.
+- `private void OnMouseUp()` 대신 `OnMouseDown()`이나 `public void OnMouseUp()`를 씁니다.
+- `button.onClick.AddListener(MyFunc);`를 `Update()` 안에 넣어 리스너를 매 프레임 누적시킵니다.
+- `button.onClick.AddListener(MyFunc());`처럼 괄호를 붙입니다.
 
 ## 빠른 체크리스트
-- 기존 `UnityEngine` 외에 UI 컴포넌트를 사용하기 위한 추가 네임스페이스 선언을 했는가?
-- `.text` 프로퍼티에 들어갈 자료형이 문자열이 되도록 안전한 치환 로직을 짰는가?
-- `AddListener` 안에 들어가는 인자가 함수 호출이 아닌 함수 이름 자체임을 인지하고 있는가?
+- UI `Text`를 쓰기 위한 `using UnityEngine.UI;`를 적었는가?
+- `Text` 컴포넌트를 받을 변수를 올바른 타입과 이름으로 선언했는가?
+- `.text`에 들어가는 값이 문자열인지 확인했는가?
+- 메서드 선언부의 이름과 매개변수 이름이 호출/본문과 정확히 일치하는가?
+- `OnMouseUp()`의 의미가 "마우스를 뗄 때"임을 구별할 수 있는가?
+- `AddListener`를 `Start()` 같은 1회성 구간에 등록했는가?
 
 ## 미니 체크
 ### Q1
-`int score = 50;` 일 때, UI Text의 내용을 수치로 치환하는 올바른 코드는 다음 중 무엇인가?
-A) `myText.text = score;`
-B) `myText.text = score.ToString();`
-- 정답: B (text 필드에는 반드시 string 타입 값만 넣을 수 있다.)
+점수 `score`를 UI에 `"Score: 값"` 형태로 표시하려면 어떤 대입문이 맞을까요?
+
+- 정답: `myText.text = ("Score: " + score.ToString());`
 
 ### Q2
-스크립트(Script) 내부에서 코드 상으로 버튼 클릭 시 동작을 등록할 때 사용하는 유니티 UI 컴포넌트의 내장 함수 이름은 무엇인가?
-- 정답: `onClick.AddListener()`
+`SetMessageToDisplay("게임 오버!")`가 되려면 선언부의 반환형은 무엇이어야 할까요?
+
+- 정답: `void`입니다.
+
+### Q3
+버튼 리스너를 한 번만 안전하게 등록하려면 보통 어디에 두는 것이 가장 적절할까요?
+
+- 정답: `Start()` 같은 1회성 초기화 메서드입니다.
 
 ## 연결 세트
-- 기초: unity_u08_ui_b01
-- 챌린지: unity_u08_ui_c01
+- 기초: `unity_u08_ui_b01`
+- 챌린지: `unity_u08_ui_c01`

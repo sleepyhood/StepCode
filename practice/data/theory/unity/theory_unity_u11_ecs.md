@@ -1,78 +1,189 @@
 # Unity U11 ECS
 
 ## 학습 목표
-- ECS(Entity Component System) 아키텍처의 개념을 이해하고 도입 목적을 파악한다.
-- 기존 객체 지향(MonoBehaviour) 방식 코드와 순수 데이터 중심(ECS) 코드를 키워드로 구별한다.
+- ECS(Entity Component System)의 기본 목적을 짧게 설명할 수 있습니다.
+- `using Unity.Entities;` 선언과 실제 ECS 사용을 구분할 수 있습니다.
+- `MonoBehaviour` 코드와 ECS 코드의 판별 기준을 문제 풀이 수준에서 구분할 수 있습니다.
+- ECS를 "실제로 사용한 코드"로 인정되는 최소 조건을 말할 수 있습니다.
 
 ## 범위
-- 키워드: ECS, Entity, ComponentData, SystemBase, MonoBehaviour와의 차이점
+- 키워드: `ECS`, `Unity.Entities`, `MonoBehaviour`, `SystemBase`, `ComponentSystem`, `IComponentData`, `EntityManager`
+
+## 먼저 큰 그림
+이번 단원은 "이 코드가 정말 ECS를 사용하고 있는가?"를 판별하는 단원입니다.
+
+W11에서는 특히 아래 4가지를 바로 연결할 수 있어야 합니다.
+- `using Unity.Entities;`만 있으면 아직 ECS 사용으로 보지 않습니다.
+- `MonoBehaviour`만 상속한 코드는 기본적으로 ECS 코드가 아닙니다.
+- `SystemBase`, `ComponentSystem`, `IComponentData`, `EntityManager` 같은 ECS 전용 타입이 실제 코드에 등장해야 합니다.
+- ECS 실사용 최소 코드는 `using` 선언 + ECS 전용 타입 상속/구현입니다.
+
+![ECS 1만 개 렌더링 한계 극복](../images/unity_u11_ecs_massive_entities.png)
+*캡션: 대량의 개체를 한꺼번에 처리하는 ECS 개념을 시각적으로 보여 주는 예시입니다. 출처: 자체 촬영*
 
 ## 핵심 패턴
 ```csharp
-// ECS 환경에서 System을 구현하는 예시 (구조 파악용)
 using Unity.Entities;
-using Unity.Transforms;
 
 public partial class MovementSystem : SystemBase
 {
-    protected override void OnUpdate()
-    {
-        float deltaTime = SystemAPI.Time.DeltaTime;
-
-        // 시스템은 데이터 조각(Component)들만 쭉 훑으면서 로직을 한 번에 처리한다.
-        Entities.ForEach((ref LocalTransform transform, in MoveSpeedData speed) =>
-        {
-            transform.Position.y += speed.Value * deltaTime;
-        }).ScheduleParallel();
-    }
 }
-
-// MonoBehaviour에서는 불가능한 수만 개의 객체 병렬 처리 최적화 코드이다.
 ```
+
+이 코드는 W11 기준에서 "ECS를 실제로 사용한다"고 판정할 수 있는 최소 형태에 가깝습니다.
+- `using Unity.Entities;`가 있습니다.
+- `SystemBase`라는 ECS 전용 타입을 실제로 상속합니다.
+
+반대로 아래 코드는 ECS가 아닙니다.
+
+```csharp
+using Unity.Entities;
+using UnityEngine;
+
+public class EnemyAI : MonoBehaviour
+{
+    void Start() { Debug.Log("Enemy initialized"); }
+}
+```
+
+- `using Unity.Entities;`는 있지만
+- 실제 본문은 `MonoBehaviour` 패턴이고 ECS 전용 타입 사용이 없습니다.
 
 ## 문항 핵심 포인트
 
-### 1) ECS의 도입 목적 (대규모 성능 최적화)
-- 개념: 기존의 `MonoBehaviour` 방식은 좀비 1만 마리가 있다면 좀비마다 `Update` 함수를 1만 번 따로 불러야 해서 오버헤드(비효율)가 크다. ECS(Entity Component System)는 눈에 보이는 껍데기(Entity), 순수 데이터들의 조합(Component), 그리고 이 데이터들을 한꺼번에 묶어서 병렬로 일괄 처리하는 공장장(System)으로 역할을 철저히 분리하여 메모리 효율과 대규모 연산(디펜스 게임, 군집 시뮬레이션 등) 성능을 극대화시킨 차세대 구조이다.
-- 오답 포인트: 몬스터 10만 마리가 등장하는 게임을 제작하는데, ECS 대신 기존 `Instantiate`와 `MonoBehaviour`의 `Update`만을 활용해도 거뜬하다고 섣불리 오판하는 경우이다.
-- 정답 판별: **수만 개 이상의 엄청난 수의 객체 배치, CPU 멀티코어 병렬 연산, 극강의 성능 최적화** 라는 요구 목적 키워드가 나왔을 때, 이를 해결할 기술로 **ECS(Entities)** 를 올바로 매칭시킬 수 있는지 확인한다.
+### 1) ECS는 왜 나왔을까?
+이 개념을 알면 무엇이 쉬워지나?
+- 코드 판별 문제에서 ECS가 무엇을 위한 구조인지 배경을 짧게 이해할 수 있습니다.
 
-![ECS 1만 개 렌더링 한계 극복](../images/unity_u11_ecs_massive_entities.png)
-*캡션: MonoBehaviour로는 프레임 저하가 일어나는 엄청난 수의 비행체(Entity)들을 ECS로 60프레임에 무리 없이 그려내는 기술 데모. 출처: 자체 촬영*
+- 개념: ECS는 많은 수의 개체를 더 효율적으로 처리하기 위해 나온 데이터 중심 구조입니다. 기존 `MonoBehaviour` 방식보다 대량 처리와 구조적 분리에 강합니다.
+- 왜 헷갈리나?: "최신 기술"이라는 말만 듣고, 모든 프로젝트에서 무조건 써야 하는 구조처럼 받아들이기 쉽습니다.
+- 어떻게 구별하나?: W11에서는 성능 세부 설명보다 "ECS는 별도 전용 타입을 가진 다른 구조"라는 점이 핵심입니다.
+- 짧은 유사 예시:
+  - `PlayerController : MonoBehaviour` -> 전통적 컴포넌트 방식
+  - `MovementSystem : SystemBase` -> ECS 방식
 
-### 2) 상속 클래스(키워드) 패턴으로 ECS 사용 여부 판별하기 (P01, P02, X02 대비)
-- 개념: 현재 작성된 C# 스크립트가 구식 방식인지 신식 ECS 방식인지 구분하려면 상속받는 클래스와 사용하는 핵심 구조체의 이름을 살펴야 한다.
-- **실사용 판별 황금률**: 
-  - 스크립트 최상단에 **`using Unity.Entities;` 네임스페이스가 선언되어 있다고 해서 무조건 'ECS를 사용한다'고 판정하지 않는다.**
-  - `using`은 단지 라이브러리를 불러오는 '준비'일 뿐이며, 반드시 코드 본문에서 ECS 전용 타입을 **상속받거나 호출**해야만 실제 사용으로 인정한다.
-- 패러다임별 주요 키워드:
-  - **MonoBehaviour 방식 (전통적)**: `MonoBehaviour` 상속, `Start()`, `Update()`, `GameObject`, `GetComponent<T>()`, `OnCollisionEnter()`
-  - **ECS 방식 (데이터 지향)**: `SystemBase`, `ISystem`, `ComponentSystem` 상속, `IComponentData`, `EntityManager`, `IJobEntity`, `OnUpdate()`, `Entities.ForEach`
-- 오답 포인트: 코드 상단에 `using Unity.Entities;`가 적혀 있다는 이유만으로, 본문이 `MonoBehaviour` 기반인데도 ECS 코드로 오해하는 경우이다.
-- 정답 판별: 
-  - (1) `using Unity.Entities;` 문장이 있는지 확인한다.
-  - (2) 클래스 선언부나 본문에 `SystemBase`, `IComponentData`, `EntityManager` 등 ECS 고유 키워드가 **실제로 등장**하는지 확인한다. 
-  - 두 조건이 모두 만족되어야 "ECS 실사용 코드"로 판정한다.
+정답 판단:
+- W11에서는 ECS의 목적을 길게 외우기보다, `MonoBehaviour와 다른 전용 타입 체계`라는 점을 먼저 잡으면 됩니다.
+
+### 2) `using Unity.Entities;`만으로는 왜 부족할까?
+이 개념을 알면 무엇이 쉬워지나?
+- P01, P02, X02를 바로 풀 수 있습니다.
+
+- 개념: `using Unity.Entities;`는 ECS 네임스페이스에 접근할 수 있게 해 주는 선언일 뿐입니다. 이 한 줄만으로는 "ECS를 사용했다"라고 판정하지 않습니다.
+- 왜 헷갈리나?: 라이브러리를 import했으니 이미 그 기술을 쓴 것처럼 느껴지기 쉽습니다.
+- 어떻게 구별하나?: `using` 다음에 실제 코드 본문을 봅니다. `MonoBehaviour`만 있고 ECS 타입이 없다면 거짓입니다.
+- 짧은 유사 예시:
+  ```csharp
+  using Unity.Entities;
+  using UnityEngine;
+
+  public class UIManager : MonoBehaviour
+  {
+      public void ShowPanel() { gameObject.SetActive(true); }
+  }
+  ```
+  이 코드는 `using`은 있지만 ECS 실사용은 아닙니다.
+
+정답 판단:
+- `using Unity.Entities;`만 있으면 거짓입니다.
+- `MonoBehaviour` 상속 + ECS 타입 미사용이면 거짓입니다.
+
+10초 점검:
+- `using Unity.Entities;`가 있고 `MonoBehaviour`만 상속하면 참일까요?
+- 답: 아니오. 실제 ECS 타입 사용이 없으므로 거짓입니다.
+
+### 3) 무엇이 보이면 ECS 실사용으로 볼 수 있을까?
+이 개념을 알면 무엇이 쉬워지나?
+- P01의 코드3, X01 같은 문제를 빠르게 판단할 수 있습니다.
+
+- 개념: ECS 실사용 판정의 핵심은 코드 본문에 ECS 전용 타입이 실제로 등장하는가입니다. 대표 예시는 `SystemBase`, `ComponentSystem`, `IComponentData`, `EntityManager`입니다.
+- 왜 헷갈리나?: 이름만 보면 일반 클래스처럼 보여서, 이것이 "ECS 전용 타입"인지 놓칠 수 있습니다.
+- 어떻게 구별하나?: 클래스 선언부와 본문을 먼저 봅니다. `: SystemBase`, `: ComponentSystem`, `struct ... : IComponentData` 같은 형태가 있으면 ECS 쪽으로 기웁니다.
+- 짧은 유사 예시:
+  ```csharp
+  using Unity.Entities;
+
+  public class MovementSystem : ComponentSystem
+  {
+      protected override void OnUpdate() { }
+  }
+  ```
+  `ComponentSystem`을 상속하므로 ECS 실사용입니다.
+
+자주 헷갈리는 비교:
+- `MonoBehaviour`: 전통적 GameObject 컴포넌트 방식
+- `SystemBase`: ECS 시스템
+- `ComponentSystem`: ECS 시스템
+- `IComponentData`: ECS 데이터 컴포넌트
+
+정답 판단:
+- `SystemBase`, `ComponentSystem`, `IComponentData`, `EntityManager` 같은 타입이 실제 코드에 등장하면 참으로 볼 근거가 생깁니다.
+
+### 4) ECS 실사용 최소 코드
+이 개념을 알면 무엇이 쉬워지나?
+- X01을 바로 작성할 수 있습니다.
+
+- 개념: W11 기준에서 "이 코드는 ECS를 사용한다"고 판정받기 위한 최소 조건은 `using Unity.Entities;`와 ECS 전용 타입 상속/구현입니다.
+- 왜 헷갈리나?: 클래스 이름에 `ECS`나 `Entity`라는 단어만 넣어도 될 것처럼 느껴질 수 있습니다.
+- 어떻게 구별하나?: 이름보다 타입을 봅니다. `public partial class EnemyMoveSystem : SystemBase { }`처럼 타입 사용이 있어야 합니다.
+- 짧은 유사 예시:
+  ```csharp
+  using Unity.Entities;
+
+  public partial class EnemyMoveSystem : SystemBase
+  {
+  }
+  ```
+  이 정도면 최소 실사용 예시로 충분합니다.
+
+정답 판단:
+- 최소한 `using Unity.Entities;`
+- 그리고 `SystemBase`, `ISystem`, `IComponentData`, `ComponentSystem` 중 하나의 실제 사용
+
+생각 질문:
+- 파일명이나 클래스명에 `ECS`라는 단어만 있으면 왜 증거가 되지 않을까요?
 
 ## 자주 하는 실수
-- 소규모 퍼즐이나 방탈출 게임 같은 간단한 프로젝트에도 무조건 최신 기술이라며 굳이 어렵고 낯선 ECS 문법을 억지로 도입하여 개발 속도를 망침
-- ECS 시스템 코드(`SystemBase`) 안에다가 `GameObject.Find` 같이 기존 MonoBehaviour 전용 무거운 함수를 호출해서 에디터가 다운됨
+- `using Unity.Entities;`만 보고 바로 ECS 코드라고 판정합니다.
+- `MonoBehaviour` 상속 코드를 ECS로 착각합니다.
+- 클래스 이름에 `Entity`가 들어간다는 이유만으로 ECS라고 생각합니다.
+- ECS 판별에서 실제 타입 사용보다 파일 상단 선언만 봅니다.
 
 ## 빠른 체크리스트
-- 기존 `MonoBehaviour`의 한계를 극복하고 수만 개의 유닛을 그리기 위해 필요한 유니티의 차세대 아키텍처 3글자 약자가 무엇인지 아는가?
-- 주어진 코드에서 `SystemBase`나 `IComponentData`라는 키워드가 보일 때, 이것이 ECS 기반 코드라는 것을 눈치챌 수 있는가?
+- `using Unity.Entities;`와 실제 사용을 구분할 수 있는가?
+- `MonoBehaviour`만 있으면 기본적으로 거짓이라고 판단할 수 있는가?
+- `SystemBase`, `ComponentSystem`, `IComponentData`, `EntityManager`를 ECS 핵심 타입으로 볼 수 있는가?
+- ECS 실사용 최소 코드를 직접 한 줄 이상 쓸 수 있는가?
 
 ## 미니 체크
 ### Q1
-뱀파이어 서바이버처럼 화면을 가득 채우는 10만 마리의 몬스터를 가장 렉 없이 최적화하여 구현하기에 적합한 유니티 기술 아키텍처는 다음 중 무엇인가?
-A) 모든 개체에 MonoBehaviour의 Update 달아주기
-B) ECS (Entity Component System) 도입
-- 정답: B (대규모 물리/렌더링 처리에는 데이터 지향 설계인 ECS가 압도적으로 유리하다.)
+아래 코드가 ECS 실사용일까요?
+
+```csharp
+using Unity.Entities;
+using UnityEngine;
+
+public class ScoreManager : MonoBehaviour
+{
+    private int score = 0;
+}
+```
+
+- 정답: 아니오. `using`은 있지만 ECS 전용 타입의 실제 사용이 없습니다.
 
 ### Q2
-현재 열려 있는 C# 스크립트의 클래스가 `public class MoveSystem : SystemBase` 와 같이 선언되어 있다. 이 코드는 게임오브젝트에 직접 드래그해서 컴포넌트로 부착(Add Component)할 수 있는가?
-- 정답: 아니오. `SystemBase`를 상속받은 클래스는 ECS의 시스템 역할을 담당하므로, 기존 방식처럼 특정 `GameObject`의 인스펙터에 컴포넌트로 끌어다 붙일 수 없다.
+아래 선언은 ECS 실사용으로 볼 수 있을까요?
+
+```csharp
+using Unity.Entities;
+
+public partial class MoveSystem : SystemBase
+{
+}
+```
+
+- 정답: 예. `SystemBase`를 실제로 상속하고 있기 때문입니다.
 
 ## 연결 세트
-- Basic: unity_u11_ecs_b01
-- Challenge: unity_u11_ecs_c01
+- Basic: `unity_u11_ecs_b01`
+- Challenge: `unity_u11_ecs_c01`

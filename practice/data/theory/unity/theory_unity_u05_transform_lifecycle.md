@@ -1,119 +1,239 @@
 # Unity U05 Transform 및 Lifecycle 기초
 
 ## 학습 목표
-- 자주 발생하는 배열 반환형 문법 오류를 잡고 올바른 함수 반환형을 작성한다.
-- `OnEnable`, `Awake`, `Start` 등 유니티 생명주기(Lifecycle) 이벤트 함수의 호출 시점과 특징을 구분한다.
-- 서로 다른 스크립트의 클래스 객체에 접근하는 방법(GetComponent, Inspector 할당)을 이해하고 적용한다.
+- 배열을 반환하는 함수의 반환형을 정확히 구분하고 작성합니다.
+- `Awake`, `OnEnable`, `OnDisable`, `Start`의 역할 차이를 설명할 수 있습니다.
+- 같은 오브젝트와 다른 오브젝트의 스크립트 참조 방법을 구분할 수 있습니다.
 
 ## 범위
-- 키워드: 배열 반환형, OnEnable, OnDisable, Awake, Start, GetComponent, MonoBehaviour 참조
+- 키워드: 배열 반환형, 중첩 클래스, `Transform[]`, `childCount`, `GetChild`, `Awake`, `OnEnable`, `OnDisable`, `Start`, `GetComponent`, Inspector 참조 연결
+
+## 먼저 큰 그림
+이 단원은 크게 세 가지로 보면 쉽습니다.
+- 첫째, 배열을 돌려주는 함수는 반환형도 배열이어야 합니다.
+- 둘째, Unity 생명주기 함수는 이름이 비슷해 보여도 맡은 역할이 다릅니다.
+- 셋째, 다른 스크립트에 접근할 때는 "같은 오브젝트인지, 다른 오브젝트인지"를 먼저 따져야 합니다.
+
+왜 이걸 먼저 보나?
+- W05 문제는 전부 따로 노는 것처럼 보여도, 실제로는 `타입을 정확히 선언했는가`, `라이프사이클 책임을 나눴는가`, `참조를 올바르게 가져왔는가`를 반복해서 묻습니다.
+- 그래서 배열 타입, 생명주기 순서, 참조 방식 세 가지를 먼저 잡아야 합니다.
 
 ## 핵심 패턴
 ```csharp
-public class Player : MonoBehaviour
+public class AttachProp : MonoBehaviour
 {
-    // 서로 다른 오브젝트의 스크립트(컴포넌트)에 접근하기 위해 public으로 선언
-    public GameManager gameManager; 
-    
-    // 1. 객체가 비활성화 상태여도, 스크립트가 로드되는 최초 1회 무조건 실행
+    public Transform prop;
+    public GameManager gameManager;
+
+    private PropSpecs propSpecs;
+
     private void Awake()
     {
-        Debug.Log("Awake: Init");
+        propSpecs = prop.GetComponent<PropSpecs>();
     }
 
-    // 2. 오브젝트가 켜질(활성화될) 때마다 매번 다시 실행
     private void OnEnable()
     {
-        // 3. 나 자신(같은 게임오브젝트)에 붙어있는 다른 컴포넌트에 접근할 때 사용
-        Transform myTransform = GetComponent<Transform>();
+        prop.parent = transform;
+        prop.position = transform.localPosition;
+        prop.rotation = transform.localRotation;
     }
 }
 ```
 
+### 패턴 해설
+- `public GameManager gameManager;`
+  - 다른 오브젝트에 붙은 스크립트를 연결할 때 자주 쓰는 기본 형태입니다.
+  - 이 경우 Inspector에서 직접 연결해 주는 방식이 자연스럽습니다.
+- `private void Awake()`
+  - `Awake`는 초기 준비와 캐싱에 어울립니다.
+  - 자주 다시 바뀌지 않는 참조를 먼저 읽어 둘 때 유용합니다.
+- `propSpecs = prop.GetComponent<PropSpecs>();`
+  - 같은 오브젝트나 같은 참조 대상 안에서 컴포넌트를 찾을 때 `GetComponent`를 씁니다.
+  - 즉, "이미 대상 오브젝트를 알고 있을 때 그 안의 다른 컴포넌트를 꺼내는 방식"입니다.
+- `private void OnEnable()`
+  - `OnEnable`은 오브젝트나 스크립트가 활성화될 때마다 다시 실행됩니다.
+  - 그래서 화면 장착, 표시 갱신, 이벤트 연결처럼 반복 가능 동작에 잘 어울립니다.
+- `prop.parent = transform;`
+  - 실제 장착이나 위치 동기화 같은 시각적 적용은 `Awake`보다 `OnEnable`에 두면 역할이 더 분명해집니다.
+
+### 생각 질문
+왜 데이터 읽기와 실제 장착을 같은 함수 안에 몰아넣지 않고, `Awake`와 `OnEnable`로 나눠 두는 것이 더 안전할까요?
+
 ## 문항 핵심 포인트
+### 1) 중첩 클래스 배열과 배열 반환형
+이 개념을 알면 무엇이 쉬워지나?
+- 커스텀 클래스 배열 문제와 `Transform[]` 반환형 문제를 함께 풀기 쉬워집니다.
 
-### 1) 배열을 반환하는 함수의 반환형 선언
-- 개념: 함수가 배열 형태의 값을 `return`할 때에는, 함수의 정의부에도 반드시 반환형이 배열(예: `int[]`) 구조임을 명시해야 한다.
-- **중첩 클래스(Nested Class)를 배열 요소 타입으로 사용하기**:
-  - 컨트롤러 내부에 `[System.Serializable]`로 선언한 커스텀 클래스(예: `Mount`)를 만들면, 이 클래스 이름을 배열의 요소 타입으로 쓸 수 있다.
-  - 예: `public Mount[] tMounts = new Mount[2];`
-  - 이렇게 하면 `tMounts[0].turretMount`처럼 내부 필드에 접근할 수 있다.
-  - 만약 `Transform[]`으로 선언하면 `tMounts[0]`이 `Transform` 타입이므로 `.turretMount` 필드가 없어 에러가 난다.
-- 오답 포인트: 데이터는 배열(예: `new int[5]`)을 반환하면서, 함수 선언 부에는 `[]` 기호를 빼먹고 단일 자료형(예: `int`)으로 잘못 선언하는 경우이다.
-- 정답 판별: 함수 선언부의 반환형 타입(예: `int[]`)과 실제 `return`하는 변수가 가지고 있는 자료형 타입이 동일한지 확인한다.
+- 개념:
+  - 배열을 `return`하면 함수의 반환형도 배열이어야 합니다.
+  - `Transform[] result`를 돌려준다면 반환형도 `Transform[]`입니다.
+  - 중첩 클래스 안의 필드에 접근하려면 배열 원소 타입 자체가 그 중첩 클래스여야 합니다.
+- 왜 헷갈리나?
+  - 배열 안의 최종 필드가 `Transform`이라서, 배열 전체 타입도 `Transform[]`이라고 착각하기 쉽습니다.
+  - `return result;`만 보고 원소 타입만 떠올리고, 배열 기호 `[]`를 빼먹는 경우가 많습니다.
+- 어떻게 구별하나?
+  - `tMounts[0].turretMount`가 가능하려면 `tMounts[0]` 자체가 `.turretMount`를 가진 타입이어야 합니다.
+  - 따라서 이 경우 배열 타입은 `Transform[]`가 아니라 `Mount[]`입니다.
+  - 반대로 `result` 자체가 `Transform` 배열이면 함수 반환형은 `Transform[]`입니다.
+- 짧은 유사 예시:
+  - `public Mount[] tMounts = new Mount[2];`
+  - `public Transform[] GetChildren(Transform tr)`
 
-![배열 반환형 오류](../images/unity_u05_array_return_error.svg)
-*캡션: 반환형을 int[]가 아닌 int로 선언하였을 때 IDE에서 발생하는 CS0029 타입 변환 오류 코드 화면. 출처: 자체 제작*
+### 자주 헷갈리는 비교
+| 상황 | 올바른 타입 |
+|---|---|
+| `tMounts[0].turretMount`에 접근 | `Mount[]` |
+| `result`가 `new Transform[childCount]` | `Transform[]` |
+| 자식 하나만 반환 | `Transform` |
+| 자식 여러 개를 배열로 반환 | `Transform[]` |
 
-### 2) 생명주기: OnEnable과 OnDisable 함수
-- 개념: `OnEnable` 함수는 스크립트가 부착된 게임 오브젝트가 활성화(Active) 상태로 켜질 때마다 매번 실행되는 이벤트 함수이다. 반대로 오브젝트가 꺼지면 `OnDisable` 함수가 동작한다.
-- 오답 포인트: 오브젝트를 처음 생성할 때 단 한번만 실행된다고 착각하거나, 스크립트를 코드로 `SetActive(true)` 하는 기능과 혼동하는 경우이다.
-- 정답 판별: 객체가 켜지는 순간인지(혹은 인스펙터 체크박스가 켜지는 순간인지) 파악하고, 그때마다 해당 이벤트 함수가 반복해서 호출됨을 숙지했는지 묻는다.
+### 10초 점검
+`return result;` 앞에서 `result`가 `Transform[]`라면, 함수 반환형 뒤에도 무엇이 붙어야 할까요?
+- 정답 판단: `[]`
 
-![OnEnable 기능 확인](../images/unity_u05_transform_lifecycle_onenable.png)
-*캡션: 유니티 인스펙터 좌측 상단의 체크박스를 통해 오브젝트를 껐다 켤 때마다 OnDisable과 OnEnable 함수가 차례로 실행된다. 출처: 직접 캡처*
+### 2) 자식 Transform 순회 패턴 (`childCount` + `GetChild`)
+이 개념을 알면 무엇이 쉬워지나?
+- X01 같은 자식 Transform 배열 반환 유틸 문제를 그대로 풀 수 있습니다.
 
-### 3) 생명주기: Awake 함수
-- 개념: `Awake` 함수는 `Start` 함수보다 먼저 호출되는 함수로, 스크립트 컴포넌트의 체크박스가 **꺼져 있더라도(비활성화 상태여도) 오브젝트 자체가 켜져 있다면 최초 로드 시점에 무조건 1회 실행**되는 특수한 성질을 갖는다.
-- 오답 포인트: 스크립트 체크박스(활성화/비활성화) 설정이 꺼져 있으면 `Awake` 마저 동작하지 않을 것이라 생각하는 경우이다. (`Start` 함수는 꺼져있으면 발생하지 않음)
-- 정답 판별: 생명주기 호출 순서상 "Awake -> OnEnable -> Start" 순임을 인지하고, 스크립트 활성화 토글과 무관하게 `Awake`는 무조건 실행된다는 특징을 이해하는지 확인한다.
+- 개념:
+  - `childCount`는 현재 부모의 직계 자식 수입니다.
+  - `GetChild(i)`는 `i`번째 직계 자식을 가져옵니다.
+  - 자식들을 배열에 모을 때는 보통 `배열 생성 -> for 순회 -> GetChild(i) 대입` 순서로 갑니다.
+- 왜 헷갈리나?
+  - 배열 길이를 임의 숫자로 넣거나, `Find` 같은 다른 API와 섞어 쓰기 쉽습니다.
+  - `childCount`를 알고도 반복문의 끝 조건을 잘못 쓰는 경우가 있습니다.
+- 어떻게 구별하나?
+  - 먼저 `root.childCount` 크기로 배열을 만듭니다.
+  - 그다음 `0`부터 `childCount - 1`까지 반복합니다.
+  - 각 칸에 `root.GetChild(i)`를 넣습니다.
+- 짧은 유사 예시:
+  - `Transform[] result = new Transform[root.childCount];`
+  - `for (int i = 0; i < root.childCount; i++)`
+  - `result[i] = root.GetChild(i);`
 
-![Awake 함수 씬 실행 화면](../images/unity_u05_transform_lifecycle_awake.png)
-*캡션: 스크립트 컴포넌트 체크박스가 꺼져 있어도 Awake 함수 안의 코드는 예외적으로 실행됨을 보여주는 참조. 출처: 직접 캡처*
+### 실무 팁
+- 자식 순회 문제는 먼저 "몇 개가 있나?"를 구하고, 그다음 "하나씩 넣는다"로 생각하면 코드 순서가 잘 안 꼬입니다.
 
-### 4) 다른 스크립트(컴포넌트)에 접근하는 방법
-- 개념: 게임 진행을 위해 스크립트끼리 데이터를 주고받으려면 상대방의 참조(주소)를 가져와야 한다. 이때 접근 대상이 **나와 같은 오브젝트에 부착되어 있는지** 아니면 **서로 다른 오브젝트에 있는지**에 따라 방식이 나뉜다.
-- 오답 포인트: 외부 다른 오브젝트의 스크립트에 접근할 때 단순히 `GetComponent`를 호출해서 Null エ러를 터뜨리거나, `public` 참조 필드로 만들어놓고 Inspector에서 직접 드래그 앤 드롭으로 연결해주지 않아 오류를 발생시키는 경우이다.
-- 정답 판별: 
-  - (1) 동일한 게임 오브젝트 내 다른 스크립트 가져오기: `GetComponent<클래스명>()`
-  - (2) 아예 다른 게임 오브젝트의 스크립트 가져오기: `public 대상클래스명 변수명;` (이후 인스펙터 연결)
-  두 가지 방식의 사용처를 제대로 구분하고 있는지를 판별한다.
+### 생각 질문
+왜 자식 수를 모른 채 배열을 먼저 만들면, 나중에 인덱스 오류나 누락이 생기기 쉬울까요?
 
-### 5) 자식 Transform 순회 패턴 (childCount + GetChild)
-- 개념: 특정 부모 `Transform`이 품고 있는 직계 자식들을 코드로 모두 수집하려면 두 가지 API를 세트로 사용한다:
-  - `transform.childCount`: 현재 오브젝트의 직계 자식 수(정수)를 반환
-  - `transform.GetChild(i)`: 인덱스 `i`번째 자식의 `Transform`을 반환
-- 표준 순회 코드 패턴:
-  ```csharp
-  Transform[] result = new Transform[root.childCount];
-  for (int i = 0; i < root.childCount; i++)
-  {
-      result[i] = root.GetChild(i);
-  }
-  return result;
-  ```
-- 오답 포인트: `childCount`를 빼먹고 배열 크기를 임의 상수로 넣어 인덱스 초과 예외를 유발하거나, `GetChild` 대신 `Find`를 사용해 이름으로 찾으려 한다.
-- 정답 판별: 배열 크기가 `childCount`로 정의되고, `for` 반복문으로 `0`부터 `childCount-1`까지 순회하며 `GetChild(i)`로 각 자식을 배열에 할당했는지 확인한다.
+### 3) 생명주기: `Awake`, `OnEnable`, `OnDisable`, `Start`
+이 개념을 알면 무엇이 쉬워지나?
+- 라이프사이클 블록 순서 배열 문제와 책임 분리 함정 문제를 동시에 대비할 수 있습니다.
+
+- 개념:
+  - `Awake`는 초기 준비와 캐싱에 자주 씁니다.
+  - `OnEnable`은 활성화될 때마다 반복 실행되는 동작에 어울립니다.
+  - `OnDisable`은 비활성화될 때 정리할 일이 있을 때 씁니다.
+  - `Start`는 보통 `Awake`와 `OnEnable` 다음 시점의 초기 시작 로직에 자주 둡니다.
+- 왜 헷갈리나?
+  - `Awake`, `OnEnable`, `Start`가 모두 "처음에 실행되는 것처럼" 보여서 차이를 흐리게 외우기 쉽습니다.
+  - `OnEnable`을 게임 시작 시 1회만 도는 함수처럼 오해하는 경우가 많습니다.
+- 어떻게 구별하나?
+  - 한 번 읽어 두면 되는 준비 데이터는 `Awake`
+  - 켜질 때마다 다시 처리해야 하는 장착/표시/이벤트는 `OnEnable`
+  - 꺼질 때 정리하는 것은 `OnDisable`
+  - 초기 시작 로직은 `Start`
+- 짧은 유사 예시:
+  - `Awake`: `GetComponent<PropSpecs>()`로 스펙 캐싱
+  - `OnEnable`: 손에 소품 장착
+  - `OnDisable`: 이벤트 해제
+
+### 자주 헷갈리는 비교
+| 함수 | 주로 맡는 역할 |
+|---|---|
+| `Awake` | 초기 준비, 캐싱 |
+| `OnEnable` | 활성화될 때마다 반복 동작 |
+| `OnDisable` | 비활성화 시 정리 |
+| `Start` | 초기 시작 로직 |
+
+### 10초 점검
+데이터를 한 번 읽어 두는 작업과, 켜질 때마다 손에 붙이는 작업 중 `OnEnable`에 더 어울리는 것은 어느 쪽일까요?
+- 정답 판단: 켜질 때마다 손에 붙이는 작업
+
+### 4) 같은 오브젝트 vs 다른 오브젝트의 스크립트 접근
+이 개념을 알면 무엇이 쉬워지나?
+- `GetComponent`를 써야 할 때와 Inspector 연결을 써야 할 때를 구분할 수 있습니다.
+
+- 개념:
+  - 같은 오브젝트에 붙은 다른 컴포넌트는 `GetComponent<클래스명>()`로 자주 가져옵니다.
+  - 다른 오브젝트의 스크립트를 참조하려면 `public` 필드를 만들고 Inspector에서 연결하는 방식이 자주 쓰입니다.
+- 왜 헷갈리나?
+  - 다른 오브젝트의 스크립트도 무조건 `GetComponent`로 해결하려고 하기 쉽습니다.
+  - `public` 필드를 만들었는데 Inspector 연결을 안 해서 `null` 참조가 나는 경우도 많습니다.
+- 어떻게 구별하나?
+  - 지금 찾는 대상이 "나와 같은 게임 오브젝트 안"에 있으면 `GetComponent`
+  - "다른 게임 오브젝트"에 있으면 public 참조 필드 + Inspector 연결
+- 짧은 유사 예시:
+  - `GetComponent<GameManager>()`
+  - `public GameManager gameManager;`
 
 ![GetComponent 동일 오브젝트 접근](../images/unity_u05_transform_lifecycle_getcomponent.png)
-*캡션: 같은 오브젝트(Test) 안에 있는 스크립트 B의 참조를 가져오기 위해 GetComponent를 사용하는 모습. 출처: 직접 캡처*
+*캡션: 같은 오브젝트 안의 다른 컴포넌트에 접근할 때 `GetComponent`를 사용하는 상황을 보여주는 예시입니다. 출처: [Unity Scripting API - Component.GetComponent](https://docs.unity3d.com/ScriptReference/Component.GetComponent.html)*
 
-![public 필드를 통한 참조 연결](../images/unity_u05_transform_lifecycle_reference3.png)
-*캡션: 서로 다른 오브젝트 간 연결을 위해 코드로 public B class_b; 를 선언한 뒤, 인스펙터 창에서 빈칸에 직접 대상 객체(Test2)를 끌어다 놓는 장면. 출처: 직접 캡처*
+### 생각 질문
+왜 다른 오브젝트의 스크립트를 가져와야 하는데도 무조건 `GetComponent`만 쓰면 자주 막히게 될까요?
+
+### 5) 라이프사이클 책임 분리 패턴
+이 개념을 알면 무엇이 쉬워지나?
+- P03과 X02 같은 블록 재배치 문제에서 어떤 코드를 어디에 두어야 하는지 빠르게 판단할 수 있습니다.
+
+- 개념:
+  - 무거운 초기 참조 읽기나 캐싱은 한 번만 실행되는 쪽에 두는 것이 안전합니다.
+  - 시각적 장착이나 활성화 반응은 반복 실행 가능한 함수에 두는 것이 자연스럽습니다.
+- 왜 헷갈리나?
+  - 모든 코드를 `Start` 하나에 몰아 넣으면 일단 돌아가는 것처럼 보여서 역할 분리를 무시하기 쉽습니다.
+  - `Update`에 계속 `GetComponent`를 넣는 나쁜 패턴을 떠올릴 수도 있습니다.
+- 어떻게 구별하나?
+  - 한 번 준비하고 끝나는가? -> `Awake`
+  - 켤 때마다 다시 처리해야 하는가? -> `OnEnable`
+  - 매 프레임 돌 필요가 있는가? -> 정말 필요한 경우만 `Update`
+- 짧은 유사 예시:
+  - `Awake`에서 `propSpecs = prop.GetComponent<PropSpecs>();`
+  - `OnEnable`에서 `prop.parent = transform;`
 
 ## 자주 하는 실수
-- 배열을 반환하는 함수에서 반환형 끝에 대괄호(`[]`)를 빠뜨려 오류를 유발함
-- `OnEnable`이 `Start`처럼 게임 시작 시 1회만 호출된다고 혼동함
-- 스크립트 체크박스를 껐는데 왜 해당 스크립트 내부의 `Awake` 함수가 실행되냐며 디버깅을 해맴
-- 다른 게임오브젝트 객체의 스크립트를 가져와야 하는데 엉뚱하게 `GetComponent`를 남발함
+- 배열을 반환하는 함수인데 반환형에 `[]`를 빼먹습니다.
+- `Mount` 배열이어야 할 곳을 `Transform[]`로 선언합니다.
+- `OnEnable`을 게임 시작 시 1회 함수처럼 외웁니다.
+- `Awake`와 `OnEnable`의 역할을 섞어 씁니다.
+- 다른 오브젝트 참조까지 무조건 `GetComponent`로 해결하려고 합니다.
+- public 참조 필드를 만들고도 Inspector 연결을 빼먹습니다.
+- 자식 순회에서 `childCount`를 무시하고 임의 크기 배열을 만듭니다.
 
 ## 빠른 체크리스트
-- 함수가 배열 값을 `return`할 때 반환형 이름 뒤에 `[]`를 정확히 기입했는가?
-- 유니티 라이프사이클 3대장(`Awake`, `OnEnable`, `Start`)의 실행 순서와 특수한 실행 조건(스크립트 Disabled 상태)을 차이점 위주로 설명할 수 있는가?
-- 같은 오브젝트 소속은 `GetComponent`, 다른 오브젝트 소속은 `public 변수 선언 후 인스펙터 연결`이라는 공식을 숙지했는가?
+- 배열을 `return`하면 반환형에도 `[]`가 붙는지 확인했는가?
+- 커스텀 클래스 내부 필드에 접근하려면 배열 원소 타입이 그 클래스인지 판단할 수 있는가?
+- `childCount -> for -> GetChild(i)` 흐름을 재현할 수 있는가?
+- `Awake`, `OnEnable`, `OnDisable`, `Start`의 역할 차이를 설명할 수 있는가?
+- 같은 오브젝트는 `GetComponent`, 다른 오브젝트는 Inspector 연결이라는 구분을 이해하는가?
+- 초기 캐싱과 시각적 장착을 서로 다른 생명주기 함수에 나눌 수 있는가?
 
 ## 미니 체크
 ### Q1
-반환값이 1차원 정수 배열(`new int[10]`) 형태인 함수를 선언할 때, 가장 올바른 반환형 표기는 무엇인가?
-- 정답: `int[]`
+`tMounts[0].turretMount`가 가능하려면 `tMounts`의 원소 타입은 무엇이어야 할까요?
+- 정답: `Mount`
 
 ### Q2
-스크립트 컴포넌트의 체크박스를 해제(Disabled)해 둔 채로 게임을 실행했다. 해당 스크립트 안에 있는 `Awake` 함수 내부의 코드는 실행되는가?
-- 정답: 예 (스크립트의 Enabled 설정과 무관하게, 게임 오브젝트 본체만 켜져 있다면 최초 1회 호출된다.)
+`Transform[] result`를 반환한다면 함수 반환형은?
+- 정답: `Transform[]`
 
 ### Q3
-동일한 게임오브젝트에 부착되어 있는 `GameManager` 컴포넌트(스크립트)를 런타임에 C# 코드로 직접 가져오려 할 때 사용하는 내장 함수 이름은 무엇인가?
-- 정답: `GetComponent<GameManager>()` (또는 GetComponent)
+직계 자식 수를 가져오는 `Transform` API 이름은?
+- 정답: `childCount`
+
+### Q4
+활성화될 때마다 반복 실행되는 생명주기 함수는?
+- 정답: `OnEnable`
+
+### Q5
+같은 오브젝트 안의 다른 컴포넌트를 가져올 때 자주 쓰는 함수는?
+- 정답: `GetComponent`
+
+### Q6
+다른 게임 오브젝트의 스크립트를 연결할 때 자주 쓰는 방식은?
+- 정답: `public` 참조 필드를 만들고 Inspector에서 연결
 
 ## 연결 세트
 - 기초: unity_u05_transform_lifecycle_b01
