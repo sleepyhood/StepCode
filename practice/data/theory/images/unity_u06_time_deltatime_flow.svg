@@ -1,25 +1,141 @@
-<svg width="650" height="220" xmlns="http://www.w3.org/2000/svg">
-  <rect width="650" height="220" fill="#2D2D30" rx="8" />
-  
-  <text x="325" y="30" fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">Time.deltaTime 프레임 보정</text>
-  
-  <rect x="20" y="50" width="610" height="150" fill="#1E1E1E" rx="4" />
-  
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="650"
+   height="220"
+   version="1.1"
+   id="svg7"
+   sodipodi:docname="unity_u06_time_deltatime_flow.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7" />
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.4664307"
+     inkscape:cx="270.04345"
+     inkscape:cy="118.31449"
+     inkscape:window-width="1920"
+     inkscape:window-height="1094"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg7" />
+  <rect
+     width="650"
+     height="220"
+     fill="#2D2D30"
+     rx="8"
+     id="rect1" />
+  <text
+     x="325"
+     y="30"
+     fill="#FFFFFF"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text1">Time.deltaTime 프레임 보정</text>
+  <rect
+     x="20"
+     y="48"
+     width="610"
+     height="154.33977"
+     fill="#1e1e1e"
+     rx="4"
+     id="rect2"
+     style="stroke-width:1.01436" />
   <!-- Without deltaTime -->
-  <text x="30" y="75" fill="#F44336" font-family="sans-serif" font-size="14" font-weight="bold">❌ Time.deltaTime을 곱하지 않았을 때 (프레임 단위 이동)</text>
-  <text x="30" y="100" fill="#CCCCCC" font-family="sans-serif" font-size="12">초당 10프레임 기기 → 1초 후 이동거리: 10</text>
-  <rect x="250" y="90" width="100" height="10" fill="#F44336" />
-  
-  <text x="30" y="120" fill="#CCCCCC" font-family="sans-serif" font-size="12">초당 60프레임 기기 → 1초 후 이동거리: 60</text>
-  <rect x="250" y="110" width="350" height="10" fill="#F44336" />
-
+  <text
+     x="30"
+     y="71"
+     fill="#f44336"
+     font-family="sans-serif"
+     font-size="14px"
+     font-weight="bold"
+     id="text2">❌ Time.deltaTime을 곱하지 않았을 때 (프레임 단위 이동)</text>
+  <text
+     x="30"
+     y="96"
+     fill="#cccccc"
+     font-family="sans-serif"
+     font-size="12px"
+     id="text3">초당 10프레임 기기 → 1초 후 이동거리: 10</text>
+  <rect
+     x="274"
+     y="86"
+     width="100"
+     height="10"
+     fill="#f44336"
+     id="rect3" />
+  <text
+     x="30"
+     y="116"
+     fill="#cccccc"
+     font-family="sans-serif"
+     font-size="12px"
+     id="text4">초당 60프레임 기기 → 1초 후 이동거리: 60</text>
+  <rect
+     x="274"
+     y="106"
+     width="350"
+     height="10"
+     fill="#f44336"
+     id="rect4" />
   <!-- With deltaTime -->
-  <line x1="20" y1="135" x2="630" y2="135" stroke="#333333" stroke-width="2" stroke-dasharray="4,4" />
-  
-  <text x="30" y="155" fill="#4CAF50" font-family="sans-serif" font-size="14" font-weight="bold">✅ Time.deltaTime을 곱했을 때 (시간 단위 이동)</text>
-  <text x="30" y="180" fill="#CCCCCC" font-family="sans-serif" font-size="12">초당 10프레임 기기 → 1초 후 이동거리: 1</text>
-  <rect x="250" y="170" width="200" height="10" fill="#4CAF50" />
-  
-  <text x="30" y="200" fill="#CCCCCC" font-family="sans-serif" font-size="12">초당 60프레임 기기 → 1초 후 이동거리: 1</text>
-  <rect x="250" y="190" width="200" height="10" fill="#4CAF50" />
+  <line
+     x1="20"
+     y1="131"
+     x2="630"
+     y2="131"
+     stroke="#333333"
+     stroke-width="2"
+     stroke-dasharray="4, 4"
+     id="line4" />
+  <text
+     x="30"
+     y="151"
+     fill="#4caf50"
+     font-family="sans-serif"
+     font-size="14px"
+     font-weight="bold"
+     id="text5">✅ Time.deltaTime을 곱했을 때 (시간 단위 이동)</text>
+  <text
+     x="30"
+     y="176"
+     fill="#cccccc"
+     font-family="sans-serif"
+     font-size="12px"
+     id="text6">초당 10프레임 기기 → 1초 후 이동거리: 1</text>
+  <rect
+     x="274"
+     y="166"
+     width="200"
+     height="10"
+     fill="#4caf50"
+     id="rect6" />
+  <text
+     x="30"
+     y="196"
+     fill="#cccccc"
+     font-family="sans-serif"
+     font-size="12px"
+     id="text7">초당 60프레임 기기 → 1초 후 이동거리: 1</text>
+  <rect
+     x="274"
+     y="186"
+     width="200"
+     height="10"
+     fill="#4caf50"
+     id="rect7" />
 </svg>

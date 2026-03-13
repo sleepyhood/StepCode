@@ -1,11 +1,91 @@
 {
-    "id": "unity_u02_log_operator_c01",
-    "title": "Unity U02 로그/연산자 챌린지 1회차",
+    "id": "unity_u02_log_operator",
+    "title": "Unity U02 로그/연산자",
     "categoryId": "unity_u02_log_operator",
     "availableLanguages": [
         "csharp"
     ],
     "problems": [
+        {
+            "id": "p01",
+            "type": "mcq",
+            "level": "basic",
+            "title": "콘솔 출력 API",
+            "description": "Unity 콘솔에 문자열 `\"Hello World!\"`를 출력하는 올바른 코드를 고르세요.",
+            "options": [
+                "`Console.Log(\"Hello World!\");`",
+                "`Debug.Log(\"Hello World!\");`",
+                "`print.log(\"Hello World!\");`",
+                "`System.Log(\"Hello World!\");`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 1
+        },
+        {
+            "id": "p02",
+            "type": "short",
+            "level": "basic",
+            "title": "연산자 의미 매칭",
+            "description": "왼쪽 연산자에 대응되는 의미를 오른쪽 답안 칸에 채우세요. 의미 후보: 할당, 같음 비교, 같지 않음 비교, 1 증가, 문자열 연결",
+            "answerUi": {
+                "kind": "grid",
+                "rows": [
+                    "=",
+                    "==",
+                    "!=",
+                    "++",
+                    "+"
+                ],
+                "columns": [
+                    "답안"
+                ],
+                "narrowAnswerColumn": true,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                [
+                    "할당"
+                ],
+                [
+                    "같음 비교"
+                ],
+                [
+                    "같지 않음 비교"
+                ],
+                [
+                    "1 증가"
+                ],
+                [
+                    "문자열 연결"
+                ]
+            ]
+        },
+        {
+            "id": "p03",
+            "type": "mcq",
+            "level": "basic",
+            "title": "OR 조건식 판별",
+            "description": "`hp <= 0` 또는 `timeOver == true`일 때 실행되어야 합니다. 알맞은 조건식을 고르세요.",
+            "options": [
+                "`if (hp <= 0 && timeOver == true)`",
+                "`if (hp <= 0 || timeOver == true)`",
+                "`if (hp <= 0 = timeOver == true)`",
+                "`if (hp <= 0 != timeOver == true)`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 1
+        },
         {
             "id": "p05",
             "type": "short",

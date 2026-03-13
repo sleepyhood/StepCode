@@ -1,40 +1,209 @@
-<svg width="650" height="200" xmlns="http://www.w3.org/2000/svg">
-  <rect width="650" height="200" fill="#2D2D30" rx="8" />
-  
-  <text x="325" y="30" fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">AddListener 콜백 (Callback) 구조</text>
-  
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="650"
+   height="200"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="unity_u08_ui_button_addlistener.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview12"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.4664307"
+     inkscape:cx="339.6001"
+     inkscape:cy="77.398817"
+     inkscape:window-width="1920"
+     inkscape:window-height="1094"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg12" />
+  <rect
+     width="650"
+     height="200"
+     fill="#2D2D30"
+     rx="8"
+     id="rect1" />
+  <text
+     x="325"
+     y="30"
+     fill="#FFFFFF"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text1">AddListener 콜백 (Callback) 구조</text>
   <!-- Editor logic side -->
-  <rect x="20" y="50" width="220" height="130" fill="#1E1E1E" rx="8" stroke="#4CAF50" stroke-width="2"/>
-  <text x="130" y="80" fill="#4CAF50" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">스크립트 (로직 코드)</text>
-  
-  <rect x="30" y="100" width="200" height="60" fill="#252526" rx="4" />
-  <text x="40" y="125" fill="#C586C0" font-family="monospace" font-size="12">void</text>
-  <text x="80" y="125" fill="#DCDCAA" font-family="monospace" font-size="12">Attack()</text>
-  <text x="140" y="125" fill="#D4D4D4" font-family="monospace" font-size="12">{ ... }</text>
-  <text x="40" y="145" fill="#4CAF50" font-family="monospace" font-size="12">▶ 실행되어야 할 나의 함수</text>
-
+  <rect
+     x="16"
+     y="50"
+     width="220"
+     height="130"
+     fill="#1e1e1e"
+     rx="8"
+     stroke="#4caf50"
+     stroke-width="2"
+     id="rect2" />
+  <text
+     x="126"
+     y="80"
+     fill="#4caf50"
+     font-family="sans-serif"
+     font-size="14px"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text2">스크립트 (로직 코드)</text>
+  <rect
+     x="26"
+     y="100"
+     width="200"
+     height="60"
+     fill="#252526"
+     rx="4"
+     id="rect3" />
+  <text
+     x="36"
+     y="125"
+     fill="#c586c0"
+     font-family="monospace"
+     font-size="12px"
+     id="text3">void</text>
+  <text
+     x="76"
+     y="125"
+     fill="#dcdcaa"
+     font-family="monospace"
+     font-size="12px"
+     id="text4">Attack()</text>
+  <text
+     x="136"
+     y="125"
+     fill="#d4d4d4"
+     font-family="monospace"
+     font-size="12px"
+     id="text5">{ ... }</text>
+  <text
+     x="36"
+     y="145"
+     fill="#4caf50"
+     font-family="monospace"
+     font-size="12px"
+     id="text6">▶ 실행되어야 할 나의 함수</text>
   <!-- Registration arrow -->
-  <path d="M 250 85 C 310 80, 360 85, 400 95" stroke="#F44336" stroke-width="2" fill="none" stroke-dasharray="4,4" marker-end="url(#arrow-red)"/>
-  <text x="325" y="75" fill="#F44336" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">AddListener(Attack)</text>
-  <text x="325" y="90" fill="#888888" font-family="sans-serif" font-size="10" text-anchor="middle">함수명 통째로 넘김 (구독 등록)</text>
-
+  <path
+     d="M 250 85 C 310 80, 360 85, 400 95"
+     stroke="#F44336"
+     stroke-width="2"
+     fill="none"
+     stroke-dasharray="4,4"
+     marker-end="url(#arrow-red)"
+     id="path6" />
+  <text
+     x="325"
+     y="75"
+     fill="#F44336"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text7">AddListener(Attack)</text>
+  <text
+     x="325"
+     y="104"
+     fill="#888888"
+     font-family="sans-serif"
+     font-size="10px"
+     text-anchor="middle"
+     id="text8">함수명 통째로 넘김 (구독 등록)</text>
   <!-- Button UI side -->
-  <rect x="410" y="50" width="220" height="130" fill="#1E1E1E" rx="8" stroke="#03A9F4" stroke-width="2"/>
-  <text x="520" y="80" fill="#03A9F4" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Button UI 컴포넌트</text>
-  
-  <circle cx="460" cy="140" r="15" fill="#FFC107" />
-  <text x="540" y="145" fill="#CCCCCC" font-family="sans-serif" font-size="12" text-anchor="middle">onClick 이벤트 감지기</text>
-
+  <rect
+     x="416"
+     y="50"
+     width="220"
+     height="130"
+     fill="#1e1e1e"
+     rx="8"
+     stroke="#03a9f4"
+     stroke-width="2"
+     id="rect8" />
+  <text
+     x="526"
+     y="80"
+     fill="#03a9f4"
+     font-family="sans-serif"
+     font-size="14px"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text9">Button UI 컴포넌트</text>
+  <circle
+     cx="466"
+     cy="140"
+     r="15"
+     fill="#ffc107"
+     id="circle9" />
+  <text
+     x="546"
+     y="145"
+     fill="#cccccc"
+     font-family="sans-serif"
+     font-size="12px"
+     text-anchor="middle"
+     id="text10">onClick 이벤트 감지기</text>
   <!-- Execution arrow -->
-  <path d="M 460 120 C 440 100, 380 140, 240 130" stroke="#03A9F4" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
-  <text x="325" y="160" fill="#03A9F4" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">유저가 클릭 시 자동 실행 지시!</text>
-
-  <defs>
-    <marker id="arrow-red" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#F44336" />
+  <path
+     d="M 460 120 C 440 100, 380 140, 240 130"
+     stroke="#03A9F4"
+     stroke-width="3"
+     fill="none"
+     marker-end="url(#arrow-blue)"
+     id="path10" />
+  <text
+     x="325"
+     y="160"
+     fill="#03A9F4"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text11">유저가 클릭 시 자동 실행 지시!</text>
+  <defs
+     id="defs12">
+    <marker
+       id="arrow-red"
+       viewBox="0 0 10 10"
+       refX="5"
+       refY="5"
+       markerWidth="6"
+       markerHeight="6"
+       orient="auto">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#F44336"
+         id="path11" />
     </marker>
-    <marker id="arrow-blue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#03A9F4" />
+    <marker
+       id="arrow-blue"
+       viewBox="0 0 10 10"
+       refX="5"
+       refY="5"
+       markerWidth="6"
+       markerHeight="6"
+       orient="auto">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#03A9F4"
+         id="path12" />
     </marker>
   </defs>
 </svg>

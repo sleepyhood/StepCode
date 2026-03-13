@@ -1,0 +1,213 @@
+{
+  "main": {
+    "id": "83d4a766cde877be",
+    "type": "split",
+    "children": [
+      {
+        "id": "9e3ec638d5e7166c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "297b380a1ba1d40c",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "그래프 뷰"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d58f0c49406cfe28",
+    "type": "split",
+    "children": [
+      {
+        "id": "3c0a612a4cfdf00d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "71b9f46fe21082e8",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "파일 탐색기"
+            }
+          },
+          {
+            "id": "ecb00dcf38bd642a",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "검색"
+            }
+          },
+          {
+            "id": "e4feda9ee824e51e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "북마크"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "e9c3cbe2170957ea",
+    "type": "split",
+    "children": [
+      {
+        "id": "5e16b9e076e71d95",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "40c99786c1d019aa",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "백링크"
+            }
+          },
+          {
+            "id": "83d0ffbbae74f9d6",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "나가는 링크"
+            }
+          },
+          {
+            "id": "03721f0ca0201f4d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "태그"
+            }
+          },
+          {
+            "id": "7602e3b5d7321dac",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "모든 속성"
+            }
+          },
+          {
+            "id": "709b63aa011b6bfd",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "개요"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:빠른 전환기 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 일일 노트 열기": false,
+      "templates:템플릿 삽입": false,
+      "command-palette:명령어 팔레트 열기": false,
+      "bases:새 베이스 생성하기": false,
+      "obsidian-excalidraw-plugin:New drawing": false
+    }
+  },
+  "active": "297b380a1ba1d40c",
+  "lastOpenFiles": [
+    "canva/강민승/이론(개념, 진도)/theory_canva_l01.md",
+    "canva/강민승/이론(개념, 진도)/theory_canva_index.md",
+    "canva/theory_canva_index.md",
+    "images/unity_u03_function_return_error.svg",
+    "images/unity_u03_function_return_error.png",
+    "images/Drawing 2026-03-13 14.55.13.excalidraw.md",
+    "images/Drawing 2026-03-13 14.54.31.excalidraw.md",
+    "images/unity_u03_function_event_execution_order.svg",
+    "images/unity_u03_function_event_execution_order.png",
+    "images/unity_u03_function_static_access_error.png",
+    "images/unity_u03_function_static_access_error.svg",
+    "images/unity_u04_null_exception_console.svg",
+    "images/contest_w03_euclid_state_transition.svg",
+    "images/contest_w03_leap_logic_filter.svg",
+    "Excalidraw/Drawing 2026-03-13 14.53.58.excalidraw.md",
+    "Excalidraw/Drawing 2026-03-13 14.53.31.excalidraw.md",
+    "images/unity_u01_inspector_editor_overview.png",
+    "unity/theory_unity_u04_null_exception.md",
+    "unity/theory_unity_u03_function_syntax.md",
+    "unity/theory_unity_u01_inspector.md",
+    "Excalidraw/Drawing 2026-03-13 14.51.15.excalidraw.md",
+    "Excalidraw",
+    "unity/theory_unity_u02_log_operator.md",
+    "unity/guide_unity_theory.md",
+    "unity/theory_unity_u06_input.md",
+    "무제.base",
+    "무제.canvas",
+    "2026-03-13.md",
+    "jungol/02_중등/2026년_1차_중등_수업_해설지_2019-2025.md",
+    "jungol/2023_정올_고등부_원문정답.pdf"
+  ]
+}

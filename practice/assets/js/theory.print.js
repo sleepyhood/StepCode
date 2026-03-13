@@ -203,6 +203,7 @@ function renderTheoryMarkdown(target, mdText) {
 
 function resolveDataPathSuffix(src) {
   const s = String(src || "").trim();
+  if (s.startsWith("../images/")) return "theory/images/" + s.slice("../images/".length);
   if (s.startsWith("./data/")) return s.slice("./data/".length);
   if (s.startsWith("/data/")) return s.slice("/data/".length);
   if (s.startsWith("/practice/data/")) return s.slice("/practice/data/".length);

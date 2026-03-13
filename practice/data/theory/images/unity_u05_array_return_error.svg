@@ -1,31 +1,223 @@
-<svg width="650" height="200" xmlns="http://www.w3.org/2000/svg">
-  <rect width="650" height="200" fill="#1E1E1E" rx="8" />
-  <rect width="650" height="30" fill="#333333" rx="8" />
-  <circle cx="15" cy="15" r="6" fill="#FF5F56" />
-  <circle cx="35" cy="15" r="6" fill="#FFBD2E" />
-  <circle cx="55" cy="15" r="6" fill="#27C93F" />
-  <text x="325" y="20" fill="#CCCCCC" font-family="monospace" font-size="12" text-anchor="middle">Data.cs - IDE</text>
-
-  <text x="30" y="60" fill="#569CD6" font-family="monospace" font-size="14">int</text>
-  <text x="65" y="60" fill="#DCDCAA" font-family="monospace" font-size="14">CreateArray</text><text x="155" y="60" fill="#D4D4D4" font-family="monospace" font-size="14">() {</text>
-  
-  <text x="50" y="85" fill="#569CD6" font-family="monospace" font-size="14">int</text><text x="75" y="85" fill="#D4D4D4" font-family="monospace" font-size="14">[]</text>
-  <text x="100" y="85" fill="#9CDCFE" font-family="monospace" font-size="14">arr</text>
-  <text x="135" y="85" fill="#D4D4D4" font-family="monospace" font-size="14">=</text>
-  <text x="155" y="85" fill="#569CD6" font-family="monospace" font-size="14">new</text>
-  <text x="190" y="85" fill="#569CD6" font-family="monospace" font-size="14">int</text><text x="215" y="85" fill="#D4D4D4" font-family="monospace" font-size="14">[</text><text x="225" y="85" fill="#B5CEA8" font-family="monospace" font-size="14">5</text><text x="235" y="85" fill="#D4D4D4" font-family="monospace" font-size="14">];</text>
-
-  <text x="50" y="110" fill="#C586C0" font-family="monospace" font-size="14">return</text>
-  <text x="105" y="110" fill="#9CDCFE" font-family="monospace" font-size="14">arr</text><text x="135" y="110" fill="#D4D4D4" font-family="monospace" font-size="14">;</text>
-
-  <text x="30" y="135" fill="#D4D4D4" font-family="monospace" font-size="14">}</text>
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="650"
+   height="200"
+   version="1.1"
+   id="svg23"
+   sodipodi:docname="unity_u05_array_return_error.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs23" />
+  <sodipodi:namedview
+     id="namedview23"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.0738462"
+     inkscape:cx="325"
+     inkscape:cy="100.05564"
+     inkscape:window-width="1920"
+     inkscape:window-height="1094"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg23" />
+  <rect
+     width="650"
+     height="200"
+     fill="#1E1E1E"
+     rx="8"
+     id="rect1" />
+  <rect
+     width="650"
+     height="30"
+     fill="#333333"
+     rx="8"
+     id="rect2" />
+  <circle
+     cx="15"
+     cy="15"
+     r="6"
+     fill="#FF5F56"
+     id="circle2" />
+  <circle
+     cx="35"
+     cy="15"
+     r="6"
+     fill="#FFBD2E"
+     id="circle3" />
+  <circle
+     cx="55"
+     cy="15"
+     r="6"
+     fill="#27C93F"
+     id="circle4" />
+  <text
+     x="325"
+     y="20"
+     fill="#CCCCCC"
+     font-family="monospace"
+     font-size="12"
+     text-anchor="middle"
+     id="text4">Data.cs - IDE</text>
+  <text
+     x="30"
+     y="60"
+     fill="#569CD6"
+     font-family="monospace"
+     font-size="14"
+     id="text5">int</text>
+  <text
+     x="65"
+     y="60"
+     fill="#DCDCAA"
+     font-family="monospace"
+     font-size="14"
+     id="text6">CreateArray</text>
+  <text
+     x="155"
+     y="60"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text7">() {</text>
+  <text
+     x="50"
+     y="85"
+     fill="#569CD6"
+     font-family="monospace"
+     font-size="14"
+     id="text8">int</text>
+  <text
+     x="75"
+     y="85"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text9">[]</text>
+  <text
+     x="100"
+     y="85"
+     fill="#9CDCFE"
+     font-family="monospace"
+     font-size="14"
+     id="text10">arr</text>
+  <text
+     x="135"
+     y="85"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text11">=</text>
+  <text
+     x="155"
+     y="85"
+     fill="#569CD6"
+     font-family="monospace"
+     font-size="14"
+     id="text12">new</text>
+  <text
+     x="190"
+     y="85"
+     fill="#569CD6"
+     font-family="monospace"
+     font-size="14"
+     id="text13">int</text>
+  <text
+     x="215"
+     y="85"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text14">[</text>
+  <text
+     x="225"
+     y="85"
+     fill="#B5CEA8"
+     font-family="monospace"
+     font-size="14"
+     id="text15">5</text>
+  <text
+     x="235"
+     y="85"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text16">];</text>
+  <text
+     x="50"
+     y="110"
+     fill="#C586C0"
+     font-family="monospace"
+     font-size="14"
+     id="text17">return</text>
+  <text
+     x="105"
+     y="110"
+     fill="#9CDCFE"
+     font-family="monospace"
+     font-size="14"
+     id="text18">arr</text>
+  <text
+     x="135"
+     y="110"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text19">;</text>
+  <text
+     x="30"
+     y="135"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text20">}</text>
   <!-- Red squiggly line under arr in return -->
-  <path d="M 105 114 Q 109 118, 113 114 T 121 114 T 129 114" fill="none" stroke="#F44336" stroke-width="2" />
-  
+  <path
+     d="M 105 114 Q 109 118, 113 114 T 121 114 T 129 114"
+     fill="none"
+     stroke="#F44336"
+     stroke-width="2"
+     id="path20" />
   <!-- Tooltip for error -->
-  <rect x="70" y="140" width="530" height="40" fill="#252526" stroke="#454545" stroke-width="1" rx="4" />
-  <text x="80" y="163" fill="#F44336" font-family="monospace" font-size="14">CS0029</text>
-  <text x="135" y="163" fill="#CCCCCC" font-family="monospace" font-size="14">: Cannot implicitly convert type 'int[]'</text>
-  <text x="80" y="186" fill="#CCCCCC" font-family="monospace" font-size="14">to 'int'</text>
+  <rect
+     x="70"
+     y="140"
+     width="530"
+     height="40"
+     fill="#252526"
+     stroke="#454545"
+     stroke-width="1"
+     rx="4"
+     id="rect20" />
+  <text
+     x="80"
+     y="157"
+     fill="#f44336"
+     font-family="monospace"
+     font-size="14px"
+     id="text21">CS0029</text>
+  <text
+     x="135"
+     y="157"
+     fill="#cccccc"
+     font-family="monospace"
+     font-size="14px"
+     id="text22">: Cannot implicitly convert type 'int[]'</text>
+  <text
+     x="80"
+     y="172"
+     fill="#cccccc"
+     font-family="monospace"
+     font-size="14px"
+     id="text23">to 'int'</text>
 </svg>

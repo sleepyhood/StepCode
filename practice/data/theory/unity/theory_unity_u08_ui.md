@@ -31,6 +31,12 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("게임 시작 됨!");
     }
+
+    // 3. 외부에서 메시지를 전달받아 UI를 갱신하는 함수 예시 (P02 대비)
+    public void SetMessageToDisplay(string stringToDisplay)
+    {
+        scoreText.text = stringToDisplay;
+    }
 }
 ```
 
@@ -41,15 +47,44 @@ public class UIManager : MonoBehaviour
 - 오답 포인트: 숫자를 대입할 때 `.text = 100;` 으로 숫자형을 곧바로 넣어버려 형 변환 에러가 나거나, 변수 이름 자체만 적어두는 경우(`scoreText = "Hello";`)이다.
 - 정답 판별: 요소의 `.text` 멤버 참조가 정확하고, 값으로 대입되는 우항이 완전한 `string` 타입 구문(예: `.ToString()`, `"문자"`)인지 확인한다.
 
-![Text 컴포넌트 연결 구조](./data/theory/images/unity_u08_ui_text_inspector.png)
+![Text 컴포넌트 연결 구조](../images/unity_u08_ui_text_inspector.png)
 *캡션: 인스펙터의 Text(Legacy) 컴포넌트에 스크립트의 public Text 변수를 드래그 앤 드롭으로 연결한 모습. 출처: 직접 캡처*
 
 ### 2) Button.onClick.AddListener() 활용
 - 개념: 버튼이 클릭될 때 어떤 동작을 할지 지정하는 방법에는 '인스펙터의 On Click () 항목에서 직접 객체와 함수를 선택하는 방식(에디터 기반)'과 '코드에서 `AddListener`를 써서 함수를 주입해주는 방식(코드 기반)'이 있다. 후자는 실행 도중에 동적으로 버튼 역할을 바꿔줄 수 있어 강력하다.
+- **등록 위치의 중요성** (Start vs Update):
+  - `AddListener`는 **호출될 때마다 리스너가 누적 등록**된다. 따라서 반드시 **1회만 실행되는 초기화 메서드**(`Start`, `Awake`, `OnEnable`) 안에서 호출해야 한다.
+  - `Update()`나 `LateUpdate()` 안에 넣으면 60fps 기준 **1초에 60개의 동일 리스너가 누적**되어, 버튼 1번 클릭에 콜백이 수백 번 실행되는 치명적 부작용이 생긴다.
+  - `OnTriggerEnter2D` 같은 물리 이벤트는 **UI 버튼 클릭과 완전히 무관**하므로 리스너 등록 장소로 적합하지 않다.
+  ```csharp
+  // ⭕ 올바른 예: Start에서 1회 등록
+  void Start() {
+      button.onClick.AddListener(OnButtonClicked);
+  }
+  // ❌ 위험한 예: Update에서 매 프레임 등록 (중복 누적!)
+  void Update() {
+      button.onClick.AddListener(OnButtonClicked); // 매 프레임 1개씩 쌓임
+  }
+  ```
 - 오답 포인트: `AddListener`의 괄호 안에 들어가야 하는 것은 "실행될 함수 그 자체(메서드 이름)"여야 하는데, 함수의 반환 결과를 넣듯 `()`를 붙여서 `AddListener(function())` 형식으로 넘겨주어 문법 오류를 유발하는 경우이다.
 - 정답 판별: 콜백으로 넘겨주는 인자가 함수 호출 구문 `()` 없이 함수의 이름(식별자) 원형 그대로 잘 넘겨졌는지 판별한다.
 
-![AddListener 동작 원리 다이어그램](./data/theory/images/unity_u08_ui_button_addlistener.svg)
+### 3) 마우스 이벤트 내장 메시지 함수 (OnMouse~ 계열)
+- 개념: 유니티 엔진은 3D/2D 오브젝트 위에서 마우스 조작이 발생할 때 특정 이름의 함수를 **자동으로 호출**해 준다. 개발자가 직접 호출하지 않으므로 `private`으로 선언하는 것이 설계 원칙이다.
+  - `OnMouseDown()`: 마우스 버튼을 **누르는 순간** 1회 호출
+  - `OnMouseUp()`: 마우스 버튼을 누르고 있다가 **떼 순간** 1회 호출
+  - `OnMouseEnter()`: 마우스 커서가 오브젝트 위로 **올라온 순간** 1회 호출
+- 예시:
+  ```csharp
+  private void OnMouseUp()
+  {
+      panelObject.SetActive(!panelObject.activeSelf);
+  }
+  ```
+- 오답 포인트: `OnMouseDown`(누르는 순간)과 `OnMouseUp`(떼 순간)을 혼동하거나, 접근 제한자를 `public`으로 놓아 불필요하게 외부에 노출한다.
+- 정답 판별: `private void OnMouseUp()` 형태가 정확한지 확인한다.
+
+![AddListener 동작 원리 다이어그램](../images/unity_u08_ui_button_addlistener.svg)
 *캡션: 버튼 컨트롤러가 클릭 이벤트를 감지하면, AddListener로 등록해둔 사용자 함수들을 차례대로 호출해주는 콜백 시스템의 원리. 출처: 자체 제작*
 
 ## 자주 하는 실수

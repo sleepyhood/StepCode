@@ -1,6 +1,6 @@
-﻿{
-    "id": "unity_u05_transform_lifecycle_b01",
-    "title": "Unity U05 Transform and Lifecycle Basic R1",
+{
+    "id": "unity_u05_transform_lifecycle",
+    "title": "Unity U05 Transform and Lifecycle",
     "categoryId": "unity_u05_transform_lifecycle",
     "availableLanguages": [
         "csharp"
@@ -57,6 +57,35 @@
                 "B -> C -> A -> D",
                 "B C A D"
             ]
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - 자식 Transform 배열 유틸 함수 작성",
+            "description": "`Transform root`를 받아 직계 자식을 `Transform[]`로 반환하는 핵심 코드를 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "Transform[] result = new Transform[root.childCount];\nfor (int i = 0; i < root.childCount; ++i)\n{\n    result[i] = root.GetChild(i);\n}"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - 라이프사이클 배치 판별",
+            "description": "가장 적절한 배치를 고르세요.",
+            "options": [
+                "`OnEnable`에서 데이터 읽기, `Awake`에서 장착",
+                "`Awake`에서 데이터 읽기, `OnEnable`에서 장착",
+                "둘 다 `Start`에만 배치",
+                "둘 다 `Update`에 배치"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 1
         }
     ]
 }

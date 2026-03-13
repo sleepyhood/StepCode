@@ -37,10 +37,14 @@ public class GameManager : MonoBehaviour
 
 ### 1) NullReferenceException과 객체 생성 (`new`)
 - 개념: 클래스 변수는 선언만으로는 공간(이름표)만 만들어질 뿐이며, 실제 메모리 공간(객체)을 할당하려면 반드시 `new 클래스명()`을 호출해야 한다. 초기화 없이 변수 내부의 멤버(필드, 메서드)에 접근하면 변수가 비어있는 `null` 상태이므로 런타임에 에러가 발생한다.
+- **값 타입 vs 참조 타입의 null 비교 규칙**:
+  - **참조 타입** (`GameObject`, 클래스 인스턴스, `string` 등): 객체의 주소를 담는 방식이므로 `== null` 비교가 **가능**하다.
+  - **값 타입** (`int`, `float`, `bool` 등): 변수 자체가 값을 직접 보관하므로 태생적으로 `null`이 될 수 없어 `== null` 비교가 **불가능**(컴파일 에러)하다.
+  - 따라서 `if (projectile == null)` 같은 null 체크는 `projectile`이 `GameObject`(참조 타입)일 때만 성립한다.
 - 오답 포인트: 클래스의 멤버에 접근하는 코드에서 해당 객체가 스크립트 상에서 `new`로 생성되었는지, 혹은 유니티 Inspector 등 외부에서 참조가 올바로 할당되어 있는지 확인하지 않는 경우이다.
 - 정답 판별: 오류가 발생하는 줄에서 접근 대상 객체가 이전에 `new` 연산자로 정상 초기화가 이루어졌는지 먼저 파악한다. 그렇지 않다면 예외 상황이다.
 
-![NullReference Exception 콘솔 에러](./data/theory/images/unity_u04_null_exception_console.svg)
+![NullReference Exception 콘솔 에러](../images/unity_u04_null_exception_console.svg)
 *캡션: 인스턴스가 존재하지 않는 객체 변수에 접근할 때 Unity Console에서 출력되는 대표적인 NullReferenceException 메시지 예시.*
 
 ### 2) 데이터 타입 비교와 타입 불일치 (Type Mismatch)
@@ -48,20 +52,41 @@ public class GameManager : MonoBehaviour
 - 오답 포인트: 데이터의 의미 자체가 다른 기준(예: 문자열 `string`과 정수 `int`)을 억지로 `==` 연산자로 비교하려고 시도하는 경우이다. 이 경우 프로그램이 아예 실행(컴파일)되지 않는다.
 - 정답 판별: 비교 연산자 좌우의 변수 타입이 동일한지, 혹은 정수와 실수처럼 의미상 호환 가능한 허용된 타입인지 확인한다.
 
-![Type Mismatch 에러](./data/theory/images/unity_u04_type_mismatch_error.svg)
+![Type Mismatch 에러](../images/unity_u04_type_mismatch_error.svg)
 *캡션: 호환되지 않는 타입(문자열과 정수) 사이에서 비교 연산자(==)를 사용하려 할 때 발생하는 C# IDE 컴파일 에러 예시.*
 
 ### 3) Dictionary (딕셔너리) 초기화 및 사용 문법
 - 개념: Dictionary는 특정 `key`(인덱스 역할)를 통해 `value`(값)를 저장하고 읽어오는 컬렉션 구조이다. 배열은 인덱스가 0, 1, 2 등의 자연수(int)로 고정되어 있지만, Dictionary는 `string`, `class` 등 다양한 타입을 키(key)로 활용할 수 있다. 사용 시에는 `new Dictionary<키_타입, 값_타입>()` 구문으로 필수 초기화를 거쳐야 한다.
+- **Dictionary에 데이터를 채우는 표준 흐름** (new → foreach → Add):
+  ```csharp
+  // 1. 먼저 new로 초기화 (안 하면 NullReferenceException)
+  dictionary = new Dictionary<string, GameObject>();
+  // 2. 기존 리스트를 foreach로 순회
+  foreach (var go in gameObjects)
+  {
+      // 3. 순회하며 키-값 쌍을 등록
+      dictionary.Add(go.name, go);
+  }
+  ```
+  반드시 **new 생성 → foreach 순회 → Add 등록** 순서를 지켜야 한다.
 - 오답 포인트: Dictionary 변수를 선언만 해두고, `new`를 통한 초기화를 빼먹은 채 `d["ABCD"] = 5;` 처럼 요소를 즉시 삽입하려 하는 경우 NullException을 발생시킨다.
 - 정답 판별: 제네릭 타입 종류(Key, Value 대응)와 초기화 구문(`new Dictionary()`)이 선언부에 정확히 명시되어 있는지 확인한다.
+
+### 3-1) 삼항 연산자를 활용한 null 안전 처리
+- 개념: `조건 ? 참일 때 값 : 거짓일 때 값` 형태의 **삼항 조건 연산자**를 사용하면, 객체가 null일 때와 정상일 때의 값 할당을 한 줄로 처리할 수 있다.
+  ```csharp
+  // projectile이 null이면 0f, 아니면 X 좌표값 대입
+  float xPos = projectile == null ? 0f : projectile.transform.position.x;
+  ```
+- 오답 포인트: null 체크 없이 `projectile.transform.position.x`에 바로 접근하면, 객체가 파괴되었거나 Inspector 미할당 시 NullReferenceException이 발생한다.
+- 정답 판별: `== null` 조건이 삼항 연산자의 조건부에 있고, null일 때의 안전한 기본값(예: `0f`)과 정상일 때의 접근 경로가 모두 포함되어 있는지 확인한다.
 
 ### 4) 암시적 타입 `var`
 - 개념: `var` 키워드는 프로그래머가 명시적으로 타입을 쓰지 않아도 대입 연산자(`=`) 오른쪽 값의 출처를 분석해 컴파일러가 스스로 자료형을 결정해주는 문법이다.
 - 오답 포인트: 변수 선언 줄에서(`var temp;`) 초기값을 대입하지 않고 아랫줄에 가서야 값(`temp = 3;`)을 넣으려 하는 경우이다. 컴파일러가 처음 만나는 선언 시점에 타입을 구별할 수 없어 오류가 난다.
 - 정답 판별: `var` 로 정의된 변수가 **선언하는 즉시 특정 초기값으로 할당(=)** 되었는지 확인한다.
 
-![var 초기화 누락 에러](./data/theory/images/unity_u04_var_initialization_error.svg)
+![var 초기화 누락 에러](../images/unity_u04_var_initialization_error.svg)
 *캡션: var 키워드로 변수를 선언할 때 같은 줄에서 초기화를 수행하지 않으면 발생하는 CS0818 컴파일 오류 화면.*
 
 ### 5) foreach 반복문

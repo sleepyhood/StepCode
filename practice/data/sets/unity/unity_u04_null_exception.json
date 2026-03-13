@@ -1,6 +1,6 @@
-﻿{
-    "id": "unity_u04_null_exception_b01",
-    "title": "Unity U04 Null/예외 기초 1회차",
+{
+    "id": "unity_u04_null_exception",
+    "title": "Unity U04 Null/예외",
     "categoryId": "unity_u04_null_exception",
     "availableLanguages": [
         "csharp"
@@ -63,9 +63,46 @@
                 "B",
                 "C",
                 "D"
-            ]
-            ,
+            ],
             "correctIndex": 2
+        },
+        {
+            "id": "p04",
+            "type": "code",
+            "level": "challenge",
+            "title": "Dictionary 초기화 순서",
+            "description": "`gameObjects`를 순회해 `dictionary`를 초기화하는 코드를 작성하세요. key=`gameObject.name`, value=`gameObject`.",
+            "code": "// TODO",
+            "expectedCode": "dictionary = new Dictionary<string, GameObject>();\nforeach (var gameObject in gameObjects)\n{\n    dictionary.Add(gameObject.name, gameObject);\n}"
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - null 안전 접근",
+            "description": "`projectile`이 null이면 0, 아니면 `projectile.transform.position.x`를 `xPos`에 담는 한 줄 코드를 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "float xPos = projectile == null ? 0f : projectile.transform.position.x;"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - 타입 비교 가능성 판별",
+            "description": "컴파일 오류 없이 비교 가능한 식을 고르세요.",
+            "options": [
+                "`dictionary == myInt`",
+                "`myString == list`",
+                "`dictionary == list`",
+                "`myFloat > myInt`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 3
         }
     ]
 }

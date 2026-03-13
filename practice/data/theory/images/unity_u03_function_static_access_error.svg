@@ -1,32 +1,202 @@
-<svg width="650" height="200" xmlns="http://www.w3.org/2000/svg">
-  <rect width="650" height="200" fill="#1E1E1E" rx="8" />
-  <rect width="650" height="30" fill="#333333" rx="8" />
-  <circle cx="15" cy="15" r="6" fill="#FF5F56" />
-  <circle cx="35" cy="15" r="6" fill="#FFBD2E" />
-  <circle cx="55" cy="15" r="6" fill="#27C93F" />
-  <text x="325" y="20" fill="#CCCCCC" font-family="monospace" font-size="12" text-anchor="middle">GameManager.cs - IDE (Visual Studio / VS Code)</text>
-  
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="650"
+   height="200"
+   version="1.1"
+   id="svg20"
+   sodipodi:docname="unity_u03_function_static_access_error.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs20" />
+  <sodipodi:namedview
+     id="namedview20"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.9733718"
+     inkscape:cx="307.59535"
+     inkscape:cy="89.440822"
+     inkscape:window-width="1920"
+     inkscape:window-height="1094"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg20" />
+  <rect
+     width="650"
+     height="200"
+     fill="#1E1E1E"
+     rx="8"
+     id="rect1" />
+  <rect
+     width="650"
+     height="30"
+     fill="#333333"
+     rx="8"
+     id="rect2" />
+  <circle
+     cx="15"
+     cy="15"
+     r="6"
+     fill="#FF5F56"
+     id="circle2" />
+  <circle
+     cx="35"
+     cy="15"
+     r="6"
+     fill="#FFBD2E"
+     id="circle3" />
+  <circle
+     cx="55"
+     cy="15"
+     r="6"
+     fill="#27C93F"
+     id="circle4" />
+  <text
+     x="325"
+     y="20"
+     fill="#CCCCCC"
+     font-family="monospace"
+     font-size="12"
+     text-anchor="middle"
+     id="text4">GameManager.cs - IDE (Visual Studio / VS Code)</text>
   <!-- Code text -->
-  <text x="30" y="60" fill="#569CD6" font-family="monospace" font-size="14">int</text>
-  <text x="65" y="60" fill="#9CDCFE" font-family="monospace" font-size="14">score = </text><text x="130" y="60" fill="#B5CEA8" font-family="monospace" font-size="14">0</text><text x="138" y="60" fill="#D4D4D4" font-family="monospace" font-size="14">;</text>
-  
-  <text x="30" y="90" fill="#569CD6" font-family="monospace" font-size="14">public</text>
-  <text x="85" y="90" fill="#569CD6" font-family="monospace" font-size="14">static</text>
-  <text x="140" y="90" fill="#569CD6" font-family="monospace" font-size="14">void</text>
-  <text x="180" y="90" fill="#DCDCAA" font-family="monospace" font-size="14">AddScore</text>
-  <text x="250" y="90" fill="#D4D4D4" font-family="monospace" font-size="14">()</text>
-  
-  <text x="30" y="115" fill="#D4D4D4" font-family="monospace" font-size="14">{</text>
-  <text x="50" y="140" fill="#9CDCFE" font-family="monospace" font-size="14">score</text>
-  <text x="100" y="140" fill="#D4D4D4" font-family="monospace" font-size="14">+= 1; </text>
-  <text x="30" y="165" fill="#D4D4D4" font-family="monospace" font-size="14">}</text>
-  
+  <text
+     x="30"
+     y="60"
+     fill="#569CD6"
+     font-family="monospace"
+     font-size="14"
+     id="text5">int</text>
+  <text
+     x="65"
+     y="60"
+     fill="#9CDCFE"
+     font-family="monospace"
+     font-size="14"
+     id="text6">score = </text>
+  <text
+     x="130"
+     y="60"
+     fill="#B5CEA8"
+     font-family="monospace"
+     font-size="14"
+     id="text7">0</text>
+  <text
+     x="138"
+     y="60"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text8">;</text>
+  <text
+     x="30"
+     y="90"
+     fill="#569CD6"
+     font-family="monospace"
+     font-size="14"
+     id="text9">public</text>
+  <text
+     x="85"
+     y="90"
+     fill="#569CD6"
+     font-family="monospace"
+     font-size="14"
+     id="text10">static</text>
+  <text
+     x="140"
+     y="90"
+     fill="#569CD6"
+     font-family="monospace"
+     font-size="14"
+     id="text11">void</text>
+  <text
+     x="180"
+     y="90"
+     fill="#DCDCAA"
+     font-family="monospace"
+     font-size="14"
+     id="text12">AddScore</text>
+  <text
+     x="250"
+     y="90"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text13">()</text>
+  <text
+     x="30"
+     y="115"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text14">{</text>
+  <text
+     x="50"
+     y="140"
+     fill="#9CDCFE"
+     font-family="monospace"
+     font-size="14"
+     id="text15">score</text>
+  <text
+     x="100"
+     y="140"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text16">+= 1; </text>
+  <text
+     x="30"
+     y="165"
+     fill="#D4D4D4"
+     font-family="monospace"
+     font-size="14"
+     id="text17">}</text>
   <!-- Red squiggly line under score -->
-  <path d="M 50 144 Q 54 148, 58 144 T 66 144 T 74 144 T 82 144 T 90 144" fill="none" stroke="#F44336" stroke-width="2" />
-  
+  <path
+     d="M 50 144 Q 54 148, 58 144 T 66 144 T 74 144 T 82 144 T 90 144"
+     fill="none"
+     stroke="#F44336"
+     stroke-width="2"
+     id="path17" />
   <!-- Tooltip for error -->
-  <rect x="70" y="130" width="530" height="40" fill="#252526" stroke="#454545" stroke-width="1" rx="4" />
-  <text x="80" y="153" fill="#F44336" font-family="monospace" font-size="14">CS0120</text>
-  <text x="135" y="153" fill="#CCCCCC" font-family="monospace" font-size="14">: An object reference is required for the</text>
-  <text x="80" y="176" fill="#CCCCCC" font-family="monospace" font-size="14">non-static field, method, or property...</text>
+  <rect
+     x="70"
+     y="154"
+     width="530"
+     height="40"
+     fill="#252526"
+     stroke="#454545"
+     stroke-width="1"
+     rx="4"
+     id="rect17" />
+  <text
+     x="80"
+     y="171"
+     fill="#f44336"
+     font-family="monospace"
+     font-size="14px"
+     id="text18">CS0120</text>
+  <text
+     x="135"
+     y="171"
+     fill="#cccccc"
+     font-family="monospace"
+     font-size="14px"
+     id="text19">: An object reference is required for the</text>
+  <text
+     x="80"
+     y="184"
+     fill="#cccccc"
+     font-family="monospace"
+     font-size="14px"
+     id="text20">non-static field, method, or property...</text>
 </svg>

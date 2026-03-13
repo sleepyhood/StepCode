@@ -1,4 +1,4 @@
-﻿# Canva L01 이론: Canva 시작과 저작권/라이선스
+# Canva L01 이론: Canva 시작과 저작권/라이선스
 
 ## 연계 실습/과제
 - 과제지: [student_assignment_l01.md](./student_assignment_l01.md)

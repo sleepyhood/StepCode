@@ -1,38 +1,200 @@
-<svg width="650" height="240" xmlns="http://www.w3.org/2000/svg">
-  <rect width="650" height="240" fill="#2D2D30" rx="8" />
-  
-  <text x="325" y="30" fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">Collision vs Trigger 방식 비교</text>
-  
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="650"
+   height="240"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="unity_u07_spawn_physics_trigger_vs_collision.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview8"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.0738462"
+     inkscape:cx="325"
+     inkscape:cy="119.82567"
+     inkscape:window-width="1920"
+     inkscape:window-height="1094"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <rect
+     width="650"
+     height="240"
+     fill="#2D2D30"
+     rx="8"
+     id="rect1" />
+  <text
+     x="325"
+     y="30"
+     fill="#FFFFFF"
+     font-family="sans-serif"
+     font-size="16"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text1">Collision vs Trigger 방식 비교</text>
   <!-- Collision (Is Trigger = false) -->
-  <rect x="20" y="50" width="290" height="170" fill="#1E1E1E" rx="4" />
-  <text x="165" y="75" fill="#4CAF50" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Is Trigger 체크 해제 (Collision)</text>
-  <text x="165" y="95" fill="#CCCCCC" font-family="sans-serif" font-size="12" text-anchor="middle">물리적 충돌 발생 O (벽, 바닥)</text>
-  
-  <rect x="70" y="140" width="80" height="50" fill="#607D8B" stroke="#B0BEC5" stroke-width="2" />
-  <circle cx="210" cy="165" r="25" fill="#FFC107" />
-  
+  <rect
+     x="20"
+     y="50"
+     width="290"
+     height="170"
+     fill="#1E1E1E"
+     rx="4"
+     id="rect2" />
+  <text
+     x="165"
+     y="75"
+     fill="#4CAF50"
+     font-family="sans-serif"
+     font-size="14"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text2">Is Trigger 체크 해제 (Collision)</text>
+  <text
+     x="165"
+     y="95"
+     fill="#CCCCCC"
+     font-family="sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     id="text3">물리적 충돌 발생 O (벽, 바닥)</text>
+  <rect
+     x="70"
+     y="140"
+     width="80"
+     height="50"
+     fill="#607D8B"
+     stroke="#B0BEC5"
+     stroke-width="2"
+     id="rect3" />
+  <circle
+     cx="210"
+     cy="165"
+     r="25"
+     fill="#FFC107"
+     id="circle3" />
   <!-- Movement arrow and bounce -->
-  <path d="M 235 165 L 160 165" stroke="#FFC107" stroke-width="3" fill="none" marker-end="url(#arrow-yellow)" stroke-dasharray="5,5"/>
-  <path d="M 152 165 L 152 140" stroke="#F44336" stroke-width="4" fill="none"/>
-  <text x="152" y="130" fill="#F44336" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">충돌(막힘)!</text>
-  
-  <defs>
-    <marker id="arrow-yellow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFC107" />
+  <path
+     d="M 235 165 L 160 165"
+     stroke="#FFC107"
+     stroke-width="3"
+     fill="none"
+     marker-end="url(#arrow-yellow)"
+     stroke-dasharray="5,5"
+     id="path3" />
+  <path
+     d="M 152 165 L 152 140"
+     stroke="#F44336"
+     stroke-width="4"
+     fill="none"
+     id="path4" />
+  <text
+     x="152"
+     y="130"
+     fill="#F44336"
+     font-family="sans-serif"
+     font-size="12"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text4">충돌(막힘)!</text>
+  <defs
+     id="defs6">
+    <marker
+       id="arrow-yellow"
+       viewBox="0 0 10 10"
+       refX="5"
+       refY="5"
+       markerWidth="6"
+       markerHeight="6"
+       orient="auto-start-reverse">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#FFC107"
+         id="path5" />
     </marker>
-    <marker id="arrow-blue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#03A9F4" />
+    <marker
+       id="arrow-blue"
+       viewBox="0 0 10 10"
+       refX="5"
+       refY="5"
+       markerWidth="6"
+       markerHeight="6"
+       orient="auto-start-reverse">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#03A9F4"
+         id="path6" />
     </marker>
   </defs>
-
   <!-- Trigger (Is Trigger = true) -->
-  <rect x="330" y="50" width="300" height="170" fill="#1E1E1E" rx="4" />
-  <text x="480" y="75" fill="#03A9F4" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Is Trigger 체크 (Trigger)</text>
-  <text x="480" y="95" fill="#CCCCCC" font-family="sans-serif" font-size="12" text-anchor="middle">물리 충돌 없이 감지용 (코인, 포탈)</text>
-  
-  <rect x="380" y="140" width="80" height="50" fill="rgba(96, 125, 139, 0.3)" stroke="#03A9F4" stroke-width="2" stroke-dasharray="4,4" />
-  <circle cx="520" cy="165" r="25" fill="#FFC107" />
-  
-  <path d="M 545 165 L 360 165" stroke="#FFC107" stroke-width="3" fill="none" marker-end="url(#arrow-yellow)" stroke-dasharray="5,5"/>
-  <text x="420" y="150" fill="#03A9F4" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">통과함 (이벤트 감지)</text>
+  <rect
+     x="330"
+     y="50"
+     width="300"
+     height="170"
+     fill="#1E1E1E"
+     rx="4"
+     id="rect6" />
+  <text
+     x="480"
+     y="75"
+     fill="#03A9F4"
+     font-family="sans-serif"
+     font-size="14"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text6">Is Trigger 체크 (Trigger)</text>
+  <text
+     x="480"
+     y="95"
+     fill="#CCCCCC"
+     font-family="sans-serif"
+     font-size="12"
+     text-anchor="middle"
+     id="text7">물리 충돌 없이 감지용 (코인, 포탈)</text>
+  <rect
+     x="380"
+     y="140"
+     width="80"
+     height="50"
+     fill="rgba(96, 125, 139, 0.3)"
+     stroke="#03A9F4"
+     stroke-width="2"
+     stroke-dasharray="4,4"
+     id="rect7" />
+  <circle
+     cx="520"
+     cy="165"
+     r="25"
+     fill="#FFC107"
+     id="circle7" />
+  <path
+     d="M 545 165 L 360 165"
+     stroke="#FFC107"
+     stroke-width="3"
+     fill="none"
+     marker-end="url(#arrow-yellow)"
+     stroke-dasharray="5,5"
+     id="path7" />
+  <text
+     x="420"
+     y="130"
+     fill="#03a9f4"
+     font-family="sans-serif"
+     font-size="12px"
+     font-weight="bold"
+     text-anchor="middle"
+     id="text8">통과함 (이벤트 감지)</text>
 </svg>

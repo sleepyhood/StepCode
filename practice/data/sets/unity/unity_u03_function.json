@@ -1,7 +1,7 @@
 {
-    "id": "unity_u03_function_syntax_b01",
-    "title": "Unity U03 함수/static 기초 1회차",
-    "categoryId": "unity_u03_function_syntax",
+    "id": "unity_u03_function",
+    "title": "Unity U03 함수/static",
+    "categoryId": "unity_u03_function",
     "availableLanguages": [
         "csharp"
     ],
@@ -70,6 +70,26 @@
             "description": "요구사항( `private`, `static`, 반환형 `int`, 메서드명 `Multiply`, 매개변수 `int a, int b` )을 만족하는 메서드 선언 한 줄을 작성하세요.",
             "code": "// TODO",
             "expectedCode": "private static int Multiply(int a, int b)"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - `void`/`return` 오개념 판별",
+            "description": "다음 중 틀린 설명을 고르세요.",
+            "options": [
+                "`void` 메서드는 값을 반환하지 않는다.",
+                "`int` 반환형 메서드는 적절한 값을 `return`해야 한다.",
+                "static 메서드는 인스턴스 필드를 직접 접근할 수 있다.",
+                "매개변수는 서로 다른 타입을 함께 사용할 수 있다."
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
         }
     ]
 }

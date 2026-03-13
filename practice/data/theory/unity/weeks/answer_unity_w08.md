@@ -1,4 +1,4 @@
-﻿# Unity 주차 정답지 W08
+# Unity 주차 정답지 W08
 
 ## 메타
 - 대상 문제지: `problem_unity_w08.md`
@@ -7,44 +7,44 @@
 ## 정답표
 | 문항 ID | 정답 | 한 줄 근거 |
 |---|---|---|
-| P01 | ① `using UnityEngine.UI;` ② `public Text myText;` ③ `myText.text = ("Score: " + score.ToString());` | UI Text 사용 필수 3요소 |
-| P02 | ① `void` ② `SetMessageToDisplay` ③ `(string stringToDisplay)` | 호출/본문과 시그니처 일치 |
-| P03 | ① `private` ② `void` ③ `OnMouseUp()` | 요구 조건(내부 사용 + 클릭 업 이벤트) 충족 |
-| P04 | 1 참, 2 거짓, 3 참 | 원문 30번 판단과 동일 |
-| X01 | 예: `void Start() { button2.onClick.AddListener(LightBulbOn); }` | `Start` 1회 등록으로 중복 방지 |
-| X02 | B | 일반적으로 `Start`에서 1회 등록 |
+| P01 | ① `using UnityEngine.UI;` ② `public Text myText;` ③ `myText.text = ("Score: " + score.ToString());` | UI Text 사용에 네임스페이스 import, 컴포넌트 변수 선언, 문자열 변환 대입이 모두 갖춰져야 함 |
+| P02 | ① `void` ② `SetMessageToDisplay` ③ `(string stringToDisplay)` | 값을 돌려주지 않으므로 void, 호출 코드와 대소문자 일치, 본문에서 참조하는 파라미터 이름 동기화 필수 |
+| P03 | ① `private` ② `void` ③ `OnMouseUp` | 외부 노출 불필요하므로 private, 반환값 없으므로 void, 마우스 버튼 해제 시 엔진이 자동 호출하는 정확한 내장 이름 |
+| P04 | 1 참, 2 거짓, 3 참 | Start 1회 등록은 정상 동작, OnTriggerEnter2D는 물리 전용이므로 클릭 대체 불가, Update 등록은 동작하지만 중복 누적 부작용 발생 |
+| X01 | 예: `void Start() { button2.onClick.AddListener(LightBulbOn); }` | 1회성 초기화 메서드 안에서 AddListener를 호출하여 중복 등록 원천 차단 |
+| X02 | B | 매 프레임 루프(Update/LateUpdate)나 물리 이벤트(OnTriggerEnter2D)가 아닌, 씬 시작 시 단 1회 호출되는 Start()가 최적 |
 
 ## 해설
 ### P01
-- 개념 정의: UI `Text`를 쓰려면 네임스페이스, 타입 선언, `.text` 대입이 모두 필요합니다.
-- 오답 포인트: `UnityEngine.Text`, `text`(소문자 타입), `settext` 같은 잘못된 멤버를 고르기 쉽습니다.
-- 판별 기준: 3요소가 모두 정확한 문법으로 작성되었는지 확인합니다.
+- 개념 정의: 유니티 UI의 `Text` 컴포넌트를 C# 스크립트에서 제어하려면 3가지 파이프라인이 모두 갖춰져야 합니다. ① UI 전용 네임스페이스(`UnityEngine.UI`)를 import하고, ② `Text` 타입 변수를 선언하여 Inspector에서 연결할 수 있게 하며, ③ 갱신된 숫자 데이터를 `.text` 프로퍼티에 문자열로 변환하여 대입해야 합니다.
+- 오답 포인트: `UnityEngine.Text`처럼 존재하지 않는 네임스페이스를 작성하거나, 변수 타입을 소문자 `text`로 쓰거나, `.text`에 정수형을 직접 대입해 컴파일 에러를 발생시킵니다.
+- 판별 기준: 3요소가 모두 올바른 네임스페이스 경로, 정확한 타입 대소문자, 그리고 `.ToString()` 변환을 포함한 문자열 조합 문법으로 작성되어 있는지 확인합니다.
 
 ### P02
-- 개념 정의: 메서드 호출 형태와 선언 시그니처(반환형/이름/매개변수)는 일치해야 합니다.
-- 오답 포인트: 대소문자 다른 메서드명, 매개변수 이름 불일치로 본문 변수 참조 오류가 발생합니다.
-- 판별 기준: `SetMessageToDisplay("...")` 호출과 `textToDisplay.text = stringToDisplay;` 본문을 동시에 만족해야 합니다.
+- 개념 정의: C# 메서드의 선언 시그니처(반환형 + 이름 + 매개변수)는 외부 호출 코드의 형태 및 내부 본문에서 참조하는 변수 이름과 반드시 모든 요소가 일치해야 컴파일이 성공합니다.
+- 오답 포인트: 메서드명의 대소문자를 한 글자라도 틀리면 아예 다른 함수로 인식되어 호출이 연결되지 않습니다. 또한 매개변수 이름을 본문의 `stringToDisplay`와 다르게 지으면 변수 참조 오류가 발행합니다.
+- 판별 기준: 호출부 `SetMessageToDisplay("...")`와 본문 `textToDisplay.text = stringToDisplay;`를 동시에 만족하는 시그니처인지 교차 검증합니다.
 
 ### P03
-- 개념 정의: `OnMouseUp()`은 마우스 버튼을 뗄 때 호출되는 Unity 메시지 함수입니다.
-- 오답 포인트: `OnMouseEnter()`와 혼동하거나 접근 제한자를 문제 조건과 다르게 선택합니다.
-- 판별 기준: `private void OnMouseUp()` 형태면 정답입니다.
+- 개념 정의: `OnMouseUp()`은 유니티 엔진이 3D/2D 오브젝트 위에서 마우스 버튼을 눌렀다가 뗐을 때 자동으로 호출하는 내장 메시지 함수입니다. 개발자가 직접 호출하는 것이 아니라 엔진이 자체적으로 호출하므로 접근 범위를 `private`으로 제한하는 것이 설계 원칙입니다.
+- 오답 포인트: 비슷한 이름의 `OnMouseEnter`(마우스 위에 올릴 때), `OnMouseDown`(누르는 순간) 등과 혼동하거나, 접근 제한자를 `public`으로 놓아 불필요하게 외부에 노출합니다.
+- 판별 기준: `private void OnMouseUp()` 형태가 3가지 빈칸의 정확한 조합인지 확인합니다.
 
 ### P04
-- 개념 정의: `AddListener`는 등록 위치에 따라 동작 안정성이 달라집니다.
-- 오답 포인트: `OnTriggerEnter2D`를 버튼 클릭 감지 함수로 오해하거나, `Update` 중복 등록 부작용을 놓칩니다.
-- 판별 기준: 1 참, 2 거짓, 3 참을 정확히 구분합니다.
+- 개념 정의: `Button.onClick.AddListener(콜백)` 호출이 **위치한 메서드의 호출 빈도**가 리스너의 등록 횟수를 결정하며, 이것이 곧 클릭 1회당 콜백 실행 횟수와 직결됩니다.
+- 오답 포인트: `OnTriggerEnter2D`는 2D 물리 충돌 감지에 특화된 이벤트로 UI 버튼 클릭과 전혀 무관한데, 이름에 "Enter"가 있어 클릭 진입과 무언가 관련 있다고 잘못 추론합니다. 또한 `Update()`에서의 AddListener는 동작은 하지만 매 프레임 리스너가 누적 등록되어 1회 클릭에 수백 번 실행되므로 심각한 성능 사고가 됩니다.
+- 판별 기준: 문장 1(Start 1회 등록 → 정상 동작 → 참), 문장 2(OnTriggerEnter2D는 물리 전용 → 클릭과 무관 → 거짓), 문장 3(Update 중복 등록 → 동작은 하지만 부작용 → 참)을 정확히 구분합니다.
 
 ### X01
-- 개념 정의: 버튼 리스너는 프레임 루프가 아닌 초기화 시점에 1회 등록하는 것이 기본입니다.
-- 오답 포인트: `Update()` 등록으로 클릭 1회에 리스너가 누적 실행됩니다.
-- 판별 기준: `Start/Awake/OnEnable` 중 하나에서 1회 `AddListener`를 호출하면 정답 처리 가능합니다.
+- 개념 정의: UI 버튼 리스너는 **씬의 생명주기에서 단 1번만 실행되는 초기화 메서드**(`Start`, `Awake`, `OnEnable`) 안에서 호출해야 중복 등록을 원천 차단할 수 있습니다.
+- 오답 포인트: `Update()` 안에 `AddListener`를 넣으면 60fps 기준 1초에 60개의 동일 리스너가 누적되어, 버튼 1번 클릭에 `LightBulbOn`이 수십~수백 회 연쇄 발동하는 폭주 현상을 일으킵니다.
+- 판별 기준: `void Start() { ... }` 또는 `void Awake() { ... }` 블록 안에 `button2.onClick.AddListener(LightBulbOn);`이 정확히 1줄로 작성되어 있는지 확인합니다.
 
 ### X02
-- 개념 정의: 일반 UI 버튼은 초기화 구간에서 리스너를 연결합니다.
-- 오답 포인트: `Update/LateUpdate` 같은 프레임 루프에 등록합니다.
-- 판별 기준: 단일 정답은 `Start()`입니다.
+- 개념 정의: 유니티의 `Update()`와 `LateUpdate()`는 매 프레임 반복 호출되고, `OnTriggerEnter2D()`는 물리 충돌 시마다 불규칙하게 호출되므로 이 세 곳은 모두 리스너를 안전하게 1회 등록하는 장소로 부적합합니다.
+- 오답 포인트: `Update()`가 가장 익숙하고 범용적이라는 인상 때문에 모든 로직을 `Update()`에 넣으려는 초보자 습관이 등록 위치 결정에서도 반복됩니다.
+- 판별 기준: 보기 중 씬 시작 시 해당 스크립트에서 **단 1회**만 호출된다고 보장하는 메서드는 `Start()`뿐이므로 B가 유일한 정답입니다.
 
 ## 운영 메모
-- 다음 주차 이월 보강 포인트: UI 이벤트 해제(`RemoveListener`)와 `OnEnable/OnDisable` 패턴 연결
-- 반복 오답 키워드: `Update` 중복 등록, `OnTriggerEnter2D` 용도 오해, 메서드명 대소문자
+- 다음 주차 이월 보강 포인트: UI 이벤트 해제(`RemoveListener`)와 `OnEnable/OnDisable` 쌍 패턴 연결
+- 반복 오답 키워드: Update 프레임 루프 중복 등록, OnTriggerEnter2D 용도 오해, 메서드명 대소문자 미스매치

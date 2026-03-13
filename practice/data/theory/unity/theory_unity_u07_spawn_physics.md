@@ -45,28 +45,43 @@ public class Bullet : MonoBehaviour
 
 ### 1) 프리팹(Prefab)과 Instantiate
 - 개념: 프리팹은 씬(Scene)에 존재하는 빈번히 생성/삭제되는 오브젝트(예: 몬스터, 총알)를 찍어내기 위해 미리 컴포넌트들을 조립해 둔 '설계도 파일(.prefab)'이다. `Instantiate` 함수를 사용하면 이 프리팹을 게임 도중(런타임)에 복사해서 소환할 수 있다.
+- **Instantiate 반환값 활용**: `Instantiate`는 복제된 객체를 반환하므로, 변수에 담아 즉시 조작할 수 있다:
+  ```csharp
+  // GameObject로 받기
+  GameObject clone = Instantiate(prefab, pos, rot);
+  // 또는 특정 컴포넌트 타입으로 바로 받기 (프리팩 변수 타입이 Rigidbody일 때)
+  Rigidbody clone = Instantiate(rigidbodyPrefab, pos, rot);
+  ```
+  복제 후 `clone.velocity = ...` 등으로 속도를 줄 수 있다.
 - 오답 포인트: Instantiate 할 때 매개변수로 프리팹 원본 참조 대신 알 수 없는 문자열이나 null을 넣으려 하거나, Instantiate의 반환값이 복사된 `GameObject`형임을 알지 못해 변수에 담아 프로퍼티 조작을 하지 못하는 경우이다.
 - 정답 판별: `Instantiate(프리팹변수, 위치, 회전)` 꼴의 매개변수가 알맞은 포맷으로 들어갔는지, 복제 후 바로 활용할 때 반환값을 `GameObject` 또는 `GetComponent<T>()`로 제대로 받는지 확인한다.
 
-![프리팹 윈도우](./data/theory/images/unity_u07_spawn_physics_prefab_window.png)
+![프리팹 윈도우](../images/unity_u07_spawn_physics_prefab_window.png)
 *캡션: 하이어라키(Scene)에 있던 객체를 Project 창(Asset)으로 끌어내려 .prefab 파일로 만든 모습. 출처: 직접 캡처*
 
 ### 2) Rigidbody의 물리 제어 (velocity, AddForce)
 - 개념: 이동을 위해 Transform 컴포넌트의 position을 직접 강제 조작하면 물리 연산을 무시하고 그 좌표로 공간 이동을 하지만, `Rigidbody`의 `velocity`나 `AddForce`를 이용하면 중력과 마찰, 질량을 고려한 자연스러운 물리 엔진 기반의 이동이 일어난다. `AddForce`의 ForceMode에는 지속 힘(Force), 순간 힘(Impulse), 질량 무시 가속도(Acceleration), 질량 무시 속도변화(VelocityChange)가 있다.
+- **`GetComponent<T>()`의 반환 타입 규칙**: `GetComponent<Rigidbody>()`는 `Rigidbody` 타입을 반환한다. 따라서 대입받는 변수도 반드시 `Rigidbody rb;`로 동일하게 선언해야 한다. `Vector3`나 `Collider` 등 다른 타입으로 선언하면 컴파일 에러가 난다.
 - 오답 포인트: 대상 오브젝트에 Rigidbody를 부착(Add Component)하지도 않고 스크립트에서 `GetComponent<Rigidbody>()`를 호출해 NullReferenceException이 터지는 경우이다.
 - 정답 판별: 게임오브젝트에 물리력(AddForce 등)을 행사하려 할 때 필수 전제 조건인 `Rigidbody` 컴포넌트가 부착 및 참조되어 있는지 검증한다.
 
-### 3) TransformDirection (로컬 벡터 → 월드 벡터 변환)
+### 3) TransformDirection 및 transform.forward (방향 벡터)
 - 개념: 내 캐릭터(오브젝트) 기준의 상대적 방향(예: "내 기준 3시 방향")인 로컬 벡터를, 게임 세상 전체 절대 방위표 기준의 매칭되는 축 방향(월드 벡터) 수치로 변환해 주는 함수이다.
+- **`transform.forward`**: 오브젝트가 **현재 바라보고 있는 전방 방향**을 나타내는 단위 벡터(길이 1)이다. `transform.TransformDirection(Vector3.forward)`의 축약형이다.
+  - `AddForce` 또는 `velocity`에서 전방 방향으로 힘을 줄 때 자주 사용한다:
+    ```csharp
+    rigidBody.AddForce(transform.forward * speedForce);
+    ```
+  - 여기서 `speedForce`는 `public float`으로 선언하면 Inspector에서 조절 가능한 힘 크기 변수가 된다.
 - 오답 포인트: 캐릭터가 90도 돌아서 북쪽을 보고 있을 때, `transform.forward`(로컬 기준 앞) 방향이라는 개념과 글로벌 Z축이라는 개념을 혼동하여, 회전된 객체에 절대 월드 벡터를 그대로 쑤셔넣어 엉뚱한 방향으로 날아가게 하는 경우이다.
-- 정답 판별: `transform.TransformDirection()`의 목적이 (오브젝트 로컬 방향) -> (월드 절대 방향)으로의 치환기임을 인지하는지 묻는다.
+- 정답 판별: `transform.TransformDirection()`의 목적이 (오브젝트 로컬 방향) -> (월드 절대 방향)으로의 치환기임을 인지하는지 묻는다. `transform.forward`는 이것의 축약형이다.
 
 ### 4) 오브젝트 풀링 (Object Pooling) 구조
 - 개념: 탄환이나 적병처럼 화면에 수시로 나타나고 사라지는 물체들을 매번 `Instantiate` (생성)하고 `Destroy` (파괴)하면 메모리 할당 관리에 과부하가 생겨 프레임 저하(렉)가 발생한다. 이를 막기 위해 시작할 때 대량으로 만들어둔 채 `SetActive(false)` 시켜 창고(Pool)에 숨겨 두었다가, 필요할 때 `SetActive(true)`(Spawn)로 꺼내 쓰고, 용도가 다 하면 다시 꺼두어(Despawn) 반납하는 기법이다.
 - 오답 포인트: 잦은 생성 파괴가 일어나는 상황에서 메모리 최적화를 위해 최선의 방식이 무엇이냐는 맥락에서 여전히 Instantiate/Destroy를 고집하는 경우이다.
 - 정답 판별: **재활용**, **메모리 과부하 방지**, **SetActive 제어 기반의 Spawn/Despawn** 키워드가 오브젝트 풀링 개념과 정확히 일치하는지 판별한다.
 
-![오브젝트 풀링 개념도](./data/theory/images/unity_u07_spawn_physics_object_pooling.svg)
+![오브젝트 풀링 개념도](../images/unity_u07_spawn_physics_object_pooling.svg)
 *캡션: 성능 부하를 일으키는 파괴 대신 객체를 비활성화(Despawn)하여 창고에 반납하고, 필요할 때 재활용(Spawn)하는 메모리 최적화 생태계 다이어그램. 출처: 자체 제작*
 
 ### 5) 충돌 판정 3대장 (Collider vs Trigger)
@@ -74,7 +89,7 @@ public class Bullet : MonoBehaviour
 - 오답 포인트: `OnCollisionEnter` 함수의 매개변수(Other) 데이터 타입을 적을 때 매개변수 자료형을 `Collider`로 잘못 적거나, `Is Trigger` 체크박스를 켜두고서는 "물리적으로 단단히 부딪힌다, 뚫고 지나가지 않는다"고 착각하는 경우이다.
 - 정답 판별: 물리적 튕김(벽, 타격)에는 Collision 계열이, 그냥 통과하며 감지(포탈 진입, 아이템 획득 영역)에는 Trigger 계열이 쓰이며, 매개변수 타입(`Collision` vs `Collider`)이 제대로 매칭되었는지 확인한다.
 
-![Trigger와 Collision 차이](./data/theory/images/unity_u07_spawn_physics_trigger_vs_collision.svg)
+![Trigger와 Collision 차이](../images/unity_u07_spawn_physics_trigger_vs_collision.svg)
 *캡션: Is Trigger 옵션 활성화 여부에 따른 오브젝트의 물리 충돌 제어와 관통 후 이벤트 발생의 차이 비교표. 출처: 자체 제작*
 
 ### 6) Init 함수의 용도와 관례

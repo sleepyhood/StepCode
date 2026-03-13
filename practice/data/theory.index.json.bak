@@ -1,0 +1,1164 @@
+[
+    {
+        "conceptId": "c_lv06_if",
+        "title": "C Lv6 조건문",
+        "categoryId": "c_if",
+        "lang": "c",
+        "mdPath": "./data/theory/language/theory_lv06_if.md",
+        "recommendedSetId": "c_if_b1",
+        "relatedSetIds": [
+            "c_if_b1",
+            "c_if_b2",
+            "c_if_b3",
+            "c_if_b4",
+            "c_if_c1",
+            "c_if_c2"
+        ],
+        "prerequisites": [],
+        "nextConcepts": [
+            "c_lv07_for"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "c_lv07_for",
+        "title": "C Lv7 for문",
+        "categoryId": "c_for",
+        "lang": "c",
+        "mdPath": "./data/theory/language/theory_lv07_for.md",
+        "recommendedSetId": "c_lv07_for_b01",
+        "relatedSetIds": [
+            "c_lv07_for_b01",
+            "c_lv07_for_b02",
+            "c_lv07_for_b03",
+            "c_lv07_for_b04",
+            "c_lv07_for_c01"
+        ],
+        "prerequisites": [
+            "c_lv06_if"
+        ],
+        "nextConcepts": [
+            "c_lv08_while"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "c_lv08_while",
+        "title": "C Lv8 while문",
+        "categoryId": "c_while",
+        "lang": "c",
+        "mdPath": "./data/theory/language/theory_lv08_while.md",
+        "recommendedSetId": "c_lv08_while_b01",
+        "relatedSetIds": [
+            "c_lv08_while_b01",
+            "c_lv08_while_b02",
+            "c_lv08_while_c01"
+        ],
+        "prerequisites": [
+            "c_lv07_for"
+        ],
+        "nextConcepts": [
+            "c_lv10_array"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "c_lv10_array",
+        "title": "C Lv10 배열",
+        "categoryId": "c_array",
+        "lang": "c",
+        "mdPath": "./data/theory/language/theory_lv10_array.md",
+        "recommendedSetId": "c_lv10_array_b01",
+        "relatedSetIds": [
+            "c_lv10_array_b01",
+            "c_lv10_array_b02",
+            "c_lv10_array_b03",
+            "c_lv10_array_c01",
+            "c_lv10_array_c02"
+        ],
+        "prerequisites": [
+            "c_lv08_while"
+        ],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "java_lv06_if",
+        "title": "Java 조건문",
+        "categoryId": "java_if",
+        "lang": "java",
+        "mdPath": "./data/theory/language/theory_lv06_if.md",
+        "recommendedSetId": "java_if_b1",
+        "relatedSetIds": [
+            "java_if_b1"
+        ],
+        "prerequisites": [],
+        "nextConcepts": [
+            "java_lv10_array"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "java_lv10_array",
+        "title": "Java Lv10 배열",
+        "categoryId": "java_array",
+        "lang": "java",
+        "mdPath": "./data/theory/language/theory_lv10_array.md",
+        "recommendedSetId": "java_array_b01",
+        "relatedSetIds": [
+            "java_array_b01",
+            "java_array_b02",
+            "java_array_b03",
+            "java_array_c01",
+            "java_array_c02"
+        ],
+        "prerequisites": [
+            "java_lv06_if"
+        ],
+        "nextConcepts": [
+            "java_lv15_array2d"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "java_lv15_array2d",
+        "title": "Java Lv15 2차원 배열",
+        "categoryId": "java_array2d",
+        "lang": "java",
+        "mdPath": "./data/theory/language/theory_array2d.md",
+        "recommendedSetId": "java_array2d_b01",
+        "relatedSetIds": [
+            "java_array2d_b01",
+            "java_array2d_b02",
+            "java_array2d_b03",
+            "java_array2d_c01",
+            "java_array2d_c02"
+        ],
+        "prerequisites": [
+            "java_lv10_array"
+        ],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "py_lv01_print",
+        "title": "Python Lv1 출력",
+        "categoryId": "py_print",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv01_print.md",
+        "recommendedSetId": "py_print_b1",
+        "relatedSetIds": [
+            "py_print_b1",
+            "py_print_b2",
+            "py_print_b3",
+            "py_print_c1"
+        ],
+        "prerequisites": [],
+        "nextConcepts": [
+            "py_lv02_var"
+        ],
+        "priority": 2
+    },
+    {
+        "conceptId": "py_lv02_var",
+        "title": "Python Lv2 변수",
+        "categoryId": "py_var",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv02_var.md",
+        "recommendedSetId": "py_var_b1",
+        "relatedSetIds": [
+            "py_var_b1",
+            "py_var_b2",
+            "py_var_b3",
+            "py_var_b4",
+            "py_var_c1"
+        ],
+        "prerequisites": [
+            "py_lv01_print"
+        ],
+        "nextConcepts": [
+            "py_lv03_input"
+        ],
+        "priority": 2
+    },
+    {
+        "conceptId": "py_lv03_input",
+        "title": "Python Lv3 입력",
+        "categoryId": "py_input",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv03_input.md",
+        "recommendedSetId": "py_input_b1",
+        "relatedSetIds": [
+            "py_input_b1",
+            "py_input_b2",
+            "py_input_b3",
+            "py_input_c1"
+        ],
+        "prerequisites": [
+            "py_lv02_var"
+        ],
+        "nextConcepts": [
+            "py_lv04_operator"
+        ],
+        "priority": 2
+    },
+    {
+        "conceptId": "py_lv04_operator",
+        "title": "Python Lv4 연산자",
+        "categoryId": "py_operator",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv04_operator.md",
+        "recommendedSetId": "py_lv04_operator_b01",
+        "relatedSetIds": [
+            "py_lv04_operator_b01",
+            "py_lv04_operator_b02",
+            "py_lv04_operator_c01"
+        ],
+        "prerequisites": [
+            "py_lv03_input"
+        ],
+        "nextConcepts": [
+            "py_lv05_cast"
+        ],
+        "priority": 2
+    },
+    {
+        "conceptId": "py_lv05_cast",
+        "title": "Python Lv5 자료형 변환",
+        "categoryId": "py_cast",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv05_cast.md",
+        "recommendedSetId": "py_lv05_cast_b01",
+        "relatedSetIds": [
+            "py_lv05_cast_b01",
+            "py_lv05_cast_b02",
+            "py_lv05_cast_c01"
+        ],
+        "prerequisites": [
+            "py_lv04_operator"
+        ],
+        "nextConcepts": [
+            "py_lv06_if"
+        ],
+        "priority": 2
+    },
+    {
+        "conceptId": "py_lv06_if",
+        "title": "Python Lv6 조건문",
+        "categoryId": "py_if",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv06_if.md",
+        "recommendedSetId": "py_if_b1",
+        "relatedSetIds": [
+            "py_if_b1",
+            "py_if_b2",
+            "py_if_b3",
+            "py_if_b4",
+            "py_if_c1",
+            "py_if_c2"
+        ],
+        "prerequisites": [
+            "py_lv05_cast"
+        ],
+        "nextConcepts": [
+            "py_lv07_for"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "py_lv07_for",
+        "title": "Python Lv7 for문",
+        "categoryId": "py_for",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv07_for.md",
+        "recommendedSetId": "py_lv07_for_b01",
+        "relatedSetIds": [
+            "py_lv07_for_b01",
+            "py_lv07_for_b02",
+            "py_lv07_for_b03",
+            "py_lv07_for_b04",
+            "py_lv07_for_c01"
+        ],
+        "prerequisites": [
+            "py_lv06_if"
+        ],
+        "nextConcepts": [
+            "py_lv08_while"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "py_lv08_while",
+        "title": "Python Lv8 while문",
+        "categoryId": "py_while",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv08_while.md",
+        "recommendedSetId": "py_while_b1",
+        "relatedSetIds": [
+            "py_while_b1",
+            "py_lv08_while_b02",
+            "py_lv08_while_c01"
+        ],
+        "prerequisites": [
+            "py_lv07_for"
+        ],
+        "nextConcepts": [
+            "py_lv09_nfor"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "py_lv09_nfor",
+        "title": "Python Lv9 중첩 for",
+        "categoryId": "py_nfor",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv09_nfor.md",
+        "recommendedSetId": "py_lv09_nfor_b01",
+        "relatedSetIds": [
+            "py_lv09_nfor_b01",
+            "py_lv09_nfor_b02",
+            "py_lv09_nfor_b03",
+            "py_lv09_nfor_c01"
+        ],
+        "prerequisites": [
+            "py_lv07_for"
+        ],
+        "nextConcepts": [
+            "py_lv10_array"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "py_lv10_array",
+        "title": "Python Lv10 배열",
+        "categoryId": "py_array",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_lv10_array.md",
+        "recommendedSetId": "py_lv10_array_b01",
+        "relatedSetIds": [
+            "py_lv10_array_b01",
+            "py_lv10_array_b02",
+            "py_lv10_array_b03",
+            "py_lv10_array_c01",
+            "py_lv10_array_c02"
+        ],
+        "prerequisites": [
+            "py_lv09_nfor"
+        ],
+        "nextConcepts": [
+            "py_lv15_array2d"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "py_lv15_array2d",
+        "title": "Python Lv15 2차원 배열",
+        "categoryId": "py_array2d",
+        "lang": "python",
+        "mdPath": "./data/theory/language/theory_array2d.md",
+        "recommendedSetId": "py_lv15_array2d_b01",
+        "relatedSetIds": [
+            "py_lv15_array2d_b01",
+            "py_lv15_array2d_b02",
+            "py_lv15_array2d_b03",
+            "py_lv15_array2d_c01",
+            "py_lv15_array2d_c02"
+        ],
+        "prerequisites": [
+            "py_lv10_array"
+        ],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u01_inspector",
+        "title": "Unity U01 인스펙터 기초",
+        "categoryId": "unity_u01_inspector",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u01_inspector.md",
+        "recommendedSetId": "unity_u01_inspector_b01",
+        "relatedSetIds": [
+            "unity_u01_inspector_b01",
+            "unity_u01_inspector_c01"
+        ],
+        "sourceProblemIds": [
+            2,
+            9,
+            13,
+            18,
+            29
+        ],
+        "sourceSectionMap": {
+            "inspectorBasics": 2,
+            "windowMatching": 9,
+            "ideSelection": 18,
+            "scenePlacementTf": 29,
+            "inspectorFieldVisibility": 13
+        },
+        "prerequisites": [],
+        "nextConcepts": [
+            "unity_u02_log_operator"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u02_log_operator",
+        "title": "Unity U02 로그/연산자 기초",
+        "categoryId": "unity_u02_log_operator",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u02_log_operator.md",
+        "recommendedSetId": "unity_u02_log_operator_b01",
+        "relatedSetIds": [
+            "unity_u02_log_operator_b01",
+            "unity_u02_log_operator_c01"
+        ],
+        "sourceProblemIds": [
+            3,
+            8,
+            12,
+            17,
+            21,
+            27
+        ],
+        "sourceSectionMap": {
+            "operatorAndLog": [
+                3,
+                8,
+                12,
+                27
+            ],
+            "namingRules": [
+                17,
+                21
+            ],
+            "quickChecks": [
+                17,
+                21
+            ]
+        },
+        "prerequisites": [
+            "unity_u01_inspector"
+        ],
+        "nextConcepts": [
+            "unity_u03_function_syntax"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u03_function_syntax",
+        "title": "Unity U03 함수/static 기초",
+        "categoryId": "unity_u03_function_syntax",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u03_function_syntax.md",
+        "recommendedSetId": "unity_u03_function_syntax_b01",
+        "relatedSetIds": [
+            "unity_u03_function_syntax_b01",
+            "unity_u03_function_syntax_c01"
+        ],
+        "prerequisites": [
+            "unity_u02_log_operator"
+        ],
+        "nextConcepts": [
+            "unity_u04_null_exception"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u04_null_exception",
+        "title": "Unity U04 Null/예외 기초",
+        "categoryId": "unity_u04_null_exception",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u04_null_exception.md",
+        "recommendedSetId": "unity_u04_null_exception_b01",
+        "relatedSetIds": [
+            "unity_u04_null_exception_b01",
+            "unity_u04_null_exception_c01"
+        ],
+        "prerequisites": [
+            "unity_u03_function_syntax"
+        ],
+        "nextConcepts": [
+            "unity_u05_transform_lifecycle"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u05_transform_lifecycle",
+        "title": "Unity U05 Transform and Lifecycle",
+        "categoryId": "unity_u05_transform_lifecycle",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u05_transform_lifecycle.md",
+        "recommendedSetId": "unity_u05_transform_lifecycle_b01",
+        "relatedSetIds": [
+            "unity_u05_transform_lifecycle_b01",
+            "unity_u05_transform_lifecycle_c01"
+        ],
+        "prerequisites": [],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u06_input",
+        "title": "Unity U06 Input",
+        "categoryId": "unity_u06_input",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u06_input.md",
+        "recommendedSetId": "unity_u06_input_b01",
+        "relatedSetIds": [
+            "unity_u06_input_b01",
+            "unity_u06_input_c01"
+        ],
+        "prerequisites": [],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u07_spawn_physics",
+        "title": "Unity U07 Spawn and Physics",
+        "categoryId": "unity_u07_spawn_physics",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u07_spawn_physics.md",
+        "recommendedSetId": "unity_u07_spawn_physics_b01",
+        "relatedSetIds": [
+            "unity_u07_spawn_physics_b01",
+            "unity_u07_spawn_physics_c01"
+        ],
+        "prerequisites": [],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u08_ui",
+        "title": "Unity U08 UI",
+        "categoryId": "unity_u08_ui",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u08_ui.md",
+        "recommendedSetId": "unity_u08_ui_b01",
+        "relatedSetIds": [
+            "unity_u08_ui_b01",
+            "unity_u08_ui_c01"
+        ],
+        "prerequisites": [],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u09_animator",
+        "title": "Unity U09 Animator",
+        "categoryId": "unity_u09_animator",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u09_animator.md",
+        "recommendedSetId": "unity_u09_animator_b01",
+        "relatedSetIds": [
+            "unity_u09_animator_b01",
+            "unity_u09_animator_c01"
+        ],
+        "prerequisites": [],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u10_material_color",
+        "title": "Unity U10 Material and Color",
+        "categoryId": "unity_u10_material_color",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u10_material_color.md",
+        "recommendedSetId": "unity_u10_material_color_b01",
+        "relatedSetIds": [
+            "unity_u10_material_color_b01",
+            "unity_u10_material_color_c01"
+        ],
+        "prerequisites": [],
+        "nextConcepts": [
+            "unity_u11_ecs"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "unity_u11_ecs",
+        "title": "Unity U11 ECS",
+        "categoryId": "unity_u11_ecs",
+        "lang": "csharp",
+        "mdPath": "./data/theory/unity/theory_unity_u11_ecs.md",
+        "recommendedSetId": "unity_u11_ecs_b01",
+        "relatedSetIds": [
+            "unity_u11_ecs_b01",
+            "unity_u11_ecs_c01"
+        ],
+        "sourceProblemIds": [
+            5,
+            34
+        ],
+        "sourceSectionMap": {
+            "ecsConceptCheck": [
+                5,
+                34
+            ]
+        },
+        "prerequisites": [
+            "unity_u10_material_color"
+        ],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w01_diagnostic_io_casting",
+        "title": "Python 경시대회 W01 - 진단평가/변수/입출력/형변환",
+        "categoryId": "contest_py_w01_diagnostic_io_casting",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w01_diagnostic_io_casting.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b01",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b01",
+            "contest_py_mid_2024_r3_b01",
+            "contest_py_high_2024_r3_b01"
+        ],
+        "prerequisites": {},
+        "nextConcepts": "contest_py_w02_for_range_accum",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w02_for_range_accum",
+        "title": "Python 경시대회 W02 - for/range/누적",
+        "categoryId": "contest_py_w02_for_range_accum",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w02_for_range_accum.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b02",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b02",
+            "contest_py_mid_2024_r3_b02",
+            "contest_py_high_2024_r3_b02"
+        ],
+        "prerequisites": "contest_py_w01_diagnostic_io_casting",
+        "nextConcepts": "contest_py_w03_while_termination",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w03_while_termination",
+        "title": "Python 경시대회 W03 - while/종료조건",
+        "categoryId": "contest_py_w03_while_termination",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w03_while_termination.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b03",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b03",
+            "contest_py_mid_2024_r3_b03",
+            "contest_py_high_2024_r3_b03"
+        ],
+        "prerequisites": "contest_py_w02_for_range_accum",
+        "nextConcepts": "contest_py_w04_list_indexing_insert",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w04_list_indexing_insert",
+        "title": "Python 경시대회 W04 - 리스트/인덱싱/삽입",
+        "categoryId": "contest_py_w04_list_indexing_insert",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w04_list_indexing_insert.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b04",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b04",
+            "contest_py_mid_2024_r3_b04",
+            "contest_py_high_2024_r3_b04"
+        ],
+        "prerequisites": "contest_py_w03_while_termination",
+        "nextConcepts": "contest_py_w05_nested_loop_array",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w05_nested_loop_array",
+        "title": "Python 경시대회 W05 - 2중 반복/배열 탐색",
+        "categoryId": "contest_py_w05_nested_loop_array",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w05_nested_loop_array.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b05",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b05",
+            "contest_py_mid_2024_r3_b05",
+            "contest_py_high_2024_r3_b05"
+        ],
+        "prerequisites": "contest_py_w04_list_indexing_insert",
+        "nextConcepts": "contest_py_w06_string_compare_methods",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w06_string_compare_methods",
+        "title": "Python 경시대회 W06 - 문자열 비교/메서드",
+        "categoryId": "contest_py_w06_string_compare_methods",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w06_string_compare_methods.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b06",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b06",
+            "contest_py_mid_2024_r3_b06",
+            "contest_py_high_2024_r3_b06"
+        ],
+        "prerequisites": "contest_py_w05_nested_loop_array",
+        "nextConcepts": "contest_py_w07_function_scope",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w07_function_scope",
+        "title": "Python 경시대회 W07 - 함수/스코프",
+        "categoryId": "contest_py_w07_function_scope",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w07_function_scope.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b07",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b07",
+            "contest_py_mid_2024_r3_b07",
+            "contest_py_high_2024_r3_b07"
+        ],
+        "prerequisites": "contest_py_w06_string_compare_methods",
+        "nextConcepts": "contest_py_w08_recursion_base_case",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w08_recursion_base_case",
+        "title": "Python 경시대회 W08 - 재귀/초기값/종료조건",
+        "categoryId": "contest_py_w08_recursion_base_case",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w08_recursion_base_case.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b08",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b08",
+            "contest_py_mid_2024_r3_b08",
+            "contest_py_high_2024_r3_b08"
+        ],
+        "prerequisites": "contest_py_w07_function_scope",
+        "nextConcepts": "contest_py_w09_lambda_sort_ternary",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w09_lambda_sort_ternary",
+        "title": "Python 경시대회 W09 - 람다/정렬/삼항",
+        "categoryId": "contest_py_w09_lambda_sort_ternary",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w09_lambda_sort_ternary.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b09",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b09",
+            "contest_py_mid_2024_r3_b09",
+            "contest_py_high_2024_r3_b09"
+        ],
+        "prerequisites": "contest_py_w08_recursion_base_case",
+        "nextConcepts": "contest_py_w10_module_datetime_re_collections",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w10_module_datetime_re_collections",
+        "title": "Python 경시대회 W10 - 모듈(datetime/re/collections)",
+        "categoryId": "contest_py_w10_module_datetime_re_collections",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w10_module_datetime_re_collections.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b10",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b10",
+            "contest_py_mid_2024_r3_b10",
+            "contest_py_high_2024_r3_b10"
+        ],
+        "prerequisites": "contest_py_w09_lambda_sort_ternary",
+        "nextConcepts": "contest_py_w11_bit_oct_2d",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w11_bit_oct_2d",
+        "title": "Python 경시대회 W11 - 비트/진수/2차원",
+        "categoryId": "contest_py_w11_bit_oct_2d",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w11_bit_oct_2d.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b11",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b11",
+            "contest_py_mid_2024_r3_b11",
+            "contest_py_high_2024_r3_b11"
+        ],
+        "prerequisites": "contest_py_w10_module_datetime_re_collections",
+        "nextConcepts": "contest_py_w12_final_mock",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_py_w12_final_mock",
+        "title": "Python 경시대회 W12 - 종합 모의/피드백",
+        "categoryId": "contest_py_w12_final_mock",
+        "lang": "python",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_py_w12_final_mock.md",
+        "recommendedSetId": "contest_py_mid_2024_r3_b12",
+        "relatedSetIds": [
+            "contest_py_elem_2024_r3_b12",
+            "contest_py_mid_2024_r3_b12",
+            "contest_py_high_2024_r3_b12"
+        ],
+        "prerequisites": "contest_py_w11_bit_oct_2d",
+        "nextConcepts": {},
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_curriculum",
+        "title": "Canva 3권 통합 목차 및 수업 구성안",
+        "categoryId": "canva_curriculum",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/canva_3books_integrated_curriculum.md",
+        "relatedSetIds": [],
+        "prerequisites": [],
+        "nextConcepts": [
+            "canva_l01_assignment"
+        ],
+        "priority": 2
+    },
+    {
+        "conceptId": "canva_assignments_index",
+        "title": "Canva 학생 과제지 모음 (1~10차시)",
+        "categoryId": "canva_assignments_index",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l01_l03_index.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_curriculum"
+        ],
+        "nextConcepts": [
+            "canva_l01_assignment"
+        ],
+        "priority": 2
+    },
+    {
+        "conceptId": "canva_l01_assignment",
+        "title": "Canva 1차시 학생 과제지",
+        "categoryId": "canva_l01_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l01.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_curriculum"
+        ],
+        "nextConcepts": [
+            "canva_l02_assignment"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_l02_assignment",
+        "title": "Canva 2차시 학생 과제지",
+        "categoryId": "canva_l02_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l02.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_l01_assignment"
+        ],
+        "nextConcepts": [
+            "canva_l03_assignment"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_l03_assignment",
+        "title": "Canva 3차시 학생 과제지",
+        "categoryId": "canva_l03_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l03.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_l02_assignment"
+        ],
+        "nextConcepts": [
+            "canva_l04_assignment"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_l04_assignment",
+        "title": "Canva 4차시 학생 과제지",
+        "categoryId": "canva_l04_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l04.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_l03_assignment"
+        ],
+        "nextConcepts": [
+            "canva_l05_assignment"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_l05_assignment",
+        "title": "Canva 5차시 학생 과제지",
+        "categoryId": "canva_l05_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l05.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_l04_assignment"
+        ],
+        "nextConcepts": [
+            "canva_l06_assignment"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_l06_assignment",
+        "title": "Canva 6차시 학생 과제지",
+        "categoryId": "canva_l06_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l06.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_l05_assignment"
+        ],
+        "nextConcepts": [
+            "canva_l07_assignment"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_l07_assignment",
+        "title": "Canva 7차시 학생 과제지",
+        "categoryId": "canva_l07_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l07.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_l06_assignment"
+        ],
+        "nextConcepts": [
+            "canva_l08_assignment"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_l08_assignment",
+        "title": "Canva 8차시 학생 과제지",
+        "categoryId": "canva_l08_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l08.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_l07_assignment"
+        ],
+        "nextConcepts": [
+            "canva_l09_assignment"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_l09_assignment",
+        "title": "Canva 9차시 학생 과제지",
+        "categoryId": "canva_l09_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l09.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_l08_assignment"
+        ],
+        "nextConcepts": [
+            "canva_l10_assignment"
+        ],
+        "priority": 3
+    },
+    {
+        "conceptId": "canva_l10_assignment",
+        "title": "Canva 10차시 학생 과제지",
+        "categoryId": "canva_l10_assignment",
+        "lang": "canva",
+        "mdPath": "./data/theory/canva/student_assignment_l10.md",
+        "relatedSetIds": [],
+        "prerequisites": [
+            "canva_l09_assignment"
+        ],
+        "nextConcepts": [],
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w01_diagnostic_headers_types",
+        "title": "C 경시대회 W01 - 진단평가/헤더/자료형",
+        "categoryId": "contest_c_w01_diagnostic_headers_types",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w01_diagnostic_headers_types.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b01",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b01",
+            "contest_c_mid_2024_r3_b01",
+            "contest_c_high_2024_r3_b01"
+        ],
+        "prerequisites": {},
+        "nextConcepts": "contest_c_w02_io_format_radix",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w02_io_format_radix",
+        "title": "C 경시대회 W02 - 입출력/서식/진법",
+        "categoryId": "contest_c_w02_io_format_radix",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w02_io_format_radix.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b02",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b02",
+            "contest_c_mid_2024_r3_b02",
+            "contest_c_high_2024_r3_b02"
+        ],
+        "prerequisites": "contest_c_w01_diagnostic_headers_types",
+        "nextConcepts": "contest_c_w03_operator_precedence_logic_bit",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w03_operator_precedence_logic_bit",
+        "title": "C 경시대회 W03 - 연산자 우선순위/논리/비트",
+        "categoryId": "contest_c_w03_operator_precedence_logic_bit",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w03_operator_precedence_logic_bit.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b03",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b03",
+            "contest_c_mid_2024_r3_b03",
+            "contest_c_high_2024_r3_b03"
+        ],
+        "prerequisites": "contest_c_w02_io_format_radix",
+        "nextConcepts": "contest_c_w04_loop_control_flow",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w04_loop_control_flow",
+        "title": "C 경시대회 W04 - 반복문/제어흐름",
+        "categoryId": "contest_c_w04_loop_control_flow",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w04_loop_control_flow.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b04",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b04",
+            "contest_c_mid_2024_r3_b04",
+            "contest_c_high_2024_r3_b04"
+        ],
+        "prerequisites": "contest_c_w03_operator_precedence_logic_bit",
+        "nextConcepts": "contest_c_w05_array_index_nested_loop",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w05_array_index_nested_loop",
+        "title": "C 경시대회 W05 - 배열/인덱스/중첩반복",
+        "categoryId": "contest_c_w05_array_index_nested_loop",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w05_array_index_nested_loop.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b05",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b05",
+            "contest_c_mid_2024_r3_b05",
+            "contest_c_high_2024_r3_b05"
+        ],
+        "prerequisites": "contest_c_w04_loop_control_flow",
+        "nextConcepts": "contest_c_w06_string_char_processing",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w06_string_char_processing",
+        "title": "C 경시대회 W06 - 문자열/문자 처리",
+        "categoryId": "contest_c_w06_string_char_processing",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w06_string_char_processing.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b06",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b06",
+            "contest_c_mid_2024_r3_b06",
+            "contest_c_high_2024_r3_b06"
+        ],
+        "prerequisites": "contest_c_w05_array_index_nested_loop",
+        "nextConcepts": "contest_c_w07_preprocessor_macro_traps",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w07_preprocessor_macro_traps",
+        "title": "C 경시대회 W07 - 전처리/매크로 함정",
+        "categoryId": "contest_c_w07_preprocessor_macro_traps",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w07_preprocessor_macro_traps.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b07",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b07",
+            "contest_c_mid_2024_r3_b07",
+            "contest_c_high_2024_r3_b07"
+        ],
+        "prerequisites": "contest_c_w06_string_char_processing",
+        "nextConcepts": "contest_c_w08_recursion_base_return",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w08_recursion_base_return",
+        "title": "C 경시대회 W08 - 재귀/기저/반환",
+        "categoryId": "contest_c_w08_recursion_base_return",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w08_recursion_base_return.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b08",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b08",
+            "contest_c_mid_2024_r3_b08",
+            "contest_c_high_2024_r3_b08"
+        ],
+        "prerequisites": "contest_c_w07_preprocessor_macro_traps",
+        "nextConcepts": "contest_c_w09_divide_conquer_call_order",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w09_divide_conquer_call_order",
+        "title": "C 경시대회 W09 - 분할정복/호출순서",
+        "categoryId": "contest_c_w09_divide_conquer_call_order",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w09_divide_conquer_call_order.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b09",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b09",
+            "contest_c_mid_2024_r3_b09",
+            "contest_c_high_2024_r3_b09"
+        ],
+        "prerequisites": "contest_c_w08_recursion_base_return",
+        "nextConcepts": "contest_c_w10_dynamic_memory_pointer_struct",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w10_dynamic_memory_pointer_struct",
+        "title": "C 경시대회 W10 - 동적메모리/포인터/구조체",
+        "categoryId": "contest_c_w10_dynamic_memory_pointer_struct",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w10_dynamic_memory_pointer_struct.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b10",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b10",
+            "contest_c_mid_2024_r3_b10",
+            "contest_c_high_2024_r3_b10"
+        ],
+        "prerequisites": "contest_c_w09_divide_conquer_call_order",
+        "nextConcepts": "contest_c_w11_matrix_grid_search",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w11_matrix_grid_search",
+        "title": "C 경시대회 W11 - 행렬/격자 탐색",
+        "categoryId": "contest_c_w11_matrix_grid_search",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w11_matrix_grid_search.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b11",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b11",
+            "contest_c_mid_2024_r3_b11",
+            "contest_c_high_2024_r3_b11"
+        ],
+        "prerequisites": "contest_c_w10_dynamic_memory_pointer_struct",
+        "nextConcepts": "contest_c_w12_final_mock_transfer",
+        "priority": 3
+    },
+    {
+        "conceptId": "contest_c_w12_final_mock_transfer",
+        "title": "C 경시대회 W12 - 최종 모의/유형 전이",
+        "categoryId": "contest_c_w12_final_mock_transfer",
+        "lang": "c",
+        "mdPath": "./data/theory/contest/weeks/theory_contest_c_w12_final_mock_transfer.md",
+        "recommendedSetId": "contest_c_mid_2024_r3_b12",
+        "relatedSetIds": [
+            "contest_c_elem_2024_r3_b12",
+            "contest_c_mid_2024_r3_b12",
+            "contest_c_high_2024_r3_b12"
+        ],
+        "prerequisites": "contest_c_w11_matrix_grid_search",
+        "nextConcepts": {},
+        "priority": 3
+    }
+]

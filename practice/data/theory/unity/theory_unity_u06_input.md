@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
 - 오답 포인트: `GetAxis`에 특정 키보드 키값(`KeyCode.Space`)을 직접 집어넣으려 하거나, `GetButton`의 반환값이 실수형(float)이라고 착각하는 경우이다.
 - 정답 판별: 매개변수 괄호 안에 들어간 인자가 "Horizontal", "Jump" 등 Input Manager에 정의된 문자열(String) 이름인지 점검하고, `GetAxis`류는 부드러운 실수(float), `GetButton`류는 논리형(bool)을 반환하는지 판별한다.
 
-![Input Manager 설정 화면](./data/theory/images/unity_u06_input_horizontal.png)
+![Input Manager 설정 화면](../images/unity_u06_input_horizontal.png)
 *캡션: Edit > Project Settings > Input Manager에서 Horizontal 축에 왼쪽 방향키(Negative)와 오른쪽 방향키(Positive)가 매핑된 구조. 출처: 직접 캡처*
 
 ### 3) Time.deltaTime
@@ -53,15 +53,19 @@ public class PlayerMovement : MonoBehaviour
 - 오답 포인트: 매 프레임마다 움직임을 갱신하는 `Update` 안에서 초당 이동을 구현할 때 `Time.deltaTime`을 곱해주지 않아, 고성능 컴퓨터일수록 프레임이 많아져 캐릭터가 렉 걸린 듯 엄청나게 빨리 이동해버리는 경우이다.
 - 정답 판별: `Update` 함수 내부에서 오브젝트의 위치나 값이 지속적이고 연속적으로 변화할 때, `Time.deltaTime`이 비례 상수로서 끝에 적절히 곱해져 있는지 확인한다.
 
-![Time.deltaTime 프레임 보정 다이어그램](./data/theory/images/unity_u06_time_deltatime_flow.svg)
+![Time.deltaTime 프레임 보정 다이어그램](../images/unity_u06_time_deltatime_flow.svg)
 *캡션: FPS가 달라도 Time.deltaTime을 곱해주면 결국 1초 뒤에 이동하는 최종 거리가 동일해짐을 보여주는 프레임 다이어그램. 출처: 자체 제작*
 
-### 4) Transform.Translate vs Transform.position
+### 4) Transform.Translate vs Transform.position vs 혼동 함수들
 - 개념: `transform.Translate(방향 벡터)`는 오브젝트의 "현재 위치와 회전 상태"를 기준으로 특정 방향으로 연속되게 밀어(이동시켜)주는 함수이다(로컬 상대 좌표계 변환). 반면 `transform.position = 새로운 위치`는 현재 오브젝트의 위치나 회전이 어떠하든 무조건 강제로 지정된 월드 절대 좌표 값으로 텔레포트 시킨다.
+- **이름이 비슷하지만 위치를 바꾸지 않는 함수들** (시험 함정 보기 단골):
+  - `TransformDirection(Vector3)`: 로컬 방향 벡터를 월드 방향 벡터로 **변환만** 해서 돌려줄 뿐, 오브젝트의 위치는 전혀 이동시키지 않는다.
+  - `TransformVector(Vector3)`: 로컬 벡터를 월드 벡터로 **변환만** 해서 돌려줄 뿐, 역시 위치 이동 없음.
+  - `SetPositionAndRotation(Vector3, Quaternion)`: 위치와 회전을 **월드 절대값으로 한꺼번에 강제 고정**하는 함수로, `Translate`처럼 상대적으로 밀어주는 기능이 아니다.
 - 오답 포인트: 플레이어를 앞(`forward`)으로 매 프레임 지속해서 움직이려 할 때, `Translate`가 아닌 `position` 프로퍼티에 강제 고정값을 대입해 버려서 제자리에서 굳어버리거나 다른 공간으로 날아가는 경우이다.
-- 정답 판별: 목적이 "현재 위치로부터의 상대적인 유동적 움직임"이면 `Translate`를, "특정 지점으로의 단번의 순간 이동이나 고정배치"이면 `position = ...` 대입문을 사용했는지 구별한다.
+- 정답 판별: 목적이 "현재 위치로부터의 상대적인 유동적 움직임"이면 `Translate`를, "특정 지점으로의 단번의 순간 이동이나 고정배치"이면 `position = ...` 대입문을 사용했는지 구별한다. `TransformDirection`/`TransformVector`는 **방향 변환 전용**이고, `SetPositionAndRotation`은 **절대 좌표 강제 지정**이므로, "매 프레임 상대 이동"과는 용도가 다르다.
 
-![Translate와 position의 차이](./data/theory/images/unity_u06_translate_vs_position.svg)
+![Translate와 position의 차이](../images/unity_u06_translate_vs_position.svg)
 *캡션: 로컬 좌표계 방향으로 나아가는 Translate와 월드 절대 좌표에 점을 찍는 position 대입에 따른 오브젝트 이동 결과 차이 비교표. 출처: 자체 제작*
 
 ## 자주 하는 실수

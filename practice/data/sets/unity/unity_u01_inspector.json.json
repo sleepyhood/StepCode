@@ -1,0 +1,162 @@
+{
+    "id": "unity_u01_inspector.json",
+    "title": "Unity U01 인스펙터 및 기본 창",
+    "categoryId": "unity_u01_inspector.json",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p01",
+            "type": "short",
+            "level": "basic",
+            "title": "Inspector 기능 판별",
+            "description": "Inspector(검사기) 기본 기능에 대한 3개 문장의 참/거짓을 판별하세요. 각 행에 `참` 또는 `거짓`을 채우면 됩니다.",
+            "answerUi": {
+                "kind": "grid",
+                "rows": [
+                    "(1) Static 체크는 정적 최적화 워크플로에 활용된다.",
+                    "(2) Tag는 스크립트에서 같은 분류의 오브젝트를 찾는 데 사용할 수 있다.",
+                    "(3) Prefab은 Inspector에서 수정할 수 없다."
+                ],
+                "columns": [
+                    "답안"
+                ],
+                "narrowAnswerColumn": true,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                [
+                    "참"
+                ],
+                [
+                    "참"
+                ],
+                [
+                    "거짓"
+                ]
+            ]
+        },
+        {
+            "id": "p02",
+            "type": "short",
+            "level": "basic",
+            "title": "Unity 창 역할 매칭",
+            "description": "Unity 편집기 주요 창 4개를 알맞은 기능과 매칭하세요.\nA. 씬 내 오브젝트 목록\nB. 시각적 배치 작업 공간\nC. 에셋 보관 및 탐색\nD. 선택 대상 세부 설정",
+            "answerUi": {
+                "kind": "grid",
+                "rows": [
+                    "Hierarchy",
+                    "Scene",
+                    "Project",
+                    "Inspector"
+                ],
+                "columns": [
+                    "답안(A-D)"
+                ],
+                "narrowAnswerColumn": true,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                [
+                    "A"
+                ],
+                [
+                    "B"
+                ],
+                [
+                    "C"
+                ],
+                [
+                    "D"
+                ]
+            ]
+        },
+        {
+            "id": "p03",
+            "type": "short",
+            "level": "basic",
+            "title": "IDE 설정 위치",
+            "description": "Unity Preferences에서 사용할 IDE를 지정하는 옵션의 정확한 영문 이름을 작성하세요 (3단어).",
+            "expectedAnyOf": [
+                "External Script Editor"
+            ]
+        },
+        {
+            "id": "p04",
+            "type": "short",
+            "level": "basic",
+            "title": "Scene 배치 설명 참/거짓",
+            "description": "Scene 뷰 조작 및 배치에 대한 참/거짓을 판별하세요.\n(1) Local/Global 좌표계 전환이 가능하다.\n(2) Transform 도구로 이동/회전/스케일을 한꺼번에 조작할 수 있다.\n(3) Vertex Snapping은 그리드에만 맞추는 용도이다.\n(4) 마우스 드래그로만 좌표를 수정할 수 있다.",
+            "answerUi": {
+                "kind": "grid",
+                "rows": [
+                    "(1) 좌표계 전환",
+                    "(2) 도구 결합",
+                    "(3) 스냅 제한",
+                    "(4) 입력 제한"
+                ],
+                "columns": [
+                    "답안"
+                ],
+                "narrowAnswerColumn": true,
+                "rowSep": "\n",
+                "colSep": " "
+            },
+            "expectedGrid": [
+                [
+                    "참"
+                ],
+                [
+                    "참"
+                ],
+                [
+                    "거짓"
+                ],
+                [
+                    "거짓"
+                ]
+            ]
+        },
+        {
+            "id": "p05",
+            "type": "code",
+            "level": "challenge",
+            "title": "Inspector 변수 노출",
+            "description": "캡슐화는 유지하면서 `private int speed;` 필드를 Inspector에 노출시키기 위한 수정 코드를 한 줄로 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "[SerializeField] private int speed;"
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "Tag 검색 API 작성",
+            "description": "Value: `Enemy` 태그를 가진 모든 오브젝트를 찾아 `enemies` 배열에 할당하는 코드를 작성하세요.",
+            "code": "GameObject[] enemies = // TODO",
+            "expectedCode": "GameObject[] enemies = GameObject.FindGameObjectsWithTag(\"Enemy\");"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - 필드 노출 가능 여부 판단",
+            "description": "기본 상태(커스텀 에디터 없음)에서 Inspector에 노출되지 않는 필드를 고르세요.",
+            "options": [
+                "public int hp;",
+                "[SerializeField] private float moveSpeed;",
+                "private int score;",
+                "public string playerName;"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
+        }
+    ]
+}

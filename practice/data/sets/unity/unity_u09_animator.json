@@ -1,0 +1,97 @@
+{
+    "id": "unity_u09_animator",
+    "title": "Unity U09 Animator",
+    "categoryId": "unity_u09_animator",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p01",
+            "type": "short",
+            "level": "basic",
+            "title": "점프 상태 클립 배치",
+            "description": "Z1~Z4 배치 정답을 순서대로 쓰세요.",
+            "expectedAnyOf": [
+                "Z1 JumpApex, Z2 SlowFall, Z3 FastFall, Z4 FastLand",
+                "JumpApex, SlowFall, FastFall, FastLand"
+            ]
+        },
+        {
+            "id": "p02",
+            "type": "short",
+            "level": "basic",
+            "title": "Animator 상태 시스템 전환 T/F",
+            "description": "1~4번 문장의 참/거짓을 순서대로 쓰세요.",
+            "expectedAnyOf": [
+                "참, 거짓, 참, 거짓",
+                "1 참 2 거짓 3 참 4 거짓",
+                "T, F, T, F",
+                "true false true false"
+            ]
+        },
+        {
+            "id": "p03",
+            "type": "short",
+            "level": "basic",
+            "title": "Set 함수 매칭",
+            "description": "①~④에 들어갈 함수명을 순서대로 쓰세요.",
+            "expectedAnyOf": [
+                "SetInt, SetFloat, SetBool, SetTrigger",
+                "① SetInt ② SetFloat ③ SetBool ④ SetTrigger"
+            ]
+        },
+        {
+            "id": "p04",
+            "type": "short",
+            "level": "challenge",
+            "title": "SetBool 코드 완성",
+            "description": "① 호출 주체와 ② 인수 형태를 쓰세요.",
+            "expectedAnyOf": [
+                "① animator, ② (\"Attacking\", false);",
+                "animator / (\"Attacking\", false);",
+                "animator.SetBool(\"Attacking\", false);"
+            ]
+        },
+        {
+            "id": "p05",
+            "type": "short",
+            "level": "challenge",
+            "title": "reset 전환 파라미터 선택",
+            "description": "문장 빈칸 ①, ② 정답을 쓰세요.",
+            "expectedAnyOf": [
+                "① Search, ② Friendly",
+                "Search, Friendly"
+            ]
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - 이동 속도 파라미터 갱신 코드",
+            "description": "float 파라미터 `\"Speed\"`를 `playerSpeed`로 갱신하는 1줄 코드를 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "animator.SetFloat(\"Speed\", playerSpeed);"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - Trigger 호출 문법 선택",
+            "description": "Trigger 파라미터 `Search`를 발동하는 올바른 코드를 고르세요.",
+            "options": [
+                "`animator.SetBool(\"Search\", true);`",
+                "`animator.SetTrigger(\"Search\");`",
+                "`animator.SetInt(\"Search\", 1);`",
+                "`animator.SetFloat(\"Search\", 1f);`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 1
+        }
+    ]
+}

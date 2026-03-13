@@ -1,0 +1,87 @@
+{
+    "id": "unity_u08_ui",
+    "title": "Unity U08 UI",
+    "categoryId": "unity_u08_ui",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p01",
+            "type": "short",
+            "level": "basic",
+            "title": "점수 UI 코드 3요소 쓰기",
+            "description": "① using, ② Text 변수 선언, ③ .text 갱신 코드를 쓰세요.",
+            "expectedAnyOf": [
+                "using UnityEngine.UI; / public Text myText; / myText.text = (\"Score: \" + score.ToString());",
+                "using UnityEngine.UI; public Text myText; myText.text = (\"Score: \" + score.ToString());",
+                "using UnityEngine.UI;|public Text myText;|myText.text = (\"Score: \" + score.ToString());"
+            ]
+        },
+        {
+            "id": "p02",
+            "type": "short",
+            "level": "basic",
+            "title": "SetMessageToDisplay 선언 완성",
+            "description": "① 반환형 ② 메서드명 ③ 매개변수를 쓰세요.",
+            "expectedAnyOf": [
+                "void / SetMessageToDisplay / (string stringToDisplay)",
+                "void SetMessageToDisplay(string stringToDisplay)",
+                "private void SetMessageToDisplay(string stringToDisplay)"
+            ]
+        },
+        {
+            "id": "p03",
+            "type": "short",
+            "level": "basic",
+            "title": "OnMouseUp 함수 선언 완성",
+            "description": "① 접근 제한자 ② 반환형 ③ 메서드명을 쓰세요.",
+            "expectedAnyOf": [
+                "private / void / OnMouseUp()",
+                "private void OnMouseUp()"
+            ]
+        },
+        {
+            "id": "p04",
+            "type": "short",
+            "level": "challenge",
+            "title": "버튼 이벤트 등록 위치 T/F",
+            "description": "1~3번 문장의 참/거짓을 순서대로 쓰세요.",
+            "expectedAnyOf": [
+                "참, 거짓, 참",
+                "1 참 2 거짓 3 참",
+                "T, F, T",
+                "true false true"
+            ]
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - UI 버튼 리스너 1회 등록 코드",
+            "description": "`button2` 클릭 시 `LightBulbOn`이 실행되도록 중복 등록 없이 1회 등록 코드를 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "void Start()\n{\n    button2.onClick.AddListener(LightBulbOn);\n}"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - AddListener 등록 위치 선택",
+            "description": "일반적인 단일 버튼 리스너 등록 위치로 가장 적절한 것을 고르세요.",
+            "options": [
+                "`Update()`",
+                "`Start()`",
+                "`OnTriggerEnter2D()`",
+                "`LateUpdate()`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 1
+        }
+    ]
+}

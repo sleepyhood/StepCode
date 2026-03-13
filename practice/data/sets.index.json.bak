@@ -1,0 +1,1541 @@
+[
+    {
+        "id": "c_if_b1",
+        "categoryId": "c_if",
+        "title": "C 조건문 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv06_if_b01.json"
+    },
+    {
+        "id": "c_if_b2",
+        "categoryId": "c_if",
+        "title": "C 조건문 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv06_if_b02.json"
+    },
+    {
+        "id": "c_if_b3",
+        "categoryId": "c_if",
+        "title": "C 조건문 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv06_if_b03.json"
+    },
+    {
+        "id": "c_if_b4",
+        "categoryId": "c_if",
+        "title": "C 조건문 기초 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv06_if_b04.json"
+    },
+    {
+        "id": "c_if_c1",
+        "categoryId": "c_if",
+        "title": "C 조건문 챌린지 1회차",
+        "round": 5,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/c_lv06_if_c01.json"
+    },
+    {
+        "id": "c_if_c2",
+        "categoryId": "c_if",
+        "title": "C 조건문 챌린지 2회차",
+        "round": 6,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/c_lv06_if_c02.json"
+    },
+    {
+        "id": "c_lv07_for_b01",
+        "categoryId": "c_for",
+        "title": "C for문 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv07_for_b01.json"
+    },
+    {
+        "id": "c_lv07_for_b02",
+        "categoryId": "c_for",
+        "title": "C for문 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv07_for_b02.json"
+    },
+    {
+        "id": "c_lv07_for_b03",
+        "categoryId": "c_for",
+        "title": "C for문 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv07_for_b03.json"
+    },
+    {
+        "id": "c_lv07_for_b04",
+        "categoryId": "c_for",
+        "title": "C for문 기초 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv07_for_b04.json"
+    },
+    {
+        "id": "c_lv07_for_c01",
+        "categoryId": "c_for",
+        "title": "C for문 챌린지 1회차",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/c_lv07_for_c01.json"
+    },
+    {
+        "id": "c_lv08_while_b01",
+        "categoryId": "c_while",
+        "title": "C while문 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv08_while_b01.json"
+    },
+    {
+        "id": "c_lv08_while_b02",
+        "categoryId": "c_while",
+        "title": "C while문 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv08_while_b02.json"
+    },
+    {
+        "id": "c_lv08_while_c01",
+        "categoryId": "c_while",
+        "title": "C while문 챌린지 1회차",
+        "round": 3,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/c_lv08_while_c01.json"
+    },
+    {
+        "id": "c_lv10_array_b01",
+        "categoryId": "c_array",
+        "title": "C 배열 Lv10 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv10_array_b01.json"
+    },
+    {
+        "id": "c_lv10_array_b02",
+        "categoryId": "c_array",
+        "title": "C 배열 Lv10 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv10_array_b02.json"
+    },
+    {
+        "id": "c_lv10_array_b03",
+        "categoryId": "c_array",
+        "title": "C 배열 Lv10 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/c_lv10_array_b03.json"
+    },
+    {
+        "id": "c_lv10_array_c01",
+        "categoryId": "c_array",
+        "title": "C 배열 Lv10 챌린지 1회차",
+        "round": 4,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/c_lv10_array_c01.json"
+    },
+    {
+        "id": "c_lv10_array_c02",
+        "categoryId": "c_array",
+        "title": "C 배열 Lv10 챌린지 2회차",
+        "round": 5,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/c_lv10_array_c02.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b01",
+        "categoryId": "contest_c_w01_diagnostic_headers_types",
+        "title": "C 경시대회(초등) 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b01.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b02",
+        "categoryId": "contest_c_w02_io_format_radix",
+        "title": "C 경시대회(초등) 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b02.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b03",
+        "categoryId": "contest_c_w03_operator_precedence_logic_bit",
+        "title": "C 경시대회(초등) 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b03.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b04",
+        "categoryId": "contest_c_w04_loop_control_flow",
+        "title": "C 경시대회(초등) 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b04.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b05",
+        "categoryId": "contest_c_w05_array_index_nested_loop",
+        "title": "C 경시대회(초등) 5회차",
+        "round": 5,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b05.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b06",
+        "categoryId": "contest_c_w06_string_char_processing",
+        "title": "C 경시대회(초등) 6회차",
+        "round": 6,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b06.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b07",
+        "categoryId": "contest_c_w07_preprocessor_macro_traps",
+        "title": "C 경시대회(초등) 7회차",
+        "round": 7,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b07.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b08",
+        "categoryId": "contest_c_w08_recursion_base_return",
+        "title": "C 경시대회(초등) 8회차",
+        "round": 8,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b08.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b09",
+        "categoryId": "contest_c_w09_divide_conquer_call_order",
+        "title": "C 경시대회(초등) 9회차",
+        "round": 9,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b09.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b10",
+        "categoryId": "contest_c_w10_dynamic_memory_pointer_struct",
+        "title": "C 경시대회(초등) 10회차",
+        "round": 10,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b10.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b11",
+        "categoryId": "contest_c_w11_matrix_grid_search",
+        "title": "C 경시대회(초등) 11회차",
+        "round": 11,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b11.json"
+    },
+    {
+        "id": "contest_c_elem_2024_r3_b12",
+        "categoryId": "contest_c_w12_final_mock_transfer",
+        "title": "C 경시대회(초등) 12회차",
+        "round": 12,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_c_elem_2024_r3_b12.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b01",
+        "categoryId": "contest_c_w01_diagnostic_headers_types",
+        "title": "C 경시대회(고등) 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b01.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b02",
+        "categoryId": "contest_c_w02_io_format_radix",
+        "title": "C 경시대회(고등) 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b02.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b03",
+        "categoryId": "contest_c_w03_operator_precedence_logic_bit",
+        "title": "C 경시대회(고등) 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b03.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b04",
+        "categoryId": "contest_c_w04_loop_control_flow",
+        "title": "C 경시대회(고등) 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b04.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b05",
+        "categoryId": "contest_c_w05_array_index_nested_loop",
+        "title": "C 경시대회(고등) 5회차",
+        "round": 5,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b05.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b06",
+        "categoryId": "contest_c_w06_string_char_processing",
+        "title": "C 경시대회(고등) 6회차",
+        "round": 6,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b06.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b07",
+        "categoryId": "contest_c_w07_preprocessor_macro_traps",
+        "title": "C 경시대회(고등) 7회차",
+        "round": 7,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b07.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b08",
+        "categoryId": "contest_c_w08_recursion_base_return",
+        "title": "C 경시대회(고등) 8회차",
+        "round": 8,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b08.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b09",
+        "categoryId": "contest_c_w09_divide_conquer_call_order",
+        "title": "C 경시대회(고등) 9회차",
+        "round": 9,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b09.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b10",
+        "categoryId": "contest_c_w10_dynamic_memory_pointer_struct",
+        "title": "C 경시대회(고등) 10회차",
+        "round": 10,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b10.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b11",
+        "categoryId": "contest_c_w11_matrix_grid_search",
+        "title": "C 경시대회(고등) 11회차",
+        "round": 11,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b11.json"
+    },
+    {
+        "id": "contest_c_high_2024_r3_b12",
+        "categoryId": "contest_c_w12_final_mock_transfer",
+        "title": "C 경시대회(고등) 12회차",
+        "round": 12,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_c_high_2024_r3_b12.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b01",
+        "categoryId": "contest_c_w01_diagnostic_headers_types",
+        "title": "C 경시대회(중등) 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b01.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b02",
+        "categoryId": "contest_c_w02_io_format_radix",
+        "title": "C 경시대회(중등) 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b02.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b03",
+        "categoryId": "contest_c_w03_operator_precedence_logic_bit",
+        "title": "C 경시대회(중등) 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b03.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b04",
+        "categoryId": "contest_c_w04_loop_control_flow",
+        "title": "C 경시대회(중등) 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b04.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b05",
+        "categoryId": "contest_c_w05_array_index_nested_loop",
+        "title": "C 경시대회(중등) 5회차",
+        "round": 5,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b05.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b06",
+        "categoryId": "contest_c_w06_string_char_processing",
+        "title": "C 경시대회(중등) 6회차",
+        "round": 6,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b06.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b07",
+        "categoryId": "contest_c_w07_preprocessor_macro_traps",
+        "title": "C 경시대회(중등) 7회차",
+        "round": 7,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b07.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b08",
+        "categoryId": "contest_c_w08_recursion_base_return",
+        "title": "C 경시대회(중등) 8회차",
+        "round": 8,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b08.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b09",
+        "categoryId": "contest_c_w09_divide_conquer_call_order",
+        "title": "C 경시대회(중등) 9회차",
+        "round": 9,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b09.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b10",
+        "categoryId": "contest_c_w10_dynamic_memory_pointer_struct",
+        "title": "C 경시대회(중등) 10회차",
+        "round": 10,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b10.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b11",
+        "categoryId": "contest_c_w11_matrix_grid_search",
+        "title": "C 경시대회(중등) 11회차",
+        "round": 11,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b11.json"
+    },
+    {
+        "id": "contest_c_mid_2024_r3_b12",
+        "categoryId": "contest_c_w12_final_mock_transfer",
+        "title": "C 경시대회(중등) 12회차",
+        "round": 12,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_c_mid_2024_r3_b12.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b01",
+        "categoryId": "contest_py_w01_diagnostic_io_casting",
+        "title": "Python 경시대회(초등) 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b01.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b02",
+        "categoryId": "contest_py_w02_for_range_accum",
+        "title": "Python 경시대회(초등) 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b02.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b03",
+        "categoryId": "contest_py_w03_while_termination",
+        "title": "Python 경시대회(초등) 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b03.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b04",
+        "categoryId": "contest_py_w04_list_indexing_insert",
+        "title": "Python 경시대회(초등) 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b04.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b05",
+        "categoryId": "contest_py_w05_nested_loop_array",
+        "title": "Python 경시대회(초등) 5회차",
+        "round": 5,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b05.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b06",
+        "categoryId": "contest_py_w06_string_compare_methods",
+        "title": "Python 경시대회(초등) 6회차",
+        "round": 6,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b06.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b07",
+        "categoryId": "contest_py_w07_function_scope",
+        "title": "Python 경시대회(초등) 7회차",
+        "round": 7,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b07.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b08",
+        "categoryId": "contest_py_w08_recursion_base_case",
+        "title": "Python 경시대회(초등) 8회차",
+        "round": 8,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b08.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b09",
+        "categoryId": "contest_py_w09_lambda_sort_ternary",
+        "title": "Python 경시대회(초등) 9회차",
+        "round": 9,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b09.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b10",
+        "categoryId": "contest_py_w10_module_datetime_re_collections",
+        "title": "Python 경시대회(초등) 10회차",
+        "round": 10,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b10.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b11",
+        "categoryId": "contest_py_w11_bit_oct_2d",
+        "title": "Python 경시대회(초등) 11회차",
+        "round": 11,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/elem/contest_py_elem_2024_r3_b11.json"
+    },
+    {
+        "id": "contest_py_elem_2024_r3_b12",
+        "categoryId": "contest_py_w12_final_mock",
+        "title": "Python 경시대회(초등) 12회차",
+        "round": 12,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "contest/elem/contest_py_elem_2024_r3_b12.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b01",
+        "categoryId": "contest_py_w01_diagnostic_io_casting",
+        "title": "Python 경시대회(고등) 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b01.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b02",
+        "categoryId": "contest_py_w02_for_range_accum",
+        "title": "Python 경시대회(고등) 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b02.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b03",
+        "categoryId": "contest_py_w03_while_termination",
+        "title": "Python 경시대회(고등) 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b03.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b04",
+        "categoryId": "contest_py_w04_list_indexing_insert",
+        "title": "Python 경시대회(고등) 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b04.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b05",
+        "categoryId": "contest_py_w05_nested_loop_array",
+        "title": "Python 경시대회(고등) 5회차",
+        "round": 5,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b05.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b06",
+        "categoryId": "contest_py_w06_string_compare_methods",
+        "title": "Python 경시대회(고등) 6회차",
+        "round": 6,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b06.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b07",
+        "categoryId": "contest_py_w07_function_scope",
+        "title": "Python 경시대회(고등) 7회차",
+        "round": 7,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b07.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b08",
+        "categoryId": "contest_py_w08_recursion_base_case",
+        "title": "Python 경시대회(고등) 8회차",
+        "round": 8,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b08.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b09",
+        "categoryId": "contest_py_w09_lambda_sort_ternary",
+        "title": "Python 경시대회(고등) 9회차",
+        "round": 9,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b09.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b10",
+        "categoryId": "contest_py_w10_module_datetime_re_collections",
+        "title": "Python 경시대회(고등) 10회차",
+        "round": 10,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b10.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b11",
+        "categoryId": "contest_py_w11_bit_oct_2d",
+        "title": "Python 경시대회(고등) 11회차",
+        "round": 11,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/high/contest_py_high_2024_r3_b11.json"
+    },
+    {
+        "id": "contest_py_high_2024_r3_b12",
+        "categoryId": "contest_py_w12_final_mock",
+        "title": "Python 경시대회(고등) 12회차",
+        "round": 12,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "contest/high/contest_py_high_2024_r3_b12.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b01",
+        "categoryId": "contest_py_w01_diagnostic_io_casting",
+        "title": "Python 경시대회(중등) 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b01.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b02",
+        "categoryId": "contest_py_w02_for_range_accum",
+        "title": "Python 경시대회(중등) 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b02.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b03",
+        "categoryId": "contest_py_w03_while_termination",
+        "title": "Python 경시대회(중등) 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b03.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b04",
+        "categoryId": "contest_py_w04_list_indexing_insert",
+        "title": "Python 경시대회(중등) 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b04.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b05",
+        "categoryId": "contest_py_w05_nested_loop_array",
+        "title": "Python 경시대회(중등) 5회차",
+        "round": 5,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b05.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b06",
+        "categoryId": "contest_py_w06_string_compare_methods",
+        "title": "Python 경시대회(중등) 6회차",
+        "round": 6,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b06.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b07",
+        "categoryId": "contest_py_w07_function_scope",
+        "title": "Python 경시대회(중등) 7회차",
+        "round": 7,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b07.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b08",
+        "categoryId": "contest_py_w08_recursion_base_case",
+        "title": "Python 경시대회(중등) 8회차",
+        "round": 8,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b08.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b09",
+        "categoryId": "contest_py_w09_lambda_sort_ternary",
+        "title": "Python 경시대회(중등) 9회차",
+        "round": 9,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b09.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b10",
+        "categoryId": "contest_py_w10_module_datetime_re_collections",
+        "title": "Python 경시대회(중등) 10회차",
+        "round": 10,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b10.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b11",
+        "categoryId": "contest_py_w11_bit_oct_2d",
+        "title": "Python 경시대회(중등) 11회차",
+        "round": 11,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "contest/mid/contest_py_mid_2024_r3_b11.json"
+    },
+    {
+        "id": "contest_py_mid_2024_r3_b12",
+        "categoryId": "contest_py_w12_final_mock",
+        "title": "Python 경시대회(중등) 12회차",
+        "round": 12,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "contest/mid/contest_py_mid_2024_r3_b12.json"
+    },
+    {
+        "id": "java_array2d_b01",
+        "categoryId": "java_array2d",
+        "title": "Java 2차원 배열 Lv15 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/java_lv15_array2d_b01.json"
+    },
+    {
+        "id": "java_array2d_b02",
+        "categoryId": "java_array2d",
+        "title": "Java 2차원 배열 Lv15 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/java_lv15_array2d_b02.json"
+    },
+    {
+        "id": "java_array2d_b03",
+        "categoryId": "java_array2d",
+        "title": "Java 2차원 배열 Lv15 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/java_lv15_array2d_b03.json"
+    },
+    {
+        "id": "java_array2d_c01",
+        "categoryId": "java_array2d",
+        "title": "Java 2차원 배열 Lv15 챌린지 1회차",
+        "round": 4,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/java_lv15_array2d_c01.json"
+    },
+    {
+        "id": "java_array2d_c02",
+        "categoryId": "java_array2d",
+        "title": "Java 2차원 배열 Lv15 챌린지 2회차",
+        "round": 5,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/java_lv15_array2d_c02.json"
+    },
+    {
+        "id": "java_array_b01",
+        "categoryId": "java_array",
+        "title": "Java 배열 Lv10 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/java_lv10_array_b01.json"
+    },
+    {
+        "id": "java_array_b02",
+        "categoryId": "java_array",
+        "title": "Java 배열 Lv10 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/java_lv10_array_b02.json"
+    },
+    {
+        "id": "java_array_b03",
+        "categoryId": "java_array",
+        "title": "Java 배열 Lv10 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/java_lv10_array_b03.json"
+    },
+    {
+        "id": "java_array_c01",
+        "categoryId": "java_array",
+        "title": "Java 배열 Lv10 챌린지 1회차",
+        "round": 4,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/java_lv10_array_c01.json"
+    },
+    {
+        "id": "java_array_c02",
+        "categoryId": "java_array",
+        "title": "Java 배열 Lv10 챌린지 2회차",
+        "round": 5,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/java_lv10_array_c02.json"
+    },
+    {
+        "id": "java_if_b1",
+        "categoryId": "java_if",
+        "title": "Java 조건문 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/java_if_b1.json"
+    },
+    {
+        "id": "py_if_b1",
+        "categoryId": "py_if",
+        "title": "Python 조건문 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv06_if_b01.json"
+    },
+    {
+        "id": "py_if_b2",
+        "categoryId": "py_if",
+        "title": "Python 조건문 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv06_if_b02.json"
+    },
+    {
+        "id": "py_if_b3",
+        "categoryId": "py_if",
+        "title": "Python 조건문 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv06_if_b03.json"
+    },
+    {
+        "id": "py_if_b4",
+        "title": "Python 조건문 기초 4회차",
+        "categoryId": "py_if",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv06_if_b04.json"
+    },
+    {
+        "id": "py_if_c1",
+        "categoryId": "py_if",
+        "title": "Python 조건문 챌린지 1회차",
+        "round": 5,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv06_if_c01.json"
+    },
+    {
+        "id": "py_if_c2",
+        "categoryId": "py_if",
+        "title": "Python 조건문 챌린지 1회차",
+        "round": 6,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv06_if_c02.json"
+    },
+    {
+        "id": "py_input_b1",
+        "categoryId": "py_input",
+        "title": "Python 입력 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv03_input_b01.json"
+    },
+    {
+        "id": "py_input_b2",
+        "categoryId": "py_input",
+        "title": "Python 입력 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv03_input_b02.json"
+    },
+    {
+        "id": "py_input_b3",
+        "categoryId": "py_input",
+        "title": "Python 입력 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv03_input_b03.json"
+    },
+    {
+        "id": "py_input_c1",
+        "categoryId": "py_input",
+        "title": "Python 입력 챌린지 1회차",
+        "round": 4,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv03_input_c01.json"
+    },
+    {
+        "id": "py_lv04_operator_b01",
+        "categoryId": "py_operator",
+        "title": "Python 연산자 LV04 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv04_operator_b01.json"
+    },
+    {
+        "id": "py_lv04_operator_b02",
+        "categoryId": "py_operator",
+        "title": "Python 연산자 LV04 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv04_operator_b02.json"
+    },
+    {
+        "id": "py_lv04_operator_c01",
+        "categoryId": "py_operator",
+        "title": "Python 연산자 LV04 챌린지 1회차",
+        "round": 3,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv04_operator_c01.json"
+    },
+    {
+        "id": "py_lv05_cast_b01",
+        "categoryId": "py_cast",
+        "title": "Python 자료형 변환 LV05 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv05_cast_b01.json"
+    },
+    {
+        "id": "py_lv05_cast_b02",
+        "categoryId": "py_cast",
+        "title": "Python 자료형 변환 LV05 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv05_cast_b02.json"
+    },
+    {
+        "id": "py_lv05_cast_c01",
+        "categoryId": "py_cast",
+        "title": "Python 자료형 변환 LV05 챌린지 1회차",
+        "round": 4,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv05_cast_c01.json"
+    },
+    {
+        "id": "py_lv07_for_b01",
+        "categoryId": "py_for",
+        "title": "Python for문 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "language/py_lv07_for_b01.json"
+    },
+    {
+        "id": "py_lv07_for_b02",
+        "categoryId": "py_for",
+        "title": "Python for문 LV07 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 5,
+        "file": "language/py_lv07_for_b02.json"
+    },
+    {
+        "id": "py_lv07_for_b03",
+        "categoryId": "py_for",
+        "title": "Python for문 LV07 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 6,
+        "file": "language/py_lv07_for_b03.json"
+    },
+    {
+        "id": "py_lv07_for_b04",
+        "categoryId": "py_for",
+        "title": "Python for문 LV07 기초 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv07_for_b04.json"
+    },
+    {
+        "id": "py_lv07_for_c01",
+        "categoryId": "py_for",
+        "title": "Python for문 챌린지 1회차",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 5,
+        "file": "language/py_lv07_for_c01.json"
+    },
+    {
+        "id": "py_lv08_while_b02",
+        "categoryId": "py_while",
+        "title": "Python while문 LV08 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv08_while_b02.json"
+    },
+    {
+        "id": "py_lv08_while_c01",
+        "categoryId": "py_while",
+        "title": "Python while문 LV08 챌린지 1회차",
+        "round": 3,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv08_while_c01.json"
+    },
+    {
+        "id": "py_lv09_nfor_b01",
+        "categoryId": "py_nfor",
+        "title": "Python 중첩 for문 LV09 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv09_nfor_b01.json"
+    },
+    {
+        "id": "py_lv09_nfor_b02",
+        "categoryId": "py_nfor",
+        "title": "Python 중첩 for문 LV09 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv09_nfor_b02.json"
+    },
+    {
+        "id": "py_lv09_nfor_b03",
+        "categoryId": "py_nfor",
+        "title": "Python 중첩 for문 LV09 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv09_nfor_b03.json"
+    },
+    {
+        "id": "py_lv09_nfor_c01",
+        "categoryId": "py_nfor",
+        "title": "Python 중첩 for문 LV09 챌린지 1회차",
+        "round": 4,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv09_nfor_c01.json"
+    },
+    {
+        "id": "py_lv10_array_b01",
+        "categoryId": "py_array",
+        "title": "Python 배열 Lv10 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv10_array_b01.json"
+    },
+    {
+        "id": "py_lv10_array_b02",
+        "categoryId": "py_array",
+        "title": "Python 배열 Lv10 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv10_array_b02.json"
+    },
+    {
+        "id": "py_lv10_array_b03",
+        "categoryId": "py_array",
+        "title": "Python 배열 Lv10 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv10_array_b03.json"
+    },
+    {
+        "id": "py_lv10_array_c01",
+        "categoryId": "py_array",
+        "title": "Python 배열 Lv10 챌린지 1회차",
+        "round": 4,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv10_array_c01.json"
+    },
+    {
+        "id": "py_lv10_array_c02",
+        "categoryId": "py_array",
+        "title": "Python 배열 Lv10 챌린지 2회차",
+        "round": 5,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv10_array_c02.json"
+    },
+    {
+        "id": "py_lv15_array2d_b01",
+        "categoryId": "py_array2d",
+        "title": "Python 2차원 배열 LV15 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv15_array2d_b01.json"
+    },
+    {
+        "id": "py_lv15_array2d_b02",
+        "categoryId": "py_array2d",
+        "title": "Python 2차원 배열 LV15 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv15_array2d_b02.json"
+    },
+    {
+        "id": "py_lv15_array2d_b03",
+        "categoryId": "py_array2d",
+        "title": "Python 2차원 배열 LV15 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv15_array2d_b03.json"
+    },
+    {
+        "id": "py_lv15_array2d_c01",
+        "categoryId": "py_array2d",
+        "title": "Python 2차원 배열 LV15 챌린지 1회차",
+        "round": 4,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv15_array2d_c01.json"
+    },
+    {
+        "id": "py_lv15_array2d_c02",
+        "categoryId": "py_array2d",
+        "title": "Python 2차원 배열 LV15 챌린지 2회차",
+        "round": 5,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv15_array2d_c02.json"
+    },
+    {
+        "id": "py_print_b1",
+        "categoryId": "py_print",
+        "title": "Python 출력 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv01_print_b01.json"
+    },
+    {
+        "id": "py_print_b2",
+        "categoryId": "py_print",
+        "title": "Python 출력 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv01_print_b02.json"
+    },
+    {
+        "id": "py_print_b3",
+        "categoryId": "py_print",
+        "title": "Python 출력 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv01_print_b03.json"
+    },
+    {
+        "id": "py_print_c1",
+        "categoryId": "py_print",
+        "title": "Python 출력 챌린지 1회차",
+        "round": 4,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv01_print_c01.json"
+    },
+    {
+        "id": "py_var_b1",
+        "categoryId": "py_var",
+        "title": "Python 변수 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv02_var_b01.json"
+    },
+    {
+        "id": "py_var_b2",
+        "categoryId": "py_var",
+        "title": "Python 변수 기초 2회차",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv02_var_b02.json"
+    },
+    {
+        "id": "py_var_b3",
+        "categoryId": "py_var",
+        "title": "Python 변수 기초 3회차",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv02_var_b03.json"
+    },
+    {
+        "id": "py_var_b4",
+        "categoryId": "py_var",
+        "title": "Python 변수 기초 4회차",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv02_var_b04.json"
+    },
+    {
+        "id": "py_var_c1",
+        "categoryId": "py_var",
+        "title": "Python 변수 챌린지 1회차",
+        "round": 1,
+        "difficulty": "challenge",
+        "numProblems": 9,
+        "file": "language/py_lv02_var_c01.json"
+    },
+    {
+        "id": "py_while_b1",
+        "categoryId": "py_while",
+        "title": "Python while문 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 9,
+        "file": "language/py_lv08_while_b01.json"
+    },
+    {
+        "id": "unity_u01_inspector_b01",
+        "categoryId": "unity_u01_inspector",
+        "title": "Unity U01 인스펙터 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "unity/unity_u01_inspector_b01.json"
+    },
+    {
+        "id": "unity_u01_inspector_c01",
+        "categoryId": "unity_u01_inspector",
+        "title": "Unity U01 인스펙터 챌린지 1회차",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 3,
+        "file": "unity/unity_u01_inspector_c01.json"
+    },
+    {
+        "id": "unity_u02_log_operator_b01",
+        "categoryId": "unity_u02_log_operator",
+        "title": "Unity U02 로그/연산자 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 3,
+        "file": "unity/unity_u02_log_operator_b01.json"
+    },
+    {
+        "id": "unity_u02_log_operator_c01",
+        "categoryId": "unity_u02_log_operator",
+        "title": "Unity U02 로그/연산자 챌린지 1회차",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 4,
+        "file": "unity/unity_u02_log_operator_c01.json"
+    },
+    {
+        "id": "unity_u03_function_syntax_b01",
+        "categoryId": "unity_u03_function_syntax",
+        "title": "Unity U03 함수/static 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 3,
+        "file": "unity/unity_u03_function_syntax_b01.json"
+    },
+    {
+        "id": "unity_u03_function_syntax_c01",
+        "categoryId": "unity_u03_function_syntax",
+        "title": "Unity U03 함수/static 챌린지 1회차",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 3,
+        "file": "unity/unity_u03_function_syntax_c01.json"
+    },
+    {
+        "id": "unity_u04_null_exception_b01",
+        "categoryId": "unity_u04_null_exception",
+        "title": "Unity U04 Null/예외 기초 1회차",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 3,
+        "file": "unity/unity_u04_null_exception_b01.json"
+    },
+    {
+        "id": "unity_u04_null_exception_c01",
+        "categoryId": "unity_u04_null_exception",
+        "title": "Unity U04 Null/예외 챌린지 1회차",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 3,
+        "file": "unity/unity_u04_null_exception_c01.json"
+    },
+    {
+        "id": "unity_u05_transform_lifecycle_b01",
+        "categoryId": "unity_u05_transform_lifecycle",
+        "title": "Unity U05 Transform and Lifecycle Basic R1",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 3,
+        "file": "unity/unity_u05_transform_lifecycle_b01.json"
+    },
+    {
+        "id": "unity_u05_transform_lifecycle_c01",
+        "categoryId": "unity_u05_transform_lifecycle",
+        "title": "Unity U05 Transform and Lifecycle Challenge R1",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 3,
+        "file": "unity/unity_u05_transform_lifecycle_c01.json"
+    },
+    {
+        "id": "unity_u06_input_b01",
+        "categoryId": "unity_u06_input",
+        "title": "Unity U06 Input Basic R1",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 3,
+        "file": "unity/unity_u06_input_b01.json"
+    },
+    {
+        "id": "unity_u06_input_c01",
+        "categoryId": "unity_u06_input",
+        "title": "Unity U06 Input Challenge R1",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 3,
+        "file": "unity/unity_u06_input_c01.json"
+    },
+    {
+        "id": "unity_u07_spawn_physics_b01",
+        "categoryId": "unity_u07_spawn_physics",
+        "title": "Unity U07 Spawn and Physics Basic R1",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 3,
+        "file": "unity/unity_u07_spawn_physics_b01.json"
+    },
+    {
+        "id": "unity_u07_spawn_physics_c01",
+        "categoryId": "unity_u07_spawn_physics",
+        "title": "Unity U07 Spawn and Physics Challenge R1",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 3,
+        "file": "unity/unity_u07_spawn_physics_c01.json"
+    },
+    {
+        "id": "unity_u08_ui_b01",
+        "categoryId": "unity_u08_ui",
+        "title": "Unity U08 UI Basic R1",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 3,
+        "file": "unity/unity_u08_ui_b01.json"
+    },
+    {
+        "id": "unity_u08_ui_c01",
+        "categoryId": "unity_u08_ui",
+        "title": "Unity U08 UI Challenge R1",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 3,
+        "file": "unity/unity_u08_ui_c01.json"
+    },
+    {
+        "id": "unity_u09_animator_b01",
+        "categoryId": "unity_u09_animator",
+        "title": "Unity U09 Animator Basic R1",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 3,
+        "file": "unity/unity_u09_animator_b01.json"
+    },
+    {
+        "id": "unity_u09_animator_c01",
+        "categoryId": "unity_u09_animator",
+        "title": "Unity U09 Animator Challenge R1",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 4,
+        "file": "unity/unity_u09_animator_c01.json"
+    },
+    {
+        "id": "unity_u10_material_color_b01",
+        "categoryId": "unity_u10_material_color",
+        "title": "Unity U10 Material and Color Basic R1",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 2,
+        "file": "unity/unity_u10_material_color_b01.json"
+    },
+    {
+        "id": "unity_u10_material_color_c01",
+        "categoryId": "unity_u10_material_color",
+        "title": "Unity U10 Material and Color Challenge R1",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 2,
+        "file": "unity/unity_u10_material_color_c01.json"
+    },
+    {
+        "id": "unity_u11_ecs_b01",
+        "categoryId": "unity_u11_ecs",
+        "title": "Unity U11 ECS Basic R1",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 2,
+        "file": "unity/unity_u11_ecs_b01.json"
+    },
+    {
+        "id": "unity_u11_ecs_c01",
+        "categoryId": "unity_u11_ecs",
+        "title": "Unity U11 ECS Challenge R1",
+        "round": 2,
+        "difficulty": "challenge",
+        "numProblems": 2,
+        "file": "unity/unity_u11_ecs_c01.json"
+    }
+]

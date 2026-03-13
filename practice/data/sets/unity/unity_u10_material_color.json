@@ -1,0 +1,61 @@
+{
+    "id": "unity_u10_material_color",
+    "title": "Unity U10 Material and Color",
+    "categoryId": "unity_u10_material_color",
+    "availableLanguages": [
+        "csharp"
+    ],
+    "problems": [
+        {
+            "id": "p01",
+            "type": "short",
+            "level": "basic",
+            "title": "Color 변수 출력식 완성",
+            "description": "`Debug.Log(\"Color:\" + [드롭다운]);`의 정답을 쓰세요.",
+            "expectedAnyOf": [
+                "color"
+            ]
+        },
+        {
+            "id": "p02",
+            "type": "short",
+            "level": "basic",
+            "title": "SetColor 두 인자 완성",
+            "description": "`material.SetColor( ___ , ___ );`의 두 빈칸 정답을 순서대로 쓰세요.",
+            "expectedAnyOf": [
+                "\"_Color\", Color.red",
+                "(\"_Color\", Color.red)",
+                "material.SetColor(\"_Color\", Color.red);"
+            ]
+        },
+        {
+            "id": "x01",
+            "type": "code",
+            "level": "challenge",
+            "title": "변형 - 파란색으로 머티리얼 색 변경 코드",
+            "description": "`Material mat`이 있을 때 메인 색을 파란색으로 설정하는 1줄 코드를 작성하세요.",
+            "code": "// TODO",
+            "expectedCode": "mat.SetColor(\"_Color\", Color.blue);"
+        },
+        {
+            "id": "x02",
+            "type": "mcq",
+            "level": "challenge",
+            "title": "함정 - SetColor 첫 인자 선택",
+            "description": "`SetColor`의 첫 인자로 올바른 표현을 고르세요.",
+            "options": [
+                "`_Color`",
+                "`\"_Color\"`",
+                "`Color`",
+                "`\"Color\"`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 1
+        }
+    ]
+}

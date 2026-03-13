@@ -1,11 +1,54 @@
-﻿{
-    "id": "unity_u07_spawn_physics_c01",
-    "title": "Unity U07 Spawn and Physics Challenge R1",
+{
+    "id": "unity_u07_spawn_physics",
+    "title": "Unity U07 Spawn and Physics",
     "categoryId": "unity_u07_spawn_physics",
     "availableLanguages": [
         "csharp"
     ],
     "problems": [
+        {
+            "id": "p01",
+            "type": "short",
+            "level": "basic",
+            "title": "코드 설명 주석 2개 선택",
+            "description": "주어진 코드에 맞는 주석 2개를 쓰세요.",
+            "expectedAnyOf": [
+                "C, D",
+                "C D",
+                "C와 D"
+            ]
+        },
+        {
+            "id": "p02",
+            "type": "mcq",
+            "level": "basic",
+            "title": "rb 변수 타입 선택",
+            "description": "`rb = GetComponent<Rigidbody>();`와 `rb.MovePosition(...)`에 맞는 선언 타입을 고르세요.",
+            "options": [
+                "`Vector3`",
+                "`Collider`",
+                "`RigidBody`",
+                "`CharacterController`"
+            ],
+            "optionLabels": [
+                "A",
+                "B",
+                "C",
+                "D"
+            ],
+            "correctIndex": 2
+        },
+        {
+            "id": "p03",
+            "type": "short",
+            "level": "basic",
+            "title": "AddForce 빈칸 2개 선택",
+            "description": "`rigidBody.AddForce([①] * [②]);`에서 ①, ②를 쓰세요.",
+            "expectedAnyOf": [
+                "① transform.forward, ② speedForce",
+                "transform.forward, speedForce"
+            ]
+        },
         {
             "id": "p04",
             "type": "short",

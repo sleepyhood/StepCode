@@ -37,16 +37,22 @@ public partial class MovementSystem : SystemBase
 - 오답 포인트: 몬스터 10만 마리가 등장하는 게임을 제작하는데, ECS 대신 기존 `Instantiate`와 `MonoBehaviour`의 `Update`만을 활용해도 거뜬하다고 섣불리 오판하는 경우이다.
 - 정답 판별: **수만 개 이상의 엄청난 수의 객체 배치, CPU 멀티코어 병렬 연산, 극강의 성능 최적화** 라는 요구 목적 키워드가 나왔을 때, 이를 해결할 기술로 **ECS(Entities)**를 올바로 매칭시킬 수 있는지 확인한다.
 
-![ECS 1만 개 렌더링 한계 극복](./data/theory/images/unity_u11_ecs_massive_entities.png)
+![ECS 1만 개 렌더링 한계 극복](../images/unity_u11_ecs_massive_entities.png)
 *캡션: MonoBehaviour로는 프레임 저하가 일어나는 엄청난 수의 비행체(Entity)들을 ECS로 60프레임에 무리 없이 그려내는 기술 데모. 출처: 자체 촬영*
 
-### 2) 상속 클래스(키워드) 패턴으로 ECS 사용 여부 판별하기
+### 2) 상속 클래스(키워드) 패턴으로 ECS 사용 여부 판별하기 (P01, P02, X02 대비)
 - 개념: 현재 작성된 C# 스크립트가 구식 방식인지 신식 ECS 방식인지 구분하려면 상속받는 클래스와 사용하는 핵심 구조체의 이름을 살펴야 한다.
+- **실사용 판별 황금률**: 
+  - 스크립트 최상단에 **`using Unity.Entities;` 네임스페이스가 선언되어 있다고 해서 무조건 'ECS를 사용한다'고 판정하지 않는다.**
+  - `using`은 단지 라이브러리를 불러오는 '준비'일 뿐이며, 반드시 코드 본문에서 ECS 전용 타입을 **상속받거나 호출**해야만 실제 사용으로 인정한다.
 - 패러다임별 주요 키워드:
   - **MonoBehaviour 방식 (전통적)**: `MonoBehaviour` 상속, `Start()`, `Update()`, `GameObject`, `GetComponent<T>()`, `OnCollisionEnter()`
-  - **ECS 방식 (데이터 지향)**: `SystemBase`, `ISystem` 상속, `IComponentData`, `IJobEntity`, `OnUpdate()`, `Entities.ForEach`
-- 오답 포인트: 코드에 `SystemBase`나 `IComponentData`가 등장했는데도 이 스크립트를 하이어라키의 빈 게임 오브젝트에 드래그 앤 드롭해서 Add Component 하려 하거나, 전통적 객체 지향 문법이라고 섞어서 착각하는 경우이다.
-- 정답 판별: 제시된 코드 더미에서 `SystemBase`나 `IComponentData`, `Entity` 같은 단어가 포착되었을 때 "아, 이 코드는 ECS 설계방식으로 쓰였구나" 라고 판독할 수 있는지 묻는다.
+  - **ECS 방식 (데이터 지향)**: `SystemBase`, `ISystem`, `ComponentSystem` 상속, `IComponentData`, `EntityManager`, `IJobEntity`, `OnUpdate()`, `Entities.ForEach`
+- 오답 포인트: 코드 상단에 `using Unity.Entities;`가 적혀 있다는 이유만으로, 본문이 `MonoBehaviour` 기반인데도 ECS 코드로 오해하는 경우이다.
+- 정답 판별: 
+  - (1) `using Unity.Entities;` 문장이 있는지 확인한다.
+  - (2) 클래스 선언부나 본문에 `SystemBase`, `IComponentData`, `EntityManager` 등 ECS 고유 키워드가 **실제로 등장**하는지 확인한다. 
+  - 두 조건이 모두 만족되어야 "ECS 실사용 코드"로 판정한다.
 
 ## 자주 하는 실수
 - 소규모 퍼즐이나 방탈출 게임 같은 간단한 프로젝트에도 무조건 최신 기술이라며 굳이 어렵고 낯선 ECS 문법을 억지로 도입하여 개발 속도를 망침

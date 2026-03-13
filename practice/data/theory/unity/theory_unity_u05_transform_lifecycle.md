@@ -34,10 +34,15 @@ public class Player : MonoBehaviour
 
 ### 1) 배열을 반환하는 함수의 반환형 선언
 - 개념: 함수가 배열 형태의 값을 `return`할 때에는, 함수의 정의부에도 반드시 반환형이 배열(예: `int[]`) 구조임을 명시해야 한다.
+- **중첩 클래스(Nested Class)를 배열 요소 타입으로 사용하기**:
+  - 컨트롤러 내부에 `[System.Serializable]`로 선언한 커스텀 클래스(예: `Mount`)를 만들면, 이 클래스 이름을 배열의 요소 타입으로 쓸 수 있다.
+  - 예: `public Mount[] tMounts = new Mount[2];`
+  - 이렇게 하면 `tMounts[0].turretMount`처럼 내부 필드에 접근할 수 있다.
+  - 만약 `Transform[]`으로 선언하면 `tMounts[0]`이 `Transform` 타입이므로 `.turretMount` 필드가 없어 에러가 난다.
 - 오답 포인트: 데이터는 배열(예: `new int[5]`)을 반환하면서, 함수 선언 부에는 `[]` 기호를 빼먹고 단일 자료형(예: `int`)으로 잘못 선언하는 경우이다.
 - 정답 판별: 함수 선언부의 반환형 타입(예: `int[]`)과 실제 `return`하는 변수가 가지고 있는 자료형 타입이 동일한지 확인한다.
 
-![배열 반환형 오류](./data/theory/images/unity_u05_array_return_error.svg)
+![배열 반환형 오류](../images/unity_u05_array_return_error.svg)
 *캡션: 반환형을 int[]가 아닌 int로 선언하였을 때 IDE에서 발생하는 CS0029 타입 변환 오류 코드 화면. 출처: 자체 제작*
 
 ### 2) 생명주기: OnEnable과 OnDisable 함수
@@ -45,7 +50,7 @@ public class Player : MonoBehaviour
 - 오답 포인트: 오브젝트를 처음 생성할 때 단 한번만 실행된다고 착각하거나, 스크립트를 코드로 `SetActive(true)` 하는 기능과 혼동하는 경우이다.
 - 정답 판별: 객체가 켜지는 순간인지(혹은 인스펙터 체크박스가 켜지는 순간인지) 파악하고, 그때마다 해당 이벤트 함수가 반복해서 호출됨을 숙지했는지 묻는다.
 
-![OnEnable 기능 확인](./data/theory/images/unity_u05_transform_lifecycle_onenable.png)
+![OnEnable 기능 확인](../images/unity_u05_transform_lifecycle_onenable.png)
 *캡션: 유니티 인스펙터 좌측 상단의 체크박스를 통해 오브젝트를 껐다 켤 때마다 OnDisable과 OnEnable 함수가 차례로 실행된다. 출처: 직접 캡처*
 
 ### 3) 생명주기: Awake 함수
@@ -53,7 +58,7 @@ public class Player : MonoBehaviour
 - 오답 포인트: 스크립트 체크박스(활성화/비활성화) 설정이 꺼져 있으면 `Awake` 마저 동작하지 않을 것이라 생각하는 경우이다. (`Start` 함수는 꺼져있으면 발생하지 않음)
 - 정답 판별: 생명주기 호출 순서상 "Awake -> OnEnable -> Start" 순임을 인지하고, 스크립트 활성화 토글과 무관하게 `Awake`는 무조건 실행된다는 특징을 이해하는지 확인한다.
 
-![Awake 함수 씬 실행 화면](./data/theory/images/unity_u05_transform_lifecycle_awake.png)
+![Awake 함수 씬 실행 화면](../images/unity_u05_transform_lifecycle_awake.png)
 *캡션: 스크립트 컴포넌트 체크박스가 꺼져 있어도 Awake 함수 안의 코드는 예외적으로 실행됨을 보여주는 참조. 출처: 직접 캡처*
 
 ### 4) 다른 스크립트(컴포넌트)에 접근하는 방법
@@ -64,10 +69,26 @@ public class Player : MonoBehaviour
   - (2) 아예 다른 게임 오브젝트의 스크립트 가져오기: `public 대상클래스명 변수명;` (이후 인스펙터 연결)
   두 가지 방식의 사용처를 제대로 구분하고 있는지를 판별한다.
 
-![GetComponent 동일 오브젝트 접근](./data/theory/images/unity_u05_transform_lifecycle_getcomponent.png)
+### 5) 자식 Transform 순회 패턴 (childCount + GetChild)
+- 개념: 특정 부모 `Transform`이 품고 있는 직계 자식들을 코드로 모두 수집하려면 두 가지 API를 세트로 사용한다:
+  - `transform.childCount`: 현재 오브젝트의 직계 자식 수(정수)를 반환
+  - `transform.GetChild(i)`: 인덱스 `i`번째 자식의 `Transform`을 반환
+- 표준 순회 코드 패턴:
+  ```csharp
+  Transform[] result = new Transform[root.childCount];
+  for (int i = 0; i < root.childCount; i++)
+  {
+      result[i] = root.GetChild(i);
+  }
+  return result;
+  ```
+- 오답 포인트: `childCount`를 빼먹고 배열 크기를 임의 상수로 넣어 인덱스 초과 예외를 유발하거나, `GetChild` 대신 `Find`를 사용해 이름으로 찾으려 한다.
+- 정답 판별: 배열 크기가 `childCount`로 정의되고, `for` 반복문으로 `0`부터 `childCount-1`까지 순회하며 `GetChild(i)`로 각 자식을 배열에 할당했는지 확인한다.
+
+![GetComponent 동일 오브젝트 접근](../images/unity_u05_transform_lifecycle_getcomponent.png)
 *캡션: 같은 오브젝트(Test) 안에 있는 스크립트 B의 참조를 가져오기 위해 GetComponent를 사용하는 모습. 출처: 직접 캡처*
 
-![public 필드를 통한 참조 연결](./data/theory/images/unity_u05_transform_lifecycle_reference3.png)
+![public 필드를 통한 참조 연결](../images/unity_u05_transform_lifecycle_reference3.png)
 *캡션: 서로 다른 오브젝트 간 연결을 위해 코드로 public B class_b; 를 선언한 뒤, 인스펙터 창에서 빈칸에 직접 대상 객체(Test2)를 끌어다 놓는 장면. 출처: 직접 캡처*
 
 ## 자주 하는 실수
