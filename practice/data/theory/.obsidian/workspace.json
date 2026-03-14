@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "unity/theory_unity_u09_animator.md",
-                "mode": "source",
+                "file": "canva/01_1차검수(LLM 서식 정리)_1차시. 캔바 첫 세팅과 작업 영역 적응.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "theory_unity_u09_animator"
+              "title": "01_1차검수(LLM 서식 정리)_1차시. 캔바 첫 세팅과 작업 영역 적응"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "e9c3cbe2170957ea",
@@ -186,6 +187,18 @@
   },
   "active": "de703676b0520d4f",
   "lastOpenFiles": [
+    "canva/images/week01/p037_03.png",
+    "canva/images/week01/2026-03-14-18-57-10.png",
+    "canva/images/week01/p037_02.png",
+    "canva/images/week01/2026-03-14-18-55-53.png",
+    "canva/images/week01/p037_01.png",
+    "canva/images/week01/2026-03-14-18-54-45.png",
+    "canva/images/week01/2026-03-14-18-53-30.png",
+    "canva/images/week01/2026-03-14-18-52-16.png",
+    "canva/images/week01/p032_02.png",
+    "canva/images/week01/2026-03-14-18-23-08.png",
+    "canva/images/week01/p019_01.png",
+    "unity/theory_unity_u09_animator.md",
     "unity/unity_concept_registry.md",
     "unity/theory_unity_u08_ui.md",
     "unity/theory_unity_u07_spawn_physics.md",
@@ -201,23 +214,12 @@
     "unity/weeks/problem_unity_w02.md",
     "unity/weeks/problem_unity_w01.md",
     "unity/guide_unity_theory.md",
-    "images/unity_u01_inspector_serializefield_compare.png",
     "unity/theory_unity_u11_ecs.md",
-    "unity/theory_unity_u09_animator.md",
     "canva/강민승/이론(개념, 진도)/theory_canva_l01.md",
     "canva/강민승/이론(개념, 진도)/theory_canva_index.md",
     "canva/theory_canva_index.md",
-    "images/unity_u03_function_return_error.svg",
-    "images/unity_u03_function_return_error.png",
     "images/Drawing 2026-03-13 14.55.13.excalidraw.md",
     "images/Drawing 2026-03-13 14.54.31.excalidraw.md",
-    "images/unity_u03_function_event_execution_order.svg",
-    "images/unity_u03_function_event_execution_order.png",
-    "images/unity_u03_function_static_access_error.png",
-    "images/unity_u03_function_static_access_error.svg",
-    "images/unity_u04_null_exception_console.svg",
-    "images/contest_w03_euclid_state_transition.svg",
-    "images/contest_w03_leap_logic_filter.svg",
     "Excalidraw/Drawing 2026-03-13 14.53.58.excalidraw.md",
     "Excalidraw/Drawing 2026-03-13 14.53.31.excalidraw.md",
     "Excalidraw/Drawing 2026-03-13 14.51.15.excalidraw.md",
