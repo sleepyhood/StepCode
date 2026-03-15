@@ -1,20 +1,24 @@
 {
   "main": {
-    "id": "83d4a766cde877be",
+    "id": "57139338a4ebcca7",
     "type": "split",
     "children": [
       {
-        "id": "da4fff1ffd42e363",
+        "id": "769851404041bf05",
         "type": "tabs",
         "children": [
           {
-            "id": "1c03093e6f6700dd",
+            "id": "2bc83c8b67bd0891",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "00_TODO.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "새 탭"
+              "title": "00_TODO"
             }
           }
         ]
@@ -23,15 +27,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "d58f0c49406cfe28",
+    "id": "90c6027717a13e99",
     "type": "split",
     "children": [
       {
-        "id": "3c0a612a4cfdf00d",
+        "id": "c3a5cc0e0663bae0",
         "type": "tabs",
         "children": [
           {
-            "id": "71b9f46fe21082e8",
+            "id": "642b56186fbbcbe6",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -44,7 +48,7 @@
             }
           },
           {
-            "id": "ecb00dcf38bd642a",
+            "id": "3af77c80b0726679",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -61,7 +65,7 @@
             }
           },
           {
-            "id": "e4feda9ee824e51e",
+            "id": "232814651e34f846",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -77,20 +81,20 @@
     "width": 300
   },
   "right": {
-    "id": "e9c3cbe2170957ea",
+    "id": "471151b06d0005fd",
     "type": "split",
     "children": [
       {
-        "id": "5e16b9e076e71d95",
+        "id": "00d6b8b2e87f6d93",
         "type": "tabs",
         "children": [
           {
-            "id": "40c99786c1d019aa",
+            "id": "de2454e2d8130f5b",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "unity/theory_unity_u01_inspector.md",
+                "file": "00_TODO.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,25 +104,25 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "theory_unity_u01_inspector 의 백링크"
+              "title": "00_TODO 의 백링크"
             }
           },
           {
-            "id": "83d0ffbbae74f9d6",
+            "id": "8654cc3412780c03",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "unity/theory_unity_u01_inspector.md",
+                "file": "00_TODO.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "theory_unity_u01_inspector 의 나가는 링크"
+              "title": "00_TODO 의 나가는 링크"
             }
           },
           {
-            "id": "03721f0ca0201f4d",
+            "id": "54ec6fa86c235ea4",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -133,7 +137,7 @@
             }
           },
           {
-            "id": "7602e3b5d7321dac",
+            "id": "0d25760be7ab9191",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -147,18 +151,18 @@
             }
           },
           {
-            "id": "709b63aa011b6bfd",
+            "id": "1fb2679904ce85f7",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "unity/theory_unity_u01_inspector.md",
+                "file": "00_TODO.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "theory_unity_u01_inspector 의 개요"
+              "title": "00_TODO 의 개요"
             }
           }
         ]
@@ -176,52 +180,41 @@
       "daily-notes:오늘의 일일 노트 열기": false,
       "templates:템플릿 삽입": false,
       "command-palette:명령어 팔레트 열기": false,
-      "bases:새 베이스 생성하기": false,
-      "obsidian-excalidraw-plugin:New drawing": false
+      "bases:새 베이스 생성하기": false
     }
   },
-  "active": "1c03093e6f6700dd",
+  "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
-    "무제 1.canvas",
-    "canva/01_1차검수(LLM 서식 정리)_1차시. 캔바 첫 세팅과 작업 영역 적응.md",
-    "canva/images/week01/p037_03.png",
-    "canva/images/week01/2026-03-14-18-57-10.png",
-    "canva/images/week01/p037_02.png",
-    "canva/images/week01/2026-03-14-18-55-53.png",
-    "canva/images/week01/p037_01.png",
-    "canva/images/week01/2026-03-14-18-54-45.png",
-    "canva/images/week01/2026-03-14-18-53-30.png",
-    "canva/images/week01/2026-03-14-18-52-16.png",
-    "canva/images/week01/p032_02.png",
-    "canva/images/week01/2026-03-14-18-23-08.png",
-    "unity/theory_unity_u09_animator.md",
-    "unity/unity_concept_registry.md",
-    "unity/theory_unity_u08_ui.md",
-    "unity/theory_unity_u07_spawn_physics.md",
-    "unity/theory_unity_u06_input.md",
-    "unity/theory_unity_u05_transform_lifecycle.md",
-    "unity/theory_unity_u04_null_exception.md",
-    "unity/theory_unity_u03_function_syntax.md",
-    "unity/theory_unity_u02_log_operator.md",
-    "unity/theory_unity_u01_inspector.md",
-    "2026-03-13.md",
-    "Excalidraw/Drawing 2026-03-13 23.55.44.excalidraw.md",
-    "무제 1.base",
-    "unity/weeks/problem_unity_w02.md",
-    "unity/weeks/problem_unity_w01.md",
-    "unity/guide_unity_theory.md",
-    "unity/theory_unity_u11_ecs.md",
-    "canva/강민승/이론(개념, 진도)/theory_canva_l01.md",
-    "canva/강민승/이론(개념, 진도)/theory_canva_index.md",
-    "canva/theory_canva_index.md",
-    "images/Drawing 2026-03-13 14.55.13.excalidraw.md",
-    "images/Drawing 2026-03-13 14.54.31.excalidraw.md",
-    "Excalidraw/Drawing 2026-03-13 14.53.58.excalidraw.md",
-    "Excalidraw/Drawing 2026-03-13 14.53.31.excalidraw.md",
-    "Excalidraw/Drawing 2026-03-13 14.51.15.excalidraw.md",
-    "Excalidraw",
-    "무제.base",
-    "무제.canvas",
-    "jungol/2023_정올_고등부_원문정답.pdf"
+    "practice/data/theory/jungol/01_초등(미완)/2026년_3차_초등_숙제_해설지_2019-2025.md",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/2026년_3차_초등_숙제_학생용_2019-2025.docx",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/2026년_3차_초등_숙제_교사용_2019-2025.docx",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/~WRL1197.tmp",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/~WRD1178.tmp",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/~WRL3918.tmp",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/~WRD3906.tmp",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/~WRL2836.tmp",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/~WRD2824.tmp",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/~WRL1281.tmp",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/~WRD1266.tmp",
+    "00_TODO.md",
+    "practice/data/theory/jungol/01_초등(미완)/2026년_3차_초등_수업_해설지_2019-2025.md",
+    "practice/data/theory/jungol/01_초등(미완)/2026년_3차_초등_수업_해설지_2019-2025 copy.md",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/01_초등_03_12.png",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/image.png",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/01_초등_03_11.png",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/01_초등_03_10.png",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/01_초등_03_09.png",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/01_초등_03_08.png",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/01_초등_03_07.png",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/01_초등_03_06.png",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/01_초등_03_05.png",
+    "practice/data/theory/jungol/01_초등(미완)/3주차(숙제 없음)/images/01_초등_03_04.png",
+    "practice/data/theory/jungol/01_초등(미완)/2026년_2차_초등_숙제_해설지_2019-2025 - 복사본.md",
+    "practice/data/theory/jungol/scripts/이미지_워드_가이드.md",
+    "practice/data/theory/jungol/scripts/해설지_작성_가이드.md",
+    "3주차_해설.md",
+    "2주차_해설.md",
+    "1주차_해설_PDF_추출.md",
+    "1주차_해설.md"
   ]
 }
