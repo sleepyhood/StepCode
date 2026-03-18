@@ -11,14 +11,10 @@
             "id": "2bc83c8b67bd0891",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "practice/data/theory/canva/02_2차검수(이미지 추가)_1차시. 캔바 첫 세팅과 작업 영역 적응.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "02_2차검수(이미지 추가)_1차시. 캔바 첫 세팅과 작업 영역 적응"
+              "title": "새 탭"
             }
           }
         ]
@@ -185,6 +181,18 @@
   },
   "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
+    "practice/data/theory/canva/Week05/final_match_complete.json",
+    "practice/data/theory/canva/Week05/mapping_week05.py",
+    "practice/data/theory/canva/Week05/pdf_text.txt",
+    "practice/data/theory/canva/Week05/02_이미지_추가/5차시. 실전 디자인 2 - 기업형 디자인과 자산 관리.md",
+    "practice/data/theory/canva/Week03/apply_rest_to_02.py",
+    "practice/data/theory/canva/Week04/02_이미지_추가/4차시. 실전 디자인 1 - SNS와 포스터 제작.md",
+    "practice/data/theory/canva/Week04/02_이미지_추가/tmp_4차시. 실전 디자인 1 - SNS와 포스터 제작.md",
+    "practice/data/theory/canva/Week03/apply_mapping_02.py",
+    "practice/data/theory/canva/Week03/02_이미지_추가/3차시. 디자인 정돈 및 AI 창작 워크플로 체험.md",
+    "practice/data/theory/canva/Week03/03_1차검수/3차시. 디자인 정돈 및 AI 창작 워크플로 체험.md",
+    "practice/data/theory/canva/Week03/03_1차검수/tmp_3차시. 디자인 정돈 및 AI 창작 워크플로 체험.md",
+    "practice/data/theory/canva/Week03/02_이미지_추가/tmp_3차시. 디자인 정돈 및 AI 창작 워크플로 체험.md",
     "images/week01/p041_01.png.md",
     "images/week01",
     "images",
@@ -196,10 +204,6 @@
     "practice/data/theory/jungol/03_고등/2026년_1차_고등_숙제_해설지_2019-2025.md",
     "practice/data/theory/jungol/03_고등/3주차/~$26년_3차_고등_수업_학생용_2019-2025.docx",
     "practice/data/theory/jungol/02_중등/2026년_1차_중등_숙제_해설지_2019-2025.md",
-    "practice/data/theory/jungol/02_중등/5주차/~WRL3384.tmp",
-    "practice/data/theory/jungol/02_중등/5주차/~WRD3376.tmp",
-    "practice/data/theory/jungol/02_중등/5주차/~WRL2028.tmp",
-    "practice/data/theory/jungol/02_중등/5주차/~WRD2017.tmp",
     "practice/data/theory/jungol/02_중등/2026년_5차_중등_수업_해설지_2019-2025.md",
     "00_TODO.md",
     "practice/data/theory/jungol/02_중등/2026년_5차_중등_수업_해설지_2019-2025 copy.md",
@@ -222,14 +226,6 @@
     "practice/data/theory/jungol/01_초등/2026년_2차_초등_숙제_해설지_2019-2025.md",
     "practice/data/theory/jungol/01_초등/2026년_2차_초등_수업_해설지_2019-2025.md",
     "practice/data/theory/jungol/01_초등/2026년_1차_초등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/01_초등(미완)/2026년_5차_초등_숙제_해설지_2019-2025.md",
-    "practice/data/theory/jungol/01_초등(미완)/2026년_5차_초등_수업_해설지_2019-2025 copy.md",
-    "practice/data/theory/jungol/01_초등(미완)/2026년_5차_초등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/01_초등(미완)/2026년_4차_초등_수업_해설지_2019-2025 copy.md",
-    "practice/data/theory/jungol/03_고등/2026년_4차_고등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/01_초등(미완)/2026년_3차_초등_숙제_해설지_2019-2025.md",
-    "practice/data/theory/jungol/01_초등(미완)/2026년_3차_초등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/01_초등(미완)/2026년_3차_초등_수업_해설지_2019-2025 copy.md",
-    "practice/data/theory/jungol/01_초등(미완)/2026년_2차_초등_숙제_해설지_2019-2025 - 복사본.md"
+    "practice/data/theory/jungol/01_초등(미완)/2026년_5차_초등_숙제_해설지_2019-2025.md"
   ]
 }
