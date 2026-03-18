@@ -22,14 +22,14 @@ class MarkdownIDAssignerGUI:
 
         # ID 접두사
         tk.Label(frame_settings, text="ID 접두사:").pack(side=tk.LEFT, padx=(15, 0))
-        self.prefix_var = tk.StringVar(value="IMG_")
+        self.prefix_var = tk.StringVar(value="IMG_W00_")
         tk.Entry(frame_settings, textvariable=self.prefix_var, width=10).pack(
             side=tk.LEFT, padx=5
         )
 
         # 숫자 자릿수 (예: 2로 설정하면 01, 02 / 3으로 설정하면 001, 002)
         tk.Label(frame_settings, text="숫자 자릿수:").pack(side=tk.LEFT, padx=(15, 0))
-        self.padding_var = tk.IntVar(value=2)
+        self.padding_var = tk.IntVar(value=3)
         tk.Spinbox(
             frame_settings, from_=1, to=5, textvariable=self.padding_var, width=5
         ).pack(side=tk.LEFT, padx=5)

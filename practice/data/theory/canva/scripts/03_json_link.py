@@ -113,12 +113,19 @@ class MarkdownAssemblerGUI:
             # 패턴: [이미지 삽입: ID_XXXX]
             def replace_image(match):
                 img_id = match.group(1).strip()
+
+                # [안전하게 수정한 후]
                 if img_id in mapping_data:
                     info = mapping_data[img_id]
-                    file_name = info.get("file_name", "")
-                    alt_text = info.get("alt_text", "이미지 설명")
-                    # 이미지 경로 설정 (선생님의 구조에 맞게 images/ 경로 추가)
-                    return f"![{alt_text}](../images/{file_name})"
+                    # info가 None(null)이 아닐 때만 실행하도록 조건 추가
+                    if info is not None:
+                        file_name = info.get("file_name", "")
+                        alt_text = info.get("alt_text", "이미지 설명")
+                        return f"![{alt_text}](../images/{file_name})"
+                    else:
+                        # 데이터가 null이면 원래 태그를 그대로 두거나 경고 텍스트 삽입
+                        return f"[이미지 매칭 실패: {img_id}]"
+
                 else:
                     # 매핑 데이터가 없는 경우 원본 유지 또는 경고 표시
                     return match.group(0)
