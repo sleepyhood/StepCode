@@ -19,20 +19,36 @@ def scrape_baekjoon(url):
             input_desc = page.locator("#problem_input").inner_text().strip()
             output_desc = page.locator("#problem_output").inner_text().strip()
 
-            # 샘플 입출력 추출
-            sample_in = ""
-            if page.locator("#sample-input-1").count() > 0:
-                sample_in = page.locator("#sample-input-1").inner_text().strip()
+            # 샘플 입출력 추출 (다중 샘플 대응)
+            samples = []
+            i = 1
+            while True:
+                in_sel = f"#sample-input-{i}"
+                out_sel = f"#sample-output-{i}"
+                if page.locator(in_sel).count() > 0 and page.locator(out_sel).count() > 0:
+                    s_in = page.locator(in_sel).inner_text().strip()
+                    s_out = page.locator(out_sel).inner_text().strip()
+                    samples.append((s_in, s_out))
+                    i += 1
+                else:
+                    break
 
-            sample_out = ""
-            if page.locator("#sample-output-1").count() > 0:
-                sample_out = page.locator("#sample-output-1").inner_text().strip()
+
+            # 힌트 추출 (있을 수도, 없을 수도 있음)
+            hint = ""
+            if page.locator("#problem_hint").count() > 0:
+                hint = page.locator("#problem_hint").inner_text().strip()
 
         except Exception as e:
             print(f"크롤링 에러: {e}")
             return None, None
         finally:
             browser.close()
+
+        # 샘플 MD 조립
+        samples_md = ""
+        for idx, (s_in, s_out) in enumerate(samples, 1):
+            samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
 
         # 수석 감수자 권장 마크다운(MD) 템플릿에 맞추어 문자열 포매팅
         md_content = f"""---
@@ -60,15 +76,10 @@ source: {url}
 
 ## 3. 예시
 
-### 예시 입력 1
-```text
-{sample_in}
-```
+{samples_md}---
 
-### 예시 출력 1
-```text
-{sample_out}
-```
+## 4. 힌트
+{hint if hint else "(힌트가 없습니다.)"}
 
 ---
 
@@ -116,14 +127,36 @@ def scrape_doingcoding(url):
             description = get_text('//*[@id="problem-content"]/p[2]')
             input_desc = get_text('//*[@id="problem-content"]/p[4]')
             output_desc = get_text('//*[@id="problem-content"]/p[6]')
-            sample_in = get_text('//*[@id="problem-content"]/div[1]/div/div[1]/pre')
-            sample_out = get_text('//*[@id="problem-content"]/div[1]/div/div[2]/pre')
+            
+            # 샘플 입출력 추출 (다중 샘플 대응)
+            samples = []
+            i = 1
+            while True:
+                in_xpath = f'//*[@id="problem-content"]/div[{i}]/div/div[1]/pre'
+                out_xpath = f'//*[@id="problem-content"]/div[{i}]/div/div[2]/pre'
+                
+                s_in = get_text(in_xpath, timeout=1000)
+                s_out = get_text(out_xpath, timeout=1000)
+                
+                if s_in == "(내용 없음)" and s_out == "(내용 없음)":
+                    break
+                
+                samples.append((s_in, s_out))
+                i += 1
+
+            # 힌트 추출 (사용자 제공 XPath)
+            hint = get_text('//*[@id="problem-content"]/div[2]/div/div/div')
 
         except Exception as e:
             print(f"XPath 크롤링 에러({url}): {e}")
             return None, None
         finally:
             browser.close()
+
+        # 샘플 MD 조립
+        samples_md = ""
+        for idx, (s_in, s_out) in enumerate(samples, 1):
+            samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
 
         # 수석 감수자 권장 마크다운(MD) 템플릿에 맞추어 문자열 포매팅
         md_content = f"""---
@@ -151,15 +184,10 @@ source: {url}
 
 ## 3. 예시
 
-### 예시 입력 1
-```text
-{sample_in}
-```
+{samples_md}---
 
-### 예시 출력 1
-```text
-{sample_out}
-```
+## 4. 힌트
+{hint if hint and hint != "(내용 없음)" else "(힌트가 없습니다.)"}
 
 ---
 
