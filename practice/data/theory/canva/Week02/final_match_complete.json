@@ -1,0 +1,370 @@
+﻿{
+    "IMG_W02_001":  {
+                        "file_name":  "p094_01.png",
+                        "alt_text":  "텍스트 메뉴 상단 구성"
+                    },
+    "IMG_W02_002":  {
+                        "file_name":  "p094_02.png",
+                        "alt_text":  "텍스트 메뉴 하단 구성"
+                    },
+    "IMG_W02_003":  {
+                        "file_name":  "p095_01.png",
+                        "alt_text":  "텍스트 스타일을 페이지에 추가하는 화면"
+                    },
+    "IMG_W02_004":  {
+                        "file_name":  "p096_01.png",
+                        "alt_text":  "사이드 패널에서 텍스트 스타일을 고르는 화면"
+                    },
+    "IMG_W02_005":  {
+                        "file_name":  "p098_02.png",
+                        "alt_text":  "빠른 작업으로 텍스트 상자를 추가하는 화면"
+                    },
+    "IMG_W02_006":  {
+                        "file_name":  "p096_03.png",
+                        "alt_text":  "작업 영역에 배치한 텍스트 상자 화면"
+                    },
+    "IMG_W02_007":  {
+                        "file_name":  "p096_04.png",
+                        "alt_text":  "텍스트를 선택해 편집 모드로 들어간 화면"
+                    },
+    "IMG_W02_008":  {
+                        "file_name":  "p097_03.png",
+                        "alt_text":  "텍스트 상자 크기를 조절하는 화면"
+                    },
+    "IMG_W02_009":  {
+                        "file_name":  "p097_04.png",
+                        "alt_text":  "위치 패널에서 텍스트 회전 각도를 설정하는 화면"
+                    },
+    "IMG_W02_010":  {
+                        "file_name":  "p098_01.png",
+                        "alt_text":  "텍스트 편집을 마친 최종 배치 화면"
+                    },
+    "IMG_W02_011":  {
+                        "file_name":  "p101_01.png",
+                        "alt_text":  "텍스트용 에디터 툴 바 전체 화면"
+                    },
+    "IMG_W02_012":  {
+                        "file_name":  "p100_01.png",
+                        "alt_text":  "글꼴 패널의 검색과 추천 글꼴 화면"
+                    },
+    "IMG_W02_013":  {
+                        "file_name":  "p100_02.png",
+                        "alt_text":  "글꼴 패널의 최근 사용함과 한국어 글꼴 화면"
+                    },
+    "IMG_W02_014":  {
+                        "file_name":  "p100_04.png",
+                        "alt_text":  "글꼴 패널에서 별표 표시 글꼴을 관리하는 화면"
+                    },
+    "IMG_W02_015":  {
+                        "file_name":  "p102_01.png",
+                        "alt_text":  "텍스트 색상 패널 화면"
+                    },
+    "IMG_W02_016":  {
+                        "file_name":  "p102_02.png",
+                        "alt_text":  "텍스트 색상 패널에서 색상과 HEX 코드를 설정하는 화면"
+                    },
+    "IMG_W02_017":  {
+                        "file_name":  "p102_04.png",
+                        "alt_text":  "고급 설정 옵션 창 화면"
+                    },
+    "IMG_W02_018":  {
+                        "file_name":  "p102_03.png",
+                        "alt_text":  "고급 설정 패널에서 자간과 행간을 조절하는 화면"
+                    },
+    "IMG_W02_019":  {
+                        "file_name":  "p103_01.png",
+                        "alt_text":  "효과 패널에서 텍스트 효과를 선택하는 화면"
+                    },
+    "IMG_W02_020":  {
+                        "file_name":  "p104_01.png",
+                        "alt_text":  "테두리 효과로 폰트 굵기를 조절하는 팁 화면"
+                    },
+    "IMG_W02_021":  {
+                        "file_name":  "p105_01.png",
+                        "alt_text":  "플로팅 툴 바에서 텍스트 상자 간격을 맞추는 화면"
+                    },
+    "IMG_W02_022":  {
+                        "file_name":  "p105_03.png",
+                        "alt_text":  "위치 패널에서 텍스트 상자를 정렬하는 화면"
+                    },
+    "IMG_W02_023":  {
+                        "file_name":  "p106_01.png",
+                        "alt_text":  "텍스트 레이아웃을 정리한 전후 비교 화면"
+                    },
+    "IMG_W02_024":  {
+                        "file_name":  "p107_08.png",
+                        "alt_text":  "위치 패널에서 정렬과 회전을 설정하는 화면"
+                    },
+    "IMG_W02_025":  {
+                        "file_name":  "p108_01.png",
+                        "alt_text":  "요소 메뉴의 검색 바와 카테고리를 보여 주는 화면"
+                    },
+    "IMG_W02_026":  {
+                        "file_name":  "p110_09.png",
+                        "alt_text":  "요소 패널에서 간편 라이선스 이용약관을 여는 화면"
+                    },
+    "IMG_W02_027":  {
+                        "file_name":  "p111_01.png",
+                        "alt_text":  "작업 페이지에서 요소 정보를 확인하는 화면"
+                    },
+    "IMG_W02_028":  {
+                        "file_name":  "p111_02.png",
+                        "alt_text":  "요소 검색 바에 키워드를 입력하는 화면"
+                    },
+    "IMG_W02_029":  {
+                        "file_name":  "p112_01.png",
+                        "alt_text":  "검색 결과가 카테고리별로 표시된 화면"
+                    },
+    "IMG_W02_030":  {
+                        "file_name":  "p112_02.png",
+                        "alt_text":  "검색 결과에서 요소를 페이지에 배치한 화면"
+                    },
+    "IMG_W02_031":  {
+                        "file_name":  "p117_01.png",
+                        "alt_text":  "도형 요소의 에디터 툴 바 화면"
+                    },
+    "IMG_W02_032":  {
+                        "file_name":  "p117_02.png",
+                        "alt_text":  "사진 요소의 에디터 툴 바 화면"
+                    },
+    "IMG_W02_033":  {
+                        "file_name":  "p118_01.png",
+                        "alt_text":  "그래픽 요소의 에디터 툴 바 화면"
+                    },
+    "IMG_W02_034":  {
+                        "file_name":  "p118_02.png",
+                        "alt_text":  "동영상 요소의 에디터 툴 바 화면"
+                    },
+    "IMG_W02_035":  {
+                        "file_name":  "p119_01.png",
+                        "alt_text":  "도형 편집 패널에서 도형 옵션을 바꾸는 화면"
+                    },
+    "IMG_W02_036":  {
+                        "file_name":  "p120_01.png",
+                        "alt_text":  "이미지 편집 패널을 연 화면"
+                    },
+    "IMG_W02_037":  {
+                        "file_name":  "p121_01.png",
+                        "alt_text":  "이미지 편집 패널 전체 구성 화면"
+                    },
+    "IMG_W02_038":  {
+                        "file_name":  "p122_01.png",
+                        "alt_text":  "Magic Studio 기능을 보여 주는 이미지 편집 패널 화면"
+                    },
+    "IMG_W02_039":  {
+                        "file_name":  "p123_01.png",
+                        "alt_text":  "이미지 편집 패널의 필터 기능 화면"
+                    },
+    "IMG_W02_040":  {
+                        "file_name":  "p124_02.png",
+                        "alt_text":  "이미지 편집 패널의 fx 효과 화면"
+                    },
+    "IMG_W02_041":  {
+                        "file_name":  "p124_07.png",
+                        "alt_text":  "이미지 편집 패널의 앱 활용 화면"
+                    },
+    "IMG_W02_042":  {
+                        "file_name":  "p124_22.png",
+                        "alt_text":  "그래픽 요소 편집 패널의 기본 구성 화면"
+                    },
+    "IMG_W02_043":  {
+                        "file_name":  "p125_01.png",
+                        "alt_text":  "그래픽 요소의 색상 편집 화면"
+                    },
+    "IMG_W02_044":  {
+                        "file_name":  "p125_02.png",
+                        "alt_text":  "그래픽 요소에 스타일 매칭을 적용하는 화면"
+                    },
+    "IMG_W02_045":  {
+                        "file_name":  "p127_03.png",
+                        "alt_text":  "그래픽 편집 패널의 효과와 스타일 옵션 화면"
+                    },
+    "IMG_W02_046":  {
+                        "file_name":  "p128_01.png",
+                        "alt_text":  "그래픽 요소 편집 결과를 비교하는 화면"
+                    },
+    "IMG_W02_047":  {
+                        "file_name":  "p128_02.png",
+                        "alt_text":  "그래픽 요소의 색감과 스타일을 조정한 화면"
+                    },
+    "IMG_W02_048":  {
+                        "file_name":  "p128_03.png",
+                        "alt_text":  "그래픽 요소 편집 후 배치 화면"
+                    },
+    "IMG_W02_049":  {
+                        "file_name":  "p129_01.png",
+                        "alt_text":  "동영상 편집 패널의 기본 옵션 화면"
+                    },
+    "IMG_W02_050":  {
+                        "file_name":  "p129_02.png",
+                        "alt_text":  "동영상 효과와 재생 옵션을 설정하는 화면"
+                    },
+    "IMG_W02_051":  {
+                        "file_name":  "p130_01.png",
+                        "alt_text":  "여러 요소를 정렬하고 배치하는 화면"
+                    },
+    "IMG_W02_052":  {
+                        "file_name":  "p131_01.png",
+                        "alt_text":  "요소를 시선이 가는 레이아웃으로 정돈한 화면"
+                    },
+    "IMG_W02_053":  {
+                        "file_name":  "p131_02.png",
+                        "alt_text":  "컬렉션 요소를 한 화면에 맞춰 배치한 화면"
+                    },
+    "IMG_W02_054":  {
+                        "file_name":  "p132_02.png",
+                        "alt_text":  "겹친 요소의 레이어 순서를 조정하는 화면"
+                    },
+    "IMG_W02_055":  {
+                        "file_name":  "p132_06.png",
+                        "alt_text":  "레이어 메뉴에서 맨 앞과 맨 뒤 배치를 조절하는 화면"
+                    },
+    "IMG_W02_056":  {
+                        "file_name":  "p133_02.png",
+                        "alt_text":  "여러 요소를 그룹으로 묶는 화면"
+                    },
+    "IMG_W02_057":  {
+                        "file_name":  "p135_08.png",
+                        "alt_text":  "업로드 항목 패널에 파일을 추가하는 화면"
+                    },
+    "IMG_W02_058":  {
+                        "file_name":  "p135_10.png",
+                        "alt_text":  "파일을 드래그 앤 드롭으로 업로드하는 화면"
+                    },
+    "IMG_W02_059":  {
+                        "file_name":  "p136_01.png",
+                        "alt_text":  "업로드한 이미지를 페이지에 배치하는 화면"
+                    },
+    "IMG_W02_060":  {
+                        "file_name":  "p136_02.png",
+                        "alt_text":  "업로드한 그래픽 요소를 사용하는 화면"
+                    },
+    "IMG_W02_061":  {
+                        "file_name":  "p136_03.png",
+                        "alt_text":  "업로드한 파일을 디자인에 적용한 화면"
+                    },
+    "IMG_W02_062":  {
+                        "file_name":  "p137_01.png",
+                        "alt_text":  "배경 색상 패널의 기본 색상 선택 화면"
+                    },
+    "IMG_W02_063":  {
+                        "file_name":  "p137_02.png",
+                        "alt_text":  "단색 배경을 적용한 디자인 화면"
+                    },
+    "IMG_W02_064":  {
+                        "file_name":  "p138_03.png",
+                        "alt_text":  "그라데이션 배경을 선택하는 화면"
+                    },
+    "IMG_W02_065":  {
+                        "file_name":  "p138_04.png",
+                        "alt_text":  "사진 색상을 활용해 배경 색상을 맞추는 화면"
+                    },
+    "IMG_W02_066":  {
+                        "file_name":  "p139_03.png",
+                        "alt_text":  "HEX 코드로 새로운 배경 색상을 추가하는 화면"
+                    },
+    "IMG_W02_067":  {
+                        "file_name":  "p139_04.png",
+                        "alt_text":  "배경 색상 적용 결과를 비교하는 화면"
+                    },
+    "IMG_W02_068":  {
+                        "file_name":  "p140_01.png",
+                        "alt_text":  "이미지를 페이지에 배치해 배경으로 준비한 화면"
+                    },
+    "IMG_W02_069":  {
+                        "file_name":  "p141_01.png",
+                        "alt_text":  "이미지를 배경으로 설정하는 메뉴 화면"
+                    },
+    "IMG_W02_070":  {
+                        "file_name":  "p141_02.png",
+                        "alt_text":  "배경 이미지의 위치와 크기를 자르는 화면"
+                    },
+    "IMG_W02_071":  {
+                        "file_name":  "p141_03.png",
+                        "alt_text":  "이미지를 배경으로 적용한 최종 화면"
+                    },
+    "IMG_W02_072":  {
+                        "file_name":  "p142_01.png",
+                        "alt_text":  "그래픽 요소를 페이지에 추가하는 화면"
+                    },
+    "IMG_W02_073":  {
+                        "file_name":  "p142_02.png",
+                        "alt_text":  "그래픽 요소를 캔버스 크기에 맞게 확대한 화면"
+                    },
+    "IMG_W02_074":  {
+                        "file_name":  "p143_01.png",
+                        "alt_text":  "그래픽 요소를 맨 뒤로 보내 배경처럼 사용하는 화면"
+                    },
+    "IMG_W02_075":  {
+                        "file_name":  "p143_02.png",
+                        "alt_text":  "반투명 도형을 중간 배경으로 추가한 화면"
+                    },
+    "IMG_W02_076":  {
+                        "file_name":  "p143_03.png",
+                        "alt_text":  "도형 요소의 투명도를 조절하는 화면"
+                    },
+    "IMG_W02_077":  {
+                        "file_name":  "p144_01.png",
+                        "alt_text":  "텍스트 뒤에 도형 중간 배경을 배치한 화면"
+                    },
+    "IMG_W02_078":  {
+                        "file_name":  "p144_02.png",
+                        "alt_text":  "중간 배경을 적용해 가독성을 높인 화면"
+                    },
+    "IMG_W02_079":  {
+                        "file_name":  "p144_03.png",
+                        "alt_text":  "도형 중간 배경 적용 결과 화면"
+                    },
+    "IMG_W02_080":  {
+                        "file_name":  "p145_02.png",
+                        "alt_text":  "템플릿의 색상만 적용하는 메뉴 화면"
+                    },
+    "IMG_W02_081":  {
+                        "file_name":  "p145_03.png",
+                        "alt_text":  "스타일 탭에서 색상과 글꼴 조합을 적용하는 화면"
+                    },
+    "IMG_W02_082":  {
+                        "file_name":  "p146_01.png",
+                        "alt_text":  "스타일 탭의 색상 팔레트 화면"
+                    },
+    "IMG_W02_083":  {
+                        "file_name":  "p146_02.png",
+                        "alt_text":  "스타일 탭의 글꼴 조합 화면"
+                    },
+    "IMG_W02_084":  {
+                        "file_name":  "p146_05.png",
+                        "alt_text":  "사진 색상을 추출해 팔레트를 만드는 화면"
+                    },
+    "IMG_W02_085":  {
+                        "file_name":  "p148_02.png",
+                        "alt_text":  "추출한 색상을 디자인에 적용하는 화면"
+                    },
+    "IMG_W02_086":  {
+                        "file_name":  "p150_01.png",
+                        "alt_text":  "배경 투명도를 낮춰 색감을 정리하는 화면"
+                    },
+    "IMG_W02_087":  {
+                        "file_name":  "p148_01.png",
+                        "alt_text":  "스타일 복사 기능을 선택하는 화면"
+                    },
+    "IMG_W02_088":  {
+                        "file_name":  "p149_01.png",
+                        "alt_text":  "스포이드로 화면의 색상을 선택하는 화면"
+                    },
+    "IMG_W02_089":  {
+                        "file_name":  "p149_02.png",
+                        "alt_text":  "스타일 복사 후 요소에 동일한 색을 적용한 화면"
+                    },
+    "IMG_W02_090":  {
+                        "file_name":  "p150_02.png",
+                        "alt_text":  "스포이드로 추출한 색으로 통일감을 맞추는 화면"
+                    },
+    "IMG_W02_091":  {
+                        "file_name":  "p151_01.png",
+                        "alt_text":  "전체 디자인의 색상 밸런스를 조정하기 전 화면"
+                    },
+    "IMG_W02_092":  {
+                        "file_name":  "p152_01.png",
+                        "alt_text":  "전체 디자인의 색상 밸런스를 조정한 후 화면"
+                    }
+}

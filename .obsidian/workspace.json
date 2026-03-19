@@ -11,10 +11,14 @@
             "id": "2bc83c8b67bd0891",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "practice/data/theory/canva/Week01/03_1차검수/1차시. 캔바 첫 세팅과 작업 영역 적응.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "새 탭"
+              "title": "1차시. 캔바 첫 세팅과 작업 영역 적응"
             }
           }
         ]
@@ -74,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "471151b06d0005fd",
@@ -181,38 +186,42 @@
   },
   "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
+    "practice/data/theory/canva/Week03/final_match_complete.json",
+    "practice/data/theory/canva/Week04/04_2차검수",
+    "practice/data/theory/canva/Week03/04_2차검수",
+    "practice/data/theory/canva/Week02/04_2차검수",
+    "practice/data/theory/canva/Week01/04_2차검수/1차시. 캔바 첫 세팅과 작업 영역 적응.md",
+    "practice/data/theory/canva/Week01/04_2차검수",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/contact_218_227.png",
+    "practice/data/theory/canva/Week04/03_1차검수/4차시. 실전 디자인 1 - SNS와 포스터 제작.md",
+    "practice/data/theory/canva/Week04/03_1차검수",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/contact_selected.png",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/contact_199_207.png",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/p227.png",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/p226.png",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/p225.png",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/p224.png",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/p223.png",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/p222.png",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages/p221.png",
+    "practice/data/theory/canva/Week03/_tmp_pdf_pages",
+    "practice/data/theory/canva/Week03/03_1차검수/3차시. 디자인 정돈 및 AI 창작 워크플로 체험.md",
+    "practice/data/theory/canva/Week01/final_match_complete.json",
+    "practice/data/theory/canva/Week02/03_1차검수/2차시. 디자인 기초 다지기 - 텍스트와 요소.md",
+    "practice/data/theory/canva/Week02/03_1차검수",
+    "practice/data/theory/canva/Week01/_tmp_pdf_text.txt",
     "practice/data/theory/canva/Week06/02_이미지_추가/6차시. 브랜드 정체성과 비주얼 시스템 구축.md",
     "practice/data/theory/canva/Week06/02_이미지_추가/tmp_6차시. 브랜드 정체성과 비주얼 시스템 구축 copy.md",
     "practice/data/theory/canva/Week06/02_이미지_추가/tmp_6차시. 브랜드 정체성과 비주얼 시스템 구축.md",
     "practice/data/theory/canva/Week08/final_match_complete.json",
     "practice/data/theory/canva/Week06/02_이미지_추가/t6차시. 브랜드 정체성과 비주얼 시스템 구축.md",
-    "practice/data/theory/canva/Week08/_contact/p497.png",
-    "practice/data/theory/canva/Week08/_contact/p496.png",
-    "practice/data/theory/canva/Week08/_contact/p495.png",
-    "practice/data/theory/canva/Week08/_contact/p494.png",
-    "practice/data/theory/canva/Week08/_contact/p493.png",
-    "practice/data/theory/canva/Week08/_contact/p492.png",
-    "practice/data/theory/canva/Week08/_contact/p491.png",
-    "practice/data/theory/canva/Week08/_contact/p490.png",
-    "practice/data/theory/canva/Week08/_contact/p489.png",
-    "practice/data/theory/canva/Week08/_contact/p488.png",
-    "practice/data/theory/canva/Week08/_contact",
-    "practice/data/theory/canva/Week07/final_match_complete.json",
-    "practice/data/theory/canva/Week07/_contact",
-    "practice/data/theory/canva/Week06/final_match_complete.json",
-    "practice/data/theory/canva/Week06/_contact",
     "practice/data/theory/canva/Week05/02_이미지_추가/5차시. 실전 디자인 2 - 기업형 디자인과 자산 관리.md",
     "practice/data/theory/canva/Week05/02_이미지_추가/tmp_5차시. 실전 디자인 2 - 기업형 디자인과 자산 관리.md",
     "practice/data/theory/canva/Week08/02_이미지_추가/8차시. 업무 효율 200% 올리는 대량 제작 실무.md",
     "practice/data/theory/canva/Week07/02_이미지_추가/7차시. 브랜드를 뽐내는 웹 포트폴리오 제작.md",
-    "practice/data/theory/canva/Week05/final_match_complete.json",
-    "practice/data/theory/canva/Week05/mapping_week05.py",
-    "practice/data/theory/canva/Week05/pdf_text.txt",
-    "practice/data/theory/canva/Week03/apply_rest_to_02.py",
     "practice/data/theory/canva/Week04/02_이미지_추가/4차시. 실전 디자인 1 - SNS와 포스터 제작.md",
     "practice/data/theory/canva/Week04/02_이미지_추가/tmp_4차시. 실전 디자인 1 - SNS와 포스터 제작.md",
     "practice/data/theory/canva/Week03/02_이미지_추가/3차시. 디자인 정돈 및 AI 창작 워크플로 체험.md",
-    "practice/data/theory/canva/Week03/03_1차검수/3차시. 디자인 정돈 및 AI 창작 워크플로 체험.md",
     "practice/data/theory/canva/Week03/03_1차검수/tmp_3차시. 디자인 정돈 및 AI 창작 워크플로 체험.md",
     "practice/data/theory/canva/Week03/02_이미지_추가/tmp_3차시. 디자인 정돈 및 AI 창작 워크플로 체험.md",
     "images/week01/p041_01.png.md",
@@ -222,10 +231,6 @@
     "practice/data/theory/jungol/02_중등/2026년_1차_중등_숙제_해설지_2019-2025.md",
     "practice/data/theory/jungol/02_중등/2026년_5차_중등_수업_해설지_2019-2025.md",
     "00_TODO.md",
-    "practice/data/theory/jungol/02_중등/2026년_5차_중등_수업_해설지_2019-2025 copy.md",
-    "practice/data/theory/jungol/02_중등/2026년_4차_중등_수업_해설지_2019-2025 copy.md",
-    "practice/data/theory/jungol/01_초등/2026년_5차_초등_숙제_해설지_2019-2025.md",
-    "practice/data/theory/jungol/01_초등/2026년_5차_초등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/01_초등/2026년_4차_초등_수업_해설지_2019-2025.md"
+    "practice/data/theory/jungol/02_중등/2026년_5차_중등_수업_해설지_2019-2025 copy.md"
   ]
 }
