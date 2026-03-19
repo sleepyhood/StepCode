@@ -115,7 +115,10 @@
     "file_name": "p474_01.png",
     "alt_text": "디자인 탭의 템플릿 목록에서 시트용 레이아웃 예시를 둘러보는 화면"
   },
-  "IMG_W08_030": null,
+  "IMG_W08_030": {
+    "file_name": "p475_01.png",
+    "alt_text": "프롬프트를 입력해 시트 템플릿 추천 결과를 확인하는 화면"
+  },
   "IMG_W08_031": {
     "file_name": "p475_01.png",
     "alt_text": "템플릿을 적용할 때 새 페이지로 추가 여부를 묻는 팝업 창"
@@ -153,8 +156,8 @@
     "alt_text": "후기 제목과 고객 이름, 이미지 등 여러 필드가 템플릿에 연결된 대량 제작 화면"
   },
   "IMG_W08_040": {
-    "file_name": "p485_01.png",
-    "alt_text": "고급 옵션에서 생성 결과 형식과 저장 위치를 설정하는 대량 제작 화면"
+    "file_name": "p483_03.png",
+    "alt_text": "고급 옵션에서 결과 형식과 각 페이지 이름, 저장 위치를 설정하는 화면"
   },
   "IMG_W08_041": {
     "file_name": "p485_03.png",
@@ -217,43 +220,43 @@
     "alt_text": "운영 데이터를 도넛형 차트로 바꿔 유형 비중을 확인하는 화면"
   },
   "IMG_W08_056": {
-    "file_name": "p491_01.png",
-    "alt_text": "차트 설정과 맞춤 설정 옵션을 설명하는 패널 예시 화면"
+    "file_name": "p493_01.png",
+    "alt_text": "차트 설정과 맞춤 설정 활용 방법을 한눈에 정리한 안내 화면"
   },
   "IMG_W08_057": {
-    "file_name": "p495_01.png",
+    "file_name": "p494_01.png",
     "alt_text": "필터 설정 패널에서 데이터 분류와 버튼 스타일을 지정하는 화면"
   },
   "IMG_W08_058": {
-    "file_name": "p495_03.png",
-    "alt_text": "매직 인사이트 패널과 성과 데이터 표가 함께 보이는 분석 준비 화면"
-  },
-  "IMG_W08_059": {
     "file_name": "p495_02.png",
     "alt_text": "선택한 데이터 범위에서 Magic Insights 기능을 실행하는 메뉴 화면"
   },
-  "IMG_W08_060": {
+  "IMG_W08_059": {
     "file_name": "p495_03.png",
     "alt_text": "Magic Insights 패널에서 추천 질문과 생성 버튼을 보여주는 화면"
   },
-  "IMG_W08_061": {
+  "IMG_W08_060": {
     "file_name": "p496_01.png",
     "alt_text": "Magic Insights가 생성한 텍스트 요약과 차트 추천 결과 패널 화면"
   },
-  "IMG_W08_062": {
+  "IMG_W08_061": {
     "file_name": "p496_02.png",
     "alt_text": "Magic Insights가 제안한 막대형 차트 결과를 확인하는 패널 화면"
   },
-  "IMG_W08_063": {
+  "IMG_W08_062": {
     "file_name": "p496_03.png",
     "alt_text": "Magic Insights가 제안한 추가 시각화 예시를 보여주는 패널 화면"
   },
-  "IMG_W08_064": {
+  "IMG_W08_063": {
     "file_name": "p496_04.png",
     "alt_text": "인사이트 결과를 시트에 배치해 차트와 요약을 함께 정리한 화면"
   },
+  "IMG_W08_064": {
+    "file_name": "p497_01.png",
+    "alt_text": "매직 인사이트 프롬프트 추천 예시를 정리한 안내 박스"
+  },
   "IMG_W08_065": {
     "file_name": "p497_02.png",
-    "alt_text": "매직 인사이트 활용 팁과 분석 질문 예시를 정리한 안내 박스"
+    "alt_text": "매직 인사이트 활용 팁을 정리한 안내 박스"
   }
 }
