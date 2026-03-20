@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "practice/data/theory/jungol/03_고등/2026년_2차_고등_수업_해설지_2019-2025.md",
+                "file": "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026년_2차_고등_수업_해설지_2019-2025"
+              "title": "2026년_5차_고등_숙제_해설지_2019-2025"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "471151b06d0005fd",
@@ -185,14 +186,23 @@
   },
   "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
-    "practice/data/theory/unity/theory_unity_u01_inspector.pdf",
+    "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.pdf",
+    "practice/data/theory/jungol/03_고등/2026년_5차_고등_수업_해설지_2019-2025.pdf",
+    "practice/data/theory/jungol/02_중등/2026년_5차_중등_숙제_해설지_2019-2025.pdf",
+    "practice/data/theory/jungol/02_중등/2026년_5차_중등_수업_해설지_2019-2025.pdf",
+    "practice/data/theory/jungol/01_초등/2026년_5차_초등_숙제_해설지_2019-2025.pdf",
+    "practice/data/theory/jungol/01_초등/2026년_5차_초등_수업_해설지_2019-2025.pdf",
+    "practice/data/theory/jungol/03_고등/5주차/~WRL0002.tmp",
+    "practice/data/theory/jungol/03_고등/5주차/~WRD0001.tmp",
+    "practice/data/theory/jungol/03_고등/5주차/~$26년_5차_고등_수업_교사용_2019-2025.docx",
+    "practice/data/theory/jungol/03_고등/5주차/~$26년_5차_고등_숙제_교사용_2019-2025.docx",
+    "practice/data/theory/jungol/03_고등/5주차/~$26년_5차_고등_숙제_학생용_2019-2025.docx",
+    "practice/data/theory/jungol/03_고등/2026년_2차_고등_수업_해설지_2019-2025.md",
     "practice/data/theory/canva/Week02/images/p140_04.png",
     "practice/data/theory/canva/Week02/images/p138_11.png",
     "practice/data/theory/canva/Week02/images/p132_07.png",
     "practice/data/theory/canva/Week02/images/p116_02.png",
     "practice/data/theory/canva/Week02/images/p116_01.png",
-    "practice/data/theory/canva/Week02/04_2차검수/메모.txt",
-    "practice/data/theory/canva/Week01/04_2차검수/메모.txt",
     "practice/data/language_v2/lv07_for/tmp/01_dc_P101v0735.md",
     "practice/data/language_v2/lv07_for/tmp/01_dc_P101v0734.md",
     "practice/data/language_v2/lv07_for/tmp/01_dc_P101v0733.md",
@@ -217,15 +227,6 @@
     "practice/data/language_v2/lv07_for/tmp/01_dc_P101v0714.md",
     "practice/data/language_v2/lv07_for/tmp/01_dc_P101v0713.md",
     "practice/data/language_v2/lv07_for/tmp/01_dc_P101v0712.md",
-    "practice/data/language_v2/lv07_for/tmp/01_dc_P101v0711.md",
-    "practice/data/language_v2/lv07_for/tmp",
-    "practice/data/theory/jungol/03_고등/5주차/~WRL1205.tmp",
-    "practice/data/theory/jungol/03_고등/5주차/~WRD1186.tmp",
-    "practice/data/theory/jungol/03_고등/5주차/~WRL1587.tmp",
-    "practice/data/theory/jungol/03_고등/5주차/~WRD0005.tmp",
-    "practice/data/language_v2/__pycache__/crawl.cpython-312.pyc",
-    "practice/data/language_v2/__pycache__",
-    "practice/data/language_v2/gui_crawler.py",
     "tmp/week07_pdf_early/page-04.png",
     "tmp/week07_pdf_early/page-03.png",
     "tmp/week07_pdf_early/page-02.png",
