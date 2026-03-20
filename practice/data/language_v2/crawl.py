@@ -98,7 +98,7 @@ print(A + B)
         return title, md_content
 
 
-def scrape_doingcoding(url):
+def scrape_doingcoding(url, get_templates=False):
     with sync_playwright() as p:
         # 자체 학원 사이트는 봇 탐지가 약할 수 있으므로 headless=True로 1초 만에 수집 가능
         browser = p.chromium.launch(headless=True)
@@ -147,6 +147,43 @@ def scrape_doingcoding(url):
             # 힌트 추출 (사용자 제공 XPath)
             hint = get_text('//*[@id="problem-content"]/div[2]/div/div/div')
 
+            # 코드 템플릿 추출 (C, C++, Python3, Java) - 옵션 선택 시에만 동작
+            templates = {}
+            if get_templates:
+                try:
+                    # 언어 선택 드롭다운이 있는지 확인
+                    dropdown = page.locator('div.ivu-select-selection').first
+                    if dropdown.count() > 0:
+                        for lang_name in ["C", "C++", "Python3", "Java"]:
+                            # 드롭다운 클릭
+                            dropdown.click()
+                            page.wait_for_timeout(500)
+                            
+                            # 해당 언어 옵션 클릭
+                            lang_option = page.locator(f'li.ivu-select-item:has-text("{lang_name}")').first
+                            if lang_option.count() > 0:
+                                lang_option.click()
+                                page.wait_for_timeout(500)
+                                
+                                # 새로고침(초기화) 버튼 클릭 시도 (템플릿 강제 로드)
+                                reset_btn = page.locator('button.ivu-btn-icon-only')
+                                if reset_btn.count() > 0:
+                                    reset_btn.first.click()
+                                    page.wait_for_timeout(500)
+                                    # 확인 모달의 '예' 버튼
+                                    confirm_btn = page.locator('button.ivu-btn-primary:has-text("예")')
+                                    if confirm_btn.count() > 0:
+                                        confirm_btn.click()
+                                        page.wait_for_timeout(1000)
+                                
+                                # 코드 추출 (CodeMirror 내용)
+                                code_lines = page.locator('.CodeMirror-line').all_inner_texts()
+                                if code_lines:
+                                    templates[lang_name] = "\n".join(code_lines).strip()
+                except Exception as te:
+                    # 템플릿 추출 실패는 전체 크롤링 실패로 간주하지 않음
+                    print(f"템플릿 추출 중 경미한 에러 (문제 없음): {te}")
+
         except Exception as e:
             print(f"XPath 크롤링 에러({url}): {e}")
             return None, None
@@ -157,6 +194,15 @@ def scrape_doingcoding(url):
         samples_md = ""
         for idx, (s_in, s_out) in enumerate(samples, 1):
             samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
+
+        # 템플릿 MD 조립
+        templates_md = ""
+        if templates:
+            templates_md = "## 5. 코드 템플릿\n\n"
+            for lang, code in templates.items():
+                lang_tag = "python" if "Python" in lang else lang.lower()
+                templates_md += f"### {lang}\n```{lang_tag}\n{code}\n```\n\n"
+            templates_md += "---\n\n"
 
         # 수석 감수자 권장 마크다운(MD) 템플릿에 맞추어 문자열 포매팅
         md_content = f"""---
@@ -191,7 +237,7 @@ source: {url}
 
 ---
 
-<!-- ANSWER_START -->
+{templates_md}<!-- ANSWER_START -->
 ## [정답 및 해설 (Ground Truth)]
 
 ### 모범 코드 (Python)
@@ -210,7 +256,7 @@ if __name__ == "__main__":
     target_url = "http://edu.doingcoding.com/problem/P101v0701"
     print(f"[크롤링 시작] {target_url}")
 
-    title, md_output = scrape_doingcoding(target_url)
+    title, md_output = scrape_doingcoding(target_url, get_templates=False)
 
     if md_output:
         # 결과를 현재 폴더에 저장

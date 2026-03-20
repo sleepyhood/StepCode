@@ -59,6 +59,11 @@ class CrawlerApp:
         self.suffix_id.insert(0, "")
         self.suffix_id.pack(side=tk.LEFT, padx=5)
 
+        # 4. 옵션 (코드 템플릿 수집 여부)
+        self.get_templates_var = tk.BooleanVar(value=False)
+        self.check_template = tk.Checkbutton(root, text="코드 템플릿 포함 (수집 속도가 현저히 느려질 수 있습니다)", variable=self.get_templates_var)
+        self.check_template.pack(pady=5)
+
         # 4. 저장 폴더 지정
         frame_dir = tk.Frame(root)
         frame_dir.pack(pady=20)
@@ -135,6 +140,7 @@ class CrawlerApp:
         domain = self.domain_var.get()
         template = self.url_template.get().strip()
         save_path = self.save_dir.get()
+        get_templates = self.get_templates_var.get()
 
         if "{id}" not in template:
             messagebox.showerror("입력 오류", "URL 템플릿 안에 반드시 '{id}' 라는 문자가 포함되어야 합니다.")
@@ -146,11 +152,11 @@ class CrawlerApp:
         self.log_area.config(state='disabled')
         self.log(f"=== 대량 수집 시작 (조합된 ID 총 {len(target_ids)} 개) ===")
         
-        thread = threading.Thread(target=self.crawl_process, args=(target_ids, domain, template, save_path))
+        thread = threading.Thread(target=self.crawl_process, args=(target_ids, domain, template, save_path, get_templates))
         thread.daemon = True
         thread.start()
 
-    def crawl_process(self, target_ids, domain, template, save_path):
+    def crawl_process(self, target_ids, domain, template, save_path, get_templates):
         success_count = 0
         
         for current_id in target_ids:
@@ -164,7 +170,7 @@ class CrawlerApp:
                     result = scrape_baekjoon(target_url)
                     prefix = "bj"
                 else:
-                    result = scrape_doingcoding(target_url)
+                    result = scrape_doingcoding(target_url, get_templates=get_templates)
                     prefix = "dc"
                 
                 if result == (None, None):
