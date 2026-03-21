@@ -5,9 +5,11 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 import tkinter as tk
-from tkinter import filedialog, messagebox, ttk
+from tkinter import filedialog, messagebox, simpledialog, ttk
 
+import cv2
 import mss
+import numpy as np
 import pyautogui
 from PIL import Image, ImageOps
 from pynput import keyboard
@@ -35,6 +37,20 @@ class CaptureRegion:
             "width": self.width,
             "height": self.height,
         }
+
+
+@dataclass
+class CaptureJobConfig:
+    output_dir: Path
+    prefix: str
+    start_page: int
+    total: int
+    start_delay: float
+    page_turn_delay: float
+    post_key_delay: float
+    turn_key: str
+    next_click_x_offset: int
+    next_click_y_offset: int
 
 
 class RegionSelector(tk.Toplevel):
@@ -101,6 +117,73 @@ class RegionSelector(tk.Toplevel):
         self.destroy()
 
 
+class RegionConfirmDialog(tk.Toplevel):
+    def __init__(self, master: tk.Tk, screenshot: Image.Image, detected_region: CaptureRegion, on_confirm):
+        super().__init__(master)
+        self.on_confirm = on_confirm
+        self.detected_region = detected_region
+        self.title("자동 감지 결과 확인")
+        self.attributes("-topmost", True)
+        self.configure(bg="white")
+
+        preview = screenshot.copy()
+        draw = np.array(preview)
+        x1 = detected_region.left
+        y1 = detected_region.top
+        x2 = detected_region.left + detected_region.width
+        y2 = detected_region.top + detected_region.height
+        cv2.rectangle(draw, (x1, y1), (x2, y2), (0, 229, 255), 4)
+        cv2.putText(
+            draw,
+            "Detected region",
+            (x1, max(30, y1 - 12)),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1.0,
+            (0, 229, 255),
+            2,
+            cv2.LINE_AA,
+        )
+        preview = Image.fromarray(draw)
+
+        max_width = 1100
+        max_height = 760
+        scale = min(max_width / preview.width, max_height / preview.height, 1.0)
+        shown = preview.resize((int(preview.width * scale), int(preview.height * scale)), Image.Resampling.LANCZOS)
+        self.preview_photo = tk.PhotoImage(data=self._to_png_bytes_base64(shown))
+
+        ttk.Label(
+            self,
+            text="자동 감지된 영역입니다. 맞으면 사용, 아니면 수동 선택으로 다시 지정하세요.",
+            padding=(12, 12, 12, 8),
+        ).pack(anchor="w")
+        ttk.Label(self, image=self.preview_photo).pack(padx=12, pady=4)
+
+        button_row = ttk.Frame(self, padding=(12, 8, 12, 12))
+        button_row.pack(fill="x")
+        ttk.Button(button_row, text="이 영역 사용", command=self._confirm).pack(side="left")
+        ttk.Button(button_row, text="수동 선택", command=self._fallback_manual).pack(side="left", padx=(8, 0))
+        ttk.Button(button_row, text="취소", command=self.destroy).pack(side="right")
+
+        self.grab_set()
+        self.focus_force()
+
+    def _to_png_bytes_base64(self, image: Image.Image) -> bytes:
+        import base64
+        import io
+
+        buffer = io.BytesIO()
+        image.save(buffer, format="PNG")
+        return base64.b64encode(buffer.getvalue())
+
+    def _confirm(self):
+        self.on_confirm(self.detected_region, manual=False)
+        self.destroy()
+
+    def _fallback_manual(self):
+        self.on_confirm(None, manual=True)
+        self.destroy()
+
+
 class PdfCaptureApp:
     def __init__(self, root: tk.Tk):
         self.root = root
@@ -120,9 +203,11 @@ class PdfCaptureApp:
         self.start_delay_var = tk.DoubleVar(value=3.0)
         self.page_turn_delay_var = tk.DoubleVar(value=1.2)
         self.post_key_delay_var = tk.DoubleVar(value=1.0)
-        self.turn_key_var = tk.StringVar(value="right")
+        self.turn_key_var = tk.StringVar(value="next_button_click")
+        self.next_click_x_offset_var = tk.IntVar(value=26)
+        self.next_click_y_offset_var = tk.IntVar(value=0)
         self.click_to_focus_var = tk.BooleanVar(value=True)
-        self.trim_edges_var = tk.BooleanVar(value=True)
+        self.trim_edges_var = tk.BooleanVar(value=False)
         self.trim_top_bottom_var = tk.BooleanVar(value=False)
         self.bg_threshold_var = tk.IntVar(value=18)
         self.edge_margin_var = tk.IntVar(value=4)
@@ -146,7 +231,10 @@ class PdfCaptureApp:
 
         region_box = ttk.LabelFrame(container, text="1. 캡쳐 영역")
         region_box.pack(fill="x", pady=(0, 10))
-        ttk.Button(region_box, text="영역 선택", command=self.select_region).pack(anchor="w", padx=12, pady=(10, 6))
+        button_row = ttk.Frame(region_box)
+        button_row.pack(anchor="w", padx=12, pady=(10, 6))
+        ttk.Button(button_row, text="자동 감지", command=self.auto_detect_region).pack(side="left")
+        ttk.Button(button_row, text="수동 선택", command=self.select_region).pack(side="left", padx=(8, 0))
         ttk.Label(region_box, textvariable=self.region_var).pack(anchor="w", padx=12, pady=(0, 10))
 
         output_box = ttk.LabelFrame(container, text="2. 저장 설정")
@@ -165,8 +253,10 @@ class PdfCaptureApp:
             options_box,
             "페이지 넘김 키",
             self.turn_key_var,
-            ("right", "pagedown", "space"),
+            ("next_button_click", "right", "pagedown", "space"),
         )
+        self._labeled_spinbox(options_box, "다음 버튼 X 오프셋", self.next_click_x_offset_var, -200, 300, 1)
+        self._labeled_spinbox(options_box, "다음 버튼 Y 오프셋", self.next_click_y_offset_var, -300, 300, 1)
 
         trim_box = ttk.LabelFrame(container, text="4. 여백 보정")
         trim_box.pack(fill="x", pady=(0, 10))
@@ -267,6 +357,49 @@ class PdfCaptureApp:
 
         selector.bind("<Destroy>", lambda _event: restore_on_close())
 
+    def auto_detect_region(self):
+        try:
+            self._set_status("대상 화면을 선택한 뒤 PDF 페이지 영역을 자동 감지합니다...")
+            monitor = self._choose_monitor()
+            if not monitor:
+                self._set_status("자동 감지가 취소되었습니다.")
+                return
+
+            self.root.withdraw()
+            self.root.update()
+            time.sleep(0.2)
+
+            screenshot = self._grab_monitor_image(monitor)
+            detected = self._detect_pdf_region(screenshot)
+            if not detected:
+                raise RuntimeError("자동 감지에 실패했습니다. 수동 선택을 사용하세요.")
+
+            def handle_confirm(region: CaptureRegion | None, manual: bool):
+                if manual:
+                    self.select_region()
+                    return
+                assert region is not None
+                self.capture_region = CaptureRegion(
+                    left=monitor["left"] + region.left,
+                    top=monitor["top"] + region.top,
+                    width=region.width,
+                    height=region.height,
+                )
+                self.region_var.set(
+                    "auto: "
+                    f"left={self.capture_region.left}, top={self.capture_region.top}, "
+                    f"width={self.capture_region.width}, height={self.capture_region.height}"
+                )
+                self._set_status("자동 감지 영역을 설정했습니다. 테스트 캡쳐로 먼저 확인하세요.")
+
+            self.root.after(0, lambda: RegionConfirmDialog(self.root, screenshot, detected, handle_confirm))
+        except Exception as exc:
+            messagebox.showerror("자동 감지 실패", str(exc))
+            self._set_status(f"자동 감지 실패: {exc}")
+        finally:
+            self.root.deiconify()
+            self.root.lift()
+
     def request_stop(self, from_hotkey: bool = False):
         self.stop_requested = True
         if from_hotkey:
@@ -308,51 +441,57 @@ class PdfCaptureApp:
         if not self._validate():
             return
 
+        config = CaptureJobConfig(
+            output_dir=Path(self.output_dir_var.get()).expanduser(),
+            prefix=self.file_prefix_var.get().strip() or "page",
+            start_page=int(self.start_page_var.get()),
+            total=int(self.capture_count_var.get()),
+            start_delay=float(self.start_delay_var.get()),
+            page_turn_delay=float(self.page_turn_delay_var.get()),
+            post_key_delay=float(self.post_key_delay_var.get()),
+            turn_key=self.turn_key_var.get().strip() or "right",
+            next_click_x_offset=int(self.next_click_x_offset_var.get()),
+            next_click_y_offset=int(self.next_click_y_offset_var.get()),
+        )
+
         self.stop_requested = False
         self.is_running = True
         self.root.iconify()
-        thread = threading.Thread(target=self._capture_worker, daemon=True)
+        thread = threading.Thread(target=self._capture_worker, args=(config,), daemon=True)
         thread.start()
 
-    def _capture_worker(self):
+    def _capture_worker(self, config: CaptureJobConfig):
         try:
-            output_dir = Path(self.output_dir_var.get()).expanduser()
-            prefix = self.file_prefix_var.get().strip() or "page"
-            start_page = self.start_page_var.get()
-            total = self.capture_count_var.get()
-            start_delay = float(self.start_delay_var.get())
-            page_turn_delay = float(self.page_turn_delay_var.get())
-            post_key_delay = float(self.post_key_delay_var.get())
-            turn_key = self.turn_key_var.get().strip() or "right"
             saved_count = 0
 
             self._set_status(
-                f"{start_delay:.1f}초 후 캡쳐를 시작합니다. 브라우저 PDF 화면이 맨 앞으로 오도록 준비하세요."
+                f"{config.start_delay:.1f}초 후 캡쳐를 시작합니다. 브라우저 PDF 화면이 맨 앞으로 오도록 준비하세요."
             )
-            time.sleep(max(0.0, start_delay))
+            time.sleep(max(0.0, config.start_delay))
 
-            for index in range(total):
+            for index in range(config.total):
                 if self.stop_requested:
                     break
 
-                page_no = start_page + index
+                page_no = config.start_page + index
                 self._set_status(f"{page_no}페이지 캡쳐 중...")
                 image = self._grab_region()
-                save_path = output_dir / f"{prefix}_{page_no:04d}.png"
+                save_path = config.output_dir / f"{config.prefix}_{page_no:04d}.png"
                 image.save(save_path)
                 saved_count += 1
 
-                if index == total - 1 or self.stop_requested:
+                if index == config.total - 1 or self.stop_requested:
                     continue
 
-                time.sleep(max(0.0, page_turn_delay))
-                self._send_page_turn_key(turn_key)
-                time.sleep(max(0.0, post_key_delay))
+                self._set_status(f"{page_no}페이지 저장 완료. 다음 페이지로 넘기는 중...")
+                time.sleep(max(0.0, config.page_turn_delay))
+                self._send_page_turn_action(config)
+                time.sleep(max(0.0, config.post_key_delay))
 
             if self.stop_requested:
                 self._set_status(f"중지 요청으로 캡쳐를 종료했습니다. 저장 장수: {saved_count}")
             else:
-                self._set_status(f"캡쳐 완료. {saved_count}장을 저장했습니다: {output_dir}")
+                self._set_status(f"캡쳐 완료. {saved_count}장을 저장했습니다: {config.output_dir}")
         except Exception as exc:
             self._set_status(f"오류 발생: {exc}")
             self.root.after(0, lambda: messagebox.showerror("캡쳐 오류", str(exc)))
@@ -366,10 +505,24 @@ class PdfCaptureApp:
             x, y = self.capture_region.center
             pyautogui.click(x, y)
 
-    def _send_page_turn_key(self, key_name: str):
+    def _send_page_turn_action(self, config: CaptureJobConfig):
+        if config.turn_key == "next_button_click":
+            self._click_next_button(
+                x_offset=config.next_click_x_offset,
+                y_offset=config.next_click_y_offset,
+            )
+            return
+
         self._focus_pdf_viewer()
         time.sleep(0.1)
-        pyautogui.press(key_name)
+        pyautogui.press(config.turn_key)
+
+    def _click_next_button(self, x_offset: int, y_offset: int):
+        if not self.capture_region:
+            return
+        x = self.capture_region.left + self.capture_region.width + x_offset
+        y = self.capture_region.top + self.capture_region.height // 2 + y_offset
+        pyautogui.click(x, y)
 
     def _restore_window(self):
         self.root.deiconify()
@@ -393,6 +546,98 @@ class PdfCaptureApp:
             )
 
         return image
+
+    def _choose_monitor(self) -> dict | None:
+        with mss.mss() as sct:
+            monitors = [dict(monitor) for monitor in sct.monitors[1:]]
+
+        if not monitors:
+            return None
+        if len(monitors) == 1:
+            return monitors[0]
+
+        choice = simpledialog.askinteger(
+            "화면 선택",
+            "\n".join(
+                [
+                    "자동 감지할 화면 번호를 입력하세요.",
+                    *[
+                        f"{idx}. left={m['left']}, top={m['top']}, width={m['width']}, height={m['height']}"
+                        for idx, m in enumerate(monitors, start=1)
+                    ],
+                ]
+            ),
+            parent=self.root,
+            minvalue=1,
+            maxvalue=len(monitors),
+        )
+        if choice is None:
+            return None
+        return monitors[choice - 1]
+
+    def _grab_monitor_image(self, monitor: dict) -> Image.Image:
+        with mss.mss() as sct:
+            shot = sct.grab(monitor)
+        image = Image.frombytes("RGB", shot.size, shot.rgb)
+        return image
+
+    def _detect_pdf_region(self, image: Image.Image) -> CaptureRegion | None:
+        frame = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        blur = cv2.GaussianBlur(gray, (5, 5), 0)
+        edges = cv2.Canny(blur, 40, 120)
+        edges = cv2.dilate(edges, np.ones((5, 5), np.uint8), iterations=2)
+        edges = cv2.erode(edges, np.ones((3, 3), np.uint8), iterations=1)
+
+        contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        screen_h, screen_w = gray.shape
+        screen_center_x = screen_w / 2
+        screen_center_y = screen_h / 2
+
+        best_rect = None
+        best_score = -1.0
+
+        for contour in contours:
+            area = cv2.contourArea(contour)
+            if area < screen_w * screen_h * 0.03:
+                continue
+
+            x, y, w, h = cv2.boundingRect(contour)
+            if w < screen_w * 0.15 or h < screen_h * 0.25:
+                continue
+
+            aspect = w / max(h, 1)
+            if not 0.45 <= aspect <= 0.9:
+                continue
+
+            rect_area = w * h
+            fill_ratio = area / max(rect_area, 1)
+            if fill_ratio < 0.45:
+                continue
+
+            center_x = x + w / 2
+            center_y = y + h / 2
+            center_distance = abs(center_x - screen_center_x) / screen_w + abs(center_y - screen_center_y) / screen_h
+            center_score = max(0.0, 1.0 - center_distance)
+            aspect_score = max(0.0, 1.0 - abs(aspect - 0.707) / 0.35)
+            size_score = rect_area / (screen_w * screen_h)
+
+            score = size_score * 0.65 + center_score * 0.25 + aspect_score * 0.10
+            if score > best_score:
+                best_score = score
+                best_rect = (x, y, w, h)
+
+        if not best_rect:
+            return None
+
+        x, y, w, h = best_rect
+        padding = 6
+        x = max(0, x - padding)
+        y = max(0, y - padding)
+        w = min(screen_w - x, w + padding * 2)
+        h = min(screen_h - y, h + padding * 2)
+
+        return CaptureRegion(left=x, top=y, width=w, height=h)
 
     def _trim_background_edges(
         self,
