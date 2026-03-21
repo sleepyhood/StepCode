@@ -1,7 +1,7 @@
 """
-
+python -m pip install --upgrade pip setuptools wheel
 pip install "huggingface_hub[hf_xet]"
-
+pip install "opendataloader-pdf[hybrid]" --no-cache-dir
 
 opendataloader-pdf-hybrid --port 5002 --force-ocr
 """
