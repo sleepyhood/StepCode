@@ -11,14 +11,12 @@
             "id": "2bc83c8b67bd0891",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.md",
-                "mode": "source",
-                "source": false
+                "file": "practice/data/theory/jungol/03_고등/2026년_3차_고등_수업_해설지_2019-2025.pdf"
               },
-              "icon": "lucide-file",
-              "title": "2026년_5차_고등_숙제_해설지_2019-2025"
+              "icon": "lucide-file-text",
+              "title": "2026년_3차_고등_수업_해설지_2019-2025"
             }
           }
         ]
@@ -186,6 +184,7 @@
   },
   "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
+    "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.md",
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0723.md",
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0722.md",
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0721.md",
@@ -211,7 +210,6 @@
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0701.md",
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_P101v0735.md",
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_P101v0734.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_P101v0733.md",
     "practice/data/theory/canva/Week08/04_2차검수",
     "practice/data/theory/canva/Week08/03_1차검수 copy",
     "practice/data/theory/canva/Week07/04_2차검수",
