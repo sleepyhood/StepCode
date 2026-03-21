@@ -1,4 +1,8 @@
 """
+
+pip install "huggingface_hub[hf_xet]"
+
+
 opendataloader-pdf-hybrid --port 5002 --force-ocr
 """
 
