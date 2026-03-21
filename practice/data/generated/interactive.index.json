@@ -1,0 +1,15 @@
+[
+  {
+    "id": "py_lv07_for_b01",
+    "categoryId": "py_for",
+    "title": "Python for문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "language",
+    "status": "active",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r01.json"
+  }
+]

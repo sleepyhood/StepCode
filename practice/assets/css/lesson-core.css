@@ -1,0 +1,38 @@
+.lesson-callout {
+  margin: 14px 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #dbe5f1;
+  background: #f8fafc;
+}
+
+.lesson-callout-title {
+  margin-bottom: 8px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.lesson-callout > :last-child {
+  margin-bottom: 0;
+}
+
+.lesson-callout--goal {
+  border-color: #bae6fd;
+  background: #f0f9ff;
+}
+
+.lesson-callout--key {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.lesson-callout--warn {
+  border-color: #fed7aa;
+  background: #fff7ed;
+}
+
+.lesson-callout--check {
+  border-color: #ddd6fe;
+  background: #f5f3ff;
+}

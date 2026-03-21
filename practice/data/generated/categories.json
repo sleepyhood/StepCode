@@ -1,0 +1,12 @@
+[
+  {
+    "id": "py_for",
+    "name": "Python - Lv7 반복1(for)",
+    "lang": "Python",
+    "track": "language",
+    "order": 207,
+    "partName": "반복1(for)",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv07_for"
+  }
+]

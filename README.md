@@ -24,6 +24,8 @@ practice/
     categories.json     # 카테고리 목록 (C-조건문, Python-for 등)
     sets.index.json     # 세트(회차) 메타데이터 목록
     theory.index.json   # 이론(개념) 메타데이터 목록
+    content/            # 신규 원본 구조 (수동 관리)
+    generated/          # 신규 자동 생성 인덱스
     sets/
       c_if_b1.json      # C 조건문 기초 1회차
       c_if_c1.json      # C 조건문 챌린지 1회차
@@ -43,6 +45,8 @@ practice/
 > * 이론 등록 : `data/theory.index.json`
 > * 실제 문제 내용 : `data/sets/*.json`
 > * 실제 이론 내용 : `data/theory/**/*.md`
+> * 신규 원본 등록 : `data/content/**/*`
+> * 자동 인덱스 생성 : `scripts/generate_content_indexes.py`
 
 ---
 
@@ -95,6 +99,33 @@ VSCode Live Server, Web Server for Chrome 등 다른 정적 서버를 써도 됩
 ```
 
 > 새 단원을 만들 때는 여기에 항목을 하나 추가하고, `id`를 이후 세트/문제에서 `categoryId`로 사용합니다.
+
+### 3.1.1 신규 콘텐츠 원본 구조 (`content/`)
+
+병행 전환용 신규 구조에서는 사람이 직접 수정하는 원본을 `practice/data/content/` 아래에 둡니다.
+
+예시:
+
+```text
+practice/data/content/language/python/lv07_for/
+  category.meta.yml
+  lesson/lesson.md
+  worksheets/worksheet_basic_r01.md
+  worksheets/answer_basic_r01.md
+  interactive/interactive_basic_r01.json
+```
+
+원칙:
+
+* `content/`는 사람이 직접 관리하는 원본입니다.
+* `generated/`는 스크립트가 생성하는 웹용 인덱스입니다.
+* 기존 `categories.json`, `sets.index.json`, `theory.index.json`는 당분간 fallback으로 유지합니다.
+
+자동 생성 명령:
+
+```powershell
+python scripts/generate_content_indexes.py
+```
 
 ---
 

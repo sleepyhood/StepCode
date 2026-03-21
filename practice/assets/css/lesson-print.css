@@ -1,0 +1,5 @@
+.theory-print-root .lesson-callout {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  box-shadow: none;
+}

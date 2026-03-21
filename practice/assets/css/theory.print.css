@@ -802,3 +802,5 @@ body.layout-double .theory-print-root .theory-mini-check-card p {
     font-size: 10.2pt;
   }
 }
+@import url("./lesson-core.css");
+@import url("./lesson-print.css");

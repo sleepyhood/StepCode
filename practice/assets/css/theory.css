@@ -1,3 +1,6 @@
+@import url("./lesson-core.css");
+@import url("./lesson-screen.css");
+
 :root {
   --theory-card-bg: rgba(255, 255, 255, 0.92);
   --theory-border: rgba(15, 23, 42, 0.1);

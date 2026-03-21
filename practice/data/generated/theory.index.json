@@ -1,0 +1,22 @@
+[
+  {
+    "conceptId": "py_lv07_for",
+    "title": "Python Lv7 for문",
+    "categoryId": "py_for",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv07_for/lesson/lesson.md",
+    "recommendedSetId": "py_lv07_for_b01",
+    "relatedSetIds": [
+      "py_lv07_for_b01"
+    ],
+    "prerequisites": [
+      "py_lv06_if"
+    ],
+    "nextConcepts": [
+      "py_lv08_while"
+    ],
+    "priority": 3,
+    "sourcePath": "./data/content/language/python/lv07_for/lesson/lesson.md"
+  }
+]

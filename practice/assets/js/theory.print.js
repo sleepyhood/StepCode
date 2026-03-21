@@ -198,7 +198,56 @@ function renderTheoryMarkdown(target, mdText) {
   }
   const safe = window.DOMPurify.sanitize(md.render(raw));
   target.innerHTML = safe;
+  enhanceLessonCallouts(target);
   applyDataImageFallbacks(target);
+}
+
+function normalizeCalloutType(raw) {
+  const v = String(raw || "").trim().toLowerCase();
+  if (["goal", "key", "warn", "check"].includes(v)) return v;
+  return "";
+}
+
+function enhanceLessonCallouts(root) {
+  const quotes = root.querySelectorAll("blockquote");
+  quotes.forEach((quote) => {
+    const first = quote.firstElementChild;
+    if (!first || first.tagName !== "P") return;
+    const firstHtml = String(first.innerHTML || "");
+    const match = firstHtml.match(/^\s*\[!([a-zA-Z]+)\]\s*<br>\s*([\s\S]*)$/i);
+    const direct = String(first.textContent || "").match(/^\s*\[!([a-zA-Z]+)\]\s*$/i);
+
+    let type = "";
+    let title = "";
+    if (match) {
+      type = normalizeCalloutType(match[1]);
+      title = String(match[2] || "").trim();
+    } else if (direct) {
+      type = normalizeCalloutType(direct[1]);
+      const next = first.nextElementSibling;
+      if (next && next.tagName === "P") {
+        title = String(next.textContent || "").trim();
+        next.remove();
+      }
+    }
+    if (!type) return;
+
+    quote.classList.add("lesson-callout", `lesson-callout--${type}`);
+    first.remove();
+
+    const titleEl = document.createElement("div");
+    titleEl.className = "lesson-callout-title";
+    titleEl.textContent =
+      title ||
+      (type === "goal"
+        ? "오늘의 목표"
+        : type === "key"
+          ? "핵심 개념"
+          : type === "warn"
+            ? "주의"
+            : "체크");
+    quote.insertBefore(titleEl, quote.firstChild);
+  });
 }
 
 function resolveDataPathSuffix(src) {

@@ -1,15 +1,62 @@
 // practice/assets/js/services/problemService.local.js
 const ProblemService = {
+  async fetchJsonFirst(paths, errorMessage) {
+    let lastError = null;
+    for (const path of paths) {
+      try {
+        const res = await fetch(path);
+        if (!res.ok) {
+          lastError = new Error(`${errorMessage}: ${path}`);
+          continue;
+        }
+        return res.json();
+      } catch (err) {
+        lastError = err;
+      }
+    }
+    throw lastError || new Error(errorMessage);
+  },
+
+  mergeByKey(preferred, legacy, key) {
+    const out = [];
+    const seen = new Set();
+    [preferred || [], legacy || []].forEach((items) => {
+      items.forEach((item) => {
+        const itemKey = String(item?.[key] || item?.categoryId || "");
+        if (!itemKey || seen.has(itemKey)) return;
+        seen.add(itemKey);
+        out.push(item);
+      });
+    });
+    return out;
+  },
+
   async listCategories() {
-    const res = await fetch(`${APP_CONFIG.dataBasePath}/categories.json`);
-    if (!res.ok) throw new Error("failed to load categories");
-    return res.json();
+    const [generated, legacy] = await Promise.all([
+      this.fetchJsonFirst(
+        [`${APP_CONFIG.dataBasePath}/generated/categories.json`],
+        "failed to load generated categories"
+      ).catch(() => []),
+      this.fetchJsonFirst(
+        [`${APP_CONFIG.dataBasePath}/categories.json`],
+        "failed to load categories"
+      ).catch(() => []),
+    ]);
+    return this.mergeByKey(generated, legacy, "id");
   },
 
   async listSets() {
-    const res = await fetch(`${APP_CONFIG.dataBasePath}/sets.index.json`);
-    if (!res.ok) throw new Error("failed to load sets index");
-    return res.json();
+    const [generated, legacy] = await Promise.all([
+      this.fetchJsonFirst(
+        [`${APP_CONFIG.dataBasePath}/generated/interactive.index.json`],
+        "failed to load generated interactive index"
+      ).catch(() => []),
+      this.fetchJsonFirst(
+        [`${APP_CONFIG.dataBasePath}/sets.index.json`],
+        "failed to load sets index"
+      ).catch(() => []),
+    ]);
+    return this.mergeByKey(generated, legacy, "id");
   },
 
   async loadSet(setId) {
@@ -19,17 +66,31 @@ const ProblemService = {
       throw new Error(`Unknown setId: ${setId}`);
     }
 
-    const res = await fetch(
-      `${APP_CONFIG.dataBasePath}/sets/${meta.file}`
-    );
-    if (!res.ok) throw new Error(`failed to load set: ${meta.file}`);
+    const targetPath = meta.dataPath || `${APP_CONFIG.dataBasePath}/sets/${meta.file}`;
+    const res = await fetch(targetPath);
+    if (!res.ok) throw new Error(`failed to load set: ${meta.file || targetPath}`);
     return res.json();
   },
 
   async listTheoryIndex() {
-    const res = await fetch(`${APP_CONFIG.dataBasePath}/theory.index.json`);
-    if (!res.ok) throw new Error("failed to load theory index");
-    return res.json();
+    const [generated, legacy] = await Promise.all([
+      this.fetchJsonFirst(
+        [`${APP_CONFIG.dataBasePath}/generated/theory.index.json`],
+        "failed to load generated theory index"
+      ).catch(() => []),
+      this.fetchJsonFirst(
+        [`${APP_CONFIG.dataBasePath}/theory.index.json`],
+        "failed to load theory index"
+      ).catch(() => []),
+    ]);
+    return this.mergeByKey(generated, legacy, "conceptId");
+  },
+
+  async listWorksheetIndex() {
+    return this.fetchJsonFirst(
+      [`${APP_CONFIG.dataBasePath}/generated/worksheet.index.json`],
+      "failed to load worksheet index"
+    );
   },
 
   async getTheoryByConceptId(conceptId) {
