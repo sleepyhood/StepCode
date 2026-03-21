@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>12명 여행객의 자동차 셔틀 전략</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">정올 중등 2020 8번</p>
+        <h1>12명 여행객의 자동차 셔틀 전략</h1>
+        <p class="lead">
+          자동차가 어디까지 갔다가 돌아오는지, 각 조가 얼마나 걷고 얼마나 타는지를
+          단계별로 확인하면서 왜 정답이 <strong>2시간 36분</strong>인지 이해하는
+          시뮬레이션입니다.
+        </p>
+      </header>
+
+      <section class="problem card">
+        <h2>문제 요약</h2>
+        <ul>
+          <li>여행객은 12명이고, 목적지까지 남은 거리는 20km입니다.</li>
+          <li>자동차는 최대 4명까지 태우고, 속력은 시속 20km입니다.</li>
+          <li>사람은 시속 4km로 걸을 수 있습니다.</li>
+          <li>12명 모두가 정확히 동시에 도착해야 합니다.</li>
+        </ul>
+      </section>
+
+      <section class="sim-shell">
+        <div class="sim-header card">
+          <div>
+            <h2>셔틀 시뮬레이션</h2>
+            <p>
+              A조, B조, C조로 나눠서 차를 공평하게 번갈아 탑니다. 아래 도로에서
+              자동차와 각 조의 위치를 보면서 단계를 따라가세요.
+            </p>
+          </div>
+          <div class="stat-chips">
+            <span class="chip">차 탑승: 36분</span>
+            <span class="chip">걷기: 2시간</span>
+            <span class="chip accent">최종 도착: 2시간 36분</span>
+          </div>
+        </div>
+
+        <section class="sim-main">
+          <section class="card visual-card">
+            <div class="controls">
+              <button id="prevBtn" type="button">이전 단계</button>
+              <button id="playBtn" type="button" class="accent-btn">자동 재생</button>
+              <button id="nextBtn" type="button">다음 단계</button>
+            </div>
+
+            <div class="scrub-box">
+              <input id="stepRange" type="range" min="0" max="5" step="1" value="0" />
+              <div id="stageMeta" class="stage-meta"></div>
+            </div>
+
+            <div id="ruler" class="ruler"></div>
+            <div id="trackList" class="track-list"></div>
+          </section>
+
+          <aside class="info-column">
+            <section class="card current-card">
+              <div id="currentStepNo" class="step-no"></div>
+              <h3 id="currentTitle" class="step-title"></h3>
+              <div id="currentTime" class="step-time"></div>
+              <p id="currentSummary" class="step-summary"></p>
+            </section>
+
+            <section class="card">
+              <h3>수식과 시뮬레이션 연결</h3>
+              <ul class="formula-list">
+                <li>사람 1명 기준: <code>20x + 4y = 20</code> → <code>5x + y = 5</code></li>
+                <li>자동차 기준: 앞으로 <code>3x</code>, 뒤로 <code>y - 2x</code></li>
+                <li><code>20(3x) - 20(y - 2x) = 20</code> → <code>5x - y = 1</code></li>
+                <li>그래서 <code>x = 0.6시간 = 36분</code>, <code>y = 2시간</code></li>
+              </ul>
+            </section>
+
+            <section class="card">
+              <h3>이 장면에서 각 조의 상태</h3>
+              <div id="groupGrid" class="group-grid"></div>
+            </section>
+          </aside>
+        </section>
+      </section>
+
+      <section class="why card">
+        <h2>왜 이 방법이 가장 빠를까?</h2>
+        <ol>
+          <li>세 조가 동시에 도착하려면 세 조가 받는 혜택이 같아야 합니다.</li>
+          <li>그래서 각 조는 똑같이 36분 동안 차를 타고, 2시간 동안 걷습니다.</li>
+          <li>차는 A조를 내려준 뒤 빈 차로 돌아와 B조를 만나고, 다시 C조를 만납니다.</li>
+          <li>이 만나는 지점이 4km, 8km로 맞아떨어져서 마지막에 모두 20km 지점에 동시에 도착합니다.</li>
+        </ol>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

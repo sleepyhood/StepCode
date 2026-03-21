@@ -1,7 +1,7 @@
 # StepCode – 실행추적 · MCQ · 코드수정 연습
 
 로컬에서 가볍게 돌릴 수 있는 **실행추적/MCQ/코드 작성 연습장**입니다.  
-이 문서는 특히 **새로운 문제 세트를 JSON으로 추가할 때 따라야 할 규칙**에 초점을 맞춥니다.
+이 문서는 특히 **새로운 문제 세트 JSON과 이론 문서(md)를 추가/연결할 때 따라야 할 규칙**에 초점을 맞춥니다.
 
 ---
 
@@ -13,14 +13,17 @@
 practice/
   index.html            # 메인 목록 페이지
   practice.html         # 실제 문제 풀이 페이지
+  theory.html           # 실제 이론(개념) 보기 페이지
   index.js
   practice.js
+  theory.js
   main.css
   practice.css
 
   data/
     categories.json     # 카테고리 목록 (C-조건문, Python-for 등)
     sets.index.json     # 세트(회차) 메타데이터 목록
+    theory.index.json   # 이론(개념) 메타데이터 목록
     sets/
       c_if_b1.json      # C 조건문 기초 1회차
       c_if_c1.json      # C 조건문 챌린지 1회차
@@ -37,7 +40,9 @@ practice/
 > **실전에서 자주 수정하는 파일**
 >
 > * 카테고리/세트 추가 : `data/categories.json`, `data/sets.index.json`
+> * 이론 등록 : `data/theory.index.json`
 > * 실제 문제 내용 : `data/sets/*.json`
+> * 실제 이론 내용 : `data/theory/**/*.md`
 
 ---
 
@@ -57,6 +62,7 @@ python -m http.server 8000
 
 * 메인: `http://localhost:8000/index.html`
 * 문제풀이: 세트 선택 후 자동 이동 (`practice.html?set=...`)
+* 이론보기: 개념 선택 후 자동 이동 (`theory.html?concept=...` 또는 `theory.html?set=...`)
 
 VSCode Live Server, Web Server for Chrome 등 다른 정적 서버를 써도 됩니다.
 
@@ -205,7 +211,39 @@ VSCode Live Server, Web Server for Chrome 등 다른 정적 서버를 써도 됩
 
 ---
 
-### 3.3 `data/sets/*.json` – 실제 문제 세트
+### 3.3 `theory.index.json` – 이론(개념) 목록
+
+이 파일은 이론 페이지의 인덱스입니다.  
+각 항목이 “어떤 개념을 어떤 md 파일로 보여줄지”를 연결합니다.
+
+핵심 역할:
+
+* `conceptId` : 이론 페이지 진입용 고유 ID (`theory.html?concept=...`)
+* `categoryId` : 어떤 카테고리와 연결되는지 나타내는 ID
+* `title` : 이론 페이지 제목
+* `mdPath` : 실제 md 파일 경로
+
+즉, `theory.index.json`은 **이론 목차 + 실제 md 연결표**입니다.
+
+예시:
+
+```json
+[
+  {
+    "conceptId": "py_for_lv07",
+    "categoryId": "py_for",
+    "title": "Python for문 핵심 개념",
+    "mdPath": "./data/theory/python/theory_py_for_lv07.md"
+  }
+]
+```
+
+> 새 이론 문서를 추가할 때는 md 파일만 만드는 것으로 끝나지 않습니다.
+> 반드시 `theory.index.json`에 항목을 추가해야 웹에서 찾을 수 있습니다.
+
+---
+
+### 3.4 `data/sets/*.json` – 실제 문제 세트
 
 각 세트 파일은 다음과 같은 공통 구조를 가집니다.
 
@@ -250,6 +288,16 @@ VSCode Live Server, Web Server for Chrome 등 다른 정적 서버를 써도 됩
   ]
 }
 ```
+
+---
+
+### 3.5 `data/theory/**/*.md` – 실제 이론 문서
+
+실제 개념 설명 본문입니다.
+
+* 웹은 `theory.index.json`의 `mdPath`를 읽고 해당 md 파일을 불러옵니다.
+* 따라서 md 파일 경로가 바뀌면 `theory.index.json`도 같이 수정해야 합니다.
+* 반대로 `theory.index.json`에만 등록하고 md 파일이 없으면 이론 페이지가 열리지 않습니다.
 
 ---
 
@@ -400,15 +448,23 @@ VSCode Live Server, Web Server for Chrome 등 다른 정적 서버를 써도 됩
 
    * `categories.json` → 카테고리 목록 렌더링
    * `sets.index.json` → 세트 목록 렌더링
+   * `theory.index.json` → 카테고리별 개념/이론 진입 정보 연결
    * 세트 버튼 클릭 시 `practice.html?set=세트ID` 로 이동
 
 2. **practice.html + practice.js**
 
-   * 쿼리스트링의 `set` 값으로 해당 세트 JSON(`data/sets/…`) 로드
+   * 쿼리스트링의 `set` 값으로 `sets.index.json`에서 세트 메타를 찾음
+   * 해당 항목의 `file` 값으로 실제 세트 JSON(`data/sets/…`) 로드
    * 문제 리스트 렌더링, HUD(타이머/네비게이션 등) 초기화
    * 사용자가 푼 답안을 `localStorage`에 저장하여, **뒤로 갔다가 다시 들어와도 이전 답안을 복원** (개발 내용 기준)
 
-3. **채점**
+3. **theory.html + theory.js**
+
+   * 쿼리스트링의 `concept`, `category`, 또는 `set` 값을 기준으로 `theory.index.json`에서 항목을 찾음
+   * 해당 항목의 `mdPath` 값으로 실제 md 파일(`data/theory/**/*.md`) 로드
+   * 렌더링 후 개념 페이지를 표시
+
+4. **채점**
 
    * MCQ : `correctIndex` 비교
    * Short : `expectedText` 또는 `expectedAnyOf`와 정규화 비교
@@ -647,7 +703,13 @@ powershell -ExecutionPolicy Bypass -File scripts/check_sets_index.ps1
 
    - 새 단원이라면 카테고리를 먼저 추가합니다.
 
-5. **정합성 체크 실행**
+5. **이론 md 작성 및 인덱스 등록** (`practice/data/theory/**/*.md`, `practice/data/theory.index.json`)
+
+   - 개념 페이지에 보여줄 md 파일을 작성합니다.
+   - `conceptId`, `categoryId`, `title`, `mdPath`를 `theory.index.json`에 추가합니다.
+   - 문제 세트와 이론을 연결하려면 `categoryId`가 서로 일치해야 합니다.
+
+6. **정합성 체크 실행**
 
    - 아래 명령으로 문제 수/파일 존재/카테고리 일치를 확인합니다.
 
