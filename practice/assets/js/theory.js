@@ -7,10 +7,18 @@ function getMdRenderer() {
   });
 }
 
+function stripFrontMatter(mdText) {
+  const raw = String(mdText || "").replace(/\r\n?/g, "\n");
+  if (!raw.startsWith("---\n")) return raw;
+  const end = raw.indexOf("\n---\n", 4);
+  if (end === -1) return raw;
+  return raw.slice(end + 5);
+}
+
 const TOGGLE_LANGS = new Set(["python", "c", "java", "csharp"]);
 
 function renderTheoryMarkdown(target, mdText) {
-  const raw = String(mdText || "");
+  const raw = stripFrontMatter(mdText);
   const md = getMdRenderer();
   if (!md) {
     target.textContent = raw;

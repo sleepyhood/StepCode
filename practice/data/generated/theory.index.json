@@ -1,19 +1,75 @@
 [
   {
-    "conceptId": "canva_l11_rehearsal_lesson",
-    "title": "Canva 11차시 리허설",
-    "categoryId": "canva_l11_rehearsal",
+    "conceptId": "canva_l01_assignment",
+    "title": "1차시. 캔바 첫 세팅과 작업 영역 적응",
+    "categoryId": "canva_l01_assignment",
     "lang": "canva",
     "track": "canva",
-    "mdPath": "./data/content/canva/canva/l11_rehearsal/lesson/lesson.md",
+    "mdPath": "./data/content/canva/canva/l01_assignment/lesson/lesson.md",
     "recommendedSetId": "",
     "relatedSetIds": [],
     "prerequisites": [
-      "canva_l10_assignment"
+      "canva_curriculum"
     ],
-    "nextConcepts": [],
+    "nextConcepts": [
+      "canva_l02_assignment"
+    ],
     "priority": 2,
-    "sourcePath": "./data/content/canva/canva/l11_rehearsal/lesson/lesson.md"
+    "sourcePath": "./data/content/canva/canva/l01_assignment/lesson/lesson.md"
+  },
+  {
+    "conceptId": "canva_l02_assignment",
+    "title": "2차시. 디자인 기초 다지기 - 텍스트와 요소",
+    "categoryId": "canva_l02_assignment",
+    "lang": "canva",
+    "track": "canva",
+    "mdPath": "./data/content/canva/canva/l02_assignment/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [
+      "canva_l01_assignment"
+    ],
+    "nextConcepts": [
+      "canva_l03_assignment"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/canva/canva/l02_assignment/lesson/lesson.md"
+  },
+  {
+    "conceptId": "canva_l03_assignment",
+    "title": "3차시. 디자인 정돈 및 AI 창작 워크플로 체험",
+    "categoryId": "canva_l03_assignment",
+    "lang": "canva",
+    "track": "canva",
+    "mdPath": "./data/content/canva/canva/l03_assignment/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [
+      "canva_l02_assignment"
+    ],
+    "nextConcepts": [
+      "canva_l04_assignment"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/canva/canva/l03_assignment/lesson/lesson.md"
+  },
+  {
+    "conceptId": "canva_l04_assignment",
+    "title": "4차시. 실전 디자인 1 - SNS와 포스터 제작",
+    "categoryId": "canva_l04_assignment",
+    "lang": "canva",
+    "track": "canva",
+    "mdPath": "./data/content/canva/canva/l04_assignment/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [
+      "canva_l03_assignment"
+    ],
+    "nextConcepts": [
+      "canva_l05_assignment"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/canva/canva/l04_assignment/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv07_for",

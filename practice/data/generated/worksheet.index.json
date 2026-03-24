@@ -1,20 +1,5 @@
 [
   {
-    "id": "l11_rehearsal_basic_r01",
-    "title": "Canva 11차시 리허설 활동지 1회차",
-    "categoryId": "canva_l11_rehearsal",
-    "track": "canva",
-    "lang": "canva",
-    "difficulty": "basic",
-    "round": 1,
-    "status": "active",
-    "audience": "common",
-    "printDefault": true,
-    "mdPath": "./data/content/canva/canva/l11_rehearsal/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/canva/canva/l11_rehearsal/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/canva/canva/l11_rehearsal/worksheets/worksheet_basic_r01.md"
-  },
-  {
     "id": "py_lv07_for_basic_r01",
     "title": "Python for문 기초 1회차",
     "categoryId": "py_for",

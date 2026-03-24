@@ -10,13 +10,43 @@
     "contentRootPath": "./data/content/language/python/lv07_for"
   },
   {
-    "id": "canva_l11_rehearsal",
-    "name": "Canva - 11차시 리허설",
+    "id": "canva_l01_assignment",
+    "name": "Canva - 1차시 과제지",
     "lang": "Canva",
     "track": "canva",
-    "order": 799,
-    "partName": "11차시 리허설",
+    "order": 703,
+    "partName": "1차시 과제지",
     "status": "active",
-    "contentRootPath": "./data/content/canva/canva/l11_rehearsal"
+    "contentRootPath": "./data/content/canva/canva/l01_assignment"
+  },
+  {
+    "id": "canva_l02_assignment",
+    "name": "Canva - 2차시 과제지",
+    "lang": "Canva",
+    "track": "canva",
+    "order": 704,
+    "partName": "2차시 과제지",
+    "status": "active",
+    "contentRootPath": "./data/content/canva/canva/l02_assignment"
+  },
+  {
+    "id": "canva_l03_assignment",
+    "name": "Canva - 3차시 과제지",
+    "lang": "Canva",
+    "track": "canva",
+    "order": 705,
+    "partName": "3차시 과제지",
+    "status": "active",
+    "contentRootPath": "./data/content/canva/canva/l03_assignment"
+  },
+  {
+    "id": "canva_l04_assignment",
+    "name": "Canva - 4차시 과제지",
+    "lang": "Canva",
+    "track": "canva",
+    "order": 706,
+    "partName": "4차시 과제지",
+    "status": "active",
+    "contentRootPath": "./data/content/canva/canva/l04_assignment"
   }
 ]
