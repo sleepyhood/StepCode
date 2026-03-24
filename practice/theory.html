@@ -24,19 +24,21 @@
           <p id="theory-subtitle">관련 문제와 함께 학습합니다.</p>
         </div>
         <div class="theory-top-actions">
-          <a id="theory-print-btn" class="theory-start-btn" href="#" hidden>이론 출력</a>
-          <a id="theory-batch-print-btn" class="theory-start-btn" href="#" hidden>경시 이론 일괄 출력</a>
-          <a id="theory-combined-print-btn" class="theory-start-btn" href="#" hidden>이론+문제 출력</a>
-          <a id="theory-start-btn" class="theory-start-btn" href="#" hidden>대표 문제 풀기</a>
+          <a id="theory-print-btn" class="theory-action-btn theory-action-btn--secondary" href="#" hidden>이론 출력</a>
+          <!-- <a id="theory-batch-print-btn" class="theory-action-btn theory-action-btn--secondary" href="#" hidden>경시 이론 일괄 출력</a>
+          <a id="theory-combined-print-btn" class="theory-action-btn theory-action-btn--secondary" href="#" hidden>이론+문제 출력</a> -->
+          <a id="theory-start-btn" class="theory-action-btn theory-action-btn--primary" href="#" hidden>대표 문제 풀기</a>
         </div>
       </header>
 
       <main class="theory-layout">
         <section class="theory-main">
-          <section id="theory-audience-toggle" class="theory-lang-toggle" hidden></section>
-          <section id="theory-view-toggle" class="theory-lang-toggle" hidden></section>
-          <section id="theory-concept-toggle" class="theory-lang-toggle" hidden></section>
-          <section id="theory-lang-toggle" class="theory-lang-toggle" hidden></section>
+          <div id="theory-filter-wrap" class="theory-filter-wrap" hidden>
+            <section id="theory-audience-toggle" class="theory-lang-toggle" hidden></section>
+            <section id="theory-view-toggle" class="theory-lang-toggle" hidden></section>
+            <section id="theory-concept-toggle" class="theory-lang-toggle" hidden></section>
+            <section id="theory-lang-toggle" class="theory-lang-toggle" hidden></section>
+          </div>
           <article id="theory-content" class="theory-content">
             불러오는 중...
           </article>
@@ -49,6 +51,51 @@
           </section>
         </aside>
       </main>
+
+      <div class="theory-fab-stack" aria-label="문서 이동 도구">
+        <button
+          id="theory-toc-fab"
+          class="theory-fab-btn theory-fab-btn--toc"
+          type="button"
+          aria-expanded="false"
+          aria-controls="theory-toc-panel"
+          aria-label="목차 열기"
+          hidden
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="5" cy="6.5" r="1.5"></circle>
+            <circle cx="5" cy="12" r="1.5"></circle>
+            <circle cx="5" cy="17.5" r="1.5"></circle>
+            <path d="M9 6.5h10"></path>
+            <path d="M9 12h10"></path>
+            <path d="M9 17.5h10"></path>
+          </svg>
+        </button>
+        <button id="theory-scroll-top" class="theory-fab-btn" type="button" aria-label="맨 위로">
+          ↑
+        </button>
+        <button id="theory-scroll-bottom" class="theory-fab-btn" type="button" aria-label="맨 아래로">
+          ↓
+        </button>
+      </div>
+
+      <div id="theory-toc-overlay" class="theory-toc-overlay" hidden>
+        <section
+          id="theory-toc-panel"
+          class="theory-toc-panel"
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby="theory-toc-title"
+        >
+          <div class="theory-toc-head">
+            <h2 id="theory-toc-title">목차</h2>
+            <button id="theory-toc-close" class="theory-toc-close" type="button" aria-label="목차 닫기">
+              ×
+            </button>
+          </div>
+          <nav id="theory-toc-list" class="theory-toc-list" aria-label="이론 목차"></nav>
+        </section>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>

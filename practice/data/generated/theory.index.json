@@ -72,6 +72,76 @@
     "sourcePath": "./data/content/canva/canva/l04_assignment/lesson/lesson.md"
   },
   {
+    "conceptId": "canva_l05_assignment",
+    "title": "5차시. 실전 디자인 2 - 기업형 디자인과 자산 관리",
+    "categoryId": "canva_l05_assignment",
+    "lang": "canva",
+    "track": "canva",
+    "mdPath": "./data/content/canva/canva/l05_assignment/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [
+      "canva_l04_assignment"
+    ],
+    "nextConcepts": [
+      "canva_l06_assignment"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/canva/canva/l05_assignment/lesson/lesson.md"
+  },
+  {
+    "conceptId": "canva_l06_assignment",
+    "title": "6차시. 브랜드 정체성과 비주얼 시스템 구축",
+    "categoryId": "canva_l06_assignment",
+    "lang": "canva",
+    "track": "canva",
+    "mdPath": "./data/content/canva/canva/l06_assignment/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [
+      "canva_l05_assignment"
+    ],
+    "nextConcepts": [
+      "canva_l07_assignment"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/canva/canva/l06_assignment/lesson/lesson.md"
+  },
+  {
+    "conceptId": "canva_l07_assignment",
+    "title": "7차시. 브랜드를 뽐내는 웹 포트폴리오 제작",
+    "categoryId": "canva_l07_assignment",
+    "lang": "canva",
+    "track": "canva",
+    "mdPath": "./data/content/canva/canva/l07_assignment/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [
+      "canva_l06_assignment"
+    ],
+    "nextConcepts": [
+      "canva_l08_assignment"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/canva/canva/l07_assignment/lesson/lesson.md"
+  },
+  {
+    "conceptId": "canva_l08_assignment",
+    "title": "8차시. 업무 효율 200% 올리는 대량 제작 실무",
+    "categoryId": "canva_l08_assignment",
+    "lang": "canva",
+    "track": "canva",
+    "mdPath": "./data/content/canva/canva/l08_assignment/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [
+      "canva_l07_assignment"
+    ],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/canva/canva/l08_assignment/lesson/lesson.md"
+  },
+  {
     "conceptId": "py_lv07_for",
     "title": "Python Lv7 for문",
     "categoryId": "py_for",

@@ -31,6 +31,18 @@ const ProblemService = {
     return out;
   },
 
+  excludeLegacyTrackWhenGeneratedExists(preferred, legacy, track) {
+    const target = String(track || "").trim().toLowerCase();
+    if (!target) return legacy || [];
+    const hasPreferredTrack = (preferred || []).some(
+      (item) => String(item?.track || "").trim().toLowerCase() === target
+    );
+    if (!hasPreferredTrack) return legacy || [];
+    return (legacy || []).filter(
+      (item) => String(item?.track || "").trim().toLowerCase() !== target
+    );
+  },
+
   async listCategories() {
     const [generated, legacy] = await Promise.all([
       this.fetchJsonFirst(
@@ -42,7 +54,12 @@ const ProblemService = {
         "failed to load categories"
       ).catch(() => []),
     ]);
-    return this.mergeByKey(generated, legacy, "id");
+    const filteredLegacy = this.excludeLegacyTrackWhenGeneratedExists(
+      generated,
+      legacy,
+      "canva"
+    );
+    return this.mergeByKey(generated, filteredLegacy, "id");
   },
 
   async listSets() {
@@ -83,7 +100,12 @@ const ProblemService = {
         "failed to load theory index"
       ).catch(() => []),
     ]);
-    return this.mergeByKey(generated, legacy, "conceptId");
+    const filteredLegacy = this.excludeLegacyTrackWhenGeneratedExists(
+      generated,
+      legacy,
+      "canva"
+    );
+    return this.mergeByKey(generated, filteredLegacy, "conceptId");
   },
 
   async listWorksheetIndex() {

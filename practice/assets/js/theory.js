@@ -708,6 +708,7 @@ function setupLanguageToggle(contentEl, preferredLangRaw) {
 
   if (langs.length <= 1) {
     toggleEl.hidden = true;
+    syncTheoryFilterWrapper();
     return;
   }
 
@@ -746,6 +747,7 @@ function setupLanguageToggle(contentEl, preferredLangRaw) {
   });
 
   applyLanguageFilter(contentEl, selectedByDefault);
+  syncTheoryFilterWrapper();
 }
 
 function detectAudienceFromHeadingText(text) {
@@ -1065,6 +1067,14 @@ function applySectionFilters(contentEl) {
   applyConceptFilter(contentEl, getActiveConceptSet(contentEl));
 }
 
+function syncTheoryFilterWrapper() {
+  const wrap = document.getElementById("theory-filter-wrap");
+  if (!wrap) return;
+  const toggles = Array.from(wrap.querySelectorAll(".theory-lang-toggle"));
+  const hasVisible = toggles.some((el) => !el.hidden && String(el.innerHTML || "").trim());
+  wrap.hidden = !hasVisible;
+}
+
 function setupConceptToggle(contentEl, params) {
   const toggleEl = document.getElementById("theory-concept-toggle");
   if (!toggleEl) return;
@@ -1073,6 +1083,7 @@ function setupConceptToggle(contentEl, params) {
   const concepts = conceptItems.map((it) => it.no);
   if (!concepts.length) {
     toggleEl.hidden = true;
+    syncTheoryFilterWrapper();
     return;
   }
 
@@ -1133,6 +1144,7 @@ function setupConceptToggle(contentEl, params) {
   });
 
   render();
+  syncTheoryFilterWrapper();
 }
 
 function setupAudienceToggle(contentEl, params, setIdInQuery, setMap) {
@@ -1142,6 +1154,7 @@ function setupAudienceToggle(contentEl, params, setIdInQuery, setMap) {
   const hasAudience = !!contentEl.querySelector(".theory-section-block[data-audience]");
   if (!hasAudience) {
     toggleEl.hidden = true;
+    syncTheoryFilterWrapper();
     return;
   }
 
@@ -1186,6 +1199,7 @@ function setupAudienceToggle(contentEl, params, setIdInQuery, setMap) {
   });
 
   applyAudienceFilter(contentEl, selectedByDefault);
+  syncTheoryFilterWrapper();
 }
 
 function setupViewToggle(contentEl, params, isHost) {
@@ -1195,6 +1209,7 @@ function setupViewToggle(contentEl, params, isHost) {
   const hasView = !!contentEl.querySelector(".theory-section-block[data-view]");
   if (!hasView) {
     toggleEl.hidden = true;
+    syncTheoryFilterWrapper();
     return;
   }
 
@@ -1209,6 +1224,7 @@ function setupViewToggle(contentEl, params, isHost) {
     toggleEl.dataset.currentView = "student";
     applyViewFilter(contentEl, "student");
     syncViewParam("student");
+    syncTheoryFilterWrapper();
     return;
   }
 
@@ -1245,6 +1261,7 @@ function setupViewToggle(contentEl, params, isHost) {
   });
 
   applyViewFilter(contentEl, selectedByDefault);
+  syncTheoryFilterWrapper();
 }
 
 function buildTheoryLookup(items) {
@@ -1278,11 +1295,14 @@ function buildRelatedSetIds(entry, allSets) {
 
 function renderRelatedList(entry, setMap, setIdInQuery) {
   const listEl = document.getElementById("theory-related-list");
+  const sideCard = listEl?.closest(".theory-side-card");
   if (!listEl) return;
   listEl.innerHTML = "";
+  if (sideCard) sideCard.classList.remove("is-empty");
 
   const relatedIds = buildRelatedSetIds(entry, Object.values(setMap));
   if (!relatedIds.length) {
+    if (sideCard) sideCard.classList.add("is-empty");
     const p = document.createElement("p");
     p.className = "theory-empty";
     p.textContent = "연결된 문제가 아직 없습니다.";
@@ -1489,9 +1509,194 @@ function updateTitle(entry) {
   if (subEl) {
     const rows = [];
     if (entry.lang) rows.push(entry.lang.toUpperCase());
-    if (entry.categoryId) rows.push(entry.categoryId);
+    const lessonLabelMatch = String(entry.title || "").match(/^(\d+\s*(?:차시|주차))/);
+    if (lessonLabelMatch) rows.push(lessonLabelMatch[1].replace(/\s+/g, ""));
     subEl.textContent = rows.join(" · ");
   }
+}
+
+function setupTheoryHeaderAutoHide() {
+  const header = document.querySelector(".theory-topbar");
+  const tocOverlay = document.getElementById("theory-toc-overlay");
+  if (!header) return;
+
+  let lastY = window.scrollY || 0;
+  let downAccum = 0;
+  let upAccum = 0;
+  const threshold = 24;
+
+  const update = () => {
+    const y = window.scrollY || 0;
+    const delta = y - lastY;
+    lastY = y;
+
+    if (y <= 12) {
+      header.classList.remove("is-hidden");
+      downAccum = 0;
+      upAccum = 0;
+      return;
+    }
+
+    if (tocOverlay && !tocOverlay.hidden) {
+      header.classList.remove("is-hidden");
+      downAccum = 0;
+      upAccum = 0;
+      return;
+    }
+
+    if (Math.abs(delta) < 2) return;
+
+    if (delta > 0) {
+      downAccum += delta;
+      upAccum = 0;
+      if (downAccum >= threshold) {
+        header.classList.add("is-hidden");
+        downAccum = 0;
+      }
+    } else {
+      upAccum += Math.abs(delta);
+      downAccum = 0;
+      if (upAccum >= threshold) {
+        header.classList.remove("is-hidden");
+        upAccum = 0;
+      }
+    }
+  };
+
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+}
+
+function slugifyHeading(text, fallback) {
+  const raw = String(text || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-가-힣]+/g, "")
+    .replace(/\-+/g, "-")
+    .replace(/^\-|\-$/g, "");
+  return raw || fallback;
+}
+
+function buildTheoryTocItems(contentEl) {
+  const headings = Array.from(contentEl.querySelectorAll("h2, h3")).filter(
+    (el) => String(el.textContent || "").trim()
+  );
+  const usedIds = new Set();
+  let h2Count = 0;
+  let h3Count = 0;
+
+  return headings.map((el, index) => {
+    const depth = Number(String(el.tagName || "").replace("H", "")) || 2;
+    const text = String(el.textContent || "").trim();
+    let id = el.id || slugifyHeading(text, `theory-section-${index + 1}`);
+    while (usedIds.has(id)) id = `${id}-${index + 1}`;
+    usedIds.add(id);
+    el.id = id;
+
+    let number = "";
+    if (depth === 2) {
+      h2Count += 1;
+      h3Count = 0;
+      number = String(h2Count);
+    } else if (depth === 3) {
+      if (h2Count === 0) h2Count = 1;
+      h3Count += 1;
+      number = `${h2Count}.${h3Count}`;
+    }
+
+    return { el, id, text, depth, number };
+  });
+}
+
+function setupTheoryToc(contentEl) {
+  const tocFab = document.getElementById("theory-toc-fab");
+  const overlay = document.getElementById("theory-toc-overlay");
+  const panel = document.getElementById("theory-toc-panel");
+  const closeBtn = document.getElementById("theory-toc-close");
+  const listEl = document.getElementById("theory-toc-list");
+  const topBtn = document.getElementById("theory-scroll-top");
+  const bottomBtn = document.getElementById("theory-scroll-bottom");
+  if (!tocFab || !overlay || !panel || !closeBtn || !listEl || !topBtn || !bottomBtn) return;
+
+  const items = buildTheoryTocItems(contentEl);
+  listEl.innerHTML = "";
+  tocFab.hidden = !items.length;
+  if (!items.length) return;
+
+  const linkById = new Map();
+  items.forEach((item) => {
+    const link = document.createElement("a");
+    link.className = "theory-toc-link";
+    link.href = `#${item.id}`;
+    link.dataset.target = item.id;
+    link.dataset.depth = String(item.depth);
+
+    const num = document.createElement("span");
+    num.className = "theory-toc-num";
+    num.textContent = item.number || "";
+
+    const label = document.createElement("span");
+    label.className = "theory-toc-text";
+    label.textContent = item.text;
+
+    link.append(num, label);
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      item.el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    listEl.appendChild(link);
+    linkById.set(item.id, link);
+  });
+
+  function openToc() {
+    overlay.hidden = false;
+    tocFab.setAttribute("aria-expanded", "true");
+  }
+
+  function closeToc() {
+    overlay.hidden = true;
+    tocFab.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleToc() {
+    if (overlay.hidden) openToc();
+    else closeToc();
+  }
+
+  function setActive(id) {
+    items.forEach((item) => item.el.classList.toggle("is-toc-active", item.id === id));
+    linkById.forEach((link, key) => link.classList.toggle("is-active", key === id));
+  }
+
+  function updateActiveHeading() {
+    const offset = 110;
+    let activeId = items[0]?.id || "";
+    items.forEach((item) => {
+      const rect = item.el.getBoundingClientRect();
+      if (rect.top - offset <= 0) activeId = item.id;
+    });
+    if (activeId) setActive(activeId);
+  }
+
+  tocFab.onclick = toggleToc;
+  closeBtn.onclick = closeToc;
+  overlay.onclick = (event) => {
+    if (event.target === overlay) closeToc();
+  };
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !overlay.hidden) closeToc();
+  });
+
+  topBtn.onclick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  bottomBtn.onclick = () => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+  };
+
+  window.addEventListener("scroll", updateActiveHeading, { passive: true });
+  updateActiveHeading();
 }
 
 function pickEntry(params, lookup, setMap) {
@@ -1513,6 +1718,8 @@ async function initTheoryPage() {
   const params = new URLSearchParams(location.search);
   const setIdInQuery = params.get("set");
   const langInQuery = params.get("lang");
+
+  setupTheoryHeaderAutoHide();
 
   try {
     const [theoryIndex, sets] = await Promise.all([
@@ -1554,6 +1761,7 @@ async function initTheoryPage() {
     enhanceExampleBlocks(contentEl);
     attachTrailingExampleBlocks(contentEl);
     setupLanguageToggle(contentEl, langInQuery || entry.lang);
+    setupTheoryToc(contentEl);
   } catch (err) {
     console.error(err);
     contentEl.textContent = "개념 페이지를 불러오는 중 오류가 발생했습니다.";
