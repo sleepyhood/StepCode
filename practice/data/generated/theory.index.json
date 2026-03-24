@@ -1,5 +1,21 @@
 [
   {
+    "conceptId": "canva_l11_rehearsal_lesson",
+    "title": "Canva 11차시 리허설",
+    "categoryId": "canva_l11_rehearsal",
+    "lang": "canva",
+    "track": "canva",
+    "mdPath": "./data/content/canva/canva/l11_rehearsal/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [
+      "canva_l10_assignment"
+    ],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/canva/canva/l11_rehearsal/lesson/lesson.md"
+  },
+  {
     "conceptId": "py_lv07_for",
     "title": "Python Lv7 for문",
     "categoryId": "py_for",

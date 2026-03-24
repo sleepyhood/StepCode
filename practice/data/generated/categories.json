@@ -8,5 +8,15 @@
     "partName": "반복1(for)",
     "status": "active",
     "contentRootPath": "./data/content/language/python/lv07_for"
+  },
+  {
+    "id": "canva_l11_rehearsal",
+    "name": "Canva - 11차시 리허설",
+    "lang": "Canva",
+    "track": "canva",
+    "order": 799,
+    "partName": "11차시 리허설",
+    "status": "active",
+    "contentRootPath": "./data/content/canva/canva/l11_rehearsal"
   }
 ]

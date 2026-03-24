@@ -24,7 +24,7 @@ practice/
     categories.json     # 카테고리 목록 (C-조건문, Python-for 등)
     sets.index.json     # 세트(회차) 메타데이터 목록
     theory.index.json   # 이론(개념) 메타데이터 목록
-    content/            # 신규 원본 구조 (수동 관리)
+    content/            # 신규 원본 구조 (생성기 + 본문 수동 작성)
     generated/          # 신규 자동 생성 인덱스
     sets/
       c_if_b1.json      # C 조건문 기초 1회차
@@ -45,7 +45,7 @@ practice/
 > * 이론 등록 : `data/theory.index.json`
 > * 실제 문제 내용 : `data/sets/*.json`
 > * 실제 이론 내용 : `data/theory/**/*.md`
-> * 신규 원본 등록 : `data/content/**/*`
+> * 신규 원본 등록 : `scripts/new_content_category.py`, `scripts/new_lesson.py`, `scripts/new_worksheet.py`
 > * 자동 인덱스 생성 : `scripts/generate_content_indexes.py`
 
 ---
@@ -117,9 +117,62 @@ practice/data/content/language/python/lv07_for/
 
 원칙:
 
-* `content/`는 사람이 직접 관리하는 원본입니다.
+* `content/`는 생성기로 틀을 만들고, 본문만 사람이 채우는 원본입니다.
 * `generated/`는 스크립트가 생성하는 웹용 인덱스입니다.
 * 기존 `categories.json`, `sets.index.json`, `theory.index.json`는 당분간 fallback으로 유지합니다.
+
+생성기:
+
+* `python scripts/new_content_category.py ...`
+* `python scripts/new_lesson.py ...`
+* `python scripts/new_worksheet.py ...`
+
+권장 흐름:
+
+1. 카테고리 틀 생성
+2. lesson 생성
+3. worksheet 생성
+4. 본문 작성
+5. 인덱스 재생성
+
+예시:
+
+```powershell
+python scripts/new_content_category.py `
+  --track language `
+  --lang python `
+  --slug lv07_for `
+  --category-id py_for `
+  --title "Python - Lv7 반복1(for)" `
+  --part-name "반복1(for)" `
+  --order 207 `
+  --with-interactive
+
+python scripts/new_lesson.py `
+  --category-root "practice/data/content/language/python/lv07_for" `
+  --title "Python Lv7 for문" `
+  --lesson-id py_lv07_for `
+  --tags "for,loop,range" `
+  --recommended-set-id py_lv07_for_b01 `
+  --prerequisites py_lv06_if `
+  --next-concepts py_lv08_while `
+  --priority 3
+
+python scripts/new_worksheet.py `
+  --category-root "practice/data/content/language/python/lv07_for" `
+  --title "Python for문 기초 1회차" `
+  --worksheet-id py_lv07_for_b01 `
+  --difficulty basic `
+  --round 1 `
+  --with-interactive
+```
+
+ID 규칙:
+
+* `category.meta.yml`의 `id`는 카테고리 ID입니다. 예: `py_for`
+* `lesson/lesson.md`의 front matter `id`는 이론 개념 ID입니다. 예: `py_lv07_for`
+* `interactive_*.json`의 `meta.id`와 루트 `id`는 세트/인터랙티브 ID입니다. 예: `py_lv07_for_b01`
+* `worksheet_*.md`의 front matter `id`는 문서 ID이며 파일명에서 자동 파생됩니다. 예: `lv07_for_basic_r01`
 
 자동 생성 명령:
 
@@ -505,6 +558,9 @@ python scripts/generate_content_indexes.py
 
 ## 6. 새 문제 / 새 세트 / 새 카테고리 추가 가이드
 
+신규 `content/` 구조를 사용할 때는 생성기를 먼저 사용하세요.
+기존 `categories.json`, `sets.index.json`, `theory.index.json` 직접 수정 방식은 fallback입니다.
+
 ### 6.0 정합성 체크
 
 `sets.index.json`과 실제 세트 파일의 `numProblems`가 일치하는지 확인하려면 아래 스크립트를 실행하세요.
@@ -517,6 +573,67 @@ powershell -ExecutionPolicy Bypass -File scripts/check_sets_index.ps1
 
 파트 문서를 새로 만들 때는 `docs/parts/_template.md`를 기준으로 작성하세요.
 
+### 6.0.2 신규 content 생성기 사용
+
+1. 카테고리 생성
+
+```powershell
+python scripts/new_content_category.py `
+  --track language `
+  --lang python `
+  --slug lv07_for `
+  --category-id py_for `
+  --title "Python - Lv7 반복1(for)" `
+  --part-name "반복1(for)" `
+  --order 207 `
+  --with-interactive
+```
+
+2. lesson 생성
+
+```powershell
+python scripts/new_lesson.py `
+  --category-root "practice/data/content/language/python/lv07_for" `
+  --title "Python Lv7 for문" `
+  --lesson-id py_lv07_for `
+  --tags "for,loop,range" `
+  --recommended-set-id py_lv07_for_b01 `
+  --prerequisites py_lv06_if `
+  --next-concepts py_lv08_while `
+  --priority 3
+```
+
+3. worksheet + answer + interactive 생성
+
+```powershell
+python scripts/new_worksheet.py `
+  --category-root "practice/data/content/language/python/lv07_for" `
+  --title "Python for문 기초 1회차" `
+  --worksheet-id py_lv07_for_b01 `
+  --difficulty basic `
+  --round 1 `
+  --with-interactive
+```
+
+4. 본문 작성 후 인덱스 재생성
+
+```powershell
+python scripts/generate_content_indexes.py
+```
+
+생성기는 다음을 자동 처리합니다.
+
+* 경로 생성
+* 파일명 생성
+* 기본 메타데이터 채움
+* `practice/data/content/**/*`
+* `practice/data/generated/*.json`
+* `practice/data/categories.json`
+* `practice/data/sets.index.json`
+* `practice/data/theory.index.json`
+
+위 범위까지 포함한 ID 충돌 검사
+
 ### 6.1 기존 세트에 “문제 하나 더” 추가
 
 1. `data/sets/<세트ID>.json` 파일을 연다.
@@ -527,7 +644,7 @@ powershell -ExecutionPolicy Bypass -File scripts/check_sets_index.ps1
 
 ---
 
-### 6.2 새 세트 추가 (예: Python while문 챌린지 1회차)
+### 6.2 기존 구조에서 새 세트 추가 (예: Python while문 챌린지 1회차)
 
 1. **세트 JSON 파일 만들기**
 
@@ -575,7 +692,7 @@ powershell -ExecutionPolicy Bypass -File scripts/check_sets_index.ps1
 
 ---
 
-### 6.3 새 카테고리 추가 (예: Python - Lv9 함수)
+### 6.3 기존 구조에서 새 카테고리 추가 (예: Python - Lv9 함수)
 
 1. **`categories.json`에 항목 추가**
 
@@ -717,34 +834,29 @@ powershell -ExecutionPolicy Bypass -File scripts/check_sets_index.ps1
 
 다음 순서를 기준으로 작업하면 누락 없이 정합성을 유지할 수 있습니다.
 
-1. **파트별 문서 초안 작성** (`docs/parts/*.md`)
+1. **카테고리 틀 생성**
 
-   - 핵심 개념, 세트 구성(요약), 문항 타입 비율을 먼저 정리합니다.
+   - `python scripts/new_content_category.py ...`
 
-2. **세트 JSON 작성** (`practice/data/sets/*.json`)
+2. **lesson 생성**
 
-   - 문서의 세트 구성에 맞춰 문제를 작성합니다.
-   - 문제 수와 순서를 문서와 일치시키세요.
+   - `python scripts/new_lesson.py ...`
 
-3. **세트 인덱스 등록** (`practice/data/sets.index.json`)
+3. **worksheet 생성**
 
-   - `id`, `categoryId`, `title`, `round`, `difficulty`, `numProblems`, `file`를 추가합니다.
+   - `python scripts/new_worksheet.py ...`
 
-4. **신규 카테고리 등록** (필요 시) (`practice/data/categories.json`)
+4. **본문 작성**
 
-   - 새 단원이라면 카테고리를 먼저 추가합니다.
+   - `practice/data/content/**/*` 아래 본문과 문제를 채웁니다.
 
-5. **이론 md 작성 및 인덱스 등록** (`practice/data/theory/**/*.md`, `practice/data/theory.index.json`)
+5. **자동 인덱스 생성**
 
-   - 개념 페이지에 보여줄 md 파일을 작성합니다.
-   - `conceptId`, `categoryId`, `title`, `mdPath`를 `theory.index.json`에 추가합니다.
-   - 문제 세트와 이론을 연결하려면 `categoryId`가 서로 일치해야 합니다.
+   - `python scripts/generate_content_indexes.py`
 
-6. **정합성 체크 실행**
+6. **브라우저 확인**
 
-   - 아래 명령으로 문제 수/파일 존재/카테고리 일치를 확인합니다.
+   - `practice/index.html`에서 카테고리, 이론, 워크시트 반영 여부를 확인합니다.
 
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File scripts/check_sets_index.ps1
-   ```
+기존 레거시 JSON 직접 수정 흐름이 필요하면 6.1 ~ 6.3 절을 참고하세요.
 
