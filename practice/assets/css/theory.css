@@ -525,6 +525,14 @@
   scroll-margin-top: 88px;
 }
 
+.theory-heading-num {
+  display: inline-block;
+  margin-right: 0.16em;
+  color: #2563eb;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
 .theory-content .is-toc-active {
   color: #0f766e;
 }

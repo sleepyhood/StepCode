@@ -1,0 +1,4620 @@
+{
+  "file name" : "1회차_파이썬으로_게임만들기.pdf",
+  "number of pages" : 72,
+  "author" : "Minseung Kang",
+  "title" : "",
+  "creation date" : "D:20260324132412+09'00'",
+  "modification date" : "D:20260324132412+09'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 202,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 32.592, 460.344, 236.517, 517.187 ],
+    "heading level" : 1,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 44.064,
+    "text color" : "[0.0]",
+    "content" : "파이썬 설정"
+  }, {
+    "type" : "caption",
+    "id" : 203,
+    "page number" : 1,
+    "bounding box" : [ 55.008, 368.05, 829.215, 441.902 ],
+    "linked content id" : 204,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "파이썬에서 한글을 사용하려고 하면 오류가 발생할 때가 있습니다. 그럴 때는 아래 사진을 따라 설정 을 바꿔주면 됩니다."
+  }, {
+    "type" : "image",
+    "id" : 204,
+    "page number" : 1,
+    "bounding box" : [ 77.929, 24.484, 826.729, 346.704 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile1.png"
+  }, {
+    "type" : "heading",
+    "id" : 209,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 50.016, 467.07, 302.995, 492.922 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "오른쪽 아래 저장 옆 화살표 클릭"
+  }, {
+    "type" : "image",
+    "id" : 207,
+    "page number" : 2,
+    "bounding box" : [ 168.21, 14.116, 805.33, 424.506 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile2.png"
+  }, {
+    "type" : "image",
+    "id" : 210,
+    "page number" : 3,
+    "bounding box" : [ 31.436, 397.02, 286.956, 498.16 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile3.png"
+  }, {
+    "type" : "image",
+    "id" : 214,
+    "page number" : 3,
+    "bounding box" : [ 449.46, 361.49, 819.5, 500.52 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile4.png"
+  }, {
+    "type" : "image",
+    "id" : 212,
+    "page number" : 3,
+    "bounding box" : [ 264.67, 15.965, 719.37, 281.985 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile5.png"
+  }, {
+    "type" : "heading",
+    "id" : 218,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 114.24, 341.494, 282.09, 398.337 ],
+    "heading level" : 1,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 44.064,
+    "text color" : "[0.0]",
+    "content" : "모듈이란?"
+  }, {
+    "type" : "paragraph",
+    "id" : 219,
+    "level" : "1",
+    "page number" : 4,
+    "bounding box" : [ 114.24, 268.7, 583.155, 304.768 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 27.96,
+    "text color" : "[0.0]",
+    "content" : "- 다른 파일에 있는 코드를 가져다 쓰는 것"
+  }, {
+    "type" : "header",
+    "id" : 220,
+    "page number" : 5,
+    "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 124,
+      "page number" : 5,
+      "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "따라해보기"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 222,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 52.08, 359.29, 572.826, 433.142 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "Visual studio 화면 위쪽에 검색이라고 되어 있는 부분을 클릭하고 솔루션 탐색기 라고 검색하고 클릭해봅시다"
+  }, {
+    "type" : "image",
+    "id" : 221,
+    "page number" : 5,
+    "bounding box" : [ 23.906, 62.703, 471.896, 267.043 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile6.png"
+  }, {
+    "type" : "image",
+    "id" : 223,
+    "page number" : 5,
+    "bounding box" : [ 590.05, 56.13, 888.31, 287.41 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile7.png"
+  }, {
+    "type" : "header",
+    "id" : 225,
+    "page number" : 6,
+    "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 125,
+      "page number" : 6,
+      "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "따라해보기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 226,
+    "page number" : 6,
+    "bounding box" : [ 52.08, 379.37, 681.851, 441.222 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "그럼 아래와 같이 솔루션 탐색기가 화면에 나오게 됩니다. 여기서 PythonApplication1이라고 되어있는 부분을 우클릭하고 아래 사진에서"
+  }, {
+    "type" : "paragraph",
+    "id" : 227,
+    "page number" : 6,
+    "bounding box" : [ 52.08, 343.364, 342.173, 369.247 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "빨간색으로 표시된 부분을 눌러봅시다"
+  }, {
+    "type" : "paragraph",
+    "id" : 228,
+    "page number" : 6,
+    "bounding box" : [ 52.08, 307.35, 610.863, 333.202 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "(PythonApplication1이 아닌 다른 이름으로 되어있을 수도 있습니다.)"
+  }, {
+    "type" : "image",
+    "id" : 230,
+    "page number" : 6,
+    "bounding box" : [ 44.876, 58.79, 366.626, 201.29 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile8.png"
+  }, {
+    "type" : "image",
+    "id" : 229,
+    "page number" : 6,
+    "bounding box" : [ 526.3, 11.071, 911.24, 276.901 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile9.png"
+  }, {
+    "type" : "header",
+    "id" : 232,
+    "page number" : 7,
+    "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 126,
+      "page number" : 7,
+      "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "따라해보기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 233,
+    "page number" : 7,
+    "bounding box" : [ 52.08, 379.37, 703.477, 441.222 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이런 화면이 나오면 Python클래스를 선택하고 이름을 설정해서 추가를 눌러줍시다. 이름은 아무렇게나 작성해도 되는데 여기서는 test1.py로 하겠습니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 234,
+    "page number" : 7,
+    "bounding box" : [ 52.08, 343.364, 293.421, 369.247 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "(뒤에 .py는 꼭 붙여야 합니다.)"
+  }, {
+    "type" : "image",
+    "id" : 235,
+    "page number" : 7,
+    "bounding box" : [ 58.722, 27.287, 501.272, 319.487 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile10.png"
+  }, {
+    "type" : "header",
+    "id" : 236,
+    "page number" : 8,
+    "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 127,
+      "page number" : 8,
+      "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "따라해보기"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 237,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 52.08, 379.37, 646.477, 441.222 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "그럼 솔루션 탐색기에 새로운 파이썬 파일이 하나 추가됩니다. 더블클릭하면 해당 파일이 열리고 거기서 파이썬 코드를 작성할 수 있습니다."
+  }, {
+    "type" : "image",
+    "id" : 238,
+    "page number" : 8,
+    "bounding box" : [ 59.263, 44.713, 654.573, 352.293 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile11.png"
+  }, {
+    "type" : "header",
+    "id" : 239,
+    "page number" : 9,
+    "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 128,
+      "page number" : 9,
+      "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "따라해보기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 240,
+    "page number" : 9,
+    "bounding box" : [ 52.08, 379.37, 889.981, 441.222 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "test1.py에서 다음과 같이 함수를 만든 뒤 PythonApplication1.py에서 오른쪽 사진처럼 코드를 작성하면 test1.py에 있는 함수, 즉 다른 파일에 있는 코드 사용이 가능합니다. 이런걸 모듈이라 부릅니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 241,
+    "page number" : 9,
+    "bounding box" : [ 52.08, 343.364, 665.802, 369.247 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "정확히는 PythonApplication1.py 입장에서 봤을 때 test1.py가 모듈입니다."
+  }, {
+    "type" : "image",
+    "id" : 242,
+    "page number" : 9,
+    "bounding box" : [ 24.311, 140.94, 454.041, 260.89 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile12.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 252,
+    "page number" : 9,
+    "bounding box" : [ 728.04, 267.5, 942.704, 285.612 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 14.04,
+    "text color" : "[0.0]",
+    "content" : "test1에 있는 코드를 쓰겠다는 뜻입니다"
+  }, {
+    "type" : "image",
+    "id" : 243,
+    "page number" : 9,
+    "bounding box" : [ 600.57, 117.49, 904.8, 270.0 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile13.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 248,
+    "page number" : 9,
+    "bounding box" : [ 470.64, 32.286, 888.857, 58.138 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "test1에 있는 test()라는 함수를 사용한다는 뜻입니다."
+  }, {
+    "type" : "header",
+    "id" : 254,
+    "page number" : 10,
+    "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 129,
+      "page number" : 10,
+      "bounding box" : [ 36.408, 466.66, 139.488, 497.62 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "따라해보기"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 255,
+    "level" : "Subtitle",
+    "page number" : 10,
+    "bounding box" : [ 56.808, 403.59, 394.597, 429.442 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "아래와 같은 방식으로도 사용이 가능합니다."
+  }, {
+    "type" : "image",
+    "id" : 257,
+    "page number" : 10,
+    "bounding box" : [ 49.59, 73.271, 865.36, 350.981 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile14.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 260,
+    "page number" : 10,
+    "bounding box" : [ 527.16, 257.2, 836.402, 280.42 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 18.0,
+    "text color" : "[0.0]",
+    "content" : "test1에서 test함수만 가져온다는 뜻입니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 261,
+    "page number" : 10,
+    "bounding box" : [ 527.16, 224.794, 857.646, 248.045 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 18.024,
+    "text color" : "[0.0]",
+    "content" : "test1에 있는 다른 코드는 사용이 불가능합니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 264,
+    "page number" : 10,
+    "bounding box" : [ 91.464, 77.052, 485.23, 132.67 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 18.0,
+    "text color" : "[0.0]",
+    "content" : "이렇게 import 하면 이전과 달리 앞에 test1. 을 붙이지 않고 사용이 가능합니다"
+  }, {
+    "type" : "heading",
+    "id" : 266,
+    "level" : "Subtitle",
+    "page number" : 11,
+    "bounding box" : [ 39.792, 432.77, 317.62, 463.73 ],
+    "heading level" : 4,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 24.0,
+    "text color" : "[0.0]",
+    "content" : "파이썬으로 게임을 만들다보면"
+  }, {
+    "type" : "paragraph",
+    "id" : 267,
+    "page number" : 11,
+    "bounding box" : [ 57.144, 324.15, 855.593, 386.002 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "다양한 모듈을 사용하게 됩니다. 물론 직접 만들 필요는 없습니다. 파이썬에서 기본적으로 제공해주는 모 듈이나 간단하게 설치만 하면 바로 가져다 쓸 수 있는 모듈들을 사용합니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 268,
+    "page number" : 11,
+    "bounding box" : [ 57.144, 252.13, 566.467, 277.982 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "아~ 모듈이라는건 이런거구나를 이해했으면 다음으로 넘어갑시다."
+  }, {
+    "type" : "heading",
+    "id" : 269,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 41.472, 447.84, 169.558, 478.8 ],
+    "heading level" : 4,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 24.0,
+    "text color" : "[0.0]",
+    "content" : "모듈의 문제점"
+  }, {
+    "type" : "paragraph",
+    "id" : 270,
+    "page number" : 12,
+    "bounding box" : [ 72.696, 370.344, 766.759, 396.227 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "모듈은 코드를 보기 편하게 만들어 줍니다. 하나의 파일 안에 코드를 다 집어넣는게 아니라"
+  }, {
+    "type" : "paragraph",
+    "id" : 271,
+    "page number" : 12,
+    "bounding box" : [ 72.696, 334.33, 461.387, 360.182 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "여러 파일에 나누어 넣다보니 훨씬 보기 편합니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 272,
+    "page number" : 12,
+    "bounding box" : [ 72.696, 190.3, 853.891, 288.152 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "그래서 보통 개발을 하게 되면 모듈 파일 여러 개와 모듈을 import해서 코드를 실제로 실행할 메인 파일 하나로 이루어지게 됩니다. 그런데 처음에는 모듈로만 쓰려고 했던 파일을 메인으로 사용하 고 싶어질 수도 있습니다. 이 때 어떤 문제가 생길까요?"
+  }, {
+    "type" : "header",
+    "id" : 275,
+    "page number" : 13,
+    "bounding box" : [ 29.76, 482.16, 388.22, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 130,
+      "page number" : 13,
+      "bounding box" : [ 29.76, 482.16, 388.22, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "먼저 메인 파일이 무엇인지 알아봅시다"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 278,
+    "page number" : 13,
+    "bounding box" : [ 42.24, 311.02, 577.72, 418.37 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile15.png"
+  }, {
+    "type" : "image",
+    "id" : 279,
+    "page number" : 13,
+    "bounding box" : [ 42.24, 180.12, 495.23, 300.75 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile16.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 276,
+    "page number" : 13,
+    "bounding box" : [ 68.496, 88.974, 903.264, 150.822 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "실행 버튼을 누르면 PythonApplication1.py와 test1.py 두 개의 파일 중 어떤 파일이 실제로 실행되는지 확인해 봅시다. 실행을 하면 두 개의 파일 중 어떤 것이 실행되는지 구분할 수 있도록 위와 같이 print문을"
+  }, {
+    "type" : "paragraph",
+    "id" : 277,
+    "page number" : 13,
+    "bounding box" : [ 68.496, 52.968, 252.332, 78.851 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "작성하고 실행해봅시다."
+  }, {
+    "type" : "header",
+    "id" : 280,
+    "page number" : 14,
+    "bounding box" : [ 29.76, 482.16, 388.22, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 131,
+      "page number" : 14,
+      "bounding box" : [ 29.76, 482.16, 388.22, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "먼저 메인 파일이 무엇인지 알아봅시다"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 282,
+    "page number" : 14,
+    "bounding box" : [ 54.686, 245.88, 473.116, 406.01 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile17.png"
+  }, {
+    "type" : "heading",
+    "id" : 281,
+    "level" : "Subtitle",
+    "page number" : 14,
+    "bounding box" : [ 66.0, 114.73, 640.688, 176.582 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "PythonApplication1.py가 실행됩니다. test1.py는 실행되지 않습니다 PythonApplication1.py가 현재 메인파일로 설정되서 그렇습니다."
+  }, {
+    "type" : "header",
+    "id" : 283,
+    "page number" : 15,
+    "bounding box" : [ 29.76, 482.16, 388.22, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 132,
+      "page number" : 15,
+      "bounding box" : [ 29.76, 482.16, 388.22, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "먼저 메인 파일이 무엇인지 알아봅시다"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 286,
+    "page number" : 15,
+    "bounding box" : [ 61.892, 31.017, 387.212, 461.337 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile18.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 284,
+    "page number" : 15,
+    "bounding box" : [ 440.28, 365.684, 887.106, 391.567 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "메인파일을 바꾸려면 솔루션 탐색기에서 메인파일로 설정"
+  }, {
+    "type" : "paragraph",
+    "id" : 285,
+    "page number" : 15,
+    "bounding box" : [ 440.28, 293.67, 881.325, 355.522 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "하고 싶은 파일을 우클릭 하고 시작 파일로 설정을 눌러주 면 됩니다."
+  }, {
+    "type" : "header",
+    "id" : 289,
+    "page number" : 16,
+    "bounding box" : [ 29.76, 482.16, 388.22, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 133,
+      "page number" : 16,
+      "bounding box" : [ 29.76, 482.16, 388.22, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "먼저 메인 파일이 무엇인지 알아봅시다"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 291,
+    "page number" : 16,
+    "bounding box" : [ 57.711, 182.42, 636.281, 406.85 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile19.png"
+  }, {
+    "type" : "heading",
+    "id" : 290,
+    "level" : "Subtitle",
+    "page number" : 16,
+    "bounding box" : [ 77.712, 113.62, 571.667, 139.472 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "실행해보면 메인파일이 test1.py로 바뀐걸 확인할 수 있습니다."
+  }, {
+    "type" : "header",
+    "id" : 292,
+    "page number" : 17,
+    "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 134,
+      "page number" : 17,
+      "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "메인 파일을 바꿔가며 사용하다보면 생기는 문제점"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 293,
+    "level" : "Subtitle",
+    "page number" : 17,
+    "bounding box" : [ 50.088, 346.42, 902.254, 444.302 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "PythonApplication1.py를 원래 메인 파일로 사용하다가 test1.py를 메인 파일로 사용해야하는 상황이라고 해봅시다. PythonApplication1.py에는 실제 실행하는 코드가 대부분일 거고 반대로 test1.py에는 실행코드 는 없고 변수와 함수만 있는 상태였을 겁니다."
+  }, {
+    "type" : "image",
+    "id" : 294,
+    "page number" : 17,
+    "bounding box" : [ 32.111, 15.902, 445.391, 328.072 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile20.png"
+  }, {
+    "type" : "image",
+    "id" : 296,
+    "page number" : 17,
+    "bounding box" : [ 485.43, 62.042, 916.74, 329.982 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile21.png"
+  }, {
+    "type" : "header",
+    "id" : 298,
+    "page number" : 18,
+    "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 135,
+      "page number" : 18,
+      "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "메인 파일을 바꿔가며 사용하다보면 생기는 문제점"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 299,
+    "page number" : 18,
+    "bounding box" : [ 50.28, 427.464, 784.58, 453.347 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "여기서 메인 파일을 test1.py로 바꾸고 PythonApplication1을 import하면 어떻게 될까요?"
+  }, {
+    "type" : "caption",
+    "id" : 300,
+    "page number" : 18,
+    "bounding box" : [ 50.28, 355.45, 696.997, 417.302 ],
+    "linked content id" : 301,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "test1.py에는 실행 코드가 하나도 없는데도 출력 결과가 나오게 됩니다. PythonApplication1을 import 하면서 거기에 있던 print 코드가 실행된겁니다."
+  }, {
+    "type" : "image",
+    "id" : 301,
+    "page number" : 18,
+    "bounding box" : [ 52.323, 20.333, 635.293, 322.103 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile22.png"
+  }, {
+    "type" : "header",
+    "id" : 303,
+    "page number" : 19,
+    "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 136,
+      "page number" : 19,
+      "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "메인 파일을 바꿔가며 사용하다보면 생기는 문제점"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 304,
+    "page number" : 19,
+    "bounding box" : [ 54.504, 272.84, 911.995, 334.692 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "의도적으로 이렇게 사용할 수도 있겠지만 보통은 이렇게 사용하지 않습니다. 이런 경우를 막으려면 어떻게 해야 할까요? 원래 메인 파일로 사용했던 곳으로 가서 실행 코드를 하나하나 다 찾아가며 지워야 될까요? 너무 귀찮"
+  }, {
+    "type" : "paragraph",
+    "id" : 305,
+    "page number" : 19,
+    "bounding box" : [ 54.504, 236.834, 636.072, 262.717 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "을겁니다. 나중에 다시 필요해지면 지웠던걸 또 다시 써야할 수도 있습니다."
+  }, {
+    "type" : "header",
+    "id" : 306,
+    "page number" : 20,
+    "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 137,
+      "page number" : 20,
+      "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "메인 파일을 바꿔가며 사용하다보면 생기는 문제점"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 307,
+    "page number" : 20,
+    "bounding box" : [ 43.68, 430.64, 348.707, 456.492 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "그래서 아래와 같은 방식을 사용합니다."
+  }, {
+    "type" : "image",
+    "id" : 308,
+    "page number" : 20,
+    "bounding box" : [ 42.264, 39.793, 574.684, 374.783 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile23.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 309,
+    "page number" : 20,
+    "bounding box" : [ 597.36, 203.91, 932.805, 337.782 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "__name__ 이라는 변수는 이 파일이 메인 파일로 설정되어있을 때 ‘__main__’ 이라 는 값을 가지게 됩니다. 즉 여기 if문은 이 파일을 메인 파일로 설정했을 때만 실행되"
+  }, {
+    "type" : "paragraph",
+    "id" : 310,
+    "page number" : 20,
+    "bounding box" : [ 597.36, 167.904, 933.08, 193.787 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "게 됩니다. 반대로 다른 파일에서 이 파일을"
+  }, {
+    "type" : "paragraph",
+    "id" : 311,
+    "page number" : 20,
+    "bounding box" : [ 597.36, 95.89, 934.725, 157.742 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "모듈로 불러오는 경우에는 실행되지 않게 됩 니다."
+  }, {
+    "type" : "header",
+    "id" : 314,
+    "page number" : 21,
+    "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 138,
+      "page number" : 21,
+      "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "메인 파일을 바꿔가며 사용하다보면 생기는 문제점"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 315,
+    "level" : "Subtitle",
+    "page number" : 21,
+    "bounding box" : [ 43.68, 394.61, 788.929, 456.492 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "test1.py가 메인 파일인 상태에서 PythonApplication1.py의 코드를 앞 페이지처럼 작성하고 실행해봅시다. 이제는 PythonApplication1에 있던 print 코드가 실행되지 않습니다."
+  }, {
+    "type" : "image",
+    "id" : 316,
+    "page number" : 21,
+    "bounding box" : [ 51.67, 64.376, 711.26, 353.056 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile24.png"
+  }, {
+    "type" : "header",
+    "id" : 317,
+    "page number" : 22,
+    "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 139,
+      "page number" : 22,
+      "bounding box" : [ 29.76, 482.16, 494.93, 513.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "메인 파일을 바꿔가며 사용하다보면 생기는 문제점"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 318,
+    "page number" : 22,
+    "bounding box" : [ 43.68, 430.64, 345.107, 456.492 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이야기가 길었지만 결론은 간단합니다."
+  }, {
+    "type" : "heading",
+    "id" : 319,
+    "level" : "Subtitle",
+    "page number" : 22,
+    "bounding box" : [ 43.68, 391.37, 845.941, 419.698 ],
+    "heading level" : 6,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 21.96,
+    "text color" : "[0.0]",
+    "content" : "if __name__ == ‘__main__’ 이라고 되어있는 부분은 이 파일이 메인 파일일 때만 실행된다."
+  }, {
+    "type" : "caption",
+    "id" : 320,
+    "page number" : 22,
+    "bounding box" : [ 43.68, 355.01, 235.767, 380.862 ],
+    "linked content id" : 321,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이것만 기억하면 됩니다."
+  }, {
+    "type" : "image",
+    "id" : 321,
+    "page number" : 22,
+    "bounding box" : [ 44.913, 33.818, 493.833, 326.448 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile25.png"
+  }, {
+    "type" : "header",
+    "id" : 322,
+    "page number" : 23,
+    "bounding box" : [ 39.744, 464.16, 183.53, 495.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 140,
+      "page number" : 23,
+      "bounding box" : [ 39.744, 464.16, 183.53, 495.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 설치"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 323,
+    "page number" : 23,
+    "bounding box" : [ 55.68, 363.61, 747.637, 425.482 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "pygame은 우리가 파이썬으로 게임을 만들 때 사용하게될 모듈 입니다. 기존에 작성했던 코드를 다 지우고 import pygame 이라고 작성한 뒤 실행을 해봅시다."
+  }, {
+    "type" : "caption",
+    "id" : 324,
+    "page number" : 23,
+    "bounding box" : [ 55.68, 291.61, 660.517, 317.462 ],
+    "linked content id" : 325,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "실행을 했는데 아래와 같이 나온다면 pygame이 이미 설치 됐다는 뜻입니다."
+  }, {
+    "type" : "image",
+    "id" : 325,
+    "page number" : 23,
+    "bounding box" : [ 61.951, 23.018, 770.051, 269.048 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile26.png"
+  }, {
+    "type" : "header",
+    "id" : 326,
+    "page number" : 24,
+    "bounding box" : [ 39.744, 464.16, 183.53, 495.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 141,
+      "page number" : 24,
+      "bounding box" : [ 39.744, 464.16, 183.53, 495.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 설치"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 327,
+    "page number" : 24,
+    "bounding box" : [ 61.68, 398.62, 462.617, 424.472 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "오류가 발생한다면 pygame을 설치해줘야 합니다."
+  }, {
+    "type" : "caption",
+    "id" : 328,
+    "page number" : 24,
+    "bounding box" : [ 61.68, 290.6, 582.497, 352.452 ],
+    "linked content id" : 329,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "윈도우 키와 R키를 같이 누르면 아래와 같은 창이 하나 나타납니다. 여기에 cmd라고 치고 확인을 눌러봅시다"
+  }, {
+    "type" : "image",
+    "id" : 329,
+    "page number" : 24,
+    "bounding box" : [ 60.459, 37.978, 484.999, 262.098 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile27.png"
+  }, {
+    "type" : "header",
+    "id" : 330,
+    "page number" : 25,
+    "bounding box" : [ 39.744, 395.69, 664.867, 495.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 142,
+      "page number" : 25,
+      "bounding box" : [ 39.744, 464.16, 183.53, 495.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 설치"
+    }, {
+      "type" : "paragraph",
+      "id" : 143,
+      "page number" : 25,
+      "bounding box" : [ 53.664, 395.69, 664.867, 421.542 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "여기서 pip install pygame이라고 치고 엔터키를 누르면 설치가 시작됩니다."
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 331,
+    "page number" : 25,
+    "bounding box" : [ 53.664, 359.67, 925.067, 385.522 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "설치가 완료되면 다시 visual studio로 돌아와서 import pygame 코드가 오류없이 실행되는지 확인해봅시다."
+  }, {
+    "type" : "caption",
+    "id" : 332,
+    "page number" : 25,
+    "bounding box" : [ 53.664, 287.67, 424.717, 313.522 ],
+    "linked content id" : 333,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "오류가 발생하지 않는다면 잘 설치가 된 겁니다."
+  }, {
+    "type" : "image",
+    "id" : 333,
+    "page number" : 25,
+    "bounding box" : [ 51.205, 58.714, 682.005, 253.924 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile28.png"
+  }, {
+    "type" : "header",
+    "id" : 335,
+    "page number" : 26,
+    "bounding box" : [ 39.744, 395.69, 664.867, 495.12 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 144,
+      "page number" : 26,
+      "bounding box" : [ 39.744, 464.16, 183.53, 495.12 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 설치"
+    }, {
+      "type" : "paragraph",
+      "id" : 145,
+      "page number" : 26,
+      "bounding box" : [ 53.664, 395.69, 664.867, 421.542 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "여기서 pip install pygame이라고 치고 엔터키를 누르면 설치가 시작됩니다."
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 336,
+    "page number" : 26,
+    "bounding box" : [ 53.664, 359.67, 925.067, 385.522 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "설치가 완료되면 다시 visual studio로 돌아와서 import pygame 코드가 오류없이 실행되는지 확인해봅시다."
+  }, {
+    "type" : "paragraph",
+    "id" : 337,
+    "page number" : 26,
+    "bounding box" : [ 53.664, 287.67, 424.717, 313.522 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "오류가 발생하지 않는다면 잘 설치가 된 겁니다."
+  }, {
+    "type" : "header",
+    "id" : 338,
+    "page number" : 27,
+    "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 146,
+      "page number" : 27,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 341,
+    "page number" : 27,
+    "bounding box" : [ 45.129, 33.488, 442.579, 450.418 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile29.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 339,
+    "page number" : 27,
+    "bounding box" : [ 482.23, 252.2, 900.953, 422.072 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "게임 화면만 만드는 아주 간단한 코드입니다. 코드를 따라서 작성하면 되는데 무작정 따라하고 실행 하고 끝이 아니라 작성하고 나서 코드의 의미를 스스로 생각해보고 수정도 하고 실행도 해보며 각 코드의 의미 를 알아봅시다."
+  }, {
+    "type" : "paragraph",
+    "id" : 340,
+    "page number" : 27,
+    "bounding box" : [ 482.23, 144.17, 903.353, 206.022 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "본인만의 게임을 만들거나 기존의 게임을 수정할 때 도 움이 될 겁니다."
+  }, {
+    "type" : "header",
+    "id" : 342,
+    "page number" : 28,
+    "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 147,
+      "page number" : 28,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 344,
+    "page number" : 28,
+    "bounding box" : [ 44.28, 426.05, 360.017, 451.902 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "예를 들면 이렇게 생각해 볼 수 있습니다."
+  }, {
+    "type" : "image",
+    "id" : 345,
+    "page number" : 28,
+    "bounding box" : [ 44.696, 363.23, 876.526, 407.277 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile30.png"
+  }, {
+    "type" : "caption",
+    "id" : 346,
+    "page number" : 28,
+    "bounding box" : [ 51.912, 321.01, 766.179, 346.862 ],
+    "linked content id" : 345,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "SURFACE는 그냥 변수이름이겠고 display는 모니터? 화면? 그런 뜻이겠지? 그럼 이 코드는"
+  }, {
+    "type" : "paragraph",
+    "id" : 347,
+    "page number" : 28,
+    "bounding box" : [ 51.912, 285.004, 487.99, 310.887 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "게임 화면을 가로 400 세로 300의 크기로 만드는건가?"
+  }, {
+    "type" : "image",
+    "id" : 349,
+    "page number" : 28,
+    "bounding box" : [ 47.005, 34.937, 235.205, 191.627 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile31.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 350,
+    "page number" : 28,
+    "bounding box" : [ 20.736, 41.466, 197.633, 62.054 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 15.96,
+    "text color" : "[0.0]",
+    "content" : "실행해보니까 이렇게 나오네"
+  }, {
+    "type" : "paragraph",
+    "id" : 351,
+    "page number" : 28,
+    "bounding box" : [ 20.736, 12.66, 309.572, 33.279 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 15.984,
+    "text color" : "[0.0]",
+    "content" : "그럼 (400,300)을 (100,300)으로 바꿔볼까?"
+  }, {
+    "type" : "image",
+    "id" : 353,
+    "page number" : 28,
+    "bounding box" : [ 665.19, 13.408, 718.439, 191.628 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile32.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 354,
+    "level" : "2",
+    "page number" : 28,
+    "bounding box" : [ 578.16, 20.202, 884.069, 69.59 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 15.96,
+    "text color" : "[0.0]",
+    "content" : "처음 생각했던게 맞구나 앞에 있는게 가로 길이고 뒤에 있는게 세로 길이가 맞네"
+  }, {
+    "type" : "header",
+    "id" : 355,
+    "page number" : 29,
+    "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 148,
+      "page number" : 29,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 361,
+    "page number" : 29,
+    "bounding box" : [ 561.77, 310.71, 778.4, 489.04 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile33.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 357,
+    "page number" : 29,
+    "bounding box" : [ 44.28, 426.05, 360.017, 451.902 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "예를 들면 이렇게 생각해 볼 수 있습니다."
+  }, {
+    "type" : "image",
+    "id" : 360,
+    "page number" : 29,
+    "bounding box" : [ 51.023, 310.71, 561.763, 415.6 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile34.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 358,
+    "page number" : 29,
+    "bounding box" : [ 66.984, 233.19, 874.527, 295.042 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "SURFACE는 위에서 게임 화면을 집어넣은 변수니까 SURFCAE.fill은 화면을 뭔가로 채운다는 뜻이겠네. 보통 색을 RGB(Red, Green, Blue)로 표현하니까 빨강과 초록을 섞은 노란색이 나왔구나."
+  }, {
+    "type" : "paragraph",
+    "id" : 359,
+    "page number" : 29,
+    "bounding box" : [ 20.568, 96.744, 425.69, 122.627 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "그럼 (0,255,0) 이라고 하면 초록색 화면이 되겠네?"
+  }, {
+    "type" : "image",
+    "id" : 363,
+    "page number" : 29,
+    "bounding box" : [ 604.47, 18.95, 834.67, 206.72 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile35.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 365,
+    "level" : "3",
+    "page number" : 29,
+    "bounding box" : [ 844.34, 37.974, 879.615, 63.826 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "맞네"
+  }, {
+    "type" : "header",
+    "id" : 366,
+    "page number" : 30,
+    "bounding box" : [ 28.752, 435.13, 343.267, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 149,
+      "page number" : 30,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    }, {
+      "type" : "paragraph",
+      "id" : 150,
+      "page number" : 30,
+      "bounding box" : [ 44.208, 435.13, 343.267, 460.982 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "코드의 의미를 간단하게 확인해봅시다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 367,
+    "page number" : 30,
+    "bounding box" : [ 31.212, 327.5, 831.952, 376.052 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile36.png"
+  }, {
+    "type" : "text block",
+    "id" : 369,
+    "page number" : 30,
+    "bounding box" : [ 272.785, 336.585, 703.635, 366.977 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 1,
+      "page number" : 30,
+      "bounding box" : [ 280.39, 340.48, 685.503, 358.592 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "다양한 기능이 있지만 우리는 주로 프로그램(게임) 종료 목적으로 사용한다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 370,
+    "page number" : 30,
+    "bounding box" : [ 31.212, 251.08, 831.952, 292.005 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile37.png"
+  }, {
+    "type" : "text block",
+    "id" : 372,
+    "page number" : 30,
+    "bounding box" : [ 300.875, 258.315, 562.285, 288.707 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 2,
+      "page number" : 30,
+      "bounding box" : [ 308.5, 262.19, 544.553, 280.302 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "게임을 만드는데 필요한 기능들이 있는 모듈"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 371,
+    "page number" : 30,
+    "bounding box" : [ 31.212, 148.52, 831.952, 197.915 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile38.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 374,
+    "page number" : 30,
+    "bounding box" : [ 596.98, 152.25, 761.98, 195.562 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 14.04,
+    "text color" : "[0.0]",
+    "content" : "사용자가 게임을 종료하려는지 확인할 때 쓰는 변수 QUIT"
+  }, {
+    "type" : "header",
+    "id" : 375,
+    "page number" : 31,
+    "bounding box" : [ 28.752, 435.13, 343.267, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 151,
+      "page number" : 31,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    }, {
+      "type" : "paragraph",
+      "id" : 152,
+      "page number" : 31,
+      "bounding box" : [ 44.208, 435.13, 343.267, 460.982 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "코드의 의미를 간단하게 확인해봅시다."
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 377,
+    "page number" : 31,
+    "bounding box" : [ 271.425, 329.585, 677.825, 385.423 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 4,
+      "page number" : 31,
+      "bounding box" : [ 279.05, 333.74, 666.687, 377.052 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "pygame이 내 컴퓨터의 모니터, 스피커 등을 사용할 수 있게 하는 코드 pygame으로 게임을 만들 때 항상 적어준다고 보면 된다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 376,
+    "page number" : 31,
+    "bounding box" : [ 42.096, 329.96, 728.716, 375.838 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile39.png"
+  }, {
+    "type" : "image",
+    "id" : 379,
+    "page number" : 31,
+    "bounding box" : [ 42.095, 252.42, 728.715, 287.583 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile40.png"
+  }, {
+    "type" : "text block",
+    "id" : 380,
+    "page number" : 31,
+    "bounding box" : [ 72.453, 222.865, 478.853, 253.257 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 3,
+      "page number" : 31,
+      "bounding box" : [ 80.04, 226.75, 460.123, 244.862 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "위에서 나왔던대로 게임 화면의 크기를 400, 300으로 설정하는 코드"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 381,
+    "page number" : 31,
+    "bounding box" : [ 633.84, 27.109, 947.07, 166.349 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile41.png"
+  }, {
+    "type" : "image",
+    "id" : 378,
+    "page number" : 31,
+    "bounding box" : [ 42.095, 115.83, 728.715, 166.342 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile42.png"
+  }, {
+    "type" : "text block",
+    "id" : 383,
+    "page number" : 31,
+    "bounding box" : [ 73.971, 81.69, 346.561, 112.082 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 5,
+      "page number" : 31,
+      "bounding box" : [ 81.552, 85.53, 335.133, 103.642 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "게임 창의 이름을 “game”으로 설정하는 코드"
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 385,
+    "page number" : 32,
+    "bounding box" : [ 28.752, 435.13, 343.267, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 153,
+      "page number" : 32,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    }, {
+      "type" : "paragraph",
+      "id" : 154,
+      "page number" : 32,
+      "bounding box" : [ 44.208, 435.13, 343.267, 460.982 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "코드의 의미를 간단하게 확인해봅시다."
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 387,
+    "page number" : 32,
+    "bounding box" : [ 279.485, 241.585, 685.885, 399.205 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 9,
+      "page number" : 32,
+      "bounding box" : [ 287.09, 322.31, 565.243, 390.822 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "이 파일이 메인 파일일 때만 실행되도록 하기 위함. 아래 쪽에 if __name__ == ‘__main__’:"
+    }, {
+      "type" : "paragraph",
+      "id" : 10,
+      "page number" : 32,
+      "bounding box" : [ 287.09, 271.89, 419.653, 315.222 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "main() 이라고 된 걸 볼 수 있다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 386,
+    "page number" : 32,
+    "bounding box" : [ 47.101, 327.39, 784.431, 378.214 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile43.png"
+  }, {
+    "type" : "image",
+    "id" : 388,
+    "page number" : 32,
+    "bounding box" : [ 47.101, 126.08, 784.431, 201.468 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile44.png"
+  }, {
+    "type" : "text block",
+    "id" : 389,
+    "page number" : 32,
+    "bounding box" : [ 140.565, -0.219, 780.095, 131.961 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 6,
+      "page number" : 32,
+      "bounding box" : [ 148.15, 105.424, 438.136, 123.567 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.064,
+      "text color" : "[0.0]",
+      "content" : "위에서 나왔던대로 화면을 원하는 색으로 채우는 코드"
+    }, {
+      "type" : "paragraph",
+      "id" : 7,
+      "page number" : 32,
+      "bounding box" : [ 148.15, 80.202, 406.41, 98.314 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "while True 라는 무한 반복문 안에 있는 이유는"
+    }, {
+      "type" : "list",
+      "id" : 8,
+      "level" : "1",
+      "page number" : 32,
+      "bounding box" : [ 148.15, 4.596, 761.538, 73.114 ],
+      "numbering style" : "arabic numbers",
+      "number of list items" : 2,
+      "list items" : [ {
+        "type" : "list item",
+        "page number" : 32,
+        "bounding box" : [ 148.15, 29.802, 761.538, 73.114 ],
+        "font" : "HancomMalangMalang-Regular",
+        "font size" : 14.04,
+        "text color" : "[0.0]",
+        "content" : "1. 게임화면은 결국 동영상 화면인 셈인데 동영상은 사실 이미지 여러 개를 빠르게 보여주는 것과 같다. 매 프레임 마다 새롭게 화면을 그려줘야 해서 반복문에 넣어야 한다.",
+        "kids" : [ ]
+      }, {
+        "type" : "list item",
+        "page number" : 32,
+        "bounding box" : [ 148.15, 4.596, 501.908, 22.739 ],
+        "font" : "HancomMalangMalang-Regular",
+        "font size" : 14.064,
+        "text color" : "[0.0]",
+        "content" : "2. 게임 프로그램이 종료될 때 까지 무한히 화면을 그려줘야 한다.",
+        "kids" : [ ]
+      } ]
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 391,
+    "page number" : 33,
+    "bounding box" : [ 28.752, 435.13, 343.267, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 155,
+      "page number" : 33,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    }, {
+      "type" : "paragraph",
+      "id" : 156,
+      "page number" : 33,
+      "bounding box" : [ 44.208, 435.13, 343.267, 460.982 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "코드의 의미를 간단하게 확인해봅시다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 392,
+    "page number" : 33,
+    "bounding box" : [ 46.331, 338.82, 711.841, 388.797 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile45.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 393,
+    "page number" : 33,
+    "bounding box" : [ 64.704, 268.604, 834.233, 294.487 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "pygame에는 ‘이벤트 큐’ 라는게 있습니다. ‘큐’ 라는 곳에 사용자가 누른 키보드, 마우스 클릭 같은"
+  }, {
+    "type" : "paragraph",
+    "id" : 394,
+    "page number" : 33,
+    "bounding box" : [ 64.704, 196.59, 671.707, 258.442 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "정보가 순서대로 저장됩니다. 그것들을 순서대로 실행하기 위한 반복문 입니다. pygame.event.get()는 이벤트 큐의 내용을 가져오는 코드입니다."
+  }, {
+    "type" : "header",
+    "id" : 396,
+    "page number" : 34,
+    "bounding box" : [ 28.752, 435.13, 343.267, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 157,
+      "page number" : 34,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    }, {
+      "type" : "paragraph",
+      "id" : 158,
+      "page number" : 34,
+      "bounding box" : [ 44.208, 435.13, 343.267, 460.982 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "코드의 의미를 간단하게 확인해봅시다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 398,
+    "page number" : 34,
+    "bounding box" : [ 42.096, 299.72, 589.676, 407.74 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile46.png"
+  }, {
+    "type" : "caption",
+    "id" : 400,
+    "page number" : 34,
+    "bounding box" : [ 44.544, 264.05, 686.199, 289.902 ],
+    "linked content id" : 398,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이 코드를 실행하면 변수 i에 1, 3, 5, 7, 9가 순서대로 들어가며 반복문이 실행되죠?"
+  }, {
+    "type" : "image",
+    "id" : 397,
+    "page number" : 34,
+    "bounding box" : [ 42.096, 163.76, 707.606, 213.737 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile47.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 402,
+    "page number" : 34,
+    "bounding box" : [ 49.296, 116.17, 881.197, 142.022 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "플레이어가 좌클릭, 우클릭, W를 순서대로 눌렀다고 하면 위 코드는 아래 코드처럼 된다고 생각하면 됩니다."
+  }, {
+    "type" : "image",
+    "id" : 404,
+    "page number" : 34,
+    "bounding box" : [ 42.096, 58.889, 871.376, 98.118 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile48.png"
+  }, {
+    "type" : "header",
+    "id" : 405,
+    "page number" : 35,
+    "bounding box" : [ 28.752, 435.13, 343.267, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 159,
+      "page number" : 35,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    }, {
+      "type" : "paragraph",
+      "id" : 160,
+      "page number" : 35,
+      "bounding box" : [ 44.208, 435.13, 343.267, 460.982 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "코드의 의미를 간단하게 확인해봅시다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 407,
+    "page number" : 35,
+    "bounding box" : [ 46.254, 286.56, 629.174, 400.66 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile49.png"
+  }, {
+    "type" : "table",
+    "id" : 408,
+    "level" : "4",
+    "page number" : 35,
+    "bounding box" : [ 213.33, 222.56, 506.67, 373.851 ],
+    "number of rows" : 2,
+    "number of columns" : 2,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 35,
+        "bounding box" : [ 215.58, 285.435, 504.42, 371.601 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 2,
+        "kids" : [ ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 35,
+        "bounding box" : [ 215.58, 224.81, 354.38, 285.435 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 35,
+        "bounding box" : [ 354.38, 224.81, 504.42, 285.435 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      } ]
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 409,
+    "page number" : 35,
+    "bounding box" : [ 58.374, 82.603, 802.294, 195.283 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 12,
+      "level" : "Subtitle",
+      "page number" : 35,
+      "bounding box" : [ 65.952, 87.198, 749.159, 185.072 ],
+      "heading level" : 7,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "event의 타입이 QUIT라면, 즉 플레이어가 게임 종료버튼(오른쪽 위 X버튼)을 눌렀다면 pygame.quit() = pygame 기능 종료 sys.exit() = 프로그램 완전 종료"
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 410,
+    "page number" : 36,
+    "bounding box" : [ 28.752, 435.13, 343.267, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 161,
+      "page number" : 36,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    }, {
+      "type" : "paragraph",
+      "id" : 162,
+      "page number" : 36,
+      "bounding box" : [ 44.208, 435.13, 343.267, 460.982 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "코드의 의미를 간단하게 확인해봅시다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 413,
+    "page number" : 36,
+    "bounding box" : [ 43.454, 310.41, 840.574, 367.499 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile50.png"
+  }, {
+    "type" : "text block",
+    "id" : 412,
+    "page number" : 36,
+    "bounding box" : [ 79.304, 157.115, 472.144, 269.795 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 13,
+      "page number" : 36,
+      "bounding box" : [ 86.88, 233.74, 345.643, 259.592 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "화면의 변경사항을 적용하는 코드"
+    }, {
+      "type" : "paragraph",
+      "id" : 14,
+      "page number" : 36,
+      "bounding box" : [ 86.88, 161.72, 455.417, 187.572 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "다음 페이지의 예제를 보면 이해할 수 있습니다."
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 414,
+    "page number" : 37,
+    "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 163,
+      "page number" : 37,
+      "bounding box" : [ 28.752, 480.17, 171.1, 511.13 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "PyGame 기본"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 416,
+    "page number" : 37,
+    "bounding box" : [ 30.197, 20.93, 455.947, 466.34 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile51.png"
+  }, {
+    "type" : "text block",
+    "id" : 415,
+    "page number" : 37,
+    "bounding box" : [ 489.535, 58.023, 948.655, 461.523 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 15,
+      "page number" : 37,
+      "bounding box" : [ 497.18, 389.5, 938.677, 451.352 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "코드를 일부 수정했습니다. event가 발생할 때마다 화면의 색이 바뀌는 코드입니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 16,
+      "page number" : 37,
+      "bounding box" : [ 497.18, 281.48, 938.945, 343.332 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "실행해보면 마우스를 움직일 때마다, 클릭할 때마다, 클릭 을 뗄 때마다,"
+    }, {
+      "type" : "paragraph",
+      "id" : 17,
+      "page number" : 37,
+      "bounding box" : [ 497.18, 245.474, 927.086, 271.357 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "키보드를 누를 때, 뗄 때, 누르고 있는 동안, 색이 계속 바"
+    }, {
+      "type" : "paragraph",
+      "id" : 18,
+      "page number" : 37,
+      "bounding box" : [ 497.18, 173.45, 875.443, 235.302 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "뀌는걸 확인할 수 있습니다. (이런 것들이 전부 이벤트 큐에 들어가게 됩니다)"
+    }, {
+      "type" : "paragraph",
+      "id" : 19,
+      "page number" : 37,
+      "bounding box" : [ 497.18, 65.43, 912.729, 127.282 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "그런데 여기서 pygame.display.update()를 빼면? 화면이 전혀 변하지 않습니다."
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 417,
+    "level" : "Subtitle",
+    "page number" : 38,
+    "bounding box" : [ 28.752, 480.17, 116.112, 511.13 ],
+    "heading level" : 4,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 24.0,
+    "text color" : "[0.0]",
+    "content" : "FPS 제한"
+  }, {
+    "type" : "image",
+    "id" : 423,
+    "page number" : 38,
+    "bounding box" : [ 51.05, 15.07, 508.66, 463.06 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile52.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 419,
+    "page number" : 38,
+    "bounding box" : [ 523.97, 391.42, 938.706, 453.272 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "FPS를 높게 설정하면 컴퓨터 성능에 따라 렉이 걸릴 수 있습니다. 이번에는 FPS를 제한하는 코드를 작성해"
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "page number" : 38,
+    "bounding box" : [ 523.97, 355.414, 579.382, 381.297 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "봅시다."
+  }, {
+    "type" : "paragraph",
+    "id" : 421,
+    "page number" : 38,
+    "bounding box" : [ 523.97, 283.4, 943.775, 309.252 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "위에서 봤던 코드는 넘어가고 처음 등장한 코드만 짚어"
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "page number" : 38,
+    "bounding box" : [ 523.97, 247.394, 579.382, 273.277 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "봅시다."
+  }, {
+    "type" : "heading",
+    "id" : 424,
+    "level" : "Subtitle",
+    "page number" : 39,
+    "bounding box" : [ 50.52, 420.0, 176.3, 450.96 ],
+    "heading level" : 4,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 24.0,
+    "text color" : "[0.0]",
+    "content" : "참고) FPS란?"
+  }, {
+    "type" : "paragraph",
+    "id" : 425,
+    "page number" : 39,
+    "bounding box" : [ 75.168, 354.65, 359.797, 380.502 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "Frame Per Second의 약자입니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 426,
+    "page number" : 39,
+    "bounding box" : [ 75.168, 318.644, 658.412, 344.527 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "Frame = 사진 한 장. 즉 FPS는 1초에 사진 몇 장을 보여주는지를 말합니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 427,
+    "page number" : 39,
+    "bounding box" : [ 75.168, 246.63, 843.495, 308.482 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "30FPS는 1초에 30개의 사진, 60FPS는 1초에 60개의 사진입니다. 앞에서 게임 화면은 동영상 화면과도 같다고 했습니다. 움직이는 것처럼 보이는게 사실은 여러 개의"
+  }, {
+    "type" : "paragraph",
+    "id" : 428,
+    "page number" : 39,
+    "bounding box" : [ 75.168, 210.624, 329.202, 236.507 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "사진을 연속으로 보여주는겁니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 429,
+    "page number" : 39,
+    "bounding box" : [ 75.168, 138.61, 794.627, 164.462 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "FPS가 높을수록 화면이 더 부드럽게 보이겠지만 그 만큼 컴퓨터에게 높은 사양이 요구됩니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 430,
+    "page number" : 39,
+    "bounding box" : [ 75.168, 102.604, 656.372, 128.487 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "FPS를 높게 설정하면 오히려 렉이 걸릴 수 있어 제한하는 경우가 많습니다."
+  }, {
+    "type" : "text block",
+    "id" : 432,
+    "page number" : 40,
+    "bounding box" : [ 429.255, 366.415, 936.795, 479.095 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 22,
+      "page number" : 40,
+      "bounding box" : [ 436.9, 443.09, 914.867, 468.942 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "Pygame.time.Clock()은 시간관련 기능을 가진 객체입니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 23,
+      "page number" : 40,
+      "bounding box" : [ 436.9, 407.084, 912.156, 432.967 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "객체가 무엇인지는 뒤에 나오고 시간 관련 기능이다라고 이해"
+    }, {
+      "type" : "paragraph",
+      "id" : 24,
+      "page number" : 40,
+      "bounding box" : [ 436.9, 371.07, 534.907, 396.922 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "하면 됩니다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 431,
+    "page number" : 40,
+    "bounding box" : [ 38.492, 395.58, 748.992, 444.975 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile53.png"
+  }, {
+    "type" : "image",
+    "id" : 433,
+    "page number" : 40,
+    "bounding box" : [ 20.911, 209.72, 814.111, 248.232 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile54.png"
+  }, {
+    "type" : "text block",
+    "id" : 434,
+    "page number" : 40,
+    "bounding box" : [ 51.955, 94.064, 632.885, 206.744 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 20,
+      "page number" : 40,
+      "bounding box" : [ 59.544, 133.668, 615.307, 196.522 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "글자 폰트를 설정하여 sysfont라는 변수에 넣고 있습니다. None은 폰트를 설정하지 않겠다 = 기본 폰트를 사용하겠다는 뜻입니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 21,
+      "page number" : 40,
+      "bounding box" : [ 59.544, 98.664, 259.582, 124.547 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "36은 글자의 크기 입니다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 436,
+    "page number" : 41,
+    "bounding box" : [ 56.59, 300.14, 903.41, 507.77 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile55.png"
+  }, {
+    "type" : "table",
+    "id" : 437,
+    "level" : "5",
+    "page number" : 41,
+    "bounding box" : [ 167.29, 297.89, 398.67, 344.433 ],
+    "number of rows" : 1,
+    "number of columns" : 1,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 41,
+        "bounding box" : [ 169.54, 300.14, 396.42, 342.183 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      } ]
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 435,
+    "page number" : 41,
+    "bounding box" : [ 60.327, 152.545, 740.047, 265.225 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 25,
+      "level" : "Subtitle",
+      "page number" : 41,
+      "bounding box" : [ 67.92, 157.16, 729.517, 255.012 ],
+      "heading level" : 7,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "무한 반복문 안에서 counter의 값을 1씩 증가시킵니다. 반복문은 결국 프레임당 한 번 실행되므로 counter는 프레임마다 1씩 커지게 됩니다. 60FPS라면 counter의 값은 1초에 60씩 증가하게 될겁니다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 439,
+    "page number" : 42,
+    "bounding box" : [ 40.398, 450.71, 887.218, 514.464 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile56.png"
+  }, {
+    "type" : "text block",
+    "id" : 438,
+    "page number" : 42,
+    "bounding box" : [ 40.023, 25.16, 933.443, 428.65 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 26,
+      "page number" : 42,
+      "bounding box" : [ 47.616, 392.644, 529.552, 418.527 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "sysfont.render 뒤에 \\는 한 줄 아래로 내리겠다는 뜻입니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 27,
+      "page number" : 42,
+      "bounding box" : [ 47.616, 320.62, 922.985, 382.472 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "원래 하나의 코드는 한 줄에 쓰지만 이렇게 한 줄의 코드가 너무 길어질 때에는 \\을 쓰고 그 아래줄에 이어서 작성 이 가능합니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 28,
+      "page number" : 42,
+      "bounding box" : [ 47.616, 284.614, 907.122, 310.497 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "render는 화면에 나타낸다는 뜻입니다. 위에서 정한 폰트인 sysfont로 화면에 글자를 나타내겠다는 뜻입니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 29,
+      "page number" : 42,
+      "bounding box" : [ 47.616, 212.6, 740.943, 238.452 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "“count is {}”.format(counter)는 counter is 라는 글자는 그대로 화면에 나오게 되고"
+    }, {
+      "type" : "paragraph",
+      "id" : 30,
+      "page number" : 42,
+      "bounding box" : [ 47.616, 176.594, 553.912, 202.477 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "counter 변수의 값이 {}이 있는 자리에 들어가서 나오게 됩니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 31,
+      "page number" : 42,
+      "bounding box" : [ 47.616, 104.57, 718.817, 130.422 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "True는 안티앨리어싱을 켜겠다는 건데 글자를 좀 더 부드럽게 보이게 한다는 뜻입니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 32,
+      "page number" : 42,
+      "bounding box" : [ 47.616, 68.568, 244.392, 94.451 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "(255,0,0)은 색깔입니다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 441,
+    "page number" : 43,
+    "bounding box" : [ 40.398, 441.63, 887.218, 479.304 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile57.png"
+  }, {
+    "type" : "text block",
+    "id" : 440,
+    "page number" : 43,
+    "bounding box" : [ 40.023, 50.143, 933.443, 380.933 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 33,
+      "page number" : 43,
+      "bounding box" : [ 47.616, 236.89, 384.355, 370.762 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "SURFACE = 우리가 만든 게임 화면 blit = 이미지를 그리는 함수 count_image는 위에서 만든 글자 이미지 (50,50)은 위치"
+    }, {
+      "type" : "paragraph",
+      "id" : 34,
+      "page number" : 43,
+      "bounding box" : [ 47.616, 164.86, 629.147, 190.712 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "즉 이 코드는 화면 (50,50) 위치에 count_image를 그려주는 코드입니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 35,
+      "page number" : 43,
+      "bounding box" : [ 47.616, 56.838, 904.988, 118.69 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "pygame에서는 텍스트를 텍스트 그대로 출력하는게 불가능하고 텍스트를 이미지로 바꿔 그 이미지를 출력하는 방식입니다."
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 443,
+    "page number" : 44,
+    "bounding box" : [ 40.398, 386.79, 887.218, 418.604 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile58.png"
+  }, {
+    "type" : "text block",
+    "id" : 442,
+    "page number" : 44,
+    "bounding box" : [ 40.023, 143.155, 933.443, 292.185 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 36,
+      "page number" : 44,
+      "bounding box" : [ 47.616, 220.13, 688.697, 281.982 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "FPS를 120으로 제한하는 코드. 이 코드를 작성하면 120FPS를 넘지 못하게 됩니다. 이 코드를 실행하면 counter의 값이 1초에 120 증가하는걸 확인할 수 있습니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 37,
+      "page number" : 44,
+      "bounding box" : [ 47.616, 148.11, 477.707, 173.962 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "FPSCLOCK.tick(1) 이라고 하면 1초에 1씩 증가합니다."
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 444,
+    "page number" : 45,
+    "bounding box" : [ 37.128, 469.42, 145.848, 500.38 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 164,
+      "page number" : 45,
+      "bounding box" : [ 37.128, 469.42, 145.848, 500.38 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 445,
+    "page number" : 45,
+    "bounding box" : [ 63.456, 399.03, 402.327, 424.882 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "화면에 뭔가를 그릴려면 좌표를 알아야겠죠."
+  }, {
+    "type" : "list",
+    "id" : 446,
+    "level" : "6",
+    "page number" : 45,
+    "bounding box" : [ 63.456, 219.004, 768.766, 388.882 ],
+    "numbering style" : "korean letters",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 45,
+      "bounding box" : [ 63.456, 363.03, 768.766, 388.882 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "바로 앞에서 글자 이미지를 나타내는 좌표에 대한 이야기가 나왔지만 한 번 더 짚고 가자면",
+      "kids" : [ {
+        "type" : "paragraph",
+        "id" : 201,
+        "page number" : 45,
+        "bounding box" : [ 63.456, 255.01, 384.556, 316.862 ],
+        "font" : "HancomMalangMalang-Regular",
+        "font size" : 20.04,
+        "text color" : "[0.0]",
+        "content" : "컴퓨터에서 좌표는 왼쪽 제일 위가 (0,0) 오른쪽으로 갈수록 x좌표의 값이 증가하고"
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 45,
+      "bounding box" : [ 63.456, 219.004, 414.092, 244.887 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "아래로 내려갈수록 y좌표의 값이 증가합니다.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 447,
+    "page number" : 45,
+    "bounding box" : [ 523.93, 31.813, 842.27, 333.523 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile59.png"
+  }, {
+    "type" : "header",
+    "id" : 448,
+    "page number" : 46,
+    "bounding box" : [ 37.128, 425.0, 189.103, 500.38 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 165,
+      "page number" : 46,
+      "bounding box" : [ 37.128, 469.42, 145.848, 500.38 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    }, {
+      "type" : "paragraph",
+      "id" : 166,
+      "page number" : 46,
+      "bounding box" : [ 60.936, 425.0, 189.103, 450.852 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "직사각형 그리기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 450,
+    "page number" : 46,
+    "bounding box" : [ 69.696, 365.984, 249.595, 396.584 ],
+    "font" : "Consolas",
+    "font size" : 9.0,
+    "text color" : "[0.8]",
+    "content" : "import sys import pygame from pygame.locals import QUIT, Rect"
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 46,
+    "bounding box" : [ 69.696, 322.764, 289.59, 342.564 ],
+    "font" : "Consolas",
+    "font size" : 9.0,
+    "text color" : "[0.8]",
+    "content" : "pygame.init() SURFACE = pygame.display.set_mode((400,300))"
+  }, {
+    "type" : "paragraph",
+    "id" : 452,
+    "page number" : 46,
+    "bounding box" : [ 69.696, 268.764, 269.67, 299.364 ],
+    "font" : "Consolas",
+    "font size" : 9.0,
+    "text color" : "[0.8]",
+    "content" : "def main(): while True: for event in pygame.event.get():"
+  }, {
+    "type" : "paragraph",
+    "id" : 453,
+    "page number" : 46,
+    "bounding box" : [ 129.7, 236.344, 239.626, 266.964 ],
+    "font" : "Consolas",
+    "font size" : 9.0,
+    "text color" : "[0.8]",
+    "content" : "if event.type == QUIT: pygame.quit() sys.exit()"
+  }, {
+    "type" : "paragraph",
+    "id" : 454,
+    "page number" : 46,
+    "bounding box" : [ 109.66, 171.544, 399.624, 223.744 ],
+    "font" : "Consolas",
+    "font size" : 9.0,
+    "text color" : "[0.8]",
+    "content" : "SURFACE.fill((255,255,255)) pygame.draw.rect(SURFACE, (255,0,0), (10,20,100,50)) pygame.draw.rect(SURFACE, (255,0,0), (150,10,100,30), 3) pygame.draw.rect(SURFACE, (0,255,0), ((100, 80), (80,50)))"
+  }, {
+    "type" : "list",
+    "id" : 455,
+    "level" : "7",
+    "page number" : 46,
+    "bounding box" : [ 109.66, 95.916, 334.554, 158.944 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 46,
+      "bounding box" : [ 109.66, 139.138, 324.614, 158.944 ],
+      "font" : "Consolas",
+      "font size" : 9.024,
+      "text color" : "[0.8]",
+      "content" : "rect0 = Rect(200, 60, 140, 180) pygame.draw.rect(SURFACE, (0,0,255), rect0)",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 46,
+      "bounding box" : [ 109.66, 95.916, 334.554, 126.514 ],
+      "font" : "Consolas",
+      "font size" : 9.0,
+      "text color" : "[0.8]",
+      "content" : "rect1 = Rect((30,160), (100,50)) pygame.draw.rect(SURFACE, (255,255,0), rect1) pygame.display.update()",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 456,
+    "page number" : 46,
+    "bounding box" : [ 69.696, 63.516, 199.57, 83.316 ],
+    "font" : "Consolas",
+    "font size" : 9.0,
+    "text color" : "[0.808, 0.569, 0.471]",
+    "content" : "if __name__ == '__main__': main()"
+  }, {
+    "type" : "header",
+    "id" : 457,
+    "page number" : 47,
+    "bounding box" : [ 35.664, 428.24, 174.053, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 167,
+      "page number" : 47,
+      "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    }, {
+      "type" : "paragraph",
+      "id" : 168,
+      "page number" : 47,
+      "bounding box" : [ 45.888, 428.24, 174.053, 454.092 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "직사각형 그리기"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 460,
+    "page number" : 47,
+    "bounding box" : [ 49.598, 389.87, 896.418, 422.014 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile60.png"
+  }, {
+    "type" : "text block",
+    "id" : 465,
+    "page number" : 47,
+    "bounding box" : [ 49.223, 250.565, 698.613, 363.245 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 39,
+      "page number" : 47,
+      "bounding box" : [ 56.808, 327.22, 525.213, 353.072 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "직사각형을 그린다 SURFACE라는 게임 창에. 색깔은 이걸로"
+    }, {
+      "type" : "paragraph",
+      "id" : 40,
+      "page number" : 47,
+      "bounding box" : [ 56.808, 255.2, 668.995, 281.052 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "앞에서부터 순서대로 직사각형의 왼쪽 위 꼭짓점 x좌표, y좌표, 가로, 세로 길이"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 461,
+    "page number" : 47,
+    "bounding box" : [ 49.598, 158.04, 929.508, 193.017 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile61.png"
+  }, {
+    "type" : "text block",
+    "id" : 467,
+    "page number" : 47,
+    "bounding box" : [ 49.223, 46.924, 923.873, 159.604 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 38,
+      "level" : "Subtitle",
+      "page number" : 47,
+      "bounding box" : [ 56.808, 51.51, 900.615, 149.382 ],
+      "heading level" : 7,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "위랑 똑같은데 마지막에 3은 선의 굵기입니다. 위에선 굵기를 생략했는데 생략하면 0을 쓴 것과 같고 그러면 사각형 내부를 전부 색으로 채우게 됩니다. 0이 아닌 다른 걸 쓰면 내부를 채우지 않고 사각형의 선만 그려진 상태가 됩니다."
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 468,
+    "page number" : 48,
+    "bounding box" : [ 35.664, 428.24, 174.053, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 169,
+      "page number" : 48,
+      "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    }, {
+      "type" : "paragraph",
+      "id" : 170,
+      "page number" : 48,
+      "bounding box" : [ 45.888, 428.24, 174.053, 454.092 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "직사각형 그리기"
+    } ]
+  }, {
+    "type" : "image",
+    "id" : 471,
+    "page number" : 48,
+    "bounding box" : [ 42.689, 307.01, 917.309, 403.023 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile62.png"
+  }, {
+    "type" : "text block",
+    "id" : 470,
+    "page number" : 48,
+    "bounding box" : [ 43.041, 158.355, 917.691, 307.385 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 44,
+      "page number" : 48,
+      "bounding box" : [ 50.616, 271.344, 273.212, 297.227 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "이런 방식으로도 가능합니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 45,
+      "page number" : 48,
+      "bounding box" : [ 50.616, 199.33, 721.263, 261.182 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "Rect()라는 객체를 미리 만들고(사각형을 의미하는 변수를 만들었다 생각하면 됩니다) pygame.draw.rect 함수 안에 넣어줄 수 있습니다."
+    }, {
+      "type" : "paragraph",
+      "id" : 46,
+      "page number" : 48,
+      "bounding box" : [ 50.616, 163.324, 898.392, 189.207 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.0]",
+      "content" : "앞 페이지와 마찬가지로 Rect(왼쪽 위 꼭짓점 x좌표, 왼쪽 위 꼭짓점 y좌표, 가로길이, 세로길이) 순서입니다."
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 472,
+    "page number" : 49,
+    "bounding box" : [ 35.664, 428.24, 196.513, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 171,
+      "page number" : 49,
+      "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    }, {
+      "type" : "paragraph",
+      "id" : 172,
+      "page number" : 49,
+      "bounding box" : [ 45.888, 428.24, 196.513, 454.092 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "다양한 도형 그리기"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 482,
+    "level" : "Subtitle",
+    "page number" : 49,
+    "bounding box" : [ 54.624, 370.598, 770.273, 394.622 ],
+    "heading level" : 3,
+    "font" : "Consolas",
+    "font size" : 24.024,
+    "text color" : "[0.8]",
+    "content" : "pygame.draw.circle(SURFACE, (255,0,0), (50,50), 20, 3)"
+  }, {
+    "type" : "text block",
+    "id" : 473,
+    "page number" : 49,
+    "bounding box" : [ 47.451, 327.085, 140.358, 367.064 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 47,
+      "page number" : 49,
+      "bounding box" : [ 55.032, 331.04, 130.395, 356.892 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "원 그리기"
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 475,
+    "page number" : 49,
+    "bounding box" : [ 560.755, 325.085, 923.395, 365.064 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 48,
+      "page number" : 49,
+      "bounding box" : [ 580.42, 329.044, 896.761, 354.927 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.306, 0.584, 0.851]",
+      "content" : "중심좌표 반지름 선 굵기(생략하면 0)"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 477,
+    "level" : "Subtitle",
+    "page number" : 49,
+    "bounding box" : [ 54.624, 245.444, 783.58, 269.444 ],
+    "heading level" : 5,
+    "font" : "Consolas",
+    "font size" : 24.0,
+    "text color" : "[0.8]",
+    "content" : "pygame.draw.ellipse(SURFACE, (255,0,0), (50,50,100,50))"
+  }, {
+    "type" : "text block",
+    "id" : 479,
+    "page number" : 49,
+    "bounding box" : [ 579.665, 56.612, 923.395, 242.002 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 49,
+      "page number" : 49,
+      "bounding box" : [ 587.3, 61.902, 908.225, 231.782 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "직사각형과 같은 방식으로 적어줍니다 pygame에서 타원은 직사각형의 모퉁이 를 잘라낸 것으로 표현합니다. (50,50,100,50)인 직사각형의 모퉁이를 잘라낸 타원이 그려집니다"
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 478,
+    "page number" : 49,
+    "bounding box" : [ 47.451, 202.015, 159.861, 241.994 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 50,
+      "page number" : 49,
+      "bounding box" : [ 55.032, 205.93, 148.035, 231.782 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "타원 그리기"
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 486,
+    "page number" : 50,
+    "bounding box" : [ 35.664, 428.24, 196.513, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 173,
+      "page number" : 50,
+      "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    }, {
+      "type" : "paragraph",
+      "id" : 174,
+      "page number" : 50,
+      "bounding box" : [ 45.888, 428.24, 196.513, 454.092 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "다양한 도형 그리기"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 496,
+    "level" : "Subtitle",
+    "page number" : 50,
+    "bounding box" : [ 57.96, 342.418, 853.073, 366.442 ],
+    "heading level" : 3,
+    "font" : "Consolas",
+    "font size" : 24.024,
+    "text color" : "[0.8]",
+    "content" : "pygame.draw.line(SURFACE, (255,0,0), (10, 10), (10, 80), 10)"
+  }, {
+    "type" : "text block",
+    "id" : 487,
+    "page number" : 50,
+    "bounding box" : [ 50.799, 302.135, 143.706, 342.114 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 54,
+      "page number" : 50,
+      "bounding box" : [ 58.392, 306.08, 133.755, 331.932 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.04,
+      "text color" : "[0.0]",
+      "content" : "선 그리기"
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 492,
+    "page number" : 50,
+    "bounding box" : [ 554.605, 298.955, 935.955, 338.934 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 51,
+      "page number" : 50,
+      "bounding box" : [ 568.25, 302.904, 932.621, 328.787 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 20.064,
+      "text color" : "[0.306, 0.584, 0.851]",
+      "content" : "시작좌표 끝좌표 선 굵기(생략하면 0)"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 494,
+    "page number" : 50,
+    "bounding box" : [ 63.864, 178.3, 507.757, 204.152 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "여러 도형을 그리는 함수가 있지만 형태가 다 비슷합니다."
+  }, {
+    "type" : "header",
+    "id" : 498,
+    "page number" : 51,
+    "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 175,
+      "page number" : 51,
+      "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 500,
+    "page number" : 51,
+    "bounding box" : [ 54.024, 417.096, 120.153, 429.12 ],
+    "font" : "Consolas",
+    "font size" : 12.024,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "import sys"
+  }, {
+    "type" : "paragraph",
+    "id" : 501,
+    "page number" : 51,
+    "bounding box" : [ 54.024, 388.282, 252.65, 414.682 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "import pygame from pygame.locals import QUIT"
+  }, {
+    "type" : "paragraph",
+    "id" : 502,
+    "page number" : 51,
+    "bounding box" : [ 54.024, 330.682, 345.53, 357.082 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.init() SURFACE = pygame.display.set_mode((400,300))"
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 51,
+    "bounding box" : [ 54.024, 258.652, 319.01, 299.452 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "def main(): while True: for event in pygame.event.get():"
+  }, {
+    "type" : "paragraph",
+    "id" : 504,
+    "page number" : 51,
+    "bounding box" : [ 133.46, 215.452, 279.17, 256.252 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "if event.type == QUIT: pygame.quit() sys.exit()"
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 51,
+    "bounding box" : [ 106.94, 186.632, 285.89, 198.632 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.71, 0.808, 0.659]",
+    "content" : "SURFACE.fill((255,255,255))"
+  }, {
+    "type" : "list",
+    "id" : 506,
+    "level" : "8",
+    "page number" : 51,
+    "bounding box" : [ 106.94, 114.632, 464.83, 169.832 ],
+    "numbering style" : "english letters",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 51,
+      "bounding box" : [ 106.94, 143.432, 464.83, 169.832 ],
+      "font" : "Consolas",
+      "font size" : 12.0,
+      "text color" : "[0.773, 0.525, 0.753]",
+      "content" : "for x in range(0,401,25): pygame.draw.line(SURFACE, (0,0,0), (x,0), (x,300))",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 51,
+      "bounding box" : [ 106.94, 114.632, 464.83, 141.032 ],
+      "font" : "Consolas",
+      "font size" : 12.0,
+      "text color" : "[0.773, 0.525, 0.753]",
+      "content" : "for y in range(0,301,25): pygame.draw.line(SURFACE, (0,0,0), (0,y), (400,y))",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 507,
+    "page number" : 51,
+    "bounding box" : [ 54.024, 71.408, 259.37, 112.232 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.display.update() if __name__ == '__main__':"
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 51,
+    "bounding box" : [ 80.424, 57.008, 120.14, 69.008 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.863, 0.863, 0.667]",
+    "content" : "main()"
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "page number" : 51,
+    "bounding box" : [ 552.36, 312.56, 923.653, 374.412 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이런식으로 코드를 작성해서 바둑판 모양을 만들 어 볼 수 있습니다."
+  }, {
+    "type" : "header",
+    "id" : 509,
+    "page number" : 52,
+    "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 176,
+      "page number" : 52,
+      "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 521,
+    "page number" : 52,
+    "bounding box" : [ 770.14, 425.57, 827.975, 451.422 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.306, 0.584, 0.851]",
+    "content" : "선 굵기"
+  }, {
+    "type" : "paragraph",
+    "id" : 514,
+    "page number" : 52,
+    "bounding box" : [ 44.736, 424.54, 401.747, 450.392 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "선 여러 개를 한 번에 그리는 방법도 있습니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 516,
+    "page number" : 52,
+    "bounding box" : [ 54.624, 352.094, 823.3, 376.094 ],
+    "font" : "Consolas",
+    "font size" : 24.0,
+    "text color" : "[0.8]",
+    "content" : "pygame.draw.lines(SURFACE, (255,0,0), True, point_list, 5)"
+  }, {
+    "type" : "paragraph",
+    "id" : 525,
+    "page number" : 52,
+    "bounding box" : [ 47.904, 191.064, 457.046, 216.947 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0, 0.69, 0.314]",
+    "content" : "Point_list에 있는 첫 번째 점과 마지막 점을 이을 것"
+  }, {
+    "type" : "paragraph",
+    "id" : 511,
+    "page number" : 52,
+    "bounding box" : [ 519.31, 147.8, 864.327, 209.652 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[1.0, 0.0, 0.0]",
+    "content" : "점의 좌표 여러 개가 들어있는 리스트입니다. 이 리스트에 있는 점들을 선으로 이어줍니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 526,
+    "page number" : 52,
+    "bounding box" : [ 47.904, 119.05, 440.797, 180.902 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0, 0.69, 0.314]",
+    "content" : "인지를 결정하는 부분 입니다. True로 하면 첫번째 점과 마지막 점을 이어줍니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 512,
+    "page number" : 52,
+    "bounding box" : [ 519.31, 111.794, 902.972, 137.677 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[1.0, 0.0, 0.0]",
+    "content" : "리스트는 아래와 같은 형태로 만들어 주면 됩니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 527,
+    "page number" : 52,
+    "bounding box" : [ 47.904, 77.016, 939.88, 108.923 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0, 0.69, 0.314]",
+    "content" : "False로 하면 첫번째 점과 마지막 점은 잇지 않습니다. point_list = [(10, 30), (20, 50), (30, 40)]"
+  }, {
+    "type" : "header",
+    "id" : 529,
+    "page number" : 53,
+    "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 177,
+      "page number" : 53,
+      "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 531,
+    "page number" : 53,
+    "bounding box" : [ 54.024, 419.717, 109.048, 429.677 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "import sys"
+  }, {
+    "type" : "paragraph",
+    "id" : 532,
+    "page number" : 53,
+    "bounding box" : [ 54.024, 407.711, 125.621, 417.695 ],
+    "font" : "Consolas",
+    "font size" : 9.984,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "import pygame"
+  }, {
+    "type" : "paragraph",
+    "id" : 533,
+    "page number" : 53,
+    "bounding box" : [ 54.024, 383.697, 219.098, 405.657 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "from pygame.locals import QUIT import random"
+  }, {
+    "type" : "paragraph",
+    "id" : 534,
+    "page number" : 53,
+    "bounding box" : [ 54.024, 287.667, 296.048, 357.657 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.init() SURFACE = pygame.display.set_mode((400,300)) FPSCLOCK = pygame.time.Clock() def main():"
+  }, {
+    "type" : "paragraph",
+    "id" : 535,
+    "page number" : 53,
+    "bounding box" : [ 76.104, 263.667, 274.088, 285.627 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "while True: for event in pygame.event.get():"
+  }, {
+    "type" : "paragraph",
+    "id" : 536,
+    "page number" : 53,
+    "bounding box" : [ 120.14, 227.667, 241.088, 261.627 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "if event.type == QUIT: pygame.quit() sys.exit()"
+  }, {
+    "type" : "paragraph",
+    "id" : 537,
+    "page number" : 53,
+    "bounding box" : [ 98.064, 167.647, 246.608, 213.627 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.8]",
+    "content" : "SURFACE.fill((255,255,255)) point_list = [] for _ in range(5):"
+  }, {
+    "type" : "paragraph",
+    "id" : 538,
+    "page number" : 53,
+    "bounding box" : [ 120.14, 131.647, 285.128, 165.607 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "xpos = random.randint(0,400) ypos = random.randint(0,300) point_list.append((xpos,ypos))"
+  }, {
+    "type" : "paragraph",
+    "id" : 539,
+    "page number" : 53,
+    "bounding box" : [ 98.064, 119.647, 417.028, 129.607 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.8]",
+    "content" : "pygame.draw.lines(SURFACE, (255,0,0), True, point_list, 5)"
+  }, {
+    "type" : "paragraph",
+    "id" : 540,
+    "page number" : 53,
+    "bounding box" : [ 98.064, 83.639, 224.541, 93.623 ],
+    "font" : "Consolas",
+    "font size" : 9.984,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.display.update()"
+  }, {
+    "type" : "paragraph",
+    "id" : 541,
+    "page number" : 53,
+    "bounding box" : [ 54.024, 35.621, 197.018, 81.581 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.808, 0.569, 0.471]",
+    "content" : "FPSCLOCK.tick(50) if __name__ == '__main__': main()"
+  }, {
+    "type" : "paragraph",
+    "id" : 530,
+    "page number" : 53,
+    "bounding box" : [ 552.36, 318.51, 919.787, 344.362 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "매 프레임마다 선 여러 개를 그리는 코드입니다."
+  }, {
+    "type" : "header",
+    "id" : 542,
+    "page number" : 54,
+    "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 178,
+      "page number" : 54,
+      "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 547,
+    "page number" : 54,
+    "bounding box" : [ 128.81, 427.912, 276.843, 445.936 ],
+    "font" : "Consolas",
+    "font size" : 18.024,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "point_list = []"
+  }, {
+    "type" : "paragraph",
+    "id" : 548,
+    "page number" : 54,
+    "bounding box" : [ 128.81, 406.298, 306.49, 424.298 ],
+    "font" : "Consolas",
+    "font size" : 18.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "for _ in range(5):"
+  }, {
+    "type" : "paragraph",
+    "id" : 549,
+    "page number" : 54,
+    "bounding box" : [ 168.29, 341.498, 464.41, 402.698 ],
+    "font" : "Consolas",
+    "font size" : 18.0,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "xpos = random.randint(0,400) ypos = random.randint(0,300) point_list.append((xpos,ypos))"
+  }, {
+    "type" : "paragraph",
+    "id" : 550,
+    "page number" : 54,
+    "bounding box" : [ 128.81, 255.068, 701.34, 337.868 ],
+    "font" : "Consolas",
+    "font size" : 18.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.draw.lines(SURFACE, (255,0,0), True, point_list, 5) pygame.display.update() FPSCLOCK.tick(50)"
+  }, {
+    "type" : "paragraph",
+    "id" : 543,
+    "page number" : 54,
+    "bounding box" : [ 55.824, 199.93, 728.467, 225.782 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "random.randint(0, 400)은 0이상 400이하의 랜덤한 숫자를 반환하는 코드입니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 544,
+    "page number" : 54,
+    "bounding box" : [ 55.824, 163.924, 632.173, 189.807 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "매 프레임마다 randint를 이용하여 랜덤한 5개의 점을 point_list에 넣고"
+  }, {
+    "type" : "paragraph",
+    "id" : 545,
+    "page number" : 54,
+    "bounding box" : [ 55.824, 127.9, 677.227, 153.752 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "그렇게 만들어진 5개의 점을 선으로 이어서 매 프레임마다 출력하는 코드입니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 546,
+    "page number" : 54,
+    "bounding box" : [ 55.824, 55.896, 574.392, 81.779 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "FPSCLOCK.tick()의 값을 바꿔가며 속도를 조절해 볼 수 있습니다."
+  }, {
+    "type" : "header",
+    "id" : 551,
+    "page number" : 55,
+    "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 179,
+      "page number" : 55,
+      "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "도형 그리기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 552,
+    "page number" : 55,
+    "bounding box" : [ 48.288, 379.13, 667.527, 440.982 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "pyagme.draw.lines는 선만 그려주고 내부를 색으로 채워주지는 않습니다. 내부를 색으로 채우고 싶을 때 사용하는 pygame.draw.polygon 이 있습니다."
+  }, {
+    "type" : "heading",
+    "id" : 554,
+    "level" : "Subtitle",
+    "page number" : 55,
+    "bounding box" : [ 60.48, 291.764, 736.27, 315.764 ],
+    "heading level" : 5,
+    "font" : "Consolas",
+    "font size" : 24.0,
+    "text color" : "[0.8]",
+    "content" : "pygame.draw.polygon(SURFACE, (255,0,0), point_list)"
+  }, {
+    "type" : "paragraph",
+    "id" : 555,
+    "page number" : 55,
+    "bounding box" : [ 56.112, 227.29, 716.387, 253.142 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "lines에 사용했던 코드에 lines를 polygon으로 바꾸기만 해서 실행해볼 수 있습니다."
+  }, {
+    "type" : "header",
+    "id" : 556,
+    "page number" : 56,
+    "bounding box" : [ 35.664, 470.704, 236.1, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 180,
+      "page number" : 56,
+      "bounding box" : [ 35.664, 470.704, 236.1, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "이미지 파일 가져오기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 557,
+    "page number" : 56,
+    "bounding box" : [ 69.216, 339.77, 681.017, 365.622 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이번에는 외부에 있는 이미지 파일을 가져와서 화면에 띄우는 법을 알아봅시다."
+  }, {
+    "type" : "paragraph",
+    "id" : 558,
+    "page number" : 56,
+    "bounding box" : [ 69.216, 231.75, 750.397, 293.602 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "우선 이미지를 구해봅시다. 인터넷에 검색해서 마음에 드는 이미지를 다운로드 받습니다. png나 jpg 파일이 가장 무난합니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 559,
+    "page number" : 56,
+    "bounding box" : [ 69.216, 159.73, 701.057, 185.582 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "다운을 받았으면 그 이미지를 우리가 실행하는 파일이 있는 폴더로 옮겨야 합니다."
+  }, {
+    "type" : "heading",
+    "id" : 560,
+    "level" : "Subtitle",
+    "page number" : 57,
+    "bounding box" : [ 35.664, 470.704, 236.1, 501.695 ],
+    "heading level" : 2,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 24.024,
+    "text color" : "[0.0]",
+    "content" : "이미지 파일 가져오기"
+  }, {
+    "type" : "image",
+    "id" : 561,
+    "page number" : 57,
+    "bounding box" : [ 33.679, 150.72, 468.159, 421.72 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile63.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 564,
+    "page number" : 57,
+    "bounding box" : [ 258.14, 289.78, 308.661, 315.632 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "우클릭"
+  }, {
+    "type" : "image",
+    "id" : 565,
+    "page number" : 57,
+    "bounding box" : [ 607.64, 92.382, 917.01, 507.862 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile64.png"
+  }, {
+    "type" : "caption",
+    "id" : 569,
+    "page number" : 57,
+    "bounding box" : [ 603.58, 50.406, 926.267, 76.258 ],
+    "linked content id" : 565,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이 폴더에 다운받은 이미지를 저장합니다."
+  }, {
+    "type" : "header",
+    "id" : 570,
+    "page number" : 58,
+    "bounding box" : [ 35.664, 470.704, 236.1, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 181,
+      "page number" : 58,
+      "bounding box" : [ 35.664, 470.704, 236.1, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "이미지 파일 가져오기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 572,
+    "page number" : 58,
+    "bounding box" : [ 54.024, 393.322, 252.65, 434.122 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "import sys import pygame from pygame.locals import QUIT"
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 58,
+    "bounding box" : [ 54.024, 321.292, 345.53, 362.092 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.init() SURFACE = pygame.display.set_mode((600,300)) pygame.display.set_caption(\"game\")"
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 58,
+    "bounding box" : [ 54.024, 278.086, 126.753, 290.11 ],
+    "font" : "Consolas",
+    "font size" : 12.024,
+    "text color" : "[0.863, 0.863, 0.667]",
+    "content" : "def main():"
+  }, {
+    "type" : "paragraph",
+    "id" : 575,
+    "page number" : 58,
+    "bounding box" : [ 80.424, 234.872, 329.21, 279.701 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "jjangu = pygame.image.load(\"짱구.png\") manggu = pygame.image.load(\"맹구.png\") while True:"
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "page number" : 58,
+    "bounding box" : [ 106.94, 220.472, 319.01, 232.472 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "for event in pygame.event.get():"
+  }, {
+    "type" : "paragraph",
+    "id" : 577,
+    "page number" : 58,
+    "bounding box" : [ 133.46, 177.272, 279.17, 218.072 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "if event.type == QUIT: pygame.quit() sys.exit()"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "page number" : 58,
+    "bounding box" : [ 106.94, 134.052, 299.21, 160.452 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.8]",
+    "content" : "SURFACE.blit(jjangu, (0,0)) SURFACE.blit(manggu, (300,0))"
+  }, {
+    "type" : "paragraph",
+    "id" : 579,
+    "page number" : 58,
+    "bounding box" : [ 106.94, 105.252, 259.358, 117.252 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.display.update()"
+  }, {
+    "type" : "paragraph",
+    "id" : 580,
+    "page number" : 58,
+    "bounding box" : [ 54.024, 62.042, 226.263, 74.066 ],
+    "font" : "Consolas",
+    "font size" : 12.024,
+    "text color" : "[0.808, 0.569, 0.471]",
+    "content" : "if __name__ == '__main__':"
+  }, {
+    "type" : "paragraph",
+    "id" : 581,
+    "page number" : 58,
+    "bounding box" : [ 80.424, 47.624, 120.14, 59.624 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.863, 0.863, 0.667]",
+    "content" : "main()"
+  }, {
+    "type" : "paragraph",
+    "id" : 571,
+    "page number" : 58,
+    "bounding box" : [ 481.34, 321.574, 835.242, 347.457 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "다운받은 이미지를 화면에 띄우는 코드입니다."
+  }, {
+    "type" : "image",
+    "id" : 582,
+    "page number" : 58,
+    "bounding box" : [ 487.42, 47.216, 836.6, 276.256 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile65.png"
+  }, {
+    "type" : "header",
+    "id" : 583,
+    "page number" : 59,
+    "bounding box" : [ 35.664, 470.704, 236.1, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 182,
+      "page number" : 59,
+      "bounding box" : [ 35.664, 470.704, 236.1, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "이미지 파일 가져오기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 586,
+    "page number" : 59,
+    "bounding box" : [ 124.32, 372.623, 538.712, 423.591 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "jjangu = pygame.image.load(\"짱구.png\") manggu = pygame.image.load(\"맹구.png\")"
+  }, {
+    "type" : "paragraph",
+    "id" : 587,
+    "page number" : 59,
+    "bounding box" : [ 124.32, 348.857, 245.395, 368.921 ],
+    "font" : "Consolas",
+    "font size" : 20.064,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "while True:"
+  }, {
+    "type" : "paragraph",
+    "id" : 588,
+    "page number" : 59,
+    "bounding box" : [ 168.36, 276.843, 487.352, 320.883 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.8]",
+    "content" : "SURFACE.blit(jjangu, (0,0)) SURFACE.blit(manggu, (300,0))"
+  }, {
+    "type" : "paragraph",
+    "id" : 584,
+    "page number" : 59,
+    "bounding box" : [ 80.28, 193.64, 545.177, 219.492 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "(0,0)과 (300,0)은 이미지의 왼쪽 위 꼭짓점의 위치입니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 585,
+    "page number" : 59,
+    "bounding box" : [ 80.28, 121.634, 590.062, 147.517 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "SURFACE의 크기보다 이미지가 크면 이미지가 잘릴 수 있습니다."
+  }, {
+    "type" : "header",
+    "id" : 589,
+    "page number" : 60,
+    "bounding box" : [ 35.664, 470.704, 236.1, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 183,
+      "page number" : 60,
+      "bounding box" : [ 35.664, 470.704, 236.1, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "이미지 파일 가져오기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 595,
+    "page number" : 60,
+    "bounding box" : [ 79.344, 413.67, 406.697, 439.522 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이미지의 일부만 나오게 할 수도 있습니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 592,
+    "page number" : 60,
+    "bounding box" : [ 83.328, 355.764, 693.0, 379.764 ],
+    "font" : "Consolas",
+    "font size" : 24.0,
+    "text color" : "[0.8]",
+    "content" : "SURFACE.blit(jjangu, (0,0), Rect(0,0,259,140))"
+  }, {
+    "type" : "paragraph",
+    "id" : 590,
+    "page number" : 60,
+    "bounding box" : [ 457.13, 311.57, 799.569, 337.422 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이 영역에 해당하는 부분만 화면에 나옵니다"
+  }, {
+    "type" : "image",
+    "id" : 593,
+    "page number" : 60,
+    "bounding box" : [ 76.125, 31.167, 329.495, 290.897 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile66.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 60,
+    "bounding box" : [ 361.8, 145.3, 881.565, 207.152 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "게임을 만들 때 여러 개의 이미지가 필요할 수 있는데 이미지 파일 을 전부 따로 두고 하나씩 불러 오는 것보다 이미지들을 하나로 묶어"
+  }, {
+    "type" : "paragraph",
+    "id" : 597,
+    "page number" : 60,
+    "bounding box" : [ 361.8, 109.294, 782.182, 135.177 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "놓고 하나의 이미지를 잘라서 쓰는게 더 효과적입니다."
+  }, {
+    "type" : "header",
+    "id" : 598,
+    "page number" : 61,
+    "bounding box" : [ 35.664, 470.704, 209.578, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 184,
+      "page number" : 61,
+      "bounding box" : [ 35.664, 470.704, 209.578, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "이미지 회전시키기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 601,
+    "page number" : 61,
+    "bounding box" : [ 54.024, 415.859, 132.096, 440.099 ],
+    "font" : "Consolas",
+    "font size" : 11.04,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "import sys import pygame"
+  }, {
+    "type" : "paragraph",
+    "id" : 602,
+    "page number" : 61,
+    "bounding box" : [ 54.024, 402.653, 270.135, 413.717 ],
+    "font" : "Consolas",
+    "font size" : 11.064,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "from pygame.locals import QUIT, Rect"
+  }, {
+    "type" : "paragraph",
+    "id" : 599,
+    "page number" : 61,
+    "bounding box" : [ 505.94, 408.27, 810.997, 434.122 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이미지를 회전 시키는 것도 가능합니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 603,
+    "page number" : 61,
+    "bounding box" : [ 54.024, 310.239, 318.122, 374.079 ],
+    "font" : "Consolas",
+    "font size" : 11.04,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.init() SURFACE = pygame.display.set_mode((500,300)) pygame.display.set_caption(\"game\") FPSCLOCK = pygame.time.Clock() def main():"
+  }, {
+    "type" : "paragraph",
+    "id" : 604,
+    "page number" : 61,
+    "bounding box" : [ 78.144, 296.913, 304.455, 311.802 ],
+    "font" : "Consolas",
+    "font size" : 11.064,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "jjangu = pygame.image.load(\"짱구.png\")"
+  }, {
+    "type" : "paragraph",
+    "id" : 605,
+    "page number" : 61,
+    "bounding box" : [ 78.024, 270.619, 144.092, 294.859 ],
+    "font" : "Consolas",
+    "font size" : 11.04,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "theta = 30 while True:"
+  }, {
+    "type" : "paragraph",
+    "id" : 606,
+    "page number" : 61,
+    "bounding box" : [ 102.02, 257.419, 294.122, 268.459 ],
+    "font" : "Consolas",
+    "font size" : 11.04,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "for event in pygame.event.get():"
+  }, {
+    "type" : "paragraph",
+    "id" : 607,
+    "page number" : 61,
+    "bounding box" : [ 126.02, 217.819, 258.122, 255.259 ],
+    "font" : "Consolas",
+    "font size" : 11.04,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "if event.type == QUIT: pygame.quit() sys.exit()"
+  }, {
+    "type" : "paragraph",
+    "id" : 608,
+    "page number" : 61,
+    "bounding box" : [ 102.02, 191.413, 228.135, 202.477 ],
+    "font" : "Consolas",
+    "font size" : 11.064,
+    "text color" : "[0.8]",
+    "content" : "SURFACE.fill((0,0,0))"
+  }, {
+    "type" : "paragraph",
+    "id" : 609,
+    "page number" : 61,
+    "bounding box" : [ 102.02, 112.189, 426.142, 189.229 ],
+    "font" : "Consolas",
+    "font size" : 11.04,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "theta += 30 jjangu_rotate = pygame.transform.rotate(jjangu, theta) SURFACE.blit(jjangu_rotate, (0,0)) FPSCLOCK.tick(5) pygame.display.update()"
+  }, {
+    "type" : "paragraph",
+    "id" : 600,
+    "page number" : 61,
+    "bounding box" : [ 505.94, 336.25, 705.819, 362.102 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "왼쪽 코드를 작성해봅시다"
+  }, {
+    "type" : "heading",
+    "id" : 611,
+    "level" : "Subtitle",
+    "page number" : 61,
+    "bounding box" : [ 505.94, 136.33, 930.637, 198.182 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "핵심 코드는 이 부분 입니다. theta는 회전 시킬 각도 값을 가지고 있는 변수입니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 610,
+    "page number" : 61,
+    "bounding box" : [ 54.024, 59.367, 210.122, 83.607 ],
+    "font" : "Consolas",
+    "font size" : 11.04,
+    "text color" : "[0.808, 0.569, 0.471]",
+    "content" : "if __name__ == '__main__': main()"
+  }, {
+    "type" : "header",
+    "id" : 613,
+    "page number" : 62,
+    "bounding box" : [ 35.664, 470.704, 209.578, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 185,
+      "page number" : 62,
+      "bounding box" : [ 35.664, 470.704, 209.578, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "이미지 회전시키기"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 614,
+    "level" : "Subtitle",
+    "page number" : 62,
+    "bounding box" : [ 73.272, 330.25, 660.467, 392.102 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "그런데 코드를 실행해보면 한 가지 문제가 있습니다. 사진이 왼쪽 꼭짓점을 기준으로 회전해서 돌다가 화면 밖으로 나가버립니다."
+  }, {
+    "type" : "image",
+    "id" : 617,
+    "page number" : 62,
+    "bounding box" : [ 36.017, 94.902, 286.777, 259.222 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile67.png"
+  }, {
+    "type" : "image",
+    "id" : 616,
+    "page number" : 62,
+    "bounding box" : [ 345.39, 93.897, 596.15, 259.227 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile68.png"
+  }, {
+    "type" : "image",
+    "id" : 615,
+    "page number" : 62,
+    "bounding box" : [ 648.75, 97.239, 899.51, 260.229 ],
+    "source" : "1회차_파이썬으로_게임만들기_images/imageFile69.png"
+  }, {
+    "type" : "header",
+    "id" : 618,
+    "page number" : 63,
+    "bounding box" : [ 35.664, 387.027, 257.578, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 186,
+      "page number" : 63,
+      "bounding box" : [ 35.664, 470.704, 209.578, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "이미지 회전시키기"
+    }, {
+      "type" : "paragraph",
+      "id" : 187,
+      "page number" : 63,
+      "bounding box" : [ 59.472, 423.027, 257.578, 456.987 ],
+      "font" : "Consolas",
+      "font size" : 9.96,
+      "text color" : "[0.773, 0.525, 0.753]",
+      "content" : "import sys import pygame from pygame.locals import QUIT, Rect"
+    }, {
+      "type" : "paragraph",
+      "id" : 188,
+      "page number" : 63,
+      "bounding box" : [ 59.472, 387.027, 131.068, 396.987 ],
+      "font" : "Consolas",
+      "font size" : 9.96,
+      "text color" : "[0.306, 0.788, 0.69]",
+      "content" : "pygame.init()"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 620,
+    "page number" : 63,
+    "bounding box" : [ 59.472, 375.027, 306.898, 384.987 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "SURFACE = pygame.display.set_mode((500, 300))"
+  }, {
+    "type" : "paragraph",
+    "id" : 621,
+    "page number" : 63,
+    "bounding box" : [ 59.472, 363.021, 246.551, 373.005 ],
+    "font" : "Consolas",
+    "font size" : 9.984,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.display.set_caption(\"game\")"
+  }, {
+    "type" : "paragraph",
+    "id" : 622,
+    "page number" : 63,
+    "bounding box" : [ 59.472, 351.007, 224.578, 360.967 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "FPSCLOCK = pygame.time.Clock()"
+  }, {
+    "type" : "paragraph",
+    "id" : 623,
+    "page number" : 63,
+    "bounding box" : [ 59.472, 291.007, 288.898, 324.967 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "def main(): jjangu = pygame.image.load(\"짱구.png\") theta = 30"
+  }, {
+    "type" : "paragraph",
+    "id" : 624,
+    "page number" : 63,
+    "bounding box" : [ 81.552, 255.001, 142.001, 264.985 ],
+    "font" : "Consolas",
+    "font size" : 9.984,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "while True:"
+  }, {
+    "type" : "paragraph",
+    "id" : 625,
+    "page number" : 63,
+    "bounding box" : [ 103.51, 242.977, 279.538, 252.937 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "for event in pygame.event.get():"
+  }, {
+    "type" : "paragraph",
+    "id" : 626,
+    "page number" : 63,
+    "bounding box" : [ 125.59, 206.977, 246.538, 240.937 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "if event.type == QUIT: pygame.quit() sys.exit()"
+  }, {
+    "type" : "paragraph",
+    "id" : 627,
+    "page number" : 63,
+    "bounding box" : [ 103.51, 158.977, 229.978, 180.937 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.31, 0.757, 1.0]",
+    "content" : "SURFACE.fill((0, 0, 0)) theta += 2"
+  }, {
+    "type" : "text block",
+    "id" : 628,
+    "page number" : 63,
+    "bounding box" : [ 90.262, 106.17, 412.902, 164.434 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 55,
+      "page number" : 63,
+      "bounding box" : [ 103.51, 146.971, 400.531, 156.955 ],
+      "font" : "Consolas",
+      "font size" : 9.984,
+      "text color" : "[0.612, 0.863, 0.996]",
+      "content" : "jjangu_rotate = pygame.transform.rotate(jjangu, theta)"
+    }, {
+      "type" : "paragraph",
+      "id" : 56,
+      "page number" : 63,
+      "bounding box" : [ 103.51, 110.957, 279.538, 144.917 ],
+      "font" : "Consolas",
+      "font size" : 9.96,
+      "text color" : "[0.612, 0.863, 0.996]",
+      "content" : "cen = jjangu_rotate.get_rect() cen.center = (200,150) SURFACE.blit(jjangu_rotate, cen)"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 629,
+    "page number" : 63,
+    "bounding box" : [ 103.51, 62.957, 229.978, 84.917 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "FPSCLOCK.tick(60) pygame.display.update()"
+  }, {
+    "type" : "paragraph",
+    "id" : 630,
+    "page number" : 63,
+    "bounding box" : [ 59.472, 26.933, 202.468, 36.893 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.808, 0.569, 0.471]",
+    "content" : "if __name__ == '__main__':"
+  }, {
+    "type" : "footer",
+    "id" : 631,
+    "page number" : 63,
+    "bounding box" : [ 81.552, 14.933, 114.508, 24.893 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 122,
+      "page number" : 63,
+      "bounding box" : [ 81.552, 14.933, 114.508, 24.893 ],
+      "heading level" : 8,
+      "font" : "Consolas",
+      "font size" : 9.96,
+      "text color" : "[0.863, 0.863, 0.667]",
+      "content" : "main()"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 619,
+    "page number" : 63,
+    "bounding box" : [ 478.22, 190.64, 950.975, 252.492 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "회전시킨 사진의 중심 좌표를 설정하여 중심을 기준으로 회전 하도록 할 수 있습니다."
+  }, {
+    "type" : "header",
+    "id" : 632,
+    "page number" : 64,
+    "bounding box" : [ 35.664, 470.704, 209.578, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 189,
+      "page number" : 64,
+      "bounding box" : [ 35.664, 470.704, 209.578, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "이미지 회전시키기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 633,
+    "page number" : 64,
+    "bounding box" : [ 28.656, 247.973, 936.82, 376.033 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.416, 0.6, 0.333]",
+    "content" : "jjangu_rotate = pygame.transform.rotate(jjangu, theta) cen = jjangu_rotate.get_rect() # 회전된 이미지와 똑같은 형태의 직사각형 생성 cen.center = (200,150) # 그 직사각형의 중심을 설정 SURFACE.blit(jjangu_rotate, cen) # 그렇게 만들어진 직사각형이 위치의 역할을 함"
+  }, {
+    "type" : "heading",
+    "id" : 634,
+    "level" : "Subtitle",
+    "page number" : 64,
+    "bounding box" : [ 52.872, 170.07, 639.578, 195.922 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이렇게 하면 이미지가 중심을 기준으로 회전하는 모습을 확인할 수 있습니다"
+  }, {
+    "type" : "header",
+    "id" : 635,
+    "page number" : 65,
+    "bounding box" : [ 35.664, 380.477, 241.228, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 190,
+      "page number" : 65,
+      "bounding box" : [ 35.664, 470.704, 187.376, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "글자 회전시키기"
+    }, {
+      "type" : "paragraph",
+      "id" : 191,
+      "page number" : 65,
+      "bounding box" : [ 43.128, 416.477, 241.228, 450.437 ],
+      "font" : "Consolas",
+      "font size" : 9.96,
+      "text color" : "[0.773, 0.525, 0.753]",
+      "content" : "import sys import pygame from pygame.locals import QUIT, Rect"
+    }, {
+      "type" : "paragraph",
+      "id" : 192,
+      "page number" : 65,
+      "bounding box" : [ 43.128, 380.477, 114.748, 390.437 ],
+      "font" : "Consolas",
+      "font size" : 9.96,
+      "text color" : "[0.306, 0.788, 0.69]",
+      "content" : "pygame.init()"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 636,
+    "page number" : 65,
+    "bounding box" : [ 43.128, 368.477, 290.548, 378.437 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "SURFACE = pygame.display.set_mode((400, 300))"
+  }, {
+    "type" : "paragraph",
+    "id" : 637,
+    "page number" : 65,
+    "bounding box" : [ 43.128, 356.471, 230.201, 366.455 ],
+    "font" : "Consolas",
+    "font size" : 9.984,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.display.set_caption(\"game\")"
+  }, {
+    "type" : "paragraph",
+    "id" : 638,
+    "page number" : 65,
+    "bounding box" : [ 43.128, 344.457, 208.228, 354.417 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "FPSCLOCK = pygame.time.Clock()"
+  }, {
+    "type" : "paragraph",
+    "id" : 639,
+    "page number" : 65,
+    "bounding box" : [ 43.128, 260.457, 345.658, 318.417 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "def main(): theta = 0 scale = 1 sysfont = pygame.font.SysFont(None,72) message = sysfont.render(\"Hello\", True,(0,255,255))"
+  }, {
+    "type" : "paragraph",
+    "id" : 640,
+    "page number" : 65,
+    "bounding box" : [ 65.208, 248.451, 125.681, 258.435 ],
+    "font" : "Consolas",
+    "font size" : 9.984,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "while True:"
+  }, {
+    "type" : "paragraph",
+    "id" : 641,
+    "page number" : 65,
+    "bounding box" : [ 87.168, 236.427, 263.188, 246.387 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "for event in pygame.event.get():"
+  }, {
+    "type" : "paragraph",
+    "id" : 642,
+    "page number" : 65,
+    "bounding box" : [ 109.27, 200.427, 230.188, 234.387 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "if event.type == QUIT: pygame.quit() sys.exit()"
+  }, {
+    "type" : "paragraph",
+    "id" : 643,
+    "page number" : 65,
+    "bounding box" : [ 87.168, 152.427, 235.708, 186.387 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "theta += 5 SURFACE.fill((0, 0, 0)) scale = (theta % 360) / 180"
+  }, {
+    "type" : "paragraph",
+    "id" : 644,
+    "page number" : 65,
+    "bounding box" : [ 87.168, 140.421, 384.191, 150.405 ],
+    "font" : "Consolas",
+    "font size" : 9.984,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "msg = pygame.transform.rotozoom(message, theta, scale)"
+  }, {
+    "type" : "paragraph",
+    "id" : 645,
+    "page number" : 65,
+    "bounding box" : [ 87.168, 104.407, 213.628, 138.367 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "rect = msg.get_rect() rect.center = (200,150) SURFACE.blit(msg, rect)"
+  }, {
+    "type" : "paragraph",
+    "id" : 646,
+    "page number" : 65,
+    "bounding box" : [ 87.168, 68.405, 213.628, 90.365 ],
+    "font" : "Consolas",
+    "font size" : 9.96,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.display.update() FPSCLOCK.tick(60)"
+  }, {
+    "type" : "paragraph",
+    "id" : 647,
+    "page number" : 65,
+    "bounding box" : [ 43.128, 32.399, 186.161, 42.383 ],
+    "font" : "Consolas",
+    "font size" : 9.984,
+    "text color" : "[0.808, 0.569, 0.471]",
+    "content" : "if __name__ == '__main__':"
+  }, {
+    "type" : "footer",
+    "id" : 650,
+    "page number" : 65,
+    "bounding box" : [ 65.208, 20.381, 98.166, 30.341 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 123,
+      "page number" : 65,
+      "bounding box" : [ 65.208, 20.381, 98.166, 30.341 ],
+      "heading level" : 8,
+      "font" : "Consolas",
+      "font size" : 9.96,
+      "text color" : "[0.863, 0.863, 0.667]",
+      "content" : "main()"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 648,
+    "page number" : 65,
+    "bounding box" : [ 530.11, 305.74, 938.101, 331.592 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "글자를 회전시키면서 동시에 크기도 변경하는 코드입"
+  }, {
+    "type" : "paragraph",
+    "id" : 649,
+    "page number" : 65,
+    "bounding box" : [ 530.11, 269.734, 569.202, 295.617 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "니다."
+  }, {
+    "type" : "header",
+    "id" : 651,
+    "page number" : 66,
+    "bounding box" : [ 35.664, 431.883, 247.112, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 193,
+      "page number" : 66,
+      "bounding box" : [ 35.664, 470.704, 187.376, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "글자 회전시키기"
+    }, {
+      "type" : "paragraph",
+      "id" : 194,
+      "page number" : 66,
+      "bounding box" : [ 137.09, 431.883, 247.112, 451.923 ],
+      "font" : "Consolas",
+      "font size" : 20.04,
+      "text color" : "[0.612, 0.863, 0.996]",
+      "content" : "theta += 5"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 652,
+    "page number" : 66,
+    "bounding box" : [ 137.09, 407.877, 433.975, 427.941 ],
+    "font" : "Consolas",
+    "font size" : 20.064,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "scale = (theta % 360) / 180"
+  }, {
+    "type" : "paragraph",
+    "id" : 653,
+    "page number" : 66,
+    "bounding box" : [ 137.09, 311.863, 731.022, 403.903 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "msg = pygame.transform.rotozoom(message, theta, scale) rect = msg.get_rect() rect.center = (200,150) SURFACE.blit(msg, rect)"
+  }, {
+    "type" : "paragraph",
+    "id" : 655,
+    "page number" : 66,
+    "bounding box" : [ 78.792, 234.32, 777.696, 260.172 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "위에서 만든 mesasge라는 텍스트를 theta 만큼 회전시키고 scale의 크기로 설정합니다"
+  }, {
+    "type" : "header",
+    "id" : 657,
+    "page number" : 67,
+    "bounding box" : [ 35.664, 439.373, 247.112, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 195,
+      "page number" : 67,
+      "bounding box" : [ 35.664, 470.704, 187.376, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "글자 회전시키기"
+    }, {
+      "type" : "paragraph",
+      "id" : 196,
+      "page number" : 67,
+      "bounding box" : [ 137.09, 439.373, 247.112, 459.413 ],
+      "font" : "Consolas",
+      "font size" : 20.04,
+      "text color" : "[0.612, 0.863, 0.996]",
+      "content" : "theta += 5"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 658,
+    "page number" : 67,
+    "bounding box" : [ 137.09, 415.373, 433.956, 435.413 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "scale = (theta % 360) / 180"
+  }, {
+    "type" : "paragraph",
+    "id" : 659,
+    "page number" : 67,
+    "bounding box" : [ 137.09, 391.367, 731.035, 411.431 ],
+    "font" : "Consolas",
+    "font size" : 20.064,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "msg = pygame.transform.rotozoom(message, theta, scale)"
+  }, {
+    "type" : "paragraph",
+    "id" : 660,
+    "page number" : 67,
+    "bounding box" : [ 137.09, 319.343, 390.052, 387.383 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "rect = msg.get_rect() rect.center = (200,150) SURFACE.blit(msg, rect)"
+  }, {
+    "type" : "paragraph",
+    "id" : 662,
+    "page number" : 67,
+    "bounding box" : [ 63.72, 267.22, 592.717, 293.072 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "theta(회전각)이 5씩 계속 커집니다. 이에 따라 글자가 회전합니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 663,
+    "page number" : 67,
+    "bounding box" : [ 63.72, 159.2, 753.757, 221.052 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "theta % 360은 0~359의 값을 가집니다. 그걸 180으로 나누면 scale은 0~2(정확히는 2보다 조금 작은 값)의 값을 가지게 됩니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 664,
+    "page number" : 67,
+    "bounding box" : [ 63.72, 123.194, 631.122, 149.077 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "즉 이 코드에서 글자의 크기는 0에서 시작해서 최대 2배까지 증가합니다."
+  }, {
+    "type" : "paragraph",
+    "id" : 665,
+    "page number" : 67,
+    "bounding box" : [ 63.72, 51.174, 769.064, 77.026 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "그리고 theta가 360 이상이 되면 theta % 360은 다시 0부터 시작해 2까지 증가합니다"
+  }, {
+    "type" : "paragraph",
+    "id" : 666,
+    "page number" : 67,
+    "bounding box" : [ 63.72, 15.168, 667.659, 41.051 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.064,
+    "text color" : "[0.0]",
+    "content" : "그래서 이 코드는 글자가 최대 크기가 된 뒤 다시 크기 0부터 시작하게 됩니다"
+  }, {
+    "type" : "header",
+    "id" : 668,
+    "page number" : 68,
+    "bounding box" : [ 35.664, 470.704, 187.376, 501.695 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 197,
+      "page number" : 68,
+      "bounding box" : [ 35.664, 470.704, 187.376, 501.695 ],
+      "heading level" : 2,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.024,
+      "text color" : "[0.0]",
+      "content" : "글자 회전시키기"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 669,
+    "page number" : 68,
+    "bounding box" : [ 58.704, 337.57, 856.619, 363.422 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "글자의 크기가 최대가 된 뒤 바로 크기 0이 되는게 아니라 조금씩 크기를 줄이려면 어떻게 해야할까요?"
+  }, {
+    "type" : "paragraph",
+    "id" : 670,
+    "page number" : 68,
+    "bounding box" : [ 58.704, 265.54, 482.437, 291.392 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "조금 뒤에서 배울 삼각함수를 이용해서 할 수 있습니다."
+  }, {
+    "type" : "heading",
+    "id" : 671,
+    "level" : "Subtitle",
+    "page number" : 69,
+    "bounding box" : [ 35.664, 470.704, 144.421, 501.695 ],
+    "heading level" : 2,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 24.024,
+    "text color" : "[0.0]",
+    "content" : "그림 그리기"
+  }, {
+    "type" : "paragraph",
+    "id" : 673,
+    "page number" : 69,
+    "bounding box" : [ 47.088, 401.772, 331.846, 442.572 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.773, 0.525, 0.753]",
+    "content" : "import sys import pygame from pygame.locals import QUIT, MOUSEMOTION"
+  }, {
+    "type" : "paragraph",
+    "id" : 674,
+    "page number" : 69,
+    "bounding box" : [ 47.088, 315.342, 338.59, 370.542 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.init() SURFACE = pygame.display.set_mode((400,300)) pygame.display.set_caption(\"game\") def main():"
+  }, {
+    "type" : "paragraph",
+    "id" : 675,
+    "page number" : 69,
+    "bounding box" : [ 73.488, 286.542, 159.65, 312.942 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "mousepos = [] while True:"
+  }, {
+    "type" : "paragraph",
+    "id" : 676,
+    "page number" : 69,
+    "bounding box" : [ 100.01, 272.142, 278.95, 284.142 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.71, 0.808, 0.659]",
+    "content" : "SURFACE.fill((255,255,255))"
+  }, {
+    "type" : "paragraph",
+    "id" : 677,
+    "page number" : 69,
+    "bounding box" : [ 100.01, 257.736, 312.083, 269.76 ],
+    "font" : "Consolas",
+    "font size" : 12.024,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "for event in pygame.event.get():"
+  }, {
+    "type" : "paragraph",
+    "id" : 678,
+    "page number" : 69,
+    "bounding box" : [ 126.53, 214.522, 272.23, 255.322 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "if event.type == QUIT: pygame.quit() sys.exit()"
+  }, {
+    "type" : "paragraph",
+    "id" : 679,
+    "page number" : 69,
+    "bounding box" : [ 126.53, 185.722, 331.87, 212.122 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "elif event.type == MOUSEMOTION: mousepos.append(event.pos)"
+  }, {
+    "type" : "paragraph",
+    "id" : 680,
+    "page number" : 69,
+    "bounding box" : [ 100.01, 156.916, 232.523, 168.94 ],
+    "font" : "Consolas",
+    "font size" : 12.024,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "for pos in mousepos:"
+  }, {
+    "type" : "paragraph",
+    "id" : 681,
+    "page number" : 69,
+    "bounding box" : [ 126.53, 142.492, 418.15, 154.492 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.8]",
+    "content" : "pygame.draw.circle(SURFACE, (0,0,0), pos, 5)"
+  }, {
+    "type" : "paragraph",
+    "id" : 682,
+    "page number" : 69,
+    "bounding box" : [ 100.01, 99.292, 252.418, 111.292 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "pygame.display.update()"
+  }, {
+    "type" : "paragraph",
+    "id" : 683,
+    "page number" : 69,
+    "bounding box" : [ 47.088, 56.096, 219.29, 68.096 ],
+    "font" : "Consolas",
+    "font size" : 12.0,
+    "text color" : "[0.808, 0.569, 0.471]",
+    "content" : "if __name__ == '__main__':"
+  }, {
+    "type" : "paragraph",
+    "id" : 684,
+    "page number" : 69,
+    "bounding box" : [ 73.488, 41.69, 113.223, 53.714 ],
+    "font" : "Consolas",
+    "font size" : 12.024,
+    "text color" : "[0.863, 0.863, 0.667]",
+    "content" : "main()"
+  }, {
+    "type" : "paragraph",
+    "id" : 672,
+    "page number" : 69,
+    "bounding box" : [ 549.36, 372.73, 920.673, 398.582 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "이번에는 그림판 같은 프로그램을 만들어 봅시다"
+  }, {
+    "type" : "header",
+    "id" : 685,
+    "page number" : 70,
+    "bounding box" : [ 29.808, 481.94, 138.576, 512.9 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 198,
+      "page number" : 70,
+      "bounding box" : [ 29.808, 481.94, 138.576, 512.9 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "그림 그리기"
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 692,
+    "page number" : 70,
+    "bounding box" : [ 517.345, 411.855, 827.865, 442.247 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 61,
+      "page number" : 70,
+      "bounding box" : [ 525.0, 415.77, 817.483, 433.882 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "마우스의 움직임을 감지하기위한 변수(정확히는 상수)"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 686,
+    "page number" : 70,
+    "bounding box" : [ 37.248, 414.243, 510.282, 434.283 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.31, 0.757, 1.0]",
+    "content" : "from pygame.locals import QUIT, MOUSEMOTION"
+  }, {
+    "type" : "paragraph",
+    "id" : 687,
+    "page number" : 70,
+    "bounding box" : [ 37.248, 366.237, 158.335, 386.301 ],
+    "font" : "Consolas",
+    "font size" : 20.064,
+    "text color" : "[0.863, 0.863, 0.667]",
+    "content" : "def main():"
+  }, {
+    "type" : "paragraph",
+    "id" : 688,
+    "page number" : 70,
+    "bounding box" : [ 81.312, 318.223, 224.332, 362.263 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "mousepos = [] while True:"
+  }, {
+    "type" : "paragraph",
+    "id" : 695,
+    "page number" : 70,
+    "bounding box" : [ 232.2, 341.654, 504.419, 359.797 ],
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 14.064,
+    "text color" : "[0.0]",
+    "content" : "마우스 커서의 움직임(위치 좌표)를 저장할 리스트"
+  }, {
+    "type" : "paragraph",
+    "id" : 689,
+    "page number" : 70,
+    "bounding box" : [ 125.35, 294.223, 477.346, 314.263 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.306, 0.788, 0.69]",
+    "content" : "for event in pygame.event.get():"
+  }, {
+    "type" : "text block",
+    "id" : 697,
+    "page number" : 70,
+    "bounding box" : [ 513.165, 248.815, 748.335, 279.207 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 58,
+      "page number" : 70,
+      "bounding box" : [ 520.8, 252.69, 739.455, 270.802 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "마우스가 움직이는 이벤트가 발생했다면"
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 690,
+    "page number" : 70,
+    "bounding box" : [ 162.445, 214.625, 509.645, 270.639 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 59,
+      "page number" : 70,
+      "bounding box" : [ 169.27, 222.193, 510.342, 266.233 ],
+      "font" : "Consolas",
+      "font size" : 20.04,
+      "text color" : "[0.612, 0.863, 0.996]",
+      "content" : "elif event.type == MOUSEMOTION: mousepos.append(event.pos)"
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 698,
+    "page number" : 70,
+    "bounding box" : [ 513.165, 190.295, 967.825, 246.092 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 60,
+      "page number" : 70,
+      "bounding box" : [ 520.8, 194.37, 945.638, 237.682 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "이벤트가 발생한 곳의 위치, 즉 마우스가 움직일 때 마다 마우스의 위치 좌표를 mousepos 리스트에 넣는 코드"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 691,
+    "page number" : 70,
+    "bounding box" : [ 125.35, 150.173, 653.142, 194.233 ],
+    "font" : "Consolas",
+    "font size" : 20.04,
+    "text color" : "[0.612, 0.863, 0.996]",
+    "content" : "for pos in mousepos: pygame.draw.circle(SURFACE, (0,0,0), pos, 5)"
+  }, {
+    "type" : "text block",
+    "id" : 703,
+    "page number" : 70,
+    "bounding box" : [ 487.065, 108.005, 660.555, 138.397 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 62,
+      "page number" : 70,
+      "bounding box" : [ 494.71, 111.86, 650.462, 129.972 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "그 위치에 원(점)을 그리겠다"
+    } ]
+  }, {
+    "type" : "text block",
+    "id" : 701,
+    "page number" : 70,
+    "bounding box" : [ 114.925, 33.665, 425.165, 64.057 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 57,
+      "page number" : 70,
+      "bounding box" : [ 122.52, 37.506, 396.135, 55.618 ],
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 14.04,
+      "text color" : "[0.0]",
+      "content" : "mousepos에 있는 값(좌표)들을 하나씩 가져와서"
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 704,
+    "page number" : 71,
+    "bounding box" : [ 36.504, 472.94, 145.248, 503.9 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 199,
+      "page number" : 71,
+      "bounding box" : [ 36.504, 472.94, 145.248, 503.9 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "그림 그리기"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 705,
+    "level" : "Subtitle",
+    "page number" : 71,
+    "bounding box" : [ 63.576, 255.25, 884.468, 353.122 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "실행해보면 문제가 있다는 걸 알 수 있습니다. 우리가 원하는건 마우스를 클릭한 상태에서 마우스를 움직였 을 때 그림이 그려지는건데 현재 이 코드는 클릭을 하지 않아도 계속 그림이 그려집니다. 코드를 일부 수정해서 클릭을 했을 때만 그림이 그려지도록 해봅시다."
+  }, {
+    "type" : "header",
+    "id" : 706,
+    "page number" : 72,
+    "bounding box" : [ 36.504, 472.94, 145.248, 503.9 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 200,
+      "page number" : 72,
+      "bounding box" : [ 36.504, 472.94, 145.248, 503.9 ],
+      "heading level" : 4,
+      "font" : "HancomMalangMalang-Regular",
+      "font size" : 24.0,
+      "text color" : "[0.0]",
+      "content" : "그림 그리기"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 707,
+    "level" : "Subtitle",
+    "page number" : 72,
+    "bounding box" : [ 63.576, 255.25, 884.468, 353.122 ],
+    "heading level" : 7,
+    "font" : "HancomMalangMalang-Regular",
+    "font size" : 20.04,
+    "text color" : "[0.0]",
+    "content" : "실행해보면 문제가 있다는 걸 알 수 있습니다. 우리가 원하는건 마우스를 클릭한 상태에서 마우스를 움직였 을 때 그림이 그려지는건데 현재 이 코드는 클릭을 하지 않아도 계속 그림이 그려집니다. 코드를 일부 수정해서 클릭을 했을 때만 그림이 그려지도록 해봅시다."
+  } ]
+}

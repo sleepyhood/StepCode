@@ -10,6 +10,16 @@
     "contentRootPath": "./data/content/language/python/lv07_for"
   },
   {
+    "id": "py_pygame",
+    "name": "Pygame",
+    "lang": "Pygame",
+    "track": "pygame",
+    "order": 275,
+    "partName": "Pygame",
+    "status": "active",
+    "contentRootPath": "./data/content/pygame"
+  },
+  {
     "id": "canva_l01_assignment",
     "name": "Canva - 1차시. 캔바 첫 세팅과 작업 영역 적응",
     "lang": "Canva",

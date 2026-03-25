@@ -1609,6 +1609,23 @@ function buildTheoryTocItems(contentEl) {
   });
 }
 
+function decorateTheoryHeadings(items) {
+  const list = Array.isArray(items) ? items : [];
+  list.forEach((item) => {
+    const heading = item?.el;
+    if (!heading) return;
+
+    const existing = heading.querySelector(":scope > .theory-heading-num");
+    if (existing) existing.remove();
+    if (!item.number) return;
+
+    const num = document.createElement("span");
+    num.className = "theory-heading-num";
+    num.textContent = `${item.number}.`;
+    heading.insertBefore(num, heading.firstChild);
+  });
+}
+
 function setupTheoryToc(contentEl) {
   const tocFab = document.getElementById("theory-toc-fab");
   const overlay = document.getElementById("theory-toc-overlay");
@@ -1620,6 +1637,7 @@ function setupTheoryToc(contentEl) {
   if (!tocFab || !overlay || !panel || !closeBtn || !listEl || !topBtn || !bottomBtn) return;
 
   const items = buildTheoryTocItems(contentEl);
+  decorateTheoryHeadings(items);
   listEl.innerHTML = "";
   tocFab.hidden = !items.length;
   if (!items.length) return;

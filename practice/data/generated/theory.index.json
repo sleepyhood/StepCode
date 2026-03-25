@@ -160,5 +160,21 @@
     ],
     "priority": 3,
     "sourcePath": "./data/content/language/python/lv07_for/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_intro",
+    "title": "Python Pygame 1주차",
+    "categoryId": "py_pygame",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/lesson/lesson.md",
+    "recommendedSetId": "py_pygame_b01",
+    "relatedSetIds": [
+      "py_pygame_b01"
+    ],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 3,
+    "sourcePath": "./data/content/pygame/lesson/lesson.md"
   }
 ]

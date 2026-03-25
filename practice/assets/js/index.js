@@ -29,10 +29,16 @@ function getTrackFromCategory(cat) {
 
 function getTrackLabel(track) {
   if (track === "language") return "언어 수업";
+  if (track === "pygame") return "파이게임 수업";
   if (track === "unity") return "유니티 수업";
   if (track === "contest") return "경시대회 수업";
   if (track === "canva") return "Canva 가이드";
   return track;
+}
+
+function getSecondaryFilterLabel(track) {
+  if (track === "language") return "언어";
+  return "분류";
 }
 
 function preferredLangSort(langs) {
@@ -509,7 +515,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const langLabel = document.createElement("span");
     langLabel.className = "part-controls-label";
-    langLabel.textContent = "언어";
+    langLabel.textContent = getSecondaryFilterLabel(state.track);
     controls.appendChild(langLabel);
 
     const langWrap = document.createElement("div");
@@ -582,6 +588,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         history.replaceState(null, "", nextUrl);
       } catch (_) {}
       renderTrackButtons();
+      langLabel.textContent = getSecondaryFilterLabel(state.track);
       renderLanguageButtons(langs);
 
       list.innerHTML = "";
