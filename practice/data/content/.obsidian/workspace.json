@@ -21,14 +21,12 @@
             "id": "6eecd502f122db6b",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "excalidraw",
               "state": {
-                "file": "pygame/round01/problem_review_round01.md",
-                "mode": "source",
-                "source": false
+                "file": "Excalidraw/Drawing 2026-03-26 23.14.19.excalidraw.md"
               },
-              "icon": "lucide-file",
-              "title": "problem_review_round01"
+              "icon": "excalidraw-icon",
+              "title": "Drawing 2026-03-26 23.14.19.excalidraw"
             }
           }
         ],
@@ -196,8 +194,17 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "6eecd502f122db6b",
+  "active": "3ebfa7605e2d81ca",
   "lastOpenFiles": [
+    "pygame/worksheets/worksheet_basic_r01.md",
+    "pygame/worksheets/answer_basic_r01.md",
+    "pygame/worksheets",
+    "pygame/lesson/lesson.md",
+    "pygame/lesson",
+    "pygame/interactive/interactive_basic_r01.json",
+    "pygame/interactive",
+    "pygame/round01/problem_review_round01.md",
+    "pygame/pygame_문제_제작_운영원칙.md",
     "pygame/round01/reference_images/problem06_correct.gif",
     "pygame/round01/reference_images/problem05_correct.gif",
     "Excalidraw/Drawing 2026-03-26 23.14.19.excalidraw.md",
@@ -213,7 +220,6 @@
     "무제 1.canvas",
     "무제.base",
     "무제.md",
-    "canva/canva/l04_assignment/lesson/lesson.md",
-    "pygame/round01/problem_review_round01.md"
+    "canva/canva/l04_assignment/lesson/lesson.md"
   ]
 }

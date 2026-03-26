@@ -208,7 +208,7 @@ def scan_category(category_root: Path) -> tuple[dict, list[dict], list[dict], li
                     "track": meta.get("track", category["track"]),
                     "status": meta.get("status", "active"),
                     "file": path.name,
-                    "dataPath": rel_data_path(path),
+                    "dataPath": meta.get("dataPath", rel_data_path(path)),
                     "sourcePath": rel_data_path(path),
                 }
             )

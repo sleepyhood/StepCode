@@ -13,7 +13,7 @@ def main():
         SURFACE.fill((20, 20, 20))
         pygame.draw.circle(SURFACE, (255, 210, 80), (200, 150), 60)
 
-        # 문제 3.1, 3.2: X 버튼으로 창이 닫히도록 고치세요.
+        # 문제 2.1, 2.2: X 버튼으로 창이 닫히도록 고치세요.
         if False:
             pygame.quit()
             sys.exit()

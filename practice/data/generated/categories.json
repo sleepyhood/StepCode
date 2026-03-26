@@ -11,11 +11,11 @@
   },
   {
     "id": "py_pygame",
-    "name": "Pygame",
-    "lang": "Pygame",
+    "name": "Python - Pygame 1주차",
+    "lang": "Python",
     "track": "pygame",
     "order": 275,
-    "partName": "Pygame",
+    "partName": "1주차",
     "status": "active",
     "contentRootPath": "./data/content/pygame"
   },

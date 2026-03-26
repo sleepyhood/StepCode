@@ -4,11 +4,15 @@
 
 이 문서는 `practice/data/sets/` 아래에서 사용하는 문제지 JSON의 공통 규칙을 정의한다.
 
+> 제안 반영:
+> 이 문서는 기존 `mcq`, `short`, `code` 구조를 유지하면서, 실습형 문제 세트와 코드 제시형 문제를 더 자연스럽게 담기 위한 확장안도 함께 정리한다. 특히 `mcq_multi`는 표준 타입으로 추가하고, `media`, `targetBlockId`는 선택 확장 필드로 검토한다. 또한 `대문항-소문항` 계층형 구성을 정식 지원 대상으로 본다.
+
 이 가이드는 다음 목표를 가진다.
 
 - 과목별 JSON 구조를 가능한 한 일관되게 유지한다.
 - `language`, `unity`, `contest` 영역에서 공통으로 해석 가능한 필드를 정리한다.
 - 문제 유형(`mcq`, `short`, `code`)별 필수/선택 필드를 명확히 구분한다.
+- 평면형 문항 나열뿐 아니라 `대문항-소문항` 계층형 표현도 일관되게 담을 수 있게 한다.
 - 프론트엔드 뷰어와 데이터 제작자가 같은 기준으로 파일을 읽고 작성할 수 있게 한다.
 - 향후 자동 검증(JSON Schema, lint, 빌드 검증)으로 확장할 수 있는 기반을 만든다.
 
@@ -64,10 +68,12 @@
 이 가이드는 추상적인 이상형보다, 현재 저장소에서 이미 사용 중인 필드를 기준으로 정리한다. 확인된 주요 필드는 다음과 같다.
 
 - 세트 공통: `id`, `title`, `categoryId`, `availableLanguages`, `concepts`, `problems`
-- 문제 공통: `id`, `type`, `level`, `title`, `description`, `code`, `teacherExplainMd`, `conceptRef`, `conceptRefs`, `hint`, `ioExample`
+- 세트 계층형 확장: `sections`
+- 문제 공통: `id`, `type`, `level`, `title`, `description`, `code`, `teacherExplainMd`, `conceptRef`, `conceptRefs`, `media`, `hint`, `ioExample`
 - `mcq`: `options`, `optionLabels`, `correctIndex`
+- `mcq_multi`: `options`, `optionLabels`, `correctIndexes`
 - `short`: `expectedText`, `expectedAnyOf`, `answerUi`, `expectedGrid`
-- `code`: `expectedCode`, `expectedCodes`
+- `code`: `expectedCode`, `expectedCodes`, `targetBlockId`
 
 ---
 
@@ -96,6 +102,7 @@
 | `availableLanguages` | string[] | 필수      | 해당 세트에서 허용되는 언어 목록 |
 | `concepts`           | object[] | 선택      | 개념 설명 목록                   |
 | `problems`           | object[] | 필수      | 문제 목록                        |
+| `sections`           | object[] | 선택      | 대문항-소문항 계층형 목록        |
 
 ### 4.3 최상위 필드 상세
 
@@ -172,6 +179,59 @@
 - 순서 자체가 출력 순서가 되므로, 배열 순서를 의도적으로 관리한다.
 - 비어 있는 배열은 허용하지 않는 것을 권장한다.
 
+#### `sections`
+
+- `sections`는 `대문항-소문항` 구조를 표현할 때 사용하는 선택 필드다.
+- 실습형 문제처럼 "공통 제시 코드 1개 + 소문항 여러 개" 구조가 자연스러운 경우 `sections`를 우선 검토한다.
+- `sections`를 사용할 때는 `problems`를 생략하거나, 내부 도구 호환을 위한 보조 캐시로만 유지한다.
+- 신규 작성 기준으로는 `sections`와 `problems`를 동시에 주 데이터 소스로 쓰지 않는 것을 권장한다.
+
+### 4.4 계층형 세트 구조(`sections`)
+
+계층형 세트는 다음처럼 쓴다.
+
+```json
+{
+  "id": "pygame_round01",
+  "title": "Python Pygame 1주차",
+  "categoryId": "py_pygame",
+  "availableLanguages": ["python"],
+  "sections": [
+    {
+      "id": "s1",
+      "title": "1번 창 생성과 화면 색",
+      "description": "이 프로그램은 창을 만들고 배경색과 사각형 위치를 확인하는 코드이다.",
+      "code": "import pygame\n...",
+      "media": [
+        {
+          "type": "image",
+          "path": "./assets/problem01_correct.png",
+          "caption": "정상 작동 참고 화면"
+        }
+      ],
+      "children": [
+        {
+          "id": "p1_1",
+          "type": "code",
+          "level": "basic",
+          "title": "1.1 fill RGB 오류 수정",
+          "description": "제시된 코드의 실행 오류를 고치기 위해 `fill()` 한 줄을 다시 작성하세요.",
+          "expectedCode": "SURFACE.fill((255, 255, 255))"
+        }
+      ]
+    }
+  ]
+}
+```
+
+핵심 원칙:
+
+- `대문항(section)`은 공통 맥락을 제공하는 단위다.
+- `소문항(child problem)`은 실제 채점 단위다.
+- 따라서 `대문항 자체에는 답안 입력 칸이 없다`는 전제를 기본으로 한다.
+- 정답, 채점, 제출, 오답 피드백은 모두 `children` 내부 소문항에만 둔다.
+- 대문항의 `code`, `description`, `media`는 소문항이 공유하는 공통 자료다.
+
 ---
 
 ## 5. `concepts` 구조
@@ -242,6 +302,9 @@
 
 ## 6. 문제 객체 공통 구조
 
+이 절은 `소문항(실제 채점 단위)` 기준이다.
+계층형 세트에서 대문항은 아래 문제 객체와 다른 역할을 가지며, 정답 필드를 갖지 않는다.
+
 ### 6.1 권장 형태
 
 ```json
@@ -253,7 +316,14 @@
   "description": "문제 설명",
   "code": "print('hello')",
   "teacherExplainMd": "해설",
-  "conceptRef": "intro"
+  "conceptRef": "intro",
+  "media": [
+    {
+      "type": "image",
+      "path": "./example.png",
+      "caption": "보조 설명 이미지"
+    }
+  ]
 }
 ```
 
@@ -270,6 +340,7 @@
 | `teacherExplainMd` | string         | 권장      | 교사용 해설 마크다운     |
 | `conceptRef`       | string         | 선택      | 대표 개념 ID             |
 | `conceptRefs`      | string[]       | 선택      | 관련 개념 ID 목록        |
+| `media`            | object[]       | 선택      | 문제에 연결되는 참고 미디어 |
 | `hint`             | string         | 선택      | 힌트                     |
 | `ioExample`        | object         | 선택      | 입력/출력 예시           |
 
@@ -290,13 +361,16 @@
 
 #### `type`
 
-현재 표준 유형은 다음 3개다.
+현재 표준 유형은 다음 4개다.
 
 - `mcq`
+- `mcq_multi`
 - `short`
 - `code`
 
-이 세 유형 외 확장이 필요하면, 먼저 뷰어와 채점 로직이 해당 유형을 이해하는지 확인해야 한다.
+`mcq_multi`는 "옳은 것을 모두 고르시오" 같은 복수정답 객관식을 자연스럽게 표현하기 위한 표준 확장 타입으로 본다.
+
+이 유형들 외 확장이 필요하면, 먼저 뷰어와 채점 로직이 해당 유형을 이해하는지 확인해야 한다.
 
 #### `level`
 
@@ -375,6 +449,47 @@
 - 계산/추론 과정
 - 실수 포인트
 
+#### `media`
+
+- 문제 설명과 함께 참고 이미지, GIF, 비교 캡처 같은 자료를 연결할 때 사용하는 선택 필드다.
+- 새 문제 유형을 만들지 않고, 문제 공통 필드에서 다루는 것이 더 단순하다.
+- 특히 `pygame` 같은 실습형 문제에서 "정상 동작 예시", "비교용 스크린샷", "참고 UI 상태"를 붙일 때 유용하다.
+
+최소 예시는 다음처럼 단순한 구조를 권장한다.
+
+```json
+{
+  "media": [
+    {
+      "type": "image",
+      "path": "./foo.png",
+      "caption": "플레이어가 오른쪽으로 이동한 상태"
+    }
+  ]
+}
+```
+
+또는 GIF 기준 예:
+
+```json
+{
+  "media": [
+    {
+      "type": "gif",
+      "path": "./player_move_ok.gif",
+      "caption": "정상 동작 예시"
+    }
+  ]
+}
+```
+
+권장 규칙:
+
+- 구조는 가능한 한 단순하게 유지한다.
+- `type`, `path` 정도만 있어도 시작할 수 있다.
+- `caption`은 매우 권장되지만 필수는 아니다.
+- 실제 렌더링 여부와 무관하게, 작성 규칙 차원에서 먼저 유지할 수 있다.
+
 #### `hint`
 
 - 학생용 또는 제작자용 힌트를 짧게 제공할 때 사용한다.
@@ -403,6 +518,47 @@
   }
 }
 ```
+
+---
+
+## 6A. 대문항(`section`) 구조
+
+### 6A.1 목적
+
+`section`은 여러 소문항이 공유하는 공통 자료를 묶는 상위 단위다.
+
+대표 용도:
+
+- 공통 제시 코드 1개를 여러 소문항이 함께 참조할 때
+- 공통 참고 이미지 또는 GIF를 상단에 한 번만 보여주고 싶을 때
+- "1번 대문항 아래 1.1, 1.2, 1.3, 1.4"처럼 시험지형 구성을 유지할 때
+
+### 6A.2 기본 규칙
+
+- 대문항은 `정답 입력 단위`가 아니다.
+- 대문항은 `설명/제시 코드/공통 미디어/공통 힌트`를 담는 단위다.
+- 실제 채점 필드는 `children` 안의 소문항에만 들어간다.
+- 따라서 대문항에는 `correctIndex`, `correctIndexes`, `expectedText`, `expectedAnyOf`, `expectedGrid`, `expectedCode`, `expectedCodes`를 두지 않는다.
+
+### 6A.3 권장 필드
+
+| 필드 | 타입 | 필수 여부 | 설명 |
+| --- | --- | --- | --- |
+| `id` | string | 필수 | 대문항 고유 ID |
+| `title` | string | 필수 | 대문항 제목 |
+| `description` | string | 권장 | 대문항 공통 설명 |
+| `code` | string or null | 선택 | 대문항 공통 제시 코드 |
+| `media` | object[] | 선택 | 대문항 공통 참고 미디어 |
+| `conceptRef` | string | 선택 | 대표 개념 ID |
+| `conceptRefs` | string[] | 선택 | 관련 개념 ID 목록 |
+| `teacherExplainMd` | string | 선택 | 대문항 공통 해설/운영 메모 |
+| `children` | object[] | 필수 | 실제 채점 대상 소문항 목록 |
+
+### 6A.4 작성 시 주의
+
+- 소문항이 공통 코드를 공유한다면, 가능하면 코드를 대문항에 두고 소문항마다 반복하지 않는다.
+- 소문항에서 특정 블록만 수정하게 할 때는 대문항 `code`와 소문항 `targetBlockId`를 함께 쓰는 편이 자연스럽다.
+- 대문항 설명과 소문항 설명이 서로 중복되지 않게 역할을 분리한다.
 
 ---
 
@@ -460,7 +616,78 @@
 
 ---
 
-### 7.2 `short` 타입
+### 7.2 `mcq_multi` 타입
+
+#### 목적
+
+복수정답 객관식 문제.
+
+예:
+
+- "옳은 것을 모두 고르시오"
+- "다음 중 해당하는 항목을 모두 선택하시오"
+
+기존 `mcq`는 `correctIndex` 하나만 가지므로, 복수정답을 자연스럽게 표현하기 어렵다. 따라서 `mcq_multi`를 별도 표준 타입으로 정의한다.
+
+#### 필수 필드
+
+| 필드 | 타입 | 필수 여부 | 설명 |
+|---|---|---|---|
+| `options` | string[] | 필수 | 선택지 목록 |
+| `optionLabels` | string[] | 필수 | 보기 라벨 |
+| `correctIndexes` | number[] | 필수 | 정답 선택지 인덱스 목록 |
+
+#### 선택 필드
+
+| 필드 | 타입 | 필수 여부 | 설명 |
+|---|---|---|---|
+| `minSelections` | number | 선택 | 최소 선택 개수 |
+| `maxSelections` | number | 선택 | 최대 선택 개수 |
+
+#### 권장 형태
+
+```json
+{
+  "id": "mcq_multi1",
+  "type": "mcq_multi",
+  "level": "basic",
+  "title": "MCQ Multi 1. 옳은 명령 모두 고르기",
+  "description": "다음 중 파이게임 메인 루프 안에서 자주 수행하는 작업을 모두 고르세요.",
+  "options": [
+    "이벤트를 순회하며 종료 입력을 처리한다.",
+    "매 프레임마다 화면을 다시 그린다.",
+    "반드시 매 프레임마다 `pygame.quit()`를 호출한다.",
+    "필요하면 `clock.tick(...)`으로 프레임 속도를 조절한다."
+  ],
+  "optionLabels": ["A", "B", "C", "D"],
+  "correctIndexes": [0, 1, 3],
+  "minSelections": 3,
+  "maxSelections": 3
+}
+```
+
+#### 규칙
+
+- `optionLabels.length`와 `options.length`는 반드시 같아야 한다.
+- `correctIndexes`는 중복이 없어야 한다.
+- `correctIndexes`의 모든 값은 반드시 `options` 범위 안에 있어야 한다.
+- `correctIndexes`는 정렬된 상태를 권장한다.
+- `minSelections`, `maxSelections`가 있으면 `correctIndexes.length`와 모순되지 않아야 한다.
+
+권장 해석:
+
+- 정확한 정답 개수가 고정이면 `minSelections`와 `maxSelections`를 같은 값으로 둘 수 있다.
+- UI에서 선택 개수 제한을 아직 사용하지 않더라도, 작성 규칙 차원에서 먼저 유지할 수 있다.
+
+#### 작성 시 주의
+
+- `mcq`로 표현 가능한 단일정답 문제는 계속 `mcq`를 사용한다.
+- 복수정답 문제를 `mcq`에 억지로 맞추기 위해 `options` 안에 "A와 B" 같은 조합 선택지를 넣는 방식은 비권장이다.
+- 해설에 "정답: A, B, D"처럼 라벨을 적는 경우 `correctIndexes`와 함께 수정해야 한다.
+
+---
+
+### 7.3 `short` 타입
 
 #### 목적
 
@@ -583,7 +810,7 @@
 
 ---
 
-### 7.3 `code` 타입
+### 7.4 `code` 타입
 
 #### 목적
 
@@ -595,6 +822,7 @@
 | --------------- | -------- | ----------- | -------------- |
 | `expectedCode`  | string   | 조건부 필수 | 대표 정답 코드 |
 | `expectedCodes` | string[] | 선택        | 추가 허용 정답 |
+| `targetBlockId` | string   | 선택        | 교체/완성 대상 블록 ID |
 
 #### 권장 형태
 
@@ -606,7 +834,8 @@
   "title": "Code 1. 입력을 리스트로 저장",
   "description": "정수들을 리스트 lst로 저장하는 한 줄을 작성하세요.",
   "code": "n = int(input())\n# TODO",
-  "expectedCode": "lst = list(map(int, input().split()))"
+  "expectedCode": "lst = list(map(int, input().split()))",
+  "targetBlockId": "BLOCK_A"
 }
 ```
 
@@ -631,12 +860,25 @@
 - 동등한 대체 정답이 있으면 `expectedCodes`에 추가한다.
 - `expectedCodes`를 둘 경우, `expectedCode`와 의미가 동등해야 한다.
 - `expectedCodes` 안에 `expectedCode`를 중복으로 넣지 않는다.
+- `targetBlockId`는 전체 코드 작성이 아니라 제시 코드의 특정 블록을 교체하거나 완성하는 문제에서 선택적으로 사용한다.
+
+`targetBlockId` 예:
+
+- `BLOCK_A`
+- `BLOCK_PLAYER_UPDATE`
+- `BLOCK_COLLISION_CHECK`
+
+현실적인 운영 기준:
+
+- 프론트엔드나 채점기가 아직 이 필드를 직접 사용하지 않더라도, 작성 규칙 차원에서 먼저 유지할 수 있다.
+- 특히 `pygame` 같은 실습형 문제에서 어느 구간을 학생이 수정해야 하는지 명확히 표시하는 데 도움이 된다.
 
 #### 작성 시 주의
 
 - 공백, 줄바꿈, 들여쓰기 차이를 채점에서 어떻게 다룰지 아직 구현에 따라 달라질 수 있으므로, 문서 작성자는 가능한 한 표준형 한 가지를 제시한다.
 - 여러 줄 정답이 필요한 경우 문자열 안에 줄바꿈을 포함할 수 있지만, 가능하면 문제 설계를 한 줄 또는 짧은 블록 기준으로 단순화한다.
 - 언어별 문법 변형이 많다면 `expectedCodes`로 보완한다.
+- 블록 단위 수정 문제라면 `code` 안의 마커와 `targetBlockId`의 이름이 자연스럽게 대응되도록 작성한다.
 
 ---
 
@@ -650,10 +892,25 @@
 | `title`              | 필수 |
 | `categoryId`         | 필수 |
 | `availableLanguages` | 필수 |
-| `problems`           | 필수 |
+| `problems`           | `sections`를 쓰지 않을 때 필수 |
+| `sections`           | 계층형 세트에서 권장 |
 | `concepts`           | 선택 |
 
-### 8.2 문제 공통
+### 8.2 대문항(`section`) 공통
+
+| 필드               | 상태 |
+| ------------------ | ---- |
+| `id`               | 필수 |
+| `title`            | 필수 |
+| `children`         | 필수 |
+| `description`      | 권장 |
+| `code`             | 선택 |
+| `teacherExplainMd` | 선택 |
+| `conceptRef`       | 선택 |
+| `conceptRefs`      | 선택 |
+| `media`            | 선택 |
+
+### 8.3 문제 공통
 
 | 필드               | 상태 |
 | ------------------ | ---- |
@@ -666,16 +923,18 @@
 | `teacherExplainMd` | 권장 |
 | `conceptRef`       | 선택 |
 | `conceptRefs`      | 선택 |
+| `media`            | 선택 |
 | `hint`             | 선택 |
 | `ioExample`        | 선택 |
 
-### 8.3 타입별 정답 필드
+### 8.4 타입별 정답 필드
 
 | `type`  | 필수/조건부 필드                                                     |
 | ------- | -------------------------------------------------------------------- |
 | `mcq`   | `options`, `optionLabels`, `correctIndex`                            |
+| `mcq_multi` | `options`, `optionLabels`, `correctIndexes`                      |
 | `short` | `expectedText` 또는 `expectedAnyOf` 또는 `answerUi` + `expectedGrid` |
-| `code`  | `expectedCode`                                                       |
+| `code`  | `expectedCode` (`targetBlockId`, `expectedCodes`는 선택 확장)        |
 
 ---
 
@@ -769,9 +1028,10 @@
 
 ### 10.3 `type`
 
-현재는 다음 세 값만 표준으로 유지한다.
+현재는 다음 네 값을 표준으로 유지한다.
 
 - `mcq`
+- `mcq_multi`
 - `short`
 - `code`
 
@@ -797,10 +1057,20 @@
 비권장:
 
 - `mcq` 문제에 `expectedText` 추가
+- `mcq_multi` 문제에 `correctIndex`만 두는 것
 - `code` 문제에 `correctIndex` 추가
 - `short` 텍스트형 문제에 `expectedGrid` 추가
 
 가능하더라도, 뷰어와 작성자 모두 혼란스러워진다.
+
+추가 비권장:
+
+- 복수정답 문제를 `mcq`로 우회하기 위해 조합형 선택지를 만드는 것
+- `mcq_multi`에서 `correctIndexes`를 비정렬 상태로 두거나 중복을 넣는 것
+- 실습형 문제에서 참고 이미지가 필요한데도 설명 본문에만 경로를 텍스트로 적고 구조화된 `media`를 쓰지 않는 것
+- 특정 블록 교체 문제인데도 `targetBlockId` 없이 설명에만 "위쪽 빈칸"처럼 모호하게 적는 것
+- 대문항에 정답 필드를 직접 넣고, 동시에 `children`에도 정답 필드를 넣는 것
+- 공통 제시 코드를 소문항마다 반복 복사하여 대문항의 역할을 사실상 없애는 것
 
 ### 11.3 참조 무결성 없는 개념 연결
 
@@ -841,7 +1111,8 @@
 - `title`이 자연어 제목으로 읽히는가
 - `categoryId`가 기존 분류 규칙과 충돌하지 않는가
 - `availableLanguages`가 배열인가
-- `problems`가 비어 있지 않은가
+- `problems` 또는 `sections` 중 실제 데이터 소스가 비어 있지 않은가
+- `sections`를 쓴다면 각 대문항에 `children`이 존재하는가
 
 ### 12.2 개념 연결 체크
 
@@ -856,6 +1127,7 @@
 - `level` 값이 세트 내에서 일관적인가
 - `title`, `description`이 비어 있지 않은가
 - `code`가 필요 없는 문제면 `null` 또는 생략 규칙을 지켰는가
+- 계층형 세트라면 대문항에 정답 필드가 들어가 있지 않은가
 
 ### 12.4 타입별 체크
 
@@ -863,6 +1135,13 @@
 
 - `options`와 `optionLabels` 길이가 같은가
 - `correctIndex`가 범위 안인가
+
+`mcq_multi`
+
+- `options`와 `optionLabels` 길이가 같은가
+- `correctIndexes`에 중복이 없는가
+- `correctIndexes`의 각 값이 범위 안인가
+- `minSelections`, `maxSelections`가 있다면 정답 개수와 모순되지 않는가
 
 `short`
 
@@ -873,11 +1152,17 @@
 
 - `expectedCode`가 존재하는가
 - `expectedCodes`가 있다면 실제로 동등 정답만 담고 있는가
+- 블록 교체 문제라면 `targetBlockId`가 설명/코드와 자연스럽게 대응하는가
+
+공통 확장
+
+- 참고 이미지나 GIF가 필요한 문제라면 `media`로 구조화하는 편이 더 적절하지 않은가
 
 ### 12.5 해설 체크
 
 - `teacherExplainMd`가 있다면 정답과 모순되지 않는가
 - 해설 안의 정답 라벨이 `correctIndex`와 일치하는가
+- `mcq_multi`라면 해설 안의 정답 라벨이 `correctIndexes`와 일치하는가
 - 설명에 있는 코드/출력 값이 실제 정답과 일치하는가
 
 ---
@@ -999,6 +1284,147 @@
 }
 ```
 
+### 13.5 `mcq_multi` 예시
+
+```json
+{
+  "id": "pygame_loop_multi_demo",
+  "title": "Pygame Loop Multi Demo",
+  "categoryId": "pygame_loop_demo",
+  "availableLanguages": ["python"],
+  "problems": [
+    {
+      "id": "mcq_multi1",
+      "type": "mcq_multi",
+      "level": "basic",
+      "title": "MCQ Multi 1. 메인 루프의 역할",
+      "description": "다음 중 일반적인 파이게임 메인 루프에서 수행하는 작업을 모두 고르세요.",
+      "options": [
+        "이벤트를 확인하고 종료 입력을 처리한다.",
+        "화면을 다시 그린다.",
+        "매 프레임마다 `pygame.quit()`를 호출한다.",
+        "필요하면 FPS를 제어한다."
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndexes": [0, 1, 3],
+      "minSelections": 3,
+      "maxSelections": 3,
+      "teacherExplainMd": "정답은 A, B, D입니다. 메인 루프는 이벤트 처리, 화면 갱신, 프레임 제어를 담당할 수 있지만 `pygame.quit()`는 종료 시점에 호출합니다."
+    }
+  ]
+}
+```
+
+### 13.6 `code` + `targetBlockId` 예시
+
+```json
+{
+  "id": "pygame_block_demo",
+  "title": "Pygame Block Demo",
+  "categoryId": "pygame_block_demo",
+  "availableLanguages": ["python"],
+  "problems": [
+    {
+      "id": "code_block1",
+      "type": "code",
+      "level": "basic",
+      "title": "Code 1. 이동 블록 완성",
+      "description": "플레이어가 오른쪽 화살표를 누를 때 x 좌표가 증가하도록 `BLOCK_PLAYER_MOVE` 부분을 완성하세요.",
+      "code": "keys = pygame.key.get_pressed()\n# BLOCK_PLAYER_MOVE_START\n# TODO\n# BLOCK_PLAYER_MOVE_END\nscreen.blit(player, (x, y))",
+      "expectedCode": "if keys[pygame.K_RIGHT]:\n    x += speed",
+      "targetBlockId": "BLOCK_PLAYER_MOVE",
+      "teacherExplainMd": "오른쪽 키 입력이 참일 때만 x를 증가시키면 됩니다."
+    }
+  ]
+}
+```
+
+### 13.7 `media` 예시
+
+```json
+{
+  "id": "pygame_media_demo",
+  "title": "Pygame Media Demo",
+  "categoryId": "pygame_media_demo",
+  "availableLanguages": ["python"],
+  "problems": [
+    {
+      "id": "short1",
+      "type": "short",
+      "level": "basic",
+      "title": "Short 1. 정상 화면 판별",
+      "description": "참고 이미지를 보고, 플레이어가 벽 밖으로 나가지 않도록 하기 위해 필요한 조건 한 가지를 쓰세요.",
+      "code": "if x < 0:\n    x = 0",
+      "media": [
+        {
+          "type": "image",
+          "path": "./assets/pygame_player_bounds_ok.png",
+          "caption": "플레이어가 화면 내부에 유지된 정상 상태"
+        },
+        {
+          "type": "gif",
+          "path": "./assets/pygame_player_move_ok.gif",
+          "caption": "좌우 이동 정상 동작 예시"
+        }
+      ],
+      "expectedText": "x > WIDTH - player_width 이면 x = WIDTH - player_width 로 제한한다"
+    }
+  ]
+}
+```
+
+### 13.8 계층형 `sections` 예시
+
+```json
+{
+  "id": "pygame_round01",
+  "title": "Python Pygame 1주차",
+  "categoryId": "py_pygame",
+  "availableLanguages": ["python"],
+  "sections": [
+    {
+      "id": "s1",
+      "title": "1번 창 생성과 화면 색",
+      "description": "이 프로그램은 창을 만들고 배경색과 사각형 위치를 확인하는 코드이다.",
+      "code": "import sys\nimport pygame\nfrom pygame.locals import QUIT\n...",
+      "media": [
+        {
+          "type": "image",
+          "path": "./assets/problem01_correct.png",
+          "caption": "정상 작동 참고 화면"
+        }
+      ],
+      "children": [
+        {
+          "id": "p1_1",
+          "type": "code",
+          "level": "basic",
+          "title": "1.1 fill RGB 오류 수정",
+          "description": "`fill()` 한 줄을 올바르게 다시 작성하세요.",
+          "expectedCode": "SURFACE.fill((255, 255, 255))"
+        },
+        {
+          "id": "p1_2",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "1.2 결과 판단",
+          "description": "실행 결과로 옳은 것을 모두 고르세요.",
+          "options": ["배경이 초록색이다.", "사각형이 중앙에 있다.", "실행 오류가 난다."],
+          "optionLabels": ["A", "B", "C"],
+          "correctIndexes": [0, 1]
+        }
+      ]
+    }
+  ]
+}
+```
+
+이 예시의 핵심:
+
+- 대문항 `s1`에는 정답 필드가 없다.
+- 실제 채점은 `children` 안의 소문항에서만 일어난다.
+- 공통 제시 코드와 공통 이미지는 대문항에 한 번만 둔다.
+
 ---
 
 ## 14. 실무 운영 권장안
@@ -1007,11 +1433,15 @@
 
 새로운 문제지 JSON은 다음 기준으로 작성하는 것을 권장한다.
 
-- 최상위 필드: `id`, `title`, `categoryId`, `availableLanguages`, `problems`
+- 최상위 필드: `id`, `title`, `categoryId`, `availableLanguages`, `problems` 또는 `sections`
 - 필요 시 `concepts` 추가
-- 모든 문제에 `id`, `type`, `level`, `title`, `description`
+- 평면형이면 모든 문제에 `id`, `type`, `level`, `title`, `description`
+- 계층형이면 대문항에 공통 코드/설명/이미지를 두고, 실제 정답은 `children` 소문항에만 둔다
 - 가능한 경우 `teacherExplainMd` 포함
 - 정답 필드는 `type`에 맞는 것만 사용
+- 복수정답 객관식은 `mcq` 대신 `mcq_multi`를 사용
+- 실습형 문제에서 참고 이미지나 GIF가 필요하면 `media`를 선택적으로 검토
+- 코드 일부만 교체하는 문제라면 `code` 타입 안에서 `targetBlockId` 사용을 검토
 
 ### 14.2 기존 파일 점진 정리 기준
 
@@ -1019,9 +1449,11 @@
 
 1. 파일명과 `id` 일치
 2. `type`별 정답 필드 정리
-3. `teacherExplainMd` 보강
-4. `level` 값 표준화
-5. `concepts`와 참조 무결성 정리
+3. 복수정답 객관식은 `mcq_multi`로 승격 검토
+4. `teacherExplainMd` 보강
+5. `level` 값 표준화
+6. `concepts`와 참조 무결성 정리
+7. 실습형 문제는 필요 시 `media`, `targetBlockId` 같은 선택 확장 필드 검토
 
 ### 14.3 프론트엔드 구현 시 기대 동작
 
@@ -1030,8 +1462,13 @@
 - `concepts`는 없어도 된다.
 - `code`는 없거나 `null`일 수 있다.
 - `teacherExplainMd`는 없어도 된다.
+- `media`는 없어도 된다.
+- `sections`가 있으면 대문항을 먼저 렌더링하고, 내부 `children`을 실제 문제 카드로 렌더링하는 편이 좋다.
+- 대문항 자체에는 답안 입력 UI를 만들지 않는 편이 좋다.
 - `short`는 텍스트형과 그리드형 둘 다 지원해야 한다.
+- `mcq_multi`는 선택 개수 제약이 없더라도 최소한 `correctIndexes` 구조는 처리할 수 있는 편이 좋다.
 - `code`는 `expectedCode` 외 `expectedCodes`까지 허용할 수 있다.
+- `targetBlockId`는 당장 사용하지 않더라도 무시 가능한 메타 필드로 다룰 수 있다.
 
 ---
 
@@ -1059,7 +1496,11 @@
 - `id`, `title`, `categoryId`, `availableLanguages`, `problems`는 최상위 공통 필수다.
 - 문제는 `id`, `type`, `level`, `title`, `description`를 공통 필수로 본다.
 - `teacherExplainMd`는 전 영역 공통 권장 필드로 확대한다.
+- `media`는 실습형 문제를 위한 선택 확장 필드로 검토한다.
 - `concepts`, `conceptRef`, `conceptRefs`는 선택 확장으로 유지한다.
+- 필요하면 `sections`로 대문항-소문항 계층형 구조를 표현한다.
+- 대문항은 공통 제시 단위이며, 정답 입력 칸을 갖지 않는다.
+- 복수정답 객관식은 `mcq_multi`로 명시적으로 표현한다.
 - `short`는 텍스트형과 그리드형을 모두 허용한다.
-- `code`는 `expectedCode`를 중심으로, 필요 시 `expectedCodes`로 대체 정답을 허용한다.
+- `code`는 `expectedCode`를 중심으로, 필요 시 `expectedCodes`와 `targetBlockId`를 함께 확장할 수 있다.
 - 파일명과 `id`는 반드시 맞춘다.

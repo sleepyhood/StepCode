@@ -114,6 +114,37 @@ function buildConceptIndex(concepts) {
   return { list, byId };
 }
 
+function getSetSections(setData = currentSetData) {
+  return Array.isArray(setData?.sections) ? setData.sections : [];
+}
+
+function hasSectionLayout(setData = currentSetData) {
+  return getSetSections(setData).length > 0;
+}
+
+function getAllQuestions(setData = currentSetData) {
+  if (!setData) return [];
+  if (!hasSectionLayout(setData)) {
+    return Array.isArray(setData.problems) ? setData.problems : [];
+  }
+
+  const out = [];
+  getSetSections(setData).forEach((section, sectionIndex) => {
+    const children = Array.isArray(section?.children) ? section.children : [];
+    children.forEach((child, childIndex) => {
+      if (!child || typeof child !== "object") return;
+      out.push({
+        ...child,
+        __section: section,
+        __sectionId: section.id || `section_${sectionIndex + 1}`,
+        __sectionIndex: sectionIndex,
+        __childIndex: childIndex,
+      });
+    });
+  });
+  return out;
+}
+
 function renderConceptSection(container, concepts) {
   const { list } = buildConceptIndex(concepts);
   if (!list.length) return null;
@@ -236,10 +267,25 @@ function renderMediaBlock(targetEl, media) {
   const wrap = document.createElement("div");
   wrap.className = "media-block";
   const hostDebug = isHostUiEnabled();
+  const resolveSrc = (rawPath) => {
+    const input = String(rawPath || "").trim();
+    if (!input) return "";
+    if (/^(https?:)?\/\//i.test(input) || input.startsWith("data:")) return input;
+    try {
+      const base = String(currentSetData?.__dataPath || "").trim();
+      if (base) {
+        return new URL(input, new URL(base, window.location.href)).href;
+      }
+      return new URL(input, window.location.href).href;
+    } catch (_) {
+      return input;
+    }
+  };
 
   items.forEach((m) => {
-    if (!m || m.type !== "image") return;
-    if (!m.src) {
+    if (!m || (m.type !== "image" && m.type !== "gif")) return;
+    const src = resolveSrc(m.src || m.path || "");
+    if (!src) {
       if (hostDebug) {
         const miss = document.createElement("div");
         miss.className = "media-missing";
@@ -252,7 +298,7 @@ function renderMediaBlock(targetEl, media) {
     fig.className = "media-figure";
 
     const img = document.createElement("img");
-    img.src = m.src;
+    img.src = src;
     img.alt = m.alt || "";
     img.loading = "lazy";
     img.decoding = "async";
@@ -261,7 +307,7 @@ function renderMediaBlock(targetEl, media) {
       if (hostDebug) {
         const miss = document.createElement("div");
         miss.className = "media-missing";
-        miss.textContent = `이미지 로드 실패: ${m.src}`;
+        miss.textContent = `이미지 로드 실패: ${src}`;
         wrap.appendChild(miss);
       }
     });
@@ -612,13 +658,13 @@ function updateQGradeBadge(qid) {
 }
 
 function refreshAllQGradeBadges() {
-  const qs = currentSetData?.problems || [];
+  const qs = getAllQuestions();
   qs.forEach((q) => updateQGradeBadge(q.id));
 }
 
 // ====== (추가) 진행도(푼/맞은) ======
 function getActiveQuestions() {
-  const all = currentSetData?.problems || [];
+  const all = getAllQuestions();
   const coreCount = Number(currentSetData?.coreCount ?? 6);
 
   if (!isClassMode()) return all;
@@ -638,6 +684,7 @@ function isAnswered(q) {
   const v = currentAnswers?.[q.id];
   if (q.type === "mcq")
     return v !== undefined && v !== null && String(v) !== "";
+  if (q.type === "mcq_multi") return Array.isArray(v) && v.length > 0;
   return String(v ?? "").trim().length > 0;
 }
 
@@ -952,7 +999,7 @@ function makeTeacherLogSnapshot() {
     typeof getSolveElapsedNow === "function" ? getSolveElapsedNow() : null;
 
   // 채점 로직과 동일한 방식으로 "현재 답안 기준" 점수 스냅샷 계산
-  const questions = (currentSetData && currentSetData.problems) || [];
+    const questions = getAllQuestions();
   let correctCount = 0;
   const perQuestion = [];
 
@@ -962,6 +1009,21 @@ function makeTeacherLogSnapshot() {
     if (q.type === "mcq") {
       const selected = currentAnswers[q.id];
       isCorrect = String(selected) === String(q.correctIndex);
+    } else if (q.type === "mcq_multi") {
+      const selected = Array.isArray(currentAnswers[q.id])
+        ? currentAnswers[q.id]
+        : [];
+      const picked = selected
+        .map((v) => Number(v))
+        .filter((v) => Number.isInteger(v))
+        .sort((a, b) => a - b);
+      const correct = (Array.isArray(q.correctIndexes) ? q.correctIndexes : [])
+        .map((v) => Number(v))
+        .filter((v) => Number.isInteger(v))
+        .sort((a, b) => a - b);
+      isCorrect =
+        picked.length === correct.length &&
+        picked.every((v, idx) => v === correct[idx]);
     } else if (q.type === "short") {
       const val = String((currentAnswers && currentAnswers[q.id]) ?? "");
       if (q.expectedAnyOf) {
@@ -1250,6 +1312,13 @@ async function initPractice() {
   try {
     // 세트 JSON 불러오기
     currentSetData = await ProblemService.loadSet(setId);
+    try {
+      const setList = await ProblemService.listSets();
+      const meta = Array.isArray(setList)
+        ? setList.find((item) => item.id === setId)
+        : null;
+      if (meta?.dataPath) currentSetData.__dataPath = meta.dataPath;
+    } catch (_) {}
     // 세트 정보 + 로컬 저장된 답안 불러오기
     currentSetId = setId;
     currentAnswers = loadStoredAnswers(setId);
@@ -1451,16 +1520,22 @@ function getQuestionConceptRefs(q) {
   if (!q || typeof q !== "object") return [];
 
   const refs = [];
-  if (Array.isArray(q.conceptRefs)) {
-    q.conceptRefs.forEach((v) => {
-      const s = String(v || "").trim();
+  const pushRefs = (source) => {
+    if (!source || typeof source !== "object") return;
+    if (Array.isArray(source.conceptRefs)) {
+      source.conceptRefs.forEach((v) => {
+        const s = String(v || "").trim();
+        if (s) refs.push(s);
+      });
+    }
+    if (source.conceptRef) {
+      const s = String(source.conceptRef || "").trim();
       if (s) refs.push(s);
-    });
-  }
-  if (q.conceptRef) {
-    const s = String(q.conceptRef || "").trim();
-    if (s) refs.push(s);
-  }
+    }
+  };
+
+  pushRefs(q);
+  if (q.__section) pushRefs(q.__section);
 
   return Array.from(new Set(refs));
 }
@@ -1476,7 +1551,7 @@ function computeConceptReport() {
   });
 
   const byQ = qGradeMeta?.byQ || {};
-  const qs = currentSetData?.problems || [];
+  const qs = getAllQuestions();
   qs.forEach((q) => {
     const refs = getQuestionConceptRefs(q);
     refs.forEach((cid) => {
@@ -1549,6 +1624,13 @@ function getWrongFeedbackMessage(q, userVal) {
     }
   }
 
+  if (q.type === "mcq_multi") {
+    if (!Array.isArray(userVal) || userVal.length === 0) {
+      return "보기를 먼저 선택해 주세요.";
+    }
+    if (q.wrongFeedbackText) return String(q.wrongFeedbackText);
+  }
+
   if (q.type === "short" || q.type === "code") {
     if (userVal === undefined || userVal === null || String(userVal).trim() === "") {
       return "답안을 입력해 주세요.";
@@ -1557,6 +1639,216 @@ function getWrongFeedbackMessage(q, userVal) {
   }
 
   return "❌ 다시 한 번 생각해보세요.";
+}
+
+function getQuestionBucket(q, idx, coreCount = Number(currentSetData?.coreCount ?? 6)) {
+  return q.bucket === "supp" || q.bucket === "core"
+    ? q.bucket
+    : idx < coreCount
+    ? "core"
+    : "supp";
+}
+
+function getQuestionTitleText(q, idx) {
+  const raw = String(q?.title || "문제").trim();
+  if (q?.displayNumber) return `${q.displayNumber} ${raw}`.trim();
+  if (/^\d+(?:\.\d+)+/.test(raw)) return raw;
+  return `${idx + 1}. ${raw}`;
+}
+
+function renderSharedCodeBlock(targetEl, code) {
+  if (!code) return;
+  const pre = document.createElement("pre");
+  pre.className = "code-block line-numbers";
+  const codeEl = document.createElement("code");
+  codeEl.className = `language-${currentLang}`;
+  codeEl.textContent = code;
+  pre.appendChild(codeEl);
+  targetEl.appendChild(pre);
+}
+
+function renderSectionCard(parentEl, section, conceptIndex) {
+  const wrap = document.createElement("section");
+  wrap.className = "question-section-card";
+  wrap.setAttribute("data-section-id", section.id || "");
+
+  const head = document.createElement("div");
+  head.className = "question-section-head";
+
+  const title = document.createElement("h2");
+  title.className = "question-section-title";
+  title.textContent = String(section?.title || "대문항");
+  head.appendChild(title);
+
+  const refs = getQuestionConceptRefs(section);
+  refs.forEach((cid) => {
+    if (!conceptIndex.byId[cid]) return;
+    const c = conceptIndex.byId[cid];
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "concept-chip";
+    chip.textContent = formatConceptLabelText(c.title || cid);
+    chip.addEventListener("click", () => scrollToConcept(cid));
+    head.appendChild(chip);
+  });
+
+  wrap.appendChild(head);
+
+  const { main: descMain, view: descView } = splitDescriptionForView(
+    section?.description || ""
+  );
+  if (descMain) {
+    const desc = document.createElement("div");
+    desc.className = "description md";
+    renderMarkdownInto(desc, descMain);
+    wrap.appendChild(desc);
+  }
+  if (descView) {
+    const viewWrap = document.createElement("div");
+    viewWrap.className = "view-panel";
+    const viewTitle = document.createElement("div");
+    viewTitle.className = "view-title";
+    viewTitle.textContent = "보기";
+    const viewBody = document.createElement("div");
+    viewBody.className = "view-body md";
+    renderMarkdownInto(viewBody, descView);
+    viewWrap.append(viewTitle, viewBody);
+    wrap.appendChild(viewWrap);
+  }
+
+  renderMediaBlock(wrap, section?.media);
+  renderSharedCodeBlock(wrap, section?.code);
+
+  const body = document.createElement("div");
+  body.className = "question-section-body";
+  wrap.appendChild(body);
+  parentEl.appendChild(wrap);
+  return body;
+}
+
+function renderQuestionCard(parentEl, q, idx, bucket, conceptIndex) {
+  const card = document.createElement("section");
+  card.className = "question-card";
+  card.dataset.qid = q.id;
+  card.dataset.bucket = bucket;
+
+  const header = document.createElement("div");
+  header.className = "question-header";
+
+  const headerLeft = document.createElement("div");
+  headerLeft.className = "question-header-left";
+
+  const title = document.createElement("h2");
+  title.textContent = getQuestionTitleText(q, idx);
+  headerLeft.appendChild(title);
+
+  const conceptRefs = getQuestionConceptRefs(q);
+  conceptRefs.forEach((cid) => {
+    if (!conceptIndex.byId[cid]) return;
+    const c = conceptIndex.byId[cid];
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "concept-chip";
+    chip.textContent = formatConceptLabelText(c.title || cid);
+    chip.addEventListener("click", () => scrollToConcept(cid));
+    headerLeft.appendChild(chip);
+  });
+
+  const headerRight = document.createElement("div");
+  headerRight.className = "question-header-right";
+
+  const typeTag = document.createElement("span");
+  typeTag.className = "q-type-tag";
+  if (q.type === "mcq") typeTag.textContent = "객관식";
+  else if (q.type === "mcq_multi") typeTag.textContent = "복수정답";
+  else if (q.type === "short") typeTag.textContent = "단답형";
+  else if (q.type === "code") typeTag.textContent = "코드 작성";
+  headerRight.appendChild(typeTag);
+  appendQGradeBadge(headerRight, q.id);
+
+  header.append(headerLeft, headerRight);
+  card.appendChild(header);
+
+  const { main: descMain, view: descView } = splitDescriptionForView(
+    q.description || ""
+  );
+  if (descMain) {
+    const desc = document.createElement("div");
+    desc.className = "description md";
+    renderMarkdownInto(desc, descMain);
+    card.appendChild(desc);
+  }
+  if (descView) {
+    const viewWrap = document.createElement("div");
+    viewWrap.className = "view-panel";
+    const viewTitle = document.createElement("div");
+    viewTitle.className = "view-title";
+    viewTitle.textContent = "보기";
+    const viewBody = document.createElement("div");
+    viewBody.className = "view-body md";
+    renderMarkdownInto(viewBody, descView);
+    viewWrap.append(viewTitle, viewBody);
+    card.appendChild(viewWrap);
+  }
+
+  renderMediaBlock(card, q.media);
+  renderSharedCodeBlock(card, q.code);
+
+  if (q.ioExample && (q.ioExample.input || q.ioExample.output)) {
+    const ioWrap = document.createElement("div");
+    ioWrap.className = "io-example";
+
+    const ioTitle = document.createElement("div");
+    ioTitle.className = "io-title";
+    ioTitle.textContent = "입력/출력 예시";
+    ioWrap.appendChild(ioTitle);
+
+    const ioGrid = document.createElement("div");
+    ioGrid.className = "io-grid";
+
+    const inBox = document.createElement("div");
+    inBox.className = "io-box";
+    const inLabel = document.createElement("div");
+    inLabel.className = "io-label";
+    inLabel.textContent = "입력";
+    const inPre = document.createElement("pre");
+    inPre.className = "io-pre";
+    inPre.textContent = q.ioExample.input || "(입력 없음)";
+    inBox.append(inLabel, inPre);
+
+    const outBox = document.createElement("div");
+    outBox.className = "io-box";
+    const outLabel = document.createElement("div");
+    outLabel.className = "io-label";
+    outLabel.textContent = "출력";
+    const outPre = document.createElement("pre");
+    outPre.className = "io-pre";
+    outPre.textContent = q.ioExample.output || "(출력 없음)";
+    outBox.append(outLabel, outPre);
+
+    ioGrid.append(inBox, outBox);
+    ioWrap.appendChild(ioGrid);
+    card.appendChild(ioWrap);
+  }
+
+  renderTracePanel(card, q);
+
+  if (q.type === "mcq") {
+    renderMcqOptions(card, q);
+  } else if (q.type === "mcq_multi") {
+    renderMcqOptions(card, q, true);
+  } else {
+    renderTextArea(card, q);
+  }
+
+  appendCoachPanel(card, q, idx, bucket);
+
+  const feedback = document.createElement("div");
+  feedback.className = "feedback";
+  feedback.setAttribute("data-feedback", q.id);
+  card.appendChild(feedback);
+
+  parentEl.appendChild(card);
 }
 
 // ====== 문제 전체 렌더 ======
@@ -1569,8 +1861,11 @@ function renderSet() {
   const conceptIndex = buildConceptIndex(currentSetData.concepts);
   renderConceptSection(container, conceptIndex.list);
 
-  const questions = currentSetData.problems || [];
+  const questions = getAllQuestions();
   const coreCount = Number(currentSetData.coreCount ?? 6);
+  const questionIndexById = new Map(
+    questions.map((q, idx) => [q.id, idx])
+  );
 
   let coreWrap = container;
   let suppWrap = null;
@@ -1625,167 +1920,44 @@ function renderSet() {
     });
   }
 
-  // if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
+  if (hasSectionLayout()) {
+    const allSections = getSetSections();
+    const targets = isClassMode() && suppWrap
+      ? [
+          { bucket: "core", wrap: coreWrap },
+          { bucket: "supp", wrap: suppWrap },
+        ]
+      : [{ bucket: null, wrap: container }];
 
-  questions.forEach((q, idx) => {
-    const card = document.createElement("section");
-    card.className = "question-card";
-
-    card.dataset.qid = q.id;
-
-    // 버킷(core/supp) 결정: q.bucket 우선, 없으면 앞 6개를 core
-    const bucket =
-      q.bucket === "supp" || q.bucket === "core"
-        ? q.bucket
-        : idx < coreCount
-        ? "core"
-        : "supp";
-    card.dataset.bucket = bucket;
-
-    // --- 헤더 (문제 번호 + 제목 + 타입 태그) ---
-    const header = document.createElement("div");
-    header.className = "question-header";
-
-    const headerLeft = document.createElement("div");
-    headerLeft.className = "question-header-left";
-
-    const title = document.createElement("h2");
-    title.textContent = `${idx + 1}. ${q.title}`;
-    headerLeft.appendChild(title);
-
-    const conceptRefs = getQuestionConceptRefs(q);
-    conceptRefs.forEach((cid) => {
-      if (!conceptIndex.byId[cid]) return;
-      const c = conceptIndex.byId[cid];
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = "concept-chip";
-      chip.textContent = formatConceptLabelText(c.title || cid);
-      chip.addEventListener("click", () => scrollToConcept(cid));
-      headerLeft.appendChild(chip);
+    targets.forEach(({ bucket, wrap }) => {
+      allSections.forEach((section) => {
+        const children = questions.filter((q) => {
+          if (q.__sectionId !== section.id) return false;
+          if (!bucket) return true;
+          const idx = questionIndexById.get(q.id) ?? 0;
+          return getQuestionBucket(q, idx, coreCount) === bucket;
+        });
+        if (!children.length) return;
+        const sectionBody = renderSectionCard(wrap, section, conceptIndex);
+        children.forEach((q) => {
+          const idx = questionIndexById.get(q.id) ?? 0;
+          const childBucket = getQuestionBucket(q, idx, coreCount);
+          renderQuestionCard(sectionBody, q, idx, childBucket, conceptIndex);
+        });
+      });
     });
-
-    const headerRight = document.createElement("div");
-    headerRight.className = "question-header-right";
-
-    const typeTag = document.createElement("span");
-    typeTag.className = "q-type-tag";
-    if (q.type === "mcq") typeTag.textContent = "객관식";
-    else if (q.type === "short") typeTag.textContent = "단답형";
-    else if (q.type === "code") typeTag.textContent = "코드 작성";
-    headerRight.appendChild(typeTag);
-    appendQGradeBadge(headerRight, q.id);
-
-    header.appendChild(headerLeft);
-    header.appendChild(headerRight);
-    card.appendChild(header);
-
-    // --- 설명 ---
-    const { main: descMain, view: descView } = splitDescriptionForView(
-      q.description || ""
-    );
-
-    if (descMain) {
-      const desc = document.createElement("div");
-      desc.className = "description md";
-      renderMarkdownInto(desc, descMain);
-      card.appendChild(desc);
-    }
-
-    if (descView) {
-      const viewWrap = document.createElement("div");
-      viewWrap.className = "view-panel";
-      const viewTitle = document.createElement("div");
-      viewTitle.className = "view-title";
-      viewTitle.textContent = "보기";
-      const viewBody = document.createElement("div");
-      viewBody.className = "view-body md";
-      renderMarkdownInto(viewBody, descView);
-      viewWrap.appendChild(viewTitle);
-      viewWrap.appendChild(viewBody);
-      card.appendChild(viewWrap);
-    }
-
-    renderMediaBlock(card, q.media);
-
-    // --- 코드 블록 (있으면) ---
-    if (q.code) {
-      const pre = document.createElement("pre");
-      pre.className = "code-block line-numbers";
-
-      const codeEl = document.createElement("code");
-      // 현재 선택된 언어 기준으로 Prism 클래스 부여
-      codeEl.className = `language-${currentLang}`;
-      codeEl.textContent = q.code;
-
-      pre.appendChild(codeEl);
-      card.appendChild(pre);
-    }
-
-    if (q.ioExample && (q.ioExample.input || q.ioExample.output)) {
-      const ioWrap = document.createElement("div");
-      ioWrap.className = "io-example";
-
-      const ioTitle = document.createElement("div");
-      ioTitle.className = "io-title";
-      ioTitle.textContent = "입력/출력 예시";
-      ioWrap.appendChild(ioTitle);
-
-      const ioGrid = document.createElement("div");
-      ioGrid.className = "io-grid";
-
-      const inBox = document.createElement("div");
-      inBox.className = "io-box";
-      const inLabel = document.createElement("div");
-      inLabel.className = "io-label";
-      inLabel.textContent = "입력";
-      const inPre = document.createElement("pre");
-      inPre.className = "io-pre";
-      inPre.textContent = q.ioExample.input || "(입력 없음)";
-      inBox.appendChild(inLabel);
-      inBox.appendChild(inPre);
-
-      const outBox = document.createElement("div");
-      outBox.className = "io-box";
-      const outLabel = document.createElement("div");
-      outLabel.className = "io-label";
-      outLabel.textContent = "출력";
-      const outPre = document.createElement("pre");
-      outPre.className = "io-pre";
-      outPre.textContent = q.ioExample.output || "(출력 없음)";
-      outBox.appendChild(outLabel);
-      outBox.appendChild(outPre);
-
-      ioGrid.appendChild(inBox);
-      ioGrid.appendChild(outBox);
-      ioWrap.appendChild(ioGrid);
-
-      card.appendChild(ioWrap);
-    }
-
-    renderTracePanel(card, q);
-
-    // --- 유형별 입력/보기 생성 ---
-    if (q.type === "mcq") {
-      renderMcqOptions(card, q);
-    } else {
-      renderTextArea(card, q);
-    }
-
-    appendCoachPanel(card, q, idx, bucket);
-
-    // --- 피드백 영역 ---
-    const feedback = document.createElement("div");
-    feedback.className = "feedback";
-    feedback.setAttribute("data-feedback", q.id);
-    card.appendChild(feedback);
-
-    if (isClassMode() && suppWrap) {
-      (bucket === "core" ? coreWrap : suppWrap).appendChild(card);
-    } else {
-      container.appendChild(card);
-    }
-  });
+  } else {
+    questions.forEach((q, idx) => {
+      const bucket = getQuestionBucket(q, idx, coreCount);
+      const target =
+        isClassMode() && suppWrap
+          ? bucket === "core"
+            ? coreWrap
+            : suppWrap
+          : container;
+      renderQuestionCard(target, q, idx, bucket, conceptIndex);
+    });
+  }
 
   // ▼ 렌더가 다 끝난 뒤에 하이라이트 호출 ▼
   if (window.Prism) {
@@ -1824,7 +1996,7 @@ function getQuestionRecommendedMs(q, idx) {
   const coreCount = Number(currentSetData?.coreCount ?? 6);
   const per = Math.floor(
     getSetRecommendedMs() /
-      Math.max(1, Math.min(coreCount, (currentSetData?.problems || []).length))
+      Math.max(1, Math.min(coreCount, getAllQuestions().length))
   );
   return Math.max(90_000, per); // 최소 1분30초
 }
@@ -2008,7 +2180,7 @@ function startCoachTicker() {
 
   coachTicker = setInterval(() => {
     checkClassTimeboxOnce(); // ✅ 수업모드 15분 도달 체크(1회 팝업)
-    const questions = currentSetData?.problems || [];
+    const questions = getAllQuestions();
     const coreCount = Number(currentSetData?.coreCount ?? 6);
 
     for (let i = 0; i < questions.length; i++) {
@@ -2202,7 +2374,7 @@ function shouldMcqOptionsUseTwoColumns(q) {
   });
 }
 
-function renderMcqOptions(card, q) {
+function renderMcqOptions(card, q, isMulti = false) {
   const optionsWrap = document.createElement("div");
   optionsWrap.className = "options";
 
@@ -2212,6 +2384,9 @@ function renderMcqOptions(card, q) {
   }
 
   const saved = currentAnswers && currentAnswers[q.id];
+  const savedMulti = Array.isArray(saved)
+    ? saved.map((v) => String(v))
+    : [];
 
   (q.options || []).forEach((opt, i) => {
     const optDiv = document.createElement("div");
@@ -2220,21 +2395,34 @@ function renderMcqOptions(card, q) {
     const inputId = `${q.id}_opt${i}`;
 
     const input = document.createElement("input");
-    input.type = "radio";
-    input.name = q.id;
+    input.type = isMulti ? "checkbox" : "radio";
+    input.name = isMulti ? `${q.id}[]` : q.id;
     input.value = String(i);
     input.id = inputId;
     input.setAttribute("data-question", q.id);
 
     // 저장된 값이 있으면 체크 복원
-    if (saved !== undefined && String(saved) === String(i)) {
+    if (!isMulti && saved !== undefined && String(saved) === String(i)) {
+      input.checked = true;
+    }
+    if (isMulti && savedMulti.includes(String(i))) {
       input.checked = true;
     }
 
     // 선택이 바뀔 때마다 자동 저장
     input.addEventListener("change", () => {
-      if (input.checked) {
+      if (!isMulti && input.checked) {
         recordAnswer(q.id, input.value);
+        return;
+      }
+      if (isMulti) {
+        const selected = Array.from(
+          optionsWrap.querySelectorAll(`input[data-question="${q.id}"]:checked`)
+        )
+          .map((el) => Number(el.value))
+          .filter((v) => Number.isInteger(v))
+          .sort((a, b) => a - b);
+        recordAnswer(q.id, selected);
       }
     });
 
@@ -2780,7 +2968,7 @@ function setupGrading() {
     }
 
     // ✅ 제출 전 소프트 가드: Code/Output 혼동 의심 답안 있으면 확인
-    const qs = currentSetData.problems || [];
+    const qs = getAllQuestions();
     let suspicious = 0;
 
     qs.forEach((q) => {
@@ -2798,18 +2986,13 @@ function setupGrading() {
       if (!ok) return;
     }
 
-    const all = currentSetData.problems || [];
+    const all = getAllQuestions();
     const coreCount = Number(currentSetData.coreCount ?? 6);
 
     const questions = !isClassMode()
       ? all
       : all.filter((q, idx) => {
-          const bucket =
-            q.bucket === "supp" || q.bucket === "core"
-              ? q.bucket
-              : idx < coreCount
-              ? "core"
-              : "supp";
+          const bucket = getQuestionBucket(q, idx, coreCount);
           return bucket === activeBucket;
         });
     let correctCount = 0;
@@ -2822,6 +3005,21 @@ function setupGrading() {
       if (q.type === "mcq") {
         const selected = currentAnswers[q.id];
         isCorrect = String(selected) === String(q.correctIndex);
+      } else if (q.type === "mcq_multi") {
+        const selected = Array.isArray(currentAnswers[q.id])
+          ? currentAnswers[q.id]
+          : [];
+        const picked = selected
+          .map((v) => Number(v))
+          .filter((v) => Number.isInteger(v))
+          .sort((a, b) => a - b);
+        const correct = (Array.isArray(q.correctIndexes) ? q.correctIndexes : [])
+          .map((v) => Number(v))
+          .filter((v) => Number.isInteger(v))
+          .sort((a, b) => a - b);
+        isCorrect =
+          picked.length === correct.length &&
+          picked.every((v, idx) => v === correct[idx]);
       } else if (q.type === "short") {
         // const inputEl = document.querySelector(`[data-question="${q.id}"]`);
         // const val = (inputEl && inputEl.value) || "";
@@ -2857,9 +3055,7 @@ function setupGrading() {
       }
       bumpQGradeAttempt(q.id, isCorrect);
       if (isClassMode()) {
-        const idx = (currentSetData.problems || []).findIndex(
-          (x) => x.id === q.id
-        );
+        const idx = all.findIndex((x) => x.id === q.id);
         const row = ensureCoachRow(q.id);
 
         row.solved = !!isCorrect; // ✅ 현재 정답 여부로 유지
@@ -3130,14 +3326,17 @@ function dashWsUrl() {
 }
 
 function dashComputeProgress() {
-  const probs =
-    currentSetData && currentSetData.problems ? currentSetData.problems : [];
+  const probs = getAllQuestions();
   const total = probs.length;
 
   // answered: 답안이 비어있지 않으면 풀이로 간주
   let answered = 0;
   for (const q of probs) {
     const v = currentAnswers ? currentAnswers[q.id] : "";
+    if (Array.isArray(v)) {
+      if (v.length > 0) answered++;
+      continue;
+    }
     if (v != null && String(v).trim() !== "") answered++;
   }
 
@@ -3154,8 +3353,7 @@ function dashComputeProgress() {
 }
 
 function dashComputeTopTries(limit = 3) {
-  const probs =
-    currentSetData && currentSetData.problems ? currentSetData.problems : [];
+  const probs = getAllQuestions();
   const byQ = qGradeMeta && qGradeMeta.byQ ? qGradeMeta.byQ : {};
   const rows = [];
 

@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "py_pygame_b01",
+    "contentType": "interactive",
+    "track": "pygame",
+    "lang": "python",
+    "categoryId": "py_pygame",
+    "title": "Python Pygame 1주차",
+    "round": 1,
+    "difficulty": "basic",
+    "status": "active",
+    "dataPath": "./data/sets/pygame_round01.json"
+  }
+}
