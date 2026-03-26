@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="{{ BASE_HREF }}">
+    <title>{{ DOCUMENT_TITLE }}</title>
+    <style>
+        /* CSS_CONTENT_PLACEHOLDER */
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const content = document.querySelector(".markdown-body");
+            const article = document.querySelector(".article-shell");
+            const title = content.querySelector("h1");
+
+            if (title) {
+                const heroTitle = document.querySelector(".hero-title");
+                heroTitle.textContent = title.textContent.trim();
+                title.remove();
+            } else {
+                document.querySelector(".hero-title").textContent = document.title;
+            }
+
+            const headings = Array.from(content.querySelectorAll("h2, h3"));
+            const toc = document.querySelector(".toc-list");
+
+            headings.forEach((heading, index) => {
+                if (!heading.id) {
+                    heading.id = `section-${index + 1}`;
+                }
+
+                const link = document.createElement("a");
+                link.href = `#${heading.id}`;
+                link.className = `toc-link toc-${heading.tagName.toLowerCase()}`;
+                link.textContent = heading.textContent.trim();
+                toc.appendChild(link);
+            });
+
+            if (!toc.children.length) {
+                document.querySelector(".toc-panel").remove();
+            }
+
+            article.querySelectorAll("img").forEach((img) => {
+                const wrapper = document.createElement("figure");
+                wrapper.className = "image-card";
+                img.parentNode.insertBefore(wrapper, img);
+                wrapper.appendChild(img);
+
+                if (img.alt) {
+                    const caption = document.createElement("figcaption");
+                    caption.textContent = img.alt;
+                    wrapper.appendChild(caption);
+                }
+            });
+
+            article.querySelectorAll("pre code").forEach((code) => {
+                const className = Array.from(code.classList).find((name) => name.startsWith("language-"));
+                const lang = className ? className.replace("language-", "").toUpperCase() : "CODE";
+                const pre = code.parentElement;
+                const frame = document.createElement("div");
+                frame.className = "code-frame";
+
+                const label = document.createElement("div");
+                label.className = "code-label";
+                label.textContent = lang;
+
+                pre.parentNode.insertBefore(frame, pre);
+                frame.appendChild(label);
+                frame.appendChild(pre);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="page">
+        <div class="backdrop backdrop-a"></div>
+        <div class="backdrop backdrop-b"></div>
+
+        <main class="page-shell">
+            <header class="hero">
+                <div class="hero-kicker">Markdown PDF Export</div>
+                <h1 class="hero-title"></h1>
+                <p class="hero-summary">마크다운 문법을 유지한 채 제목, 코드, 이미지, 인용문을 읽기 좋은 레이아웃으로 정리합니다.</p>
+            </header>
+
+            <section class="toc-panel">
+                <div class="toc-head">
+                    <div class="toc-kicker">Contents</div>
+                    <h2>목차</h2>
+                </div>
+                <nav class="toc-list"></nav>
+            </section>
+
+            <article class="article-shell">
+                <div class="markdown-body">
+                    <!-- CONTENT_PLACEHOLDER -->
+                </div>
+            </article>
+        </main>
+    </div>
+</body>
+</html>

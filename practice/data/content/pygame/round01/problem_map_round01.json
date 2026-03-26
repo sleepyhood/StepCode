@@ -1,0 +1,197 @@
+{
+  "id": "pygame_round01_problem_map",
+  "track": "pygame",
+  "round": 1,
+  "weekLabel": "1주차",
+  "version": 1,
+  "status": "draft",
+  "format": {
+    "majorProblemCount": 6,
+    "subProblemCountPerMajor": 3,
+    "strategy": "6개의 대문항을 두고, 각 대문항마다 소문항 3개를 배치한다."
+  },
+  "notes": [
+    "이 파일은 1주차 문제지 재구성을 위한 전용 목차 및 매핑 초안이다.",
+    "기존 mission 파일을 바로 폐기하지 않고, 각 대문항의 출제 재료로 매핑한다.",
+    "각 대문항은 가능하면 하나의 실행 가능한 코드 맥락을 유지한다."
+  ],
+  "problems": [
+    {
+      "number": 1,
+      "title": "창 만들기와 기본 화면 구성",
+      "goal": "pygame 창 생성, 배경색 변경, 기본 도형 위치 수정을 한 흐름으로 다룬다.",
+      "problemFile": "problems/problem01.py",
+      "sourceMissions": [
+        "missions/mission01_window.py",
+        "missions/mission06_shape_lab.py"
+      ],
+      "subProblems": [
+        {
+          "number": "1.1",
+          "type": "error_fix",
+          "focus": "기본 실행 오류 찾기와 초기 설정 보완",
+          "promptDraft": "현재 코드가 실행되지 않는 이유를 찾고, 빠진 초기 설정 또는 필요한 코드를 작성하시오."
+        },
+        {
+          "number": "1.2",
+          "type": "layout_fix",
+          "focus": "좌표 수정",
+          "promptDraft": "왼쪽 위에 그려지는 도형을 화면의 중앙에 오도록 좌표를 수정하시오."
+        },
+        {
+          "number": "1.3",
+          "type": "rule_change",
+          "focus": "창 크기 또는 배경색 실험",
+          "promptDraft": "창 크기나 배경색 규칙을 바꾸어 제시된 조건과 같은 화면이 나오도록 수정하시오."
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "도형 그리기 순서와 겹침",
+      "goal": "draw 호출 순서와 좌표 변경에 따라 화면 결과가 달라지는 원리를 확인한다.",
+      "problemFile": "problems/problem02.py",
+      "sourceMissions": [
+        "missions/mission02_draw_order.py",
+        "missions/mission06_shape_lab.py"
+      ],
+      "subProblems": [
+        {
+          "number": "2.1",
+          "type": "observation",
+          "focus": "가려짐 원인 설명",
+          "promptDraft": "두 도형이 겹칠 때 어떤 도형이 앞에 보이는지 관찰하고, 그 이유를 서술하시오."
+        },
+        {
+          "number": "2.2",
+          "type": "order_fix",
+          "focus": "draw 순서 수정",
+          "promptDraft": "제시된 결과와 같아지도록 두 draw 코드의 순서 또는 위치를 수정하시오."
+        },
+        {
+          "number": "2.3",
+          "type": "extension",
+          "focus": "새 도형 추가",
+          "promptDraft": "새 도형 하나를 추가하고, 항상 가장 위에 보이도록 코드를 작성하시오."
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "이벤트 처리와 정상 종료",
+      "goal": "이벤트 반복문과 QUIT 처리의 필요성을 이해하고 직접 수정한다.",
+      "problemFile": "problems/problem03.py",
+      "sourceMissions": [
+        "missions/mission03_quit_bug.py"
+      ],
+      "subProblems": [
+        {
+          "number": "3.1",
+          "type": "bug_analysis",
+          "focus": "창이 닫히지 않는 이유",
+          "promptDraft": "현재 창의 X 버튼을 눌러도 종료되지 않는 이유를 설명하시오."
+        },
+        {
+          "number": "3.2",
+          "type": "bug_fix",
+          "focus": "QUIT 이벤트 처리",
+          "promptDraft": "창이 정상적으로 닫히도록 이벤트 처리 코드를 수정하시오."
+        },
+        {
+          "number": "3.3",
+          "type": "extension",
+          "focus": "추가 입력 규칙",
+          "promptDraft": "특정 키를 누르면 화면 색이나 도형 색이 바뀌도록 입력 규칙을 추가하시오."
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "화면 갱신과 속도 제어",
+      "goal": "display.update와 clock.tick의 역할을 구분하고, 화면 변화와 속도를 직접 조절한다.",
+      "problemFile": "problems/problem04.py",
+      "sourceMissions": [
+        "missions/mission04_update_bug.py",
+        "missions/mission05_fps_test.py"
+      ],
+      "subProblems": [
+        {
+          "number": "4.1",
+          "type": "bug_fix",
+          "focus": "화면 갱신 누락",
+          "promptDraft": "색 값은 바뀌지만 화면 변화가 보이지 않는 이유를 찾고, 필요한 한 줄을 추가하시오."
+        },
+        {
+          "number": "4.2",
+          "type": "concept_check",
+          "focus": "tick 값 비교",
+          "promptDraft": "tick 값을 바꾸었을 때 움직임이 어떻게 달라지는지 비교하여 쓰시오."
+        },
+        {
+          "number": "4.3",
+          "type": "rule_change",
+          "focus": "속도 목표 맞추기",
+          "promptDraft": "사각형이 너무 빠르거나 느리지 않게 움직이도록 tick 값 또는 이동값을 조절하시오."
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "회전과 중심 좌표",
+      "goal": "회전된 이미지의 크기 변화와 중심 보정 문제를 다룬다.",
+      "problemFile": "problems/problem05.py",
+      "sourceMissions": [
+        "missions/mission07_image_rotate.py"
+      ],
+      "subProblems": [
+        {
+          "number": "5.1",
+          "type": "observation",
+          "focus": "회전 결과 관찰",
+          "promptDraft": "현재 스프라이트가 회전할 때 어떤 문제가 생기는지 관찰하여 서술하시오."
+        },
+        {
+          "number": "5.2",
+          "type": "bug_fix",
+          "focus": "중심 정렬",
+          "promptDraft": "회전한 이미지가 화면 가운데를 기준으로 돌도록 코드를 수정하시오."
+        },
+        {
+          "number": "5.3",
+          "type": "extension",
+          "focus": "회전 규칙 변경",
+          "promptDraft": "회전 속도나 시작 위치를 바꾸어 다른 움직임이 되도록 수정하시오."
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": "마우스 입력과 그리기 규칙",
+      "goal": "마우스 움직임과 클릭 상태를 구분하여 입력 규칙을 설계한다.",
+      "problemFile": "problems/problem06.py",
+      "sourceMissions": [
+        "missions/mission08_paint_lab.py"
+      ],
+      "subProblems": [
+        {
+          "number": "6.1",
+          "type": "bug_analysis",
+          "focus": "의도와 실제 동작 차이",
+          "promptDraft": "마우스를 움직이기만 해도 선이 그려지는 이유를 설명하시오."
+        },
+        {
+          "number": "6.2",
+          "type": "bug_fix",
+          "focus": "클릭 조건 추가",
+          "promptDraft": "마우스를 클릭한 상태에서만 점이 그려지도록 조건을 수정하시오."
+        },
+        {
+          "number": "6.3",
+          "type": "extension",
+          "focus": "그리기 기능 확장",
+          "promptDraft": "점의 색, 크기, 또는 지우기 규칙 중 하나를 추가하여 기능을 확장하시오."
+        }
+      ]
+    }
+  ]
+}
