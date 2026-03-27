@@ -11,12 +11,17 @@
             "id": "2bc83c8b67bd0891",
             "type": "leaf",
             "state": {
-              "type": "pdf",
+              "type": "canvas",
               "state": {
-                "file": "practice/data/theory/jungol/03_고등/2026년_3차_고등_수업_해설지_2019-2025.pdf"
+                "file": "Resources/reference/project_maps/content_workflow.canvas",
+                "viewState": {
+                  "x": 1155.4458986474883,
+                  "y": 206.21936888003722,
+                  "zoom": -1.2472783818056876
+                }
               },
-              "icon": "lucide-file-text",
-              "title": "2026년_3차_고등_수업_해설지_2019-2025"
+              "icon": "lucide-layout-dashboard",
+              "title": "content_workflow"
             }
           }
         ]
@@ -184,6 +189,9 @@
   },
   "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
+    "Resources/reference/project_maps/stepcode-overview.canvas",
+    "Resources/reference/project_maps/content_workflow.canvas",
+    "practice/data/theory/jungol/03_고등/2026년_3차_고등_수업_해설지_2019-2025.pdf",
     "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.md",
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0723.md",
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0722.md",
@@ -209,7 +217,6 @@
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0702.md",
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0701.md",
     "practice/data/language_v2/lv07_for/_docs/reference/01_dc_P101v0735.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_P101v0734.md",
     "practice/data/theory/canva/Week08/04_2차검수",
     "practice/data/theory/canva/Week08/03_1차검수 copy",
     "practice/data/theory/canva/Week07/04_2차검수",
@@ -219,7 +226,6 @@
     "practice/data/theory/canva/Week05/04_2차검수",
     "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.pdf",
     "practice/data/theory/jungol/03_고등/2026년_5차_고등_수업_해설지_2019-2025.pdf",
-    "practice/data/theory/jungol/02_중등/2026년_5차_중등_숙제_해설지_2019-2025.pdf",
     "practice/data/theory/canva/Week02/images/p140_04.png",
     "practice/data/theory/canva/Week02/images/p138_11.png",
     "practice/data/theory/canva/Week02/images/p132_07.png",

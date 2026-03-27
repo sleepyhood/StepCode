@@ -969,3 +969,11 @@ python scripts/generate_content_indexes.py
 
 세부 이력과 보류 사유는 `Resources/reference/guides/naming_convention.md`와 `Resources/reference/guides/rename_map.md`를 기준으로 관리합니다.
 
+---
+
+## 13. 로컬 작업환경 가이드
+
+가이드 문서 전체 진입점은 [guides/README.md](Resources/reference/guides/README.md)입니다.
+
+Codex 로컬 스킬 설치/재설치 및 운영 메모는 [Codex_skills_setup.md](Resources/reference/guides/Codex_skills_setup.md)를 참고합니다.
+

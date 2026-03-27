@@ -32,6 +32,7 @@ HOST_PIN_FILE = BASE_DIR / ".host_pin"
 HOST_COOKIE_NAME = "stepcode_host"
 HOST_SESSION_TTL_SEC = 60 * 60 * 8  # 8시간 (원하면 조절)
 
+
 def load_host_pin() -> str:
     if HOST_PIN_FILE.exists():
         return HOST_PIN_FILE.read_text(encoding="utf-8").strip()
@@ -41,8 +42,16 @@ def load_host_pin() -> str:
     print(f"[StepCode] HOST_PIN created: {pin} (saved to {HOST_PIN_FILE.name})")
     return pin
 
+
 def _env_truthy(name: str) -> bool:
-    return (os.environ.get(name) or "").strip().lower() in ("1", "true", "yes", "y", "on")
+    return (os.environ.get(name) or "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+        "y",
+        "on",
+    )
+
 
 # 기본값: 교사 인증 없이 열림(요청대로)
 # 필요하면 `STEPCODE_REQUIRE_HOST_PIN=1`로 PIN 인증을 강제할 수 있음.
@@ -54,12 +63,14 @@ if _env_truthy("STEPCODE_OPEN_HOST"):
 _HOST_PIN: str | None = None
 _HOST_SIGN_KEY: bytes | None = None
 
+
 def get_host_pin() -> str:
     global _HOST_PIN, _HOST_SIGN_KEY
     if _HOST_PIN is None:
         _HOST_PIN = load_host_pin()
         _HOST_SIGN_KEY = hashlib.sha256(_HOST_PIN.encode("utf-8")).digest()
     return _HOST_PIN
+
 
 def get_host_sign_key() -> bytes:
     global _HOST_SIGN_KEY
@@ -69,20 +80,29 @@ def get_host_sign_key() -> bytes:
     assert _HOST_SIGN_KEY is not None
     return _HOST_SIGN_KEY
 
+
 def _b64url_encode(b: bytes) -> str:
     return base64.urlsafe_b64encode(b).decode("utf-8").rstrip("=")
+
 
 def _b64url_decode(s: str) -> bytes:
     pad = "=" * ((4 - len(s) % 4) % 4)
     return base64.urlsafe_b64decode((s + pad).encode("utf-8"))
 
+
 def make_host_cookie() -> str:
     exp = int(time.time()) + HOST_SESSION_TTL_SEC
     payload = str(exp).encode("utf-8")
-    sig = hmac.new(get_host_sign_key(), payload, hashlib.sha256).hexdigest().encode("utf-8")
+    sig = (
+        hmac.new(get_host_sign_key(), payload, hashlib.sha256)
+        .hexdigest()
+        .encode("utf-8")
+    )
     return _b64url_encode(payload + b"." + sig)
 
+
 # [dashboard_server.py] (상단쪽) "쿠키 검증"으로 되어있는 첫 번째 is_host_request()를 아래로 교체
+
 
 def is_host_request(request: web.Request) -> bool:
     # 개발/테스트용: 호스트 인증 완전 해제
@@ -97,7 +117,11 @@ def is_host_request(request: web.Request) -> bool:
             exp_b, sig_b = raw.split(b".", 1)
             exp = int(exp_b.decode("utf-8"))
             if exp >= int(time.time()):
-                expected = hmac.new(get_host_sign_key(), exp_b, hashlib.sha256).hexdigest().encode("utf-8")
+                expected = (
+                    hmac.new(get_host_sign_key(), exp_b, hashlib.sha256)
+                    .hexdigest()
+                    .encode("utf-8")
+                )
                 if hmac.compare_digest(sig_b, expected):
                     return True
         except Exception:
@@ -206,8 +230,13 @@ async def broadcast_teachers(room_id: str, message: dict):
     for ws in dead:
         room["teachers"].discard(ws)
 
+
 async def host_status(request: web.Request):
-    return web.json_response({"isHost": is_host_request(request)}, dumps=lambda x: json.dumps(x, ensure_ascii=False))
+    return web.json_response(
+        {"isHost": is_host_request(request)},
+        dumps=lambda x: json.dumps(x, ensure_ascii=False),
+    )
+
 
 async def host_login(request: web.Request):
     try:
@@ -217,9 +246,15 @@ async def host_login(request: web.Request):
 
     pin = str(body.get("pin") or "").strip()
     if pin != get_host_pin():
-        return web.json_response({"ok": False, "error": "invalid_pin"}, status=403, dumps=lambda x: json.dumps(x, ensure_ascii=False))
+        return web.json_response(
+            {"ok": False, "error": "invalid_pin"},
+            status=403,
+            dumps=lambda x: json.dumps(x, ensure_ascii=False),
+        )
 
-    resp = web.json_response({"ok": True}, dumps=lambda x: json.dumps(x, ensure_ascii=False))
+    resp = web.json_response(
+        {"ok": True}, dumps=lambda x: json.dumps(x, ensure_ascii=False)
+    )
     resp.set_cookie(
         HOST_COOKIE_NAME,
         make_host_cookie(),
@@ -230,10 +265,14 @@ async def host_login(request: web.Request):
     )
     return resp
 
+
 async def host_logout(request: web.Request):
-    resp = web.json_response({"ok": True}, dumps=lambda x: json.dumps(x, ensure_ascii=False))
+    resp = web.json_response(
+        {"ok": True}, dumps=lambda x: json.dumps(x, ensure_ascii=False)
+    )
     resp.del_cookie(HOST_COOKIE_NAME, path="/")
     return resp
+
 
 async def deny_private(request: web.Request):
     raise web.HTTPNotFound()
@@ -251,7 +290,12 @@ async def ws_handler(request: web.Request):
     async def send_snapshot():
         room = get_room(room_id)
         items = list(room["students"].values())
-        await ws.send_str(json.dumps({"type": "snapshot", "room": room_id, "items": items}, ensure_ascii=False))
+        await ws.send_str(
+            json.dumps(
+                {"type": "snapshot", "room": room_id, "items": items},
+                ensure_ascii=False,
+            )
+        )
 
     try:
         async for msg in ws:
@@ -273,18 +317,38 @@ async def ws_handler(request: web.Request):
 
                 if role == "teacher":
                     if not req_is_host:
-                        await ws.send_str(json.dumps({"type": "error", "error": "host_required"}, ensure_ascii=False))
+                        await ws.send_str(
+                            json.dumps(
+                                {"type": "error", "error": "host_required"},
+                                ensure_ascii=False,
+                            )
+                        )
                         await ws.close()
                         return ws
                     room["teachers"].add(ws)
-                    await ws.send_str(json.dumps({"type": "hello_ack", "role": "teacher", "room": room_id}, ensure_ascii=False))
+                    await ws.send_str(
+                        json.dumps(
+                            {"type": "hello_ack", "role": "teacher", "room": room_id},
+                            ensure_ascii=False,
+                        )
+                    )
                     await send_snapshot()
                 else:
                     # student
                     sid = str(data.get("studentId") or "").strip() or "unknown"
                     student_key = f"{room_id}:{sid}"
 
-                    await ws.send_str(json.dumps({"type": "hello_ack", "role": "student", "room": room_id, "studentKey": student_key}, ensure_ascii=False))
+                    await ws.send_str(
+                        json.dumps(
+                            {
+                                "type": "hello_ack",
+                                "role": "student",
+                                "room": room_id,
+                                "studentKey": student_key,
+                            },
+                            ensure_ascii=False,
+                        )
+                    )
 
                     # hello만 와도 기본 엔트리 생성
                     st = {
@@ -295,7 +359,15 @@ async def ws_handler(request: web.Request):
                         "lastSeenAt": now_ms(),
                     }
                     room["students"][student_key] = st
-                    await broadcast_teachers(room_id, {"type": "status", "room": room_id, "studentKey": student_key, "payload": st})
+                    await broadcast_teachers(
+                        room_id,
+                        {
+                            "type": "status",
+                            "room": room_id,
+                            "studentKey": student_key,
+                            "payload": st,
+                        },
+                    )
 
             elif mtype == "status" and role != "teacher":
                 if not room_id:
@@ -303,18 +375,31 @@ async def ws_handler(request: web.Request):
                 room = get_room(room_id)
 
                 payload = data.get("payload") or {}
-                sid = str(payload.get("studentId") or data.get("studentId") or "").strip() or "unknown"
+                sid = (
+                    str(payload.get("studentId") or data.get("studentId") or "").strip()
+                    or "unknown"
+                )
                 if student_key is None:
                     student_key = f"{room_id}:{sid}"
 
                 payload["studentKey"] = student_key
                 payload["room"] = room_id
                 payload["studentId"] = sid
-                payload["displayName"] = payload.get("displayName") or payload.get("studentId") or sid
+                payload["displayName"] = (
+                    payload.get("displayName") or payload.get("studentId") or sid
+                )
                 payload["lastSeenAt"] = now_ms()
 
                 room["students"][student_key] = payload
-                await broadcast_teachers(room_id, {"type": "status", "room": room_id, "studentKey": student_key, "payload": payload})
+                await broadcast_teachers(
+                    room_id,
+                    {
+                        "type": "status",
+                        "room": room_id,
+                        "studentKey": student_key,
+                        "payload": payload,
+                    },
+                )
 
             elif mtype == "snapshot_request" and role == "teacher":
                 await send_snapshot()
@@ -331,7 +416,15 @@ async def ws_handler(request: web.Request):
                 if st:
                     st["lastSeenAt"] = now_ms()
                     st["disconnected"] = True
-                    await broadcast_teachers(room_id, {"type": "status", "room": room_id, "studentKey": student_key, "payload": st})
+                    await broadcast_teachers(
+                        room_id,
+                        {
+                            "type": "status",
+                            "room": room_id,
+                            "studentKey": student_key,
+                            "payload": st,
+                        },
+                    )
         except Exception:
             pass
 
@@ -344,10 +437,16 @@ async def gc_task(app: web.Application):
         t = now_ms()
         for room_id, room in list(ROOMS.items()):
             students = room["students"]
-            expired = [k for k, v in students.items() if t - int(v.get("lastSeenAt") or 0) > EXPIRE_SEC * 1000]
+            expired = [
+                k
+                for k, v in students.items()
+                if t - int(v.get("lastSeenAt") or 0) > EXPIRE_SEC * 1000
+            ]
             for k in expired:
                 students.pop(k, None)
-                await broadcast_teachers(room_id, {"type": "bye", "room": room_id, "studentKey": k})
+                await broadcast_teachers(
+                    room_id, {"type": "bye", "room": room_id, "studentKey": k}
+                )
 
 
 async def on_startup(app: web.Application):
@@ -366,6 +465,7 @@ async def on_cleanup(app: web.Application):
 # [dashboard_server.py] (하단쪽) "URL에 host=1&token=..." 설명이 있는 두 번째 is_host_request()는
 # 쿠키용 is_host_request()를 덮어써서 항상 false가 되는 원인이므로 "이름을 변경"해야 함.
 
+
 # (기존) def is_host_request(request: web.Request) -> bool:
 def is_host_token_request(request: web.Request) -> bool:
     """(레거시) URL에 host=1&token=<HOST_TOKEN> 이 포함되면 호스트로 간주"""
@@ -373,7 +473,6 @@ def is_host_token_request(request: web.Request) -> bool:
     if q.get("host") == "1" and q.get("token") == HOST_TOKEN:
         return True
     return False
-
 
 
 async def practice_html_handler(request: web.Request):
@@ -424,7 +523,6 @@ def main():
     # 비공개 파일 직접 접근 차단 (show_index도 끄는 걸 권장)
     app.router.add_route("*", "/.host_token", deny_private)
 
-
     # practice.html은 host 플래그를 HTML에 주입해야 하므로 정적 라우팅보다 먼저 별도 처리
     app.router.add_get("/practice.html", practice_html_handler)
 
@@ -438,7 +536,9 @@ def main():
     # ※ 이 토큰을 URL에 붙여야 practice.html의 교사 전용 버튼(인쇄/로그)이 보입니다.
     print("[StepCode] HOST_TOKEN:", HOST_TOKEN)
     print("[StepCode] Host mode URL example:")
-    print("          http://<host>:8000/practice.html?set=...&room=...&host=1&token=<HOST_TOKEN>")
+    print(
+        "          http://<host>:8000/practice.html?set=...&room=...&host=1&token=<HOST_TOKEN>"
+    )
     if OPEN_HOST:
         print("[StepCode] OPEN HOST MODE (default): teacher 인증이 비활성화되었습니다.")
         print("[StepCode] To require PIN: set STEPCODE_REQUIRE_HOST_PIN=1")

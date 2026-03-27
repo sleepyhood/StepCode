@@ -15,6 +15,21 @@
     "sourcePath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r01.md"
   },
   {
+    "id": "py_lv07_for_basic_r02",
+    "title": "Python for문 기초 2회차",
+    "categoryId": "py_for",
+    "track": "language",
+    "lang": "python",
+    "difficulty": "basic",
+    "round": 2,
+    "status": "active",
+    "audience": "common",
+    "printDefault": true,
+    "mdPath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/language/python/lv07_for/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r02.md"
+  },
+  {
     "id": "py_pygame_basic_r01",
     "title": "Python Pygame 1주차",
     "categoryId": "py_pygame",

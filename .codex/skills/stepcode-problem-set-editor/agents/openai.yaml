@@ -1,0 +1,3 @@
+interface:
+  display_name: "StepCode Problem Set Editor"
+  short_description: "Sync legacy set JSON and index metadata"

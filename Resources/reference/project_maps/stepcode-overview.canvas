@@ -1,0 +1,25 @@
+{
+	"nodes":[
+		{"id":"1a2b3c4d5e6f7001","type":"group","x":-80,"y":-80,"width":1740,"height":1280,"color":"4","label":"StepCode Overview"},
+		{"id":"1a2b3c4d5e6f7002","type":"text","text":"# StepCode\n\n로컬 학습용 실행추적 · MCQ · 코드수정 연습 저장소\n\n- 핵심 제품 영역은 `practice/`\n- 콘텐츠 생성과 인덱스 관리는 `scripts/` + `practice/data/`\n- 운영 규칙과 구조 메모는 `README.md`와 `Resources/reference/guides/`\n- 루트는 PARA 체계(`Projects`, `Areas`, `Resources`, `Archives`)로 정리 중","x":-40,"y":-30,"width":360,"height":350,"color":"4"},
+		{"id":"1a2b3c4d5e6f7007","type":"text","text":"## Resources/reference/guides/\n\n반복 참조하는 운영 가이드\n\n- PARA 정리 기준\n- 경로 네이밍 규칙\n- Codex skill 설치/운영 메모\n- 구조 변경 시 판단 근거를 보관\n\n처음 보는 사람에게는 저장소의 규칙집 역할","x":-40,"y":365,"width":360,"height":300,"color":"6"},
+		{"id":"1a2b3c4d5e6f7004","type":"text","text":"## practice/data/\n\n운영 데이터와 콘텐츠 원본이 함께 있는 핵심 영역\n\n- `categories.json`, `sets.index.json`, `theory.index.json`: 레거시/운영 인덱스\n- `content/`: 사람이 채우는 신규 원본\n- `generated/`: 스크립트가 만드는 웹용 인덱스\n- `sets/`: 실제 문제 세트 JSON\n- `theory/`: 실제 개념 Markdown\n- `language_v2/`: 현재 진행 중인 실험/수집 작업 영역","x":1120,"y":110,"width":470,"height":365,"color":"3"},
+		{"id":"1a2b3c4d5e6f7003","type":"text","text":"## practice/\n\n웹앱 런타임 진입점\n\n- `index.html`: 메인 목록\n- `practice.html`: 문제 풀이\n- `theory.html`: 개념 보기\n- `assets/`: UI 자산\n- 로컬 서버로 실행해서 테스트","x":580,"y":-60,"width":340,"height":250,"color":"2"},
+		{"id":"1a2b3c4d5e6f7009","type":"text","text":"## .codex/skills/\n\n프로젝트 로컬 자동화 지식\n\n- StepCode 전용 skill 보관\n- 작업 규칙과 편집 흐름을 재사용\n- 저장소 이해와 운영 방식의 보조 계층","x":600,"y":915,"width":370,"height":225,"color":"5"},
+		{"id":"1a2b3c4d5e6f7008","type":"text","text":"## PARA 루트\n\n- `Projects/`: 진행 중 작업\n- `Areas/`: 장기 운영 영역\n- `Resources/`: 참고 자료\n- `Archives/`: 완료/중간 산출물\n\n단, 웹앱 핵심 경로는 당장 이동하지 않고 문서 기준으로 관리","x":-40,"y":890,"width":500,"height":250,"color":"4"},
+		{"id":"1a2b3c4d5e6f7010","type":"text","text":"## 읽는 순서\n\n1. `README.md`\n2. `Resources/reference/guides/`\n3. `practice/`와 `practice/data/`\n4. `scripts/`\n5. 실험 영역과 PARA 보조 경로","x":1285,"y":915,"width":330,"height":230,"color":"2"},
+		{"id":"1a2b3c4d5e6f7005","type":"text","text":"## scripts/\n\n콘텐츠 생성과 정합성 유지 도구\n\n- `new_content_category.py`\n- `new_lesson.py`\n- `new_worksheet.py`\n- `generate_content_indexes.py`\n- `check_sets_index.ps1`\n\n문서 작성 뒤 인덱스 재생성과 점검을 담당","x":395,"y":200,"width":370,"height":330,"color":"5"},
+		{"id":"1a2b3c4d5e6f7006","type":"text","text":"## docs/ + README.md\n\n운영 규칙과 작성 기준의 기준 문서\n\n- `README.md`: 저장소 구조, 데이터 스키마, 생성 흐름 설명\n- `docs/parts/`: 파트 문서와 템플릿\n- 신규 콘텐츠/세트/이론 추가 시 먼저 읽어야 하는 기준점","x":905,"y":580,"width":380,"height":270,"color":"1"}
+	],
+	"edges":[
+		{"id":"2b3c4d5e6f700101","fromNode":"1a2b3c4d5e6f7002","fromSide":"right","toNode":"1a2b3c4d5e6f7003","toSide":"left","label":"제품 진입점"},
+		{"id":"2b3c4d5e6f700102","fromNode":"1a2b3c4d5e6f7003","fromSide":"right","toNode":"1a2b3c4d5e6f7004","toSide":"left","label":"콘텐츠 로드"},
+		{"id":"2b3c4d5e6f700103","fromNode":"1a2b3c4d5e6f7005","fromSide":"right","toNode":"1a2b3c4d5e6f7004","toSide":"left","label":"생성/재생성"},
+		{"id":"2b3c4d5e6f700104","fromNode":"1a2b3c4d5e6f7006","fromSide":"left","toNode":"1a2b3c4d5e6f7005","toSide":"right","label":"작업 기준"},
+		{"id":"2b3c4d5e6f700105","fromNode":"1a2b3c4d5e6f7007","fromSide":"right","toNode":"1a2b3c4d5e6f7006","toSide":"left","label":"운영 규칙"},
+		{"id":"2b3c4d5e6f700106","fromNode":"1a2b3c4d5e6f7008","fromSide":"top","toNode":"1a2b3c4d5e6f7007","toSide":"bottom","label":"분류 원칙"},
+		{"id":"2b3c4d5e6f700107","fromNode":"1a2b3c4d5e6f7009","fromSide":"top","toNode":"1a2b3c4d5e6f7007","toSide":"bottom","label":"작업 보조"},
+		{"id":"2b3c4d5e6f700108","fromNode":"1a2b3c4d5e6f7010","fromSide":"top","toNode":"1a2b3c4d5e6f7006","toSide":"bottom","label":"먼저 보기"},
+		{"id":"2b3c4d5e6f700109","fromNode":"1a2b3c4d5e6f7004","fromSide":"bottom","toNode":"1a2b3c4d5e6f7010","toSide":"top","label":"핵심 이해 대상"}
+	]
+}

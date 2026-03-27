@@ -1,0 +1,3 @@
+interface:
+  display_name: "StepCode Content Workflow"
+  short_description: "Generator-first content creation for StepCode"
