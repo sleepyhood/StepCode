@@ -1,19 +1,188 @@
+import json
+import shutil
 import unittest
+import zipfile
+from pathlib import Path
+from unittest.mock import patch
 
 from practice.data.language_v2.crawl import (
+    DOINGCODING_CSRF_FALLBACK_URL,
+    DOINGCODING_CSRF_SEED_URL,
+    DOINGCODING_ADMIN_DOWNLOAD_BUTTON_SELECTORS,
+    DOINGCODING_ADMIN_ID_SELECTOR,
+    DOINGCODING_ADMIN_LOGIN_URL,
+    DOINGCODING_ADMIN_LOGIN_BUTTON_SELECTOR,
+    DOINGCODING_ADMIN_PASSWORD_SELECTOR,
+    DOINGCODING_ADMIN_PROBLEMS_URL,
+    DOINGCODING_ADMIN_ROW_SELECTORS,
+    DOINGCODING_ADMIN_SEARCH_SELECTORS,
     _extract_section_after_heading,
     _extract_sample_pairs,
+    _attempt_admin_login_submit,
+    debug_admin_cookie_state,
+    ensure_doingcoding_admin_csrf,
+    extract_cookie_value,
+    _find_first_working_selector,
     _goto_with_retries,
     _find_doingcoding_content_root,
     _find_doingcoding_title,
     _missing_required_fields,
     _pick_best_code,
+    collect_doingcoding_testcases,
+    download_doingcoding_testcases,
+    login_doingcoding_admin,
+    parse_testcase_bundle,
+    render_templates_md,
+    render_testcases_md,
     SECTION_HEADINGS,
 )
 from lxml import html
 
+CURRENT_DIR = Path(__file__).resolve().parent
+
 
 class DoingCodingStage1ParsingTests(unittest.TestCase):
+    def test_extract_cookie_value_prefers_matching_domain_and_admin_path(self):
+        cookies = [
+            {"name": "csrftoken", "value": "generic", "domain": "example.com", "path": "/"},
+            {"name": "csrftoken", "value": "site_root", "domain": "edu.doingcoding.com", "path": "/"},
+            {"name": "csrftoken", "value": "admin_path", "domain": "edu.doingcoding.com", "path": "/admin"},
+        ]
+
+        self.assertEqual(extract_cookie_value(cookies, "csrftoken"), "admin_path")
+
+    def test_debug_admin_cookie_state_reports_cookie_flags(self):
+        class FakeContext:
+            def cookies(self):
+                return [
+                    {"name": "csrftoken", "value": "abc", "domain": "edu.doingcoding.com", "path": "/admin"},
+                    {"name": "sessionid", "value": "def", "domain": "edu.doingcoding.com", "path": "/"},
+                ]
+
+        state = debug_admin_cookie_state(FakeContext())
+
+        self.assertEqual(state["cookie_count"], 2)
+        self.assertTrue(state["has_csrftoken"])
+        self.assertTrue(state["has_sessionid"])
+
+    def test_ensure_doingcoding_admin_csrf_uses_profile_endpoint_first(self):
+        class FakeContext:
+            def __init__(self):
+                self.cookie_values = [{"name": "csrftoken", "value": "cookie_token", "domain": "edu.doingcoding.com", "path": "/"}]
+
+            def cookies(self):
+                return list(self.cookie_values)
+
+        class FakePage:
+            def __init__(self):
+                self.context = FakeContext()
+
+            def evaluate(self, _script):
+                return ""
+
+        logs = []
+        response = type("Response", (), {"status": 200})()
+        with patch("practice.data.language_v2.crawl._goto_with_retries", return_value=response) as goto_mock:
+            token = ensure_doingcoding_admin_csrf(FakePage(), logger=logs.append)
+
+        self.assertEqual(token, "cookie_token")
+        self.assertEqual(goto_mock.call_args_list[0].args[1], DOINGCODING_CSRF_SEED_URL)
+        self.assertEqual(
+            logs,
+            [
+                "[관리자 로그인 준비] /api/profile 접속",
+                "[관리자 로그인 준비] /api/profile 상태: 200",
+                "[관리자 로그인 준비] csrftoken 확보 성공",
+            ],
+        )
+        goto_mock.assert_called_once()
+
+    def test_ensure_doingcoding_admin_csrf_falls_back_to_website_after_profile(self):
+        class FakeContext:
+            def __init__(self):
+                self.cookie_values = []
+
+            def cookies(self):
+                return list(self.cookie_values)
+
+        class FakePage:
+            def __init__(self):
+                self.context = FakeContext()
+                self.evaluations = 0
+
+            def evaluate(self, _script):
+                self.evaluations += 1
+                return ""
+
+        logs = []
+        page = FakePage()
+
+        def fake_goto(_page, url, **_kwargs):
+            if url == DOINGCODING_CSRF_FALLBACK_URL:
+                page.context.cookie_values = [{"name": "csrftoken", "value": "website_token", "domain": "edu.doingcoding.com", "path": "/"}]
+            return None
+
+        with patch("practice.data.language_v2.crawl._goto_with_retries", side_effect=fake_goto) as goto_mock:
+            token = ensure_doingcoding_admin_csrf(page, logger=logs.append)
+
+        self.assertEqual(token, "website_token")
+        self.assertEqual(goto_mock.call_args_list[0].args[1], DOINGCODING_CSRF_SEED_URL)
+        self.assertEqual(goto_mock.call_args_list[1].args[1], DOINGCODING_CSRF_FALLBACK_URL)
+        self.assertIn("[관리자 로그인 준비] /api/website 접속", logs)
+        self.assertEqual(logs[-1], "[관리자 로그인 준비] csrftoken 확보 성공")
+
+    def test_ensure_doingcoding_admin_csrf_falls_back_to_admin_login_after_profile_and_website(self):
+        class FakeContext:
+            def __init__(self):
+                self.cookie_values = []
+
+            def cookies(self):
+                return list(self.cookie_values)
+
+        class FakePage:
+            def __init__(self):
+                self.context = FakeContext()
+
+            def evaluate(self, _script):
+                return ""
+
+        logs = []
+        page = FakePage()
+
+        def fake_goto(_page, url, **_kwargs):
+            if url == DOINGCODING_ADMIN_LOGIN_URL:
+                page.context.cookie_values = [{"name": "csrftoken", "value": "login_token", "domain": "edu.doingcoding.com", "path": "/admin"}]
+            return None
+
+        with patch("practice.data.language_v2.crawl._goto_with_retries", side_effect=fake_goto) as goto_mock:
+            token = ensure_doingcoding_admin_csrf(page, logger=logs.append)
+
+        self.assertEqual(token, "login_token")
+        self.assertEqual(goto_mock.call_args_list[0].args[1], DOINGCODING_CSRF_SEED_URL)
+        self.assertEqual(goto_mock.call_args_list[1].args[1], DOINGCODING_CSRF_FALLBACK_URL)
+        self.assertEqual(goto_mock.call_args_list[2].args[1], DOINGCODING_ADMIN_LOGIN_URL)
+        self.assertIn("[관리자 로그인 준비] /admin/login 접속", logs)
+        self.assertEqual(logs[-1], "[관리자 로그인 준비] csrftoken 확보 성공")
+
+    def test_ensure_doingcoding_admin_csrf_raises_when_profile_website_and_login_all_fail(self):
+        class FakeContext:
+            def cookies(self):
+                return []
+
+        class FakePage:
+            def __init__(self):
+                self.context = FakeContext()
+
+            def evaluate(self, _script):
+                return ""
+
+        logs = []
+        with patch("practice.data.language_v2.crawl._goto_with_retries"):
+            with self.assertRaises(RuntimeError):
+                ensure_doingcoding_admin_csrf(FakePage(), logger=logs.append)
+
+        self.assertEqual(logs[-1], "[관리자 로그인 준비] csrftoken 없음")
+
     def test_extracts_sections_by_heading_instead_of_fixed_indexes(self):
         document = html.fromstring(
             """
@@ -156,6 +325,688 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
         self.assertEqual(response.status, 200)
         self.assertEqual(page.goto_calls, 2)
         self.assertEqual(page.timeout_calls, [500])
+
+    def test_parse_testcase_bundle_uses_info_mapping(self):
+        temp_dir = CURRENT_DIR / "_tmp_bundle_test"
+        temp_dir.mkdir(exist_ok=True)
+        try:
+            bundle_path = temp_dir / "cases.zip"
+            extract_dir = temp_dir / "extract"
+            with zipfile.ZipFile(bundle_path, "w") as archive:
+                archive.writestr(
+                    "info",
+                    json.dumps(
+                        {
+                            "spj": False,
+                            "test_cases": {
+                                "1": {
+                                    "input_name": "1.in",
+                                    "output_name": "1.out",
+                                    "input_size": 4,
+                                    "output_size": 2,
+                                }
+                            },
+                        },
+                        ensure_ascii=False,
+                    ),
+                )
+                archive.writestr("1.in", "1 2\n")
+                archive.writestr("1.out", "3\n")
+
+            bundle = parse_testcase_bundle(str(bundle_path), str(extract_dir))
+
+            self.assertEqual(bundle["info"]["test_cases"]["1"]["input_name"], "1.in")
+            self.assertEqual(bundle["cases"][0]["input_text"], "1 2\n")
+            self.assertEqual(bundle["cases"][0]["output_text"], "3\n")
+        finally:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+
+    def test_render_testcases_md_includes_metadata_and_cases(self):
+        markdown = render_testcases_md(
+            {
+                "info": {"spj": False, "test_cases": {"1": {"input_name": "1.in", "output_name": "1.out"}}},
+                "cases": [
+                    {
+                        "id": "1",
+                        "input_name": "1.in",
+                        "output_name": "1.out",
+                        "input_text": "1 2\n",
+                        "output_text": "3\n",
+                        "meta": {},
+                    }
+                ],
+            }
+        )
+
+        self.assertIn("## 5. 채점용 테스트케이스", markdown)
+        self.assertIn('"input_name": "1.in"', markdown)
+        self.assertIn("### 테스트케이스 1 입력", markdown)
+        self.assertIn("### 테스트케이스 1 출력", markdown)
+
+    def test_render_templates_md_uses_requested_section_number(self):
+        markdown = render_templates_md({"Python3": "print(1)\n"}, section_number=6)
+
+        self.assertIn("## 6. 코드 템플릿", markdown)
+        self.assertIn("```python", markdown)
+
+
+    def test_login_doingcoding_admin_fills_credentials_and_waits_for_problem_page(self):
+        class FakeLocator:
+            def __init__(self, page, selector):
+                self.page = page
+                self.selector = selector
+
+            @property
+            def first(self):
+                return self
+
+            def click(self, force=False):
+                self.page.locator_clicks.append((self.selector, force))
+
+            def fill(self, value):
+                self.page.locator_fills.append((self.selector, value))
+
+            def press(self, key):
+                self.page.locator_presses.append((self.selector, key))
+                raise RuntimeError("locator enter failed")
+
+            def evaluate(self, script):
+                self.page.locator_evaluates.append((self.selector, script))
+
+        class FakePage:
+            def __init__(self):
+                self.locator_fills = []
+                self.locator_presses = []
+                self.locator_clicks = []
+                self.waited = []
+                self.goto_args = []
+                self.timeout_calls = []
+                self.function_calls = []
+                self.load_states = []
+                self.locator_evaluates = []
+                self.url = DOINGCODING_ADMIN_LOGIN_URL
+                self.context = type(
+                    "FakeContext",
+                    (),
+                    {
+                        "cookies": lambda self_inner: [
+                            {"name": "csrftoken", "value": "token", "domain": "edu.doingcoding.com", "path": "/admin"}
+                        ]
+                    },
+                )()
+
+            def goto(self, url, wait_until, timeout):
+                self.goto_args.append((url, wait_until, timeout))
+                return None
+
+            def wait_for_selector(self, selector, timeout, state="visible"):
+                self.waited.append((selector, timeout, state))
+
+            def wait_for_function(self, script, timeout):
+                self.function_calls.append((script, timeout))
+
+            def wait_for_load_state(self, state):
+                self.load_states.append(state)
+
+            def wait_for_timeout(self, ms):
+                self.timeout_calls.append(ms)
+
+            def locator(self, selector):
+                return FakeLocator(self, selector)
+
+            @property
+            def keyboard(self):
+                class Keyboard:
+                    def press(self_inner, key):
+                        raise AssertionError("keyboard fallback should not be used in this test")
+
+                return Keyboard()
+
+        page = FakePage()
+        logs = []
+        with patch("practice.data.language_v2.crawl.ensure_doingcoding_admin_csrf", return_value="token") as ensure_mock:
+            login_doingcoding_admin(page, "admin_id", "admin_pw", logger=logs.append)
+
+        self.assertEqual(page.locator_fills, [(DOINGCODING_ADMIN_ID_SELECTOR, "admin_id"), (DOINGCODING_ADMIN_PASSWORD_SELECTOR, "admin_pw")])
+        self.assertEqual(page.locator_presses, [(DOINGCODING_ADMIN_PASSWORD_SELECTOR, "Enter")])
+        self.assertEqual(
+            page.locator_clicks[:2],
+            [(DOINGCODING_ADMIN_ID_SELECTOR, False), (DOINGCODING_ADMIN_PASSWORD_SELECTOR, False)],
+        )
+        self.assertEqual(page.goto_args[0][0], DOINGCODING_ADMIN_PROBLEMS_URL)
+        self.assertEqual(page.load_states, ["domcontentloaded"])
+        self.assertEqual(page.timeout_calls, [1000])
+        self.assertEqual(len(page.function_calls), 1)
+        self.assertIn(page.waited[-1][0], DOINGCODING_ADMIN_SEARCH_SELECTORS)
+        self.assertIn("[관리자 로그인] 제출 전 상태: url=http://edu.doingcoding.com/admin/login, csrftoken=있음, cookies=1", logs)
+        ensure_mock.assert_called_once_with(page, logger=logs.append)
+
+    def test_login_doingcoding_admin_clicks_button_when_enter_does_not_finish_login(self):
+        class FakeLocator:
+            def __init__(self, page, selector):
+                self.page = page
+                self.selector = selector
+
+            @property
+            def first(self):
+                return self
+
+            def click(self, force=False):
+                self.page.locator_clicks.append((self.selector, force))
+
+            def fill(self, value):
+                self.page.locator_fills.append((self.selector, value))
+
+            def press(self, key):
+                self.page.locator_presses.append((self.selector, key))
+                if self.selector == DOINGCODING_ADMIN_PASSWORD_SELECTOR:
+                    self.page.password_enter_attempted = True
+
+            def evaluate(self, script):
+                self.page.locator_evaluates.append((self.selector, script))
+                if self.selector == DOINGCODING_ADMIN_PASSWORD_SELECTOR:
+                    raise RuntimeError("requestSubmit failed")
+
+        class FakePage:
+            def __init__(self):
+                self.locator_fills = []
+                self.locator_presses = []
+                self.locator_clicks = []
+                self.locator_evaluates = []
+                self.goto_args = []
+                self.function_calls = 0
+                self.load_states = []
+                self.keyboard_presses = []
+                self.password_enter_attempted = False
+                self.url = DOINGCODING_ADMIN_LOGIN_URL
+                self.context = type(
+                    "FakeContext",
+                    (),
+                    {
+                        "cookies": lambda self_inner: [
+                            {"name": "csrftoken", "value": "token", "domain": "edu.doingcoding.com", "path": "/admin"}
+                        ]
+                    },
+                )()
+
+            def goto(self, url, wait_until, timeout):
+                self.goto_args.append((url, wait_until, timeout))
+                return None
+
+            def wait_for_selector(self, selector, timeout, state="visible"):
+                return None
+
+            def wait_for_function(self, script, timeout):
+                self.function_calls += 1
+                if self.function_calls == 1:
+                    raise RuntimeError("still on login")
+
+            def wait_for_load_state(self, state):
+                self.load_states.append(state)
+
+            def wait_for_timeout(self, _ms):
+                return None
+
+            def locator(self, selector):
+                return FakeLocator(self, selector)
+
+            @property
+            def keyboard(self):
+                page = self
+
+                class Keyboard:
+                    def press(self_inner, key):
+                        page.keyboard_presses.append(key)
+
+                return Keyboard()
+
+        page = FakePage()
+        with patch("practice.data.language_v2.crawl.ensure_doingcoding_admin_csrf", return_value="token"):
+            login_doingcoding_admin(page, "admin_id", "admin_pw")
+
+        self.assertEqual(page.locator_presses, [(DOINGCODING_ADMIN_PASSWORD_SELECTOR, "Enter")])
+        self.assertEqual(page.keyboard_presses, ["Enter"])
+        self.assertNotIn((DOINGCODING_ADMIN_LOGIN_BUTTON_SELECTOR, True), page.locator_clicks)
+        self.assertEqual(page.function_calls, 2)
+
+    def test_attempt_admin_login_submit_uses_force_click_after_enter_and_keyboard_fail(self):
+        class FakeLocator:
+            def __init__(self, page, selector):
+                self.page = page
+                self.selector = selector
+
+            @property
+            def first(self):
+                return self
+
+            def click(self, force=False):
+                self.page.locator_clicks.append((self.selector, force))
+                if self.selector == 'button:has-text("GO")':
+                    return None
+
+            def press(self, key):
+                self.page.locator_presses.append((self.selector, key))
+                raise RuntimeError("locator enter failed")
+
+            def evaluate(self, script):
+                self.page.locator_evaluates.append((self.selector, script))
+                if self.selector == DOINGCODING_ADMIN_PASSWORD_SELECTOR:
+                    raise RuntimeError("requestSubmit failed")
+
+        class FakePage:
+            def __init__(self):
+                self.locator_clicks = []
+                self.locator_presses = []
+                self.locator_evaluates = []
+                self.keyboard_presses = []
+                self.function_calls = 0
+
+            def locator(self, selector):
+                return FakeLocator(self, selector)
+
+            @property
+            def keyboard(self):
+                page = self
+
+                class Keyboard:
+                    def press(self_inner, key):
+                        page.keyboard_presses.append(key)
+
+                return Keyboard()
+
+            def wait_for_function(self, script, timeout):
+                self.function_calls += 1
+                if self.function_calls < 3:
+                    raise RuntimeError("login still pending")
+
+        page = FakePage()
+        _attempt_admin_login_submit(page)
+
+        self.assertEqual(page.locator_presses, [(DOINGCODING_ADMIN_PASSWORD_SELECTOR, "Enter")])
+        self.assertEqual(page.keyboard_presses, ["Enter"])
+        self.assertIn(('button:has-text("GO")', True), page.locator_clicks)
+
+    def test_attempt_admin_login_submit_handles_request_submit_failure(self):
+        class FakeLocator:
+            def __init__(self, page, selector):
+                self.page = page
+                self.selector = selector
+
+            @property
+            def first(self):
+                return self
+
+            def click(self, force=False):
+                self.page.locator_clicks.append((self.selector, force))
+                if self.selector != DOINGCODING_ADMIN_PASSWORD_SELECTOR:
+                    raise RuntimeError("click failed")
+
+            def press(self, key):
+                self.page.locator_presses.append((self.selector, key))
+
+            def evaluate(self, script):
+                self.page.locator_evaluates.append((self.selector, script))
+                if self.selector == DOINGCODING_ADMIN_PASSWORD_SELECTOR:
+                    raise RuntimeError("requestSubmit failed")
+
+        class FakePage:
+            def __init__(self):
+                self.locator_clicks = []
+                self.locator_presses = []
+                self.locator_evaluates = []
+                self.keyboard_presses = []
+                self.function_calls = 0
+
+            def locator(self, selector):
+                return FakeLocator(self, selector)
+
+            @property
+            def keyboard(self):
+                page = self
+
+                class Keyboard:
+                    def press(self_inner, key):
+                        page.keyboard_presses.append(key)
+                        raise RuntimeError("keyboard enter failed")
+
+                return Keyboard()
+
+            def wait_for_function(self, script, timeout):
+                self.function_calls += 1
+                return None
+
+        page = FakePage()
+        _attempt_admin_login_submit(page)
+
+        self.assertEqual(page.locator_presses, [(DOINGCODING_ADMIN_PASSWORD_SELECTOR, "Enter")])
+        self.assertGreaterEqual(len(page.locator_clicks), 1)
+
+    def test_login_doingcoding_admin_raises_with_cookie_diagnostics_on_failure(self):
+        class FakeLocator:
+            def __init__(self, page, selector):
+                self.page = page
+                self.selector = selector
+
+            @property
+            def first(self):
+                return self
+
+            def click(self, force=False):
+                self.page.locator_clicks.append((self.selector, force))
+
+            def fill(self, value):
+                self.page.locator_fills.append((self.selector, value))
+
+        class FakeContext:
+            def cookies(self):
+                return [{"name": "csrftoken", "value": "token", "domain": "edu.doingcoding.com", "path": "/admin"}]
+
+        class FakePage:
+            def __init__(self):
+                self.locator_clicks = []
+                self.locator_fills = []
+                self.context = FakeContext()
+                self.url = DOINGCODING_ADMIN_LOGIN_URL
+
+            def locator(self, selector):
+                return FakeLocator(self, selector)
+
+        logs = []
+        page = FakePage()
+        with patch("practice.data.language_v2.crawl.ensure_doingcoding_admin_csrf", return_value="token"), \
+            patch("practice.data.language_v2.crawl._attempt_admin_login_submit", side_effect=RuntimeError("submit failed")), \
+            patch("practice.data.language_v2.crawl.attempt_admin_login_via_request", return_value=False) as request_mock:
+            with self.assertRaises(RuntimeError) as raised:
+                login_doingcoding_admin(page, "admin_id", "admin_pw", logger=logs.append)
+
+        self.assertIn("CSRF cookie/token mismatch 가능성", str(raised.exception))
+        self.assertIn("[관리자 로그인] 최종 실패: csrftoken=있음, sessionid=없음", logs)
+        request_mock.assert_called_once()
+    def test_download_doingcoding_testcases_saves_zip_after_row_match(self):
+        class FakeDownload:
+            suggested_filename = "P101v0701.zip"
+
+            def __init__(self):
+                self.saved_path = None
+
+            def save_as(self, path):
+                self.saved_path = path
+
+        class FakeDownloadContext:
+            def __init__(self, download):
+                self.value = download
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+        class FakePage:
+            def __init__(self):
+                self.download = FakeDownload()
+                self.fills = []
+                self.presses = []
+                self.clicks = []
+                self.waited = []
+                self.failed_selectors = {
+                    DOINGCODING_ADMIN_SEARCH_SELECTORS[0],
+                    DOINGCODING_ADMIN_ROW_SELECTORS[0],
+                    DOINGCODING_ADMIN_DOWNLOAD_BUTTON_SELECTORS[0],
+                }
+
+            def wait_for_selector(self, selector, timeout, state="visible"):
+                self.waited.append((selector, timeout, state))
+                if selector in self.failed_selectors:
+                    raise RuntimeError(f"{selector} missing")
+
+            def wait_for_timeout(self, _ms):
+                return None
+
+            def fill(self, selector, value):
+                self.fills.append((selector, value))
+
+            def press(self, selector, key):
+                self.presses.append((selector, key))
+
+            def text_content(self, selector):
+                if selector in DOINGCODING_ADMIN_ROW_SELECTORS:
+                    return "P101v0701 문제 행"
+                return ""
+
+            def expect_download(self):
+                return FakeDownloadContext(self.download)
+
+            def click(self, selector):
+                self.clicks.append(selector)
+
+        temp_dir = CURRENT_DIR / "_tmp_admin_download_test"
+        temp_dir.mkdir(exist_ok=True)
+        try:
+            page = FakePage()
+            download_path = download_doingcoding_testcases(page, "P101v0701", str(temp_dir))
+
+            self.assertEqual(page.fills, [(DOINGCODING_ADMIN_SEARCH_SELECTORS[1], "P101v0701")])
+            self.assertEqual(page.presses, [(DOINGCODING_ADMIN_SEARCH_SELECTORS[1], "Enter")])
+            self.assertEqual(page.clicks, [DOINGCODING_ADMIN_DOWNLOAD_BUTTON_SELECTORS[1]])
+            self.assertTrue(download_path.endswith("P101v0701.zip"))
+            self.assertTrue(page.download.saved_path.endswith("P101v0701.zip"))
+        finally:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+
+    def test_find_first_working_selector_falls_back_to_next_candidate(self):
+        class FakePage:
+            def wait_for_selector(self, selector, timeout, state="visible"):
+                if selector == "bad":
+                    raise RuntimeError("bad selector")
+                return None
+
+        selector = _find_first_working_selector(FakePage(), ["bad", "good"], timeout=1000, require_visible=False)
+        self.assertEqual(selector, "good")
+
+    def test_collect_doingcoding_testcases_logs_in_downloads_and_parses_bundle(self):
+        class FakePage:
+            pass
+
+        class FakeContext:
+            def __init__(self):
+                self.page = FakePage()
+                self.closed = False
+
+            def new_page(self):
+                return self.page
+
+            def close(self):
+                self.closed = True
+
+        class FakeBrowser:
+            def __init__(self):
+                self.context = FakeContext()
+
+            def new_context(self, accept_downloads):
+                self.accept_downloads = accept_downloads
+                return self.context
+
+        temp_dir = CURRENT_DIR / "_tmp_collect_testcases"
+        temp_dir.mkdir(exist_ok=True)
+        try:
+            browser = FakeBrowser()
+            with patch("practice.data.language_v2.crawl.login_doingcoding_admin") as login_mock, \
+                patch("practice.data.language_v2.crawl.download_doingcoding_testcases", return_value=str(temp_dir / "bundle.zip")) as download_mock, \
+                patch("practice.data.language_v2.crawl.parse_testcase_bundle", return_value={"info": {"spj": False}, "cases": [{"id": "1"}]}) as parse_mock:
+                bundle = collect_doingcoding_testcases(
+                    browser,
+                    "P101v0701",
+                    "admin",
+                    "secret",
+                    base_download_dir=str(temp_dir),
+                )
+
+            self.assertEqual(bundle, {"info": {"spj": False}, "cases": [{"id": "1"}]})
+            self.assertTrue(browser.accept_downloads)
+            self.assertTrue(browser.context.closed)
+            login_mock.assert_called_once()
+            download_mock.assert_called_once()
+            parse_mock.assert_called_once()
+        finally:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+
+    def test_scrape_doingcoding_does_not_collect_testcases_when_option_is_disabled(self):
+        class FakeLocator:
+            def __init__(self, selector):
+                self.selector = selector
+
+            @property
+            def first(self):
+                return self
+
+            def wait_for(self, timeout=None):
+                raise RuntimeError("not found")
+
+            def inner_text(self):
+                return ""
+
+            def count(self):
+                return 0
+
+        class FakePage:
+            def goto(self, url, wait_until, timeout):
+                return type("Response", (), {"status": 200})()
+
+            def wait_for_selector(self, selector, timeout=None):
+                return None
+
+            def wait_for_timeout(self, _ms):
+                return None
+
+            def content(self):
+                return """
+                <div>
+                  <div id="problem-main"><div><div class="title">문제 제목</div></div></div>
+                  <div id="problem-content">
+                    <p>문제 설명</p>
+                    <p>문제 본문 설명</p>
+                    <p>입력</p>
+                    <p>입력 설명</p>
+                    <p>출력</p>
+                    <p>출력 설명</p>
+                  </div>
+                </div>
+                """
+
+            def locator(self, selector):
+                return FakeLocator(selector)
+
+        class FakeBrowser:
+            def new_page(self):
+                return FakePage()
+
+            def close(self):
+                return None
+
+        class FakePlaywright:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+            class chromium:
+                @staticmethod
+                def launch(headless=True):
+                    return FakeBrowser()
+
+        with patch("practice.data.language_v2.crawl.sync_playwright", return_value=FakePlaywright()), \
+            patch("practice.data.language_v2.crawl.collect_doingcoding_testcases") as collect_mock:
+            title, markdown = __import__("practice.data.language_v2.crawl", fromlist=["scrape_doingcoding"]).scrape_doingcoding(
+                "http://edu.doingcoding.com/problem/P101v0701",
+                get_testcases=False,
+            )
+
+        self.assertEqual(title, "문제 제목")
+        self.assertIn("문제 제목", markdown)
+        collect_mock.assert_not_called()
+
+    def test_scrape_doingcoding_collects_testcases_when_option_is_enabled(self):
+        class FakeLocator:
+            def __init__(self, selector):
+                self.selector = selector
+
+            @property
+            def first(self):
+                return self
+
+            def wait_for(self, timeout=None):
+                raise RuntimeError("not found")
+
+            def inner_text(self):
+                return ""
+
+            def count(self):
+                return 0
+
+        class FakePage:
+            def goto(self, url, wait_until, timeout):
+                return type("Response", (), {"status": 200})()
+
+            def wait_for_selector(self, selector, timeout=None):
+                return None
+
+            def wait_for_timeout(self, _ms):
+                return None
+
+            def content(self):
+                return """
+                <div>
+                  <div id="problem-main"><div><div class="title">문제 제목</div></div></div>
+                  <div id="problem-content">
+                    <p>문제 설명</p>
+                    <p>문제 본문 설명</p>
+                    <p>입력</p>
+                    <p>입력 설명</p>
+                    <p>출력</p>
+                    <p>출력 설명</p>
+                  </div>
+                </div>
+                """
+
+            def locator(self, selector):
+                return FakeLocator(selector)
+
+        class FakeBrowser:
+            def new_page(self):
+                return FakePage()
+
+            def close(self):
+                return None
+
+        class FakePlaywright:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+            class chromium:
+                @staticmethod
+                def launch(headless=True):
+                    return FakeBrowser()
+
+        with patch("practice.data.language_v2.crawl.sync_playwright", return_value=FakePlaywright()), \
+            patch(
+                "practice.data.language_v2.crawl.collect_doingcoding_testcases",
+                return_value={"info": {}, "cases": [{"id": "1", "input_text": "1\n", "output_text": "2\n", "input_name": "1.in", "output_name": "1.out", "meta": {}}]},
+            ) as collect_mock:
+            title, markdown = __import__("practice.data.language_v2.crawl", fromlist=["scrape_doingcoding"]).scrape_doingcoding(
+                "http://edu.doingcoding.com/problem/P101v0701",
+                get_testcases=True,
+                admin_username="admin",
+                admin_password="secret",
+            )
+
+        self.assertEqual(title, "문제 제목")
+        self.assertIn("채점용 테스트케이스", markdown)
+        collect_mock.assert_called_once()
 
 
 if __name__ == "__main__":

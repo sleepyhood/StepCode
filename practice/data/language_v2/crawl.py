@@ -1,6 +1,11 @@
 from playwright.sync_api import sync_playwright
 from lxml import html
+import json
+import os
 import re
+import shutil
+import tempfile
+import zipfile
 
 SECTION_HEADINGS = {
     "description": ["문제 설명", "문제설명", "설명"],
@@ -9,6 +14,29 @@ SECTION_HEADINGS = {
     "hint": ["힌트"],
 }
 REQUIRED_FIELD_PLACEHOLDERS = {"", "(내용 없음)"}
+DOINGCODING_CSRF_SEED_URL = "http://edu.doingcoding.com/api/profile"
+DOINGCODING_CSRF_FALLBACK_URL = "http://edu.doingcoding.com/api/website"
+DOINGCODING_ADMIN_LOGIN_URL = "http://edu.doingcoding.com/admin/login"
+DOINGCODING_ADMIN_PROBLEMS_URL = "http://edu.doingcoding.com/admin/problems"
+DOINGCODING_ADMIN_ID_SELECTOR = 'xpath=//*[@id="app"]/form/div[1]/div/div/input'
+DOINGCODING_ADMIN_PASSWORD_SELECTOR = 'xpath=//*[@id="app"]/form/div[2]/div/div/input'
+DOINGCODING_ADMIN_LOGIN_BUTTON_SELECTOR = 'xpath=//*[@id="app"]/form/div[3]/div/button'
+DOINGCODING_ADMIN_SEARCH_SELECTORS = [
+    'xpath=//*[@id="app"]/div/div[3]/div[1]/div[1]/header/div[2]/div/div/input',
+    'xpath=//*[@id="app"]//header//input',
+    'css=header input',
+    'css=input[type="text"]',
+]
+DOINGCODING_ADMIN_ROW_SELECTORS = [
+    'xpath=//*[@id="app"]/div/div[3]/div[1]/div[1]/div/div[1]/div[4]/div[2]/table/tbody/tr',
+    'xpath=//*[@id="app"]//table/tbody/tr',
+    'css=table tbody tr',
+]
+DOINGCODING_ADMIN_DOWNLOAD_BUTTON_SELECTORS = [
+    'xpath=//*[@id="app"]/div/div[3]/div[1]/div[1]/div/div[1]/div[4]/div[2]/table/tbody/tr/td[7]/div/div/div[2]/button',
+    'xpath=//*[@id="app"]//table/tbody/tr[1]//button',
+    'css=table tbody tr button',
+]
 
 
 def _clean_text(value):
@@ -212,6 +240,440 @@ def _goto_with_retries(page, url, wait_until="domcontentloaded", timeout=10000, 
     raise last_error
 
 
+def _emit_log(logger, message):
+    if callable(logger):
+        logger(message)
+    print(message)
+
+
+def _find_first_working_selector(page, selectors, timeout=10000, require_visible=False):
+    state = "visible" if require_visible else "attached"
+    last_error = None
+    for selector in selectors:
+        try:
+            page.wait_for_selector(selector, timeout=timeout, state=state)
+            return selector
+        except Exception as exc:
+            last_error = exc
+    raise last_error
+
+
+def extract_cookie_value(cookies, name, domain_hint="edu.doingcoding.com"):
+    matches = [cookie for cookie in cookies if cookie.get("name") == name]
+    if not matches:
+        return None
+
+    prioritized = []
+    for cookie in matches:
+        domain = cookie.get("domain", "")
+        path = cookie.get("path", "")
+        score = 0
+        if domain_hint and domain_hint in domain:
+            score += 2
+        if "/admin" in path:
+            score += 1
+        prioritized.append((score, len(path), cookie))
+
+    prioritized.sort(key=lambda item: (item[0], item[1]), reverse=True)
+    return prioritized[0][2].get("value")
+
+
+def debug_admin_cookie_state(context):
+    cookies = context.cookies()
+    csrftoken = extract_cookie_value(cookies, "csrftoken")
+    sessionid = extract_cookie_value(cookies, "sessionid")
+    return {
+        "cookie_count": len(cookies),
+        "has_csrftoken": csrftoken is not None,
+        "has_sessionid": sessionid is not None,
+    }
+
+
+def ensure_doingcoding_admin_csrf(page, logger=None):
+    def _read_document_cookie():
+        try:
+            document_cookie = page.evaluate("() => document.cookie")
+        except Exception:
+            return None
+
+        for token in document_cookie.split(";"):
+            name, _, value = token.strip().partition("=")
+            if name == "csrftoken" and value:
+                return value
+        return None
+
+    _emit_log(logger, "[관리자 로그인 준비] /api/profile 접속")
+    response = _goto_with_retries(
+        page,
+        DOINGCODING_CSRF_SEED_URL,
+        wait_until="domcontentloaded",
+        timeout=10000,
+        ready_selector=None,
+        attempts=3,
+    )
+    status = response.status if response is not None else "no-response"
+    _emit_log(logger, f"[관리자 로그인 준비] /api/profile 상태: {status}")
+
+    csrftoken = extract_cookie_value(page.context.cookies(), "csrftoken")
+    if not csrftoken:
+        csrftoken = _read_document_cookie()
+
+    if not csrftoken:
+        _emit_log(logger, "[관리자 로그인 준비] /api/website 접속")
+        fallback_response = _goto_with_retries(
+            page,
+            DOINGCODING_CSRF_FALLBACK_URL,
+            wait_until="domcontentloaded",
+            timeout=10000,
+            ready_selector=None,
+            attempts=3,
+        )
+        fallback_status = fallback_response.status if fallback_response is not None else "no-response"
+        _emit_log(logger, f"[관리자 로그인 준비] /api/website 상태: {fallback_status}")
+        csrftoken = extract_cookie_value(page.context.cookies(), "csrftoken") or _read_document_cookie()
+
+    if not csrftoken:
+        _emit_log(logger, "[관리자 로그인 준비] /admin/login 접속")
+        _goto_with_retries(
+            page,
+            DOINGCODING_ADMIN_LOGIN_URL,
+            wait_until="domcontentloaded",
+            timeout=10000,
+            ready_selector=DOINGCODING_ADMIN_ID_SELECTOR,
+            attempts=3,
+        )
+        csrftoken = extract_cookie_value(page.context.cookies(), "csrftoken") or _read_document_cookie()
+
+    if csrftoken:
+        _emit_log(logger, "[관리자 로그인 준비] csrftoken 확보 성공")
+        return csrftoken
+
+    _emit_log(logger, "[관리자 로그인 준비] csrftoken 없음")
+    raise RuntimeError("관리자 로그인 전 csrftoken 쿠키를 확보하지 못했습니다.")
+
+
+def _wait_for_admin_login_success(page, timeout=5000):
+    page.wait_for_function(
+        """() => {
+            const path = window.location.pathname || "";
+            return !path.includes('/admin/login');
+        }""",
+        timeout=timeout,
+    )
+
+
+def _attempt_admin_login_submit(page, logger=None):
+    password_locator = page.locator(DOINGCODING_ADMIN_PASSWORD_SELECTOR)
+    login_button = page.locator(DOINGCODING_ADMIN_LOGIN_BUTTON_SELECTOR)
+    go_button = page.locator('button:has-text("GO")').first
+
+    try:
+        _emit_log(logger, "[관리자 로그인] 제출 시도 1: locator Enter")
+        password_locator.click()
+        password_locator.press("Enter")
+        _wait_for_admin_login_success(page, timeout=5000)
+        return
+    except Exception:
+        pass
+
+    try:
+        _emit_log(logger, "[관리자 로그인] 제출 시도 2: keyboard Enter")
+        password_locator.click()
+        page.keyboard.press("Enter")
+        _wait_for_admin_login_success(page, timeout=5000)
+        return
+    except Exception:
+        pass
+
+    try:
+        _emit_log(logger, "[관리자 로그인] 제출 시도 3: form requestSubmit")
+        password_locator.evaluate(
+            """(element) => {
+                const form = element.form || element.closest('form');
+                if (form && typeof form.requestSubmit === 'function') {
+                    form.requestSubmit();
+                    return true;
+                }
+                if (form) {
+                    form.submit();
+                    return true;
+                }
+                return false;
+            }"""
+        )
+        _wait_for_admin_login_success(page, timeout=5000)
+        return
+    except Exception:
+        pass
+
+    try:
+        _emit_log(logger, "[관리자 로그인] 제출 시도 4: GO 버튼 force click")
+        go_button.click(force=True)
+        _wait_for_admin_login_success(page, timeout=5000)
+        return
+    except Exception:
+        pass
+
+    try:
+        _emit_log(logger, "[관리자 로그인] 제출 시도 5: 로그인 버튼 force click")
+        login_button.click(force=True)
+        _wait_for_admin_login_success(page, timeout=5000)
+        return
+    except Exception:
+        pass
+
+    _emit_log(logger, "[관리자 로그인] 제출 시도 6: 로그인 버튼 JS click")
+    login_button.evaluate(
+        """(element) => {
+            element.click();
+        }"""
+    )
+    _wait_for_admin_login_success(page, timeout=5000)
+
+
+def attempt_admin_login_via_request(context, username, password, csrftoken, logger=None):
+    _emit_log(
+        logger,
+        "[관리자 로그인] 네트워크 기반 fallback은 비활성 상태입니다. 성공 요청 payload 확인 후 활성화가 필요합니다.",
+    )
+    return False
+
+
+def _load_testcase_info_from_dir(extract_dir):
+    info_candidates = [
+        os.path.join(extract_dir, "info"),
+        os.path.join(extract_dir, "info.json"),
+    ]
+    for candidate in info_candidates:
+        if not os.path.exists(candidate):
+            continue
+        with open(candidate, "r", encoding="utf-8") as info_file:
+            return json.load(info_file)
+    return {}
+
+
+def _read_text_file(path):
+    with open(path, "r", encoding="utf-8") as source_file:
+        return source_file.read().replace("\r\n", "\n").replace("\r", "\n")
+
+
+def _pair_testcase_files(extract_dir, info):
+    paired = []
+    info_cases = info.get("test_cases", {}) if isinstance(info, dict) else {}
+    if info_cases:
+        def _sort_key(item):
+            key = item[0]
+            return (0, int(key)) if str(key).isdigit() else (1, str(key))
+
+        for case_id, meta in sorted(info_cases.items(), key=_sort_key):
+            input_name = meta.get("input_name")
+            output_name = meta.get("output_name")
+            if not input_name or not output_name:
+                continue
+            input_path = os.path.join(extract_dir, input_name)
+            output_path = os.path.join(extract_dir, output_name)
+            if not os.path.exists(input_path) or not os.path.exists(output_path):
+                continue
+            paired.append(
+                {
+                    "id": str(case_id),
+                    "input_name": input_name,
+                    "output_name": output_name,
+                    "input_text": _read_text_file(input_path),
+                    "output_text": _read_text_file(output_path),
+                    "meta": meta,
+                }
+            )
+        return paired
+
+    discovered_inputs = {}
+    discovered_outputs = {}
+    for entry in os.listdir(extract_dir):
+        full_path = os.path.join(extract_dir, entry)
+        if not os.path.isfile(full_path):
+            continue
+        stem, ext = os.path.splitext(entry)
+        if ext == ".in":
+            discovered_inputs[stem] = entry
+        elif ext == ".out":
+            discovered_outputs[stem] = entry
+
+    for stem in sorted(set(discovered_inputs) & set(discovered_outputs), key=lambda value: (0, int(value)) if value.isdigit() else (1, value)):
+        paired.append(
+            {
+                "id": stem,
+                "input_name": discovered_inputs[stem],
+                "output_name": discovered_outputs[stem],
+                "input_text": _read_text_file(os.path.join(extract_dir, discovered_inputs[stem])),
+                "output_text": _read_text_file(os.path.join(extract_dir, discovered_outputs[stem])),
+                "meta": {},
+            }
+        )
+    return paired
+
+
+def parse_testcase_bundle(bundle_path, extract_dir):
+    with zipfile.ZipFile(bundle_path) as archive:
+        archive.extractall(extract_dir)
+
+    info = _load_testcase_info_from_dir(extract_dir)
+    cases = _pair_testcase_files(extract_dir, info)
+    return {"info": info, "cases": cases, "extract_dir": extract_dir}
+
+
+def render_testcases_md(testcase_bundle, section_number=5):
+    cases = testcase_bundle.get("cases", [])
+    info = testcase_bundle.get("info", {})
+    if not cases:
+        return ""
+
+    sections = [f"## {section_number}. 채점용 테스트케이스", ""]
+    if info:
+        sections.extend(
+            [
+                "### 메타데이터",
+                "```json",
+                json.dumps(info, ensure_ascii=False, indent=4),
+                "```",
+                "",
+            ]
+        )
+
+    for case in cases:
+        case_id = case["id"]
+        sections.extend(
+            [
+                f"### 테스트케이스 {case_id} 입력",
+                "```text",
+                case["input_text"].rstrip("\n"),
+                "```",
+                "",
+                f"### 테스트케이스 {case_id} 출력",
+                "```text",
+                case["output_text"].rstrip("\n"),
+                "```",
+                "",
+            ]
+        )
+
+    sections.append("---")
+    sections.append("")
+    return "\n".join(sections)
+
+
+def render_templates_md(templates, section_number=5):
+    if not templates:
+        return ""
+    templates_md = [f"## {section_number}. 코드 템플릿", ""]
+    for lang, code in templates.items():
+        lang_tag = "python" if "Python" in lang else lang.lower()
+        templates_md.extend(
+            [
+                f"### {lang}",
+                f"```{lang_tag}",
+                code,
+                "```",
+                "",
+            ]
+        )
+    templates_md.extend(["---", ""])
+    return "\n".join(templates_md)
+
+
+def login_doingcoding_admin(page, username, password, logger=None):
+    if not username or not password:
+        raise ValueError("관리자 로그인 계정 정보가 필요합니다.")
+
+    csrftoken = ensure_doingcoding_admin_csrf(page, logger=logger)
+    page.locator(DOINGCODING_ADMIN_ID_SELECTOR).click()
+    page.locator(DOINGCODING_ADMIN_ID_SELECTOR).fill(username)
+    page.locator(DOINGCODING_ADMIN_PASSWORD_SELECTOR).click()
+    page.locator(DOINGCODING_ADMIN_PASSWORD_SELECTOR).fill(password)
+    cookie_state = debug_admin_cookie_state(page.context)
+    _emit_log(
+        logger,
+        f"[관리자 로그인] 제출 전 상태: url={page.url}, csrftoken={'있음' if bool(csrftoken) else '없음'}, cookies={cookie_state['cookie_count']}",
+    )
+
+    try:
+        _attempt_admin_login_submit(page, logger=logger)
+    except Exception as exc:
+        cookie_state = debug_admin_cookie_state(page.context)
+        _emit_log(
+            logger,
+            f"[관리자 로그인] 최종 실패: csrftoken={'있음' if cookie_state['has_csrftoken'] else '없음'}, sessionid={'있음' if cookie_state['has_sessionid'] else '없음'}",
+        )
+        attempt_admin_login_via_request(page.context, username, password, csrftoken, logger=logger)
+        raise RuntimeError("관리자 로그인 실패: CSRF cookie/token mismatch 가능성") from exc
+
+    page.wait_for_load_state("domcontentloaded")
+    page.wait_for_timeout(1000)
+    _goto_with_retries(
+        page,
+        DOINGCODING_ADMIN_PROBLEMS_URL,
+        wait_until="domcontentloaded",
+        timeout=10000,
+        ready_selector=None,
+        attempts=3,
+    )
+    _find_first_working_selector(page, DOINGCODING_ADMIN_SEARCH_SELECTORS, timeout=15000, require_visible=False)
+    return True
+
+
+def download_doingcoding_testcases(page, problem_id, download_dir):
+    os.makedirs(download_dir, exist_ok=True)
+    search_selector = _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_SEARCH_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+    row_selector = _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_ROW_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+    download_selector = _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_DOWNLOAD_BUTTON_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+
+    page.fill(search_selector, problem_id)
+    page.press(search_selector, "Enter")
+    page.wait_for_timeout(1000)
+    page.wait_for_selector(row_selector, timeout=15000, state="attached")
+    row_text = _clean_text(page.text_content(row_selector) or "")
+    if problem_id not in row_text:
+        raise RuntimeError(f"관리자 문제 목록에서 문제 ID를 확인하지 못했습니다: {problem_id}")
+
+    with page.expect_download() as download_info:
+        page.click(download_selector)
+    download = download_info.value
+    suggested_filename = download.suggested_filename or f"{problem_id}.zip"
+    download_path = os.path.join(download_dir, suggested_filename)
+    download.save_as(download_path)
+    return download_path
+
+
+def collect_doingcoding_testcases(browser, problem_id, admin_username, admin_password, base_download_dir=None, logger=None):
+    work_root = base_download_dir or os.getcwd()
+    temp_dir = tempfile.mkdtemp(prefix=f"dc_tc_{problem_id}_", dir=work_root)
+    context = browser.new_context(accept_downloads=True)
+    page = context.new_page()
+    try:
+        login_doingcoding_admin(page, admin_username, admin_password, logger=logger)
+        bundle_path = download_doingcoding_testcases(page, problem_id, temp_dir)
+        extract_dir = os.path.join(temp_dir, "extract")
+        bundle = parse_testcase_bundle(bundle_path, extract_dir)
+        return {"info": bundle.get("info", {}), "cases": bundle.get("cases", [])}
+    finally:
+        context.close()
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+
 def scrape_baekjoon(url):
     with sync_playwright() as p:
         # headless=False로 띄워야 백준(acmicpc)의 봇 탐지(Cloudflare 등)를 우회하기 좋습니다.
@@ -327,10 +789,19 @@ print(A + B)
         return title, md_content
 
 
-def scrape_doingcoding(url, get_templates=False):
+def scrape_doingcoding(
+    url,
+    get_templates=False,
+    get_testcases=False,
+    admin_username=None,
+    admin_password=None,
+    testcase_download_dir=None,
+    show_browser=False,
+    logger=None,
+):
     with sync_playwright() as p:
         # 자체 학원 사이트는 봇 탐지가 약할 수 있으므로 headless=True로 1초 만에 수집 가능
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=not show_browser)
         page = browser.new_page()
 
         try:
@@ -430,6 +901,17 @@ def scrape_doingcoding(url, get_templates=False):
                     # 템플릿 추출 실패는 전체 크롤링 실패로 간주하지 않음
                     print(f"템플릿 추출 중 경미한 에러 (문제 없음): {te}")
 
+            testcase_bundle = {}
+            if get_testcases:
+                testcase_bundle = collect_doingcoding_testcases(
+                    browser,
+                    problem_id,
+                    admin_username,
+                    admin_password,
+                    base_download_dir=testcase_download_dir,
+                    logger=logger,
+                )
+
         except Exception as e:
             print(f"XPath 크롤링 에러({url}): {e}")
             return None, None
@@ -453,14 +935,13 @@ def scrape_doingcoding(url, get_templates=False):
         for idx, (s_in, s_out) in enumerate(samples, 1):
             samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
 
-        # 템플릿 MD 조립
-        templates_md = ""
-        if templates:
-            templates_md = "## 5. 코드 템플릿\n\n"
-            for lang, code in templates.items():
-                lang_tag = "python" if "Python" in lang else lang.lower()
-                templates_md += f"### {lang}\n```{lang_tag}\n{code}\n```\n\n"
-            templates_md += "---\n\n"
+        next_section_number = 5
+        testcases_md = ""
+        if testcase_bundle:
+            testcases_md = render_testcases_md(testcase_bundle, section_number=next_section_number)
+            next_section_number += 1
+
+        templates_md = render_templates_md(templates, section_number=next_section_number)
 
         # 수석 감수자 권장 마크다운(MD) 템플릿에 맞추어 문자열 포매팅
         md_content = f"""---
@@ -495,7 +976,7 @@ source: {url}
 
 ---
 
-{templates_md}<!-- ANSWER_START -->
+{testcases_md}{templates_md}<!-- ANSWER_START -->
 ## [정답 및 해설 (Ground Truth)]
 
 ### 모범 코드 (Python)

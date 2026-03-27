@@ -1,3 +1,4 @@
+import os
 import queue
 import shutil
 import sys
@@ -9,6 +10,11 @@ if str(CURRENT_DIR) not in sys.path:
     sys.path.insert(0, str(CURRENT_DIR))
 
 from gui_crawler import CrawlerApp, build_output_filepath
+from gui_crawler import (
+    DOINGCODING_ADMIN_ID_ENV,
+    DOINGCODING_ADMIN_PASSWORD_ENV,
+    resolve_admin_credentials,
+)
 
 
 class FakeLogArea:
@@ -78,6 +84,42 @@ class GuiStage5Tests(unittest.TestCase):
             self.assertTrue(second_path.endswith("01_dc_test_1.md"))
         finally:
             shutil.rmtree(temp_dir, ignore_errors=True)
+
+    def test_resolve_admin_credentials_prefers_inputs_then_env(self):
+        original_id = os.environ.get(DOINGCODING_ADMIN_ID_ENV)
+        original_pw = os.environ.get(DOINGCODING_ADMIN_PASSWORD_ENV)
+        os.environ[DOINGCODING_ADMIN_ID_ENV] = "env_id"
+        os.environ[DOINGCODING_ADMIN_PASSWORD_ENV] = "env_pw"
+        try:
+            self.assertEqual(resolve_admin_credentials("typed_id", "typed_pw"), ("typed_id", "typed_pw"))
+            self.assertEqual(resolve_admin_credentials("", ""), ("env_id", "env_pw"))
+        finally:
+            if original_id is None:
+                os.environ.pop(DOINGCODING_ADMIN_ID_ENV, None)
+            else:
+                os.environ[DOINGCODING_ADMIN_ID_ENV] = original_id
+            if original_pw is None:
+                os.environ.pop(DOINGCODING_ADMIN_PASSWORD_ENV, None)
+            else:
+                os.environ[DOINGCODING_ADMIN_PASSWORD_ENV] = original_pw
+
+    def test_crawl_process_accepts_show_browser_argument(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.ui_queue = queue.Queue()
+        app.log = lambda _message: None
+        app.ui_queue.put = lambda _item: None
+
+        app.crawl_process(
+            target_ids=[],
+            domain="doingcoding",
+            template="http://edu.doingcoding.com/problem/{id}",
+            save_path=str(CURRENT_DIR),
+            get_templates=False,
+            get_testcases=False,
+            admin_username="",
+            admin_password="",
+            show_browser=True,
+        )
 
 
 if __name__ == "__main__":

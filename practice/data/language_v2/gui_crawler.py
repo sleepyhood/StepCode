@@ -17,6 +17,9 @@ try:
 except ImportError:
     from crawl import scrape_baekjoon, scrape_doingcoding
 
+DOINGCODING_ADMIN_ID_ENV = "DOINGCODING_ADMIN_ID"
+DOINGCODING_ADMIN_PASSWORD_ENV = "DOINGCODING_ADMIN_PASSWORD"
+
 
 def build_output_filepath(save_dir, filename):
     base, ext = os.path.splitext(filename)
@@ -26,6 +29,12 @@ def build_output_filepath(save_dir, filename):
         candidate = os.path.join(save_dir, f"{base}_{suffix}{ext}")
         suffix += 1
     return candidate
+
+
+def resolve_admin_credentials(username, password):
+    resolved_username = (username or "").strip() or os.getenv(DOINGCODING_ADMIN_ID_ENV, "").strip()
+    resolved_password = (password or "").strip() or os.getenv(DOINGCODING_ADMIN_PASSWORD_ENV, "").strip()
+    return resolved_username, resolved_password
 
 class CrawlerApp:
     def __init__(self, root):
@@ -80,6 +89,31 @@ class CrawlerApp:
         self.get_templates_var = tk.BooleanVar(value=False)
         self.check_template = tk.Checkbutton(root, text="코드 템플릿 포함 (수집 속도가 현저히 느려질 수 있습니다)", variable=self.get_templates_var)
         self.check_template.pack(pady=5)
+
+        self.get_testcases_var = tk.BooleanVar(value=False)
+        self.check_testcases = tk.Checkbutton(
+            root,
+            text="채점용 테스트케이스 포함 (doingcoding 관리자 로그인 필요)",
+            variable=self.get_testcases_var,
+        )
+        self.check_testcases.pack(pady=5)
+
+        self.show_browser_var = tk.BooleanVar(value=False)
+        self.check_show_browser = tk.Checkbutton(
+            root,
+            text="doingcoding 진행 화면 표시",
+            variable=self.show_browser_var,
+        )
+        self.check_show_browser.pack(pady=5)
+
+        admin_frame = tk.Frame(root)
+        admin_frame.pack(pady=(0, 10))
+        tk.Label(admin_frame, text="관리자 ID").pack(side=tk.LEFT)
+        self.admin_username = tk.Entry(admin_frame, width=18)
+        self.admin_username.pack(side=tk.LEFT, padx=(5, 10))
+        tk.Label(admin_frame, text="관리자 PW").pack(side=tk.LEFT)
+        self.admin_password = tk.Entry(admin_frame, width=18, show="*")
+        self.admin_password.pack(side=tk.LEFT, padx=(5, 0))
 
         # 4. 저장 폴더 지정
         frame_dir = tk.Frame(root)
@@ -179,9 +213,26 @@ class CrawlerApp:
         template = self.url_template.get().strip()
         save_path = self.save_dir.get()
         get_templates = self.get_templates_var.get()
+        get_testcases = self.get_testcases_var.get()
+        show_browser = self.show_browser_var.get()
+        admin_username, admin_password = resolve_admin_credentials(
+            self.admin_username.get(),
+            self.admin_password.get(),
+        )
 
         if "{id}" not in template:
             messagebox.showerror("입력 오류", "URL 템플릿 안에 반드시 '{id}' 라는 문자가 포함되어야 합니다.")
+            return
+
+        if get_testcases and domain != "doingcoding":
+            messagebox.showerror("입력 오류", "채점용 테스트케이스 수집은 doingcoding에서만 사용할 수 있습니다.")
+            return
+
+        if get_testcases and (not admin_username or not admin_password):
+            messagebox.showerror(
+                "입력 오류",
+                "채점용 테스트케이스 수집에는 관리자 ID/PW가 필요합니다. 입력란 또는 환경변수를 확인해 주세요.",
+            )
             return
 
         os.makedirs(save_path, exist_ok=True)
@@ -192,11 +243,35 @@ class CrawlerApp:
         self.log_area.config(state='disabled')
         self._append_log(f"=== 대량 수집 시작 (조합된 ID 총 {len(target_ids)} 개) ===")
         
-        thread = threading.Thread(target=self.crawl_process, args=(target_ids, domain, template, save_path, get_templates))
+        thread = threading.Thread(
+            target=self.crawl_process,
+            args=(
+                target_ids,
+                domain,
+                template,
+                save_path,
+                get_templates,
+                get_testcases,
+                admin_username,
+                admin_password,
+                show_browser,
+            ),
+        )
         thread.daemon = True
         thread.start()
 
-    def crawl_process(self, target_ids, domain, template, save_path, get_templates):
+    def crawl_process(
+        self,
+        target_ids,
+        domain,
+        template,
+        save_path,
+        get_templates,
+        get_testcases,
+        admin_username,
+        admin_password,
+        show_browser,
+    ):
         success_count = 0
         failures = []
         
@@ -211,7 +286,16 @@ class CrawlerApp:
                     result = scrape_baekjoon(target_url)
                     prefix = "bj"
                 else:
-                    result = scrape_doingcoding(target_url, get_templates=get_templates)
+                    result = scrape_doingcoding(
+                        target_url,
+                        get_templates=get_templates,
+                        get_testcases=get_testcases,
+                        admin_username=admin_username,
+                        admin_password=admin_password,
+                        testcase_download_dir=save_path,
+                        show_browser=show_browser,
+                        logger=self.log,
+                    )
                     prefix = "dc"
                 
                 if result == (None, None):
