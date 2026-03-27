@@ -32,14 +32,22 @@ const ProblemService = {
   },
 
   excludeLegacyTrackWhenGeneratedExists(preferred, legacy, track) {
-    const target = String(track || "").trim().toLowerCase();
+    const target = String(track || "")
+      .trim()
+      .toLowerCase();
     if (!target) return legacy || [];
     const hasPreferredTrack = (preferred || []).some(
-      (item) => String(item?.track || "").trim().toLowerCase() === target
+      (item) =>
+        String(item?.track || "")
+          .trim()
+          .toLowerCase() === target,
     );
     if (!hasPreferredTrack) return legacy || [];
     return (legacy || []).filter(
-      (item) => String(item?.track || "").trim().toLowerCase() !== target
+      (item) =>
+        String(item?.track || "")
+          .trim()
+          .toLowerCase() !== target,
     );
   },
 
@@ -47,17 +55,17 @@ const ProblemService = {
     const [generated, legacy] = await Promise.all([
       this.fetchJsonFirst(
         [`${APP_CONFIG.dataBasePath}/generated/categories.json`],
-        "failed to load generated categories"
+        "failed to load generated categories",
       ).catch(() => []),
       this.fetchJsonFirst(
         [`${APP_CONFIG.dataBasePath}/categories.json`],
-        "failed to load categories"
+        "failed to load categories",
       ).catch(() => []),
     ]);
     const filteredLegacy = this.excludeLegacyTrackWhenGeneratedExists(
       generated,
       legacy,
-      "canva"
+      "canva",
     );
     return this.mergeByKey(generated, filteredLegacy, "id");
   },
@@ -66,11 +74,11 @@ const ProblemService = {
     const [generated, legacy] = await Promise.all([
       this.fetchJsonFirst(
         [`${APP_CONFIG.dataBasePath}/generated/interactive.index.json`],
-        "failed to load generated interactive index"
+        "failed to load generated interactive index",
       ).catch(() => []),
       this.fetchJsonFirst(
         [`${APP_CONFIG.dataBasePath}/sets.index.json`],
-        "failed to load sets index"
+        "failed to load sets index",
       ).catch(() => []),
     ]);
     return this.mergeByKey(generated, legacy, "id");
@@ -83,9 +91,11 @@ const ProblemService = {
       throw new Error(`Unknown setId: ${setId}`);
     }
 
-    const targetPath = meta.dataPath || `${APP_CONFIG.dataBasePath}/sets/${meta.file}`;
+    const targetPath =
+      meta.dataPath || `${APP_CONFIG.dataBasePath}/sets/${meta.file}`;
     const res = await fetch(targetPath);
-    if (!res.ok) throw new Error(`failed to load set: ${meta.file || targetPath}`);
+    if (!res.ok)
+      throw new Error(`failed to load set: ${meta.file || targetPath}`);
     return res.json();
   },
 
@@ -93,17 +103,17 @@ const ProblemService = {
     const [generated, legacy] = await Promise.all([
       this.fetchJsonFirst(
         [`${APP_CONFIG.dataBasePath}/generated/theory.index.json`],
-        "failed to load generated theory index"
+        "failed to load generated theory index",
       ).catch(() => []),
       this.fetchJsonFirst(
         [`${APP_CONFIG.dataBasePath}/theory.index.json`],
-        "failed to load theory index"
+        "failed to load theory index",
       ).catch(() => []),
     ]);
     const filteredLegacy = this.excludeLegacyTrackWhenGeneratedExists(
       generated,
       legacy,
-      "canva"
+      "canva",
     );
     return this.mergeByKey(generated, filteredLegacy, "conceptId");
   },
@@ -111,7 +121,7 @@ const ProblemService = {
   async listWorksheetIndex() {
     return this.fetchJsonFirst(
       [`${APP_CONFIG.dataBasePath}/generated/worksheet.index.json`],
-      "failed to load worksheet index"
+      "failed to load worksheet index",
     );
   },
 
@@ -123,5 +133,5 @@ const ProblemService = {
   async getTheoryByCategoryId(categoryId) {
     const items = await this.listTheoryIndex();
     return items.find((item) => item.categoryId === categoryId) || null;
-  }
+  },
 };
