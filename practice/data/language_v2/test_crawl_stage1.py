@@ -441,6 +441,8 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
 
             def wait_for_selector(self, selector, timeout, state="visible"):
                 self.waited.append((selector, timeout, state))
+                if selector == DOINGCODING_ADMIN_ID_SELECTOR:
+                    self.url = DOINGCODING_ADMIN_LOGIN_URL
 
             def wait_for_function(self, script, timeout):
                 self.function_calls.append((script, timeout))
@@ -473,13 +475,107 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
             page.locator_clicks[:2],
             [(DOINGCODING_ADMIN_ID_SELECTOR, False), (DOINGCODING_ADMIN_PASSWORD_SELECTOR, False)],
         )
-        self.assertEqual(page.goto_args[0][0], DOINGCODING_ADMIN_PROBLEMS_URL)
+        self.assertEqual(page.goto_args[0][0], DOINGCODING_ADMIN_LOGIN_URL)
+        self.assertEqual(page.goto_args[1][0], DOINGCODING_ADMIN_PROBLEMS_URL)
         self.assertEqual(page.load_states, ["domcontentloaded"])
         self.assertEqual(page.timeout_calls, [1000])
         self.assertEqual(len(page.function_calls), 1)
+        self.assertEqual(
+            page.waited[:2],
+            [
+                (DOINGCODING_ADMIN_ID_SELECTOR, 10000, "visible"),
+                (DOINGCODING_ADMIN_PASSWORD_SELECTOR, 10000, "attached"),
+            ],
+        )
         self.assertIn(page.waited[-1][0], DOINGCODING_ADMIN_SEARCH_SELECTORS)
+        self.assertIn("[관리자 로그인] csrf 확보 후 /admin/login 재진입", logs)
+        self.assertIn("[관리자 로그인] 로그인 폼 확인 완료", logs)
         self.assertIn("[관리자 로그인] 제출 전 상태: url=http://edu.doingcoding.com/admin/login, csrftoken=있음, cookies=1", logs)
         ensure_mock.assert_called_once_with(page, logger=logs.append)
+
+    def test_login_doingcoding_admin_reenters_login_page_after_csrf_seed_page(self):
+        class FakeLocator:
+            def __init__(self, page, selector):
+                self.page = page
+                self.selector = selector
+
+            @property
+            def first(self):
+                return self
+
+            def click(self, force=False):
+                self.page.locator_clicks.append((self.selector, force))
+
+            def fill(self, value):
+                self.page.locator_fills.append((self.selector, value))
+
+            def press(self, key):
+                self.page.locator_presses.append((self.selector, key))
+                raise RuntimeError("locator enter failed")
+
+            def evaluate(self, script):
+                self.page.locator_evaluates.append((self.selector, script))
+
+        class FakePage:
+            def __init__(self):
+                self.locator_clicks = []
+                self.locator_fills = []
+                self.locator_presses = []
+                self.locator_evaluates = []
+                self.goto_args = []
+                self.waited = []
+                self.function_calls = []
+                self.load_states = []
+                self.timeout_calls = []
+                self.url = DOINGCODING_CSRF_SEED_URL
+                self.context = type(
+                    "FakeContext",
+                    (),
+                    {
+                        "cookies": lambda self_inner: [
+                            {"name": "csrftoken", "value": "token", "domain": "edu.doingcoding.com", "path": "/admin"}
+                        ]
+                    },
+                )()
+
+            def goto(self, url, wait_until, timeout):
+                self.goto_args.append((url, wait_until, timeout))
+                self.url = url
+                return None
+
+            def wait_for_selector(self, selector, timeout, state="visible"):
+                self.waited.append((selector, timeout, state))
+                if selector == DOINGCODING_ADMIN_ID_SELECTOR:
+                    self.url = DOINGCODING_ADMIN_LOGIN_URL
+
+            def wait_for_function(self, script, timeout):
+                self.function_calls.append((script, timeout))
+
+            def wait_for_load_state(self, state):
+                self.load_states.append(state)
+
+            def wait_for_timeout(self, ms):
+                self.timeout_calls.append(ms)
+
+            def locator(self, selector):
+                return FakeLocator(self, selector)
+
+            @property
+            def keyboard(self):
+                class Keyboard:
+                    def press(self_inner, key):
+                        raise AssertionError("keyboard fallback should not be used in this test")
+
+                return Keyboard()
+
+        page = FakePage()
+        with patch("practice.data.language_v2.crawl.ensure_doingcoding_admin_csrf", return_value="token"):
+            login_doingcoding_admin(page, "admin_id", "admin_pw")
+
+        self.assertEqual(page.goto_args[0][0], DOINGCODING_ADMIN_LOGIN_URL)
+        self.assertEqual(page.waited[0], (DOINGCODING_ADMIN_ID_SELECTOR, 10000, "visible"))
+        self.assertEqual(page.waited[1], (DOINGCODING_ADMIN_PASSWORD_SELECTOR, 10000, "attached"))
+        self.assertEqual(page.locator_fills[:2], [(DOINGCODING_ADMIN_ID_SELECTOR, "admin_id"), (DOINGCODING_ADMIN_PASSWORD_SELECTOR, "admin_pw")])
 
     def test_login_doingcoding_admin_clicks_button_when_enter_does_not_finish_login(self):
         class FakeLocator:
@@ -534,6 +630,8 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
                 return None
 
             def wait_for_selector(self, selector, timeout, state="visible"):
+                if selector == DOINGCODING_ADMIN_ID_SELECTOR:
+                    self.url = DOINGCODING_ADMIN_LOGIN_URL
                 return None
 
             def wait_for_function(self, script, timeout):
@@ -564,6 +662,7 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
         with patch("practice.data.language_v2.crawl.ensure_doingcoding_admin_csrf", return_value="token"):
             login_doingcoding_admin(page, "admin_id", "admin_pw")
 
+        self.assertEqual(page.goto_args[0][0], DOINGCODING_ADMIN_LOGIN_URL)
         self.assertEqual(page.locator_presses, [(DOINGCODING_ADMIN_PASSWORD_SELECTOR, "Enter")])
         self.assertEqual(page.keyboard_presses, ["Enter"])
         self.assertNotIn((DOINGCODING_ADMIN_LOGIN_BUTTON_SELECTOR, True), page.locator_clicks)
@@ -708,6 +807,18 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
                 self.context = FakeContext()
                 self.url = DOINGCODING_ADMIN_LOGIN_URL
 
+            def goto(self, url, wait_until, timeout):
+                self.url = url
+                return None
+
+            def wait_for_selector(self, selector, timeout, state="visible"):
+                if selector == DOINGCODING_ADMIN_ID_SELECTOR:
+                    self.url = DOINGCODING_ADMIN_LOGIN_URL
+                return None
+
+            def wait_for_timeout(self, _ms):
+                return None
+
             def locator(self, selector):
                 return FakeLocator(self, selector)
 
@@ -720,7 +831,7 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
                 login_doingcoding_admin(page, "admin_id", "admin_pw", logger=logs.append)
 
         self.assertIn("CSRF cookie/token mismatch 가능성", str(raised.exception))
-        self.assertIn("[관리자 로그인] 최종 실패: csrftoken=있음, sessionid=없음", logs)
+        self.assertIn("[관리자 로그인] 최종 실패: url=http://edu.doingcoding.com/admin/login, csrftoken=있음, sessionid=없음", logs)
         request_mock.assert_called_once()
     def test_download_doingcoding_testcases_saves_zip_after_row_match(self):
         class FakeDownload:

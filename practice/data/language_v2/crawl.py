@@ -585,6 +585,18 @@ def login_doingcoding_admin(page, username, password, logger=None):
         raise ValueError("관리자 로그인 계정 정보가 필요합니다.")
 
     csrftoken = ensure_doingcoding_admin_csrf(page, logger=logger)
+    _emit_log(logger, "[관리자 로그인] csrf 확보 후 /admin/login 재진입")
+    _goto_with_retries(
+        page,
+        DOINGCODING_ADMIN_LOGIN_URL,
+        wait_until="domcontentloaded",
+        timeout=10000,
+        ready_selector=DOINGCODING_ADMIN_ID_SELECTOR,
+        attempts=3,
+    )
+    page.wait_for_selector(DOINGCODING_ADMIN_PASSWORD_SELECTOR, timeout=10000, state="attached")
+    _emit_log(logger, "[관리자 로그인] 로그인 폼 확인 완료")
+
     page.locator(DOINGCODING_ADMIN_ID_SELECTOR).click()
     page.locator(DOINGCODING_ADMIN_ID_SELECTOR).fill(username)
     page.locator(DOINGCODING_ADMIN_PASSWORD_SELECTOR).click()
@@ -601,7 +613,7 @@ def login_doingcoding_admin(page, username, password, logger=None):
         cookie_state = debug_admin_cookie_state(page.context)
         _emit_log(
             logger,
-            f"[관리자 로그인] 최종 실패: csrftoken={'있음' if cookie_state['has_csrftoken'] else '없음'}, sessionid={'있음' if cookie_state['has_sessionid'] else '없음'}",
+            f"[관리자 로그인] 최종 실패: url={page.url}, csrftoken={'있음' if cookie_state['has_csrftoken'] else '없음'}, sessionid={'있음' if cookie_state['has_sessionid'] else '없음'}",
         )
         attempt_admin_login_via_request(page.context, username, password, csrftoken, logger=logger)
         raise RuntimeError("관리자 로그인 실패: CSRF cookie/token mismatch 가능성") from exc

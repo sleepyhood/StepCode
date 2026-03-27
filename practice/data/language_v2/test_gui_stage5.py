@@ -54,6 +54,44 @@ class FakeRoot:
         self.after_calls.append((delay, callback))
 
 
+class FakeVar:
+    def __init__(self, value=None):
+        self.value = value
+
+    def get(self):
+        return self.value
+
+    def set(self, value):
+        self.value = value
+
+
+class FakeFrame:
+    def __init__(self):
+        self.pack_calls = []
+        self.hidden = False
+
+    def pack(self, **kwargs):
+        self.pack_calls.append(kwargs)
+        self.hidden = False
+
+    def pack_forget(self):
+        self.hidden = True
+
+
+class FakeEntry:
+    def __init__(self, value=""):
+        self.value = value
+
+    def delete(self, _start, _end):
+        self.value = ""
+
+    def insert(self, _index, value):
+        self.value = value
+
+    def get(self):
+        return self.value
+
+
 class GuiStage5Tests(unittest.TestCase):
     def test_process_ui_queue_updates_widgets_on_main_thread(self):
         app = CrawlerApp.__new__(CrawlerApp)
@@ -120,6 +158,78 @@ class GuiStage5Tests(unittest.TestCase):
             admin_password="",
             show_browser=True,
         )
+
+    def test_set_doingcoding_option_visibility_hides_options_and_resets_flags_for_baekjoon(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.domain_var = FakeVar("baekjoon")
+        app.doingcoding_options_frame = FakeFrame()
+        app.frame_dir = object()
+        app.get_templates_var = FakeVar(True)
+        app.get_testcases_var = FakeVar(True)
+        app.show_browser_var = FakeVar(True)
+
+        CrawlerApp._set_doingcoding_option_visibility(app)
+
+        self.assertTrue(app.doingcoding_options_frame.hidden)
+        self.assertFalse(app.get_templates_var.get())
+        self.assertFalse(app.get_testcases_var.get())
+        self.assertFalse(app.show_browser_var.get())
+
+    def test_set_doingcoding_option_visibility_shows_options_for_doingcoding(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.domain_var = FakeVar("doingcoding")
+        app.doingcoding_options_frame = FakeFrame()
+        app.frame_dir = object()
+        app.get_templates_var = FakeVar(False)
+        app.get_testcases_var = FakeVar(False)
+        app.show_browser_var = FakeVar(False)
+
+        CrawlerApp._set_doingcoding_option_visibility(app)
+
+        self.assertFalse(app.doingcoding_options_frame.hidden)
+        self.assertEqual(app.doingcoding_options_frame.pack_calls[-1], {"before": app.frame_dir, "pady": (0, 10)})
+
+    def test_update_url_template_switches_defaults_and_hides_doingcoding_options_for_baekjoon(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.domain_var = FakeVar("baekjoon")
+        app.url_template = FakeEntry("http://edu.doingcoding.com/problem/{id}")
+        app.prefix_id = FakeEntry("P101v")
+        app.start_id = FakeEntry("0701")
+        app.end_id = FakeEntry("0710")
+        app.doingcoding_options_frame = FakeFrame()
+        app.frame_dir = object()
+        app.get_templates_var = FakeVar(True)
+        app.get_testcases_var = FakeVar(True)
+        app.show_browser_var = FakeVar(True)
+
+        CrawlerApp.update_url_template(app)
+
+        self.assertEqual(app.url_template.get(), "https://www.acmicpc.net/problem/{id}")
+        self.assertEqual(app.prefix_id.get(), "")
+        self.assertEqual(app.start_id.get(), "1000")
+        self.assertEqual(app.end_id.get(), "1005")
+        self.assertTrue(app.doingcoding_options_frame.hidden)
+
+    def test_update_url_template_switches_defaults_and_shows_doingcoding_options(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.domain_var = FakeVar("doingcoding")
+        app.url_template = FakeEntry("https://www.acmicpc.net/problem/{id}")
+        app.prefix_id = FakeEntry("")
+        app.start_id = FakeEntry("1000")
+        app.end_id = FakeEntry("1005")
+        app.doingcoding_options_frame = FakeFrame()
+        app.frame_dir = object()
+        app.get_templates_var = FakeVar(False)
+        app.get_testcases_var = FakeVar(False)
+        app.show_browser_var = FakeVar(False)
+
+        CrawlerApp.update_url_template(app)
+
+        self.assertEqual(app.url_template.get(), "http://edu.doingcoding.com/problem/{id}")
+        self.assertEqual(app.prefix_id.get(), "P101v")
+        self.assertEqual(app.start_id.get(), "0701")
+        self.assertEqual(app.end_id.get(), "0710")
+        self.assertFalse(app.doingcoding_options_frame.hidden)
 
 
 if __name__ == "__main__":
