@@ -3,6 +3,33 @@
   "title": "Python Pygame 1주차",
   "categoryId": "py_pygame",
   "availableLanguages": ["python"],
+  "defaultDisplayGroup": "by_section",
+  "displayGroups": [
+    {
+      "id": "by_section",
+      "label": "대문항별",
+      "note": "6개 대문항 묶음으로 학습",
+      "renderMode": "section",
+      "filter": {}
+    },
+    {
+      "id": "core",
+      "label": "핵심",
+      "note": "기본 6문항 노출",
+      "renderMode": "section",
+      "filter": {
+        "questionBucket": "core"
+      }
+    },
+    {
+      "id": "supp",
+      "label": "보강/숙제",
+      "renderMode": "section",
+      "filter": {
+        "questionBucket": "supp"
+      }
+    }
+  ],
   "concepts": [
     {
       "id": "window_basics",

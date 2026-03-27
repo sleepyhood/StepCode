@@ -4,16 +4,33 @@ import threading
 import time
 import os
 import sys
+import queue
 
 # 상위 폴더나 외부 모듈 의존성 등을 위해 경로 추가
-sys.path.append(os.path.dirname(os.path.abspath(__name__)))
+MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
+if MODULE_DIR not in sys.path:
+    sys.path.append(MODULE_DIR)
 
 # 기존 선생님이 작성/보유하신 크롤링 모듈 임포트
-from crawl import scrape_baekjoon, scrape_doingcoding
+try:
+    from .crawl import scrape_baekjoon, scrape_doingcoding
+except ImportError:
+    from crawl import scrape_baekjoon, scrape_doingcoding
+
+
+def build_output_filepath(save_dir, filename):
+    base, ext = os.path.splitext(filename)
+    candidate = os.path.join(save_dir, filename)
+    suffix = 1
+    while os.path.exists(candidate):
+        candidate = os.path.join(save_dir, f"{base}_{suffix}{ext}")
+        suffix += 1
+    return candidate
 
 class CrawlerApp:
     def __init__(self, root):
         self.root = root
+        self.ui_queue = queue.Queue()
         self.root.title("StepCode Reference 수집기 (GUI) - 접두어 패치판")
         self.root.geometry("620x550")
         
@@ -79,6 +96,7 @@ class CrawlerApp:
         # 6. 진행 상황 로그 출력 창
         self.log_area = scrolledtext.ScrolledText(root, width=75, height=10, state='disabled', bg="#f0f0f0")
         self.log_area.pack(pady=5)
+        self.root.after(100, self.process_ui_queue)
 
     def update_url_template(self, *args):
         self.url_template.delete(0, tk.END)
@@ -103,12 +121,32 @@ class CrawlerApp:
         if directory:
             self.save_dir.set(directory)
 
-    def log(self, message):
+    def _append_log(self, message):
         self.log_area.config(state='normal')
         self.log_area.insert(tk.END, message + "\n")
         self.log_area.see(tk.END)
         self.log_area.config(state='disabled')
-        self.root.update_idletasks()
+
+    def _set_start_button(self, state, text):
+        self.start_btn.config(state=state, text=text)
+
+    def process_ui_queue(self):
+        while True:
+            try:
+                action, payload = self.ui_queue.get_nowait()
+            except queue.Empty:
+                break
+
+            if action == "log":
+                self._append_log(payload)
+            elif action == "button":
+                state, text = payload
+                self._set_start_button(state, text)
+
+        self.root.after(100, self.process_ui_queue)
+
+    def log(self, message):
+        self.ui_queue.put(("log", message))
 
     def start_crawl(self):
         try:
@@ -146,11 +184,13 @@ class CrawlerApp:
             messagebox.showerror("입력 오류", "URL 템플릿 안에 반드시 '{id}' 라는 문자가 포함되어야 합니다.")
             return
 
-        self.start_btn.config(state=tk.DISABLED, text="크롤링 진행 중...")
+        os.makedirs(save_path, exist_ok=True)
+
+        self._set_start_button(tk.DISABLED, "크롤링 진행 중...")
         self.log_area.config(state='normal')
         self.log_area.delete(1.0, tk.END)
         self.log_area.config(state='disabled')
-        self.log(f"=== 대량 수집 시작 (조합된 ID 총 {len(target_ids)} 개) ===")
+        self._append_log(f"=== 대량 수집 시작 (조합된 ID 총 {len(target_ids)} 개) ===")
         
         thread = threading.Thread(target=self.crawl_process, args=(target_ids, domain, template, save_path, get_templates))
         thread.daemon = True
@@ -158,6 +198,7 @@ class CrawlerApp:
 
     def crawl_process(self, target_ids, domain, template, save_path, get_templates):
         success_count = 0
+        failures = []
         
         for current_id in target_ids:
             target_url = template.replace("{id}", current_id)
@@ -175,6 +216,7 @@ class CrawlerApp:
                 
                 if result == (None, None):
                     self.log(f"  ❌ 크롤링 실패 (요소를 찾을 수 없거나 삭제된 문제입니다)")
+                    failures.append(target_url)
                     time.sleep(1)
                     continue
                 
@@ -182,21 +224,28 @@ class CrawlerApp:
                 
                 if md_output:
                     filename = f"01_{prefix}_{current_id}.md"
-                    filepath = os.path.join(save_path, filename)
+                    filepath = build_output_filepath(save_path, filename)
                     with open(filepath, 'w', encoding='utf-8-sig') as f:
                         f.write(md_output)
                     
                     self.log(f"  ✅ [추출 성공] '{title}'")
-                    self.log(f"  📂 저장 완료: {filename}")
+                    self.log(f"  📂 저장 완료: {os.path.basename(filepath)}")
                     success_count += 1
                 
                 time.sleep(1.5)
                 
             except Exception as e:
                 self.log(f"  ❌ 시스템 에러 발생: {e}")
+                failures.append(target_url)
+
+        if failures:
+            failure_report = os.path.join(save_path, "crawl_failures.txt")
+            with open(failure_report, "w", encoding="utf-8-sig") as failure_file:
+                failure_file.write("\n".join(failures) + "\n")
+            self.log(f"  ⚠ 실패 목록 저장: {os.path.basename(failure_report)}")
 
         self.log(f"\n=== 전체 수집을 완료했습니다. (최종 성공: {success_count} 건) ===")
-        self.start_btn.config(state=tk.NORMAL, text="🚀 지정된 ID 범위 크롤링 시작")
+        self.ui_queue.put(("button", (tk.NORMAL, "🚀 지정된 ID 범위 크롤링 시작")))
 
 if __name__ == "__main__":
     root = tk.Tk()

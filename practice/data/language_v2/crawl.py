@@ -1,5 +1,215 @@
 from playwright.sync_api import sync_playwright
-import os
+from lxml import html
+import re
+
+SECTION_HEADINGS = {
+    "description": ["문제 설명", "문제설명", "설명"],
+    "input": ["입력"],
+    "output": ["출력"],
+    "hint": ["힌트"],
+}
+REQUIRED_FIELD_PLACEHOLDERS = {"", "(내용 없음)"}
+
+
+def _clean_text(value):
+    if not value:
+        return ""
+    value = value.replace("\xa0", " ")
+    value = value.replace("\r\n", "\n").replace("\r", "\n")
+    value = re.sub(r"[ \t]+", " ", value)
+    value = re.sub(r"\n{3,}", "\n\n", value)
+    return value.strip()
+
+
+def _normalize_heading(text):
+    cleaned = _clean_text(text)
+    return re.sub(r"[\s:：\-\[\]\(\)]", "", cleaned)
+
+
+def _matches_heading(text, candidates):
+    normalized = _normalize_heading(text)
+    return any(normalized == _normalize_heading(candidate) for candidate in candidates)
+
+
+def _iter_direct_children(element):
+    for child in element.xpath("./*"):
+        yield child
+
+
+def _element_text(element):
+    return _clean_text("".join(element.itertext()))
+
+
+def _has_pre_descendant(element):
+    return bool(element.xpath(".//pre"))
+
+
+def _looks_like_section_heading(text):
+    return any(_matches_heading(text, candidates) for candidates in SECTION_HEADINGS.values())
+
+
+def _extract_section_after_heading(content_root, labels):
+    children = list(_iter_direct_children(content_root))
+    for index, child in enumerate(children):
+        text = _element_text(child)
+        if not _matches_heading(text, labels):
+            continue
+
+        chunks = []
+        for sibling in children[index + 1:]:
+            sibling_text = _element_text(sibling)
+            if not sibling_text:
+                continue
+            if _looks_like_section_heading(sibling_text):
+                break
+            if _has_pre_descendant(sibling):
+                break
+            chunks.append(sibling_text)
+
+        if chunks:
+            return "\n\n".join(chunks)
+
+    return ""
+
+
+def _find_doingcoding_content_root(tree):
+    roots = tree.xpath('//*[@id="problem-content"]')
+    return roots[0] if roots else None
+
+
+def _find_doingcoding_title(tree):
+    xpath_candidates = [
+        '//*[@id="problem-main"]//*[self::h1 or self::h2 or self::h3][1]',
+        '//*[@id="problem-main"]/div[3]/div[1]/div/div',
+        '//*[@id="problem-main"]//*[contains(@class, "title")][1]',
+    ]
+    for xpath_expr in xpath_candidates:
+        nodes = tree.xpath(xpath_expr)
+        if not nodes:
+            continue
+        text = _element_text(nodes[0])
+        if text:
+            return text
+
+    nodes = tree.xpath('//*[@id="problem-main"]//*')
+    for node in nodes:
+        text = _element_text(node)
+        if text and len(text) <= 200:
+            return text
+    return ""
+
+
+def _missing_required_fields(field_map):
+    missing = []
+    for name, value in field_map.items():
+        text = _clean_text(value)
+        if text in REQUIRED_FIELD_PLACEHOLDERS:
+            missing.append(name)
+    return missing
+
+
+def _extract_sample_pairs(content_root):
+    samples = []
+    for child in _iter_direct_children(content_root):
+        text = _element_text(child)
+        if _matches_heading(text, SECTION_HEADINGS["hint"]):
+            break
+
+        pre_nodes = child.xpath(".//pre")
+        if len(pre_nodes) < 2:
+            continue
+
+        pre_texts = [_clean_text("".join(node.itertext())) for node in pre_nodes]
+        pre_texts = [text for text in pre_texts if text or text == ""]
+
+        pair_count = len(pre_texts) // 2
+        for index in range(pair_count):
+            sample_input = pre_texts[index * 2]
+            sample_output = pre_texts[index * 2 + 1]
+            samples.append((sample_input, sample_output))
+
+    return samples
+
+
+def _normalize_code_text(value):
+    if not value:
+        return ""
+    text = value.replace("\xa0", " ")
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    lines = [line.rstrip() for line in text.split("\n")]
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    while lines and not lines[-1].strip():
+        lines.pop()
+    return "\n".join(lines)
+
+
+def _pick_best_code(candidates):
+    normalized = []
+    for candidate in candidates:
+        text = _normalize_code_text(candidate)
+        if text:
+            normalized.append(text)
+    if not normalized:
+        return ""
+    normalized.sort(key=lambda item: (item.count("\n"), len(item)), reverse=True)
+    return normalized[0]
+
+
+def _extract_editor_code(page):
+    candidates = page.evaluate(
+        """() => {
+            const values = [];
+
+            document.querySelectorAll('.CodeMirror').forEach((element) => {
+                const editor = element.CodeMirror;
+                if (editor && typeof editor.getValue === 'function') {
+                    values.push(editor.getValue());
+                }
+            });
+
+            document.querySelectorAll('textarea').forEach((element) => {
+                if (element.value) {
+                    values.push(element.value);
+                }
+            });
+
+            document.querySelectorAll('.CodeMirror-code').forEach((element) => {
+                const text = element.innerText || element.textContent || '';
+                if (text) {
+                    values.push(text);
+                }
+            });
+
+            document.querySelectorAll('pre code, pre').forEach((element) => {
+                const text = element.innerText || element.textContent || '';
+                if (text) {
+                    values.push(text);
+                }
+            });
+
+            return values;
+        }"""
+    )
+    return _pick_best_code(candidates)
+
+
+def _goto_with_retries(page, url, wait_until="domcontentloaded", timeout=10000, ready_selector=None, attempts=3):
+    last_error = None
+    for attempt in range(1, attempts + 1):
+        try:
+            response = page.goto(url, wait_until=wait_until, timeout=timeout)
+            status = response.status if response is not None else "no-response"
+            print(f"[접속] {url} (시도 {attempt}/{attempts}, 상태: {status})")
+            if ready_selector:
+                page.wait_for_selector(ready_selector, timeout=timeout)
+            return response
+        except Exception as exc:
+            last_error = exc
+            print(f"[재시도] {url} (시도 {attempt}/{attempts}) 실패: {exc}")
+            if attempt < attempts:
+                page.wait_for_timeout(500 * attempt)
+    raise last_error
 
 
 def scrape_baekjoon(url):
@@ -9,7 +219,14 @@ def scrape_baekjoon(url):
         page = browser.new_page()
 
         try:
-            page.goto(url)
+            _goto_with_retries(
+                page,
+                url,
+                wait_until="domcontentloaded",
+                timeout=10000,
+                ready_selector="#problem_title",
+                attempts=3,
+            )
 
             # CSS Selector(id 기반)를 이용한 핵심 요소 추출
             problem_id = url.split("/")[-1]
@@ -44,6 +261,18 @@ def scrape_baekjoon(url):
             return None, None
         finally:
             browser.close()
+
+        missing_fields = _missing_required_fields(
+            {
+                "title": title,
+                "description": description,
+                "input": input_desc,
+                "output": output_desc,
+            }
+        )
+        if missing_fields:
+            print(f"필수 필드 누락으로 저장하지 않음({problem_id}): {', '.join(missing_fields)}")
+            return None, None
 
         # 샘플 MD 조립
         samples_md = ""
@@ -106,9 +335,18 @@ def scrape_doingcoding(url, get_templates=False):
 
         try:
             # 타임아웃을 넉넉하게 주고 네트워크 통신이 끝날 때까지 기다립니다.
-            page.goto(url, wait_until="domcontentloaded", timeout=10000)
+            _goto_with_retries(
+                page,
+                url,
+                wait_until="domcontentloaded",
+                timeout=10000,
+                ready_selector="#problem-main",
+                attempts=3,
+            )
 
             problem_id = url.split("/")[-1]
+            tree = html.fromstring(page.content())
+            content_root = _find_doingcoding_content_root(tree)
 
             # 요소가 없을 경우에 봇이 죽지 않도록 방어 코드(Safe Extraction)를 적용합니다.
             def get_text(xpath, timeout=2000):
@@ -119,30 +357,39 @@ def scrape_doingcoding(url, get_templates=False):
                 except:
                     return "(내용 없음)"
 
-            title = get_text('//*[@id="problem-main"]/div[3]/div[1]/div/div', 5000)
-            if title == "(내용 없음)":
+            title = _find_doingcoding_title(tree) or get_text('//*[@id="problem-main"]/div[3]/div[1]/div/div', 5000)
+            if title == "(내용 없음)" or not _clean_text(title):
                 # 제목마저 못가져오면 진짜 아예 페이지가 없거나 로딩이 실패한 것임
                 raise Exception("제목 요소를 찾을 수 없음")
 
-            description = get_text('//*[@id="problem-content"]/p[2]')
-            input_desc = get_text('//*[@id="problem-content"]/p[4]')
-            output_desc = get_text('//*[@id="problem-content"]/p[6]')
+            description = ""
+            input_desc = ""
+            output_desc = ""
+            if content_root is not None:
+                description = _extract_section_after_heading(content_root, SECTION_HEADINGS["description"])
+                input_desc = _extract_section_after_heading(content_root, SECTION_HEADINGS["input"])
+                output_desc = _extract_section_after_heading(content_root, SECTION_HEADINGS["output"])
+
+            description = description or get_text('//*[@id="problem-content"]/p[2]')
+            input_desc = input_desc or get_text('//*[@id="problem-content"]/p[4]')
+            output_desc = output_desc or get_text('//*[@id="problem-content"]/p[6]')
             
             # 샘플 입출력 추출 (다중 샘플 대응)
-            samples = []
-            i = 1
-            while True:
-                in_xpath = f'//*[@id="problem-content"]/div[{i}]/div/div[1]/pre'
-                out_xpath = f'//*[@id="problem-content"]/div[{i}]/div/div[2]/pre'
-                
-                s_in = get_text(in_xpath, timeout=1000)
-                s_out = get_text(out_xpath, timeout=1000)
-                
-                if s_in == "(내용 없음)" and s_out == "(내용 없음)":
-                    break
-                
-                samples.append((s_in, s_out))
-                i += 1
+            samples = _extract_sample_pairs(content_root) if content_root is not None else []
+            if not samples:
+                i = 1
+                while True:
+                    in_xpath = f'//*[@id="problem-content"]/div[{i}]/div/div[1]/pre'
+                    out_xpath = f'//*[@id="problem-content"]/div[{i}]/div/div[2]/pre'
+
+                    s_in = get_text(in_xpath, timeout=1000)
+                    s_out = get_text(out_xpath, timeout=1000)
+
+                    if s_in == "(내용 없음)" and s_out == "(내용 없음)":
+                        break
+
+                    samples.append((s_in, s_out))
+                    i += 1
 
             # 힌트 추출 (사용자 제공 XPath)
             hint = get_text('//*[@id="problem-content"]/div[2]/div/div/div')
@@ -176,10 +423,9 @@ def scrape_doingcoding(url, get_templates=False):
                                         confirm_btn.click()
                                         page.wait_for_timeout(1000)
                                 
-                                # 코드 추출 (CodeMirror 내용)
-                                code_lines = page.locator('.CodeMirror-line').all_inner_texts()
-                                if code_lines:
-                                    templates[lang_name] = "\n".join(code_lines).strip()
+                                code_text = _extract_editor_code(page)
+                                if code_text:
+                                    templates[lang_name] = code_text
                 except Exception as te:
                     # 템플릿 추출 실패는 전체 크롤링 실패로 간주하지 않음
                     print(f"템플릿 추출 중 경미한 에러 (문제 없음): {te}")
@@ -189,6 +435,18 @@ def scrape_doingcoding(url, get_templates=False):
             return None, None
         finally:
             browser.close()
+
+        missing_fields = _missing_required_fields(
+            {
+                "title": title,
+                "description": description,
+                "input": input_desc,
+                "output": output_desc,
+            }
+        )
+        if missing_fields:
+            print(f"필수 필드 누락으로 저장하지 않음({problem_id}): {', '.join(missing_fields)}")
+            return None, None
 
         # 샘플 MD 조립
         samples_md = ""

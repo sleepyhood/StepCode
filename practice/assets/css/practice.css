@@ -891,7 +891,8 @@ body {
   font-size: 0.9rem;
 }
 
-.option-item input[type="radio"] {
+.option-item input[type="radio"],
+.option-item input[type="checkbox"] {
   margin-top: 10px;
   flex-shrink: 0;
 }
@@ -923,7 +924,8 @@ body {
 }
 
 /* 선택된 보기 강조 */
-.option-item input[type="radio"]:checked + .option-label {
+.option-item input[type="radio"]:checked + .option-label,
+.option-item input[type="checkbox"]:checked + .option-label {
   border-color: #2563eb;
   background: #eff6ff;
 }
@@ -1439,6 +1441,51 @@ body.mode-class .mode-toggle-btn {
   margin-left: auto;
   font-size: 0.85rem;
   color: #6b7280;
+}
+
+.section-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.section-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.section-nav-item.active {
+  border-color: var(--accent-primary);
+  background: #f0fdfa;
+  box-shadow: 0 0 0 1px rgba(15, 118, 110, 0.08);
+}
+
+.section-nav-title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.section-nav-meta {
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.question-section-meta {
+  margin: 6px 0 10px;
+  font-size: 0.88rem;
+  color: #475569;
+  font-weight: 700;
 }
 
 /* ===== 수업모드 코칭 패널 ===== */

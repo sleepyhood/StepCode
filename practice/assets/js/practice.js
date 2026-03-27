@@ -445,7 +445,8 @@ const COACH_STATE_PREFIX = "stepcode:coachState:";
 
 let practiceMode = "normal";
 let forcedMode = null; // "normal" | "class" | null (페이지가 강제하는 모드)
-let activeBucket = "core"; // "core" | "supp"
+let activeViewId = "core";
+let activeSectionId = "";
 let coachState = {}; // { [qid]: { touchedAt, stage, wrongGrades, explainUnlocked, solved, explainOpen } }
 let coachTicker = null;
 let coachSaveTimer = null;
@@ -664,20 +665,7 @@ function refreshAllQGradeBadges() {
 
 // ====== (추가) 진행도(푼/맞은) ======
 function getActiveQuestions() {
-  const all = getAllQuestions();
-  const coreCount = Number(currentSetData?.coreCount ?? 6);
-
-  if (!isClassMode()) return all;
-
-  return all.filter((q, idx) => {
-    const bucket =
-      q.bucket === "supp" || q.bucket === "core"
-        ? q.bucket
-        : idx < coreCount
-        ? "core"
-        : "supp";
-    return bucket === activeBucket;
-  });
+  return getQuestionsForActiveDisplayGroup();
 }
 
 function isAnswered(q) {
@@ -1649,6 +1637,172 @@ function getQuestionBucket(q, idx, coreCount = Number(currentSetData?.coreCount 
     : "supp";
 }
 
+function getDisplayGroups(setData = currentSetData) {
+  const rawGroups = Array.isArray(setData?.displayGroups) ? setData.displayGroups : [];
+  const normalized = rawGroups
+    .map((group, index) => {
+      if (!group || typeof group !== "object") return null;
+      const id = String(group.id || "").trim();
+      if (!id) return null;
+      return {
+        id,
+        label: String(group.label || group.title || `보기 ${index + 1}`),
+        note: group.note ? String(group.note) : "",
+        renderMode: group.renderMode === "flat" ? "flat" : "section",
+        filter:
+          group.filter && typeof group.filter === "object" ? { ...group.filter } : {},
+      };
+    })
+    .filter(Boolean);
+
+  if (normalized.length) return normalized;
+
+  if (isClassMode()) {
+    return [
+      {
+        id: "core",
+        label: "핵심",
+        note: `기본 ${Math.min(Number(setData?.coreCount ?? 6), getAllQuestions(setData).length)}문항 노출`,
+        renderMode: hasSectionLayout(setData) ? "section" : "flat",
+        filter: { questionBucket: "core" },
+      },
+      {
+        id: "supp",
+        label: "보강/숙제",
+        renderMode: hasSectionLayout(setData) ? "section" : "flat",
+        filter: { questionBucket: "supp" },
+      },
+    ];
+  }
+
+  return [
+    {
+      id: "all",
+      label: "전체",
+      renderMode: hasSectionLayout(setData) ? "section" : "flat",
+      filter: {},
+    },
+  ];
+}
+
+function getDefaultDisplayGroupId(setData = currentSetData) {
+  const groups = getDisplayGroups(setData);
+  const explicit = String(setData?.defaultDisplayGroup || "").trim();
+  if (explicit && groups.some((group) => group.id === explicit)) return explicit;
+  return groups[0]?.id || "all";
+}
+
+function ensureActiveDisplayGroup() {
+  const groups = getDisplayGroups();
+  if (!groups.some((group) => group.id === activeViewId)) {
+    activeViewId = getDefaultDisplayGroupId();
+  }
+  return groups.find((group) => group.id === activeViewId) || groups[0] || null;
+}
+
+function getActiveDisplayGroup() {
+  return ensureActiveDisplayGroup();
+}
+
+function questionMatchesDisplayGroup(q, idx, group) {
+  if (!group) return true;
+  const filter = group.filter && typeof group.filter === "object" ? group.filter : {};
+
+  if (filter.questionBucket) {
+    const bucket = getQuestionBucket(q, idx);
+    if (bucket !== String(filter.questionBucket)) return false;
+  }
+
+  if (Array.isArray(filter.sectionIds) && filter.sectionIds.length) {
+    if (!filter.sectionIds.includes(q.__sectionId)) return false;
+  }
+
+  if (Array.isArray(filter.levels) && filter.levels.length) {
+    if (!filter.levels.includes(q.level)) return false;
+  }
+
+  if (Array.isArray(filter.types) && filter.types.length) {
+    if (!filter.types.includes(q.type)) return false;
+  }
+
+  return true;
+}
+
+function getQuestionsForDisplayGroup(group, setData = currentSetData) {
+  const all = getAllQuestions(setData);
+  return all.filter((q, idx) => questionMatchesDisplayGroup(q, idx, group));
+}
+
+function getQuestionsForActiveDisplayGroup(setData = currentSetData) {
+  return getQuestionsForDisplayGroup(getActiveDisplayGroup(), setData);
+}
+
+function getPrintBucketForDisplayGroup(group) {
+  const bucket = group?.filter?.questionBucket;
+  return bucket === "core" || bucket === "supp" ? bucket : "all";
+}
+
+function shouldUseSectionNavigator(group) {
+  if (!hasSectionLayout()) return false;
+  if (!group || group.renderMode === "flat") return false;
+  const filter = group.filter && typeof group.filter === "object" ? group.filter : {};
+  return !filter.questionBucket;
+}
+
+function getQuestionsForSection(sectionId, group = getActiveDisplayGroup(), setData = currentSetData) {
+  const questions = getQuestionsForDisplayGroup(group, setData);
+  return questions.filter((q) => q.__sectionId === sectionId);
+}
+
+function buildSectionQuestionSummary(questions) {
+  const labels = questions
+    .map((q, idx) => {
+      if (q?.displayNumber) return String(q.displayNumber).trim();
+      const rawTitle = String(q?.title || "").trim();
+      const numbered = rawTitle.match(/^\d+(?:\.\d+)+/);
+      return numbered ? numbered[0] : String(idx + 1);
+    })
+    .filter(Boolean);
+
+  return {
+    count: questions.length,
+    labels,
+    labelText: labels.join(", "),
+  };
+}
+
+function getSectionSummaries(group = getActiveDisplayGroup(), setData = currentSetData) {
+  return getSetSections(setData)
+    .map((section) => {
+      const questions = getQuestionsForSection(section.id, group, setData);
+      if (!questions.length) return null;
+      return {
+        section,
+        questions,
+        summary: buildSectionQuestionSummary(questions),
+      };
+    })
+    .filter(Boolean);
+}
+
+function ensureActiveSection(group = getActiveDisplayGroup(), setData = currentSetData) {
+  if (!shouldUseSectionNavigator(group)) {
+    activeSectionId = "";
+    return "";
+  }
+
+  const summaries = getSectionSummaries(group, setData);
+  if (!summaries.length) {
+    activeSectionId = "";
+    return "";
+  }
+
+  if (!summaries.some((entry) => entry.section.id === activeSectionId)) {
+    activeSectionId = summaries[0].section.id;
+  }
+  return activeSectionId;
+}
+
 function getQuestionTitleText(q, idx) {
   const raw = String(q?.title || "문제").trim();
   if (q?.displayNumber) return `${q.displayNumber} ${raw}`.trim();
@@ -1667,7 +1821,7 @@ function renderSharedCodeBlock(targetEl, code) {
   targetEl.appendChild(pre);
 }
 
-function renderSectionCard(parentEl, section, conceptIndex) {
+function renderSectionCard(parentEl, section, conceptIndex, sectionQuestions = []) {
   const wrap = document.createElement("section");
   wrap.className = "question-section-card";
   wrap.setAttribute("data-section-id", section.id || "");
@@ -1693,6 +1847,14 @@ function renderSectionCard(parentEl, section, conceptIndex) {
   });
 
   wrap.appendChild(head);
+
+  const sectionSummary = buildSectionQuestionSummary(sectionQuestions);
+  if (sectionSummary.count > 0) {
+    const meta = document.createElement("div");
+    meta.className = "question-section-meta";
+    meta.textContent = `포함 문항 ${sectionSummary.labelText} · 총 ${sectionSummary.count}문항`;
+    wrap.appendChild(meta);
+  }
 
   const { main: descMain, view: descView } = splitDescriptionForView(
     section?.description || ""
@@ -1851,6 +2013,119 @@ function renderQuestionCard(parentEl, q, idx, bucket, conceptIndex) {
   parentEl.appendChild(card);
 }
 
+function renderDisplayGroupTabs(container, groups, activeGroup, onChange) {
+  if (!container || !Array.isArray(groups) || groups.length <= 1) return null;
+
+  const tabs = document.createElement("div");
+  tabs.className = "set-tabs";
+
+  groups.forEach((group) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `tab ${group.id === activeGroup?.id ? "active" : ""}`.trim();
+    btn.dataset.viewId = group.id;
+    btn.textContent = group.label || group.id;
+    tabs.appendChild(btn);
+  });
+
+  const note = activeGroup?.note ? String(activeGroup.note) : "";
+  if (note) {
+    const noteEl = document.createElement("span");
+    noteEl.className = "tab-note";
+    noteEl.textContent = note;
+    tabs.appendChild(noteEl);
+  }
+
+  tabs.addEventListener("click", (e) => {
+    const btn = e.target?.closest?.("[data-view-id]");
+    if (!btn) return;
+    const nextId = String(btn.dataset.viewId || "").trim();
+    if (!nextId || nextId === activeViewId) return;
+    activeViewId = nextId;
+    if (typeof onChange === "function") onChange(nextId);
+  });
+
+  container.appendChild(tabs);
+  return tabs;
+}
+
+function renderSectionNavigator(container, sectionSummaries, activeSection, onChange) {
+  if (!container || !Array.isArray(sectionSummaries) || sectionSummaries.length <= 1) {
+    return null;
+  }
+
+  const nav = document.createElement("div");
+  nav.className = "section-nav";
+
+  sectionSummaries.forEach((entry) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `section-nav-item ${
+      entry.section.id === activeSection ? "active" : ""
+    }`.trim();
+    btn.dataset.sectionId = entry.section.id;
+
+    const title = document.createElement("span");
+    title.className = "section-nav-title";
+    title.textContent = String(entry.section?.title || "대문항");
+
+    const meta = document.createElement("span");
+    meta.className = "section-nav-meta";
+    meta.textContent = entry.summary.labelText || `${entry.summary.count}문항`;
+
+    btn.append(title, meta);
+    nav.appendChild(btn);
+  });
+
+  nav.addEventListener("click", (e) => {
+    const btn = e.target?.closest?.("[data-section-id]");
+    if (!btn) return;
+    const nextId = String(btn.dataset.sectionId || "").trim();
+    if (!nextId || nextId === activeSectionId) return;
+    activeSectionId = nextId;
+    if (typeof onChange === "function") onChange(nextId);
+  });
+
+  container.appendChild(nav);
+  return nav;
+}
+
+function renderQuestionsForDisplayGroup(parentEl, group, questions, questionIndexById, conceptIndex) {
+  if (!parentEl) return;
+
+  if (hasSectionLayout() && group?.renderMode !== "flat") {
+    const sectionEntries = shouldUseSectionNavigator(group)
+      ? getSectionSummaries(group).filter((entry) => entry.section.id === ensureActiveSection(group))
+      : getSetSections()
+          .map((section) => ({
+            section,
+            questions: questions.filter((q) => q.__sectionId === section.id),
+          }))
+          .filter((entry) => entry.questions.length);
+
+    sectionEntries.forEach((entry) => {
+      const sectionBody = renderSectionCard(
+        parentEl,
+        entry.section,
+        conceptIndex,
+        entry.questions
+      );
+      entry.questions.forEach((q) => {
+        const idx = questionIndexById.get(q.id) ?? 0;
+        const bucket = getQuestionBucket(q, idx);
+        renderQuestionCard(sectionBody, q, idx, bucket, conceptIndex);
+      });
+    });
+    return;
+  }
+
+  questions.forEach((q) => {
+    const idx = questionIndexById.get(q.id) ?? 0;
+    const bucket = getQuestionBucket(q, idx);
+    renderQuestionCard(parentEl, q, idx, bucket, conceptIndex);
+  });
+}
+
 // ====== 문제 전체 렌더 ======
 function renderSet() {
   const container = document.getElementById("problem-container");
@@ -1862,102 +2137,38 @@ function renderSet() {
   renderConceptSection(container, conceptIndex.list);
 
   const questions = getAllQuestions();
-  const coreCount = Number(currentSetData.coreCount ?? 6);
   const questionIndexById = new Map(
     questions.map((q, idx) => [q.id, idx])
   );
+  const groups = getDisplayGroups();
+  const activeGroup = getActiveDisplayGroup();
 
-  let coreWrap = container;
-  let suppWrap = null;
+  renderDisplayGroupTabs(container, groups, activeGroup, () => {
+    renderSet();
+  });
 
-  if (isClassMode()) {
-    if (activeBucket !== "core" && activeBucket !== "supp")
-      activeBucket = "core";
-
-    // 탭
-    const tabs = document.createElement("div");
-    tabs.className = "set-tabs";
-    tabs.innerHTML = `
-  <button type="button" class="tab ${
-    activeBucket === "core" ? "active" : ""
-  }" data-tab="core">핵심</button>
-  <button type="button" class="tab ${
-    activeBucket === "supp" ? "active" : ""
-  }" data-tab="supp">보강/숙제</button>
-  <span class="tab-note">기본 ${Math.min(
-    coreCount,
-    questions.length
-  )}문항 노출</span>
-`;
-
-    container.appendChild(tabs);
-
-    coreWrap = document.createElement("div");
-    coreWrap.id = "core-wrap";
-    suppWrap = document.createElement("div");
-    suppWrap.id = "supp-wrap";
-    suppWrap.hidden = activeBucket !== "supp";
-    coreWrap.hidden = activeBucket !== "core";
-
-    container.appendChild(coreWrap);
-    container.appendChild(suppWrap);
-
-    tabs.addEventListener("click", (e) => {
-      const btn = e.target?.closest?.("[data-tab]");
-      if (!btn) return;
-      activeBucket = btn.dataset.tab;
-
-      tabs
-        .querySelectorAll(".tab")
-        .forEach((b) => b.classList.toggle("active", b === btn));
-
-      coreWrap.hidden = activeBucket !== "core";
-      suppWrap.hidden = activeBucket !== "supp";
-
-      // ✅ 추가: 탭 전환 후 HUD 재생성
-      if (window.refreshHudIndexPanel) window.refreshHudIndexPanel();
-      updateProgressUi();
-    });
+  if (shouldUseSectionNavigator(activeGroup)) {
+    ensureActiveSection(activeGroup);
+    renderSectionNavigator(
+      container,
+      getSectionSummaries(activeGroup),
+      activeSectionId,
+      () => renderSet()
+    );
   }
 
-  if (hasSectionLayout()) {
-    const allSections = getSetSections();
-    const targets = isClassMode() && suppWrap
-      ? [
-          { bucket: "core", wrap: coreWrap },
-          { bucket: "supp", wrap: suppWrap },
-        ]
-      : [{ bucket: null, wrap: container }];
+  const contentWrap = document.createElement("div");
+  contentWrap.className = "display-group-wrap";
+  container.appendChild(contentWrap);
 
-    targets.forEach(({ bucket, wrap }) => {
-      allSections.forEach((section) => {
-        const children = questions.filter((q) => {
-          if (q.__sectionId !== section.id) return false;
-          if (!bucket) return true;
-          const idx = questionIndexById.get(q.id) ?? 0;
-          return getQuestionBucket(q, idx, coreCount) === bucket;
-        });
-        if (!children.length) return;
-        const sectionBody = renderSectionCard(wrap, section, conceptIndex);
-        children.forEach((q) => {
-          const idx = questionIndexById.get(q.id) ?? 0;
-          const childBucket = getQuestionBucket(q, idx, coreCount);
-          renderQuestionCard(sectionBody, q, idx, childBucket, conceptIndex);
-        });
-      });
-    });
-  } else {
-    questions.forEach((q, idx) => {
-      const bucket = getQuestionBucket(q, idx, coreCount);
-      const target =
-        isClassMode() && suppWrap
-          ? bucket === "core"
-            ? coreWrap
-            : suppWrap
-          : container;
-      renderQuestionCard(target, q, idx, bucket, conceptIndex);
-    });
-  }
+  const activeQuestions = getQuestionsForDisplayGroup(activeGroup);
+  renderQuestionsForDisplayGroup(
+    contentWrap,
+    activeGroup,
+    activeQuestions,
+    questionIndexById,
+    conceptIndex
+  );
 
   // ▼ 렌더가 다 끝난 뒤에 하이라이트 호출 ▼
   if (window.Prism) {
@@ -2987,14 +3198,8 @@ function setupGrading() {
     }
 
     const all = getAllQuestions();
-    const coreCount = Number(currentSetData.coreCount ?? 6);
-
-    const questions = !isClassMode()
-      ? all
-      : all.filter((q, idx) => {
-          const bucket = getQuestionBucket(q, idx, coreCount);
-          return bucket === activeBucket;
-        });
+    const activeGroup = getActiveDisplayGroup();
+    const questions = getQuestionsForActiveDisplayGroup();
     let correctCount = 0;
     // bumpQGradeAttempt(q.id, isCorrect);
 
@@ -3095,16 +3300,12 @@ function setupGrading() {
     });
     saveQGradeMeta(currentSetId, qGradeMeta);
     refreshAllQGradeBadges();
-    updateProgressUi();
+      updateProgressUi();
 
-    if (scoreEl) {
-      const label = isClassMode()
-        ? activeBucket === "core"
-          ? "핵심"
-          : "보강/숙제"
-        : "전체";
+      if (scoreEl) {
+      const label = activeGroup?.label || "전체";
       scoreEl.textContent = `${label} ${questions.length}문제 중 ${correctCount}문제 정답`;
-    }
+      }
 
     // ✅ 채점 메타 갱신 (횟수 + 쿨다운 시작)
     meta.attempts += 1;
@@ -3374,8 +3575,8 @@ function dashBuildPayload() {
     currentSetData && currentSetData.title ? currentSetData.title : "";
   const mode =
     typeof isClassMode === "function" && isClassMode() ? "class" : "practice";
-  const bucket =
-    mode === "class" && typeof activeBucket === "string" ? activeBucket : "";
+  const activeGroup = getActiveDisplayGroup();
+  const bucket = getPrintBucketForDisplayGroup(activeGroup);
 
   let solveElapsedMs = 0;
   try {
@@ -3398,6 +3599,8 @@ function dashBuildPayload() {
     setTitle,
     mode,
     bucket,
+    viewId: activeGroup?.id || "",
+    viewLabel: activeGroup?.label || "",
     progress: dashComputeProgress(),
     topTries: dashComputeTopTries(3),
     solveElapsedMs,
@@ -3989,10 +4192,8 @@ function setupWorksheetPrint() {
       return;
     }
 
-    let bucket = "all";
-    if (typeof isClassMode === "function" && isClassMode()) {
-      bucket = typeof activeBucket === "string" && activeBucket ? activeBucket : "core";
-    }
+    const activeGroup = getActiveDisplayGroup();
+    let bucket = getPrintBucketForDisplayGroup(activeGroup);
     if (e.shiftKey) bucket = "all";
 
     const variant = e.altKey || e.metaKey ? "teacher" : "student";
