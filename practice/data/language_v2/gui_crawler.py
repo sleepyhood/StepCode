@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext
+from playwright.sync_api import sync_playwright
 import threading
 import time
 import os
@@ -13,9 +14,19 @@ if MODULE_DIR not in sys.path:
 
 # 기존 선생님이 작성/보유하신 크롤링 모듈 임포트
 try:
-    from .crawl import scrape_baekjoon, scrape_doingcoding
+    from .crawl import (
+        close_doingcoding_admin_session,
+        open_doingcoding_admin_session,
+        scrape_baekjoon,
+        scrape_doingcoding,
+    )
 except ImportError:
-    from crawl import scrape_baekjoon, scrape_doingcoding
+    from crawl import (
+        close_doingcoding_admin_session,
+        open_doingcoding_admin_session,
+        scrape_baekjoon,
+        scrape_doingcoding,
+    )
 
 DOINGCODING_ADMIN_ID_ENV = "DOINGCODING_ADMIN_ID"
 DOINGCODING_ADMIN_PASSWORD_ENV = "DOINGCODING_ADMIN_PASSWORD"
@@ -341,55 +352,77 @@ class CrawlerApp:
     ):
         success_count = 0
         failures = []
+        shared_playwright = None
+        shared_browser = None
+        admin_session = None
 
-        for current_id in target_ids:
-            target_url = template.replace("{id}", current_id)
-            self.log(f"\n[접속 시도] {target_url}")
+        if domain == "doingcoding" and get_testcases:
+            shared_playwright = sync_playwright().start()
+            shared_browser = shared_playwright.chromium.launch(headless=not show_browser)
+            admin_session = open_doingcoding_admin_session(
+                shared_browser,
+                admin_username,
+                admin_password,
+                logger=self.log,
+            )
 
-            md_output = None
-            title = ""
-            try:
-                if domain == "baekjoon":
-                    result = scrape_baekjoon(target_url)
-                    prefix = "bj"
-                else:
-                    result = scrape_doingcoding(
-                        target_url,
-                        get_templates=get_templates,
-                        get_testcases=get_testcases,
-                        admin_username=admin_username,
-                        admin_password=admin_password,
-                        testcase_download_dir=save_path,
-                        show_browser=show_browser,
-                        logger=self.log,
-                    )
-                    prefix = "dc"
+        try:
+            for current_id in target_ids:
+                target_url = template.replace("{id}", current_id)
+                self.log(f"\n[접속 시도] {target_url}")
 
-                if result == (None, None):
-                    self.log(
-                        f"  ❌ 크롤링 실패 (요소를 찾을 수 없거나 삭제된 문제입니다)"
-                    )
+                md_output = None
+                title = ""
+                try:
+                    if domain == "baekjoon":
+                        result = scrape_baekjoon(target_url)
+                        prefix = "bj"
+                    else:
+                        result = scrape_doingcoding(
+                            target_url,
+                            get_templates=get_templates,
+                            get_testcases=get_testcases,
+                            admin_username=admin_username,
+                            admin_password=admin_password,
+                            testcase_download_dir=save_path,
+                            show_browser=show_browser,
+                            logger=self.log,
+                            browser=shared_browser,
+                            admin_session=admin_session,
+                        )
+                        prefix = "dc"
+
+                    if result == (None, None):
+                        self.log(
+                            f"  ❌ 크롤링 실패 (요소를 찾을 수 없거나 삭제된 문제입니다)"
+                        )
+                        failures.append(target_url)
+                        time.sleep(1)
+                        continue
+
+                    title, md_output = result
+
+                    if md_output:
+                        filename = f"01_{prefix}_{current_id}.md"
+                        filepath = build_output_filepath(save_path, filename)
+                        with open(filepath, "w", encoding="utf-8-sig") as f:
+                            f.write(md_output)
+
+                        self.log(f"  ✅ [추출 성공] '{title}'")
+                        self.log(f"  📂 저장 완료: {os.path.basename(filepath)}")
+                        success_count += 1
+
+                    time.sleep(1.5)
+
+                except Exception as e:
+                    self.log(f"  ❌ 시스템 에러 발생: {e}")
                     failures.append(target_url)
-                    time.sleep(1)
-                    continue
-
-                title, md_output = result
-
-                if md_output:
-                    filename = f"01_{prefix}_{current_id}.md"
-                    filepath = build_output_filepath(save_path, filename)
-                    with open(filepath, "w", encoding="utf-8-sig") as f:
-                        f.write(md_output)
-
-                    self.log(f"  ✅ [추출 성공] '{title}'")
-                    self.log(f"  📂 저장 완료: {os.path.basename(filepath)}")
-                    success_count += 1
-
-                time.sleep(1.5)
-
-            except Exception as e:
-                self.log(f"  ❌ 시스템 에러 발생: {e}")
-                failures.append(target_url)
+        finally:
+            close_doingcoding_admin_session(admin_session)
+            if shared_browser is not None:
+                shared_browser.close()
+            if shared_playwright is not None:
+                shared_playwright.stop()
 
         if failures:
             failure_report = os.path.join(save_path, "crawl_failures.txt")

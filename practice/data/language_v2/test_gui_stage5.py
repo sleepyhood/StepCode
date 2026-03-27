@@ -4,6 +4,7 @@ import shutil
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 CURRENT_DIR = Path(__file__).resolve().parent
 if str(CURRENT_DIR) not in sys.path:
@@ -13,6 +14,8 @@ from gui_crawler import CrawlerApp, build_output_filepath
 from gui_crawler import (
     DOINGCODING_ADMIN_ID_ENV,
     DOINGCODING_ADMIN_PASSWORD_ENV,
+    close_doingcoding_admin_session,
+    open_doingcoding_admin_session,
     resolve_admin_credentials,
 )
 
@@ -158,6 +161,81 @@ class GuiStage5Tests(unittest.TestCase):
             admin_password="",
             show_browser=True,
         )
+
+    def test_crawl_process_opens_admin_session_once_for_doingcoding_testcases_batch(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.ui_queue = queue.Queue()
+        app.log = lambda _message: None
+        app.ui_queue.put = lambda _item: None
+
+        class FakeBrowser:
+            def close(self):
+                return None
+
+        class FakePlaywright:
+            def __init__(self):
+                self.stopped = False
+                self.chromium = self
+
+            def launch(self, headless=True):
+                self.headless = headless
+                return FakeBrowser()
+
+            def stop(self):
+                self.stopped = True
+
+        admin_session = object()
+        with patch("gui_crawler.sync_playwright") as sync_mock, \
+            patch("gui_crawler.open_doingcoding_admin_session", return_value=admin_session) as open_mock, \
+            patch("gui_crawler.close_doingcoding_admin_session") as close_mock, \
+            patch("gui_crawler.scrape_doingcoding", return_value=("제목", "본문")) as scrape_mock, \
+            patch("gui_crawler.build_output_filepath", side_effect=lambda save_path, filename: str(Path(save_path) / filename)):
+            sync_mock.return_value.start.return_value = FakePlaywright()
+            app.crawl_process(
+                target_ids=["P101v0701", "P101v0702"],
+                domain="doingcoding",
+                template="http://edu.doingcoding.com/problem/{id}",
+                save_path=str(CURRENT_DIR),
+                get_templates=False,
+                get_testcases=True,
+                admin_username="admin",
+                admin_password="secret",
+                show_browser=True,
+            )
+
+        open_mock.assert_called_once()
+        close_mock.assert_called_once_with(admin_session)
+        self.assertEqual(scrape_mock.call_count, 2)
+        self.assertTrue(all(call.kwargs["admin_session"] is admin_session for call in scrape_mock.call_args_list))
+        self.assertTrue(all(call.kwargs["browser"] is not None for call in scrape_mock.call_args_list))
+
+    def test_crawl_process_does_not_open_admin_session_when_testcases_disabled(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.ui_queue = queue.Queue()
+        app.log = lambda _message: None
+        app.ui_queue.put = lambda _item: None
+
+        with patch("gui_crawler.open_doingcoding_admin_session") as open_mock, \
+            patch("gui_crawler.close_doingcoding_admin_session") as close_mock, \
+            patch("gui_crawler.scrape_doingcoding", return_value=("제목", "본문")) as scrape_mock, \
+            patch("gui_crawler.build_output_filepath", side_effect=lambda save_path, filename: str(Path(save_path) / filename)):
+            app.crawl_process(
+                target_ids=["P101v0701"],
+                domain="doingcoding",
+                template="http://edu.doingcoding.com/problem/{id}",
+                save_path=str(CURRENT_DIR),
+                get_templates=False,
+                get_testcases=False,
+                admin_username="",
+                admin_password="",
+                show_browser=False,
+            )
+
+        open_mock.assert_not_called()
+        close_mock.assert_called_once_with(None)
+        scrape_mock.assert_called_once()
+        self.assertIsNone(scrape_mock.call_args.kwargs["admin_session"])
+        self.assertIsNone(scrape_mock.call_args.kwargs["browser"])
 
     def test_set_doingcoding_option_visibility_hides_options_and_resets_flags_for_baekjoon(self):
         app = CrawlerApp.__new__(CrawlerApp)

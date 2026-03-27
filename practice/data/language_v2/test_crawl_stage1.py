@@ -6,6 +6,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from practice.data.language_v2.crawl import (
+    DoingCodingAdminSession,
     DOINGCODING_CSRF_FALLBACK_URL,
     DOINGCODING_CSRF_SEED_URL,
     DOINGCODING_ADMIN_DOWNLOAD_BUTTON_SELECTORS,
@@ -29,8 +30,11 @@ from practice.data.language_v2.crawl import (
     _missing_required_fields,
     _pick_best_code,
     collect_doingcoding_testcases,
+    collect_doingcoding_testcases_with_session,
     download_doingcoding_testcases,
     login_doingcoding_admin,
+    open_doingcoding_admin_session,
+    close_doingcoding_admin_session,
     parse_testcase_bundle,
     render_templates_md,
     render_testcases_md,
@@ -915,6 +919,79 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
         selector = _find_first_working_selector(FakePage(), ["bad", "good"], timeout=1000, require_visible=False)
         self.assertEqual(selector, "good")
 
+    def test_open_doingcoding_admin_session_logs_in_once_and_returns_session(self):
+        class FakeContext:
+            def __init__(self):
+                self.page = object()
+                self.closed = False
+
+            def new_page(self):
+                return self.page
+
+            def close(self):
+                self.closed = True
+
+        class FakeBrowser:
+            def __init__(self):
+                self.context = FakeContext()
+
+            def new_context(self, accept_downloads):
+                self.accept_downloads = accept_downloads
+                return self.context
+
+        logs = []
+        browser = FakeBrowser()
+        with patch("practice.data.language_v2.crawl.login_doingcoding_admin") as login_mock:
+            session = open_doingcoding_admin_session(browser, "admin", "secret", logger=logs.append)
+
+        self.assertIsInstance(session, DoingCodingAdminSession)
+        self.assertTrue(browser.accept_downloads)
+        self.assertIs(session.page, browser.context.page)
+        login_mock.assert_called_once_with(browser.context.page, "admin", "secret", logger=logs.append)
+        self.assertEqual(logs[:2], ["[관리자 세션] 초기화 시작", "[관리자 세션] 로그인 완료, 이후 문제에 재사용"])
+
+    def test_close_doingcoding_admin_session_closes_context_once(self):
+        class FakeContext:
+            def __init__(self):
+                self.closed = False
+
+            def close(self):
+                self.closed = True
+
+        session = DoingCodingAdminSession(FakeContext(), object(), "admin", "secret")
+        close_doingcoding_admin_session(session)
+        self.assertTrue(session.context.closed)
+
+    def test_collect_doingcoding_testcases_with_session_reuses_existing_page(self):
+        session = DoingCodingAdminSession(context=object(), page="shared-page", username="admin", password="secret")
+        logs = []
+        with patch("practice.data.language_v2.crawl.download_doingcoding_testcases", return_value="bundle.zip") as download_mock:
+            bundle_path = collect_doingcoding_testcases_with_session(session, "P101v0701", str(CURRENT_DIR), logger=logs.append)
+
+        self.assertEqual(bundle_path, "bundle.zip")
+        download_mock.assert_called_once_with("shared-page", "P101v0701", str(CURRENT_DIR))
+        self.assertEqual(logs, ["[관리자 세션] 기존 로그인 세션 재사용"])
+
+    def test_collect_doingcoding_testcases_with_session_relogs_once_after_download_failure(self):
+        session = DoingCodingAdminSession(context=object(), page="shared-page", username="admin", password="secret")
+        logs = []
+        with patch(
+            "practice.data.language_v2.crawl.download_doingcoding_testcases",
+            side_effect=[RuntimeError("expired"), "bundle.zip"],
+        ) as download_mock, patch("practice.data.language_v2.crawl.login_doingcoding_admin") as login_mock:
+            bundle_path = collect_doingcoding_testcases_with_session(session, "P101v0701", str(CURRENT_DIR), logger=logs.append)
+
+        self.assertEqual(bundle_path, "bundle.zip")
+        self.assertEqual(download_mock.call_count, 2)
+        login_mock.assert_called_once_with("shared-page", "admin", "secret", logger=logs.append)
+        self.assertEqual(
+            logs,
+            [
+                "[관리자 세션] 기존 로그인 세션 재사용",
+                "[관리자 세션] 세션 재로그인 시도",
+            ],
+        )
+
     def test_collect_doingcoding_testcases_logs_in_downloads_and_parses_bundle(self):
         class FakePage:
             pass
@@ -942,9 +1019,11 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
         temp_dir.mkdir(exist_ok=True)
         try:
             browser = FakeBrowser()
-            with patch("practice.data.language_v2.crawl.login_doingcoding_admin") as login_mock, \
-                patch("practice.data.language_v2.crawl.download_doingcoding_testcases", return_value=str(temp_dir / "bundle.zip")) as download_mock, \
+            with patch("practice.data.language_v2.crawl.open_doingcoding_admin_session") as open_mock, \
+                patch("practice.data.language_v2.crawl.collect_doingcoding_testcases_with_session", return_value=str(temp_dir / "bundle.zip")) as collect_mock, \
+                patch("practice.data.language_v2.crawl.close_doingcoding_admin_session") as close_mock, \
                 patch("practice.data.language_v2.crawl.parse_testcase_bundle", return_value={"info": {"spj": False}, "cases": [{"id": "1"}]}) as parse_mock:
+                open_mock.return_value = DoingCodingAdminSession(browser.context, browser.context.page, "admin", "secret")
                 bundle = collect_doingcoding_testcases(
                     browser,
                     "P101v0701",
@@ -954,10 +1033,9 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
                 )
 
             self.assertEqual(bundle, {"info": {"spj": False}, "cases": [{"id": "1"}]})
-            self.assertTrue(browser.accept_downloads)
-            self.assertTrue(browser.context.closed)
-            login_mock.assert_called_once()
-            download_mock.assert_called_once()
+            open_mock.assert_called_once()
+            collect_mock.assert_called_once()
+            close_mock.assert_called_once()
             parse_mock.assert_called_once()
         finally:
             shutil.rmtree(temp_dir, ignore_errors=True)

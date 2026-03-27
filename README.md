@@ -860,3 +860,112 @@ python scripts/generate_content_indexes.py
 
 기존 레거시 JSON 직접 수정 흐름이 필요하면 6.1 ~ 6.3 절을 참고하세요.
 
+---
+
+## 11. PARA 루트 정리 규칙
+
+루트는 이제 PARA 기준으로 정리합니다.
+
+- `Projects/`: 현재 진행 중이며 종료 조건이 있는 작업
+- `Areas/`: 장기적으로 운영/관리하는 제품과 콘텐츠 영역
+- `Resources/`: 반복 참조하는 가이드, 템플릿, 참고 자료
+- `Archives/`: 완료/중단/임시/재생성 가능한 산출물
+
+### 11.1 현재 운영 핵심 경로
+
+다음 경로는 웹앱과 생성 스크립트가 직접 참조하므로 **1차 PARA 적용에서는 실제 이동 금지**입니다.
+
+- `practice/`
+- `practice/data/**`
+- `practice/assets/**`
+- `scripts/`
+- `docs/`
+- `README.md`
+
+### 11.2 루트 느슨한 파일 분류 기준
+
+- 운영 가이드, 체크리스트, 구조 메모: `Resources/reference/guides/`
+- 현재 진행 중인 단기 작업 메모/원본: `Projects/active/<YYYYMMDD_slug>/`
+- PDF, 추출 텍스트, 캡처 이미지, 테스트 산출물: `Archives/`
+
+### 11.3 임시 산출물 저장 위치
+
+루트에 직접 `tmp*`, `output/`, `lesson_test_*` 같은 폴더를 쌓지 않습니다.
+
+- 진행 중인 단기 산출물: `Projects/active/<YYYYMMDD_slug>/`
+- 재생성 가능한 중간 결과: `Archives/generated_outputs/`
+
+### 11.4 새 작업 시작 규칙
+
+새 단기 작업은 아래 규칙으로 시작합니다.
+
+1. `Projects/active/<YYYYMMDD_slug>/` 폴더를 만든다.
+2. 작업 메모, 외부 원본, 단발성 스크립트/산출물을 그 안에 둔다.
+3. 웹앱 런타임 자산으로 편입할 때만 `practice/` 또는 `scripts/`로 옮긴다.
+
+### 11.5 실험성 하위 폴더 처리 기준
+
+`practice/data` 내부에서도 성격이 다른 폴더가 섞일 수 있습니다.
+
+- `content/`, `generated/`, `sets/`, `theory/`, `curriculum/`: 운영 자산으로 유지
+- `language_v2`, `Pygame`, `temp/` 등 실험/전환 성격 폴더: 프로젝트 또는 참고자료 후보로 별도 검토
+
+### 11.6 2차 PARA 내부 분류 기준
+
+2차 정리에서는 루트뿐 아니라 `practice/data`와 `scripts` 안의 혼재도 구분합니다.
+
+`practice/data`
+
+- `content/`, `generated/`, `sets/`, `theory/`, `curriculum/`, `categories.json`, `sets.index.json`, `theory.index.json`는 `Areas` 관점의 운영 핵심 자산입니다.
+- `language_v2/`는 현재 진행 중인 `Projects/active/language_v2_crawler`와 연결되는 작업 영역입니다.
+- `practice/data/Pygame`는 운영 자산이 아니라 OCR/PDF 원본 저장소로 판정해 `Resources/reference/pygame_ocr/`로 이동했습니다.
+- 마이그레이션 스크립트와 `.bak` 파일은 운영 경로 밖으로 분리하며 `Archives`에 둡니다.
+
+`scripts`
+
+- `new_*`, `generate_content_indexes.py`, `content_scaffold_lib.py`, `check_sets_index.ps1`, `check_set_quality.py`는 운영 필수 스크립트입니다.
+- PDF 캡처, 데이터 로더, 업스케일링, 다운로드 보조 도구는 프로젝트/실험 도구로 관리합니다.
+- 참조되지 않는 실험 도구는 `Archives/tools_experiments/` 또는 개별 `Projects`로 옮깁니다.
+
+### 11.7 3차 PARA 확정 기준
+
+3차 정리에서 남은 경계 자산의 최종 소속을 확정합니다.
+
+- `Resources/reference/pygame_ocr/`: Pygame OCR/PDF 원본과 중간 산출물
+- `Resources/reference/images/week01/`: 루트 참고 이미지 묶음
+- `practice/data/language_v2/source_docs/`: 문제 원문과 기준 문서
+- `practice/data/language_v2/notes/`: 작업 메모와 참고 노트
+- `practice/data/language_v2/generated_notes/`: 중간 수집본과 임시 산출물
+- `Archives/exceptions/`: 예외 항목 기록
+
+## 12. 경로 네이밍 표준
+
+저장소의 신규 경로명은 아래 규칙을 따릅니다.
+
+- 폴더/파일명은 `lowercase snake_case`
+- 공백 사용 금지
+- 한글 경로명 금지
+- 의미 없는 `_` 접두사 금지
+- 본문 제목, 콘텐츠 텍스트, Markdown 내부 설명은 한글 유지 가능
+
+### 12.1 이번 단계에서 실제 반영한 정리
+
+- `practice/temp/contest_c/pdf to md` -> `practice/temp/contest_c/pdf_to_md`
+- `practice/temp/contest_c/개념별로 정리` -> `practice/temp/contest_c/concepts_by_topic`
+- `practice/temp/contest_c/학교별 문제` -> `practice/temp/contest_c/problems_by_school`
+- `practice/data/content/Excalidraw` -> `practice/data/content/excalidraw`
+- `practice/data/theory/Excalidraw` -> `practice/data/theory/excalidraw`
+
+### 12.2 현재 문서상 예외로 유지하는 경로
+
+다음 경로는 참조 범위가 넓거나 테스트/스크립트가 직접 의존하므로 이번 단계에서 이름을 바꾸지 않았습니다.
+
+- `practice/data/language_v2/_tmp_collect_testcases`
+- `practice/data/language_v2/lv*/_docs/reference`
+- `practice/data/theory/canva/Week01` ~ `Week08`
+- `practice/data/theory/canva/강민승`
+- `practice/data/content/.obsidian`
+- `practice/data/theory/.obsidian`
+
+세부 이력과 보류 사유는 `Resources/reference/guides/naming_convention.md`와 `Resources/reference/guides/rename_map.md`를 기준으로 관리합니다.
+
