@@ -10,6 +10,7 @@ from practice.data.language_v2.crawl import (
     DOINGCODING_CSRF_FALLBACK_URL,
     DOINGCODING_CSRF_SEED_URL,
     DOINGCODING_ADMIN_DOWNLOAD_BUTTON_SELECTORS,
+    DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS,
     DOINGCODING_ADMIN_ID_SELECTOR,
     DOINGCODING_ADMIN_LOGIN_URL,
     DOINGCODING_ADMIN_LOGIN_BUTTON_SELECTOR,
@@ -17,6 +18,9 @@ from practice.data.language_v2.crawl import (
     DOINGCODING_ADMIN_PROBLEMS_URL,
     DOINGCODING_ADMIN_ROW_SELECTORS,
     DOINGCODING_ADMIN_SEARCH_SELECTORS,
+    DOINGCODING_ADMIN_TESTCASE_FILE_INPUT_SELECTORS,
+    DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS,
+    DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS,
     _extract_section_after_heading,
     _extract_sample_pairs,
     _attempt_admin_login_submit,
@@ -35,10 +39,13 @@ from practice.data.language_v2.crawl import (
     login_doingcoding_admin,
     open_doingcoding_admin_session,
     close_doingcoding_admin_session,
+    open_doingcoding_problem_editor,
     parse_testcase_bundle,
     render_templates_md,
     render_testcases_md,
     SECTION_HEADINGS,
+    upload_doingcoding_testcases,
+    upload_doingcoding_testcases_with_session,
 )
 from lxml import html
 
@@ -908,6 +915,255 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
             self.assertTrue(page.download.saved_path.endswith("P101v0701.zip"))
         finally:
             shutil.rmtree(temp_dir, ignore_errors=True)
+
+    def test_open_doingcoding_problem_editor_searches_row_and_clicks_edit(self):
+        class FakePage:
+            def __init__(self):
+                self.fills = []
+                self.presses = []
+                self.clicks = []
+                self.waited = []
+                self.failed_selectors = {
+                    DOINGCODING_ADMIN_SEARCH_SELECTORS[0],
+                    DOINGCODING_ADMIN_ROW_SELECTORS[0],
+                    DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS[0],
+                    DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS[0],
+                    DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS[0],
+                }
+
+            def wait_for_selector(self, selector, timeout, state="visible"):
+                self.waited.append((selector, timeout, state))
+                if selector in self.failed_selectors:
+                    raise RuntimeError(f"{selector} missing")
+
+            def wait_for_timeout(self, _ms):
+                return None
+
+            def fill(self, selector, value):
+                self.fills.append((selector, value))
+
+            def press(self, selector, key):
+                self.presses.append((selector, key))
+
+            def text_content(self, selector):
+                if selector in DOINGCODING_ADMIN_ROW_SELECTORS:
+                    return "P101v0701 문제 행"
+                return ""
+
+            def click(self, selector):
+                self.clicks.append(selector)
+
+        page = FakePage()
+        logs = []
+
+        open_doingcoding_problem_editor(page, "P101v0701", logger=logs.append)
+
+        self.assertEqual(page.fills, [(DOINGCODING_ADMIN_SEARCH_SELECTORS[1], "P101v0701")])
+        self.assertEqual(page.presses, [(DOINGCODING_ADMIN_SEARCH_SELECTORS[1], "Enter")])
+        self.assertEqual(page.clicks, [DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS[1]])
+        self.assertEqual(
+            logs,
+            [
+                "[관리자 업로드] 문제 검색: P101v0701",
+                "[관리자 업로드] 문제 수정 화면 진입: P101v0701",
+            ],
+        )
+
+    def test_upload_doingcoding_testcases_uses_file_chooser_then_saves(self):
+        zip_path = CURRENT_DIR / "_tmp_upload_case.zip"
+        zip_path.write_text("zip", encoding="utf-8")
+        try:
+            class FakeChooser:
+                def __init__(self):
+                    self.path = None
+
+                def set_files(self, path):
+                    self.path = path
+
+            class FakeChooserContext:
+                def __init__(self, chooser):
+                    self.value = chooser
+
+                def __enter__(self):
+                    return self
+
+                def __exit__(self, exc_type, exc, tb):
+                    return False
+
+            class FakePage:
+                def __init__(self):
+                    self.url = "http://edu.doingcoding.com/admin/problems"
+                    self.chooser = FakeChooser()
+                    self.fills = []
+                    self.presses = []
+                    self.clicks = []
+                    self.waited = []
+                    self.failed_selectors = {
+                        DOINGCODING_ADMIN_SEARCH_SELECTORS[0],
+                        DOINGCODING_ADMIN_ROW_SELECTORS[0],
+                        DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS[0],
+                        DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS[0],
+                        DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS[0],
+                    }
+
+                def wait_for_selector(self, selector, timeout, state="visible"):
+                    self.waited.append((selector, timeout, state))
+                    if selector in self.failed_selectors:
+                        raise RuntimeError(f"{selector} missing")
+
+                def wait_for_timeout(self, _ms):
+                    return None
+
+                def fill(self, selector, value):
+                    self.fills.append((selector, value))
+
+                def press(self, selector, key):
+                    self.presses.append((selector, key))
+
+                def text_content(self, selector):
+                    if selector in DOINGCODING_ADMIN_ROW_SELECTORS:
+                        return "P101v0701 문제 행"
+                    if selector == "body":
+                        return "저장 성공"
+                    return ""
+
+                def click(self, selector):
+                    self.clicks.append(selector)
+
+                def expect_file_chooser(self, timeout):
+                    self.expect_timeout = timeout
+                    return FakeChooserContext(self.chooser)
+
+                def wait_for_function(self, _script, timeout):
+                    self.wait_function_timeout = timeout
+                    return None
+
+            page = FakePage()
+            logs = []
+
+            result = upload_doingcoding_testcases(
+                page,
+                "P101v0701",
+                str(zip_path),
+                logger=logs.append,
+            )
+
+            self.assertEqual(result["status"], "uploaded")
+            self.assertEqual(page.chooser.path, str(zip_path))
+            self.assertEqual(
+                page.clicks,
+                [
+                    DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS[1],
+                    DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS[1],
+                    DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS[1],
+                ],
+            )
+            self.assertIn("[관리자 업로드] ZIP 입력 방식: filechooser", logs)
+            self.assertEqual(result["problem_id"], "P101v0701")
+        finally:
+            zip_path.unlink(missing_ok=True)
+
+    def test_upload_doingcoding_testcases_falls_back_to_input_file(self):
+        zip_path = CURRENT_DIR / "_tmp_upload_case.zip"
+        zip_path.write_text("zip", encoding="utf-8")
+        try:
+            class FakeLocator:
+                def __init__(self):
+                    self.first = self
+                    self.path = None
+
+                def set_input_files(self, path):
+                    self.path = path
+
+            class FakePage:
+                def __init__(self):
+                    self.url = "http://edu.doingcoding.com/admin/problems"
+                    self.file_locator = FakeLocator()
+                    self.clicks = []
+                    self.fills = []
+                    self.presses = []
+                    self.waited = []
+                    self.failed_selectors = {
+                        DOINGCODING_ADMIN_SEARCH_SELECTORS[0],
+                        DOINGCODING_ADMIN_ROW_SELECTORS[0],
+                        DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS[0],
+                        DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS[0],
+                        DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS[0],
+                    }
+
+                def wait_for_selector(self, selector, timeout, state="visible"):
+                    self.waited.append((selector, timeout, state))
+                    if selector in self.failed_selectors:
+                        raise RuntimeError(f"{selector} missing")
+
+                def wait_for_timeout(self, _ms):
+                    return None
+
+                def fill(self, selector, value):
+                    self.fills.append((selector, value))
+
+                def press(self, selector, key):
+                    self.presses.append((selector, key))
+
+                def text_content(self, selector):
+                    if selector in DOINGCODING_ADMIN_ROW_SELECTORS:
+                        return "P101v0701 문제 행"
+                    if selector == "body":
+                        return "저장 성공"
+                    return ""
+
+                def click(self, selector):
+                    self.clicks.append(selector)
+
+                def expect_file_chooser(self, timeout):
+                    raise RuntimeError(f"no chooser {timeout}")
+
+                def locator(self, selector):
+                    if selector == DOINGCODING_ADMIN_TESTCASE_FILE_INPUT_SELECTORS[0]:
+                        return self.file_locator
+                    raise RuntimeError("unexpected locator")
+
+                def wait_for_function(self, _script, timeout):
+                    self.wait_function_timeout = timeout
+                    return None
+
+            page = FakePage()
+
+            upload_doingcoding_testcases(page, "P101v0701", str(zip_path))
+
+            self.assertEqual(page.file_locator.path, str(zip_path))
+            self.assertEqual(
+                page.clicks,
+                [
+                    DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS[1],
+                    DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS[1],
+                    DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS[1],
+                ],
+            )
+        finally:
+            zip_path.unlink(missing_ok=True)
+
+    def test_upload_doingcoding_testcases_with_session_relogs_once_after_failure(self):
+        session = DoingCodingAdminSession(context=object(), page="shared-page", username="admin", password="secret")
+        logs = []
+        with patch(
+            "practice.data.language_v2.crawl.upload_doingcoding_testcases",
+            side_effect=[RuntimeError("expired"), {"status": "uploaded"}],
+        ) as upload_mock, patch("practice.data.language_v2.crawl.login_doingcoding_admin") as login_mock:
+            result = upload_doingcoding_testcases_with_session(
+                session, "P101v0701", "bundle.zip", logger=logs.append
+            )
+
+        self.assertEqual(result, {"status": "uploaded"})
+        self.assertEqual(upload_mock.call_count, 2)
+        login_mock.assert_called_once_with("shared-page", "admin", "secret", logger=logs.append)
+        self.assertEqual(
+            logs,
+            [
+                "[관리자 세션] 기존 로그인 세션 재사용",
+                "[관리자 세션] 세션 재로그인 시도",
+            ],
+        )
 
     def test_find_first_working_selector_falls_back_to_next_candidate(self):
         class FakePage:

@@ -2,6 +2,7 @@ import os
 import queue
 import shutil
 import sys
+import tkinter as tk
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -17,6 +18,7 @@ from gui_crawler import (
     close_doingcoding_admin_session,
     open_doingcoding_admin_session,
     resolve_admin_credentials,
+    upload_doingcoding_testcases_with_session,
 )
 
 
@@ -93,6 +95,15 @@ class FakeEntry:
 
     def get(self):
         return self.value
+
+
+class FakeLabel:
+    def __init__(self):
+        self.text = None
+
+    def config(self, **kwargs):
+        if "text" in kwargs:
+            self.text = kwargs["text"]
 
 
 class GuiStage5Tests(unittest.TestCase):
@@ -257,7 +268,6 @@ class GuiStage5Tests(unittest.TestCase):
         app = CrawlerApp.__new__(CrawlerApp)
         app.domain_var = FakeVar("doingcoding")
         app.doingcoding_options_frame = FakeFrame()
-        app.frame_dir = object()
         app.get_templates_var = FakeVar(False)
         app.get_testcases_var = FakeVar(False)
         app.show_browser_var = FakeVar(False)
@@ -265,7 +275,7 @@ class GuiStage5Tests(unittest.TestCase):
         CrawlerApp._set_doingcoding_option_visibility(app)
 
         self.assertFalse(app.doingcoding_options_frame.hidden)
-        self.assertEqual(app.doingcoding_options_frame.pack_calls[-1], {"before": app.frame_dir, "pady": (0, 10)})
+        self.assertEqual(app.doingcoding_options_frame.pack_calls[-1], {"fill": "x", "pady": (12, 0)})
 
     def test_update_url_template_switches_defaults_and_hides_doingcoding_options_for_baekjoon(self):
         app = CrawlerApp.__new__(CrawlerApp)
@@ -308,6 +318,227 @@ class GuiStage5Tests(unittest.TestCase):
         self.assertEqual(app.start_id.get(), "0701")
         self.assertEqual(app.end_id.get(), "0710")
         self.assertFalse(app.doingcoding_options_frame.hidden)
+
+    def test_refresh_upload_summary_enables_button_when_problem_and_zip_are_ready(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.upload_problem_id = FakeVar("P101v0701")
+        app.upload_zip_path = FakeVar("C:/tmp/case.zip")
+        app.upload_summary_label = FakeLabel()
+        app.upload_testcase_btn = FakeButton()
+
+        CrawlerApp._refresh_upload_summary(app)
+
+        self.assertIn("P101v0701", app.upload_summary_label.text)
+        self.assertIn("case.zip", app.upload_summary_label.text)
+        self.assertEqual(app.upload_testcase_btn.state, "normal")
+
+    def test_refresh_upload_summary_disables_button_when_missing_values(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.upload_problem_id = FakeVar("")
+        app.upload_zip_path = FakeVar("")
+        app.upload_summary_label = FakeLabel()
+        app.upload_testcase_btn = FakeButton()
+
+        CrawlerApp._refresh_upload_summary(app)
+
+        self.assertEqual(app.upload_summary_label.text, "문제 ID와 ZIP 파일을 선택해 주세요.")
+        self.assertEqual(app.upload_testcase_btn.state, "disabled")
+
+    def test_upload_testcase_zip_calls_upload_with_selected_problem_and_zip(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.upload_problem_id = FakeVar("P101v0701")
+        temp_zip = CURRENT_DIR / "_tmp_upload_gui.zip"
+        temp_zip.write_text("zip", encoding="utf-8")
+        app.upload_zip_path = FakeVar(str(temp_zip))
+        app.admin_username = FakeEntry("admin")
+        app.admin_password = FakeEntry("secret")
+        app.show_browser_var = FakeVar(False)
+        app.log = lambda _message: None
+        logged = []
+        app._append_log = logged.append
+
+        class FakeBrowser:
+            def close(self):
+                return None
+
+        class FakePlaywright:
+            def __init__(self):
+                self.chromium = self
+
+            def launch(self, headless=True):
+                self.headless = headless
+                return FakeBrowser()
+
+            def stop(self):
+                return None
+
+        admin_session = object()
+        try:
+            with patch("gui_crawler.sync_playwright") as sync_mock, \
+                patch("gui_crawler.open_doingcoding_admin_session", return_value=admin_session) as open_mock, \
+                patch("gui_crawler.close_doingcoding_admin_session") as close_mock, \
+                patch("gui_crawler.upload_doingcoding_testcases_with_session", return_value={"problem_id": "P101v0701", "zip_path": str(temp_zip), "status": "uploaded"}) as upload_mock, \
+                patch("gui_crawler.messagebox.showinfo") as info_mock, \
+                patch("gui_crawler.messagebox.showerror") as error_mock:
+                sync_mock.return_value.start.return_value = FakePlaywright()
+                CrawlerApp.upload_testcase_zip(app)
+
+            open_mock.assert_called_once()
+            upload_mock.assert_called_once_with(admin_session, "P101v0701", str(temp_zip), logger=app.log)
+            close_mock.assert_called_once_with(admin_session)
+            info_mock.assert_called_once()
+            error_mock.assert_not_called()
+            self.assertTrue(any("완료" in message for message in logged))
+        finally:
+            temp_zip.unlink(missing_ok=True)
+
+    def test_upload_testcase_zip_rejects_missing_zip_file(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.upload_problem_id = FakeVar("P101v0701")
+        app.upload_zip_path = FakeVar(str(CURRENT_DIR / "missing.zip"))
+        app.admin_username = FakeEntry("admin")
+        app.admin_password = FakeEntry("secret")
+        app.show_browser_var = FakeVar(False)
+        app.log = lambda _message: None
+        app._append_log = lambda _message: None
+
+        with patch("gui_crawler.messagebox.showerror") as error_mock:
+            CrawlerApp.upload_testcase_zip(app)
+
+        error_mock.assert_called_once()
+
+    def test_resolve_initial_dir_prefers_last_dir_for_same_kind(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        app.last_md_dir = str(CURRENT_DIR)
+        app.last_zip_dir = str(CURRENT_DIR / "_zip_recent")
+        app.last_directory_dir = str(CURRENT_DIR / "_dir_recent")
+        Path(app.last_zip_dir).mkdir(exist_ok=True)
+        Path(app.last_directory_dir).mkdir(exist_ok=True)
+        try:
+            resolved = CrawlerApp._resolve_initial_dir(
+                app, "md", current_path=str(CURRENT_DIR / "sub" / "file.md")
+            )
+            self.assertEqual(resolved, str(CURRENT_DIR))
+        finally:
+            shutil.rmtree(app.last_zip_dir, ignore_errors=True)
+            shutil.rmtree(app.last_directory_dir, ignore_errors=True)
+
+    def test_resolve_initial_dir_falls_back_to_parent_of_current_path(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        missing_dir = str(CURRENT_DIR / "_missing_last_dir")
+        app.last_md_dir = missing_dir
+        current_file = CURRENT_DIR / "_docs" / "sample.md"
+        current_file.parent.mkdir(exist_ok=True)
+        try:
+            resolved = CrawlerApp._resolve_initial_dir(app, "md", current_path=str(current_file))
+            self.assertEqual(resolved, str(current_file.parent))
+        finally:
+            shutil.rmtree(current_file.parent, ignore_errors=True)
+
+    def test_remember_selected_path_updates_each_kind_separately(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        md_dir = CURRENT_DIR / "_tmp_md_recent"
+        zip_dir = CURRENT_DIR / "_tmp_zip_recent"
+        dir_dir = CURRENT_DIR / "_tmp_directory_recent"
+        md_dir.mkdir(exist_ok=True)
+        zip_dir.mkdir(exist_ok=True)
+        dir_dir.mkdir(exist_ok=True)
+        try:
+            CrawlerApp._remember_selected_path(app, "md", str(md_dir / "a.md"))
+            CrawlerApp._remember_selected_path(app, "zip", str(zip_dir / "a.zip"))
+            CrawlerApp._remember_selected_path(app, "directory", str(dir_dir))
+
+            self.assertEqual(app.last_md_dir, str(md_dir))
+            self.assertEqual(app.last_zip_dir, str(zip_dir))
+            self.assertEqual(app.last_directory_dir, str(dir_dir))
+        finally:
+            shutil.rmtree(md_dir, ignore_errors=True)
+            shutil.rmtree(zip_dir, ignore_errors=True)
+            shutil.rmtree(dir_dir, ignore_errors=True)
+
+    def test_select_testcase_markdown_uses_last_md_dir_and_remembers_selection(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        recent_dir = CURRENT_DIR / "_tmp_recent_md"
+        recent_dir.mkdir(exist_ok=True)
+        selected_file = recent_dir / "selected.md"
+        selected_file.write_text("content", encoding="utf-8")
+        app.last_md_dir = str(recent_dir)
+        app.testcase_md_path = FakeVar("")
+        app.testcase_preview_area = FakeLogArea()
+        app.export_testcase_zip_btn = FakeButton()
+        app.testcase_count_label = FakeLabel()
+        app.testcase_zip_name = FakeVar("")
+        app.loaded_testcases = []
+        app.selected_testcase_markdown = ""
+        try:
+            with patch("gui_crawler.filedialog.askopenfilename", return_value=str(selected_file)) as dialog_mock, \
+                patch.object(CrawlerApp, "load_testcase_markdown", return_value=True) as load_mock:
+                CrawlerApp.select_testcase_markdown(app)
+
+            self.assertEqual(dialog_mock.call_args.kwargs["initialdir"], str(recent_dir))
+            self.assertEqual(app.last_md_dir, str(recent_dir))
+            self.assertEqual(app.testcase_md_path.get(), str(selected_file))
+            load_mock.assert_called_once_with(str(selected_file))
+        finally:
+            shutil.rmtree(recent_dir, ignore_errors=True)
+
+    def test_select_upload_zip_file_uses_last_zip_dir_and_remembers_selection(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        recent_dir = CURRENT_DIR / "_tmp_recent_zip"
+        recent_dir.mkdir(exist_ok=True)
+        selected_file = recent_dir / "selected.zip"
+        selected_file.write_text("content", encoding="utf-8")
+        app.last_zip_dir = str(recent_dir)
+        app.upload_zip_path = FakeVar("")
+        app.upload_problem_id = FakeVar("")
+        app.upload_summary_label = FakeLabel()
+        app.upload_testcase_btn = FakeButton()
+        app.selected_upload_zip_path = ""
+        try:
+            with patch("gui_crawler.filedialog.askopenfilename", return_value=str(selected_file)) as dialog_mock:
+                CrawlerApp.select_upload_zip_file(app)
+
+            self.assertEqual(dialog_mock.call_args.kwargs["initialdir"], str(recent_dir))
+            self.assertEqual(app.last_zip_dir, str(recent_dir))
+            self.assertEqual(app.upload_zip_path.get(), str(selected_file))
+            self.assertEqual(app.selected_upload_zip_path, str(selected_file))
+        finally:
+            shutil.rmtree(recent_dir, ignore_errors=True)
+
+    def test_select_dir_uses_last_directory_dir_and_remembers_selection(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        recent_dir = CURRENT_DIR / "_tmp_recent_directory"
+        target_dir = CURRENT_DIR / "_tmp_selected_directory"
+        recent_dir.mkdir(exist_ok=True)
+        target_dir.mkdir(exist_ok=True)
+        app.last_directory_dir = str(recent_dir)
+        app.save_dir = FakeVar("")
+        try:
+            with patch("gui_crawler.filedialog.askdirectory", return_value=str(target_dir)) as dialog_mock:
+                CrawlerApp.select_dir(app)
+
+            self.assertEqual(dialog_mock.call_args.kwargs["initialdir"], str(recent_dir))
+            self.assertEqual(app.last_directory_dir, str(target_dir))
+            self.assertEqual(app.save_dir.get(), str(target_dir))
+        finally:
+            shutil.rmtree(recent_dir, ignore_errors=True)
+            shutil.rmtree(target_dir, ignore_errors=True)
+
+    def test_init_builds_notebook_with_three_tabs(self):
+        try:
+            root = tk.Tk()
+        except tk.TclError as exc:
+            self.skipTest(f"Tk runtime unavailable: {exc}")
+        try:
+            root.withdraw()
+            app = CrawlerApp(root)
+
+            self.assertEqual(len(app.notebook.tabs()), 3)
+            self.assertEqual(app.notebook.tab(app.notebook.tabs()[0], "text"), "크롤링")
+            self.assertEqual(app.notebook.tab(app.notebook.tabs()[1], "text"), "테스트케이스 ZIP 생성")
+            self.assertEqual(app.notebook.tab(app.notebook.tabs()[2], "text"), "테스트케이스 업로드")
+        finally:
+            root.destroy()
 
 
 if __name__ == "__main__":

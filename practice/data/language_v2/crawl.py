@@ -38,6 +38,21 @@ DOINGCODING_ADMIN_DOWNLOAD_BUTTON_SELECTORS = [
     'xpath=//*[@id="app"]//table/tbody/tr[1]//button',
     "css=table tbody tr button",
 ]
+DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS = [
+    'xpath=//*[@id="app"]/div/div[3]/div[1]/div[1]/div/div[1]/div[4]/div[2]/table/tbody/tr/td[7]/div/div/div[1]',
+    'xpath=//*[@id="app"]//table/tbody/tr[1]/td[7]//div/div/div[1]',
+]
+DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS = [
+    'xpath=//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[11]/div[2]/div/div/div/div/button',
+    'xpath=//*[@id="app"]//form//button',
+]
+DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS = [
+    'xpath=//*[@id="app"]/div/div[3]/div[1]/div/div/form/button',
+    'xpath=//*[@id="app"]//form/button',
+]
+DOINGCODING_ADMIN_TESTCASE_FILE_INPUT_SELECTORS = [
+    'css=input[type="file"]',
+]
 
 
 @dataclass
@@ -716,6 +731,148 @@ def download_doingcoding_testcases(page, problem_id, download_dir):
     return download_path
 
 
+def _search_doingcoding_problem_row(page, problem_id):
+    search_selector = _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_SEARCH_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+    row_selector = _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_ROW_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+
+    page.fill(search_selector, problem_id)
+    page.press(search_selector, "Enter")
+    page.wait_for_timeout(1000)
+    page.wait_for_selector(row_selector, timeout=15000, state="attached")
+    row_text = _clean_text(page.text_content(row_selector) or "")
+    if problem_id not in row_text:
+        raise RuntimeError(
+            f"관리자 문제 목록에서 문제 ID를 확인하지 못했습니다: {problem_id}"
+        )
+    return search_selector, row_selector
+
+
+def _set_doingcoding_testcase_zip(page, zip_path):
+    upload_selector = _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+    if hasattr(page, "expect_file_chooser"):
+        try:
+            with page.expect_file_chooser(timeout=3000) as chooser_info:
+                page.click(upload_selector)
+            chooser_info.value.set_files(zip_path)
+            return "filechooser"
+        except Exception:
+            pass
+
+    page.click(upload_selector)
+
+    last_error = None
+    for selector in DOINGCODING_ADMIN_TESTCASE_FILE_INPUT_SELECTORS:
+        try:
+            locator = page.locator(selector).first
+            if hasattr(locator, "set_input_files"):
+                locator.set_input_files(zip_path)
+                return "input"
+        except Exception as exc:
+            last_error = exc
+    raise RuntimeError("테스트케이스 ZIP 파일 입력 요소를 찾지 못했습니다.") from last_error
+
+
+def _wait_for_doingcoding_admin_save_success(page):
+    try:
+        if "admin/problems" in getattr(page, "url", ""):
+            return
+    except Exception:
+        pass
+
+    try:
+        page.wait_for_function(
+            """() => (window.location.pathname || '').includes('/admin/problems')""",
+            timeout=5000,
+        )
+        return
+    except Exception:
+        pass
+
+    try:
+        _find_first_working_selector(
+            page,
+            DOINGCODING_ADMIN_SEARCH_SELECTORS,
+            timeout=5000,
+            require_visible=False,
+        )
+        return
+    except Exception:
+        pass
+
+    try:
+        body_text = _clean_text(page.text_content("body") or "")
+        if "성공" in body_text or "저장" in body_text:
+            return
+    except Exception:
+        pass
+
+    raise RuntimeError("테스트케이스 저장 완료 상태를 확인하지 못했습니다.")
+
+
+def open_doingcoding_problem_editor(page, problem_id, logger=None):
+    _emit_log(logger, f"[관리자 업로드] 문제 검색: {problem_id}")
+    _search_doingcoding_problem_row(page, problem_id)
+    edit_selector = _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+    _emit_log(logger, f"[관리자 업로드] 문제 수정 화면 진입: {problem_id}")
+    page.click(edit_selector)
+    _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+    _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+
+
+def upload_doingcoding_testcases(page, problem_id, zip_path, logger=None):
+    if not zip_path or not os.path.isfile(zip_path):
+        raise ValueError(f"업로드할 ZIP 파일을 찾지 못했습니다: {zip_path}")
+    if not zip_path.lower().endswith(".zip"):
+        raise ValueError(f"ZIP 파일만 업로드할 수 있습니다: {zip_path}")
+
+    open_doingcoding_problem_editor(page, problem_id, logger=logger)
+    _emit_log(logger, f"[관리자 업로드] ZIP 선택: {os.path.basename(zip_path)}")
+    upload_mode = _set_doingcoding_testcase_zip(page, zip_path)
+    _emit_log(logger, f"[관리자 업로드] ZIP 입력 방식: {upload_mode}")
+
+    save_selector = _find_first_working_selector(
+        page,
+        DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS,
+        timeout=15000,
+        require_visible=False,
+    )
+    _emit_log(logger, "[관리자 업로드] 저장 버튼 클릭")
+    page.click(save_selector)
+    _wait_for_doingcoding_admin_save_success(page)
+    _emit_log(logger, f"[관리자 업로드] 저장 완료: {problem_id}")
+    return {"problem_id": problem_id, "zip_path": zip_path, "status": "uploaded"}
+
+
 def open_doingcoding_admin_session(
     browser, admin_username, admin_password, logger=None
 ):
@@ -754,6 +911,24 @@ def collect_doingcoding_testcases_with_session(
             session.page, session.username, session.password, logger=logger
         )
         return download_doingcoding_testcases(session.page, problem_id, download_dir)
+
+
+def upload_doingcoding_testcases_with_session(
+    session, problem_id, zip_path, logger=None
+):
+    _emit_log(logger, "[관리자 세션] 기존 로그인 세션 재사용")
+    try:
+        return upload_doingcoding_testcases(
+            session.page, problem_id, zip_path, logger=logger
+        )
+    except Exception:
+        _emit_log(logger, "[관리자 세션] 세션 재로그인 시도")
+        login_doingcoding_admin(
+            session.page, session.username, session.password, logger=logger
+        )
+        return upload_doingcoding_testcases(
+            session.page, problem_id, zip_path, logger=logger
+        )
 
 
 def collect_doingcoding_testcases(
