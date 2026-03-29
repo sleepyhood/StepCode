@@ -482,6 +482,32 @@ class GuiStage5Tests(unittest.TestCase):
         finally:
             shutil.rmtree(recent_dir, ignore_errors=True)
 
+    def test_load_testcase_markdown_refreshes_default_zip_name_for_new_file(self):
+        app = CrawlerApp.__new__(CrawlerApp)
+        first_file = CURRENT_DIR / "_tmp_case_a.md"
+        second_file = CURRENT_DIR / "_tmp_case_b.md"
+        first_file.write_text("first", encoding="utf-8")
+        second_file.write_text("second", encoding="utf-8")
+        app.testcase_zip_name = FakeVar("")
+        app.loaded_testcases = []
+        app.selected_testcase_markdown = ""
+        app.testcase_preview_area = FakeLogArea()
+        app.export_testcase_zip_btn = FakeButton()
+        app.testcase_count_label = FakeLabel()
+
+        try:
+            with patch("gui_crawler.parse_testcases_from_markdown", return_value=[{"input": "1", "output": "2"}]), \
+                patch("gui_crawler.build_testcase_preview", return_value="preview"), \
+                patch("gui_crawler.build_default_zip_name", side_effect=["first.zip", "second.zip"]):
+                self.assertTrue(CrawlerApp.load_testcase_markdown(app, str(first_file)))
+                self.assertEqual(app.testcase_zip_name.get(), "first.zip")
+
+                self.assertTrue(CrawlerApp.load_testcase_markdown(app, str(second_file)))
+                self.assertEqual(app.testcase_zip_name.get(), "second.zip")
+        finally:
+            first_file.unlink(missing_ok=True)
+            second_file.unlink(missing_ok=True)
+
     def test_select_upload_zip_file_uses_last_zip_dir_and_remembers_selection(self):
         app = CrawlerApp.__new__(CrawlerApp)
         recent_dir = CURRENT_DIR / "_tmp_recent_zip"

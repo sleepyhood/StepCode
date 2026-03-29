@@ -70,6 +70,10 @@ C:\Users\osw\.codex\skills\architect-review
 - `docs-architect`
 - `architect-review`
 
+### 외부 워크플로우 번들
+
+- `superpowers`
+
 추가 후보:
 
 - `webapp-testing`
@@ -94,6 +98,7 @@ C:\Users\osw\.codex\skills\architect-review
 - `test-fixing`
 - `docs-architect`
 - `architect-review`
+- `superpowers`
 - `stepcode-content-workflow`
 - `stepcode-problem-set-editor`
 - `stepcode-para-governance`
@@ -130,7 +135,31 @@ C:\Users\osw\.codex\skills\architect-review
 Restart Codex to pick up new skills.
 ```
 
-### 4.3 프로젝트 내부 커스텀 스킬
+### 4.3 Superpowers
+
+Windows PowerShell 기준:
+
+```powershell
+git clone https://github.com/obra/superpowers.git "$env:USERPROFILE\.codex\superpowers"
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
+cmd /c mklink /J "$env:USERPROFILE\.agents\skills\superpowers" "$env:USERPROFILE\.codex\superpowers\skills"
+```
+
+정상 연결 확인:
+
+```powershell
+Get-Item "$env:USERPROFILE\.agents\skills\superpowers" | Format-List FullName,LinkType,Target,Attributes
+```
+
+아래처럼 보이면 정상이다.
+
+- `LinkType : Junction`
+- `Target : {C:\Users\osw\.codex\superpowers\skills}`
+- `Attributes : Directory, ReparsePoint`
+
+설치 후에는 Codex를 재시작한다.
+
+### 4.4 프로젝트 내부 커스텀 스킬
 
 프로젝트 내부 스킬은 저장소와 함께 버전관리된다.
 
@@ -156,6 +185,54 @@ Restart Codex to pick up new skills.
 ---
 
 ## 5. 실제 활용 예시
+
+### Superpowers 사용법
+
+`Superpowers`는 하나의 명령처럼 실행하는 것이 아니라, 그 안에 들어 있는 개별 스킬을 작업 단계에 맞게 호출해서 쓴다.
+
+대표 흐름은 다음과 같다.
+
+1. `brainstorming`
+2. `writing-plans`
+3. `subagent-driven-development` 또는 `executing-plans`
+4. `test-driven-development`
+5. `requesting-code-review`
+6. `finishing-a-development-branch`
+
+기능 구현 전에 설계부터 잡고 싶을 때:
+
+```text
+brainstorming을 써서 이 기능 요구사항을 먼저 정리해줘.
+설계 초안을 짧은 단위로 보여주고, 합의되면 writing-plans로 구현 작업을 쪼개줘.
+```
+
+설계가 끝난 뒤 구현 계획을 만들고 싶을 때:
+
+```text
+writing-plans를 써서 방금 합의한 설계를 구현 가능한 작업 단위로 나눠줘.
+각 작업마다 검증 방법도 같이 적어줘.
+```
+
+버그를 체계적으로 분석하고 싶을 때:
+
+```text
+systematic-debugging을 써서 이 오류의 재현 조건, 원인 후보, 확인 절차를 단계적으로 정리해줘.
+원인 확인 후 verification-before-completion까지 포함해 실제로 해결됐는지 검증해줘.
+```
+
+TDD로 구현하고 싶을 때:
+
+```text
+test-driven-development를 써서 이 기능을 TDD로 구현해줘.
+먼저 실패하는 테스트를 만들고, 그 다음 최소 구현만 해줘.
+```
+
+변경사항을 리뷰하고 마무리하고 싶을 때:
+
+```text
+requesting-code-review를 써서 지금 변경사항을 위험도 순으로 리뷰해줘.
+작업이 끝나면 finishing-a-development-branch로 마무리 판단까지 해줘.
+```
 
 ### Playwright
 
@@ -246,6 +323,7 @@ PARA 기준으로 남길지 이동할지 판정해줘.
 - [ ] 새 컴퓨터에서 Codex 설치 완료
 - [ ] 공식 스킬 설치 완료
 - [ ] 커뮤니티 스킬 설치 완료
+- [ ] Superpowers 설치 완료
 - [ ] Codex 재시작 완료
 - [ ] Playwright 관련 작업 정상 인식 확인
 - [ ] 테스트 관련 작업 정상 인식 확인

@@ -11,17 +11,14 @@
             "id": "2bc83c8b67bd0891",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "Resources/reference/project_maps/content_workflow.canvas",
-                "viewState": {
-                  "x": 1155.4458986474883,
-                  "y": 206.21936888003722,
-                  "zoom": -1.2472783818056876
-                }
+                "file": "practice/data/language_v2/testcase_single_case_checklist.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "content_workflow"
+              "icon": "lucide-file",
+              "title": "testcase_single_case_checklist"
             }
           }
         ]
@@ -81,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 246.5
   },
   "right": {
     "id": "471151b06d0005fd",
@@ -189,34 +185,36 @@
   },
   "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
-    "Resources/reference/project_maps/stepcode-overview.canvas",
+    "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0506.md",
+    "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0505.md",
+    "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0504.md",
+    "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0503.md",
+    "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0502.md",
+    "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0501.md",
+    "practice/data/language_v2/testcase_single_case_checklist.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0315.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0314.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0313.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0312.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0311.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0310.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0309.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0308.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0307.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0306.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0305.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0304.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0303.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0301.md",
+    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0302.md",
+    "practice/data/language_v2/01_dc_P101v0702.md",
+    "practice/data/language_v2/01_dc_P101v0701.md",
+    "practice/data/language_v2/_tmp_case_a.md",
+    "practice/data/language_v2/__pycache__/testcase_zip_export.cpython-312.pyc",
     "Resources/reference/project_maps/content_workflow.canvas",
+    "Resources/reference/project_maps/stepcode-overview.canvas",
     "practice/data/theory/jungol/03_고등/2026년_3차_고등_수업_해설지_2019-2025.pdf",
     "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0723.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0722.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0721.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0720.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0719.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0718.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0717.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0716.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0715.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0714.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0713.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0712.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0711.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0710.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0709.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0708.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0707.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0706.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0705.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0704.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0703.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0702.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_SP101v0701.md",
-    "practice/data/language_v2/lv07_for/_docs/reference/01_dc_P101v0735.md",
     "practice/data/theory/canva/Week08/04_2차검수",
     "practice/data/theory/canva/Week08/03_1차검수 copy",
     "practice/data/theory/canva/Week07/04_2차검수",
@@ -225,7 +223,6 @@
     "practice/data/theory/canva/Week06/03_1차검수 copy",
     "practice/data/theory/canva/Week05/04_2차검수",
     "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.pdf",
-    "practice/data/theory/jungol/03_고등/2026년_5차_고등_수업_해설지_2019-2025.pdf",
     "practice/data/theory/canva/Week02/images/p140_04.png",
     "practice/data/theory/canva/Week02/images/p138_11.png",
     "practice/data/theory/canva/Week02/images/p132_07.png",

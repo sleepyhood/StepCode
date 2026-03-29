@@ -7,6 +7,7 @@ import re
 import shutil
 import tempfile
 import zipfile
+from urllib.parse import urlparse
 
 SECTION_HEADINGS = {
     "description": ["문제 설명", "문제설명", "설명"],
@@ -49,6 +50,10 @@ DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS = [
 DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS = [
     'xpath=//*[@id="app"]/div/div[3]/div[1]/div/div/form/button',
     'xpath=//*[@id="app"]//form/button',
+]
+DOINGCODING_ADMIN_TESTCASE_LIST_SELECTORS = [
+    'xpath=//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[11]/div[2]/div/div/div/ul',
+    'xpath=//*[@id="app"]//form//ul',
 ]
 DOINGCODING_ADMIN_TESTCASE_FILE_INPUT_SELECTORS = [
     'css=input[type="file"]',
@@ -788,35 +793,71 @@ def _set_doingcoding_testcase_zip(page, zip_path):
 
 
 def _wait_for_doingcoding_admin_save_success(page):
+    success_keywords = [
+        "저장 성공",
+        "수정 성공",
+        "등록 성공",
+        "업로드 성공",
+        "저장되었습니다",
+        "완료되었습니다",
+    ]
+
     try:
-        if "admin/problems" in getattr(page, "url", ""):
+        current_path = urlparse(getattr(page, "url", "") or "").path.rstrip("/")
+        if current_path == "/admin/problems":
             return
     except Exception:
         pass
 
     try:
         page.wait_for_function(
-            """() => (window.location.pathname || '').includes('/admin/problems')""",
-            timeout=5000,
+            """(keywords) => {
+                const path = (window.location.pathname || '').replace(/\\/+$/, '');
+                const bodyText = ((document.body && document.body.innerText) || '')
+                    .replace(/\\s+/g, ' ')
+                    .trim();
+                return (
+                    path === '/admin/problems' ||
+                    keywords.some((keyword) => bodyText.includes(keyword))
+                );
+            }""",
+            success_keywords,
+            timeout=15000,
         )
         return
     except Exception:
         pass
 
     try:
-        _find_first_working_selector(
+        testcase_list_selector = _find_first_working_selector(
             page,
-            DOINGCODING_ADMIN_SEARCH_SELECTORS,
-            timeout=5000,
+            DOINGCODING_ADMIN_TESTCASE_LIST_SELECTORS,
+            timeout=15000,
             require_visible=False,
         )
-        return
+        testcase_list_text = _clean_text(page.text_content(testcase_list_selector) or "")
+        if testcase_list_text:
+            return
+    except Exception:
+        pass
+
+    try:
+        current_path = urlparse(getattr(page, "url", "") or "").path.rstrip("/")
+        search_selector = _find_first_working_selector(
+            page,
+            DOINGCODING_ADMIN_SEARCH_SELECTORS,
+            timeout=15000,
+            require_visible=False,
+        )
+        if current_path == "/admin/problems":
+            page.wait_for_selector(search_selector, timeout=3000, state="attached")
+            return
     except Exception:
         pass
 
     try:
         body_text = _clean_text(page.text_content("body") or "")
-        if "성공" in body_text or "저장" in body_text:
+        if any(keyword in body_text for keyword in success_keywords):
             return
     except Exception:
         pass

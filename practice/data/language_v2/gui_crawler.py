@@ -299,22 +299,28 @@ class CrawlerApp:
         )
         self.testcase_count_label.pack(anchor="w", pady=(0, 4))
 
-        self.testcase_preview_area = scrolledtext.ScrolledText(
-            self.testcase_zip_frame,
-            width=90,
-            height=18,
-            state="disabled",
-            bg="#f7f7f7",
-        )
-        self.testcase_preview_area.pack(fill="both", expand=True, pady=(0, 6))
+        testcase_action_frame = tk.Frame(self.testcase_zip_frame)
+        testcase_action_frame.pack(fill="x", pady=(0, 6))
 
         self.export_testcase_zip_btn = tk.Button(
-            self.testcase_zip_frame,
+            testcase_action_frame,
             text="ZIP 생성",
             command=self.export_testcase_zip,
             state=tk.DISABLED,
         )
-        self.export_testcase_zip_btn.pack(anchor="e")
+        self.export_testcase_zip_btn.pack(side=tk.RIGHT)
+
+        preview_frame = tk.Frame(self.testcase_zip_frame)
+        preview_frame.pack(fill="both", expand=True)
+
+        self.testcase_preview_area = scrolledtext.ScrolledText(
+            preview_frame,
+            width=90,
+            height=16,
+            state="disabled",
+            bg="#f7f7f7",
+        )
+        self.testcase_preview_area.pack(fill="both", expand=True)
 
     def _build_upload_tab(self):
         self.testcase_upload_frame = tk.LabelFrame(
@@ -494,8 +500,7 @@ class CrawlerApp:
         self._set_testcase_preview(build_testcase_preview(cases, limit=3))
         self._set_testcase_export_enabled(bool(cases))
 
-        if not self.testcase_zip_name.get().strip():
-            self.testcase_zip_name.set(build_default_zip_name(filepath))
+        self.testcase_zip_name.set(build_default_zip_name(filepath))
         return True
 
     def select_testcase_markdown(self):

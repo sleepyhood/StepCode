@@ -21,6 +21,7 @@ from practice.data.language_v2.crawl import (
     DOINGCODING_ADMIN_TESTCASE_FILE_INPUT_SELECTORS,
     DOINGCODING_ADMIN_TESTCASE_SAVE_BUTTON_SELECTORS,
     DOINGCODING_ADMIN_TESTCASE_UPLOAD_BUTTON_SELECTORS,
+    DOINGCODING_ADMIN_TESTCASE_LIST_SELECTORS,
     _extract_section_after_heading,
     _extract_sample_pairs,
     _attempt_admin_login_submit,
@@ -33,6 +34,7 @@ from practice.data.language_v2.crawl import (
     _find_doingcoding_title,
     _missing_required_fields,
     _pick_best_code,
+    _wait_for_doingcoding_admin_save_success,
     collect_doingcoding_testcases,
     collect_doingcoding_testcases_with_session,
     download_doingcoding_testcases,
@@ -1142,6 +1144,45 @@ class DoingCodingStage1ParsingTests(unittest.TestCase):
             )
         finally:
             zip_path.unlink(missing_ok=True)
+
+    def test_wait_for_doingcoding_admin_save_success_rejects_edit_page_and_generic_save_text(self):
+        class FakePage:
+            def __init__(self):
+                self.url = "http://edu.doingcoding.com/admin/problems/123/edit"
+
+            def wait_for_function(self, _script, timeout):
+                raise RuntimeError(f"still editing after {timeout}")
+
+            def wait_for_selector(self, selector, timeout, state="visible"):
+                raise RuntimeError(f"{selector} missing")
+
+            def text_content(self, selector):
+                if selector == "body":
+                    return "문제 수정 화면 저장"
+                return ""
+
+        with self.assertRaises(RuntimeError):
+            _wait_for_doingcoding_admin_save_success(FakePage())
+
+    def test_wait_for_doingcoding_admin_save_success_accepts_uploaded_testcase_component(self):
+        class FakePage:
+            def __init__(self):
+                self.url = "http://edu.doingcoding.com/admin/problems/123/edit"
+
+            def wait_for_function(self, *args, **kwargs):
+                raise RuntimeError("still editing")
+
+            def wait_for_selector(self, selector, timeout, state="visible"):
+                if selector in DOINGCODING_ADMIN_TESTCASE_LIST_SELECTORS:
+                    return None
+                raise RuntimeError(f"{selector} missing")
+
+            def text_content(self, selector):
+                if selector in DOINGCODING_ADMIN_TESTCASE_LIST_SELECTORS:
+                    return "testcases.zip"
+                return ""
+
+        _wait_for_doingcoding_admin_save_success(FakePage())
 
     def test_upload_doingcoding_testcases_with_session_relogs_once_after_failure(self):
         session = DoingCodingAdminSession(context=object(), page="shared-page", username="admin", password="secret")
