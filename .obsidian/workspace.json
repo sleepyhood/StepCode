@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "practice/data/language_v2/testcase_single_case_checklist.md",
+                "file": "practice/data/theory/jungol/02_중등/2026년_6차_중등_수업_해설지_2024.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "testcase_single_case_checklist"
+              "title": "2026년_6차_중등_수업_해설지_2024"
             }
           }
         ]
@@ -185,13 +185,16 @@
   },
   "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
+    "practice/data/theory/jungol/02_중등/2026년_6차_중등_수업_해설지_2024.pdf",
+    "practice/data/theory/jungol/03_고등/2026년_6차_고등_수업_해설지_2024.md",
+    "practice/data/theory/jungol/03_고등/2026년_6차_중등_수업_해설지_2024.md",
+    "practice/data/language_v2/testcase_single_case_checklist.md",
     "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0506.md",
     "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0505.md",
     "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0504.md",
     "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0503.md",
     "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0502.md",
     "practice/data/language_v2/lv05_cast/_docs/reference/01_dc_S101v0501.md",
-    "practice/data/language_v2/testcase_single_case_checklist.md",
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0315.md",
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0314.md",
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0313.md",
@@ -208,13 +211,10 @@
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0301.md",
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0302.md",
     "practice/data/language_v2/01_dc_P101v0702.md",
-    "practice/data/language_v2/01_dc_P101v0701.md",
-    "practice/data/language_v2/_tmp_case_a.md",
     "practice/data/language_v2/__pycache__/testcase_zip_export.cpython-312.pyc",
     "Resources/reference/project_maps/content_workflow.canvas",
     "Resources/reference/project_maps/stepcode-overview.canvas",
     "practice/data/theory/jungol/03_고등/2026년_3차_고등_수업_해설지_2019-2025.pdf",
-    "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.md",
     "practice/data/theory/canva/Week08/04_2차검수",
     "practice/data/theory/canva/Week08/03_1차검수 copy",
     "practice/data/theory/canva/Week07/04_2차검수",
