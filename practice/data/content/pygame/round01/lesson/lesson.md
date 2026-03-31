@@ -4,94 +4,139 @@ contentType: "lesson"
 track: "pygame"
 lang: "python"
 categoryId: "py_pygame"
-title: "Python Pygame 1주차 응용"
+title: "Python Pygame 1주차"
 status: "active"
 order: 275
 audience: "common"
-tags: [pygame, game, window, event, debug, application]
-recommendedSetId: "py_pygame_a01"
-relatedSetIds: ["py_pygame_b01", "py_pygame_a01"]
+tags: [pygame, game, window, display, fill, update]
+recommendedSetId: "py_pygame_b01"
+relatedSetIds: ["py_pygame_b01"]
 priority: 3
 ---
 
-# Pygame 1주차 응용 수업
+# Pygame 1주차 운영 메모
 
 > [!goal]
 > 오늘의 목표
-> - 지난 시간에 만든 `pygame` 창과 이벤트 코드를 다시 읽을 수 있다.
-> - 고장난 코드를 보고 왜 안 되는지 설명할 수 있다.
-> - 규칙 1개를 직접 바꾸며 게임을 확장할 수 있다.
+>
+> - `pygame` 창을 직접 만들고 실행 확인까지 마칠 수 있다.
+> - 창 크기, 창 제목, 배경색이 각각 어떤 코드와 연결되는지 설명할 수 있다.
+> - 화면 변경 뒤 `pygame.display.update()`가 왜 필요한지 확인할 수 있다.
 
-## 1) 응용 회차의 중심 구조
+## 1) 이번 차시의 위치
 
-이번 회차는 `복사해서 완성`이 아니라 아래 3단계를 한 세트로 묶습니다.
+이 문서는 `세트 1. 창 생성과 화면 갱신 기초`의 `1주차 개념 수업` 운영 메모다.
+이번 차시에서는 창 생성과 화면 갱신까지만 다룬다.
 
-1. 코드 읽기
-2. 오류 판단과 수정
-3. 규칙 1개 변경
+아래 항목은 이번 차시의 메인 범위에서 제외한다.
 
-핵심은 "어떤 줄을 써야 하는가"보다 "`왜` 그 줄이 필요한가"를 회수하는 것입니다.
+- 종료 이벤트 처리
+- FPS 제한
+- 도형 그리기
+- 이미지 출력과 회전
+- 마우스 입력
 
-## 2) 이번 회차에서 다시 잡을 개념
+## 2) 이번 차시 핵심 개념 5개
 
-원본 1회차 수업에서 실제로 다시 사용하게 되는 개념은 아래 6개입니다.
+이번 시간에는 아래 5개만 정확히 잡는다.
 
+- `pygame.init()`
 - `pygame.display.set_mode((가로, 세로))`
+- `pygame.display.set_caption("제목")`
 - `SURFACE.fill((R, G, B))`
-- `for event in pygame.event.get():`
-- `if event.type == QUIT:`
 - `pygame.display.update()`
-- `clock.tick(FPS)`
 
-## 3) 읽기 단계에서 볼 코드
+설명 순서는 반드시 위 순서를 유지하는 편이 좋다.
+새 개념 수를 늘리지 말고, 각 줄이 화면에서 어떤 변화를 만드는지만 확인한다.
+
+## 3) 핵심 코드 1개
+
+학생이 오늘 완성해야 하는 기준 코드는 아래 수준으로 고정한다.
 
 ```python
-import sys
 import pygame
-from pygame.locals import QUIT
 
 pygame.init()
 SURFACE = pygame.display.set_mode((400, 300))
 pygame.display.set_caption("game")
 
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-
-    SURFACE.fill((255, 255, 255))
-    pygame.display.update()
+SURFACE.fill((255, 255, 255))
+pygame.display.update()
 ```
 
-이 코드를 읽을 때는 아래 순서로 확인합니다.
+이 코드의 역할은 아래 정도만 설명하면 충분하다.
 
-1. 창이 언제 만들어지는가
-2. 이벤트를 어디서 읽는가
-3. 화면을 언제 다시 그리는가
-4. 종료 코드는 어떤 조건에서 실행되는가
+1. `pygame.init()`은 `pygame` 사용 준비
+2. `set_mode()`는 창 크기 결정
+3. `set_caption()`은 창 제목 설정
+4. `fill()`은 화면 색 채우기
+5. `update()`는 변경된 화면 반영
 
-## 4) 자주 넣기 좋은 오류
+이번 시간에는 위 코드를 먼저 완성하고,
+그 다음에 숫자와 색만 바로 바꿔 보게 한다.
 
-응용 회차에서는 아래 같은 오류를 의도적으로 섞는 것이 좋습니다.
+## 4) 90분 운영 흐름
 
-- 이벤트 반복문이 빠진 경우
-- `pygame.display.update()`가 빠진 경우
-- 충돌 대상을 잘못 비교한 경우
-- 그리기 순서가 뒤집힌 경우
-- `clock.tick()`이 빠진 경우
+- 10분: `pygame` 실행 확인과 오늘 만들 결과 화면 제시
+- 20분: 핵심 코드 1줄씩 입력하며 창 생성 확인
+- 20분: `set_mode()` 숫자를 바꿔 창 크기 비교
+- 15분: `fill()` 색을 바꿔 배경색 비교
+- 10분: `update()`를 지웠을 때와 넣었을 때 차이 확인
+- 10분: 학생별 수정 결과 점검
+- 5분: 오늘 사용한 코드 5줄 다시 읽기
 
-## 5) 50분 운영 예시
+핵심은 `설명 -> 바로 실행 -> 값 1개 수정 -> 다시 실행` 흐름을 반복하는 것이다.
+새 개념 설명을 길게 끌지 않는다.
 
-- 10분: 핵심 코드 읽기와 실행 결과 예측
-- 20분: 고장난 코드 수정
-- 15분: 규칙 1개 바꾸기
-- 5분: 오늘 수정한 이유 정리
+## 5) 즉시 수정 실습 포인트
 
-## 6) 이번 세트의 마무리 질문
+이번 차시에서 바로 바꿔 보게 할 항목은 아래 정도면 충분하다.
 
-마지막에는 반드시 아래 질문을 다시 말하게 합니다.
+- 창 크기를 `(400, 300)`에서 `(300, 300)`으로 바꾸기
+- 창 제목을 `"game"`에서 다른 이름으로 바꾸기
+- 배경색을 흰색에서 초록색이나 파란색으로 바꾸기
+- `update()`를 잠시 지운 뒤 왜 화면 반영이 안 되는지 말해 보기
 
-- 왜 이벤트 처리는 반복문 안에 있어야 하는가?
-- 왜 화면 변경 뒤에 `pygame.display.update()`가 필요한가?
-- 내가 바꾼 규칙은 어떤 변수나 조건식으로 구현했는가?
+수정 실습은 "정답 찾기"보다 "값을 바꾸면 화면이 어떻게 달라지는가"에 초점을 둔다.
+
+## 6) 원본 자료 사용 범위
+
+[md_1회차_파이썬으로_게임만들기.md](c:/Users/osw/Desktop/Workspace/#Projects/StepCode/practice/data/content/pygame/round01/source/md_1회차_파이썬으로_게임만들기.md)는 범위가 넓다.
+이번 1주차에서는 아래 부분만 사용한다.
+
+- `pygame` 설치와 실행 확인
+- `pygame.init()`
+- `set_mode()`
+- `set_caption()`
+- `fill()`
+- `pygame.display.update()`
+
+이벤트, FPS, 도형, 이미지, 마우스 입력 설명은 이번 차시에서 본문 중심으로 다루지 않는다.
+
+## 7) 문제 자료와의 연결
+
+[problem_review_round01.md](c:/Users/osw/Desktop/Workspace/#Projects/StepCode/practice/data/content/pygame/round01/problem_review_round01.md)는 `round01` 전체를 기준으로 정리된 검수 문서다.
+그중 `1~4번을 필수`, `5~6번을 심화 또는 다음 세트 이관 후보`로 보는 기준은 유지한다.
+
+다만 이번 1주차 lesson에서는 문제 풀이 중심 운영을 하지 않는다.
+문제 검수 문서는 `2주차 응용` 또는 `세트 확장 운영`에 연결하는 자료로 본다.
+
+## 8) 수업 마무리 확인 질문
+
+마지막에는 아래 질문만 확인하면 된다.
+
+- 창 크기를 바꾸는 코드는 어느 줄인가
+- 창 제목을 바꾸는 코드는 어느 줄인가
+- 배경색을 바꾸는 코드는 어느 줄인가
+- 화면 변경 뒤 `update()`가 왜 필요한가
+
+학생이 이 네 가지를 말할 수 있으면 1주차 목표는 달성한 것으로 본다.
+
+## 9) 다음 회차 예고
+
+다음 회차에서는 이번에 만든 창을 바탕으로 아래 내용을 이어서 다룬다.
+
+- 종료 버튼을 눌렀을 때 정상적으로 닫기
+- 이벤트 큐 읽기
+- 화면 갱신을 반복문 안에서 다루기
+- 오픈북 복습과 간단한 수정 문제

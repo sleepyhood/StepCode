@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "practice/data/content/pygame/커리큘럼.md",
+                "file": "practice/data/content/pygame/round01/source/1회차_파이게임_추가본.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "커리큘럼"
+              "title": "1회차_파이게임_추가본"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 246.5
+    "width": 331.5
   },
   "right": {
     "id": "471151b06d0005fd",
@@ -185,29 +185,36 @@
   },
   "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile9.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile8.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile71.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile72.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile70.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile7.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile69.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile68.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile67.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile63.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile66.png",
+    "practice/data/content/pygame/round01/source/파이게임_추가본_images",
+    "practice/data/content/pygame/round01/source/파이게임 추가본_images",
+    "practice/data/content/pygame/round01/source/파이게임 추가본",
+    "practice/data/content/pygame/round01/source/파이게임_추가본",
     "practice/data/content/pygame/round01/source/1회차_파이게임_추가본.pdf",
-    "practice/data/content/pygame/round01/source/1회차_파이게임_추가본.json",
     "practice/data/content/pygame/round01/source/1회차_파이게임_추가본.md",
+    "practice/data/theory/jungol/03_고등/2026년_4차_고등_수업_해설지_2019-2025.md",
+    "practice/data/content/pygame/round01/lesson/lesson.md",
+    "practice/data/theory/jungol/03_고등/4주차_숙제대체/~$26년_4차_고등_수업_학생용_2019-2025.docx",
+    "practice/data/content/pygame/커리큘럼.md",
+    "practice/data/theory/무제.canvas",
+    "practice/data/theory/무제 1.canvas",
+    "practice/data/theory/무제 1.base",
+    "practice/data/content/pygame/round01/source/1회차_파이게임_추가본.json",
     "practice/data/content/pygame/round01/source/파이게임 추가본.md",
     "practice/data/content/pygame/round01/source/파이게임 추가본.json",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile72.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile71.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile70.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile69.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile68.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile67.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile66.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile65.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile64.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images/imageFile63.png",
-    "practice/data/content/pygame/round01/source/파이게임 추가본_images",
     "practice/data/content/pygame/round01/source/파이게임 추가본.pdf",
     "docs/superpowers/plans/2026-03-31-pygame-game-curriculum-audit.md",
-    "docs/superpowers/plans",
-    "docs/superpowers",
     "practice/data/theory/jungol/02_중등/2026년_6차_중등_수업_해설지_2024.md",
-    "practice/data/content/pygame/커리큘럼.md",
-    "practice/data/theory/jungol/02_중등/2026년_6차_중등_수업_해설지_2024.pdf",
     "practice/data/theory/jungol/03_고등/2026년_6차_고등_수업_해설지_2024.md",
     "practice/data/theory/jungol/03_고등/2026년_6차_중등_수업_해설지_2024.md",
     "practice/data/language_v2/testcase_single_case_checklist.md",
@@ -226,12 +233,7 @@
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0309.md",
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0308.md",
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0307.md",
-    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0306.md",
-    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0305.md",
-    "practice/data/language_v2/__pycache__/testcase_zip_export.cpython-312.pyc",
     "Resources/reference/project_maps/content_workflow.canvas",
-    "Resources/reference/project_maps/stepcode-overview.canvas",
-    "practice/data/theory/jungol/03_고등/2026년_3차_고등_수업_해설지_2019-2025.pdf",
-    "practice/data/theory/canva/Week08/04_2차검수"
+    "Resources/reference/project_maps/stepcode-overview.canvas"
   ]
 }
