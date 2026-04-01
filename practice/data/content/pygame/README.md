@@ -50,6 +50,26 @@ weekXX/
 - `week02` ~ `week06`은 lesson 안내 페이지와 기본 메타를 갖춘 최소 스캐폴드입니다.
 - 후속 작업에서 각 주차의 실제 문제 세트와 출력물을 채웁니다.
 
+## week01 문제 생성 파이프라인
+
+- 검수 원본: `week01/problem_review_round01.md`
+- 생성 스크립트: `scripts/generate_pygame_set_from_review.py`
+- 생성 결과: `practice/data/sets/py_pygame_w01_b01.json`
+
+즉, `problem_review_round01.md`는 사람이 직접 웹에서 읽는 파일이 아니라
+세트 JSON을 생성하는 운영 원본으로 사용합니다.
+
+예시 명령:
+
+```powershell
+python scripts/generate_pygame_set_from_review.py `
+  --source practice/data/content/pygame/week01/problem_review_round01.md `
+  --output practice/data/sets/py_pygame_w01_b01.json `
+  --set-id py_pygame_w01_b01 `
+  --title "Python Pygame 1주차" `
+  --category-id py_pygame_w01
+```
+
 ## 원본 `py_*.py` 게임 파일 취급 기준
 
 - 원본 `py_*.py` 게임 파일은 수업용 주차 자료를 만들기 위한 후보 소스입니다.
