@@ -1288,7 +1288,11 @@ function buildRelatedSetIds(entry, allSets) {
   const fixed = Array.isArray(entry.relatedSetIds) ? entry.relatedSetIds : [];
   if (fixed.length) return fixed;
   return (allSets || [])
-    .filter((setMeta) => setMeta.categoryId === entry.categoryId)
+    .filter(
+      (setMeta) =>
+        setMeta.categoryId === entry.categoryId &&
+        String(setMeta?.status || "active").toLowerCase() !== "inactive"
+    )
     .sort((a, b) => (a.round || 0) - (b.round || 0))
     .map((setMeta) => setMeta.id);
 }

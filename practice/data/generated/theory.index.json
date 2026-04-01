@@ -162,19 +162,89 @@
     "sourcePath": "./data/content/language/python/lv07_for/lesson/lesson.md"
   },
   {
-    "conceptId": "py_pygame_intro",
+    "conceptId": "py_pygame_w01_intro",
     "title": "Python Pygame 1주차",
-    "categoryId": "py_pygame",
+    "categoryId": "py_pygame_w01",
     "lang": "python",
     "track": "pygame",
-    "mdPath": "./data/content/pygame/lesson/lesson.md",
-    "recommendedSetId": "py_pygame_b01",
+    "mdPath": "./data/content/pygame/week01/lesson/lesson.md",
+    "recommendedSetId": "py_pygame_w01_b01",
     "relatedSetIds": [
-      "py_pygame_b01"
+      "py_pygame_w01_b01"
     ],
     "prerequisites": [],
     "nextConcepts": [],
     "priority": 3,
-    "sourcePath": "./data/content/pygame/lesson/lesson.md"
+    "sourcePath": "./data/content/pygame/week01/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_w02_intro",
+    "title": "Python Pygame 2주차",
+    "categoryId": "py_pygame_w02",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/week02/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame/week02/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_w03_intro",
+    "title": "Python Pygame 3주차",
+    "categoryId": "py_pygame_w03",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/week03/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame/week03/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_w04_intro",
+    "title": "Python Pygame 4주차",
+    "categoryId": "py_pygame_w04",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/week04/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame/week04/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_w05_intro",
+    "title": "Python Pygame 5주차",
+    "categoryId": "py_pygame_w05",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/week05/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame/week05/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_w06_intro",
+    "title": "Python Pygame 6주차",
+    "categoryId": "py_pygame_w06",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/week06/lesson/lesson.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame/week06/lesson/lesson.md"
   }
 ]

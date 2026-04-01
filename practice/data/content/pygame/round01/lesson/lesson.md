@@ -16,6 +16,9 @@ priority: 3
 
 # Pygame 1주차 운영 메모
 
+> 이 문서는 `round01` 보관 문서입니다.
+> 현재 웹에서 직접 노출되는 1주차 루트는 `practice/data/content/pygame/week01/lesson/lesson.md` 입니다.
+
 > [!goal]
 > 오늘의 목표
 >

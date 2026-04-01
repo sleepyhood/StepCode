@@ -10,14 +10,64 @@
     "contentRootPath": "./data/content/language/python/lv07_for"
   },
   {
-    "id": "py_pygame",
+    "id": "py_pygame_w01",
     "name": "Python - Pygame 1주차",
     "lang": "Python",
     "track": "pygame",
     "order": 275,
     "partName": "1주차",
     "status": "active",
-    "contentRootPath": "./data/content/pygame"
+    "contentRootPath": "./data/content/pygame/week01"
+  },
+  {
+    "id": "py_pygame_w02",
+    "name": "Python - Pygame 2주차",
+    "lang": "Python",
+    "track": "pygame",
+    "order": 276,
+    "partName": "2주차",
+    "status": "active",
+    "contentRootPath": "./data/content/pygame/week02"
+  },
+  {
+    "id": "py_pygame_w03",
+    "name": "Python - Pygame 3주차",
+    "lang": "Python",
+    "track": "pygame",
+    "order": 277,
+    "partName": "3주차",
+    "status": "active",
+    "contentRootPath": "./data/content/pygame/week03"
+  },
+  {
+    "id": "py_pygame_w04",
+    "name": "Python - Pygame 4주차",
+    "lang": "Python",
+    "track": "pygame",
+    "order": 278,
+    "partName": "4주차",
+    "status": "active",
+    "contentRootPath": "./data/content/pygame/week04"
+  },
+  {
+    "id": "py_pygame_w05",
+    "name": "Python - Pygame 5주차",
+    "lang": "Python",
+    "track": "pygame",
+    "order": 279,
+    "partName": "5주차",
+    "status": "active",
+    "contentRootPath": "./data/content/pygame/week05"
+  },
+  {
+    "id": "py_pygame_w06",
+    "name": "Python - Pygame 6주차",
+    "lang": "Python",
+    "track": "pygame",
+    "order": 280,
+    "partName": "6주차",
+    "status": "active",
+    "contentRootPath": "./data/content/pygame/week06"
   },
   {
     "id": "canva_l01_assignment",

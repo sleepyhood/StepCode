@@ -13,8 +13,8 @@
     "sourcePath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r01.json"
   },
   {
-    "id": "py_pygame_b01",
-    "categoryId": "py_pygame",
+    "id": "py_pygame_w01_b01",
+    "categoryId": "py_pygame_w01",
     "title": "Python Pygame 1주차",
     "round": 1,
     "difficulty": "basic",
@@ -22,7 +22,72 @@
     "track": "pygame",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/sets/pygame_round01.json",
-    "sourcePath": "./data/content/pygame/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/sets/py_pygame_w01_b01.json",
+    "sourcePath": "./data/content/pygame/week01/interactive/interactive_basic_r01.json"
+  },
+  {
+    "id": "py_pygame_w02_b01",
+    "categoryId": "py_pygame_w02",
+    "title": "Python Pygame 2주차",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "pygame",
+    "status": "inactive",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/content/pygame/week02/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/pygame/week02/interactive/interactive_basic_r01.json"
+  },
+  {
+    "id": "py_pygame_w03_b01",
+    "categoryId": "py_pygame_w03",
+    "title": "Python Pygame 3주차",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "pygame",
+    "status": "inactive",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/content/pygame/week03/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/pygame/week03/interactive/interactive_basic_r01.json"
+  },
+  {
+    "id": "py_pygame_w04_b01",
+    "categoryId": "py_pygame_w04",
+    "title": "Python Pygame 4주차",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "pygame",
+    "status": "inactive",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/content/pygame/week04/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/pygame/week04/interactive/interactive_basic_r01.json"
+  },
+  {
+    "id": "py_pygame_w05_b01",
+    "categoryId": "py_pygame_w05",
+    "title": "Python Pygame 5주차",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "pygame",
+    "status": "inactive",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/content/pygame/week05/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/pygame/week05/interactive/interactive_basic_r01.json"
+  },
+  {
+    "id": "py_pygame_w06_b01",
+    "categoryId": "py_pygame_w06",
+    "title": "Python Pygame 6주차",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "pygame",
+    "status": "inactive",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/content/pygame/week06/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/pygame/week06/interactive/interactive_basic_r01.json"
   }
 ]

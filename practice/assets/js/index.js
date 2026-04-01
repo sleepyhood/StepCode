@@ -159,6 +159,10 @@ function getPriorityInfo(priorityRaw) {
   return { value: 1, stars: "★", label: "기본" };
 }
 
+function isVisibleSetMeta(setMeta) {
+  return String(setMeta?.status || "active").toLowerCase() !== "inactive";
+}
+
 function createLangButton(lang, active) {
   const btn = document.createElement("button");
   btn.type = "button";
@@ -347,8 +351,9 @@ function buildPartCard(part, lang, theoryByCategoryId, viewState) {
 
   const meta = document.createElement("p");
   meta.className = "part-card-meta";
-  const basicCount = langInfo.sets.filter((s) => s.difficulty !== "challenge").length;
-  const challengeCount = langInfo.sets.filter((s) => s.difficulty === "challenge").length;
+  const visibleSets = langInfo.sets.filter(isVisibleSetMeta);
+  const basicCount = visibleSets.filter((s) => s.difficulty !== "challenge").length;
+  const challengeCount = visibleSets.filter((s) => s.difficulty === "challenge").length;
   const priority = getPriorityInfo(theory?.priority);
   meta.textContent = `${lang}`;
 
@@ -365,8 +370,8 @@ function buildPartCard(part, lang, theoryByCategoryId, viewState) {
 
   const actions = document.createElement("div");
   actions.className = "part-actions";
-  const basics = langInfo.sets.filter((s) => s.difficulty !== "challenge");
-  const challenges = langInfo.sets.filter((s) => s.difficulty === "challenge");
+  const basics = visibleSets.filter((s) => s.difficulty !== "challenge");
+  const challenges = visibleSets.filter((s) => s.difficulty === "challenge");
   const startHref = (() => {
     if (theory?.conceptId) {
       const q = new URLSearchParams();
