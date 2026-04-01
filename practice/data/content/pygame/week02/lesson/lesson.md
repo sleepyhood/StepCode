@@ -41,4 +41,5 @@ priority: 2
 
 - 주제: 이미지 출력과 회전 중심 응용
 - 형태: 코드 수정형 + 빈칸형 + 복수정답 객관식형
-- 기준 문제: `round01` 5번
+- 기준 문제: `week02` 1번
+- 검수 원본: `practice/data/content/pygame/week02/problem_review_week02.md`

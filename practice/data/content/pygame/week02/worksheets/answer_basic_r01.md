@@ -2,3 +2,5 @@
 
 현재는 lesson 안내 페이지 중심으로 연결되며,
 모듈 02의 출력용 정답 문서는 회전 중심 보정 세트에 맞춰 후속 보강합니다.
+
+- 검수 원본: `practice/data/content/pygame/week02/problem_review_week02.md`

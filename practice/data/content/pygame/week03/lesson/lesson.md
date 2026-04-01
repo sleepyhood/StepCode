@@ -41,4 +41,5 @@ priority: 2
 
 - 주제: 마우스 입력과 그리기 규칙 응용
 - 형태: 코드 수정형 + 빈칸형 + 복수정답 객관식형
-- 기준 문제: `round01` 6번
+- 기준 문제: `week03` 1번
+- 검수 원본: `practice/data/content/pygame/week03/problem_review_week03.md`
