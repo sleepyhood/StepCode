@@ -4,7 +4,7 @@ contentType: "lesson"
 track: "pygame"
 lang: "python"
 categoryId: "py_pygame_w01"
-title: "Python Pygame 1주차"
+title: "Python Pygame 모듈 01 · 화면 구성과 좌표"
 status: "active"
 order: 275
 audience: "common"
@@ -14,7 +14,7 @@ relatedSetIds: ["py_pygame_w01_b01"]
 priority: 3
 ---
 
-# Python Pygame 1주차
+# Python Pygame 모듈 01 · 화면 구성과 좌표
 
 이번 차시는 `pygame`의 기본 화면 제어와 입력 처리를 다시 읽고,
 고장난 코드를 직접 수정하는 데 초점을 둡니다.
@@ -35,6 +35,6 @@ priority: 3
 
 ## 학습 시작
 
-- 연습 세트: `Python Pygame 1주차`
+- 연습 세트: `Python Pygame 모듈 01 · 화면 구성과 좌표`
 - 형태: 코드 수정형 + 빈칸형 + 복수정답 객관식형
 - 검수 원본: [problem_review_round01.md](c:/Users/osw/Desktop/Workspace/#Projects/StepCode/practice/data/content/pygame/week01/problem_review_round01.md)

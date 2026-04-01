@@ -4,36 +4,41 @@ contentType: "lesson"
 track: "pygame"
 lang: "python"
 categoryId: "py_pygame_w02"
-title: "Python Pygame 2주차"
+title: "Python Pygame 모듈 02 · 이미지 출력과 회전 중심"
 status: "active"
 order: 276
 audience: "common"
-tags: [pygame, display, practice, update]
+tags: [pygame, image, rotate, center, blit]
 recommendedSetId: ""
 relatedSetIds: []
 priority: 2
 ---
 
-# Python Pygame 2주차
+# Python Pygame 모듈 02 · 이미지 출력과 회전 중심
 
-이번 주차는 `세트 1. 창 생성과 화면 갱신 기초`의 응용 차시입니다.
-현재 웹에서는 주차 구조와 lesson 진입을 먼저 연결했고, 문제 세트 본문은 후속 보강 예정입니다.
+이번 차시는 이미지 출력과 회전 결과를 다시 읽고,
+고장난 코드를 직접 수정하는 데 초점을 둡니다.
 
-## 이번 주차 목표
+## 이번 주차에서 다룰 핵심
 
-- 창 크기 변경이 화면 결과에 어떤 차이를 만드는지 설명할 수 있다.
-- 배경색 변경과 `pygame.display.update()` 호출 시점을 다시 확인할 수 있다.
-- 1주차에서 만든 최소 창 생성 코드를 바탕으로 값을 수정하는 연습 흐름을 이해할 수 있다.
+- `SURFACE.blit(...)`
+- `pygame.transform.rotate(...)`
+- `(0, 0)` 기준 출력이 만드는 화면 결과
+- `get_rect(center=...)`
+- 회전 결과의 중심 보정
 
-## 현재 준비 상태
+## 학습 방식
 
-- lesson 안내 페이지: 준비 완료
-- 웹 카드 연결: 준비 완료
-- 실문항 세트: 후속 보강 예정
+이번 주차는 `round01`의 5번 문제를 바탕으로,
+회전한 이미지가 왜 어색하게 보이는지 확인하고
+필요한 줄을 바꿔 화면 결과를 정상적으로 복구하는 흐름으로 진행합니다.
 
-## 예정된 활동
+핵심은 새로운 기능을 많이 추가하는 것이 아니라,
+이미 있는 코드를 읽고
+출력 위치와 중심 좌표를 어떻게 고쳐야 하는지 설명하는 데 있습니다.
 
-- 창 크기 변경
-- 배경색 변경
-- `update()` 누락 비교
-- 오픈북 복습 문제 풀이
+## 학습 시작
+
+- 주제: 이미지 출력과 회전 중심 응용
+- 형태: 코드 수정형 + 빈칸형 + 복수정답 객관식형
+- 기준 문제: `round01` 5번

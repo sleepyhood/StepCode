@@ -15,7 +15,7 @@
   {
     "id": "py_pygame_w01_b01",
     "categoryId": "py_pygame_w01",
-    "title": "Python Pygame 1주차",
+    "title": "Python Pygame 모듈 01 · 화면 구성과 좌표",
     "round": 1,
     "difficulty": "basic",
     "lang": "python",
@@ -28,7 +28,7 @@
   {
     "id": "py_pygame_w02_b01",
     "categoryId": "py_pygame_w02",
-    "title": "Python Pygame 2주차",
+    "title": "Python Pygame 모듈 02 · 이미지 출력과 회전 중심",
     "round": 1,
     "difficulty": "basic",
     "lang": "python",
@@ -41,7 +41,7 @@
   {
     "id": "py_pygame_w03_b01",
     "categoryId": "py_pygame_w03",
-    "title": "Python Pygame 3주차",
+    "title": "Python Pygame 모듈 03 · 마우스 입력과 그리기 규칙",
     "round": 1,
     "difficulty": "basic",
     "lang": "python",
@@ -54,7 +54,7 @@
   {
     "id": "py_pygame_w04_b01",
     "categoryId": "py_pygame_w04",
-    "title": "Python Pygame 4주차",
+    "title": "Python Pygame 모듈 04 · 이동, FPS, 값 변화",
     "round": 1,
     "difficulty": "basic",
     "lang": "python",
@@ -67,7 +67,7 @@
   {
     "id": "py_pygame_w05_b01",
     "categoryId": "py_pygame_w05",
-    "title": "Python Pygame 5주차",
+    "title": "Python Pygame 모듈 05 · 이벤트와 상태 분기",
     "round": 1,
     "difficulty": "basic",
     "lang": "python",
@@ -80,7 +80,7 @@
   {
     "id": "py_pygame_w06_b01",
     "categoryId": "py_pygame_w06",
-    "title": "Python Pygame 6주차",
+    "title": "Python Pygame 모듈 06 · 미니게임 종합 응용",
     "round": 1,
     "difficulty": "basic",
     "lang": "python",
@@ -89,5 +89,57 @@
     "file": "interactive_basic_r01.json",
     "dataPath": "./data/content/pygame/week06/interactive/interactive_basic_r01.json",
     "sourcePath": "./data/content/pygame/week06/interactive/interactive_basic_r01.json"
+  },
+  {
+    "id": "py_pygame_w07_b01",
+    "categoryId": "py_pygame_w07",
+    "title": "Python Pygame 모듈 07 · 랜덤 규칙과 등장 제어",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "pygame",
+    "status": "active",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/sets/py_pygame_w07_b01.json",
+    "sourcePath": "./data/content/pygame/week07/interactive/interactive_basic_r01.json"
+  },
+  {
+    "id": "py_pygame_w08_b01",
+    "categoryId": "py_pygame_w08",
+    "title": "Python Pygame 모듈 08 · 시간 규칙과 간격 제어",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "pygame",
+    "status": "active",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/sets/py_pygame_w08_b01.json",
+    "sourcePath": "./data/content/pygame/week08/interactive/interactive_basic_r01.json"
+  },
+  {
+    "id": "py_pygame_w09_b01",
+    "categoryId": "py_pygame_w09",
+    "title": "Python Pygame 모듈 09 · 삼각함수와 궤적 이동",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "pygame",
+    "status": "active",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/sets/py_pygame_w09_b01.json",
+    "sourcePath": "./data/content/pygame/week09/interactive/interactive_basic_r01.json"
+  },
+  {
+    "id": "py_pygame_w10_b01",
+    "categoryId": "py_pygame_w10",
+    "title": "Python Pygame 모듈 10 · 클래스와 코드 구조화",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "python",
+    "track": "pygame",
+    "status": "active",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/sets/py_pygame_w10_b01.json",
+    "sourcePath": "./data/content/pygame/week10/interactive/interactive_basic_r01.json"
   }
 ]

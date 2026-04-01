@@ -5,7 +5,7 @@
     "track": "pygame",
     "lang": "python",
     "categoryId": "py_pygame_w04",
-    "title": "Python Pygame 4주차",
+    "title": "Python Pygame 모듈 04 · 이동, FPS, 값 변화",
     "round": 1,
     "difficulty": "basic",
     "status": "inactive"

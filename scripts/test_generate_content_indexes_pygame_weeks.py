@@ -15,7 +15,7 @@ def load_json(path: Path):
 
 
 class GenerateContentIndexesPygameWeeksTests(unittest.TestCase):
-    def test_generator_emits_six_weekly_pygame_categories(self):
+    def test_generator_emits_ten_weekly_pygame_categories(self):
         subprocess.run(
             [sys.executable, "scripts/generate_content_indexes.py"],
             cwd=ROOT,
@@ -35,6 +35,10 @@ class GenerateContentIndexesPygameWeeksTests(unittest.TestCase):
                 "py_pygame_w04",
                 "py_pygame_w05",
                 "py_pygame_w06",
+                "py_pygame_w07",
+                "py_pygame_w08",
+                "py_pygame_w09",
+                "py_pygame_w10",
             ],
         )
 
@@ -58,8 +62,42 @@ class GenerateContentIndexesPygameWeeksTests(unittest.TestCase):
                 "py_pygame_w04_intro",
                 "py_pygame_w05_intro",
                 "py_pygame_w06_intro",
+                "py_pygame_w07_intro",
+                "py_pygame_w08_intro",
+                "py_pygame_w09_intro",
+                "py_pygame_w10_intro",
             ],
         )
+
+    def test_generator_emits_active_week07_to_week10_interactive_entries(self):
+        subprocess.run(
+            [sys.executable, "scripts/generate_content_indexes.py"],
+            cwd=ROOT,
+            check=True,
+        )
+
+        interactive_index = load_json(GENERATED_ROOT / "interactive.index.json")
+        pygame_week_entries = [
+            item
+            for item in interactive_index
+            if item.get("id") in {
+                "py_pygame_w07_b01",
+                "py_pygame_w08_b01",
+                "py_pygame_w09_b01",
+                "py_pygame_w10_b01",
+            }
+        ]
+
+        self.assertEqual(
+            [item["id"] for item in pygame_week_entries],
+            [
+                "py_pygame_w07_b01",
+                "py_pygame_w08_b01",
+                "py_pygame_w09_b01",
+                "py_pygame_w10_b01",
+            ],
+        )
+        self.assertTrue(all(item.get("status") == "active" for item in pygame_week_entries))
 
 
 if __name__ == "__main__":

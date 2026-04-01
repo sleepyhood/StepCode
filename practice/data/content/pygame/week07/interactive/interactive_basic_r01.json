@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "py_pygame_w07_b01",
+    "contentType": "interactive",
+    "track": "pygame",
+    "lang": "python",
+    "categoryId": "py_pygame_w07",
+    "title": "Python Pygame 모듈 07 · 랜덤 규칙과 등장 제어",
+    "round": 1,
+    "difficulty": "basic",
+    "status": "active",
+    "dataPath": "./data/sets/py_pygame_w07_b01.json"
+  }
+}

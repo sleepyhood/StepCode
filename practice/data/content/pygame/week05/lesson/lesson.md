@@ -4,29 +4,41 @@ contentType: "lesson"
 track: "pygame"
 lang: "python"
 categoryId: "py_pygame_w05"
-title: "Python Pygame 5주차"
+title: "Python Pygame 모듈 05 · 이벤트와 상태 분기"
 status: "active"
 order: 279
 audience: "common"
-tags: [pygame, fps, tick, position]
+tags: [pygame, event, state, condition, rules]
 recommendedSetId: ""
 relatedSetIds: []
 priority: 2
 ---
 
-# Python Pygame 5주차
+# Python Pygame 모듈 05 · 이벤트와 상태 분기
 
-이번 주차는 `세트 3. FPS, 좌표, 값 변화`의 개념 차시입니다.
-이 주차는 `tick()`과 화면 갱신, 좌표 변화의 관계를 이해하는 데 집중합니다.
+이번 차시는 이벤트와 상태 분기를 다시 읽고,
+고장난 코드를 직접 수정하는 데 초점을 둡니다.
 
-## 이번 주차 목표
+## 이번 주차에서 다룰 핵심
 
-- `pygame.time.Clock()`와 `tick()`의 역할을 설명할 수 있다.
-- FPS 값 차이가 움직임에 어떤 영향을 주는지 말할 수 있다.
-- 좌표 변화와 값 증가/감소가 화면 변화로 이어지는 흐름을 읽을 수 있다.
+- 이벤트 처리 흐름
+- 상태값 확인
+- 조건 분기
+- 규칙 전환
+- 조건 하나가 동작 전체에 주는 영향
 
-## 현재 준비 상태
+## 학습 방식
 
-- lesson 안내 페이지: 준비 완료
-- 웹 카드 연결: 준비 완료
-- 실문항 세트: 후속 보강 예정
+이번 주차는 입력과 상태가 함께 들어간 코드를 읽고,
+어떤 조건이 빠졌거나 잘못 들어갔는지 찾아
+동작을 원하는 규칙으로 바꾸는 흐름으로 진행합니다.
+
+핵심은 새로운 이론을 길게 배우는 것이 아니라,
+조건 하나가 화면 결과와 입력 반응을 어떻게 바꾸는지
+응용 문제 안에서 설명하고 수정하는 데 있습니다.
+
+## 학습 시작
+
+- 주제: 이벤트와 상태 분기 응용
+- 형태: 코드 수정형 + 빈칸형 + 복수정답 객관식형
+- 핵심 포인트: 조건 추가, 상태값 해석, 규칙 변경

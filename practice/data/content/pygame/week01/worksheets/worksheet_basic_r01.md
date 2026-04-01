@@ -4,7 +4,7 @@ contentType: "worksheet"
 track: "pygame"
 lang: "python"
 categoryId: "py_pygame_w01"
-title: "Python Pygame 1주차"
+title: "Python Pygame 모듈 01 · 화면 구성과 좌표"
 round: 1
 difficulty: "basic"
 status: "active"
@@ -12,7 +12,7 @@ audience: "common"
 printDefault: true
 ---
 
-# Python Pygame 1주차
+# Python Pygame 모듈 01 · 화면 구성과 좌표
 
 이 학습지는 `누적 풀이`를 전제로 구성됩니다.
 앞 문항의 수정 결과를 유지한 상태로 다음 문항을 풉니다.

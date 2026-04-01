@@ -5,7 +5,7 @@
     "track": "pygame",
     "lang": "python",
     "categoryId": "py_pygame_w05",
-    "title": "Python Pygame 5주차",
+    "title": "Python Pygame 모듈 05 · 이벤트와 상태 분기",
     "round": 1,
     "difficulty": "basic",
     "status": "inactive"

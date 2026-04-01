@@ -163,7 +163,7 @@
   },
   {
     "conceptId": "py_pygame_w01_intro",
-    "title": "Python Pygame 1주차",
+    "title": "Python Pygame 모듈 01 · 화면 구성과 좌표",
     "categoryId": "py_pygame_w01",
     "lang": "python",
     "track": "pygame",
@@ -179,7 +179,7 @@
   },
   {
     "conceptId": "py_pygame_w02_intro",
-    "title": "Python Pygame 2주차",
+    "title": "Python Pygame 모듈 02 · 이미지 출력과 회전 중심",
     "categoryId": "py_pygame_w02",
     "lang": "python",
     "track": "pygame",
@@ -193,7 +193,7 @@
   },
   {
     "conceptId": "py_pygame_w03_intro",
-    "title": "Python Pygame 3주차",
+    "title": "Python Pygame 모듈 03 · 마우스 입력과 그리기 규칙",
     "categoryId": "py_pygame_w03",
     "lang": "python",
     "track": "pygame",
@@ -207,7 +207,7 @@
   },
   {
     "conceptId": "py_pygame_w04_intro",
-    "title": "Python Pygame 4주차",
+    "title": "Python Pygame 모듈 04 · 이동, FPS, 값 변화",
     "categoryId": "py_pygame_w04",
     "lang": "python",
     "track": "pygame",
@@ -221,7 +221,7 @@
   },
   {
     "conceptId": "py_pygame_w05_intro",
-    "title": "Python Pygame 5주차",
+    "title": "Python Pygame 모듈 05 · 이벤트와 상태 분기",
     "categoryId": "py_pygame_w05",
     "lang": "python",
     "track": "pygame",
@@ -235,7 +235,7 @@
   },
   {
     "conceptId": "py_pygame_w06_intro",
-    "title": "Python Pygame 6주차",
+    "title": "Python Pygame 모듈 06 · 미니게임 종합 응용",
     "categoryId": "py_pygame_w06",
     "lang": "python",
     "track": "pygame",
@@ -246,5 +246,69 @@
     "nextConcepts": [],
     "priority": 2,
     "sourcePath": "./data/content/pygame/week06/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_w07_intro",
+    "title": "Python Pygame 모듈 07 · 랜덤 규칙과 등장 제어",
+    "categoryId": "py_pygame_w07",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/week07/lesson/lesson.md",
+    "recommendedSetId": "py_pygame_w07_b01",
+    "relatedSetIds": [
+      "py_pygame_w07_b01"
+    ],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame/week07/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_w08_intro",
+    "title": "Python Pygame 모듈 08 · 시간 규칙과 간격 제어",
+    "categoryId": "py_pygame_w08",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/week08/lesson/lesson.md",
+    "recommendedSetId": "py_pygame_w08_b01",
+    "relatedSetIds": [
+      "py_pygame_w08_b01"
+    ],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame/week08/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_w09_intro",
+    "title": "Python Pygame 모듈 09 · 삼각함수와 궤적 이동",
+    "categoryId": "py_pygame_w09",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/week09/lesson/lesson.md",
+    "recommendedSetId": "py_pygame_w09_b01",
+    "relatedSetIds": [
+      "py_pygame_w09_b01"
+    ],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame/week09/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_pygame_w10_intro",
+    "title": "Python Pygame 모듈 10 · 클래스와 코드 구조화",
+    "categoryId": "py_pygame_w10",
+    "lang": "python",
+    "track": "pygame",
+    "mdPath": "./data/content/pygame/week10/lesson/lesson.md",
+    "recommendedSetId": "py_pygame_w10_b01",
+    "relatedSetIds": [
+      "py_pygame_w10_b01"
+    ],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame/week10/lesson/lesson.md"
   }
 ]

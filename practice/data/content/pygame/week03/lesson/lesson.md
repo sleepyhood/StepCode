@@ -4,29 +4,41 @@ contentType: "lesson"
 track: "pygame"
 lang: "python"
 categoryId: "py_pygame_w03"
-title: "Python Pygame 3주차"
+title: "Python Pygame 모듈 03 · 마우스 입력과 그리기 규칙"
 status: "active"
 order: 277
 audience: "common"
-tags: [pygame, event, quit, loop]
+tags: [pygame, mouse, motion, input, drawing]
 recommendedSetId: ""
 relatedSetIds: []
 priority: 2
 ---
 
-# Python Pygame 3주차
+# Python Pygame 모듈 03 · 마우스 입력과 그리기 규칙
 
-이번 주차는 `세트 2. 이벤트 큐와 정상 종료`의 개념 차시입니다.
-이 주차는 종료 버튼 처리와 이벤트 큐의 필요성을 이해하는 데 집중합니다.
+이번 차시는 마우스 입력과 그림판 규칙을 다시 읽고,
+고장난 코드를 직접 수정하는 데 초점을 둡니다.
 
-## 이번 주차 목표
+## 이번 주차에서 다룰 핵심
 
-- `pygame.event.get()`가 왜 필요한지 설명할 수 있다.
-- `QUIT`, `pygame.quit()`, `sys.exit()`의 역할을 구분할 수 있다.
-- 무한 반복문 안에서 이벤트 처리가 빠졌을 때 생기는 문제를 말할 수 있다.
+- `MOUSEMOTION`
+- 클릭 상태 조건
+- `event.pos`
+- 좌표 저장
+- 반복 출력
 
-## 현재 준비 상태
+## 학습 방식
 
-- lesson 안내 페이지: 준비 완료
-- 웹 카드 연결: 준비 완료
-- 실문항 세트: 후속 보강 예정
+이번 주차는 `round01`의 6번 문제를 바탕으로,
+입력 조건이 빠진 코드를 읽고
+원하는 규칙으로 바꿨을 때 화면 결과가 어떻게 달라지는지 확인하는 흐름으로 진행합니다.
+
+핵심은 그림판을 새로 만드는 것이 아니라,
+클릭 여부, 좌표 저장, 반복 출력이 어떻게 연결되는지
+문제 풀이 안에서 설명하고 수정하는 데 있습니다.
+
+## 학습 시작
+
+- 주제: 마우스 입력과 그리기 규칙 응용
+- 형태: 코드 수정형 + 빈칸형 + 복수정답 객관식형
+- 기준 문제: `round01` 6번

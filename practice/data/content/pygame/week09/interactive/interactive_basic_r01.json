@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "id": "py_pygame_w09_b01",
+    "contentType": "interactive",
+    "track": "pygame",
+    "lang": "python",
+    "categoryId": "py_pygame_w09",
+    "title": "Python Pygame 모듈 09 · 삼각함수와 궤적 이동",
+    "round": 1,
+    "difficulty": "basic",
+    "status": "active",
+    "dataPath": "./data/sets/py_pygame_w09_b01.json"
+  }
+}
