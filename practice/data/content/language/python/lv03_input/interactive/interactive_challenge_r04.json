@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_input_c1",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_input",
+    "title": "Python 입력 챌린지 1회차",
+    "round": 4,
+    "difficulty": "challenge",
+    "status": "active"
+  },
+  "id": "py_input_c1",
+  "title": "Python 입력 챌린지 1회차",
+  "categoryId": "py_input",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_lv15_array2d_b03",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_array2d",
+    "title": "Python 2차원 배열 LV15 기초 3회차",
+    "round": 3,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_lv15_array2d_b03",
+  "title": "Python 2차원 배열 LV15 기초 3회차",
+  "categoryId": "py_array2d",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

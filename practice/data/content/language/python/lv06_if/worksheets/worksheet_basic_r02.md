@@ -1,0 +1,169 @@
+---
+id: "py_lv06_if_basic_r02"
+contentType: "worksheet"
+track: "language"
+lang: "python"
+categoryId: "py_if"
+title: "Python 조건문 기초 2회차"
+round: 2
+difficulty: "basic"
+status: "active"
+audience: "common"
+printDefault: true
+---
+# Python 조건문 기초 2회차
+
+### Q1. MCQ 1. 7이면 Lucky 출력
+
+다음 설명에 맞는 Python 코드를 고르세요.
+
+- 정수 n을 하나 입력받는다.
+- n이 7이면 "Lucky"를 출력한다.
+- n이 7이 아니면 아무 것도 출력하지 않는다. (else 없음)
+
+- **A**: n = int(input()) if n == 7:     print('%s' % 'Lucky')
+- **B**: n = int(input()) if n == 7:     print('%s' % 'Lucky') else:     print('%s' % 'Lucky')
+- **C**: n = int(input()) if n != 7:     print('%s' % 'Lucky')
+- **D**: n = int(input()) if n == 7:     print('%s' % 'Lucky') else:     print('%s' % 'NotLucky')
+
+---
+
+### Q2. MCQ 2. 1~9 범위 밖이면 OUT
+
+다음 설명에 맞는 Python 코드를 고르세요.
+
+- 정수 n을 하나 입력받는다.
+- n이 1 이상 9 이하가 아니면 "OUT"을 출력한다.
+- 그렇지 않으면 "IN"을 출력한다.
+
+- **A**: n = int(input()) if not (1 <= n <= 9):     print('%s' % 'OUT') else:     print('%s' % 'IN')
+- **B**: n = int(input()) if n < 1 and n > 9:     print('%s' % 'OUT') else:     print('%s' % 'IN')
+- **C**: n = int(input()) if not (1 < n < 9):     print('%s' % 'OUT') else:     print('%s' % 'IN')
+- **D**: n = int(input()) if not n < 1 or n > 9:     print('%s' % 'OUT') else:     print('%s' % 'IN')
+
+---
+
+### Q3. MCQ 3. 0으로 나누기 방지
+
+다음 설명에 맞는 Python 코드를 고르세요.
+
+- 정수 a, b를 입력받는다. (a 먼저, b 다음)
+- b가 0이 아니고, a가 b의 배수이면 "YES"를 출력한다.
+- 그 외에는 "NO"를 출력한다.
+- b가 0일 때도 오류가 나지 않아야 한다.
+
+- **A**: a = int(input()) b = int(input()) if b != 0 and a % b == 0:     print('%s' % 'YES') else:     print('%s' % 'NO')
+- **B**: a = int(input()) b = int(input()) if a % b == 0 and b != 0:     print('%s' % 'YES') else:     print('%s' % 'NO')
+- **C**: a = int(input()) b = int(input()) if b == 0 and a % b == 0:     print('%s' % 'YES') else:     print('%s' % 'NO')
+- **D**: a = int(input()) b = int(input()) if b != 0 or a % b == 0:     print('%s' % 'YES') else:     print('%s' % 'NO')
+
+---
+
+### Q4. MCQ 4. 3의 배수 또는 5의 배수
+
+다음 설명에 맞는 Python 코드를 고르세요.
+
+- 정수 n을 하나 입력받는다.
+- n이 3의 배수 또는 5의 배수이면 "YES"를 출력한다.
+- 그렇지 않으면 "NO"를 출력한다.
+
+- **A**: n = int(input()) if n % 3 == 0 or n % 5 == 0:     print('%s' % 'YES') else:     print('%s' % 'NO')
+- **B**: n = int(input()) if n % 3 == 0 and n % 5 == 0:     print('%s' % 'YES') else:     print('%s' % 'NO')
+- **C**: n = int(input()) if n % 3 == 0 or n % 5:     print('%s' % 'YES') else:     print('%s' % 'NO')
+- **D**: n = int(input()) if n % 3 == 0 or n % 5 == 0:     print('%s' % 'NO') else:     print('%s' % 'YES')
+
+---
+
+### Q5. MCQ 5. 영하/영상 판정
+
+다음 설명에 맞는 Python 코드를 고르세요.
+
+- 정수 t를 하나 입력받는다.
+- t가 0 이하이면 "ICE"를 출력한다.
+- 그렇지 않으면 "WATER"를 출력한다.
+
+- **A**: t = int(input()) if t <= 0:     print('%s' % 'ICE') else:     print('%s' % 'WATER')
+- **B**: t = int(input()) if t < 0:     print('%s' % 'ICE') else:     print('%s' % 'WATER')
+- **C**: t = int(input()) if t >= 0:     print('%s' % 'ICE') else:     print('%s' % 'WATER')
+- **D**: t = int(input()) if t <= 0:     print('%s' % 'WATER') else:     print('%s' % 'ICE')
+
+---
+
+### Q6. Trace 1. 범위 밖 판정(not)
+
+n과 limit를 넣었을 때 not 범위 조건의 결과를 표에 채우세요.
+
+입력 케이스 예시:
+- case1: n=5, limit=10
+- case2: n=0, limit=10
+- case3: n=11, limit=10
+
+```c
+n, limit = map(int, input().split())
+if not (1 <= n <= limit):
+    print('%s' % 'OUT')
+else:
+    print('%s' % 'IN')
+```
+
+---
+
+### Q7. Short 1. not으로 홀짝 판별
+
+아래 프로그램에서 입력이 9일 때, 출력되는 한 줄을 그대로 쓰세요.
+(따옴표는 쓰지 마시오)
+
+```c
+n = int(input())
+if not (n % 2 == 0):
+    print('%s' % 'odd')
+else:
+    print('%s' % 'even')
+```
+
+---
+
+### Q8. Short 2. 조건을 만족하는 값 찾기
+
+다음 조건식이 참(true)이 되도록 n의 값을 하나만 쓰세요.
+(여러 개 중 아무거나 하나 맞으면 정답입니다.)
+
+```c
+not (1 <= n <= 9) and n % 2 == 0
+```
+
+---
+
+### Q9. Code 1. 3의 배수 또는 5의 배수 조건식
+
+정수 n이 3의 배수 또는 5의 배수일 때만 "YES"가 출력되도록, if 뒤의 조건식을 작성하세요.
+
+if 뒤에 들어갈 조건식을 한 줄로 쓰세요.
+(반드시 or를 사용하세요.)
+
+```c
+n = int(input())
+if  # 여기에 조건식을 작성하세요:
+    print('%s' % 'YES')
+else:
+    print('%s' % 'NO')
+```
+
+---
+
+### Q10. Code 2. 1~9가 아니면 OUT 조건식
+
+정수 n이 1 이상 9 이하가 아닐 때만 "OUT"이 출력되도록, if 뒤의 조건식을 작성하세요.
+
+if 뒤에 들어갈 조건식을 한 줄로 쓰세요.
+(반드시 not (1 <= n <= 9) 형태를 사용하세요.)
+
+```c
+n = int(input())
+if  # 여기에 조건식을 작성하세요:
+    print('%s' % 'OUT')
+else:
+    print('%s' % 'IN')
+```
+
+---

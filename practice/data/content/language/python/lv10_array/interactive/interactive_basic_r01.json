@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_lv10_array_b01",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_array",
+    "title": "Python 배열 Lv10 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_lv10_array_b01",
+  "title": "Python 배열 Lv10 기초 1회차",
+  "categoryId": "py_array",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

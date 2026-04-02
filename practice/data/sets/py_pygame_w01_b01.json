@@ -1,6 +1,6 @@
 {
   "id": "py_pygame_w01_b01",
-  "title": "Python Pygame 모듈 01 · 화면 구성과 좌표",
+  "title": "Python Pygame 모듈 01 · 화면과 도형 기초",
   "categoryId": "py_pygame_w01",
   "availableLanguages": [
     "python"
@@ -10,7 +10,7 @@
     {
       "id": "by_section",
       "label": "대문항별",
-      "note": "6개 대문항 묶음으로 학습",
+      "note": "4개 대문항 묶음으로 학습",
       "renderMode": "section",
       "filter": {}
     }
@@ -59,28 +59,6 @@
         "p4_3",
         "p4_4"
       ]
-    },
-    {
-      "id": "sec_5",
-      "title": "5번 이미지 출력과 회전 중심",
-      "summary": "이 프로그램은 하나의 스프라이트를 계속 회전시키는 코드이다.\n현재는 회전한 이미지를 `(0, 0)`에 바로 그리기 때문에\n중심을 기준으로 도는 것처럼 보이지 않는다.\n이미지 출력, 회전, 중심 좌표 개념을 함께 확인할 수 있다.",
-      "relatedProblems": [
-        "p5_1",
-        "p5_2",
-        "p5_3",
-        "p5_4"
-      ]
-    },
-    {
-      "id": "sec_6",
-      "title": "6번 마우스 입력과 그림판 규칙",
-      "summary": "이 프로그램은 마우스가 지나간 위치를 저장해\n화면에 점을 찍는 간단한 그림판 코드이다.\n현재는 클릭하지 않아도 점이 계속 찍히도록 되어 있어서,\n입력 규칙과 마우스 좌표 처리를 함께 확인할 수 있다.",
-      "relatedProblems": [
-        "p6_1",
-        "p6_2",
-        "p6_3",
-        "p6_4"
-      ]
     }
   ],
   "sections": [
@@ -109,13 +87,28 @@
         },
         {
           "id": "p1_3",
-          "type": "short",
+          "type": "mcq_multi",
           "level": "basic",
-          "title": "1.3 1.2에서 사각형을 중앙에 옮기려면 현재 창 크기를...",
-          "description": "1.2에서 사각형을 중앙에 옮기려면\n현재 창 크기를 정확히 알아야 한다.\n아래 빈칸에 들어갈 숫자를 순서대로 쓰시오.",
+          "title": "1.3 현재 창 크기로 알맞은 것을 고른 것은?",
+          "description": "현재 창 크기로 알맞은 것을 고른 것은?",
           "teacherExplainMd": "- 앞 숫자는 가로, 뒤 숫자는 세로다.\n- 1.2의 중앙 좌표 계산은 현재 창 크기 `(400, 300)`을 기준으로 한다.",
-          "code": "SURFACE = pygame.display.set_mode((____, ____))",
-          "expectedText": "400, 300"
+          "options": [
+            "`(300, 400)`",
+            "`(400, 300)`",
+            "`(160, 90)`",
+            "`(200, 150)`"
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            1
+          ],
+          "minSelections": 1,
+          "maxSelections": 1
         },
         {
           "id": "p1_4",
@@ -146,6 +139,7 @@
         }
       ],
       "code": "import sys\nimport pygame\nfrom pygame.locals import QUIT\n\npygame.init()\nSURFACE = pygame.display.set_mode((400, 300))\npygame.display.set_caption(\"round01 problem01\")\n\n\ndef main():\n    while True:\n        for event in pygame.event.get():\n            if event.type == QUIT:\n                pygame.quit()\n                sys.exit()\n\n        # BLOCK_A_START\n        # 문제 1.1: 왜 실행 오류가 나는지 찾고 고치세요.\n        SURFACE.fill((255, 255))\n\n        # 문제 1.2: 사각형이 화면 중앙에 오도록 좌표를 수정하세요.\n        pygame.draw.rect(SURFACE, (255, 120, 120), (0, 0, 160, 90))\n        # BLOCK_A_END\n        pygame.display.update()\n\n\nif __name__ == \"__main__\":\n    main()",
+      "codePolicy": "teacher_only",
       "media": [
         {
           "type": "image",
@@ -188,12 +182,30 @@
         },
         {
           "id": "p2_2",
-          "type": "short",
+          "type": "mcq_multi",
           "level": "intermediate",
-          "title": "2.2 2.1에서 확인한 원인을 고치기 위해, X 버튼을...",
-          "description": "2.1에서 확인한 원인을 고치기 위해,\n`X` 버튼을 눌렀을 때 프로그램이 종료되도록\n아래 빈칸을 채우시오.",
-          "teacherExplainMd": "- 종료 처리의 핵심 블록이다.",
-          "expectedText": "pygame.event.get()"
+          "title": "2.2 2.1에서 확인한 원인을 고치기 위한 종료 처리 블...",
+          "description": "2.1에서 확인한 원인을 고치기 위한\n종료 처리 블록 설명으로 옳은 것을 모두 고른 것은?",
+          "teacherExplainMd": "- 종료 처리의 핵심은 이벤트를 읽고, `QUIT`를 확인한 뒤, 종료 함수를 호출하는 것이다.",
+          "options": [
+            "`pygame.event.get()`으로 이벤트를 읽어야 한다.",
+            "`if event.type == QUIT:` 조건이 필요하다.",
+            "종료 시 `pygame.quit()`와 `sys.exit()`를 함께 호출할 수 있다.",
+            "`pygame.draw.circle()`이 종료 처리의 핵심이다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0,
+            1,
+            2
+          ],
+          "minSelections": 3,
+          "maxSelections": 3
         },
         {
           "id": "p2_3",
@@ -234,6 +246,7 @@
         }
       ],
       "code": "import sys\nimport pygame\nfrom pygame.locals import QUIT\n\npygame.init()\nSURFACE = pygame.display.set_mode((400, 300))\npygame.display.set_caption(\"round01 problem03\")\n\n\ndef main():\n    while True:\n        # BLOCK_A_START\n        SURFACE.fill((20, 20, 20))\n        pygame.draw.circle(SURFACE, (255, 210, 80), (200, 150), 60)\n\n        # 문제 2.1, 2.2: X 버튼으로 창이 닫히도록 고치세요.\n        if False:\n            pygame.quit()\n            sys.exit()\n        # BLOCK_A_END\n\n        pygame.display.update()\n\n\nif __name__ == \"__main__\":\n    main()",
+      "codePolicy": "teacher_only",
       "conceptRef": "sec_2"
     },
     {
@@ -317,6 +330,7 @@
         }
       ],
       "code": "import sys\nimport pygame\nfrom pygame.locals import QUIT\n\npygame.init()\nSURFACE = pygame.display.set_mode((500, 240))\npygame.display.set_caption(\"round01 problem04\")\nFPSCLOCK = pygame.time.Clock()\n\n\ndef main():\n    xpos = 0\n    color_value = 0\n\n    while True:\n        for event in pygame.event.get():\n            if event.type == QUIT:\n                pygame.quit()\n                sys.exit()\n\n        # BLOCK_A_START\n        xpos += 4\n        if xpos > 540:\n            xpos = -40\n\n        color_value += 3\n        if color_value > 255:\n            color_value = 0\n\n        SURFACE.fill((color_value, 100, 255 - color_value))\n        pygame.draw.rect(SURFACE, (50, 120, 255), (xpos, 120, 40, 40))\n        # BLOCK_A_END\n\n        # 문제 3.1: 화면 변화가 보이도록 빠진 한 줄을 넣으세요.\n        # 문제 3.2, 3.3: tick 값을 바꿔 움직임을 비교하세요.\n        FPSCLOCK.tick(60)\n\n\nif __name__ == \"__main__\":\n    main()",
+      "codePolicy": "teacher_only",
       "conceptRef": "sec_3"
     },
     {
@@ -326,21 +340,53 @@
       "children": [
         {
           "id": "p4_1",
-          "type": "short",
+          "type": "mcq_multi",
           "level": "basic",
-          "title": "4.1 아래 빈칸에 들어갈 말을 순서대로 쓰시오. (140...",
-          "description": "아래 빈칸에 들어갈 말을 순서대로 쓰시오.\n\n`(140, 90, 170, 130)`의 의미:\n`____, ____, ____, ____`",
+          "title": "4.1 사각형 인수 (140, 90, 170, 130)의...",
+          "description": "사각형 인수 `(140, 90, 170, 130)`의 의미로 알맞은 것을 고른 것은?",
           "teacherExplainMd": "- 사각형 인자는",
-          "expectedText": "x좌표, y좌표, 가로길이, 세로길이"
+          "options": [
+            "`x좌표, y좌표, 가로길이, 세로길이`",
+            "`가로길이, 세로길이, x좌표, y좌표`",
+            "`중심 x좌표, 중심 y좌표, 반지름, 테두리 두께`",
+            "`왼쪽 위 x좌표, 오른쪽 아래 y좌표, 색상값, 두께`"
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0
+          ],
+          "minSelections": 1,
+          "maxSelections": 1
         },
         {
           "id": "p4_2",
-          "type": "short",
+          "type": "mcq_multi",
           "level": "basic",
-          "title": "4.2 4.1의 인자 해석을 바탕으로 볼 때, 제시된 코드...",
-          "description": "4.1의 인자 해석을 바탕으로 볼 때,\n제시된 코드에서 더 앞에 보이는 도형 이름을 쓰시오.",
+          "title": "4.2 제시된 코드에서 더 앞에 보이는 도형을 고른 것은?",
+          "description": "제시된 코드에서 더 앞에 보이는 도형을 고른 것은?",
           "teacherExplainMd": "- 원이 사각형보다 나중에 그려져 앞에 보인다.",
-          "expectedText": "원"
+          "options": [
+            "사각형",
+            "원",
+            "배경",
+            "두 도형이 완전히 같은 앞뒤 순서로 보인다"
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            1
+          ],
+          "minSelections": 1,
+          "maxSelections": 1
         },
         {
           "id": "p4_3",
@@ -399,6 +445,7 @@
         }
       ],
       "code": "import sys\nimport pygame\nfrom pygame.locals import QUIT\n\npygame.init()\nSURFACE = pygame.display.set_mode((500, 350))\npygame.display.set_caption(\"round01 problem02\")\n\n\ndef main():\n    while True:\n        for event in pygame.event.get():\n            if event.type == QUIT:\n                pygame.quit()\n                sys.exit()\n\n        # BLOCK_A_START\n        SURFACE.fill((245, 245, 245))\n        pygame.draw.rect(SURFACE, (255, 120, 120), (140, 90, 170, 130))\n        pygame.draw.circle(SURFACE, (80, 140, 255), (250, 170), 85)\n        # BLOCK_A_END\n        pygame.display.update()\n\n\nif __name__ == \"__main__\":\n    main()",
+      "codePolicy": "teacher_only",
       "media": [
         {
           "type": "image",
@@ -407,148 +454,6 @@
         }
       ],
       "conceptRef": "sec_4"
-    },
-    {
-      "id": "s5",
-      "title": "5번 이미지 출력과 회전 중심",
-      "description": "이 프로그램은 하나의 스프라이트를 계속 회전시키는 코드이다.\n현재는 회전한 이미지를 `(0, 0)`에 바로 그리기 때문에\n중심을 기준으로 도는 것처럼 보이지 않는다.\n이미지 출력, 회전, 중심 좌표 개념을 함께 확인할 수 있다.",
-      "children": [
-        {
-          "id": "p5_1",
-          "type": "short",
-          "level": "intermediate",
-          "title": "5.1 현재 회전 이미지가 기준으로 삼고 있는 좌표를 쓰시...",
-          "description": "현재 회전 이미지가 기준으로 삼고 있는 좌표를 쓰시오.",
-          "teacherExplainMd": "- 제시 코드는 `SURFACE.blit(rotated, (0, 0))`을 사용한다.",
-          "expectedText": "(0, 0)"
-        },
-        {
-          "id": "p5_2",
-          "type": "short",
-          "level": "intermediate",
-          "title": "5.2 5.1에서 확인한 (0, 0) 기준 출력을 고치기...",
-          "description": "5.1에서 확인한 `(0, 0)` 기준 출력을 고치기 위해\n회전한 이미지의 중심을 `(260, 160)`으로 맞추는\n아래 빈칸을 채우시오.",
-          "teacherExplainMd": "- 회전된 이미지에 맞는 새 rect를 만들고",
-          "expectedText": "center=(260, 160)"
-        },
-        {
-          "id": "p5_3",
-          "type": "short",
-          "level": "basic",
-          "title": "5.3 5.2의 두 번째 줄을 완성할 때 이미지를 화면에...",
-          "description": "5.2의 두 번째 줄을 완성할 때\n이미지를 화면에 출력하는 함수 이름을 쓰시오.",
-          "teacherExplainMd": "- `SURFACE.blit(...)`는",
-          "expectedText": "blit"
-        },
-        {
-          "id": "p5_4",
-          "type": "mcq_multi",
-          "level": "intermediate",
-          "title": "5.4 5.2와 5.3을 반영한 상태라고 가정한다. 그 상...",
-          "description": "5.2와 5.3을 반영한 상태라고 가정한다.\n그 상태에서 제시 코드의 `BLOCK_A_START`와 `BLOCK_A_END` 사이를\n아래 코드로 바꾸시오.\n\n실행 후 옳은 것을 모두 고른 것은?",
-          "teacherExplainMd": "- 각도 증가량이 `3`에서 `1`로 줄어 회전 속도가 느려진다.\n- 중심 보정이 적용되어 화면 가운데를 기준으로 도는 것처럼 보인다.\n- 배경색은 같은 값으로 유지된다.",
-          "code": "theta += 1\nSURFACE.fill((25, 25, 30))\nrotated = pygame.transform.rotate(sprite, theta)\nrotated_rect = rotated.get_rect(center=(260, 160))\nSURFACE.blit(rotated, rotated_rect)",
-          "options": [
-            "회전 속도가 이전보다 느려진다.",
-            "이미지가 화면 가운데를 기준으로 도는 것처럼 보인다.",
-            "이미지가 계속 `(0, 0)` 기준으로만 돈다.",
-            "배경색은 그대로다."
-          ],
-          "optionLabels": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ],
-          "correctIndexes": [
-            0,
-            1,
-            3
-          ],
-          "minSelections": 3,
-          "maxSelections": 3
-        }
-      ],
-      "code": "import sys\nimport pygame\nfrom pygame.locals import QUIT\n\npygame.init()\nSURFACE = pygame.display.set_mode((520, 320))\npygame.display.set_caption(\"round01 problem05\")\nFPSCLOCK = pygame.time.Clock()\n\n\ndef make_sprite():\n    sprite = pygame.Surface((140, 80), pygame.SRCALPHA)\n    pygame.draw.rect(sprite, (255, 140, 120), (10, 10, 120, 60), border_radius=12)\n    pygame.draw.circle(sprite, (255, 230, 90), (35, 40), 14)\n    pygame.draw.circle(sprite, (90, 180, 255), (105, 40), 14)\n    return sprite\n\n\ndef main():\n    sprite = make_sprite()\n    theta = 0\n\n    while True:\n        for event in pygame.event.get():\n            if event.type == QUIT:\n                pygame.quit()\n                sys.exit()\n\n        # BLOCK_A_START\n        theta += 3\n        SURFACE.fill((25, 25, 30))\n        rotated = pygame.transform.rotate(sprite, theta)\n        SURFACE.blit(rotated, (0, 0))\n        # BLOCK_A_END\n        pygame.display.update()\n        FPSCLOCK.tick(60)\n\n\nif __name__ == \"__main__\":\n    main()",
-      "media": [
-        {
-          "type": "gif",
-          "path": "../content/pygame/week01/reference_images/problem05_correct.gif",
-          "caption": "5번 정상 작동 참고 GIF"
-        }
-      ],
-      "conceptRef": "sec_5"
-    },
-    {
-      "id": "s6",
-      "title": "6번 마우스 입력과 그림판 규칙",
-      "description": "이 프로그램은 마우스가 지나간 위치를 저장해\n화면에 점을 찍는 간단한 그림판 코드이다.\n현재는 클릭하지 않아도 점이 계속 찍히도록 되어 있어서,\n입력 규칙과 마우스 좌표 처리를 함께 확인할 수 있다.",
-      "children": [
-        {
-          "id": "p6_1",
-          "type": "short",
-          "level": "basic",
-          "title": "6.1 마우스를 움직일 때마다 좌표를 리스트에 넣게 만드는...",
-          "description": "마우스를 움직일 때마다 좌표를 리스트에 넣게 만드는\n이벤트 타입 이름을 쓰시오.",
-          "teacherExplainMd": "- 그림판 코드의 핵심은",
-          "expectedText": "MOUSEMOTION"
-        },
-        {
-          "id": "p6_2",
-          "type": "short",
-          "level": "intermediate",
-          "title": "6.2 6.1에서 확인한 MOUSEMOTION 조건에 클릭...",
-          "description": "6.1에서 확인한 `MOUSEMOTION` 조건에\n클릭 상태를 추가하려고 한다.\n마우스를 클릭한 상태에서만 점이 그려지도록\n아래 빈칸 두 곳을 채우시오.",
-          "teacherExplainMd": "- 클릭한 상태에서만 그리도록 조건을 추가해야 한다.",
-          "expectedText": "MOUSEMOTION"
-        },
-        {
-          "id": "p6_3",
-          "type": "code",
-          "level": "basic",
-          "title": "6.3 6.2에서 저장된 좌표 pos에 검은 점을 찍는 정...",
-          "description": "6.2에서 저장된 좌표 `pos`에\n검은 점을 찍는 정답 한 줄을 쓰시오.",
-          "teacherExplainMd": "- 그림판 출력의 핵심 줄이다.",
-          "expectedCode": "pygame.draw.circle(SURFACE, (0, 0, 0), pos, 5)"
-        },
-        {
-          "id": "p6_4",
-          "type": "mcq_multi",
-          "level": "intermediate",
-          "title": "6.4 6.2와 6.3을 반영한 상태라고 가정한다. 그 상...",
-          "description": "6.2와 6.3을 반영한 상태라고 가정한다.\n그 상태에서 제시 코드의 `BLOCK_A_START`와 `BLOCK_A_END` 사이를\n아래 코드로 바꾸시오.\n\n그리고 `BLOCK_B_START`와 `BLOCK_B_END` 사이를\n아래 코드로 바꾸시오.\n\n실행 후 옳은 것을 모두 고른 것은?",
-          "teacherExplainMd": "- 클릭 조건이 들어가므로 움직이기만 해서는 점이 찍히지 않는다.\n- 색상은 검정에서 빨간색 계열로, 반지름은 `5`에서 `8`로 바뀐다.",
-          "code": "elif event.type == MOUSEMOTION and event.buttons[0]:\n    mouse_positions.append(event.pos)",
-          "options": [
-            "마우스를 움직이기만 하면 점이 찍힌다.",
-            "클릭한 상태에서 움직일 때만 점이 찍힌다.",
-            "점 색은 빨간색 계열로 바뀐다.",
-            "점 크기는 이전보다 커진다."
-          ],
-          "optionLabels": [
-            "A",
-            "B",
-            "C",
-            "D"
-          ],
-          "correctIndexes": [
-            1,
-            2,
-            3
-          ],
-          "minSelections": 3,
-          "maxSelections": 3
-        }
-      ],
-      "code": "import sys\nimport pygame\nfrom pygame.locals import QUIT, MOUSEMOTION\n\npygame.init()\nSURFACE = pygame.display.set_mode((600, 420))\npygame.display.set_caption(\"round01 problem06\")\nFPSCLOCK = pygame.time.Clock()\n\n\ndef main():\n    mouse_positions = []\n\n    while True:\n        for event in pygame.event.get():\n            if event.type == QUIT:\n                pygame.quit()\n                sys.exit()\n            # BLOCK_A_START\n            elif event.type == MOUSEMOTION:\n                # 문제 6.2: 클릭한 상태에서만 점이 그려지도록 고치세요.\n                mouse_positions.append(event.pos)\n            # BLOCK_A_END\n\n        SURFACE.fill((255, 255, 255))\n\n        # BLOCK_B_START\n        for pos in mouse_positions:\n            pygame.draw.circle(SURFACE, (20, 20, 20), pos, 5)\n        # BLOCK_B_END\n\n        pygame.display.update()\n        FPSCLOCK.tick(60)\n\n\nif __name__ == \"__main__\":\n    main()",
-      "media": [
-        {
-          "type": "gif",
-          "path": "../content/pygame/week01/reference_images/problem06_correct.gif",
-          "caption": "6번 정상 작동 참고 GIF"
-        }
-      ],
-      "conceptRef": "sec_6"
     }
   ]
 }

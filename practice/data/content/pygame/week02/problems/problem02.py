@@ -8,16 +8,19 @@ pygame.display.set_caption("week02 problem02")
 FPSCLOCK = pygame.time.Clock()
 
 
-def make_sprite():
-    sprite = pygame.Surface((140, 80), pygame.SRCALPHA)
-    pygame.draw.rect(sprite, (255, 140, 120), (10, 10, 120, 60), border_radius=12)
-    pygame.draw.circle(sprite, (255, 230, 90), (35, 40), 14)
-    pygame.draw.circle(sprite, (90, 180, 255), (105, 40), 14)
-    return sprite
+def make_badge():
+    badge = pygame.Surface((140, 140), pygame.SRCALPHA)
+    pygame.draw.circle(badge, (255, 210, 90), (70, 70), 60)
+    pygame.draw.circle(badge, (250, 120, 120), (70, 70), 38)
+    pygame.draw.rect(badge, (255, 245, 210), (62, 15, 16, 42), border_radius=8)
+    pygame.draw.rect(badge, (255, 245, 210), (62, 83, 16, 42), border_radius=8)
+    pygame.draw.rect(badge, (255, 245, 210), (15, 62, 42, 16), border_radius=8)
+    pygame.draw.rect(badge, (255, 245, 210), (83, 62, 42, 16), border_radius=8)
+    return badge
 
 
 def main():
-    sprite = make_sprite()
+    badge = make_badge()
     theta = 0
 
     while True:
@@ -26,13 +29,11 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        # BLOCK_A_START
         theta += 3
-        SURFACE.fill((25, 25, 30))
-        rotated = pygame.transform.rotate(sprite, theta)
-        # 문제 2.2: 현재 출력 기준 좌표를 확인하세요.
-        SURFACE.blit(rotated, (0, 0))
-        # BLOCK_A_END
+        SURFACE.fill((28, 30, 40))
+        rotated = pygame.transform.rotate(badge, theta)
+        rotated_rect = rotated.get_rect(center=(260, 160))
+        SURFACE.blit(rotated, rotated_rect)
 
         pygame.display.update()
         FPSCLOCK.tick(60)

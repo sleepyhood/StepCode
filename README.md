@@ -909,6 +909,7 @@ python scripts/generate_content_indexes.py
 
 - `content/`, `generated/`, `sets/`, `theory/`, `curriculum/`: 운영 자산으로 유지
 - `language_v2`, `Pygame`, `temp/` 등 실험/전환 성격 폴더: 프로젝트 또는 참고자료 후보로 별도 검토
+- `content/language/python/`는 운영용 Python 콘텐츠 원본, `language_v2/`는 수집/크롤링 작업 영역으로 분리 유지
 
 ### 11.6 2차 PARA 내부 분류 기준
 

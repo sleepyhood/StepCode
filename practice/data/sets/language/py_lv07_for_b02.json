@@ -1,109 +1,109 @@
 {
-    "id":  "py_lv07_for_b02",
-    "title":  "Python for문 기초 2회차",
-    "categoryId":  "py_for",
-    "availableLanguages":  [
-                               "python"
-                           ],
-    "problems":  [
-                     {
-                         "id":  "t_range_step",
-                         "type":  "short",
-                         "level":  "기초",
-                         "title":  "Trace 1. 감소 step",
-                         "description":  "각 반복 직후 i와 output을 표에 채우세요.",
-                         "code":  "for i in range(5, 0, -2):\n    print(\u0027%d\u0027 % i)",
-                         "answerUi":  {
-                                          "kind":  "grid",
-                                          "rows":  [
-                                                       "1",
-                                                       "2",
-                                                       "3"
-                                                   ],
-                                          "columns":  [
-                                                          "i",
-                                                          "output"
-                                                      ],
-                                          "rowSep":  "\\n",
-                                          "colSep":  " "
-                                      },
-                         "expectedGrid":  [
-                                              [
-                                                  "5",
-                                                  "5"
-                                              ],
-                                              [
-                                                  "3",
-                                                  "3"
-                                              ],
-                                              [
-                                                  "1",
-                                                  "1"
-                                              ]
-                                          ]
-                     },
-                     {
-                         "id":  "t_input_sum",
-                         "type":  "short",
-                         "level":  "기초",
-                         "title":  "Trace 2. 중간 상태 복원",
-                         "description":  "sum += i 코드에서 3회 반복 직후 i와 sum을 표에 채우세요.",
-                         "code":  "sumv = 0\nfor i in range(1, 7):\n    sumv += i",
-                         "answerUi":  {
-                                          "kind":  "grid",
-                                          "rows":  [
-                                                       "1",
-                                                       "2",
-                                                       "3"
-                                                   ],
-                                          "columns":  [
-                                                          "i",
-                                                          "sum"
-                                                      ],
-                                          "rowSep":  "\\n",
-                                          "colSep":  " "
-                                      },
-                         "expectedGrid":  [
-                                              [
-                                                  "1",
-                                                  "1"
-                                              ],
-                                              [
-                                                  "2",
-                                                  "3"
-                                              ],
-                                              [
-                                                  "3",
-                                                  "6"
-                                              ]
-                                          ]
-                     },
-                     {
-                         "id":  "r_find_n_even_sum",
-                         "type":  "short",
-                         "level":  "기초",
-                         "title":  "Reverse 1. 시작값/step 추론",
-                         "description":  "출력이 2, 4, 6, 8일 때 start와 step을 공백으로 구분해 쓰세요.",
-                         "code":  "for i in range(start, 9, step):\n    print(\u0027%d\u0027 % i)",
-                         "expectedText":  "2 2"
-                     },
-                     {
-                         "id":  "s_even_count",
-                         "type":  "short",
-                         "level":  "기초",
-                         "title":  "Short 1. 경계 비교",
-                         "description":  "for i in range(5) 본문은 몇 번 실행되나요?",
-                         "code":  "for i in range(5):\n    pass",
-                         "expectedText":  "5"
-                     },
-                     {
-                         "id":  "code2",
-                         "type":  "code",
-                         "level":  "기초",
-                         "title":  "Code 1. 조건식 한 줄",
-                         "description":  "1부터 n까지 수 중 짝수만 sumv에 더하려고 합니다. if문의 조건식 한 줄을 작성하세요.",
-                         "code":  "sumv = 0\nfor i in range(1, n + 1):\n    if ____:\n        sumv += i",
-                         "expectedCode":  "i % 2 == 0"
-                     }
-                 ]
+  "id": "py_lv07_for_b02",
+  "title": "Python for문 기초 2회차",
+  "categoryId": "py_for",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": [
+    {
+      "id": "t_range_step",
+      "type": "short",
+      "level": "기초",
+      "title": "Trace 1. 감소 step",
+      "description": "각 반복 직후 i와 output을 표에 채우세요.",
+      "code": "for i in range(5, 0, -2):\n    print('%d' % i)",
+      "answerUi": {
+        "kind": "grid",
+        "rows": [
+          "1",
+          "2",
+          "3"
+        ],
+        "columns": [
+          "i",
+          "output"
+        ],
+        "rowSep": "\\n",
+        "colSep": " "
+      },
+      "expectedGrid": [
+        [
+          "5",
+          "5"
+        ],
+        [
+          "3",
+          "3"
+        ],
+        [
+          "1",
+          "1"
+        ]
+      ]
+    },
+    {
+      "id": "t_input_sum",
+      "type": "short",
+      "level": "기초",
+      "title": "Trace 2. 중간 상태 복원",
+      "description": "sum += i 코드에서 3회 반복 직후 i와 sum을 표에 채우세요.",
+      "code": "sumv = 0\nfor i in range(1, 7):\n    sumv += i",
+      "answerUi": {
+        "kind": "grid",
+        "rows": [
+          "1",
+          "2",
+          "3"
+        ],
+        "columns": [
+          "i",
+          "sum"
+        ],
+        "rowSep": "\\n",
+        "colSep": " "
+      },
+      "expectedGrid": [
+        [
+          "1",
+          "1"
+        ],
+        [
+          "2",
+          "3"
+        ],
+        [
+          "3",
+          "6"
+        ]
+      ]
+    },
+    {
+      "id": "r_find_n_even_sum",
+      "type": "short",
+      "level": "기초",
+      "title": "Reverse 1. 시작값/step 추론",
+      "description": "출력이 2, 4, 6, 8일 때 start와 step을 공백으로 구분해 쓰세요.",
+      "code": "for i in range(start, 9, step):\n    print('%d' % i)",
+      "expectedText": "2 2"
+    },
+    {
+      "id": "s_even_count",
+      "type": "short",
+      "level": "기초",
+      "title": "Short 1. 경계 비교",
+      "description": "for i in range(5) 본문은 몇 번 실행되나요?",
+      "code": "for i in range(5):\n    pass",
+      "expectedText": "5"
+    },
+    {
+      "id": "code2",
+      "type": "code",
+      "level": "기초",
+      "title": "Code 1. 조건식 한 줄",
+      "description": "1부터 n까지 수 중 짝수만 sumv에 더하려고 합니다. if문의 조건식 한 줄을 작성하세요.",
+      "code": "sumv = 0\nfor i in range(1, n + 1):\n    if ____:\n        sumv += i",
+      "expectedCode": "i % 2 == 0"
+    }
+  ]
 }

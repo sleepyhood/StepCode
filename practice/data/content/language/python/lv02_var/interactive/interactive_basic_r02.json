@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_var_b2",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_var",
+    "title": "Python 변수 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_var_b2",
+  "title": "Python 변수 기초 2회차",
+  "categoryId": "py_var",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

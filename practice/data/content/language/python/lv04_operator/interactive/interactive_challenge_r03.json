@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_lv04_operator_c01",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_operator",
+    "title": "Python 연산자 LV04 챌린지 1회차",
+    "round": 3,
+    "difficulty": "challenge",
+    "status": "active"
+  },
+  "id": "py_lv04_operator_c01",
+  "title": "Python 연산자 LV04 챌린지 1회차",
+  "categoryId": "py_operator",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

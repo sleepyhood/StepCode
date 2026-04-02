@@ -1,0 +1,169 @@
+---
+id: "py_lv08_while_basic_r01"
+contentType: "worksheet"
+track: "language"
+lang: "python"
+categoryId: "py_while"
+title: "Python while문 기초 1회차"
+round: 1
+difficulty: "basic"
+status: "active"
+audience: "common"
+printDefault: true
+---
+# Python while문 기초 1회차
+
+### Q1. MCQ 1. 1부터 5까지 출력하는 while문
+
+다음 요구사항을 만족하는 Python while 코드를 고르세요.
+
+- 정수 1부터 5까지를 순서대로 한 줄에 하나씩 출력한다.
+- 각 줄에는 숫자 하나만 출력한다.
+- 숫자는 서식문자를 사용해 출력한다.
+
+- **A**: i = 1 while i < 5:     print('%d' % i)     i = i + 1
+- **B**: i = 1 while i <= 5:     print('%d' % i)     i = i + 1
+- **C**: i = 0 while i <= 5:     print('%d' % i)
+- **D**: for i in range(1, 6):     print('%d' % i)
+
+---
+
+### Q2. MCQ 2. while과 감소
+
+아래 프로그램에서 입력이 3일 때, 출력으로 알맞은 것을 고르세요.
+
+```c
+n = int(input())
+while n > 0:
+    print('%d' % n)
+    n = n - 1
+print('%s' % 'Done')
+```
+
+- **A**: 3 2 1
+- **B**: 3 2 1 Done
+- **C**: 2 1 Done
+- **D**: 1 2 3 Done
+
+---
+
+### Q3. MCQ 3. 1부터 n까지의 합
+
+다음 프로그램에서 입력이 4일 때, 출력되는 값을 고르세요.
+
+```c
+n = int(input())
+s = 0
+i = 1
+while i <= n:
+    s = s + i
+    i = i + 1
+print('%d' % s)
+```
+
+- **A**: 4
+- **B**: 6
+- **C**: 10
+- **D**: 15
+
+---
+
+### Q4. MCQ 4. 무한 루프가 되는 이유
+
+다음 프로그램의 문제점에 대한 설명으로 가장 알맞은 것을 고르세요.
+
+```c
+n = int(input())
+while n != 0:
+    print('%d' % n)
+```
+
+- **A**: n이 음수일 때는 while문이 한 번도 실행되지 않는다.
+- **B**: while 안에서 n의 값이 바뀌지 않아서, n이 0이 아니면 무한 반복된다.
+- **C**: print에서 서식문자를 사용하지 않아 오류가 발생한다.
+- **D**: input()을 int로 바꾸지 않아 문자열 덧셈이 일어난다.
+
+---
+
+### Q5. MCQ 5. while로 홀수만 출력
+
+아래 프로그램에서 입력이 7일 때, 출력으로 알맞은 것을 고르세요.
+
+```c
+n = int(input())
+i = 1
+while i <= n:
+    if i % 2 == 1:
+        print('%d' % i)
+    i = i + 1
+```
+
+- **A**: 1 2 3 4 5 6 7
+- **B**: 1 3 5 7
+- **C**: 2 4 6
+- **D**: 3 5 7
+
+---
+
+### Q6. Short 1. while i < 3 의 출력
+
+아래 프로그램에서 출력되는 숫자들을 작은 것부터 큰 것 순서로, 공백으로 구분해 한 줄에 쓰시오.
+(예: 1 2 3)
+
+```c
+i = 0
+while i < 3:
+    print('%d' % i)
+    i = i + 1
+```
+
+---
+
+### Q7. Short 2. 0이 나올 때까지 짝수 개수 세기
+
+아래 프로그램에서 입력이 순서대로 3, 4, 6, 1, 0일 때, 마지막에 출력되는 값을 쓰시오.
+
+```c
+cnt = 0
+while True:
+    x = int(input())
+    if x == 0:
+        break
+    if x % 2 == 0:
+        cnt = cnt + 1
+print('%d' % cnt)
+```
+
+---
+
+### Q8. Code 1. while로 1부터 n까지 출력
+
+정수 n을 입력받은 뒤, 1부터 n까지를 한 줄에 하나씩 출력하는 while문의 조건식을 작성하세요.
+아래 코드에서 while 줄만 완성하면 됩니다.
+
+```c
+n = int(input())
+i = 1
+while  # TODO: 여기에 조건식을 작성하시오.
+    print('%d' % i)
+    i = i + 1
+```
+
+---
+
+### Q9. Short 3. 3의 배수 합
+
+아래 프로그램에서 입력이 10일 때 출력되는 값을 쓰시오.
+
+```c
+n = int(input())
+i = 1
+s = 0
+while i <= n:
+    if i % 3 == 0:
+        s = s + i
+    i = i + 1
+print('%d' % s)
+```
+
+---

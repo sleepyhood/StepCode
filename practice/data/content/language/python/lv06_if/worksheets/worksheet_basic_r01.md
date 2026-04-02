@@ -1,0 +1,183 @@
+---
+id: "py_lv06_if_basic_r01"
+contentType: "worksheet"
+track: "language"
+lang: "python"
+categoryId: "py_if"
+title: "Python 조건문 기초 1회차"
+round: 1
+difficulty: "basic"
+status: "active"
+audience: "common"
+printDefault: true
+---
+# Python 조건문 기초 1회차
+
+### Q1. MCQ 1. Pass / Fail 프로그램
+
+다음 설명에 맞는 Python 코드를 고르세요.
+
+- 정수 score를 하나 입력받는다.
+- score가 60 이상이면 "Pass"를 출력하고,
+  그렇지 않으면 "Fail"을 출력한다.
+
+- **A**: score = input() if score >= 60:     print('%s' % 'Pass') else:     print('%s' % 'Fail')
+- **B**: score = int(input()) if score > 60:     print('%s' % 'Pass') else:     print('%s' % 'Fail')
+- **C**: score = int(input()) if score >= 60:     print('%s' % 'Pass') else:     print('%s' % 'Fail')
+- **D**: score = int(input()) if score == 60:     print('%s' % 'Pass') else:     print('%s' % 'Fail')
+
+---
+
+### Q2. MCQ 2. 짝수/홀수 출력 결과
+
+아래 프로그램에서 입력이 3일 때, 출력으로 알맞은 것을 고르세요.
+
+```c
+n = int(input())
+if n % 2 == 0:
+    print('%s' % 'Even')
+else:
+    print('%s' % 'Odd')
+print('%s' % 'Done')
+```
+
+- **A**: Even Done
+- **B**: Odd Done
+- **C**: 3 Odd Done
+- **D**: Odd 3 Done
+
+---
+
+### Q3. MCQ 3. 범위 검사
+
+다음 프로그램은 1 이상 10 이하이면 "InRange"를 출력합니다.
+"InRange"가 출력되는 입력을 모두 고른 것은?
+
+```c
+n = int(input())
+if 1 <= n <= 10:
+    print('%s' % 'InRange')
+```
+
+- **A**: 0, 1, 10
+- **B**: 1, 5, 10
+- **C**: 1, 10, 11
+- **D**: 0, 5, 11
+
+---
+
+### Q4. MCQ 4. 항상 Minus가 나오는 이유
+
+다음 프로그램은 음수일 때만 "Minus"를 출력하려고 했지만,
+입력 값과 상관없이 항상 "Minus"가 출력됩니다.
+가장 중요한 원인은 무엇인가요?
+
+```c
+n = int(input())
+if n < 0:
+    n = n
+print('%s' % 'Minus')
+```
+
+- **A**: 변수 n의 자료형이 잘못되었다.
+- **B**: 조건식이 n <= 0 이어야 한다.
+- **C**: print문이 if 블록 안으로 들여쓰기 되어 있어야 한다.
+- **D**: input()에서 받은 값을 int로 바꾸지 않았다.
+
+---
+
+### Q5. MCQ 5. 학점 조건식
+
+다음은 점수에 따라 학점을 출력하려는 프로그램입니다.
+- 90 이상이면 "A"
+- 80 이상 90 미만이면 "B"
+- 나머지는 "C"를 출력하려고 합니다.
+올바른 코드 한 개를 고르세요.
+
+- **A**: score = int(input()) if score >= 90:     print('%s' % 'A') if score >= 80:     print('%s' % 'B') else:     print('%s' % 'C')
+- **B**: score = int(input()) if score >= 80:     print('%s' % 'B') elif score >= 90:     print('%s' % 'A') else:     print('%s' % 'C')
+- **C**: score = int(input()) if score >= 90:     print('%s' % 'A') elif score >= 80:     print('%s' % 'B') else:     print('%s' % 'C')
+- **D**: score = int(input()) if score > 90:     print('%s' % 'A') elif score > 80:     print('%s' % 'B') else:     print('%s' % 'C')
+
+---
+
+### Q6. Trace 1. 평균으로 Pass/Fail 분기
+
+두 점수의 평균에 따라 분기되는 결과를 표에 채우세요.
+
+입력 케이스 예시:
+- case1: s1=80, s2=70
+- case2: s1=50, s2=40
+- case3: s1=60, s2=60
+
+```c
+s1, s2 = map(int, input().split())
+avg = (s1 + s2) // 2
+if avg >= 60:
+    print('%s' % 'PASS')
+else:
+    print('%s' % 'FAIL')
+```
+
+---
+
+### Q7. Short 1. 범위 + if-else 결과
+
+아래 프로그램에서 입력이 7일 때, 출력되는 내용을 그대로 쓰세요.
+(줄바꿈 없이 한 줄입니다.)
+
+```c
+n = int(input())
+if 5 <= n <= 10:
+    print('%s' % 'OK')
+else:
+    print('%s' % 'NG')
+```
+
+---
+
+### Q8. Short 2. 어떤 값을 넣으면 참이 될까?
+
+다음 조건식이 참(true)이 되도록 n의 값을 하나만 쓰세요.
+(여러 개 중 아무거나 하나 맞으면 정답입니다.)
+
+```c
+1 <= n <= 5
+```
+
+---
+
+### Q9. Code 1. 1 이상 10 이하 조건식 작성
+
+변수 n이 1 이상 10 이하일 때만 if 안이 실행되도록, 괄호 안의 조건식을 작성하세요.
+
+if 뒤에 들어갈 조건식을 한 줄로 쓰세요.
+(연속 비교: 1 <= n <= 10 형태를 사용하세요.)
+
+```c
+n = int(input())
+if  # 여기에 조건식을 작성하세요:
+    print('%s' % 'InRange')
+```
+
+---
+
+### Q10. Code 2. 두 조건을 모두 만족해야 Pass
+
+정수 score와 absent를 입력받았을 때,
+- score가 60 이상이고
+- absent(결석 횟수)가 5 미만일 때만 "Pass"를 출력하고,
+그렇지 않으면 "Fail"을 출력하는 조건식을 작성하세요.
+
+if 뒤 괄호 안에 들어갈 조건식만 한 줄로 쓰면 됩니다.
+
+```c
+score = int(input())
+absent = int(input())
+if  # 여기에 조건식을 작성하세요:
+    print('%s' % 'Pass')
+else:
+    print('%s' % 'Fail')
+```
+
+---

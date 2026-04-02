@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_lv04_operator_b02",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_operator",
+    "title": "Python 연산자 LV04 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_lv04_operator_b02",
+  "title": "Python 연산자 LV04 기초 2회차",
+  "categoryId": "py_operator",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

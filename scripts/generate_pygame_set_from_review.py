@@ -30,6 +30,10 @@ TYPE_MAP = {
     "빈칸형": "short",
     "복수정답 객관식형": "mcq_multi",
 }
+COPYABLE_START_RE = re.compile(
+    r"^\s*#\s*COPYABLE_START:\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*(asset|helper|logic)\s*$"
+)
+COPYABLE_END_RE = re.compile(r"^\s*#\s*COPYABLE_END:\s*(.+?)\s*$")
 
 
 class ReviewParseError(Exception):
@@ -80,6 +84,50 @@ def split_labeled_fields(text: str) -> dict[str, str]:
 
 def extract_code_fences(text: str) -> list[str]:
     return [match.group(1).strip() for match in re.finditer(r"```(?:[^\n]*)\n(.*?)```", text, flags=re.S)]
+
+
+def extract_copyable_blocks(code: str) -> tuple[str, list[dict]]:
+    if not code:
+        return code, []
+
+    # COPYABLE_START/END는 문제 검수 markdown 안에서
+    # 학생에게 부분 복사를 허용할 자산/helper 블록을 표시하는 마커다.
+    # 전체 section.code에서는 마커 줄을 제거하고, snippet만 별도 추출한다.
+    lines = code.splitlines()
+    clean_lines: list[str] = []
+    blocks: list[dict] = []
+    active: dict | None = None
+    active_lines: list[str] = []
+
+    for line in lines:
+        start_match = COPYABLE_START_RE.match(line)
+        if start_match:
+            active = {
+                "id": start_match.group(1).strip(),
+                "title": start_match.group(2).strip(),
+                "role": start_match.group(3).strip(),
+                "copyPolicy": "allowed",
+            }
+            active_lines = []
+            continue
+
+        end_match = COPYABLE_END_RE.match(line)
+        if end_match and active:
+            end_id = end_match.group(1).strip()
+            if end_id == active["id"]:
+                active["code"] = "\n".join(active_lines).strip()
+                if active["code"]:
+                    blocks.append(active)
+                active = None
+                active_lines = []
+                continue
+
+        clean_lines.append(line)
+        if active is not None:
+            active_lines.append(line)
+
+    clean_code = "\n".join(clean_lines).strip()
+    return clean_code, blocks
 
 
 def remove_code_fences(text: str) -> str:
@@ -273,7 +321,13 @@ def parse_section(source_path: Path, number: int, title: str, body: str) -> dict
         "children": [parse_child(number, match.group(1), child_body) for match, child_body in child_blocks],
     }
     if code_blocks:
-        section["code"] = code_blocks[0]
+        cleaned_code, copyable_blocks = extract_copyable_blocks(code_blocks[0])
+        section["code"] = cleaned_code
+        # pygame review 기반 section 제시 코드는 학생 화면에서 기본 잠금한다.
+        # host UI만 전체 복사 예외를 갖고, 학생용 부분 복사는 codeBlocks로 분리한다.
+        section["codePolicy"] = "teacher_only"
+        if copyable_blocks:
+            section["codeBlocks"] = copyable_blocks
     if images:
         section["media"] = images
     return section

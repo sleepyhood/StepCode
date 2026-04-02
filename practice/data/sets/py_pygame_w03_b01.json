@@ -1,0 +1,487 @@
+{
+  "id": "py_pygame_w03_b01",
+  "title": "Python Pygame 모듈 03 · 마우스 입력과 그림판 규칙",
+  "categoryId": "py_pygame_w03",
+  "availableLanguages": [
+    "python"
+  ],
+  "defaultDisplayGroup": "by_section",
+  "displayGroups": [
+    {
+      "id": "by_section",
+      "label": "대문항별",
+      "note": "4개 대문항 묶음으로 학습",
+      "renderMode": "section",
+      "filter": {}
+    }
+  ],
+  "concepts": [
+    {
+      "id": "sec_1",
+      "title": "1번 호버 트래커 보드",
+      "summary": "이 프로그램은 마우스를 움직일 때마다\n연한 파란 보드 위에 작은 파란 점을 남기는 호버 트래커 코드이다.\n클릭 조건은 아직 없고,\n움직임 이벤트를 읽는 순간 경로가 생긴다는 점을 먼저 확인한다.",
+      "relatedProblems": [
+        "p1_1",
+        "p1_2",
+        "p1_3",
+        "p1_4"
+      ]
+    },
+    {
+      "id": "sec_2",
+      "title": "2번 클릭 드로잉 패드",
+      "summary": "이 프로그램은 연한 초록 패드 위에 점을 찍는 드로잉 코드이다.\n핵심은 `MOUSEMOTION`만으로는 입력이 너무 넓고,\n클릭 상태 조건을 추가해야 원하는 규칙이 된다는 점을 확인하는 것이다.",
+      "relatedProblems": [
+        "p2_1",
+        "p2_2",
+        "p2_3",
+        "p2_4"
+      ]
+    },
+    {
+      "id": "sec_3",
+      "title": "3번 드래그 상태 기록 캔버스",
+      "summary": "이 프로그램은 마우스 왼쪽 버튼이 눌린 상태를\n`is_drawing` 변수로 따로 기억한 뒤,\n그 상태에서 움직인 좌표만 기록 캔버스 위에 남긴다.\n핵심은 클릭 상태를 버튼 이벤트로 관리하고,\n`event.pos`를 저장해 두면 나중 반복 출력에서 다시 사용할 수 있다는 점을 읽는 것이다.",
+      "relatedProblems": [
+        "p3_1",
+        "p3_2",
+        "p3_3",
+        "p3_4"
+      ]
+    },
+    {
+      "id": "sec_4",
+      "title": "4번 스탬프 패턴 보드",
+      "summary": "이 프로그램은 버튼 상태를 `is_stamping`으로 따로 기억하고,\n드래그 중 저장된 좌표마다 빨간 사각형 도장을 반복 출력한다.\n핵심은 입력 규칙이 맞아도\n반복 출력 도형이 바뀌면 결과 화면이 완전히 달라진다는 점을 읽는 것이다.",
+      "relatedProblems": [
+        "p4_1",
+        "p4_2",
+        "p4_3",
+        "p4_4"
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "id": "s1",
+      "title": "1번 호버 트래커 보드",
+      "description": "이 프로그램은 마우스를 움직일 때마다\n연한 파란 보드 위에 작은 파란 점을 남기는 호버 트래커 코드이다.\n클릭 조건은 아직 없고,\n움직임 이벤트를 읽는 순간 경로가 생긴다는 점을 먼저 확인한다.",
+      "children": [
+        {
+          "id": "p1_1",
+          "type": "mcq_multi",
+          "level": "basic",
+          "title": "1.1 마우스를 움직일 때 발생하는 이벤트 타입으로 알맞은...",
+          "description": "마우스를 움직일 때 발생하는 이벤트 타입으로 알맞은 것을 고른 것은?",
+          "teacherExplainMd": "- 마우스를 움직일 때마다 `MOUSEMOTION` 이벤트가 발생한다.",
+          "options": [
+            "`MOUSEMOTION`",
+            "`KEYDOWN`",
+            "`MOUSEBUTTONUP`",
+            "`VIDEORESIZE`"
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0
+          ],
+          "minSelections": 1,
+          "maxSelections": 1
+        },
+        {
+          "id": "p1_2",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "1.2 제시된 코드에서 마우스를 움직일 때 점이 남는 이유...",
+          "description": "제시된 코드에서 마우스를 움직일 때 점이 남는 이유로\n옳은 것을 모두 고른 것은?",
+          "teacherExplainMd": "- 현재 구조는 `MOUSEMOTION` 이벤트를 읽고,\n- 클릭 조건은 아직 필수가 아니다.",
+          "options": [
+            "`event.type == MOUSEMOTION` 조건이 있다.",
+            "`event.pos`가 리스트에 저장된다.",
+            "클릭 조건이 반드시 있어야만 저장된다.",
+            "저장된 좌표를 아래 반복문이 다시 그린다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0,
+            1,
+            3
+          ],
+          "minSelections": 3,
+          "maxSelections": 3
+        },
+        {
+          "id": "p1_3",
+          "type": "code",
+          "level": "intermediate",
+          "title": "1.3 마우스를 움직일 때만 좌표를 저장하도록 이벤트 조건...",
+          "description": "마우스를 움직일 때만 좌표를 저장하도록\n이벤트 조건 한 줄을 다시 쓰시오.",
+          "teacherExplainMd": "- 이 줄이 있어야 움직임 이벤트가 발생할 때만 좌표를 저장한다.",
+          "expectedCode": "elif event.type == MOUSEMOTION:"
+        },
+        {
+          "id": "p1_4",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "1.4 현재 제시 코드 상태로 실행했을 때 옳은 것을 모두...",
+          "description": "현재 제시 코드 상태로 실행했을 때\n옳은 것을 모두 고른 것은?",
+          "teacherExplainMd": "- 클릭 조건이 없으므로 움직이기만 해도 점이 남는다.\n- 현재 출력 색은 `(70, 126, 214)`이므로 파란색 계열이다.",
+          "options": [
+            "마우스를 움직이면 점이 계속 남는다.",
+            "클릭하지 않으면 점이 절대 찍히지 않는다.",
+            "움직인 경로를 따라 점이 남을 수 있다.",
+            "점 색은 파란색 계열이다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0,
+            2,
+            3
+          ],
+          "minSelections": 3,
+          "maxSelections": 3
+        }
+      ],
+      "code": "import sys\nimport pygame\nfrom pygame.locals import MOUSEMOTION, QUIT\n\npygame.init()\nSURFACE = pygame.display.set_mode((600, 420))\npygame.display.set_caption(\"week03 problem01\")\nFPSCLOCK = pygame.time.Clock()\n\n\ndef main():\n    hover_points = []\n\n    while True:\n        for event in pygame.event.get():\n            if event.type == QUIT:\n                pygame.quit()\n                sys.exit()\n\n            # BLOCK_A_START\n            # 문제 1.3: 이벤트 조건 한 줄을 완성하세요.\n            elif event.type == MOUSEMOTION:\n                hover_points.append(event.pos)\n            # BLOCK_A_END\n\n        SURFACE.fill((232, 241, 255))\n        pygame.draw.rect(SURFACE, (207, 223, 247), (28, 24, 544, 320), border_radius=18)\n        pygame.draw.rect(SURFACE, (160, 188, 227), (28, 356, 544, 32), border_radius=12)\n\n        for point in hover_points:\n            pygame.draw.circle(SURFACE, (70, 126, 214), point, 4)\n\n        pygame.display.update()\n        FPSCLOCK.tick(60)\n\n\nif __name__ == \"__main__\":\n    main()",
+      "codePolicy": "teacher_only",
+      "media": [
+        {
+          "type": "gif",
+          "path": "../content/pygame/week03/reference_images/problem01_correct.gif",
+          "caption": "1번 정상 작동 참고 GIF"
+        }
+      ],
+      "conceptRef": "sec_1"
+    },
+    {
+      "id": "s2",
+      "title": "2번 클릭 드로잉 패드",
+      "description": "이 프로그램은 연한 초록 패드 위에 점을 찍는 드로잉 코드이다.\n핵심은 `MOUSEMOTION`만으로는 입력이 너무 넓고,\n클릭 상태 조건을 추가해야 원하는 규칙이 된다는 점을 확인하는 것이다.",
+      "children": [
+        {
+          "id": "p2_1",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "2.1 제시된 코드의 입력 규칙 문제로 옳은 것을 모두 고...",
+          "description": "제시된 코드의 입력 규칙 문제로\n옳은 것을 모두 고른 것은?",
+          "teacherExplainMd": "- 현재 코드는 `MOUSEMOTION`만 검사하므로\n- 키보드 입력은 전혀 사용하지 않는다.",
+          "options": [
+            "클릭하지 않아도 점이 찍힌다.",
+            "마우스를 움직일 때마다 좌표가 저장된다.",
+            "점을 찍으려면 반드시 키보드 입력이 필요하다.",
+            "클릭 상태를 검사하는 조건이 없다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0,
+            1,
+            3
+          ],
+          "minSelections": 3,
+          "maxSelections": 3
+        },
+        {
+          "id": "p2_2",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "2.2 마우스를 클릭한 상태에서만 점이 그려지도록 하려면...",
+          "description": "마우스를 클릭한 상태에서만 점이 그려지도록 하려면\n조건 자리에 들어갈 값으로 알맞은 것을 고른 것은?",
+          "teacherExplainMd": "- `event.buttons[0]`은 왼쪽 버튼이 눌린 상태인지 확인하는 데 사용한다.",
+          "options": [
+            "`event.buttons[0]`",
+            "`event.pos`",
+            "`mouse_positions[0]`",
+            "`pygame.quit()`"
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0
+          ],
+          "minSelections": 1,
+          "maxSelections": 1
+        },
+        {
+          "id": "p2_3",
+          "type": "code",
+          "level": "intermediate",
+          "title": "2.3 클릭한 상태에서만 좌표를 저장하도록 정답 한 줄을...",
+          "description": "클릭한 상태에서만 좌표를 저장하도록\n정답 한 줄을 쓰시오.",
+          "teacherExplainMd": "- 이벤트 종류와 클릭 상태가 모두 맞아야 원하는 입력 규칙이 된다.",
+          "expectedCode": "elif event.type == MOUSEMOTION and event.buttons[0]:"
+        },
+        {
+          "id": "p2_4",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "2.4 2.3을 반영한 상태라고 가정한다. 실행 후 옳은...",
+          "description": "2.3을 반영한 상태라고 가정한다.\n실행 후 옳은 것을 모두 고른 것은?",
+          "teacherExplainMd": "- 클릭 조건이 추가되면 입력이 허용되는 상황이 줄어든다.\n- 색상은 출력 코드가 그대로이므로 자동으로 바뀌지 않는다.",
+          "options": [
+            "클릭한 상태에서 움직일 때만 점이 찍힌다.",
+            "움직이기만 해서는 점이 찍히지 않는다.",
+            "점이 자동으로 빨간색으로 바뀐다.",
+            "입력 규칙이 이전보다 더 좁아진다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0,
+            1,
+            3
+          ],
+          "minSelections": 3,
+          "maxSelections": 3
+        }
+      ],
+      "code": "import sys\nimport pygame\nfrom pygame.locals import MOUSEMOTION, QUIT\n\npygame.init()\nSURFACE = pygame.display.set_mode((600, 420))\npygame.display.set_caption(\"week03 problem02\")\nFPSCLOCK = pygame.time.Clock()\n\n\ndef main():\n    click_points = []\n\n    while True:\n        for event in pygame.event.get():\n            if event.type == QUIT:\n                pygame.quit()\n                sys.exit()\n\n            # BLOCK_A_START\n            # 문제 2.2, 2.3: 클릭 상태 조건을 반영하세요.\n            elif event.type == MOUSEMOTION:\n                click_points.append(event.pos)\n            # BLOCK_A_END\n\n        SURFACE.fill((248, 250, 242))\n        pygame.draw.rect(SURFACE, (227, 238, 214), (42, 34, 516, 292), border_radius=20)\n        pygame.draw.rect(SURFACE, (163, 199, 121), (42, 338, 516, 40), border_radius=14)\n\n        for point in click_points:\n            pygame.draw.circle(SURFACE, (68, 143, 78), point, 5)\n\n        pygame.display.update()\n        FPSCLOCK.tick(60)\n\n\nif __name__ == \"__main__\":\n    main()",
+      "codePolicy": "teacher_only",
+      "media": [
+        {
+          "type": "gif",
+          "path": "../content/pygame/week03/reference_images/problem02_correct.gif",
+          "caption": "2번 정상 작동 참고 GIF"
+        }
+      ],
+      "conceptRef": "sec_2"
+    },
+    {
+      "id": "s3",
+      "title": "3번 드래그 상태 기록 캔버스",
+      "description": "이 프로그램은 마우스 왼쪽 버튼이 눌린 상태를\n`is_drawing` 변수로 따로 기억한 뒤,\n그 상태에서 움직인 좌표만 기록 캔버스 위에 남긴다.\n핵심은 클릭 상태를 버튼 이벤트로 관리하고,\n`event.pos`를 저장해 두면 나중 반복 출력에서 다시 사용할 수 있다는 점을 읽는 것이다.",
+      "children": [
+        {
+          "id": "p3_1",
+          "type": "mcq_multi",
+          "level": "basic",
+          "title": "3.1 이 코드에서 is_drawing의 역할로 알맞은 것...",
+          "description": "이 코드에서 `is_drawing`의 역할로 알맞은 것을 고른 것은?",
+          "teacherExplainMd": "- `is_drawing`은 버튼을 누른 상태와 뗀 상태를 따로 기억해",
+          "options": [
+            "마우스 버튼이 눌린 드래그 상태인지 기억한다.",
+            "현재 창 크기를 저장한다.",
+            "마지막 점의 색상을 자동으로 고른다.",
+            "`QUIT` 이벤트를 대신 처리한다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0
+          ],
+          "minSelections": 1,
+          "maxSelections": 1
+        },
+        {
+          "id": "p3_2",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "3.2 이 프로그램의 입력 처리 흐름에 대한 설명으로 옳은...",
+          "description": "이 프로그램의 입력 처리 흐름에 대한 설명으로\n옳은 것을 모두 고른 것은?",
+          "teacherExplainMd": "- 이 구조는 버튼을 누름/뗌 이벤트로 상태를 바꾸고,\n- 상태 변수를 따로 두지 않으면 버튼 이벤트 기반 제어가 어렵다.",
+          "options": [
+            "`MOUSEBUTTONDOWN`이 발생하면 드래그 시작 상태로 바뀔 수 있다.",
+            "`MOUSEBUTTONUP`이 발생하면 좌표 저장을 멈추게 할 수 있다.",
+            "`event.pos`를 저장하면 나중에 점 출력 위치로 다시 사용할 수 있다.",
+            "버튼 상태를 따로 기억할 필요는 전혀 없다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0,
+            1,
+            2
+          ],
+          "minSelections": 3,
+          "maxSelections": 3
+        },
+        {
+          "id": "p3_3",
+          "type": "code",
+          "level": "intermediate",
+          "title": "3.3 드래그 중인 마우스 좌표를 리스트에 저장하는 정답...",
+          "description": "드래그 중인 마우스 좌표를 리스트에 저장하는\n정답 한 줄을 쓰시오.",
+          "teacherExplainMd": "- 이 줄이 있어야 움직인 좌표가 저장되고,",
+          "expectedCode": "trail_points.append(event.pos)"
+        },
+        {
+          "id": "p3_4",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "3.4 3.3을 반영한 상태라고 가정한다. 실행 후 옳은...",
+          "description": "3.3을 반영한 상태라고 가정한다.\n실행 후 옳은 것을 모두 고른 것은?",
+          "teacherExplainMd": "- 좌표를 저장해 두고 반복문에서 다시 출력하므로\n- 마지막 좌표는 별도 테두리로 강조된다.",
+          "options": [
+            "클릭한 상태로 움직이면 경로를 따라 점이 남는다.",
+            "저장된 좌표 수가 늘어나면 출력되는 점 수도 늘어날 수 있다.",
+            "저장된 좌표는 반복 출력과 연결되지 않는다.",
+            "마지막 저장 좌표에는 큰 테두리 표시가 남을 수 있다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0,
+            1,
+            3
+          ],
+          "minSelections": 3,
+          "maxSelections": 3
+        }
+      ],
+      "code": "import sys\nimport pygame\nfrom pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION, QUIT\n\npygame.init()\nSURFACE = pygame.display.set_mode((620, 420))\npygame.display.set_caption(\"week03 problem03\")\nFPSCLOCK = pygame.time.Clock()\n\n\ndef main():\n    trail_points = []\n    is_drawing = False\n\n    while True:\n        for event in pygame.event.get():\n            if event.type == QUIT:\n                pygame.quit()\n                sys.exit()\n            elif event.type == MOUSEBUTTONDOWN:\n                is_drawing = True\n            elif event.type == MOUSEBUTTONUP:\n                is_drawing = False\n            elif event.type == MOUSEMOTION and is_drawing:\n                # BLOCK_A_START\n                # 문제 3.3: 좌표 저장 줄을 완성하세요.\n                trail_points.append(event.pos)\n                # BLOCK_A_END\n\n        SURFACE.fill((28, 39, 64))\n        pygame.draw.rect(SURFACE, (238, 242, 250), (58, 34, 504, 332), border_radius=18)\n        pygame.draw.rect(SURFACE, (80, 104, 142), (58, 34, 504, 18), border_radius=8)\n\n        for point in trail_points:\n            pygame.draw.circle(SURFACE, (255, 196, 79), point, 4)\n\n        if trail_points:\n            pygame.draw.circle(SURFACE, (77, 170, 255), trail_points[-1], 9, 2)\n\n        pygame.display.update()\n        FPSCLOCK.tick(60)\n\n\nif __name__ == \"__main__\":\n    main()",
+      "codePolicy": "teacher_only",
+      "media": [
+        {
+          "type": "image",
+          "path": "../content/pygame/week03/reference_images/problem03_correct.png",
+          "caption": "3번 정상 작동 참고 이미지"
+        }
+      ],
+      "conceptRef": "sec_3"
+    },
+    {
+      "id": "s4",
+      "title": "4번 스탬프 패턴 보드",
+      "description": "이 프로그램은 버튼 상태를 `is_stamping`으로 따로 기억하고,\n드래그 중 저장된 좌표마다 빨간 사각형 도장을 반복 출력한다.\n핵심은 입력 규칙이 맞아도\n반복 출력 도형이 바뀌면 결과 화면이 완전히 달라진다는 점을 읽는 것이다.",
+      "children": [
+        {
+          "id": "p4_1",
+          "type": "mcq_multi",
+          "level": "basic",
+          "title": "4.1 반복문에서 저장된 좌표를 하나씩 꺼내 담는 변수로...",
+          "description": "반복문에서 저장된 좌표를 하나씩 꺼내 담는 변수로 알맞은 것을 고른 것은?",
+          "teacherExplainMd": "- 반복문은 저장된 좌표를 하나씩 꺼내 `stamp`에 담아 사각형 도장을 그린다.",
+          "options": [
+            "`stamp`",
+            "`event`",
+            "`QUIT`",
+            "`FPSCLOCK`"
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0
+          ],
+          "minSelections": 1,
+          "maxSelections": 1
+        },
+        {
+          "id": "p4_2",
+          "type": "code",
+          "level": "basic",
+          "title": "4.2 저장된 좌표 stamp에 빨간 사각형 도장을 찍는...",
+          "description": "저장된 좌표 `stamp`에\n빨간 사각형 도장을 찍는 정답 한 줄을 쓰시오.",
+          "teacherExplainMd": "- 반복 출력의 핵심은 저장된 좌표를 기준으로\n- 색상과 크기를 고정하면 한 줄 정답으로 채점할 수 있다.",
+          "expectedCode": "pygame.draw.rect(SURFACE, (255, 108, 108), (stamp[0] - 8, stamp[1] - 8, 16, 16), border_radius=4)"
+        },
+        {
+          "id": "p4_3",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "4.3 반복 출력 줄을 아래처럼 바꿨다고 가정한다. 실행...",
+          "description": "반복 출력 줄을 아래처럼 바꿨다고 가정한다.\n\n실행 후 옳은 것을 모두 고른 것은?",
+          "teacherExplainMd": "- 반복 출력 도형과 색상은 바뀌지만,\n- 좌표 저장 규칙은 입력 코드가 담당하므로 자동으로 바뀌지 않는다.",
+          "code": "pygame.draw.rect(SURFACE, (255, 108, 108), (stamp[0] - 8, stamp[1] - 8, 16, 16), border_radius=4)",
+          "options": [
+            "출력 도형은 사각형 도장 형태가 된다.",
+            "빨간색 계열 도장이 저장 좌표마다 반복 출력된다.",
+            "좌표 저장 규칙도 자동으로 바뀐다.",
+            "여전히 저장된 좌표 위치를 기준으로 도장이 찍힌다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0,
+            1,
+            3
+          ],
+          "minSelections": 3,
+          "maxSelections": 3
+        },
+        {
+          "id": "p4_4",
+          "type": "mcq_multi",
+          "level": "intermediate",
+          "title": "4.4 아래 두 조건을 모두 반영한 상태라고 가정한다. 1...",
+          "description": "아래 두 조건을 모두 반영한 상태라고 가정한다.\n\n1. `elif event.type == MOUSEMOTION and is_stamping:`\n2. `pygame.draw.rect(SURFACE, (255, 108, 108), (stamp[0] - 8, stamp[1] - 8, 16, 16), border_radius=4)`\n\n실행 후 옳은 것을 모두 고른 것은?",
+          "teacherExplainMd": "- 입력 조건이 클릭 상태로 제한되고,\n- 좌표 저장 자체는 유지되므로 경로를 따라 도장이 남는다.",
+          "options": [
+            "클릭한 상태에서 움직일 때만 빨간 도장이 남는다.",
+            "움직이기만 해도 도장이 계속 남는다.",
+            "저장된 좌표 경로를 따라 도장이 남는다.",
+            "출력 스타일이 사각형 도장 형태로 바뀌었다."
+          ],
+          "optionLabels": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "correctIndexes": [
+            0,
+            2,
+            3
+          ],
+          "minSelections": 3,
+          "maxSelections": 3
+        }
+      ],
+      "code": "import sys\nimport pygame\nfrom pygame.locals import MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION, QUIT\n\npygame.init()\nSURFACE = pygame.display.set_mode((620, 420))\npygame.display.set_caption(\"week03 problem04\")\nFPSCLOCK = pygame.time.Clock()\n\n\ndef main():\n    stamp_points = []\n    is_stamping = False\n\n    while True:\n        for event in pygame.event.get():\n            if event.type == QUIT:\n                pygame.quit()\n                sys.exit()\n            elif event.type == MOUSEBUTTONDOWN:\n                is_stamping = True\n            elif event.type == MOUSEBUTTONUP:\n                is_stamping = False\n            elif event.type == MOUSEMOTION and is_stamping:\n                stamp_points.append(event.pos)\n\n        SURFACE.fill((253, 244, 230))\n        pygame.draw.rect(SURFACE, (242, 223, 205), (36, 28, 548, 308), border_radius=18)\n        pygame.draw.rect(SURFACE, (226, 184, 150), (36, 346, 548, 36), border_radius=12)\n\n        # BLOCK_B_START\n        # 문제 4.2: 저장된 좌표에 빨간 사각형 도장을 찍는 줄을 완성하세요.\n        for stamp in stamp_points:\n            pygame.draw.rect(SURFACE, (255, 108, 108), (stamp[0] - 8, stamp[1] - 8, 16, 16), border_radius=4)\n            pygame.draw.rect(SURFACE, (255, 245, 238), (stamp[0] - 2, stamp[1] - 2, 4, 4), border_radius=2)\n        # BLOCK_B_END\n\n        pygame.display.update()\n        FPSCLOCK.tick(60)\n\n\nif __name__ == \"__main__\":\n    main()",
+      "codePolicy": "teacher_only",
+      "media": [
+        {
+          "type": "image",
+          "path": "../content/pygame/week03/reference_images/problem04_correct.png",
+          "caption": "4번 정상 작동 참고 이미지"
+        }
+      ],
+      "conceptRef": "sec_4"
+    }
+  ]
+}

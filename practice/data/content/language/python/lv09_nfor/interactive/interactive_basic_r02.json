@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_nfor_b2",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_nfor",
+    "title": "Python 중첩 for문 LV09 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_nfor_b2",
+  "title": "Python 중첩 for문 LV09 기초 2회차",
+  "categoryId": "py_nfor",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

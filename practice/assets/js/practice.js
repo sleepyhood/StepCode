@@ -59,6 +59,7 @@ function upgradeCodeInputsToCodeMirror(rootEl) {
 let currentSetId = null;
 let currentAnswers = {};
 const ANSWER_STORAGE_PREFIX = "stepcode:answers:";
+let hostUiActive = false;
 
 // ====== 호스트(교사) 전용 UI ======
 // dashboard_server.py가 /practice.html 응답에 주입하는 플래그.
@@ -1335,6 +1336,12 @@ async function initPractice() {
     // 언어 셀렉트 (지금은 C만)
     setupLangSelect(currentSetData.availableLanguages || ["c"]);
 
+    applyHostOnlyUi(false); // 기본 숨김(깜빡임 방지)
+    const isHost = await apiIsHost();
+    hostUiActive = !!isHost;
+    applyHostOnlyUi(isHost);
+    document.body.classList.toggle("host-ui", !!isHost);
+
     // 문제 렌더
     renderSet();
 
@@ -1349,26 +1356,19 @@ async function initPractice() {
     // 채점 버튼 연결
     setupGrading();
 
-
-    
     // 뒤로 가기 버튼 연결
     setupBackToListButton();
-
-    // ✅ 여기(바로 다음)
-    applyHostOnlyUi(false); // 기본 숨김(깜빡임 방지)
-
-    const isHost = await apiIsHost();
-    applyHostOnlyUi(isHost);
 
     if (isHost) {
       setupExportLog();
       setupWorksheetPrint();
+      renderConceptReport();
     }
 
 
     const dashEnabled = shouldEnableDashboardUi(isHost);
     document.body.classList.toggle("dash-on", dashEnabled);
-    if (dashEnabled) setupRealtimeDashboard(); // ← 추가`r`n`r`n    document.body.classList.toggle("host-ui", !!isHost);`r`n    if (isHost) renderConceptReport();
+    if (dashEnabled) setupRealtimeDashboard();
   } catch (err) {
     console.error(err);
     container.textContent = "문제를 불러오는 중 오류가 발생했습니다.";
@@ -1810,15 +1810,200 @@ function getQuestionTitleText(q, idx) {
   return `${idx + 1}. ${raw}`;
 }
 
-function renderSharedCodeBlock(targetEl, code) {
-  if (!code) return;
+function normalizeCodeCopyPolicy(policy) {
+  const raw = String(policy || "").trim().toLowerCase();
+  if (raw === "allowed" || raw === "teacher_only" || raw === "blocked") return raw;
+  return "";
+}
+
+function getRoleLabel(role) {
+  const raw = String(role || "").trim().toLowerCase();
+  if (raw === "asset") return "자산";
+  if (raw === "helper") return "헬퍼";
+  if (raw === "logic") return "로직";
+  return "코드";
+}
+
+function getPolicyBadgeLabel(policy) {
+  if (policy === "allowed") return "복사 가능";
+  if (policy === "teacher_only") return "직접 작성용";
+  if (policy === "blocked") return "복사 제한";
+  return "코드";
+}
+
+function showCopyToast(message) {
+  const root = document.getElementById("copy-toast-root");
+  if (!root) return;
+  const item = document.createElement("div");
+  item.className = "copy-toast";
+  item.textContent = String(message || "복사 정책이 적용된 코드입니다.");
+  root.appendChild(item);
+  requestAnimationFrame(() => item.classList.add("show"));
+  setTimeout(() => {
+    item.classList.remove("show");
+    setTimeout(() => item.remove(), 180);
+  }, 1800);
+}
+
+async function copyTextToClipboard(text, successMessage) {
+  const raw = String(text || "");
+  try {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      await navigator.clipboard.writeText(raw);
+    } else {
+      const ta = document.createElement("textarea");
+      ta.value = raw;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+    showCopyToast(successMessage || "코드를 복사했습니다.");
+  } catch (_) {
+    showCopyToast("복사에 실패했습니다.");
+  }
+}
+
+function applyLockedCopyGuard(el) {
+  if (!el) return;
+  el.classList.add("copy-locked");
+  el.tabIndex = 0;
+  // teacher_only는 학생 화면에서만 잠근다.
+  // 잠금 범위를 전체 패널이 아니라 "전체 코드 pre"로 제한해
+  // 아래 참고 snippet은 계속 선택/복사 가능하게 둔다.
+  const onBlocked = (e) => {
+    e.preventDefault();
+    showCopyToast("이 코드는 직접 작성용입니다.");
+  };
+  el.addEventListener("copy", onBlocked);
+  el.addEventListener("cut", onBlocked);
+  el.addEventListener("keydown", (e) => {
+    const key = String(e.key || "").toLowerCase();
+    if ((e.ctrlKey || e.metaKey) && key === "c") onBlocked(e);
+  });
+}
+
+function createCodePre(code, extraClass = "") {
   const pre = document.createElement("pre");
-  pre.className = "code-block line-numbers";
+  pre.className = `code-block line-numbers ${extraClass}`.trim();
   const codeEl = document.createElement("code");
   codeEl.className = `language-${currentLang}`;
-  codeEl.textContent = code;
+  codeEl.textContent = String(code || "");
   pre.appendChild(codeEl);
-  targetEl.appendChild(pre);
+  return pre;
+}
+
+function renderSnippetCards(parentEl, blocks) {
+  if (!Array.isArray(blocks) || !blocks.length) return;
+
+  const list = document.createElement("div");
+  list.className = "code-snippet-list";
+
+  blocks.forEach((block) => {
+    if (!block || !block.code) return;
+    // codeBlocks는 학생용 부분 복사 snippet이다.
+    // 1차에서는 allowed 블록만 실제 복사 대상으로 사용한다.
+    const blockPolicy = normalizeCodeCopyPolicy(block.copyPolicy || "allowed");
+    const canCopy = blockPolicy === "allowed" || (hostUiActive && blockPolicy === "teacher_only");
+
+    const card = document.createElement("section");
+    card.className = "code-snippet-card";
+    card.dataset.copyPolicy = blockPolicy || "allowed";
+
+    const head = document.createElement("div");
+    head.className = "code-snippet-head";
+
+    const titleWrap = document.createElement("div");
+    titleWrap.className = "code-snippet-title-wrap";
+
+    const title = document.createElement("div");
+    title.className = "code-snippet-title";
+    title.textContent = String(block.title || block.id || "참고 코드");
+    titleWrap.appendChild(title);
+
+    const roleBadge = document.createElement("span");
+    roleBadge.className = "code-role-badge";
+    roleBadge.textContent = getRoleLabel(block.role);
+    titleWrap.appendChild(roleBadge);
+
+    head.appendChild(titleWrap);
+
+    if (canCopy) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "code-copy-btn";
+      btn.textContent = "복사";
+      btn.addEventListener("click", () =>
+        copyTextToClipboard(block.code, "참고 블록을 복사했습니다.")
+      );
+      head.appendChild(btn);
+    }
+
+    card.appendChild(head);
+    card.appendChild(createCodePre(block.code, "snippet-code-block"));
+    list.appendChild(card);
+  });
+
+  if (list.children.length) {
+    const title = document.createElement("div");
+    title.className = "code-snippet-list-title";
+    title.textContent = "복사 가능한 참고 블록";
+    parentEl.appendChild(title);
+    parentEl.appendChild(list);
+  }
+}
+
+function renderSharedCodeBlock(targetEl, code, meta = {}) {
+  if (!code) return;
+
+  // section.code는 기본적으로 teacher_only로 생성된다.
+  // 학생은 전체 복사를 못 하고, host UI만 전체 코드 복사가 가능하다.
+  // 부분 복사가 필요한 자산/helper는 codeBlocks로 따로 렌더한다.
+  const policy = normalizeCodeCopyPolicy(meta.codePolicy);
+  const blocks = Array.isArray(meta.codeBlocks) ? meta.codeBlocks.filter(Boolean) : [];
+  const showToolbar = !!policy || blocks.length > 0;
+  const canCopyWhole =
+    policy === "allowed" || (hostUiActive && policy === "teacher_only");
+  const lockWhole = policy === "blocked" || (!hostUiActive && policy === "teacher_only");
+
+  const panel = document.createElement("div");
+  panel.className = "code-panel";
+  if (policy) panel.dataset.copyPolicy = policy;
+
+  if (showToolbar) {
+    const toolbar = document.createElement("div");
+    toolbar.className = "code-toolbar";
+
+    const badge = document.createElement("span");
+    badge.className = "code-policy-badge";
+    badge.textContent = getPolicyBadgeLabel(policy || "allowed");
+    toolbar.appendChild(badge);
+
+    if (canCopyWhole) {
+      const copyBtn = document.createElement("button");
+      copyBtn.type = "button";
+      copyBtn.className = "code-copy-btn";
+      copyBtn.textContent = hostUiActive && policy === "teacher_only" ? "전체 코드 복사" : "복사";
+      copyBtn.addEventListener("click", () =>
+        copyTextToClipboard(code, "전체 코드를 복사했습니다.")
+      );
+      toolbar.appendChild(copyBtn);
+    }
+
+    panel.appendChild(toolbar);
+  }
+
+  const pre = createCodePre(code);
+  panel.appendChild(pre);
+
+  if (lockWhole) applyLockedCopyGuard(pre);
+
+  if (blocks.length) renderSnippetCards(panel, blocks);
+
+  targetEl.appendChild(panel);
 }
 
 function renderSectionCard(parentEl, section, conceptIndex, sectionQuestions = []) {
@@ -1879,7 +2064,7 @@ function renderSectionCard(parentEl, section, conceptIndex, sectionQuestions = [
   }
 
   renderMediaBlock(wrap, section?.media);
-  renderSharedCodeBlock(wrap, section?.code);
+  renderSharedCodeBlock(wrap, section?.code, section);
 
   const body = document.createElement("div");
   body.className = "question-section-body";
@@ -1954,7 +2139,7 @@ function renderQuestionCard(parentEl, q, idx, bucket, conceptIndex) {
   }
 
   renderMediaBlock(card, q.media);
-  renderSharedCodeBlock(card, q.code);
+  renderSharedCodeBlock(card, q.code, q);
 
   if (q.ioExample && (q.ioExample.input || q.ioExample.output)) {
     const ioWrap = document.createElement("div");

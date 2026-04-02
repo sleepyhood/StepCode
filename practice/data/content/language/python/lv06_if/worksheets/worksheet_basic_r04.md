@@ -1,0 +1,203 @@
+---
+id: "py_lv06_if_basic_r04"
+contentType: "worksheet"
+track: "language"
+lang: "python"
+categoryId: "py_if"
+title: "Python 조건문 기초 4회차"
+round: 4
+difficulty: "basic"
+status: "active"
+audience: "common"
+printDefault: true
+---
+# Python 조건문 기초 4회차
+
+### Q1. MCQ 1. else는 어느 if에 붙을까? (중첩 if)
+
+아래 코드에서 입력이
+x = 1, y = -1 일 때 출력으로 알맞은 것을 고르세요.
+
+```c
+x = int(input())
+y = int(input())
+
+if x > 0:
+    if y > 0:
+        print('%s' % 'A')
+    else:
+        print('%s' % 'B')
+else:
+    print('%s' % 'C')
+```
+
+- **A**: A
+- **B**: B
+- **C**: C
+- **D**: 아무 것도 출력되지 않는다
+
+---
+
+### Q2. MCQ 2. if가 두 개면 else는 어디에 붙을까?
+
+아래 코드에서 입력이 1일 때 출력으로 알맞은 것을 고르세요.
+
+```c
+n = int(input())
+
+if n > 0:
+    print('%s' % 'P')
+if n == 0:
+    print('%s' % 'Z')
+else:
+    print('%s' % 'N')
+```
+
+- **A**: P
+- **B**: P Z
+- **C**: P N
+- **D**: P Z N
+
+---
+
+### Q3. MCQ 3. 자주 하는 실수: a == 1 or 2
+
+아래 코드에서 입력이 0일 때 출력으로 알맞은 것을 고르세요.
+
+```c
+a = int(input())
+
+if a == 1 or 2:
+    print('%s' % 'YES')
+else:
+    print('%s' % 'NO')
+```
+
+- **A**: YES
+- **B**: NO
+- **C**: 에러가 발생한다
+- **D**: 아무 것도 출력되지 않는다
+
+---
+
+### Q4. MCQ 4. 드모르간/리팩토링: not (1 <= n <= 9)와 같은 의미
+
+다음 중 `not (1 <= n <= 9)` 와 같은 의미인 조건식을 고르세요.
+
+- **A**: n < 1 or n > 9
+- **B**: n < 1 and n > 9
+- **C**: not (n < 1 or n > 9)
+- **D**: n <= 1 or n >= 9
+
+---
+
+### Q5. MCQ 5. 괄호/우선순위: 의도에 맞는 조건식
+
+다음 설명을 만족하는 조건식을 고르세요.
+
+- (a와 b가 모두 양수)이면 True
+- 또는 (c가 0)이면 True
+- 그 외에는 False
+
+(의도가 명확하도록 괄호가 포함된 식을 고르세요.)
+
+- **A**: (a > 0 and b > 0) or c == 0
+- **B**: a > 0 and (b > 0 or c == 0)
+- **C**: a > 0 or (b > 0 and c == 0)
+- **D**: (a > 0 or b > 0) and c == 0
+
+---
+
+### Q6. Trace 1. 중첩 if 좌표 분기
+
+x, y의 부호에 따라 어느 분기가 실행되는지 표에 채우세요.
+
+입력 케이스 예시:
+- case1: x=1, y=2
+- case2: x=1, y=-3
+- case3: x=-2, y=5
+
+```c
+x, y = map(int, input().split())
+if x > 0:
+    if y > 0:
+        print('%s' % 'Q1')
+    else:
+        print('%s' % 'Q4')
+else:
+    if y > 0:
+        print('%s' % 'Q2')
+    else:
+        print('%s' % 'Q3')
+```
+
+---
+
+### Q7. Short 1. 출력 예측: and/or 우선순위
+
+아래 코드에서 입력이 `0 1 0`일 때 출력되는 한 줄을 그대로 쓰세요.
+(따옴표는 쓰지 마시오)
+
+```c
+a, b, c = map(int, input().split())
+
+if a > 0 and b > 0 or c == 0:
+    print('%s' % 'OK')
+else:
+    print('%s' % 'NO')
+```
+
+---
+
+### Q8. Short 2. 출력 예측: else가 붙는 위치
+
+아래 코드에서 입력이
+x = 1, y = -1 일 때 출력되는 한 줄을 그대로 쓰세요.
+(따옴표는 쓰지 마시오)
+
+```c
+x = int(input())
+y = int(input())
+
+if x > 0:
+    if y > 0:
+        print('%s' % 'A')
+    else:
+        print('%s' % 'B')
+else:
+    print('%s' % 'C')
+```
+
+---
+
+### Q9. Code 1. not 없이 같은 의미로 바꾸기 (드모르간)
+
+정수 n이 1 이상 9 이하가 아닐 때만 "OUT"이 출력되도록 하려 합니다.
+아래 코드에서 if 뒤의 조건식을 not 없이 한 줄로 작성하세요.
+(반드시 or를 사용하세요.)
+
+```c
+n = int(input())
+if  # 여기에 조건식을 작성하세요:
+    print('%s' % 'OUT')
+else:
+    print('%s' % 'IN')
+```
+
+---
+
+### Q10. Code 2. a가 1 또는 2일 때만 YES
+
+정수 a가 1 또는 2일 때만 "YES"가 출력되도록 하려 합니다.
+아래 코드에서 if 뒤의 조건식을 올바르게 한 줄로 작성하세요.
+(주의: `a == 1 or 2` 는 올바른 조건이 아닙니다.)
+
+```c
+a = int(input())
+if  # 여기에 조건식을 작성하세요:
+    print('%s' % 'YES')
+else:
+    print('%s' % 'NO')
+```
+
+---

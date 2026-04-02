@@ -52,13 +52,7 @@ def _env_truthy(name: str) -> bool:
         "on",
     )
 
-
-# 기본값: 교사 인증 없이 열림(요청대로)
-# 필요하면 `STEPCODE_REQUIRE_HOST_PIN=1`로 PIN 인증을 강제할 수 있음.
-OPEN_HOST = not _env_truthy("STEPCODE_REQUIRE_HOST_PIN")
-# 레거시 호환(강제 인증 모드에서도 수동으로 열어두고 싶으면 이걸 켬)
-if _env_truthy("STEPCODE_OPEN_HOST"):
-    OPEN_HOST = True
+# Host privilege is granted only after successful authentication.
 
 _HOST_PIN: str | None = None
 _HOST_SIGN_KEY: bytes | None = None
@@ -105,11 +99,7 @@ def make_host_cookie() -> str:
 
 
 def is_host_request(request: web.Request) -> bool:
-    # 개발/테스트용: 호스트 인증 완전 해제
-    if OPEN_HOST:
-        return True
-
-    # 1) 쿠키 기반(teacher에서 PIN 로그인 후 발급되는 쿠키)
+    # 1) Cookie-based host session (issued after PIN login on teacher page)
     token = request.cookies.get(HOST_COOKIE_NAME) or ""
     if token:
         try:
@@ -197,7 +187,8 @@ def auto_open_dashboard_page():
         return
 
     ip = get_local_ip()
-    path = (os.environ.get("STEPCODE_AUTO_OPEN_PATH") or "/index.html").strip()
+    default_path = f"/teacher.html?token={HOST_TOKEN}"
+    path = (os.environ.get("STEPCODE_AUTO_OPEN_PATH") or default_path).strip()
     if not path.startswith("/"):
         path = "/" + path
     url = f"http://{ip}:8000{path}"
@@ -252,6 +243,10 @@ async def host_login(request: web.Request):
             dumps=lambda x: json.dumps(x, ensure_ascii=False),
         )
 
+    return issue_host_cookie_response()
+
+
+def issue_host_cookie_response() -> web.Response:
     resp = web.json_response(
         {"ok": True}, dumps=lambda x: json.dumps(x, ensure_ascii=False)
     )
@@ -264,6 +259,23 @@ async def host_login(request: web.Request):
         path="/",
     )
     return resp
+
+
+async def host_login_by_token(request: web.Request):
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+
+    token = str(body.get("token") or "").strip()
+    if token != HOST_TOKEN:
+        return web.json_response(
+            {"ok": False, "error": "invalid_token"},
+            status=403,
+            dumps=lambda x: json.dumps(x, ensure_ascii=False),
+        )
+
+    return issue_host_cookie_response()
 
 
 async def host_logout(request: web.Request):
@@ -518,6 +530,7 @@ def main():
     app.router.add_get("/ws", ws_handler)
     app.router.add_get("/api/host/status", host_status)
     app.router.add_post("/api/host/login", host_login)
+    app.router.add_post("/api/host/login_by_token", host_login_by_token)
     app.router.add_post("/api/host/logout", host_logout)
 
     # 비공개 파일 직접 접근 차단 (show_index도 끄는 걸 권장)
@@ -539,9 +552,7 @@ def main():
     print(
         "          http://<host>:8000/practice.html?set=...&room=...&host=1&token=<HOST_TOKEN>"
     )
-    if OPEN_HOST:
-        print("[StepCode] OPEN HOST MODE (default): teacher 인증이 비활성화되었습니다.")
-        print("[StepCode] To require PIN: set STEPCODE_REQUIRE_HOST_PIN=1")
+    print("[StepCode] Host auth required by default (PIN login or URL token).")
 
     web.run_app(app, host="0.0.0.0", port=8000)
 

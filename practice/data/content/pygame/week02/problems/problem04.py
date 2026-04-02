@@ -3,21 +3,23 @@ import pygame
 from pygame.locals import QUIT
 
 pygame.init()
-SURFACE = pygame.display.set_mode((520, 320))
+SURFACE = pygame.display.set_mode((560, 340))
 pygame.display.set_caption("week02 problem04")
 FPSCLOCK = pygame.time.Clock()
 
 
-def make_sprite():
-    sprite = pygame.Surface((140, 80), pygame.SRCALPHA)
-    pygame.draw.rect(sprite, (255, 140, 120), (10, 10, 120, 60), border_radius=12)
-    pygame.draw.circle(sprite, (255, 230, 90), (35, 40), 14)
-    pygame.draw.circle(sprite, (90, 180, 255), (105, 40), 14)
-    return sprite
+def make_blades():
+    blades = pygame.Surface((180, 180), pygame.SRCALPHA)
+    pygame.draw.polygon(blades, (245, 245, 245), [(90, 18), (108, 86), (72, 86)])
+    pygame.draw.polygon(blades, (240, 240, 240), [(162, 90), (94, 108), (94, 72)])
+    pygame.draw.polygon(blades, (245, 245, 245), [(90, 162), (108, 94), (72, 94)])
+    pygame.draw.polygon(blades, (240, 240, 240), [(18, 90), (86, 108), (86, 72)])
+    pygame.draw.circle(blades, (110, 110, 110), (90, 90), 12)
+    return blades
 
 
 def main():
-    sprite = make_sprite()
+    blades = make_blades()
     theta = 0
 
     while True:
@@ -26,14 +28,12 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        # BLOCK_A_START
-        # 문제 4.1: 더 느리게 회전하도록 숫자를 바꾸세요.
-        theta += 3
-        SURFACE.fill((25, 25, 30))
-        rotated = pygame.transform.rotate(sprite, theta)
-        rotated_rect = rotated.get_rect(center=(260, 160))
+        theta += 1
+        SURFACE.fill((176, 226, 255))
+        pygame.draw.rect(SURFACE, (110, 90, 70), (270, 150, 20, 150))
+        rotated = pygame.transform.rotate(blades, theta)
+        rotated_rect = rotated.get_rect(center=(280, 170))
         SURFACE.blit(rotated, rotated_rect)
-        # BLOCK_A_END
 
         pygame.display.update()
         FPSCLOCK.tick(60)

@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_lv10_array_c02",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_array",
+    "title": "Python 배열 Lv10 챌린지 2회차",
+    "round": 5,
+    "difficulty": "challenge",
+    "status": "active"
+  },
+  "id": "py_lv10_array_c02",
+  "title": "Python 배열 Lv10 챌린지 2회차",
+  "categoryId": "py_array",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

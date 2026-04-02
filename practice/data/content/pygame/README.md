@@ -151,6 +151,38 @@ python scripts/generate_content_indexes.py
 - `practice/data/content/pygame/**`를 수정한 뒤 재생성
 - 세트 JSON은 가능한 한 검수 원본 markdown에서 생성
 
+## 코드 복사 정책 작성 기준
+
+`practice.html`의 pygame 세트는 학생 화면에서
+전체 제시 코드 복사를 기본적으로 허용하지 않습니다.
+대신 `problem_review_*.md`에서 `COPYABLE_START/END`로 표시한
+부분 블록만 참고용 snippet으로 복사할 수 있습니다.
+
+마커 문법:
+
+```python
+# COPYABLE_START: make_blades | 풍차 날개 생성 | asset
+def make_blades():
+    ...
+# COPYABLE_END: make_blades
+```
+
+작성 체크리스트:
+
+- 긴 자산 생성 함수는 마커 사용 가능
+- 장식 코드나 surface 생성 helper는 마커 사용 가능
+- 학생이 손으로 치는 가치가 낮은 helper는 마커 사용 가능
+- 이벤트 처리 블록에는 마커를 쓰지 않음
+- 정답 블록이나 수정 대상 로직에는 마커를 쓰지 않음
+- 좌표 수정 핵심 줄에는 마커를 쓰지 않음
+- 반복 출력 핵심 줄에는 마커를 쓰지 않음
+
+운영 해석:
+
+- 학생은 `COPYABLE_START/END`로 분리된 블록만 복사 가능
+- 전체 제시 코드는 학생 화면에서 직접 작성용으로 취급
+- host UI에서는 `teacher_only` 전체 코드 복사가 가능할 수 있음
+
 ## round 폴더 취급
 
 - `round01`, `round02`, `round03`은 웹 직접 노출 루트가 아닙니다.

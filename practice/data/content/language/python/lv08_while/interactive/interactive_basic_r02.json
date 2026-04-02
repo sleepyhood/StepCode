@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_while_b2",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_while",
+    "title": "Python while문 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_while_b2",
+  "title": "Python while문 기초 2회차",
+  "categoryId": "py_while",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

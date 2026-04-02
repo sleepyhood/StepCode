@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_lv07_for_b02",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_for",
+    "title": "Python for문 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_lv07_for_b02",
+  "title": "Python for문 기초 2회차",
+  "categoryId": "py_for",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_nfor_c1",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_nfor",
+    "title": "Python 중첩 for문 LV09 챌린지 1회차",
+    "round": 1,
+    "difficulty": "challenge",
+    "status": "active"
+  },
+  "id": "py_nfor_c1",
+  "title": "Python 중첩 for문 LV09 챌린지 1회차",
+  "categoryId": "py_nfor",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_input_b1",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_input",
+    "title": "Python 입력 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_input_b1",
+  "title": "Python 입력 기초 1회차",
+  "categoryId": "py_input",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

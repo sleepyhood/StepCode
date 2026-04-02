@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_lv05_cast_c01",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_cast",
+    "title": "Python 자료형 변환 LV05 챌린지 1회차",
+    "round": 4,
+    "difficulty": "challenge",
+    "status": "active"
+  },
+  "id": "py_lv05_cast_c01",
+  "title": "Python 자료형 변환 LV05 챌린지 1회차",
+  "categoryId": "py_cast",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

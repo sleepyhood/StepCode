@@ -5,9 +5,10 @@
     "track": "pygame",
     "lang": "python",
     "categoryId": "py_pygame_w03",
-    "title": "Python Pygame 모듈 03 · 마우스 입력과 그리기 규칙",
+    "title": "Python Pygame 모듈 03 · 마우스 입력과 그림판 규칙",
     "round": 1,
     "difficulty": "basic",
-    "status": "inactive"
+    "status": "active",
+    "dataPath": "./data/sets/py_pygame_w03_b01.json"
   }
 }

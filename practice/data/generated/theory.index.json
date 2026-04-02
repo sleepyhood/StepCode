@@ -142,6 +142,143 @@
     "sourcePath": "./data/content/canva/canva/l08_assignment/lesson/lesson.md"
   },
   {
+    "conceptId": "py_lv01_print",
+    "title": "Python Lv1 출력",
+    "categoryId": "py_print",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv01_print/lesson/lesson.md",
+    "recommendedSetId": "py_print_b1",
+    "relatedSetIds": [
+      "py_print_b1",
+      "py_print_b2",
+      "py_print_b3",
+      "py_print_c1"
+    ],
+    "prerequisites": [],
+    "nextConcepts": [
+      "py_lv02_var"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/language/python/lv01_print/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_lv02_var",
+    "title": "Python Lv2 변수",
+    "categoryId": "py_var",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv02_var/lesson/lesson.md",
+    "recommendedSetId": "py_var_b1",
+    "relatedSetIds": [
+      "py_var_b1",
+      "py_var_b2",
+      "py_var_b3",
+      "py_var_b4",
+      "py_var_c1"
+    ],
+    "prerequisites": [
+      "py_lv01_print"
+    ],
+    "nextConcepts": [
+      "py_lv03_input"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/language/python/lv02_var/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_lv03_input",
+    "title": "Python Lv3 입력",
+    "categoryId": "py_input",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv03_input/lesson/lesson.md",
+    "recommendedSetId": "py_input_b1",
+    "relatedSetIds": [
+      "py_input_b1",
+      "py_input_b2",
+      "py_input_b3",
+      "py_input_c1"
+    ],
+    "prerequisites": [
+      "py_lv02_var"
+    ],
+    "nextConcepts": [
+      "py_lv04_operator"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/language/python/lv03_input/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_lv04_operator",
+    "title": "Python Lv4 연산자",
+    "categoryId": "py_operator",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv04_operator/lesson/lesson.md",
+    "recommendedSetId": "py_lv04_operator_b01",
+    "relatedSetIds": [
+      "py_lv04_operator_b01",
+      "py_lv04_operator_b02",
+      "py_lv04_operator_c01"
+    ],
+    "prerequisites": [
+      "py_lv03_input"
+    ],
+    "nextConcepts": [
+      "py_lv05_cast"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/language/python/lv04_operator/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_lv05_cast",
+    "title": "Python Lv5 자료형 변환",
+    "categoryId": "py_cast",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv05_cast/lesson/lesson.md",
+    "recommendedSetId": "py_lv05_cast_b01",
+    "relatedSetIds": [
+      "py_lv05_cast_b01",
+      "py_lv05_cast_b02",
+      "py_lv05_cast_c01"
+    ],
+    "prerequisites": [
+      "py_lv04_operator"
+    ],
+    "nextConcepts": [
+      "py_lv06_if"
+    ],
+    "priority": 2,
+    "sourcePath": "./data/content/language/python/lv05_cast/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_lv06_if",
+    "title": "Python Lv6 조건문",
+    "categoryId": "py_if",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv06_if/lesson/lesson.md",
+    "recommendedSetId": "py_if_b1",
+    "relatedSetIds": [
+      "py_if_b1",
+      "py_if_b2",
+      "py_if_b3",
+      "py_if_b4",
+      "py_if_c1",
+      "py_if_c2"
+    ],
+    "prerequisites": [
+      "py_lv05_cast"
+    ],
+    "nextConcepts": [
+      "py_lv07_for"
+    ],
+    "priority": 3,
+    "sourcePath": "./data/content/language/python/lv06_if/lesson/lesson.md"
+  },
+  {
     "conceptId": "py_lv07_for",
     "title": "Python Lv7 for문",
     "categoryId": "py_for",
@@ -160,6 +297,97 @@
     ],
     "priority": 3,
     "sourcePath": "./data/content/language/python/lv07_for/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_lv08_while",
+    "title": "Python Lv8 while문",
+    "categoryId": "py_while",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv08_while/lesson/lesson.md",
+    "recommendedSetId": "py_while_b1",
+    "relatedSetIds": [
+      "py_while_b1",
+      "py_lv08_while_b02",
+      "py_lv08_while_c01"
+    ],
+    "prerequisites": [
+      "py_lv07_for"
+    ],
+    "nextConcepts": [
+      "py_lv09_nfor"
+    ],
+    "priority": 3,
+    "sourcePath": "./data/content/language/python/lv08_while/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_lv09_nfor",
+    "title": "Python Lv9 중첩 for",
+    "categoryId": "py_nfor",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv09_nfor/lesson/lesson.md",
+    "recommendedSetId": "py_lv09_nfor_b01",
+    "relatedSetIds": [
+      "py_lv09_nfor_b01",
+      "py_lv09_nfor_b02",
+      "py_lv09_nfor_b03",
+      "py_lv09_nfor_c01"
+    ],
+    "prerequisites": [
+      "py_lv07_for"
+    ],
+    "nextConcepts": [
+      "py_lv10_array"
+    ],
+    "priority": 3,
+    "sourcePath": "./data/content/language/python/lv09_nfor/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_lv10_array",
+    "title": "Python Lv10 배열",
+    "categoryId": "py_array",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv10_array/lesson/lesson.md",
+    "recommendedSetId": "py_lv10_array_b01",
+    "relatedSetIds": [
+      "py_lv10_array_b01",
+      "py_lv10_array_b02",
+      "py_lv10_array_b03",
+      "py_lv10_array_c01",
+      "py_lv10_array_c02"
+    ],
+    "prerequisites": [
+      "py_lv09_nfor"
+    ],
+    "nextConcepts": [
+      "py_lv15_array2d"
+    ],
+    "priority": 3,
+    "sourcePath": "./data/content/language/python/lv10_array/lesson/lesson.md"
+  },
+  {
+    "conceptId": "py_lv15_array2d",
+    "title": "Python Lv15 2차원 배열",
+    "categoryId": "py_array2d",
+    "lang": "python",
+    "track": "language",
+    "mdPath": "./data/content/language/python/lv15_array2d/lesson/lesson.md",
+    "recommendedSetId": "py_lv15_array2d_b01",
+    "relatedSetIds": [
+      "py_lv15_array2d_b01",
+      "py_lv15_array2d_b02",
+      "py_lv15_array2d_b03",
+      "py_lv15_array2d_c01",
+      "py_lv15_array2d_c02"
+    ],
+    "prerequisites": [
+      "py_lv10_array"
+    ],
+    "nextConcepts": [],
+    "priority": 3,
+    "sourcePath": "./data/content/language/python/lv15_array2d/lesson/lesson.md"
   },
   {
     "conceptId": "py_pygame_w01_intro",
@@ -184,8 +412,10 @@
     "lang": "python",
     "track": "pygame",
     "mdPath": "./data/content/pygame/week02/lesson/lesson.md",
-    "recommendedSetId": "",
-    "relatedSetIds": [],
+    "recommendedSetId": "py_pygame_w02_b01",
+    "relatedSetIds": [
+      "py_pygame_w02_b01"
+    ],
     "prerequisites": [],
     "nextConcepts": [],
     "priority": 2,
@@ -193,13 +423,15 @@
   },
   {
     "conceptId": "py_pygame_w03_intro",
-    "title": "Python Pygame 모듈 03 · 마우스 입력과 그리기 규칙",
+    "title": "Python Pygame 모듈 03 · 마우스 입력과 그림판 규칙",
     "categoryId": "py_pygame_w03",
     "lang": "python",
     "track": "pygame",
     "mdPath": "./data/content/pygame/week03/lesson/lesson.md",
-    "recommendedSetId": "",
-    "relatedSetIds": [],
+    "recommendedSetId": "py_pygame_w03_b01",
+    "relatedSetIds": [
+      "py_pygame_w03_b01"
+    ],
     "prerequisites": [],
     "nextConcepts": [],
     "priority": 2,

@@ -8,6 +8,7 @@
     "title": "Python Pygame 모듈 02 · 이미지 출력과 회전 중심",
     "round": 1,
     "difficulty": "basic",
-    "status": "inactive"
+    "status": "active",
+    "dataPath": "./data/sets/py_pygame_w02_b01.json"
   }
 }

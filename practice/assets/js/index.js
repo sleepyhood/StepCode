@@ -1,6 +1,3 @@
-// practice/assets/js/index.js
-// Part-first library view: Part -> Language toggle -> Concept / Basic / Challenge / Rounds
-
 function getLangFromCategory(cat) {
   if (cat.lang) return cat.lang;
   if (typeof cat.name === "string") {
@@ -163,23 +160,13 @@ function isVisibleSetMeta(setMeta) {
   return String(setMeta?.status || "active").toLowerCase() !== "inactive";
 }
 
-function createLangButton(lang, active) {
+function createSegmentButton(value, label, active, key) {
   const btn = document.createElement("button");
   btn.type = "button";
-  btn.className = "part-lang-btn";
+  btn.className = "part-segment-btn";
   if (active) btn.classList.add("active");
-  btn.dataset.lang = lang;
-  btn.textContent = lang;
-  return btn;
-}
-
-function createTrackButton(track, active) {
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "part-lang-btn";
-  if (active) btn.classList.add("active");
-  btn.dataset.track = track;
-  btn.textContent = getTrackLabel(track);
+  btn.dataset[key] = value;
+  btn.textContent = label;
   return btn;
 }
 
@@ -210,17 +197,22 @@ function createContestBatchPdfPanel() {
   const head = document.createElement("div");
   head.className = "part-card-head";
 
+  const titleRow = document.createElement("div");
+  titleRow.className = "part-card-title-row";
+
   const title = document.createElement("h3");
   title.className = "part-card-title";
   title.textContent = "경시대회 묶음 PDF";
+  titleRow.appendChild(title);
 
   const meta = document.createElement("p");
   meta.className = "part-card-meta";
   meta.textContent = "언어/학년별 11회차 통합 출력";
-  head.append(title, meta);
+
+  head.append(titleRow, meta);
 
   const actions = document.createElement("div");
-  actions.className = "part-secondary-actions";
+  actions.className = "part-rounds";
 
   const combos = [
     { lang: "c", level: "elem", label: "C 초등 11회차" },
@@ -252,7 +244,10 @@ function createContestBatchPdfPanel() {
     qTheory.set("contestLevel", combo.level);
     qTheory.set("contestWeeks", "11");
     qTheory.set("lang", combo.lang === "c" ? "c" : "python");
-    qTheory.set("audience", combo.level === "elem" ? "elementary" : combo.level === "mid" ? "middle" : "high");
+    qTheory.set(
+      "audience",
+      combo.level === "elem" ? "elementary" : combo.level === "mid" ? "middle" : "high"
+    );
     qTheory.set("view", "student");
     const theoryLink = document.createElement("a");
     theoryLink.className = "part-action-link theory";
@@ -273,6 +268,7 @@ function setCardRoundsHidden(cardEl, hidden) {
   if (!rounds || !toggle) return;
   rounds.hidden = hidden;
   toggle.textContent = hidden ? "자세히 보기" : "접기";
+  toggle.setAttribute("aria-expanded", String(!hidden));
 }
 
 function getCardsInSameRow(cardEl) {
@@ -309,6 +305,7 @@ function groupByPart(categories, sets) {
     part.order = Math.min(part.order, cat.order || Number.MAX_SAFE_INTEGER);
     map.set(key, part);
   });
+
   function levelRank(part) {
     const m = String(part?.level || "").match(/(\d+)/);
     return m ? Number(m[1]) : Number.MAX_SAFE_INTEGER;
@@ -318,60 +315,23 @@ function groupByPart(categories, sets) {
     const lvDiff = levelRank(a) - levelRank(b);
     if (lvDiff !== 0) return lvDiff;
 
-    const orderDiff = (a.order || Number.MAX_SAFE_INTEGER) - (b.order || Number.MAX_SAFE_INTEGER);
+    const orderDiff =
+      (a.order || Number.MAX_SAFE_INTEGER) - (b.order || Number.MAX_SAFE_INTEGER);
     if (orderDiff !== 0) return orderDiff;
 
     return String(a.label || "").localeCompare(String(b.label || ""), "ko");
   });
 }
 
-function buildPartCard(part, lang, theoryByCategoryId, viewState) {
+function getPartEntry(part, lang, theoryByCategoryId) {
   const langInfo = part.byLang[lang];
   if (!langInfo) return null;
+
   const theory = theoryByCategoryId[langInfo.category.id];
-  const hasTheoryOnly = !langInfo.sets.length && !!theory?.conceptId;
-  if (!langInfo.sets.length && !hasTheoryOnly) return null;
-
-  const section = document.createElement("section");
-  section.className = "part-card";
-
-  const head = document.createElement("div");
-  head.className = "part-card-head";
-
-  const title = document.createElement("h3");
-  title.className = "part-card-title";
-  title.textContent = part.label;
-  if (part.level) {
-    const lv = document.createElement("span");
-    lv.className = "part-level-badge";
-    lv.textContent = part.level;
-    title.appendChild(document.createTextNode(" "));
-    title.appendChild(lv);
-  }
-
-  const meta = document.createElement("p");
-  meta.className = "part-card-meta";
   const visibleSets = langInfo.sets.filter(isVisibleSetMeta);
-  const basicCount = visibleSets.filter((s) => s.difficulty !== "challenge").length;
-  const challengeCount = visibleSets.filter((s) => s.difficulty === "challenge").length;
-  const priority = getPriorityInfo(theory?.priority);
-  meta.textContent = `${lang}`;
-
-  const priorityBadge = document.createElement("span");
-  priorityBadge.className = `part-priority-badge p${priority.value}`;
-  priorityBadge.textContent = `${priority.stars} ${priority.label}`;
-  meta.appendChild(document.createTextNode(" "));
-  meta.appendChild(priorityBadge);
-
-  head.append(title, meta);
-
-  const controls = document.createElement("div");
-  controls.className = "part-primary-controls";
-
-  const actions = document.createElement("div");
-  actions.className = "part-actions";
   const basics = visibleSets.filter((s) => s.difficulty !== "challenge");
   const challenges = visibleSets.filter((s) => s.difficulty === "challenge");
+
   const startHref = (() => {
     if (theory?.conceptId) {
       const q = new URLSearchParams();
@@ -384,21 +344,88 @@ function buildPartCard(part, lang, theoryByCategoryId, viewState) {
     if (challenges[0]) return `practice.html?set=${encodeURIComponent(challenges[0].id)}`;
     return "#";
   })();
-  actions.appendChild(createActionLink("학습 시작", startHref, "start", viewState));
+
+  return {
+    theory,
+    visibleSets,
+    basics,
+    challenges,
+    startHref,
+  };
+}
+
+function buildPartCard(part, lang, theoryByCategoryId, viewState) {
+  const langInfo = part.byLang[lang];
+  if (!langInfo) return null;
+
+  const entry = getPartEntry(part, lang, theoryByCategoryId);
+  const theory = entry?.theory;
+  const hasTheoryOnly = !entry?.visibleSets.length && !!theory?.conceptId;
+  if (!entry || (!entry.visibleSets.length && !hasTheoryOnly)) return null;
+
+  const priority = getPriorityInfo(theory?.priority);
+
+  const section = document.createElement("section");
+  section.className = "part-card";
+
+  const head = document.createElement("div");
+  head.className = "part-card-head";
+
+  const titleRow = document.createElement("div");
+  titleRow.className = "part-card-title-row";
+
+  const title = document.createElement("h3");
+  title.className = "part-card-title";
+  title.textContent = part.label;
+  titleRow.appendChild(title);
+
+  if (part.level) {
+    const lv = document.createElement("span");
+    lv.className = "part-level-badge";
+    lv.textContent = part.level;
+    titleRow.appendChild(lv);
+  }
+
+  const meta = document.createElement("p");
+  meta.className = "part-card-meta";
+  meta.append(document.createTextNode(lang));
+
+  const priorityBadge = document.createElement("span");
+  priorityBadge.className = `part-priority-badge p${priority.value}`;
+  priorityBadge.textContent = `${priority.stars} ${priority.label}`;
+  meta.appendChild(priorityBadge);
+
+  head.append(titleRow, meta);
+
+  const controls = document.createElement("div");
+  controls.className = "part-primary-controls";
+
+  const actions = document.createElement("div");
+  actions.className = "part-actions";
+  actions.appendChild(
+    createActionLink("학습 시작", entry.startHref, "start", viewState)
+  );
   controls.appendChild(actions);
+
+  const rounds = document.createElement("div");
+  rounds.className = "part-rounds";
+  rounds.hidden = true;
 
   const toggle = document.createElement("button");
   toggle.type = "button";
   toggle.className = "part-rounds-toggle";
   toggle.textContent = "자세히 보기";
-  if (langInfo.sets.length) controls.appendChild(toggle);
+  toggle.setAttribute("aria-expanded", "false");
 
-  const rounds = document.createElement("div");
-  rounds.className = "part-rounds";
-  rounds.hidden = true;
+  if (langInfo.sets.length) {
+    controls.appendChild(toggle);
+  } else {
+    rounds.hidden = false;
+  }
+
   const stats = document.createElement("p");
   stats.className = "part-round-stats";
-  stats.textContent = `Basics ${basicCount} · Challenges ${challengeCount}`;
+  stats.textContent = `Basics ${entry.basics.length} · Challenges ${entry.challenges.length}`;
   rounds.appendChild(stats);
 
   const secondary = document.createElement("div");
@@ -412,21 +439,21 @@ function buildPartCard(part, lang, theoryByCategoryId, viewState) {
       createActionLink("개념 보기", `theory.html?${q.toString()}`, "theory", viewState)
     );
   }
-  if (basics[0]) {
+  if (entry.basics[0]) {
     secondary.appendChild(
       createActionLink(
         "기초 시작",
-        `practice.html?set=${encodeURIComponent(basics[0].id)}`,
+        `practice.html?set=${encodeURIComponent(entry.basics[0].id)}`,
         "basic",
         viewState
       )
     );
   }
-  if (challenges[0]) {
+  if (entry.challenges[0]) {
     secondary.appendChild(
       createActionLink(
         "챌린지 시작",
-        `practice.html?set=${encodeURIComponent(challenges[0].id)}`,
+        `practice.html?set=${encodeURIComponent(entry.challenges[0].id)}`,
         "challenge",
         viewState
       )
@@ -434,29 +461,32 @@ function buildPartCard(part, lang, theoryByCategoryId, viewState) {
   }
   if (secondary.childElementCount) rounds.appendChild(secondary);
 
-  if (basics.length) {
-    const g = document.createElement("div");
-    g.className = "part-round-group";
-    const gt = document.createElement("p");
-    gt.className = "part-round-title";
-    gt.textContent = "Basics";
+  if (entry.basics.length) {
+    const basicGroup = document.createElement("div");
+    basicGroup.className = "part-round-group";
+    const titleBasic = document.createElement("p");
+    titleBasic.className = "part-round-title";
+    titleBasic.textContent = "Basics";
     const row = document.createElement("div");
     row.className = "part-round-row";
-    basics.forEach((s) => row.appendChild(createRoundChip(s, viewState)));
-    g.append(gt, row);
-    rounds.appendChild(g);
+    entry.basics.forEach((setMeta) => row.appendChild(createRoundChip(setMeta, viewState)));
+    basicGroup.append(titleBasic, row);
+    rounds.appendChild(basicGroup);
   }
-  if (challenges.length) {
-    const g = document.createElement("div");
-    g.className = "part-round-group";
-    const gt = document.createElement("p");
-    gt.className = "part-round-title";
-    gt.textContent = "Challenges";
+
+  if (entry.challenges.length) {
+    const challengeGroup = document.createElement("div");
+    challengeGroup.className = "part-round-group";
+    const titleChallenge = document.createElement("p");
+    titleChallenge.className = "part-round-title";
+    titleChallenge.textContent = "Challenges";
     const row = document.createElement("div");
     row.className = "part-round-row";
-    challenges.forEach((s) => row.appendChild(createRoundChip(s, viewState)));
-    g.append(gt, row);
-    rounds.appendChild(g);
+    entry.challenges.forEach((setMeta) =>
+      row.appendChild(createRoundChip(setMeta, viewState))
+    );
+    challengeGroup.append(titleChallenge, row);
+    rounds.appendChild(challengeGroup);
   }
 
   if (langInfo.sets.length) {
@@ -465,8 +495,6 @@ function buildPartCard(part, lang, theoryByCategoryId, viewState) {
       const sameRowCards = getCardsInSameRow(section);
       sameRowCards.forEach((cardEl) => setCardRoundsHidden(cardEl, nextHidden));
     });
-  } else {
-    rounds.hidden = false;
   }
 
   section.append(head, controls, rounds);
@@ -475,6 +503,11 @@ function buildPartCard(part, lang, theoryByCategoryId, viewState) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   const root = document.getElementById("list-root");
+  const heroStartLink = document.getElementById("hero-start-link");
+  const heroBrowseLink = document.getElementById("hero-browse-link");
+  const heroLiveTrack = document.getElementById("hero-live-track");
+  const heroLiveLang = document.getElementById("hero-live-lang");
+
   root.textContent = "Loading problem library...";
 
   try {
@@ -494,9 +527,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tracks = ["language", "unity"]
       .filter((track) => categories.some((cat) => getTrackFromCategory(cat) === track))
       .concat(
-        Array.from(
-          new Set(categories.map((cat) => getTrackFromCategory(cat)))
-        ).filter((track) => !["language", "unity"].includes(track))
+        Array.from(new Set(categories.map((cat) => getTrackFromCategory(cat)))).filter(
+          (track) => !["language", "unity"].includes(track)
+        )
       );
 
     const state = {
@@ -506,28 +539,48 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     root.innerHTML = "";
 
-    const controls = document.createElement("section");
-    controls.className = "part-controls";
+    const toolbar = document.createElement("section");
+    toolbar.className = "part-toolbar";
 
+    const toolbarGroups = document.createElement("div");
+    toolbarGroups.className = "part-toolbar-groups";
+
+    const trackGroup = document.createElement("div");
+    trackGroup.className = "part-toolbar-group";
     const trackLabel = document.createElement("span");
-    trackLabel.className = "part-controls-label";
+    trackLabel.className = "part-toolbar-label";
     trackLabel.textContent = "수업";
-    controls.appendChild(trackLabel);
-
     const trackWrap = document.createElement("div");
-    trackWrap.className = "part-track-wrap";
-    controls.appendChild(trackWrap);
+    trackWrap.className = "part-segment";
+    trackGroup.append(trackLabel, trackWrap);
 
+    const langGroup = document.createElement("div");
+    langGroup.className = "part-toolbar-group";
     const langLabel = document.createElement("span");
-    langLabel.className = "part-controls-label";
+    langLabel.className = "part-toolbar-label";
     langLabel.textContent = getSecondaryFilterLabel(state.track);
-    controls.appendChild(langLabel);
-
     const langWrap = document.createElement("div");
-    langWrap.className = "part-lang-wrap";
-    controls.appendChild(langWrap);
+    langWrap.className = "part-segment";
+    langGroup.append(langLabel, langWrap);
 
-    root.appendChild(controls);
+    toolbarGroups.append(trackGroup, langGroup);
+
+    const toolbarMeta = document.createElement("aside");
+    toolbarMeta.className = "part-toolbar-meta";
+
+    const toolbarMetaLabel = document.createElement("div");
+    toolbarMetaLabel.className = "part-toolbar-meta-label";
+    toolbarMetaLabel.textContent = "Current view";
+
+    const toolbarMetaValue = document.createElement("div");
+    toolbarMetaValue.className = "part-toolbar-meta-value";
+
+    const toolbarMetaCount = document.createElement("div");
+    toolbarMetaCount.className = "part-toolbar-meta-count";
+
+    toolbarMeta.append(toolbarMetaLabel, toolbarMetaValue, toolbarMetaCount);
+    toolbar.append(toolbarGroups, toolbarMeta);
+    root.appendChild(toolbar);
 
     const list = document.createElement("section");
     list.className = "part-list";
@@ -567,16 +620,40 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function renderTrackButtons() {
       trackWrap.innerHTML = "";
-      tracks.forEach((track) =>
-        trackWrap.appendChild(createTrackButton(track, track === state.track))
-      );
+      tracks.forEach((track) => {
+        trackWrap.appendChild(
+          createSegmentButton(track, getTrackLabel(track), track === state.track, "track")
+        );
+      });
     }
 
     function renderLanguageButtons(langs) {
       langWrap.innerHTML = "";
-      langs.forEach((lang) =>
-        langWrap.appendChild(createLangButton(lang, lang === state.lang))
-      );
+      langs.forEach((lang) => {
+        langWrap.appendChild(
+          createSegmentButton(lang, lang, lang === state.lang, "lang")
+        );
+      });
+    }
+
+    function updateHeroSummary(partCardsCount, firstStartHref) {
+      if (heroLiveTrack) heroLiveTrack.textContent = getTrackLabel(state.track);
+      if (heroLiveLang) heroLiveLang.textContent = state.lang || "기본";
+
+      if (heroStartLink) {
+        heroStartLink.href = firstStartHref
+          ? withViewStateParams(firstStartHref, state)
+          : "#library-shell";
+      }
+
+      if (heroBrowseLink) {
+        heroBrowseLink.textContent = partCardsCount
+          ? `${partCardsCount}개 파트 둘러보기`
+          : "파트 둘러보기";
+      }
+
+      toolbarMetaValue.textContent = `${getTrackLabel(state.track)} / ${state.lang || "기본"}`;
+      toolbarMetaCount.textContent = `${partCardsCount}개 파트`;
     }
 
     function render() {
@@ -592,6 +669,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const nextUrl = `${location.pathname}${qs ? `?${qs}` : ""}${location.hash || ""}`;
         history.replaceState(null, "", nextUrl);
       } catch (_) {}
+
       renderTrackButtons();
       langLabel.textContent = getSecondaryFilterLabel(state.track);
       renderLanguageButtons(langs);
@@ -606,8 +684,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
       const parts = groupByPart(activeCategories, sets);
       const cards = parts
-        .map((part) => buildPartCard(part, state.lang, theoryByCategoryId, state))
-        .filter(Boolean);
+        .map((part) => ({
+          part,
+          card: buildPartCard(part, state.lang, theoryByCategoryId, state),
+        }))
+        .filter((entry) => entry.card);
+
+      const firstStartHref = (() => {
+        const first = cards[0];
+        if (!first) return "";
+        const partEntry = getPartEntry(first.part, state.lang, theoryByCategoryId);
+        return partEntry?.startHref || "";
+      })();
+
+      updateHeroSummary(cards.length, firstStartHref);
 
       if (!cards.length) {
         const empty = document.createElement("p");
@@ -616,7 +706,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         list.appendChild(empty);
         return;
       }
-      cards.forEach((card) => list.appendChild(card));
+
+      cards.forEach((entry) => list.appendChild(entry.card));
     }
 
     trackWrap.addEventListener("click", (e) => {

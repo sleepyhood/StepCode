@@ -1,0 +1,131 @@
+---
+id: "py_lv10_array_challenge_r04"
+contentType: "worksheet"
+track: "language"
+lang: "python"
+categoryId: "py_array"
+title: "Python 배열 Lv10 챌린지 1회차"
+round: 4
+difficulty: "challenge"
+status: "active"
+audience: "common"
+printDefault: true
+---
+# Python 배열 Lv10 챌린지 1회차
+
+### Q1. Trace 1. 최댓값 인덱스 추적
+
+코드를 실행해 각 반복 직후의 값을 표에 채우세요. 동점일 때는 기존 인덱스를 유지합니다.
+
+```c
+lst = [7, 9, 4, 9, 3]
+mx = lst[0]
+idx = 0
+for i in range(1, len(lst)):
+    if lst[i] > mx:
+        mx = lst[i]
+        idx = i
+print(idx)
+```
+
+---
+
+### Q2. Short 1. 동점일 때 인덱스
+
+코드 실행 결과 idx 값을 쓰세요.
+
+```c
+lst = [5, 9, 2, 9]
+mx = lst[0]
+idx = 0
+for i in range(1, len(lst)):
+    if lst[i] > mx:
+        mx = lst[i]
+        idx = i
+print(idx)
+```
+
+---
+
+### Q3. Code 1. 최댓값 갱신 조건
+
+빈칸에 들어갈 조건식을 작성하세요.
+
+```c
+if ____:
+    mx = lst[i]
+    idx = i
+```
+
+---
+
+### Q4. Short 0. 앞에서 3개 출력
+
+코드 실행 결과를 쓰세요.
+
+```c
+lst = [4, 8, 2, 0, 7, 9]
+print(lst[0], lst[1], lst[2])
+```
+
+---
+
+### Q5. Code 2. 두 번째 최댓값 갱신
+
+first가 갱신될 때 second를 함께 갱신하는 한 줄을 작성하세요.
+
+```c
+if x > first:
+    # TODO
+    first = x
+```
+
+---
+
+### Q6. Reverse 1. 최댓값 위치 추론
+
+lst=[5, ?, 4, 9]에서 최댓값 인덱스가 1이 되도록 ? 값을 쓰세요.
+
+```c
+# idx of max is 1
+```
+
+---
+
+### Q7. Code 3. 인접 합 최대 갱신
+
+pair가 best보다 크면 best를 갱신하는 코드를 작성하세요.
+
+```c
+pair = lst[i] + lst[i + 1]
+# TODO
+```
+
+---
+
+### Q8. Short 2. 앞 3개 역순 출력
+
+코드 실행 결과를 쓰세요.
+
+```c
+lst = [4, 8, 2, 0, 7]
+print(lst[2], lst[1], lst[0])
+```
+
+---
+
+### Q9. MCQ 1. 인접 합 반복 범위
+
+인접한 두 수의 합을 모두 검사하려고 합니다. 올바른 반복 범위를 고르세요.
+
+```c
+for i in range(len(lst) - 1):
+    pair = lst[i] + lst[i + 1]
+```
+
+- **A**: range(len(lst))
+- **B**: range(1, len(lst))
+- **C**: range(len(lst) - 1)
+- **D**: range(len(lst) + 1)
+
+---

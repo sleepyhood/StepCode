@@ -86,8 +86,36 @@ async function apiHostLogin(pin) {
   return { ok: r.ok, data: await r.json().catch(() => ({})) };
 }
 
+async function apiHostLoginByToken(token) {
+  const r = await fetch("/api/host/login_by_token", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    credentials: "same-origin",
+    body: JSON.stringify({ token }),
+  });
+  return { ok: r.ok, data: await r.json().catch(() => ({})) };
+}
+
 async function apiHostLogout() {
   await fetch("/api/host/logout", { method: "POST", credentials: "same-origin" }).catch(() => {});
+}
+
+function getTokenFromQuery() {
+  try {
+    const p = new URLSearchParams(location.search);
+    return (p.get("token") || "").trim();
+  } catch (_) {
+    return "";
+  }
+}
+
+function removeTokenFromUrl() {
+  try {
+    const u = new URL(location.href);
+    if (!u.searchParams.has("token")) return;
+    u.searchParams.delete("token");
+    history.replaceState(null, "", `${u.pathname}${u.search}${u.hash}`);
+  } catch (_) {}
 }
 
 function applyHostUi(isHost) {
@@ -113,6 +141,20 @@ async function bootstrapHostAuth() {
     // host면 기존 편의 기능 유지: room 있으면 자동 연결
     if (roomInput.value) connect();
   }
+}
+
+async function bootstrapHostAuthWithToken() {
+  await bootstrapHostAuth();
+  if (state.isHost) return;
+
+  const token = getTokenFromQuery();
+  if (!token) return;
+
+  const res = await apiHostLoginByToken(token);
+  if (!res.ok) return;
+
+  await bootstrapHostAuth();
+  if (state.isHost) removeTokenFromUrl();
 }
 
 
@@ -315,5 +357,5 @@ btnHostLogout?.addEventListener("click", async () => {
   applyHostUi(false);
 });
 
-bootstrapHostAuth();
+bootstrapHostAuthWithToken();
 })();

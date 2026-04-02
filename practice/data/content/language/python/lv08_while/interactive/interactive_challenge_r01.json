@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_while_c1",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_while",
+    "title": "Python while문 챌린지 1회차",
+    "round": 1,
+    "difficulty": "challenge",
+    "status": "active"
+  },
+  "id": "py_while_c1",
+  "title": "Python while문 챌린지 1회차",
+  "categoryId": "py_while",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

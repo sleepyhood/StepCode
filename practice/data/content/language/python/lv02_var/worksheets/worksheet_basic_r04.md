@@ -1,0 +1,129 @@
+---
+id: "py_lv02_var_basic_r04"
+contentType: "worksheet"
+track: "language"
+lang: "python"
+categoryId: "py_var"
+title: "Python 변수 기초 4회차"
+round: 4
+difficulty: "basic"
+status: "active"
+audience: "common"
+printDefault: true
+---
+# Python 변수 기초 4회차
+
+### Q1. MCQ 1. input()의 결과 타입
+
+아래 코드가 실행될 때 생기는 문제로 알맞은 것을 고르세요.
+
+```c
+n = input()
+print('%d' % (n + 1))
+```
+
+- **A**: 정상 출력된다.
+- **B**: 문자열이라 +1이 불가능해 오류가 난다.
+- **C**: n이 자동으로 정수로 바뀐다.
+- **D**: %d가 문자열을 자동으로 처리한다.
+
+---
+
+### Q2. MCQ 2. 정수로 입력받기
+
+사용자가 입력한 값을 정수로 저장하는 코드로 알맞은 것은?
+
+- **A**: n = input()
+- **B**: n = int(input())
+- **C**: n = str(input())
+- **D**: n = map(int, input())
+
+---
+
+### Q3. MCQ 3. %d 에 들어갈 값
+
+다음 중 `%d` 자리에 넣기 위해 필요한 처리로 알맞은 것은?
+
+```c
+name, age = input().split()
+print('%s:%d' % (name, ???))
+```
+
+- **A**: age를 그대로 넣는다(문자열이어도 됨).
+- **B**: age를 int(age)로 바꿔 넣는다.
+- **C**: age를 '%d'로 바꾼다.
+- **D**: age를 str(age)로 바꿔 넣는다.
+
+---
+
+### Q4. MCQ 4. 두 정수 한 줄 입력
+
+입력 한 줄에 정수 a, b가 공백으로 구분되어 들어옵니다.
+a, b에 정수를 저장하는 코드로 가장 알맞은 것은?
+
+- **A**: a, b = input().split()
+- **B**: a, b = map(int, input().split())
+- **C**: a = int(input().split()) b = int(input().split())
+- **D**: a, b = map(int, input())
+
+---
+
+### Q5. MCQ 5. 문자열 + 정수 출력
+
+다음 중 이름(name)과 점수(score)를 "name=Tom score=15" 형식으로 출력하는 코드로 알맞은 것은?
+
+- **A**: print('name=%s score=%d' % (name, score))
+- **B**: print('name=%d score=%s' % (name, score))
+- **C**: print('name=%s score=%d' % (name, int(score)))
+- **D**: print('name=%s score=%d' % name, score)
+
+---
+
+### Q6. Short 1. 정수 변환 후 계산
+
+아래 프로그램에서 입력이 3일 때, 출력되는 한 줄을 그대로 쓰세요.
+
+```c
+n = int(input())
+print('%d' % (n * 10))
+```
+
+---
+
+### Q7. Short 2. 문자열+정수 출력 예측
+
+아래 프로그램에서 입력이 "Tom 15"일 때, 출력되는 한 줄을 그대로 쓰세요.
+
+```c
+name, age = input().split()
+print('%s:%d' % (name, int(age)))
+```
+
+---
+
+### Q8. Code 1. 문자열을 정수로 변환
+
+아래 코드에서 TODO 한 줄에 들어갈 코드를 작성하세요.
+(한 줄만 제출)
+
+```c
+n = input()
+# TODO: n을 정수로 변환해서 다시 n에 저장하세요.
+print('%d' % (n + 1))
+```
+
+---
+
+### Q9. Code 2. 합을 변수에 저장(정수 입력)
+
+아래 코드에서 TODO 한 줄에 들어갈 코드를 작성하세요.
+(한 줄만 제출)
+
+```c
+a, b = map(int, input().split())
+s = 0
+# TODO: s에 a+b를 저장하세요.
+print('%d' % s)
+```
+
+---

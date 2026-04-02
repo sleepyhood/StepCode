@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_lv05_cast_b02",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_cast",
+    "title": "Python 자료형 변환 LV05 기초 2회차",
+    "round": 2,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_lv05_cast_b02",
+  "title": "Python 자료형 변환 LV05 기초 2회차",
+  "categoryId": "py_cast",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

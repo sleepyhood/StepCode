@@ -1,0 +1,87 @@
+---
+id: "py_lv07_for_basic_r03"
+contentType: "worksheet"
+track: "language"
+lang: "python"
+categoryId: "py_for"
+title: "Python for문 기초 3회차"
+round: 3
+difficulty: "basic"
+status: "active"
+audience: "common"
+printDefault: true
+---
+# Python for문 기초 3회차
+
+### Q1. Trace 1. 입력 포함 count
+
+각 반복 직후 i, num, count를 표에 채우세요.
+
+```c
+n = 4
+count = 0
+for i in range(n):
+    num = int(input())
+    if num > 0:
+        count += 1
+```
+
+---
+
+### Q2. Trace 2. 조건 누적 합
+
+짝수만 더할 때 i, num, sum 변화를 표에 채우세요.
+
+```c
+n = 4
+sumv = 0
+for i in range(n):
+    num = int(input())
+    if num % 2 == 0:
+        sumv += num
+```
+
+---
+
+### Q3. Reverse 1. 누락 값 추론
+
+아래 코드의 출력(sumv)이 10이 되도록 ? 값을 쓰세요.
+
+```c
+n = 4
+sumv = 0
+for i in range(n):
+    num = int(input())
+    if num % 2 == 0:
+        sumv += num
+print('%d' % sumv)
+```
+
+---
+
+### Q4. Short 1. 종료 직후 i
+
+다음 코드 실행 후 출력되는 i 값을 쓰세요.
+
+```c
+for i in range(4):
+    pass
+print('%d' % i)
+```
+
+---
+
+### Q5. Code 1. 조건식 한 줄
+
+n개의 정수를 입력받아 양수만 sumv에 더하려고 합니다.
+if ____ 부분에 들어갈 조건식 한 줄을 작성하세요.
+
+```c
+sumv = 0
+for i in range(n):
+    num = int(input())
+    if ____:
+        sumv += num
+```
+
+---

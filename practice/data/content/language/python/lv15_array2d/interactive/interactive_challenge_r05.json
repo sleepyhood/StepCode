@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_lv15_array2d_c02",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_array2d",
+    "title": "Python 2차원 배열 LV15 챌린지 2회차",
+    "round": 5,
+    "difficulty": "challenge",
+    "status": "active"
+  },
+  "id": "py_lv15_array2d_c02",
+  "title": "Python 2차원 배열 LV15 챌린지 2회차",
+  "categoryId": "py_array2d",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}

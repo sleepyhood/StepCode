@@ -69,11 +69,39 @@
 
 - 세트 공통: `id`, `title`, `categoryId`, `availableLanguages`, `concepts`, `problems`
 - 세트 계층형 확장: `sections`
-- 문제 공통: `id`, `type`, `level`, `title`, `description`, `code`, `teacherExplainMd`, `conceptRef`, `conceptRefs`, `media`, `hint`, `ioExample`
+- 문제 공통: `id`, `type`, `level`, `title`, `description`, `code`, `codePolicy`, `codeBlocks`, `teacherExplainMd`, `conceptRef`, `conceptRefs`, `media`, `hint`, `ioExample`
 - `mcq`: `options`, `optionLabels`, `correctIndex`
 - `mcq_multi`: `options`, `optionLabels`, `correctIndexes`
 - `short`: `expectedText`, `expectedAnyOf`, `answerUi`, `expectedGrid`
-- `code`: `expectedCode`, `expectedCodes`, `targetBlockId`
+- `code`: `expectedCode`, `expectedCodes`, `targetBlockId`, `codePolicy`, `codeBlocks`
+
+### 3.5 코드 복사 정책 메타
+
+- `codePolicy`: 전체 표시 코드의 복사 정책
+- `codeBlocks`: 전체 코드에서 별도로 노출할 부분 복사 블록 목록
+
+1차 정책 값:
+
+- `allowed`: 학생/교사 모두 복사 가능
+- `teacher_only`: 학생은 복사 금지, 교사(host UI)만 전체 코드 복사 가능
+- `blocked`: 교사 포함 전체 복사 금지
+
+`codeBlocks` 항목 예:
+
+```json
+{
+  "id": "make_blades",
+  "title": "풍차 날개 생성",
+  "code": "def make_blades(): ...",
+  "copyPolicy": "allowed",
+  "role": "asset"
+}
+```
+
+권장 규칙:
+
+- `asset`, `helper` 같은 노가다성/장식성 블록만 부분 복사 허용
+- 이벤트 처리, 조건문, 좌표 보정, 반복 출력 핵심 로직은 전체 코드에만 두고 복사 금지
 
 ---
 

@@ -1,5 +1,65 @@
 [
   {
+    "id": "py_print",
+    "name": "Python - Lv1 출력",
+    "lang": "Python",
+    "track": "language",
+    "order": 201,
+    "partName": "Lv1 출력",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv01_print"
+  },
+  {
+    "id": "py_var",
+    "name": "Python - Lv2 변수",
+    "lang": "Python",
+    "track": "language",
+    "order": 202,
+    "partName": "Lv2 변수",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv02_var"
+  },
+  {
+    "id": "py_input",
+    "name": "Python - Lv3 입력",
+    "lang": "Python",
+    "track": "language",
+    "order": 203,
+    "partName": "Lv3 입력",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv03_input"
+  },
+  {
+    "id": "py_operator",
+    "name": "Python - Lv4 연산자",
+    "lang": "Python",
+    "track": "language",
+    "order": 204,
+    "partName": "Lv4 연산자",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv04_operator"
+  },
+  {
+    "id": "py_cast",
+    "name": "Python - Lv5 자료형 변환",
+    "lang": "Python",
+    "track": "language",
+    "order": 205,
+    "partName": "Lv5 자료형 변환",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv05_cast"
+  },
+  {
+    "id": "py_if",
+    "name": "Python - Lv6 조건",
+    "lang": "Python",
+    "track": "language",
+    "order": 206,
+    "partName": "Lv6 조건",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv06_if"
+  },
+  {
     "id": "py_for",
     "name": "Python - Lv7 반복1(for)",
     "lang": "Python",
@@ -8,6 +68,46 @@
     "partName": "반복1(for)",
     "status": "active",
     "contentRootPath": "./data/content/language/python/lv07_for"
+  },
+  {
+    "id": "py_while",
+    "name": "Python - Lv8 반복2(while)",
+    "lang": "Python",
+    "track": "language",
+    "order": 208,
+    "partName": "Lv8 반복2(while)",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv08_while"
+  },
+  {
+    "id": "py_nfor",
+    "name": "Python - Lv9 중첩 for",
+    "lang": "Python",
+    "track": "language",
+    "order": 209,
+    "partName": "Lv9 중첩 for",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv09_nfor"
+  },
+  {
+    "id": "py_array",
+    "name": "Python - Lv10 배열",
+    "lang": "Python",
+    "track": "language",
+    "order": 210,
+    "partName": "Lv10 배열",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv10_array"
+  },
+  {
+    "id": "py_array2d",
+    "name": "Python - LV15 2차원 배열",
+    "lang": "Python",
+    "track": "language",
+    "order": 215,
+    "partName": "LV15 2차원 배열",
+    "status": "active",
+    "contentRootPath": "./data/content/language/python/lv15_array2d"
   },
   {
     "id": "py_pygame_w01",
@@ -31,11 +131,11 @@
   },
   {
     "id": "py_pygame_w03",
-    "name": "Python - Pygame 모듈 03 · 마우스 입력과 그리기 규칙",
+    "name": "Python - Pygame 모듈 03 · 마우스 입력과 그림판 규칙",
     "lang": "Python",
     "track": "pygame",
     "order": 277,
-    "partName": "모듈 03 · 마우스 입력과 그리기 규칙",
+    "partName": "모듈 03 · 마우스 입력과 그림판 규칙",
     "status": "active",
     "contentRootPath": "./data/content/pygame/week03"
   },

@@ -61,3 +61,30 @@ python scripts/generate_pygame_set_from_review.py `
 ```powershell
 python scripts/test_generate_pygame_set_from_review.py
 ```
+
+## Language(lv07_for) 검수 원본 -> 세트 JSON 파이프라인
+
+`practice/data/content/language/python/lv07_for/problem_review/problem_review_*.md`
+검수 markdown을 `practice/data/sets/language/py_lv07_for_*.json`으로 변환할 때는
+아래 스크립트를 사용합니다.
+
+- `scripts/generate_language_set_from_review.py`
+
+예시:
+
+```powershell
+python scripts/generate_language_set_from_review.py `
+  --source practice/data/content/language/python/lv07_for/problem_review/problem_review_basic_r01.md `
+  --output practice/data/sets/language/py_lv07_for_b01.json `
+  --set-id py_lv07_for_b01 `
+  --title "Python for문 기초 1회차" `
+  --category-id py_for `
+  --round 1 `
+  --difficulty basic
+```
+
+검증:
+
+```powershell
+python scripts/test_generate_language_set_from_review.py
+```

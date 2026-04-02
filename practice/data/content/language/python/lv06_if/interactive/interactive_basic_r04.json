@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "id": "py_if_b4",
+    "contentType": "interactive",
+    "track": "language",
+    "lang": "python",
+    "categoryId": "py_if",
+    "title": "Python 조건문 기초 4회차",
+    "round": 4,
+    "difficulty": "basic",
+    "status": "active"
+  },
+  "id": "py_if_b4",
+  "title": "Python 조건문 기초 4회차",
+  "categoryId": "py_if",
+  "availableLanguages": [
+    "python"
+  ],
+  "problems": []
+}
