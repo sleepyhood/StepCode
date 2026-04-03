@@ -1,0 +1,19 @@
+<svg width="992" height="469" viewBox="104 188 992 469" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="700" rx="32" fill="#F7FAFD"/>
+  <line x1="120" y1="470" x2="1080" y2="470" stroke="#A9BBCE" stroke-width="4"/>
+  <text x="138" y="520" fill="#587189" font-size="22" font-family="Pretendard, Noto Sans KR, sans-serif">화면 안에서 우주선이 차지하는 실제 범위</text>
+
+  <rect x="390" y="290" width="360" height="160" rx="24" fill="#25D0E5" stroke="#17324D" stroke-width="4"/>
+  <text x="515" y="380" fill="#0F172A" font-size="32" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">ship_rect</text>
+
+  <line x1="390" y1="250" x2="390" y2="490" stroke="#5B96FF" stroke-width="6"/>
+  <line x1="480" y1="250" x2="480" y2="490" stroke="#F2A14A" stroke-width="6"/>
+  <line x1="750" y1="250" x2="750" y2="490" stroke="#39C47A" stroke-width="6"/>
+
+  <text x="330" y="230" fill="#5B96FF" font-size="26" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">left</text>
+  <text x="454" y="230" fill="#F2A14A" font-size="26" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">x</text>
+  <text x="710" y="230" fill="#39C47A" font-size="26" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">right</text>
+
+  <rect x="120" y="560" width="960" height="80" rx="18" fill="#FFFFFF" stroke="#D7E3EE"/>
+  <text x="155" y="610" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">left는 왼쪽 테두리, x는 시작 기준점, right는 오른쪽 테두리이다. 벽에 닿는지 볼 때는 left/right가 더 정확하다.</text>
+</svg>

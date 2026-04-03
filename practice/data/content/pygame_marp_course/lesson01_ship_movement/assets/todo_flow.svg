@@ -1,0 +1,42 @@
+<svg width="1092" height="392" viewBox="64 192 1092 392" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="700" rx="32" fill="#F7FAFD"/>
+  <rect x="80" y="210" width="180" height="160" rx="26" fill="#EEF5FB" stroke="#C9D9E8" stroke-width="2"/>
+  <rect x="300" y="210" width="180" height="160" rx="26" fill="#EEF5FB" stroke="#C9D9E8" stroke-width="2"/>
+  <rect x="520" y="210" width="180" height="160" rx="26" fill="#FFF7ED" stroke="#F2D1A6" stroke-width="2"/>
+  <rect x="740" y="210" width="180" height="160" rx="26" fill="#EEF8F2" stroke="#CDE5D7" stroke-width="2"/>
+  <rect x="960" y="210" width="180" height="160" rx="26" fill="#EEF8F2" stroke="#CDE5D7" stroke-width="2"/>
+
+  <text x="145" y="255" fill="#4F8CFF" font-size="26" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">1단계</text>
+  <text x="123" y="300" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">TODO 1</text>
+  <text x="118" y="336" fill="#46617B" font-size="20" font-family="Pretendard, Noto Sans KR, sans-serif">왼쪽 키 연결</text>
+
+  <text x="365" y="255" fill="#4F8CFF" font-size="26" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">2단계</text>
+  <text x="343" y="300" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">TODO 2</text>
+  <text x="338" y="336" fill="#46617B" font-size="20" font-family="Pretendard, Noto Sans KR, sans-serif">오른쪽 키 연결</text>
+
+  <text x="585" y="255" fill="#F2A14A" font-size="26" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">3단계</text>
+  <text x="556" y="300" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">실행 확인</text>
+  <text x="549" y="336" fill="#46617B" font-size="20" font-family="Pretendard, Noto Sans KR, sans-serif">좌우 이동 체크</text>
+
+  <text x="805" y="255" fill="#39C47A" font-size="26" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">4단계</text>
+  <text x="783" y="300" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">TODO 3</text>
+  <text x="756" y="336" fill="#46617B" font-size="20" font-family="Pretendard, Noto Sans KR, sans-serif">화면 경계선 추가</text>
+
+  <text x="1025" y="255" fill="#39C47A" font-size="26" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">5단계</text>
+  <text x="1004" y="300" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">최종 확인</text>
+  <text x="986" y="336" fill="#46617B" font-size="20" font-family="Pretendard, Noto Sans KR, sans-serif">탈주 버그 사라짐</text>
+
+  <path d="M260 290 L300 290" stroke="#9AB0C5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M480 290 L520 290" stroke="#9AB0C5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M700 290 L740 290" stroke="#9AB0C5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M920 290 L960 290" stroke="#9AB0C5" stroke-width="8" stroke-linecap="round"/>
+
+  <path d="M282 275 L300 290 L282 305" fill="none" stroke="#9AB0C5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M502 275 L520 290 L502 305" fill="none" stroke="#9AB0C5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M722 275 L740 290 L722 305" fill="none" stroke="#9AB0C5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M942 275 L960 290 L942 305" fill="none" stroke="#9AB0C5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="120" y="448" width="960" height="120" rx="24" fill="#FFFFFF" stroke="#D7E3EE" stroke-width="2"/>
+  <text x="160" y="500" fill="#17324D" font-size="28" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">Top-down 핵심</text>
+  <text x="160" y="538" fill="#46617B" font-size="24" font-family="Pretendard, Noto Sans KR, sans-serif">입력 두 개를 먼저 연결하고, 실행 결과를 본 다음, 마지막에 경계 조건을 추가한다.</text>
+</svg>

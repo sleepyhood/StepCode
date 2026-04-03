@@ -1,0 +1,33 @@
+<svg width="1122" height="642" viewBox="39 29 1122 642" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="700" rx="32" fill="#F8FBFE"/>
+  <rect x="55" y="45" width="1090" height="610" rx="24" fill="#1A2230"/>
+  <text x="100" y="172" fill="#8FA0B8" font-size="28" font-family="JetBrains Mono, Consolas, monospace">def move_ship(keys):</text>
+  <text x="140" y="214" fill="#8FA0B8" font-size="28" font-family="JetBrains Mono, Consolas, monospace">global ship_rect</text>
+  <text x="140" y="256" fill="#8FA0B8" font-size="28" font-family="JetBrains Mono, Consolas, monospace">speed = 5</text>
+
+  <rect x="130" y="300" width="520" height="74" rx="18" fill="#2A3950" stroke="#5B96FF" stroke-width="3"/>
+  <text x="158" y="346" fill="#F4F8FF" font-size="26" font-family="JetBrains Mono, Consolas, monospace"># TODO 1  왼쪽 키 → 왼쪽 이동</text>
+  <text x="690" y="347" fill="#5B96FF" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">여기에 첫 코드 조각</text>
+
+  <rect x="130" y="400" width="520" height="74" rx="18" fill="#2A3950" stroke="#F2A14A" stroke-width="3"/>
+  <text x="158" y="446" fill="#F4F8FF" font-size="26" font-family="JetBrains Mono, Consolas, monospace"># TODO 2  오른쪽 키 → 오른쪽 이동</text>
+  <text x="690" y="447" fill="#F2A14A" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">여기에 두 번째 코드 조각</text>
+
+  <rect x="130" y="500" width="520" height="86" rx="18" fill="#2A3950" stroke="#39C47A" stroke-width="3"/>
+  <text x="158" y="548" fill="#F4F8FF" font-size="26" font-family="JetBrains Mono, Consolas, monospace"># TODO 3  화면 밖으로 못 나가게 제한</text>
+  <text x="690" y="534" fill="#39C47A" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">마지막으로 경계 제한 코드</text>
+  <text x="690" y="568" fill="#C9D7E6" font-size="20" font-family="Pretendard, Noto Sans KR, sans-serif">ship_rect.left / ship_rect.right / 800 사용</text>
+
+  <path d="M650 337 L760 337" stroke="#5B96FF" stroke-width="7" stroke-linecap="round"/>
+  <path d="M650 437 L760 437" stroke="#F2A14A" stroke-width="7" stroke-linecap="round"/>
+  <path d="M650 537 L760 537" stroke="#39C47A" stroke-width="7" stroke-linecap="round"/>
+
+  <circle cx="780" cy="337" r="8" fill="#5B96FF"/>
+  <circle cx="780" cy="437" r="8" fill="#F2A14A"/>
+  <circle cx="780" cy="537" r="8" fill="#39C47A"/>
+
+  <rect x="770" y="220" width="310" height="96" rx="18" fill="#F5F9FD" stroke="#D3E2EF"/>
+  <text x="798" y="262" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">중요한 관찰</text>
+  <text x="798" y="295" fill="#46617B" font-size="20" font-family="Pretendard, Noto Sans KR, sans-serif">학생이 직접 채우는 것은</text>
+  <text x="798" y="323" fill="#17324D" font-size="22" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">정확히 3줄 묶음뿐이다.</text>
+</svg>

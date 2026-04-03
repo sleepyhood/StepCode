@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "practice/data/content/pygame/round01/source/1회차_파이게임_추가본.md",
-                "mode": "source",
+                "file": "practice/data/content/pygame_marp_course/lesson01_ship_movement/lesson/slide.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "1회차_파이게임_추가본"
+              "title": "slide"
             }
           }
         ]
@@ -185,26 +185,28 @@
   },
   "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
+    "practice/data/content/pygame_marp_course/marp_slide_guide.md",
+    "practice/data/content/pygame_marp_course/lesson01_ship_movement/assets/boundary_0_800.svg",
+    "practice/data/content/pygame_marp_course/lesson01_ship_movement/assets/ship_rect_edges.svg",
+    "practice/data/content/pygame_marp_course/lesson01_ship_movement/assets/ship_escape_cause.svg",
+    "practice/data/content/pygame_marp_course/lesson01_ship_movement/assets/todo_flow.svg",
+    "practice/data/content/pygame_marp_course/lesson01_ship_movement/assets/move_ship_todo_map.svg",
+    "practice/data/content/pygame_marp_course/lesson01_ship_movement/assets/move_ship_overview.svg",
+    "practice/data/theory/jungol/03_고등/2026년_3차_고등_숙제_해설지_2019-2025.md",
+    "practice/data/theory/jungol/03_고등/2026년_4차_고등_수업_해설지_2019-2025.md",
+    "practice/data/theory/jungol/03_고등/4주차_숙제대체/~$26년_4차_고등_수업_학생용_2019-2025.docx",
+    "practice/data/theory/jungol/03_고등/2026년_3차_고등_수업_해설지_2019-2025.md",
     "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile9.png",
     "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile8.png",
     "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile71.png",
     "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile72.png",
-    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile70.png",
-    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile7.png",
-    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile69.png",
-    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile68.png",
-    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile67.png",
-    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile63.png",
-    "practice/data/content/pygame/round01/source/파이게임_추가본_images/imageFile66.png",
     "practice/data/content/pygame/round01/source/파이게임_추가본_images",
     "practice/data/content/pygame/round01/source/파이게임 추가본_images",
     "practice/data/content/pygame/round01/source/파이게임 추가본",
     "practice/data/content/pygame/round01/source/파이게임_추가본",
     "practice/data/content/pygame/round01/source/1회차_파이게임_추가본.pdf",
     "practice/data/content/pygame/round01/source/1회차_파이게임_추가본.md",
-    "practice/data/theory/jungol/03_고등/2026년_4차_고등_수업_해설지_2019-2025.md",
     "practice/data/content/pygame/round01/lesson/lesson.md",
-    "practice/data/theory/jungol/03_고등/4주차_숙제대체/~$26년_4차_고등_수업_학생용_2019-2025.docx",
     "practice/data/content/pygame/커리큘럼.md",
     "practice/data/theory/무제.canvas",
     "practice/data/theory/무제 1.canvas",
@@ -231,8 +233,6 @@
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0311.md",
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0310.md",
     "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0309.md",
-    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0308.md",
-    "practice/data/language_v2/lv03_input/_docs/reference/01_dc_S101v0307.md",
     "Resources/reference/project_maps/content_workflow.canvas",
     "Resources/reference/project_maps/stepcode-overview.canvas"
   ]
