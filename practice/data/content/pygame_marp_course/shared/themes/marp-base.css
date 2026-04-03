@@ -1,0 +1,20 @@
+/* Base Marp theme placeholder for the pygame_marp_course. */
+
+@theme pygame-marp-base;
+
+section {
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  background: #f6f7fb;
+  color: #1f2937;
+  padding: 56px 64px;
+}
+
+h1,
+h2,
+h3 {
+  color: #0f172a;
+}
+
+code {
+  font-family: "Cascadia Code", "D2Coding", monospace;
+}
