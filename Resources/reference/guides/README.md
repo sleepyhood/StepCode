@@ -12,8 +12,9 @@ StepCode 저장소의 운영 가이드, 기준 문서, 체크리스트 진입점
 
 1. [문제 제작 가이드](문제%20제작%20가이드.md)
 2. [PARA 2차 운영 기준](PARA_2%EC%B0%A8_%EC%9A%B4%EC%98%81_%EA%B8%B0%EC%A4%80.md)
-3. [Naming Convention](naming_convention.md)
-4. [Codex Skills Setup](Codex_skills_setup.md)
+3. [LLM Wiki 채택 기준](llm_wiki_adoption_criteria.md)
+4. [Naming Convention](naming_convention.md)
+5. [Codex Skills Setup](Codex_skills_setup.md)
 
 ---
 
@@ -22,6 +23,7 @@ StepCode 저장소의 운영 가이드, 기준 문서, 체크리스트 진입점
 ### 운영 기준
 
 - [PARA 2차 운영 기준](PARA_2%EC%B0%A8_%EC%9A%B4%EC%98%81_%EA%B8%B0%EC%A4%80.md)
+- [LLM Wiki 채택 기준](llm_wiki_adoption_criteria.md)
 - [Naming Convention](naming_convention.md)
 - [rename_map](rename_map.md)
 

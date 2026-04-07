@@ -1,0 +1,44 @@
+<svg width="960" height="540" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="960" height="540" rx="18" fill="#1a2230"/>
+
+  <!-- Screen frame -->
+  <rect x="80" y="80" width="800" height="390" rx="14" fill="none" stroke="#4f6f8b" stroke-width="6"/>
+
+  <!-- Grid Lines horizontal -->
+  <line x1="80" y1="160" x2="880" y2="160" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  <line x1="80" y1="240" x2="880" y2="240" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  <line x1="80" y1="320" x2="880" y2="320" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  <line x1="80" y1="400" x2="880" y2="400" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+
+  <!-- Grid Lines vertical -->
+  <line x1="180" y1="80" x2="180" y2="470" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  <line x1="280" y1="80" x2="280" y2="470" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  <line x1="480" y1="80" x2="480" y2="470" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  <line x1="680" y1="80" x2="680" y2="470" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  <line x1="780" y1="80" x2="780" y2="470" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+
+  <!-- X axis arrow (green) -->
+  <line x1="100" y1="80" x2="850" y2="80" stroke="#27c93f" stroke-width="6"/>
+  <polygon points="845,72 865,80 845,88" fill="#27c93f"/>
+  <text x="340" y="56" fill="#27c93f" font-size="24" font-weight="700" font-family="Malgun Gothic, sans-serif">X 가로축 증가 (+)</text>
+
+  <!-- Y axis arrow (orange) -->
+  <line x1="80" y1="100" x2="80" y2="445" stroke="#ffbd2e" stroke-width="6"/>
+  <polygon points="72,440 80,460 88,440" fill="#ffbd2e"/>
+  <text x="8" y="380" fill="#ffbd2e" font-size="22" font-weight="700" font-family="Malgun Gothic, sans-serif" transform="rotate(-90, 8, 380)">Y 세로축 증가 (+)</text>
+
+  <!-- Origin dot + label -->
+  <circle cx="80" cy="80" r="12" fill="#ff5f56"/>
+  <text x="90" y="42" fill="#ff5f56" font-size="28" font-weight="700" font-family="Consolas, monospace">(0, 0)</text>
+
+  <!-- Ship illustration -->
+  <g transform="translate(440, 260)">
+    <polygon points="0,-32 -22,20 0,10 22,20" fill="#00ffff"/>
+    <polygon points="0,-10 -16,24 0,16 16,24" fill="#00bfff"/>
+  </g>
+  <text x="480" y="334" fill="#00ffff" font-size="20" font-family="Consolas, monospace" text-anchor="middle">우주선 (X, Y)</text>
+
+  <!-- Coordinate arrow from (0,0) to ship -->
+  <line x1="96" y1="96" x2="428" y2="244" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" stroke-dasharray="8 6"/>
+</svg>
