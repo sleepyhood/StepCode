@@ -1,5 +1,15 @@
 [
   {
+    "id": "c_if",
+    "name": "C - LV6 조건문",
+    "lang": "C",
+    "track": "language",
+    "order": 6,
+    "partName": "조건문",
+    "status": "active",
+    "contentRootPath": "./data/content/language/c/lv06_if"
+  },
+  {
     "id": "py_print",
     "name": "Python - Lv1 출력",
     "lang": "Python",

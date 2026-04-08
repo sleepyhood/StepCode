@@ -147,12 +147,16 @@ def iter_content_metadata() -> list[tuple[str, str]]:
     found: list[tuple[str, str]] = []
 
     for meta_path in sorted(CONTENT_ROOT.glob("**/category.meta.yml")):
+        if "pygame_marp_course" in meta_path.parts:
+            continue
         meta = parse_simple_yaml(read_text(meta_path))
         content_id = str(meta.get("id") or "").strip()
         if content_id:
             found.append((content_id, display_path(meta_path)))
 
     for md_path in sorted(CONTENT_ROOT.glob("**/*.md")):
+        if "pygame_marp_course" in md_path.parts:
+            continue
         try:
             text = read_text(md_path)
         except OSError:
@@ -168,6 +172,8 @@ def iter_content_metadata() -> list[tuple[str, str]]:
             found.append((content_id, display_path(md_path)))
 
     for json_path in sorted(CONTENT_ROOT.glob("**/*.json")):
+        if "pygame_marp_course" in json_path.parts:
+            continue
         try:
             payload = json.loads(read_text(json_path))
         except (OSError, json.JSONDecodeError):

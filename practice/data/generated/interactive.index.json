@@ -1,5 +1,18 @@
 [
   {
+    "id": "c_if_b1",
+    "categoryId": "c_if",
+    "title": "C 조건문 기초 1회차",
+    "round": 1,
+    "difficulty": "basic",
+    "lang": "c",
+    "track": "language",
+    "status": "active",
+    "file": "interactive_basic_r01.json",
+    "dataPath": "./data/content/language/c/lv06_if/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/language/c/lv06_if/interactive/interactive_basic_r01.json"
+  },
+  {
     "id": "py_print_b1",
     "categoryId": "py_print",
     "title": "Python 출력 기초 1회차",

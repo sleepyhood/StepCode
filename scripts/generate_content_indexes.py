@@ -246,6 +246,8 @@ def main():
 
     if CONTENT_ROOT.exists():
         for meta_path in sorted(CONTENT_ROOT.glob("**/category.meta.yml")):
+            if "pygame_marp_course" in meta_path.parts:
+                continue
             category_root = meta_path.parent
             category_entry, lesson_rows, worksheet_rows, interactive_rows = scan_category(category_root)
             categories.append(category_entry)
