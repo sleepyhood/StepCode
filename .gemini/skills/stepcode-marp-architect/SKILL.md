@@ -19,7 +19,14 @@ description: Marp 슬라이드 제작 및 Pygame 교육 콘텐츠 설계를 위�
 - 예: `speed = ???`, `if keys[pygame.K_???]:`
 
 ### 3. Marp 레이아웃 및 CSS 적용
-- 텍스트와 코드/이미지의 비중에 따라 `slide-2column`의 비율(`ratio-64`, `ratio-55`, `ratio-46`)을 결정합니다.
+- **심플리시티 퍼스트:** 기본적으로 단일 컬럼 흐름을 사용하여 가독성을 확보합니다. 불필요한 레이아웃 태그(`slide-2column`) 사용을 지양합니다.
+- **예외적 컬럼 활용:** 이미지와 텍스트를 나란히 배치해야 하거나 대조가 필요한 경우에만 `slide-2column`을 사용합니다.
+- **Frontmatter 표준:** 커스텀 테마 적용을 위해 반드시 아래 형식을 준수합니다.
+  ```yaml
+  theme: default
+  style: |
+    @import '../../shared/themes/pygame_theme.css';
+  ```
 - 모든 슬라이드 타이틀은 `<h1>`을 사용하며, `pygame_theme.css`의 상단 고정 스타일(34px)을 따릅니다.
 
 ### 4. 최종 정합성 검증

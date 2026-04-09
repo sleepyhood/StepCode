@@ -28,6 +28,120 @@ function renderTheoryMarkdown(target, mdText) {
   target.innerHTML = safe;
   enhanceLessonCallouts(target);
   applyDataImageFallbacks(target);
+  enhanceInteractiveProblems(target); // [추가] 인터랙티브 문제 주입
+}
+
+/**
+ * [문제 ID: ...] 패턴을 찾아 실제 퀴즈 UI로 변환합니다.
+ */
+async function enhanceInteractiveProblems(root) {
+  const problemTags = Array.from(root.querySelectorAll("p")).filter(p => 
+    /\[문제 ID:\s*([\w-]+)\]/.test(p.textContent)
+  );
+
+  if (!problemTags.length) return;
+
+  // 현재 차시의 문제 세트를 미리 로드 (성능 최적화)
+  const params = new URLSearchParams(location.search);
+  const setId = params.get("set");
+  let currentSet = null;
+  if (setId) {
+    try {
+      currentSet = await ProblemService.loadSet(setId);
+    } catch (e) {
+      console.warn("Failed to load problem set for interaction:", e);
+    }
+  }
+
+  problemTags.forEach(async (tag) => {
+    const match = tag.textContent.match(/\[문제 ID:\s*([\w-]+)\]/);
+    if (!match) return;
+
+    const problemId = match[1];
+    const container = document.createElement("div");
+    container.className = "interactive-problem-card";
+    container.dataset.problemId = problemId;
+
+    // 문제 데이터 찾기
+    const problemData = currentSet?.problems?.find(p => p.id === problemId);
+    
+    if (problemData) {
+      renderProblemUI(container, problemData);
+    } else {
+      container.innerHTML = `<div class="callout warn">문제를 불러올 수 없습니다. (ID: ${problemId})</div>`;
+    }
+
+    tag.replaceWith(container);
+  });
+}
+
+function renderProblemUI(container, data) {
+  const type = data.type || "mcq";
+  
+  const header = document.createElement("div");
+  header.className = "problem-header";
+  header.innerHTML = `<span class="badge">${type.toUpperCase()}</span> <strong>실력을 확인해보세요!</strong>`;
+  container.appendChild(header);
+
+  if (type === "mcq") {
+    renderMCQUI(container, data);
+  } else if (type === "code" || type === "short") {
+    renderShortUI(container, data);
+  }
+}
+
+function renderMCQUI(container, data) {
+  const optionsWrap = document.createElement("div");
+  optionsWrap.className = "problem-options";
+
+  (data.options || []).forEach((opt, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "option-btn";
+    btn.textContent = `${idx + 1}) ${opt}`;
+    btn.onclick = () => {
+      if (idx === data.answer) {
+        btn.classList.add("is-correct");
+        alert("정답입니다! 🎉");
+      } else {
+        btn.classList.add("is-wrong");
+        alert("다시 한번 생각해보세요. 💡");
+      }
+    };
+    optionsWrap.appendChild(btn);
+  });
+
+  container.appendChild(optionsWrap);
+}
+
+function renderShortUI(container, data) {
+  const inputWrap = document.createElement("div");
+  inputWrap.className = "problem-input-wrap";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "정답을 입력하세요...";
+  input.className = "short-answer-input";
+
+  const checkBtn = document.createElement("button");
+  checkBtn.className = "check-btn";
+  checkBtn.textContent = "확인";
+  
+  checkBtn.onclick = () => {
+    const userVal = input.value.trim();
+    const isCorrect = Array.isArray(data.answer) 
+      ? data.answer.includes(userVal) 
+      : userVal === String(data.answer);
+
+    if (isCorrect) {
+      container.classList.add("is-solved");
+      alert("정답입니다! 다음 스테이지로 나아갈 준비가 되셨나요?");
+    } else {
+      alert("틀렸습니다. 코드를 다시 확인해보세요!");
+    }
+  };
+
+  inputWrap.append(input, checkBtn);
+  container.appendChild(inputWrap);
 }
 
 function normalizeCalloutType(raw) {

@@ -14,6 +14,12 @@
 ### 3.1. 기본 원칙
 - **수업 진행 스크립트:** 설명서가 아닌, 수업의 흐름을 주도하는 대본처럼 작성한다.
 - **Top-Down 구조:** 큰 그림을 먼저 보여주고 세부 코드로 내려간다.
+- **Frontmatter 표준:** 커스텀 테마 적용을 위해 아래 형식을 준수한다.
+  ```yaml
+  theme: default
+  style: |
+    @import '../../shared/themes/pygame_theme.css';
+  ```
 - **클래스 기반 스타일링:** `slide-title`, `slide-section`, `slide-part` 클래스를 적극 활용한다.
 
 ### 3.2. 계층 번호 체계
