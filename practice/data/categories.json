@@ -462,10 +462,38 @@
         "order":  712
     },
     {
-        "id": "pygame_marp",
-        "name": "Python - Pygame 게임 엔진",
+        "id": "pygame_project_ship_u01",
+        "name": "[Project] 우주선 피하기 - 1.이동",
         "lang": "Python",
-        "track": "pygame",
+        "track": "pygame_project",
         "order":  801
+    },
+    {
+        "id": "pygame_project_ship_u02",
+        "name": "[Project] 우주선 피하기 - 2.낙하",
+        "lang": "Python",
+        "track": "pygame_project",
+        "order":  802
+    },
+    {
+        "id": "pygame_project_ship_u03",
+        "name": "[Project] 우주선 피하기 - 3.충돌",
+        "lang": "Python",
+        "track": "pygame_project",
+        "order":  803
+    },
+    {
+        "id": "pygame_project_ship_u04",
+        "name": "[Project] 우주선 피하기 - 4.점수",
+        "lang": "Python",
+        "track": "pygame_project",
+        "order":  804
+    },
+    {
+        "id": "pygame_project_ship_u05",
+        "name": "[Project] 우주선 피하기 - 5.완성",
+        "lang": "Python",
+        "track": "pygame_project",
+        "order":  805
     }
 ]
