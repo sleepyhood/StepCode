@@ -1,0 +1,32 @@
+{
+  "id": "pygame_u04",
+  "title": "4차시: 점수와 난이도 조절",
+  "problems": [
+    {
+      "id": "mcq-04-01",
+      "type": "mcq",
+      "question": "기존의 점수값에 1을 '누적'하여 저장하고 싶을 때 사용하는 올바른 기호는?",
+      "options": ["=", "==", "+="],
+      "answer": 2
+    },
+    {
+      "id": "code-04-01",
+      "type": "code",
+      "question": "update_score() 함수에서 점수 누적 로직을 완성하세요.",
+      "answer": "score += 1"
+    },
+    {
+      "id": "mcq-04-02",
+      "type": "mcq",
+      "question": "현재 점수가 950점일 때, score // 300의 결과값은 얼마일까요?",
+      "options": ["3", "3.16", "4"],
+      "answer": 0
+    },
+    {
+      "id": "code-04-02",
+      "type": "code",
+      "question": "update_score() 함수에서 난이도 계산 공식을 완성하세요.",
+      "answer": "difficulty = score // 300"
+    }
+  ]
+}

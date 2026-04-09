@@ -1438,5 +1438,50 @@
         "difficulty": "combined",
         "numProblems": 4,
         "file": "unity/unity_u11_ecs.json"
+    },
+    {
+        "id": "pygame_u01",
+        "categoryId": "pygame_marp",
+        "title": "Pygame 1차시: 우주선 이동",
+        "round": 1,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "pygame/u01.json"
+    },
+    {
+        "id": "pygame_u02",
+        "categoryId": "pygame_marp",
+        "title": "Pygame 2차시: 운석 낙하",
+        "round": 2,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "pygame/u02.json"
+    },
+    {
+        "id": "pygame_u03",
+        "categoryId": "pygame_marp",
+        "title": "Pygame 3차시: 충돌 판정",
+        "round": 3,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "pygame/u03.json"
+    },
+    {
+        "id": "pygame_u04",
+        "categoryId": "pygame_marp",
+        "title": "Pygame 4차시: 점수와 난이도",
+        "round": 4,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "pygame/u04.json"
+    },
+    {
+        "id": "pygame_u05",
+        "categoryId": "pygame_marp",
+        "title": "Pygame 5차시: 최종 완성",
+        "round": 5,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "pygame/u05.json"
     }
 ]

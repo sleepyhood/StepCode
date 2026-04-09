@@ -37,6 +37,8 @@ score += 1
 ### 2.1. 300점마다 레벨업!
 몫을 구하는 연산자 `//`를 사용하면 일정 점수 구간마다 레벨을 1씩 올릴 수 있습니다.
 
+![난이도 상승 곡선 도식](./assets/difficulty_logic.svg)
+
 ```mermaid
 graph TD
     A[Score: 450] --> B["Score // 300"]

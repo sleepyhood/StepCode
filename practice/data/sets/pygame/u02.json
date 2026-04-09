@@ -1,0 +1,32 @@
+{
+  "id": "pygame_u02",
+  "title": "2차시: 운석 낙하와 리스트 관리",
+  "problems": [
+    {
+      "id": "mcq-02-01",
+      "type": "mcq",
+      "question": "운석의 크기가 40일 때, 화면 오른쪽 벽(800)을 뚫고 나가지 않게 하려면 randint의 최대값은?",
+      "options": ["800", "760", "40"],
+      "answer": 1
+    },
+    {
+      "id": "code-02-01",
+      "type": "code",
+      "question": "spawn_meteor() 함수를 완성하세요.",
+      "answer": "random_x = random.randint(0, 760)\nnew_meteor = pygame.Rect(random_x, -40, 40, 40)\nmeteors.append(new_meteor)"
+    },
+    {
+      "id": "mcq-02-02",
+      "type": "mcq",
+      "question": "리스트 순회 중 항목을 삭제할 때 사용하는 복사본 기호는?",
+      "options": ["meteors[]", "meteors[:]", "meteors.copy"],
+      "answer": 1
+    },
+    {
+      "id": "code-02-02",
+      "type": "code",
+      "question": "update_meteors() 함수를 완성하세요.",
+      "answer": "for m in meteors[:]:\n    m.y += 7\n    if m.y > 600:\n        meteors.remove(m)"
+    }
+  ]
+}

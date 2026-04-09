@@ -1,0 +1,31 @@
+<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="400" height="250" fill="#f8fafc" rx="12"/>
+  
+  <!-- 화면 경계선 -->
+  <rect x="50" y="30" width="120" height="150" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4"/>
+  <text x="110" y="25" font-family="Pretendard, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Bad Case (Leak)</text>
+  
+  <rect x="230" y="30" width="120" height="150" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4"/>
+  <text x="290" y="25" font-family="Pretendard, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Good Case (Clean)</text>
+  
+  <!-- Bad Case: 운석이 밑으로 계속 쌓임 -->
+  <rect x="80" y="50" width="20" height="20" fill="#ef4444" opacity="0.6"/>
+  <rect x="110" y="90" width="20" height="20" fill="#ef4444" opacity="0.6"/>
+  <rect x="70" y="140" width="20" height="20" fill="#ef4444" opacity="0.6"/>
+  <rect x="90" y="190" width="20" height="20" fill="#ef4444"/> <!-- 화면 밖 -->
+  <rect x="120" y="210" width="20" height="20" fill="#ef4444"/> <!-- 화면 밖 -->
+  <text x="110" y="235" font-family="Pretendard, sans-serif" font-size="10" fill="#ef4444" text-anchor="middle">Infinite Accumulation!</text>
+  
+  <!-- Good Case: 화면 밖 운석이 사라짐 -->
+  <rect x="260" y="50" width="20" height="20" fill="#10b981" opacity="0.6"/>
+  <rect x="300" y="90" width="20" height="20" fill="#10b981" opacity="0.6"/>
+  <rect x="250" y="140" width="20" height="20" fill="#10b981" opacity="0.6"/>
+  <!-- x 표시는 삭제되었음을 의미 -->
+  <line x1="280" y1="190" x2="300" y2="210" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="300" y1="190" x2="280" y2="210" stroke="#94a3b8" stroke-width="2"/>
+  <text x="290" y="235" font-family="Pretendard, sans-serif" font-size="10" fill="#10b981" text-anchor="middle">remove() from List</text>
+  
+  <!-- 중앙 설명 -->
+  <text x="200" y="110" font-family="Pretendard, sans-serif" font-size="20" fill="#cbd5e1" text-anchor="middle" font-weight="bold">→</text>
+</svg>

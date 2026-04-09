@@ -53,6 +53,8 @@ if keys[pygame.K_LEFT]:
 *   `ship_rect.left`: 우주선의 왼쪽 끝선
 *   `ship_rect.right`: 우주선의 오른쪽 끝선
 
+![경계선 감시 도식](./assets/boundary_0_800.svg)
+
 ```mermaid
 graph TD
     A{left < 0?} -- Yes --> B[left = 0 고정]

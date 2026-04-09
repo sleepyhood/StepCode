@@ -165,7 +165,7 @@ def move_ship(keys):
 - **Check:** 왼쪽 테두리가 0을 넘었는지 확인합니다. [A]
 - **Fix:** 넘었다면 강제로 0에 고정시킵니다. [B]
 - 이 과정을 통해 우주선이 화면에 갇히게 됩니다.
-
+	
 ```mermaid
 graph TD
     A{left < 0?} -- Yes --> B[left = 0 고정]

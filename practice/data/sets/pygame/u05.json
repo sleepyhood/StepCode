@@ -1,0 +1,32 @@
+{
+  "id": "pygame_u05",
+  "title": "5차시: 나만의 우주선 확장하기",
+  "problems": [
+    {
+      "id": "mcq-05-01",
+      "type": "mcq",
+      "question": "운석의 크기를 최소 10에서 최대 150 사이로 만들고 싶을 때 올바른 코드는?",
+      "options": ["random.randint(10, 150)", "random.choice(10, 150)", "random.range(10, 150)"],
+      "answer": 0
+    },
+    {
+      "id": "code-05-01",
+      "type": "code",
+      "question": "spawn_meteor() 함수에서 무작위 크기 로직을 구현하세요.",
+      "answer": "meteor_size = random.randint(20, 80)\nnew_m = pygame.Rect(random_x, -meteor_size, meteor_size, meteor_size)"
+    },
+    {
+      "id": "mcq-05-02",
+      "type": "mcq",
+      "question": "충돌 직후 meteors.clear()를 사용하는 이유는 무엇일까요?",
+      "options": ["점수 초기화", "연속 충돌로 목숨이 한꺼번에 사라지는 것을 방지", "게임 난이도 상향"],
+      "answer": 1
+    },
+    {
+      "id": "code-05-02",
+      "type": "code",
+      "question": "check_collision() 함수에서 목숨 시스템을 구현하세요.",
+      "answer": "lives -= 1\nmeteors.clear()\nif lives <= 0:\n    game_over = True"
+    }
+  ]
+}

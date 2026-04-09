@@ -1,0 +1,19 @@
+<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="400" height="200" fill="#f8fafc" rx="12"/>
+  
+  <!-- 트로피 아이콘 -->
+  <path d="M170 60 L230 60 L230 100 Q230 130 200 130 Q170 130 170 100 Z" fill="#fbbf24"/>
+  <rect x="185" y="130" width="30" height="10" fill="#f59e0b"/>
+  <rect x="175" y="140" width="50" height="5" rx="2" fill="#d97706"/>
+  <path d="M170 70 Q150 70 150 90 Q150 100 170 100" fill="none" stroke="#fbbf24" stroke-width="4"/>
+  <path d="M230 70 Q250 70 250 90 Q250 100 230 100" fill="none" stroke="#fbbf24" stroke-width="4"/>
+  
+  <!-- 축하 텍스트 -->
+  <text x="200" y="40" font-family="Pretendard, sans-serif" font-size="18" font-weight="bold" fill="#1e40af" text-anchor="middle">COURSE COMPLETED!</text>
+  <text x="200" y="170" font-family="Pretendard, sans-serif" font-size="12" font-weight="600" fill="#635bff" text-anchor="middle">축하합니다! 여러분은 이제 파이썬 게임 개발자입니다.</text>
+  
+  <!-- 장식 (별) -->
+  <path d="M100 50 L105 65 L120 65 L108 75 L113 90 L100 80 L87 90 L92 75 L80 65 L95 65 Z" fill="#fde047"/>
+  <path d="M300 80 L305 95 L320 95 L308 105 L313 120 L300 110 L287 120 L292 105 L280 95 L295 95 Z" fill="#fde047"/>
+</svg>

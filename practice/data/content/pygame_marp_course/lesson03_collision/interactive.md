@@ -43,6 +43,8 @@ graph TD
 *   **True:** 모든 움직임 정지, "GAME OVER" 표시.
 *   **False:** 우주선 이동, 운석 낙하 중.
 
+![게임 상태 전이 도식](./assets/state_machine.svg)
+
 ```mermaid
 graph LR
     A[Playing] -- "Collision" --> B[Game Over]

@@ -1,0 +1,123 @@
+---
+title: "2차시. 운석 낙하와 리스트 관리"
+subtitle: "StepCode - Pygame Game Engine Course"
+format: 
+  revealjs:
+    theme: [default, sky]
+    chalkboard: true
+    incremental: true
+    logo: "../../shared/assets/logo.png"
+    footer: "StepCode Quarto Interactive Sample"
+---
+
+## 1. 오늘 완성할 모습
+
+수많은 운석이 무작위 위치에서 쏟아지는 게임의 핵심 엔진을 조립합니다.
+
+::: {.columns}
+::: {.column width="60%"}
+- **운석 생성:** `random.randint` 활용
+- **다중 관리:** 파이썬 `List` 활용
+- **메모리 최적화:** 화면 밖 운석 `remove`
+:::
+
+::: {.column width="40%"}
+![운석 낙하 미리보기](../../shared/assets/meteor_preview.png)
+:::
+:::
+
+---
+
+## 2. 운석을 만드는 원리 (Spawn)
+
+운석은 매번 다른 X 좌표에서 나타나야 합니다.
+
+### 2.1. 무작위 X 좌표 결정 {.smaller}
+
+파이썬의 `random.randint(a, b)` 함수는 무작위 정수를 생성합니다.
+
+```python
+import random
+
+# 0에서 760(800-40) 사이의 무작위 값
+random_x = random.randint(0, 760)
+```
+
+::: {.callout-tip}
+## 왜 760일까요?
+운석의 가로 크기가 40픽셀이기 때문에, 800에서 40을 뺀 760까지만 좌표를 잡아야 운석이 화면 오른쪽으로 튀어나가지 않습니다.
+:::
+
+---
+
+## 2.2. 로직 시각화 (Mermaid)
+
+Quarto는 Mermaid를 기본적으로 지원하며, 훨씬 부드럽게 렌더링합니다.
+
+```{mermaid}
+graph LR
+    A[random.randint] -- "X 좌표 결정" --> B[pygame.Rect]
+    B -- "사각형 객체 생성" --> C[meteors.append]
+    C -- "리스트에 추가" --> D((완료))
+    style C fill:#ffeb3b,stroke:#333,stroke-width:2px
+```
+
+---
+
+## 3. [Mission] 운석 공장 조립하기
+
+아래의 `???` 구간을 채워 함수를 완성하세요.
+
+```python
+def spawn_meteor():
+    global meteors
+    meteor_size = 40
+    
+    # [A] 무작위 X 좌표 결정 (Fragment 효과 적용)
+    random_x = random.randint(0, ???)
+    
+    # [B] 운석 사각형 생성
+    new_m = pygame.Rect(random_x, -meteor_size, 40, 40)
+    
+    # [C] 리스트에 추가
+    meteors.append(???)
+```
+
+. . .
+
+**💡 정답 확인:** 760과 `new_m`을 넣으셨나요?
+
+---
+
+## 4. 왜 삭제해야 할까요? (Update)
+
+화면 밖으로 나간 운석을 방치하면 게임이 멈춥니다.
+
+::: {.panel-tabset}
+
+### 원인
+수만 개의 운석 데이터가 메모리를 계속 차지하여 연산 속도가 저하됩니다.
+
+### 해결책
+화면 바닥(y > 600)을 통과하는 순간 `meteors.remove()`를 실행합니다.
+
+### 코드 예시
+```python
+for m in meteors[:]:
+    if m.y > 600:
+        meteors.remove(m)
+```
+:::
+
+---
+
+## 🏁 2차시 완료 체크리스트
+
+- [ ] `random.randint`가 정상 작동하나요?
+- [ ] 운석이 끊임없이 쏟아지나요?
+- [ ] 'R' 키를 누르면 리스트가 비워지나요?
+
+::: {.callout-important}
+## 다음 스테이지 예고
+3차시에서는 **충돌 판정**을 통해 운석에 부딪히면 죽는 로직을 배웁니다!
+:::

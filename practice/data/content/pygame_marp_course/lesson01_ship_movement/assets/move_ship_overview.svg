@@ -1,48 +1,38 @@
-<svg width="1160" height="660" viewBox="20 20 1160 660" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="700" rx="32" fill="#F7FAFD"/>
-  <rect x="36" y="36" width="1128" height="628" rx="28" fill="#FFFFFF" stroke="#D7E3EE" stroke-width="2"/>
-
-  <rect x="70" y="190" width="280" height="350" rx="26" fill="#EEF5FB" stroke="#C8D9E8" stroke-width="2"/>
-  <rect x="460" y="190" width="280" height="350" rx="26" fill="#F6F9FC" stroke="#D5E1EC" stroke-width="2"/>
-  <rect x="850" y="190" width="280" height="350" rx="26" fill="#EEF8F2" stroke="#CBE5D4" stroke-width="2"/>
-
-  <circle cx="110" cy="228" r="20" fill="#4F8CFF"/>
-  <text x="145" y="238" fill="#17324D" font-size="30" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">입력 Input</text>
-
-  <circle cx="500" cy="228" r="20" fill="#F2A14A"/>
-  <text x="535" y="238" fill="#17324D" font-size="30" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">처리 Process</text>
-
-  <circle cx="890" cy="228" r="20" fill="#39C47A"/>
-  <text x="925" y="238" fill="#17324D" font-size="30" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">결과 Output</text>
-
-  <rect x="110" y="286" width="200" height="90" rx="18" fill="#FFFFFF" stroke="#D3E2EF"/>
-  <text x="142" y="334" fill="#17324D" font-size="28" font-weight="700" font-family="JetBrains Mono, Consolas, monospace">keys</text>
-  <text x="142" y="365" fill="#5C738B" font-size="19" font-family="Pretendard, Noto Sans KR, sans-serif">지금 눌린 키 정보</text>
-
-  <text x="108" y="430" fill="#35506A" font-size="23" font-family="Pretendard, Noto Sans KR, sans-serif">- 왼쪽 키가 눌렸는지 본다</text>
-  <text x="108" y="468" fill="#35506A" font-size="23" font-family="Pretendard, Noto Sans KR, sans-serif">- 오른쪽 키가 눌렸는지 본다</text>
-  <text x="108" y="506" fill="#35506A" font-size="23" font-family="Pretendard, Noto Sans KR, sans-serif">- 함수 안으로 정보가 들어온다</text>
-
-  <rect x="500" y="280" width="200" height="72" rx="16" fill="#FFFFFF" stroke="#D7E3EE"/>
-  <text x="530" y="325" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">1. 좌우 이동</text>
-  <rect x="500" y="372" width="200" height="72" rx="16" fill="#FFFFFF" stroke="#D7E3EE"/>
-  <text x="530" y="417" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">2. 경계 제한</text>
-  <text x="500" y="490" fill="#35506A" font-size="23" font-family="Pretendard, Noto Sans KR, sans-serif">- `ship_rect.x`를 바꾼다</text>
-  <text x="500" y="528" fill="#35506A" font-size="23" font-family="Pretendard, Noto Sans KR, sans-serif">- `left/right`로 화면 밖 탈주를 막는다</text>
-
-  <rect x="892" y="286" width="196" height="90" rx="18" fill="#FFFFFF" stroke="#CBE5D4"/>
-  <text x="924" y="338" fill="#17324D" font-size="28" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">우주선 이동</text>
-  <text x="924" y="368" fill="#5C738B" font-size="19" font-family="Pretendard, Noto Sans KR, sans-serif">좌우로 부드럽게 이동</text>
-  <text x="890" y="430" fill="#35506A" font-size="23" font-family="Pretendard, Noto Sans KR, sans-serif">- 왼쪽 화살표: 왼쪽으로</text>
-  <text x="890" y="468" fill="#35506A" font-size="23" font-family="Pretendard, Noto Sans KR, sans-serif">- 오른쪽 화살표: 오른쪽으로</text>
-  <text x="890" y="506" fill="#35506A" font-size="23" font-family="Pretendard, Noto Sans KR, sans-serif">- 화면 밖으로는 못 나감</text>
-
-  <path d="M350 365 L430 365" stroke="#8FA6BC" stroke-width="8" stroke-linecap="round"/>
-  <path d="M415 345 L445 365 L415 385" fill="none" stroke="#8FA6BC" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <path d="M740 365 L820 365" stroke="#8FA6BC" stroke-width="8" stroke-linecap="round"/>
-  <path d="M805 345 L835 365 L805 385" fill="none" stroke="#8FA6BC" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <rect x="120" y="574" width="958" height="58" rx="18" fill="#F5F9FD" stroke="#D7E3EE"/>
-  <text x="155" y="612" fill="#17324D" font-size="24" font-weight="700" font-family="Pretendard, Noto Sans KR, sans-serif">핵심: 오늘은 게임 전체가 아니라 `move_ship(keys)` 함수 하나만 완성하면 된다.</text>
+<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 -->
+  <rect width="400" height="250" fill="#f8fafc" rx="12"/>
+  
+  <!-- 순환 루프 표시 -->
+  <path d="M200 40 A80 80 0 1 1 199 40" fill="none" stroke="#e2e8f0" stroke-width="4" stroke-dasharray="8 4"/>
+  <text x="200" y="130" font-family="Pretendard, sans-serif" font-size="14" font-weight="bold" fill="#94a3b8" text-anchor="middle">Infinite Loop</text>
+  
+  <!-- Step 1: Input -->
+  <rect x="150" y="20" width="100" height="40" rx="8" fill="#635bff"/>
+  <text x="200" y="45" font-family="Pretendard, sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">1. Input</text>
+  
+  <!-- Step 2: Logic -->
+  <rect x="280" y="105" width="100" height="40" rx="8" fill="#3b82f6"/>
+  <text x="330" y="130" font-family="Pretendard, sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">2. Move Logic</text>
+  
+  <!-- Step 3: Draw -->
+  <rect x="150" y="190" width="100" height="40" rx="8" fill="#10b981"/>
+  <text x="200" y="215" font-family="Pretendard, sans-serif" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">3. Draw Screen</text>
+  
+  <!-- 연결 화살표 -->
+  <!-- 1 -> 2 -->
+  <path d="M255 45 Q330 45 330 100" fill="none" stroke="#635bff" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- 2 -> 3 -->
+  <path d="M330 150 Q330 210 255 210" fill="none" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- 3 -> 1 -->
+  <path d="M145 210 Q70 210 70 125 Q70 45 145 45" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- 화살표 촉 정의 -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8" />
+    </marker>
+  </defs>
+  
+  <!-- 하단 부연 설명 -->
+  <text x="200" y="240" font-family="Pretendard, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">초당 60번 반복하며 애니메이션을 만듭니다.</text>
 </svg>

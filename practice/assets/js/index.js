@@ -524,11 +524,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (item?.categoryId) theoryByCategoryId[item.categoryId] = item;
     });
 
-    const tracks = ["language", "unity"]
+    const tracks = ["language", "pygame", "unity"]
       .filter((track) => categories.some((cat) => getTrackFromCategory(cat) === track))
       .concat(
         Array.from(new Set(categories.map((cat) => getTrackFromCategory(cat)))).filter(
-          (track) => !["language", "unity"].includes(track)
+          (track) => !["language", "pygame", "unity"].includes(track)
         )
       );
 

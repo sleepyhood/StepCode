@@ -460,5 +460,12 @@
         "lang":  "Canva",
         "track":  "canva",
         "order":  712
+    },
+    {
+        "id": "pygame_marp",
+        "name": "Python - Pygame 게임 엔진",
+        "lang": "Python",
+        "track": "pygame",
+        "order":  801
     }
 ]

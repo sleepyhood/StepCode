@@ -1,0 +1,32 @@
+{
+  "id": "pygame_u01",
+  "title": "1차시: 우주선 좌우 이동하기",
+  "problems": [
+    {
+      "id": "mcq-01-01",
+      "type": "mcq",
+      "question": "우주선을 '왼쪽'으로 움직이게 하려면 X 좌표에 어떤 연산을 해야 할까요?",
+      "options": ["+=", "-=", "*="],
+      "answer": 1
+    },
+    {
+      "id": "code-01-01",
+      "type": "code",
+      "question": "move_ship() 함수에서 좌우 이동 로직을 완성하세요.",
+      "answer": "if keys[pygame.K_LEFT]:\n    ship_rect.x -= speed\nif keys[pygame.K_RIGHT]:\n    ship_rect.x += speed"
+    },
+    {
+      "id": "mcq-01-02",
+      "type": "mcq",
+      "question": "우주선이 오른쪽 벽(800)을 뚫고 나가는 것을 막으려면 어떤 센서를 확인해야 할까요?",
+      "options": ["ship_rect.x", "ship_rect.left", "ship_rect.right"],
+      "answer": 2
+    },
+    {
+      "id": "code-01-02",
+      "type": "code",
+      "question": "우주선이 화면 밖으로 나가지 않게 고정하는 방어벽 코드를 완성하세요.",
+      "answer": "if ship_rect.left < 0:\n    ship_rect.left = 0\nif ship_rect.right > 800:\n    ship_rect.right = 800"
+    }
+  ]
+}
