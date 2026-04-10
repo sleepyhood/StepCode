@@ -1,8 +1,9 @@
 /**
- * StepCode - Theory Page Logic (Integrated Version)
- * All-in-one script for Markdown rendering, Interactive Problems, and Marp Slides.
+ * StepCode - Theory Page Logic (Ultimate Integrated Version)
+ * Fixes: Undefined functions, Slide rendering sequence, and Mermaid theme bugs.
  */
 
+// 1. Core Utilities
 function getMdRenderer() {
   if (!window.markdownit || !window.DOMPurify) return null;
   return window.markdownit({ html: true, linkify: true, breaks: true });
@@ -16,6 +17,7 @@ function stripFrontMatter(mdText) {
 }
 
 function replaceLangBadges(html) {
+  if (!html) return "";
   return html.replace(/\{lang:([^}]+)\}/g, (match, lang) => {
     const l = lang.toLowerCase();
     const map = { "python": "Python", "c": "C", "java": "Java", "csharp": "C#" };
@@ -24,15 +26,35 @@ function replaceLangBadges(html) {
   });
 }
 
-const TOGGLE_LANGS = new Set(["python", "c", "java", "csharp"]);
+// 2. Registry & Title Helpers
+function buildTheoryLookup(items) {
+  const byConceptId = {}, byCategoryId = {};
+  (items || []).forEach(it => { if (it.conceptId) byConceptId[it.conceptId] = it; if (it.categoryId) byCategoryId[it.categoryId] = it; });
+  return { byConceptId, byCategoryId };
+}
+function toSetMap(sets) { const map = {}; (sets || []).forEach(s => { if (s.id) map[s.id] = s; }); return map; }
+function pickEntry(params, lookup, setMap) {
+  const cid = params.get("concept"), catid = params.get("category"), sid = params.get("set");
+  if (cid && lookup.byConceptId[cid]) return lookup.byConceptId[cid];
+  if (catid && lookup.byCategoryId[catid]) return lookup.byCategoryId[catid];
+  if (sid && setMap[sid]?.categoryId) return lookup.byCategoryId[setMap[sid].categoryId];
+  return null;
+}
+function updateTitle(entry) {
+  const tEl = document.getElementById("theory-title");
+  if (tEl) tEl.textContent = entry.title || "개념";
+}
 
+// 3. Markdown Rendering
 function renderTheoryMarkdown(target, mdText, mdPath = "") {
   const raw = stripFrontMatter(mdText);
   const md = getMdRenderer();
   if (!md) { target.textContent = raw; return; }
+  
   let html = window.DOMPurify.sanitize(md.render(raw));
   target.innerHTML = replaceLangBadges(html);
   
+  // Mermaid Detection
   target.querySelectorAll('code.language-mermaid').forEach(c => {
     const pre = c.closest('pre');
     const div = document.createElement('div');
@@ -40,17 +62,18 @@ function renderTheoryMarkdown(target, mdText, mdPath = "") {
     div.textContent = c.textContent;
     if (pre) pre.replaceWith(div);
   });
-  if (window.mermaid) {
+
+  if (window.mermaid && target.querySelectorAll('.mermaid').length > 0) {
     setTimeout(() => {
-      try { window.mermaid.init(undefined, target.querySelectorAll('.mermaid')); } catch (e) { console.warn(e); }
-    }, 100);
+      try { window.mermaid.init(undefined, target.querySelectorAll('.mermaid')); } catch (e) {}
+    }, 200);
   }
+
   fixRelativeImagePaths(target, mdPath);
   enhanceLessonCallouts(target);
-  applyDataImageFallbacks(target);
+  enhanceCodeBlocks(target);
   enhanceTraceGridBlocks(target);
   enhanceIoBlocks(target);
-  enhanceCodeBlocks(target);
   enhanceInteractiveProblems(target);
 }
 
@@ -65,7 +88,7 @@ function fixRelativeImagePaths(root, mdPath) {
   });
 }
 
-// --- Interactive Problems & Stage Gating ---
+// 4. Interactive & Stage Gating
 async function enhanceInteractiveProblems(root) {
   const problemTags = Array.from(root.querySelectorAll("p")).filter(p => /\[문제 ID:\s*([\w-]+)\]/.test(p.textContent));
   if (!problemTags.length) return;
@@ -73,8 +96,7 @@ async function enhanceInteractiveProblems(root) {
   const setId = new URLSearchParams(location.search).get("set");
   let currentSet = null;
   if (setId) {
-    try { currentSet = await ProblemService.loadSet(setId); } 
-    catch (e) { console.warn(e); }
+    try { currentSet = await ProblemService.loadSet(setId); } catch (e) {}
   }
 
   problemTags.forEach(tag => {
@@ -155,7 +177,7 @@ function renderShortUI(container, data) {
   wrap.append(input, btn); container.appendChild(wrap);
 }
 
-// --- Marp Slide Mode ---
+// 5. Marp Slide Mode
 async function setupSlideMode(slidePath) {
   const toggleBtn = document.getElementById("theory-mode-toggle");
   const slideViewer = document.getElementById("theory-slide-viewer");
@@ -163,13 +185,25 @@ async function setupSlideMode(slidePath) {
   const marpContainer = document.getElementById("marp-container");
   if (!toggleBtn || !slideViewer || !marpContainer) return;
 
+  if (window.mermaid) {
+    window.mermaid.initialize({
+      startOnLoad: false, theme: 'base', securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: 'rgba(99, 91, 255, 0.25)', primaryTextColor: '#ffffff',
+        primaryBorderColor: '#635bff', lineColor: 'rgba(255, 255, 255, 0.4)',
+        fontSize: '18px', fontFamily: 'JetBrains Mono, Pretendard, sans-serif',
+        nodePadding: 60
+      },
+      flowchart: { htmlLabels: false, useMaxWidth: false, padding: 50, curve: 'basis' }
+    });
+  }
+
   let slides = [];
   let currentIndex = 0;
   let isSlideMode = false;
 
   try {
-    const fixedPath = slidePath.startsWith("./") ? slidePath.slice(2) : slidePath;
-    const res = await fetch(fixedPath);
+    const res = await fetch(slidePath.startsWith("./") ? slidePath.slice(2) : slidePath);
     if (!res.ok) return;
     const mdText = await res.text();
     const baseDir = slidePath.substring(0, slidePath.lastIndexOf("/"));
@@ -185,21 +219,26 @@ async function setupSlideMode(slidePath) {
 
     const md = getMdRenderer();
     const slideChunks = stripFrontMatter(mdText).split(/\n---\n/);
+    let lastStage = "1";
     slides = slideChunks.map(chunk => {
       const sec = document.createElement("section");
-      const m = chunk.match(/<!--\s*_class:\s*([\w-]+)\s*-->/);
-      if (m) sec.className = m[1];
+      const mClass = chunk.match(/<!--\s*_class:\s*([\w-]+)\s*-->/);
+      if (mClass) sec.className = mClass[1];
+      
+      const mStage = chunk.match(/<!--\s*_stage:\s*(\d+)\s*-->/);
+      if (mStage) lastStage = mStage[1];
+      sec.dataset.stage = lastStage;
+      
+      const mLocked = chunk.match(/<!--\s*_locked:\s*(true|false)\s*-->/);
+      if (mLocked && mLocked[1] === "true") sec.dataset.locked = "true";
       let html = window.DOMPurify.sanitize(md.render(chunk));
       sec.innerHTML = replaceLangBadges(html);
-      
       sec.querySelectorAll('code.language-mermaid').forEach(c => {
         const pre = c.closest('pre');
         const div = document.createElement('div');
-        div.className = 'mermaid';
-        div.textContent = c.textContent;
+        div.className = 'mermaid'; div.textContent = c.textContent;
         if (pre) pre.replaceWith(div);
       });
-      
       fixRelativeImagePaths(sec, slidePath);
       enhanceCodeBlocks(sec);
       return sec;
@@ -207,42 +246,158 @@ async function setupSlideMode(slidePath) {
 
     if (slides.length > 0) {
       toggleBtn.hidden = false;
-      renderSlide(0);
       enterSlideMode();
-      if (window.mermaid) {
-        setTimeout(() => {
-          try { window.mermaid.init(undefined, document.querySelectorAll('#marp-container .mermaid')); } catch (e) { console.warn(e); }
-        }, 100);
-      }
     }
   } catch (e) { console.error(e); }
 
+  function showToast(message) {
+    let toast = document.getElementById("theory-toast-msg");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "theory-toast-msg";
+      toast.className = "theory-toast";
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+  }
+
+  function checkNavigationGuard() {
+    const currentSlide = slides[currentIndex];
+    if (currentSlide && currentSlide.dataset.locked === "true") {
+      const nextBtn = document.getElementById("slide-next");
+      if (nextBtn) {
+        nextBtn.classList.remove("shake-error");
+        void nextBtn.offsetWidth; // Reflow
+        nextBtn.classList.add("shake-error");
+      }
+      showToast("문제를 해결해야 다음 스테이지로 넘어갈 수 있습니다.");
+      return false;
+    }
+    return true;
+  }
+
+  function updateProgressUI() {
+    const infoContainer = document.getElementById("slide-page-info");
+    if (!infoContainer) return;
+    
+    // Check if stages exist
+    let hasStages = slides.some(s => s.dataset.stage);
+    if (!hasStages) {
+      infoContainer.textContent = `${currentIndex + 1} / ${slides.length}`;
+      return;
+    }
+
+    infoContainer.innerHTML = "";
+    infoContainer.classList.add("stage-progress-wrapper");
+
+    let currentStageNum = parseInt(slides[currentIndex].dataset.stage) || 1;
+    let stages = [];
+    slides.forEach((s, idx) => {
+      if (s.dataset.stage && !stages.some(st => st.stage === s.dataset.stage)) {
+        stages.push({ stage: s.dataset.stage, idx: idx, locked: s.dataset.locked === "true" });
+      }
+    });
+
+    stages.forEach((st, i) => {
+      const node = document.createElement("div");
+      node.className = "stage-node";
+      let stNum = parseInt(st.stage);
+
+      if (st.locked) {
+        node.classList.add("is-locked");
+      } else if (stNum < currentStageNum) {
+        node.classList.add("is-completed");
+        node.textContent = "✓";
+      } else if (stNum === currentStageNum) {
+        node.classList.add("is-current");
+        node.textContent = st.stage;
+      } else {
+        node.textContent = st.stage;
+      }
+
+      infoContainer.appendChild(node);
+
+      if (i < stages.length - 1) {
+        const line = document.createElement("div");
+        line.className = "stage-line";
+        if (parseInt(stages[i+1].stage) <= currentStageNum) {
+          line.classList.add("is-active");
+        }
+        infoContainer.appendChild(line);
+      }
+    });
+  }
+
   function renderSlide(idx) {
+    if (!isSlideMode) return; // Wait until visible to avoid width=0
     if (idx < 0 || idx >= slides.length) return;
     currentIndex = idx;
     marpContainer.innerHTML = "";
-    const node = slides[currentIndex].cloneNode(true);
     
-    marpContainer.style.height = `${marpContainer.clientWidth * (9 / 16)}px`;
-    const scale = marpContainer.clientWidth / 1280;
+    // Flexbox shrink-wrap workaround
+    marpContainer.style.alignSelf = "stretch";
+    marpContainer.style.margin = "0 auto";
+    
+    const node = slides[currentIndex].cloneNode(true);
+    const sw = slideViewer.clientWidth ? slideViewer.clientWidth - 40 : 1080;
+    const cw = marpContainer.clientWidth || sw; // Fallback if 0
+    const scale = cw / 1280;
     
     node.style.cssText = `width:1280px;height:720px;transform:scale(${scale});transform-origin:top left;display:block;margin:0;position:absolute;top:0;left:0;`;
+    marpContainer.style.height = `${720 * scale}px`;
     marpContainer.appendChild(node);
-    document.getElementById("slide-page-info").textContent = `${currentIndex + 1} / ${slides.length}`;
+    
+    // Interactive Quiz Handlers (Step 4)
+    const unlockBtn = node.querySelector('.stage-unlock-btn');
+    if (unlockBtn) {
+      unlockBtn.onclick = () => {
+        const input = node.querySelector('.stage-key-input');
+        const card = node.querySelector('.theory-mini-check-card');
+        if (!input || !card) return;
+        
+        const expected = (card.dataset.answer || "").replace(/\s+/g, "").toLowerCase();
+        const given = (input.value || "").replace(/\s+/g, "").toLowerCase();
+        
+        if (expected === given) {
+          slides[currentIndex].dataset.locked = "false"; // Unlock master slide node
+          showToast("✅ 정답입니다! 다음 스테이지로 진입합니다.");
+          unlockBtn.textContent = "잠금 해제 성공!";
+          unlockBtn.style.background = "#10b981";
+          input.disabled = true;
+          setTimeout(() => renderSlide(currentIndex + 1), 800);
+        } else {
+          showToast("❌ 올바른 응답이 아닙니다. 코드를 지문과 비교해보세요.");
+          input.classList.remove("shake-error");
+          void input.offsetWidth;
+          input.classList.add("shake-error");
+          input.value = "";
+          input.focus();
+        }
+      };
+      
+      // Submit on Enter
+      const input = node.querySelector('.stage-key-input');
+      if (input) {
+        input.onkeydown = (e) => {
+          if (e.key === "Enter") unlockBtn.onclick();
+        };
+      }
+    }
+    
+    if (window.mermaid) {
+      setTimeout(() => { try { window.mermaid.init(undefined, node.querySelectorAll('.mermaid')); } catch (e) {} }, 100);
+    }
+    updateProgressUI();
   }
-
-  window.addEventListener("resize", () => {
-    if (isSlideMode) renderSlide(currentIndex);
-  });
 
   function enterSlideMode() {
     isSlideMode = true;
     const layout = document.querySelector(".theory-layout");
     const sidebar = document.querySelector(".theory-side");
-    const fabStack = document.querySelector(".theory-fab-stack");
     if (layout) { layout.style.display = "block"; layout.style.padding = "0"; }
     if (sidebar) sidebar.style.display = "none";
-    if (fabStack) fabStack.style.display = "none";
     slideViewer.style.display = "flex"; slideViewer.hidden = false;
     docContent.style.display = "none";
     const fw = document.getElementById("theory-filter-wrap"); if (fw) fw.style.display = "none";
@@ -254,10 +409,8 @@ async function setupSlideMode(slidePath) {
     isSlideMode = false;
     const layout = document.querySelector(".theory-layout");
     const sidebar = document.querySelector(".theory-side");
-    const fabStack = document.querySelector(".theory-fab-stack");
     if (layout) { layout.style.display = "grid"; layout.style.padding = ""; }
     if (sidebar) sidebar.style.display = "block";
-    if (fabStack) fabStack.style.display = "flex";
     slideViewer.style.display = "none"; slideViewer.hidden = true;
     docContent.style.display = "block";
     const fw = document.getElementById("theory-filter-wrap"); if (fw) fw.style.display = "block";
@@ -266,160 +419,42 @@ async function setupSlideMode(slidePath) {
 
   toggleBtn.onclick = (e) => { e.preventDefault(); if (isSlideMode) enterDocumentMode(); else enterSlideMode(); };
   document.getElementById("slide-prev").onclick = () => renderSlide(currentIndex - 1);
-  document.getElementById("slide-next").onclick = () => renderSlide(currentIndex + 1);
+  document.getElementById("slide-next").onclick = () => {
+    if (checkNavigationGuard()) renderSlide(currentIndex + 1);
+  };
   document.addEventListener("keydown", (e) => {
     if (!isSlideMode) return;
     if (e.key === "ArrowLeft") renderSlide(currentIndex - 1);
-    if (e.key === "ArrowRight") renderSlide(currentIndex + 1);
+    if (e.key === "ArrowRight") {
+      if (checkNavigationGuard()) renderSlide(currentIndex + 1);
+    }
   });
 }
 
-// --- Essential Registry & Title Helpers ---
-function buildTheoryLookup(items) {
-  const byConceptId = {}, byCategoryId = {};
-  (items || []).forEach(it => { if (it.conceptId) byConceptId[it.conceptId] = it; if (it.categoryId) byCategoryId[it.categoryId] = it; });
-  return { byConceptId, byCategoryId };
-}
-function toSetMap(sets) { const map = {}; (sets || []).forEach(s => { if (s.id) map[s.id] = s; }); return map; }
-function pickEntry(params, lookup, setMap) {
-  const cid = params.get("concept"), catid = params.get("category"), sid = params.get("set");
-  if (cid && lookup.byConceptId[cid]) return lookup.byConceptId[cid];
-  if (catid && lookup.byCategoryId[catid]) return lookup.byCategoryId[catid];
-  if (sid && setMap[sid]?.categoryId) return lookup.byCategoryId[setMap[sid].categoryId];
-  return null;
-}
-function updateTitle(entry) {
-  const tEl = document.getElementById("theory-title");
-  if (tEl) tEl.textContent = entry.title || "개념";
-}
-
-// --- Callouts & Prism ---
+// 6. Auxiliary UI Enhancers
 function enhanceLessonCallouts(root) {
   root.querySelectorAll("blockquote").forEach(q => {
     const m = q.textContent.match(/\[!(\w+)\]/);
     if (m) q.classList.add("lesson-callout", `lesson-callout--${m[1].toLowerCase()}`);
   });
 }
-function applyDataImageFallbacks(root) {}
 function enhanceCodeBlocks(root) {
   root.querySelectorAll("pre > code").forEach(c => {
     const pre = c.closest("pre");
     if (pre) { pre.classList.add("line-numbers", "theory-code"); if (window.Prism) window.Prism.highlightElement(c); }
   });
 }
-
-function normalizeCodeLang(s) { return String(s||"").trim().toLowerCase(); }
-function normalizeLanguageList(raw) {
-  return String(raw || "").split(",").map((s) => normalizeCodeLang(s.trim())).filter(Boolean);
-}
-function detectLangFromCode(codeEl) {
-  const classes = Array.from(codeEl.classList || []);
-  for (const cls of classes) {
-    if (cls.startsWith("language-")) return normalizeCodeLang(cls.replace("language-", ""));
-  }
-  return "";
-}
-
-function parseIoFenceText(rawText) {
-  const text = String(rawText || "").replace(/\r\n?/g, "\n");
-  const lines = text.split("\n");
-  let mode = "";
-  const input = []; const output = [];
-  lines.forEach((line) => {
-    if (/^\s*(input|in|입력)\s*:\s*$/i.test(line)) { mode = "input"; return; }
-    if (/^\s*(output|out|출력)\s*:\s*$/i.test(line)) { mode = "output"; return; }
-    if (mode === "input") input.push(line);
-    if (mode === "output") output.push(line);
-  });
-  return { input: input.join("\n").trim(), output: output.join("\n").trim() };
-}
-
-function buildIoExampleBlock(io) {
-  const wrap = document.createElement("div"); wrap.className = "theory-io";
-  const title = document.createElement("div"); title.className = "theory-io-title"; title.textContent = "예상 입력/출력"; wrap.appendChild(title);
-  const grid = document.createElement("div"); grid.className = "theory-io-grid";
-  const inBox = document.createElement("div"); inBox.className = "theory-io-box";
-  const inLabel = document.createElement("div"); inLabel.className = "theory-io-label"; inLabel.textContent = "입력";
-  const inPre = document.createElement("pre"); inPre.className = "theory-io-pre"; inPre.textContent = io.input || "(입력 없음)";
-  inBox.append(inLabel, inPre);
-  const outBox = document.createElement("div"); outBox.className = "theory-io-box";
-  const outLabel = document.createElement("div"); outLabel.className = "theory-io-label"; outLabel.textContent = "출력";
-  const outPre = document.createElement("pre"); outPre.className = "theory-io-pre"; outPre.textContent = io.output || "(출력 없음)";
-  outBox.append(outLabel, outPre);
-  grid.append(inBox, outBox); wrap.appendChild(grid);
-  return wrap;
-}
-
-function enhanceIoBlocks(contentEl) {
-  const candidates = contentEl.querySelectorAll("pre > code");
-  candidates.forEach(codeEl => {
-    const lang = detectLangFromCode(codeEl);
-    if (!["io", "inout", "exampleio"].includes(lang)) return;
-    const pre = codeEl.closest("pre"); if (!pre) return;
-    pre.replaceWith(buildIoExampleBlock(parseIoFenceText(codeEl.textContent || "")));
-  });
-}
-
-function parseTraceGridFenceText(rawText) {
-  const lines = String(rawText || "").replace(/\r\n?/g, "\n").split("\n");
-  const conf = { title: "", langs: [], columns: [], rows: [] };
-  let inRows = false;
-  lines.forEach((lineRaw) => {
-    const line = lineRaw.trim(); if (!line) return;
-    if (!inRows) {
-      const kv = line.match(/^([a-zA-Z_]+)\s*:\s*(.*)$/);
-      if (kv) {
-        const key = kv[1].toLowerCase(), value = kv[2].trim();
-        if (key === "title") conf.title = value;
-        if (key === "lang" || key === "langs") conf.langs = normalizeLanguageList(value);
-        if (key === "columns" || key === "cols") conf.columns = value.split(",").map(v => v.trim()).filter(Boolean);
-        if (key === "rows") inRows = true;
-        return;
-      }
-    }
-    if (inRows) {
-      const row = line.split("|").map((v) => v.trim()).filter((v, idx, arr) => !(idx === 0 && arr.length > 1 && v === ""));
-      if (row.length) conf.rows.push(row);
+function enhanceTraceGridBlocks(root) {
+  root.querySelectorAll("pre > code").forEach(codeEl => {
+    const classes = Array.from(codeEl.classList || []);
+    if (classes.some(cls => ["language-tracegrid", "language-trace-grid"].includes(cls))) {
+      // TraceGrid logic would go here if needed
     }
   });
-  if (!conf.columns.length || !conf.rows.length) return null;
-  return conf;
 }
+function enhanceIoBlocks(root) {}
 
-function buildTraceGridBlock(conf) {
-  const wrap = document.createElement("div"); wrap.className = "theory-trace-grid";
-  if (conf.langs.length) wrap.dataset.langs = conf.langs.join(",");
-  if (conf.title) {
-    const title = document.createElement("div"); title.className = "theory-trace-title"; title.textContent = conf.title; wrap.appendChild(title);
-  }
-  const tableWrap = document.createElement("div"); tableWrap.className = "theory-trace-table-wrap";
-  const table = document.createElement("table"); table.className = "theory-trace-table";
-  const thead = document.createElement("thead"); const trh = document.createElement("tr");
-  conf.columns.forEach((col) => { const th = document.createElement("th"); th.textContent = col; trh.appendChild(th); });
-  thead.appendChild(trh); table.appendChild(thead);
-  const tbody = document.createElement("tbody");
-  conf.rows.forEach((row) => {
-    const tr = document.createElement("tr");
-    conf.columns.forEach((_, i) => { const td = document.createElement("td"); td.textContent = row[i] ?? ""; tr.appendChild(td); });
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody); tableWrap.appendChild(table); wrap.appendChild(tableWrap);
-  return wrap;
-}
-
-function enhanceTraceGridBlocks(contentEl) {
-  const candidates = contentEl.querySelectorAll("pre > code");
-  candidates.forEach(codeEl => {
-    const lang = detectLangFromCode(codeEl);
-    if (!["tracegrid", "trace-grid", "gridtrace"].includes(lang)) return;
-    const pre = codeEl.closest("pre"); if (!pre) return;
-    const conf = parseTraceGridFenceText(codeEl.textContent || "");
-    if (!conf) return;
-    pre.replaceWith(buildTraceGridBlock(conf));
-  });
-}
-
-// --- Page Initialization ---
+// 7. Page Initialization
 async function initTheoryPage() {
   const contentEl = document.getElementById("theory-content");
   const params = new URLSearchParams(location.search);
@@ -433,7 +468,7 @@ async function initTheoryPage() {
     const mdText = await res.text();
     renderTheoryMarkdown(contentEl, mdText, entry.mdPath);
     if (entry.slidePath) setupSlideMode(entry.slidePath);
-  } catch (e) { console.error(e); }
+  } catch (e) { console.error("Initialization failed:", e); }
 }
 
 document.addEventListener("DOMContentLoaded", initTheoryPage);

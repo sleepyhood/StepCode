@@ -113,34 +113,23 @@ def move_ship(keys):
 ---
 
 <!-- _class: slide-section -->
+<!-- _stage: 1 -->
+<!-- _locked: true -->
 
 # 1.2.2. [Mission] 우주선 움직이기
 
-- `step1_student.py`의 `move_ship` 함수를 조립하세요.
 - **Logic Hole:** 오른쪽으로 가려면 X를 어떻게 해야 할까요?
 - **힌트:** `K_RIGHT`와 `+=`
 
-<div class="code-window">
-
-```python
-def move_ship(keys):
-    global ship_rect
-    speed = 5
-
-    # TODO: [A] 왼쪽 이동 로직
-    if keys[pygame.K_LEFT]:
-        ship_rect.x -= speed
-
-    # TODO: [B] 오른쪽 이동 로직
-    if keys[pygame.K_???]:
-        ship_rect.x ??? speed
-```
-
+<div class="theory-mini-check-card" data-answer="ship_rect.x += speed">
+  <input type="text" class="stage-key-input" placeholder="정답 코드(ship_rect.x ??? speed) 입력...">
+  <button class="stage-unlock-btn">제출하고 다음으로</button>
 </div>
 
 ---
 
 <!-- _class: slide-part -->
+<!-- _stage: 2 -->
 
 # 1.3. 화면 이탈 버그 막기 (Boundary)
 
@@ -165,7 +154,7 @@ def move_ship(keys):
 - **Check:** 왼쪽 테두리가 0을 넘었는지 확인합니다. [A]
 - **Fix:** 넘었다면 강제로 0에 고정시킵니다. [B]
 - 이 과정을 통해 우주선이 화면에 갇히게 됩니다.
-	
+
 ```mermaid
 graph TD
     A{left < 0?} -- Yes --> B[left = 0 고정]
@@ -179,33 +168,23 @@ graph TD
 ---
 
 <!-- _class: slide-section -->
+<!-- _stage: 2 -->
+<!-- _locked: true -->
 
 # 1.3.3. [Mission] 방어벽 완성하기
 
 - 화면 오른쪽 끝(800)을 넘지 못하게 막는 코드를 완성하세요.
 - **Logic Hole:** 오른쪽 벽의 기준은 무엇일까요?
-- **힌트:** `ship_rect.right`
 
-<div class="code-window">
-
-```python
-def move_ship(keys):
-    # ... 이동 코드 생략 ...
-
-    # [A] 왼쪽 방어벽
-    if ship_rect.left < 0:
-        ship_rect.left = 0
-
-    # [B] 오른쪽 방어벽
-    if ship_rect.??? > 800:
-        ship_rect.right = ???
-```
-
+<div class="theory-mini-check-card" data-answer="ship_rect.right = 800">
+  <input type="text" class="stage-key-input" placeholder="정답 코드(ship_rect.right = ???) 입력...">
+  <button class="stage-unlock-btn">제출하고 다음으로</button>
 </div>
 
 ---
 
 <!-- _class: slide-part -->
+<!-- _stage: 3 -->
 
 # 1.4. 게임 엔진 작동 원리
 
@@ -236,7 +215,11 @@ def move_ship(keys):
 
 </div>
 
-### 다음 시간에는...
+---
+
+<!-- _class: slide-title -->
+
+# 다음 시간에는...
 
 **2차시: 운석 낙하와 리스트 관리**
 하늘에서 쏟아지는 운석을 만들고 리스트로 관리하는 법을 배웁니다.

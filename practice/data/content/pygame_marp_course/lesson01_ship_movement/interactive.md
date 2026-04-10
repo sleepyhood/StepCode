@@ -50,8 +50,9 @@ if keys[pygame.K_LEFT]:
 
 ### 3.1. 테두리 센서 활용
 `ship_rect`는 사각형의 테두리 위치를 알려주는 똑똑한 센서들을 가지고 있습니다.
-*   `ship_rect.left`: 우주선의 왼쪽 끝선
-*   `ship_rect.right`: 우주선의 오른쪽 끝선
+*   **왜 `ship_rect.x` 대신 다른 걸 쓰나요?**
+    *   `ship_rect.left`: 우주선의 **왼쪽 끝선**입니다. 0보다 작아지면 화면 밖으로 나간 거죠.
+    *   `ship_rect.right`: 우주선의 **오른쪽 끝선**입니다. 800보다 커지면 화면 밖으로 나간 겁니다.
 
 ![경계선 감시 도식](./assets/boundary_0_800.svg)
 
