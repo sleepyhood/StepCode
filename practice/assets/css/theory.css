@@ -67,8 +67,8 @@
 
 .theory-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 14px;
+  grid-template-columns: 85px minmax(0, 1fr) 320px;
+  gap: 20px;
 }
 
 .theory-content,
@@ -716,171 +716,266 @@
 
 
 /* =========================================
-   Step 1: Stage Progress & Lock UI Styles
+   --- Roadmap / Vertical Timeline --- 
 ========================================= */
-
-/* --- Stage Progress Navigator (Replaces standard pagination) --- */
-.stage-progress-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 200px;
-  justify-content: center;
-}
-
-.stage-node {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.4s var(--premium-easing);
+.theory-roadmap-side {
+  display: block;
   position: relative;
-  z-index: 2;
+  z-index: 100;
 }
 
-.stage-node.is-completed {
-  background: #10b981;
-  color: white;
-  border-color: #059669;
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+/* 데스크탑 (전체화면): 사이드바 항상 확장 상태 고정 */
+.theory-roadmap-sticky {
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  width: 100%; 
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 14px 10px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 12px;
+  transition: width 0.3s cubic-bezier(0.2, 0, 0, 1), background 0.3s, box-shadow 0.3s;
 }
 
-.stage-node.is-current {
-  background: var(--theory-accent);
-  color: white;
-  border-color: #818cf8;
-  transform: scale(1.15);
-  box-shadow: 0 0 20px rgba(99, 91, 255, 0.6);
+/* 스크롤바 디자인 */
+.theory-roadmap-sticky::-webkit-scrollbar { width: 4px; }
+.theory-roadmap-sticky::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+/* 데스크탑에서는 햄버거 토글 버튼 숨기기 */
+.roadmap-toggle-btn {
+  display: none; 
 }
 
-.stage-node.is-locked {
-  background: rgba(15, 23, 42, 0.6);
-  color: transparent; /* Hide text, show icon */
-  border-color: rgba(255, 255, 255, 0.05);
+.roadmap-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-.stage-node.is-locked::after {
-  content: '🔒';
-  font-size: 0.85rem;
+.roadmap-container::before {
+  content: '';
   position: absolute;
-  color: white;
-}
-
-.stage-line {
-  height: 4px;
-  width: 28px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
-  transition: all 0.4s var(--premium-easing);
-  margin: 0 -4px;
+  top: 10px; bottom: 0; left: 20px;
+  width: 2px;
+  background: #e2e8f0;
   z-index: 1;
 }
 
-.stage-line.is-active {
-  background: #10b981;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+.roadmap-progress-line {
+  position: absolute;
+  top: 10px; left: 20px;
+  width: 2px;
+  background: var(--theory-accent, #635bff);
+  z-index: 2;
+  transition: height 0.3s ease;
+  height: 0;
 }
 
-/* --- Feedback Animations & Toasts --- */
-@keyframes shake-error {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-6px) rotate(-1deg); }
-  40%, 80% { transform: translateX(6px) rotate(1deg); }
+.roadmap-node {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #64748b;
+  transition: all 0.2s ease;
 }
 
-.shake-error {
-  animation: shake-error 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  background-color: #ef4444 !important; /* Red for alert */
-  border-color: #dc2626 !important;
-  color: white !important;
+.roadmap-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  margin-top: 2px; margin-left: 14px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.theory-toast {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: rgba(15, 15, 20, 0.95);
-  color: #f87171;
-  padding: 14px 28px;
-  border-radius: 100px;
-  font-weight: 800;
-  font-size: 0.95rem;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s var(--premium-easing);
-  z-index: 1000;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+.roadmap-node.is-past .roadmap-dot::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 4px; height: 4px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.roadmap-text {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  font-weight: 600;
+  white-space: nowrap; 
+  margin-top: -1px;
 }
 
-.theory-toast::before {
-  content: '⚠️';
-  font-size: 1.1rem;
+.roadmap-num {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.78rem;
+  color: #64748b;
+  flex-shrink: 0;
+  min-width: 30px;
 }
 
-.theory-toast.show {
+/* 데스크탑: 글자 항상 표시 */
+.roadmap-title-text {
   opacity: 1;
+  transform: translateX(0);
+  transition: all 0.3s ease;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: auto;
+}
+
+.roadmap-node.is-active .roadmap-dot {
+  border-color: var(--theory-accent, #635bff);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.15);
+}
+
+.roadmap-node.is-active .roadmap-text .roadmap-num,
+.roadmap-node.is-active .roadmap-text .roadmap-title-text {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.roadmap-node.is-past .roadmap-dot {
+  background: var(--theory-accent, #635bff);
+  border-color: var(--theory-accent, #635bff);
+}
+
+/* =========================================
+   반응형 (태블릿 & 모바일 & 축소 화면) 
+========================================= */
+@media (max-width: 1400px) {
+  .theory-layout {
+    grid-template-columns: 85px minmax(0, 1fr) 320px;
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  .roadmap-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    cursor: pointer;
+    margin-bottom: 24px;
+    margin-left: 5px;
+    transition: all 0.2s;
+  }
+  .roadmap-toggle-btn:hover { background: #e2e8f0; }
+
+  .theory-roadmap-sticky {
+    width: 85px; 
+    background: transparent;
+  }
+  
+  .roadmap-title-text {
+    opacity: 0; 
+    transform: translateX(-10px);
+    pointer-events: none;
+    max-width: 210px;
+  }
+
+  .theory-roadmap-sticky.is-expanded {
+    width: 320px;
+    background: var(--theory-card-bg, #ffffff);
+    box-shadow: 20px 0 40px rgba(0,0,0,0.1);
+    border: 1px solid var(--theory-border, #e2e8f0);
+  }
+
+  .theory-roadmap-sticky.is-expanded .roadmap-title-text {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 1200px) {
+  .theory-layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+  .theory-roadmap-side {
+    display: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .theory-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Resume Toast --- */
+.theory-resume-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--theory-text, #111827);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.theory-resume-toast.visible {
+  opacity: 1;
+  visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
 
-/* --- Integrated Quiz View inside Marp --- */
-#marp-container .theory-mini-check-card {
-  margin: 40px auto;
-  max-width: 80%;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-  border: 2px solid #e2e8f0;
-  text-align: left;
+.theory-resume-toast .resume-text {
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-#marp-container .stage-key-input {
-  width: 100%;
-  padding: 16px 20px;
-  font-size: 1.1rem;
-  border-radius: 12px;
-  border: 2px solid #cbd5e1;
-  background: #f8fafc;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-  font-weight: 700;
-  transition: border-color 0.2s;
+.theory-resume-toast .resume-actions {
+  display: flex;
+  gap: 8px;
 }
 
-#marp-container .stage-key-input:focus {
-  outline: none;
-  border-color: var(--theory-accent);
-  background: #ffffff;
-}
-
-#marp-container .stage-unlock-btn {
-  width: 100%;
-  padding: 16px;
-  background: var(--theory-accent);
-  color: white;
+.theory-resume-toast .resume-btn {
+  background: rgba(255,255,255,0.1);
   border: none;
-  border-radius: 12px;
-  font-size: 1.15rem;
-  font-weight: 800;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s var(--premium-easing);
+  transition: background 0.2s;
 }
 
-#marp-container .stage-unlock-btn:hover {
-  background: var(--theory-accent-strong);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(99, 91, 255, 0.3);
+.theory-resume-toast .resume-btn.resume-yes {
+  background: var(--theory-accent, #635bff);
 }
 
+.theory-resume-toast .resume-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+.theory-resume-toast .resume-btn.resume-yes:hover {
+  background: #4f46e5;
+}

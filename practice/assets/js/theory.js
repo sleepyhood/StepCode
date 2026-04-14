@@ -75,6 +75,9 @@ function renderTheoryMarkdown(target, mdText, mdPath = "") {
   enhanceTraceGridBlocks(target);
   enhanceIoBlocks(target);
   enhanceInteractiveProblems(target);
+  autoNumberHeadings(target);
+  buildFloatingTOC(target);
+  buildRoadmap(target);
 }
 
 function fixRelativeImagePaths(root, mdPath) {
@@ -82,7 +85,7 @@ function fixRelativeImagePaths(root, mdPath) {
   const baseDir = mdPath.substring(0, mdPath.lastIndexOf("/"));
   root.querySelectorAll("img").forEach(img => {
     const src = img.getAttribute("src");
-    if (src && (src.startsWith("./") || src.startsWith("../"))) {
+    if (src && !src.startsWith("http") && !src.startsWith("data:") && !src.startsWith("/")) {
       img.src = baseDir + (src.startsWith("./") ? src.slice(1) : "/" + src);
     }
   });
@@ -468,7 +471,262 @@ async function initTheoryPage() {
     const mdText = await res.text();
     renderTheoryMarkdown(contentEl, mdText, entry.mdPath);
     if (entry.slidePath) setupSlideMode(entry.slidePath);
+
+    const savedPos = localStorage.getItem(`readPosition_${location.search}`);
+    if (savedPos && parseInt(savedPos) > 150) {
+      setTimeout(() => showResumeToast(parseInt(savedPos)), 500);
+    }
   } catch (e) { console.error("Initialization failed:", e); }
+}
+
+// 8. Auto Numbering & Floating Navigation
+function autoNumberHeadings(root) {
+  const headings = Array.from(root.querySelectorAll("h1, h2, h3, h4, h5, h6"));
+  if (headings.length === 0) return;
+
+  // Find minimum level (root level)
+  let minLevel = 6;
+  headings.forEach(h => {
+    const level = parseInt(h.tagName.charAt(1));
+    if (level < minLevel) minLevel = level;
+  });
+
+  const counters = [0, 0, 0, 0, 0, 0, 0];
+
+  headings.forEach(h => {
+    // Skip if it sits inside interactive elements or has no real text
+    if (h.closest('.interactive-problem-card') || h.closest('.theory-mini-check-card') || h.closest('.theory-toc-popup')) return;
+    if (!h.textContent.trim()) return;
+
+    const level = parseInt(h.tagName.charAt(1));
+    
+    // Ignore levels greater than 6 just in case
+    if(level > 6 || level < 1) return;
+
+    counters[level]++;
+    // Reset deeper levels
+    for (let i = level + 1; i <= 6; i++) {
+        counters[i] = 0;
+    }
+
+    let numberStr = "";
+    for (let i = minLevel; i <= level; i++) {
+        numberStr += counters[i] + ".";
+    }
+
+    const numSpan = document.createElement("span");
+    numSpan.className = "theory-heading-number";
+    numSpan.textContent = numberStr + " ";
+    h.insertBefore(numSpan, h.firstChild);
+  });
+}
+
+function buildFloatingTOC(root) {
+  let existing = document.querySelector(".theory-floating-widget");
+  if (existing) existing.remove();
+
+  const headings = root.querySelectorAll("h1, h2, h3");
+  if (headings.length === 0) return;
+
+  const widget = document.createElement("div");
+  widget.className = "theory-floating-widget";
+  
+  widget.innerHTML = `
+    <div id="theory-toc-popup" class="theory-toc-popup hidden">
+      <div class="toc-header">목차</div>
+      <div class="toc-content" id="theory-toc-content"></div>
+    </div>
+    <button id="theory-toc-btn" class="floating-btn" title="목차">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+    </button>
+    <button id="theory-top-btn" class="floating-btn" title="맨 위로">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+    <button id="theory-bottom-btn" class="floating-btn" title="맨 아래로">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </button>
+  `;
+
+  document.body.appendChild(widget);
+
+  const tocContent = document.getElementById("theory-toc-content");
+  headings.forEach((h, i) => {
+    if (!h.id) h.id = "heading-" + i;
+    const a = document.createElement("a");
+    a.href = "#" + h.id;
+    a.textContent = h.textContent;
+    a.className = "theory-toc-item level-" + h.tagName.charAt(1);
+    a.onclick = (e) => {
+      e.preventDefault();
+      const y = h.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({top: y, behavior: "smooth"});
+    };
+    tocContent.appendChild(a);
+  });
+
+  const tocBtn = document.getElementById("theory-toc-btn");
+  const topBtn = document.getElementById("theory-top-btn");
+  const bottomBtn = document.getElementById("theory-bottom-btn");
+  const popup = document.getElementById("theory-toc-popup");
+
+  tocBtn.onclick = () => {
+    popup.classList.toggle("hidden");
+  };
+  
+  // Close popup when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!widget.contains(e.target)) {
+      popup.classList.add("hidden");
+    }
+  });
+
+  topBtn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+  bottomBtn.onclick = () => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+}
+
+function buildRoadmap(root) {
+  const headings = Array.from(root.querySelectorAll("h1, h2, h3"));
+  if (headings.length === 0) return;
+
+  const container = document.getElementById("theory-roadmap-container");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const progressLine = document.createElement("div");
+  progressLine.className = "roadmap-progress-line";
+  progressLine.id = "roadmap-progress-line";
+  container.appendChild(progressLine);
+
+  headings.forEach((h, i) => {
+    if (!h.id) h.id = "heading-" + i;
+    
+    const node = document.createElement("a");
+    node.href = "#" + h.id;
+    node.className = "roadmap-node";
+    node.dataset.targetId = h.id;
+    
+    // Add visual hierarchy offset for level 3
+    const level = parseInt(h.tagName.charAt(1));
+    if (level === 3) {
+      node.style.marginLeft = "12px";
+    }
+
+    const match = h.textContent.match(/^([\d\.]+)\s+(.*)/);
+    let num = "", text = h.textContent;
+    if (match) {
+      num = match[1];
+      text = match[2];
+    }
+
+    node.innerHTML = `
+      <div class="roadmap-dot"></div>
+      <div class="roadmap-text">
+        <span class="roadmap-num">${num}</span>
+        <span class="roadmap-title-text">${text}</span>
+      </div>
+    `;
+    
+    node.onclick = (e) => {
+      e.preventDefault();
+      const y = h.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({top: y, behavior: "smooth"});
+    };
+    container.appendChild(node);
+  });
+
+  const toggleBtn = document.getElementById("roadmap-toggle-btn");
+  const stickyContainer = document.getElementById("theory-roadmap-sticky");
+  if (toggleBtn && stickyContainer && !toggleBtn.dataset.bound) {
+    toggleBtn.dataset.bound = "true";
+    toggleBtn.onclick = () => {
+      stickyContainer.classList.toggle("is-expanded");
+      const icon = toggleBtn.querySelector("path");
+      if (stickyContainer.classList.contains("is-expanded")) {
+        icon.setAttribute("d", "M15 18l-6-6 6-6"); // Left chevron
+      } else {
+        icon.setAttribute("d", "M9 18l6-6-6-6"); // Right chevron
+      }
+    };
+  }
+
+  setupRoadmapScrollSpy(headings);
+}
+
+function setupRoadmapScrollSpy(headings) {
+  const nodes = document.querySelectorAll(".roadmap-node");
+  const progressLine = document.getElementById("roadmap-progress-line");
+  
+  if(nodes.length === 0) return;
+
+  const updateScroll = () => {
+    let currentIndex = 0;
+    const scrollY = window.scrollY;
+    
+    if (scrollY > 150) {
+      localStorage.setItem(`readPosition_${window.location.search}`, scrollY);
+    } else if (scrollY <= 150) {
+      localStorage.removeItem(`readPosition_${window.location.search}`);
+    }
+    
+    headings.forEach((h, i) => {
+      const top = h.getBoundingClientRect().top + scrollY - 150;
+      if (scrollY >= top) {
+        currentIndex = i;
+      }
+    });
+
+    nodes.forEach((node, i) => {
+      node.classList.remove("is-active", "is-past");
+      if (i < currentIndex) {
+        node.classList.add("is-past");
+      } else if (i === currentIndex) {
+        node.classList.add("is-active");
+      }
+    });
+
+    const activeNode = nodes[currentIndex];
+    if (activeNode) {
+      const height = activeNode.offsetTop + 7;
+      progressLine.style.height = height + "px";
+    }
+  };
+
+  window.addEventListener('scroll', updateScroll);
+  setTimeout(updateScroll, 100);
+}
+
+function showResumeToast(yPosition) {
+  const toast = document.createElement("div");
+  toast.className = "theory-resume-toast";
+  toast.innerHTML = `
+    <span class="resume-text">이전에 읽던 위치가 있습니다. 이어보시겠습니까?</span>
+    <div class="resume-actions">
+      <button class="resume-btn resume-yes">이동</button>
+      <button class="resume-btn resume-no">닫기</button>
+    </div>
+  `;
+  document.body.appendChild(toast);
+
+  const autoHide = setTimeout(() => {
+    if (toast.parentNode) {
+      toast.classList.remove("visible");
+      setTimeout(() => toast.remove(), 300);
+    }
+  }, 8000);
+
+  toast.querySelector(".resume-yes").onclick = () => {
+    window.scrollTo({ top: yPosition, behavior: "smooth" });
+    toast.classList.remove("visible");
+    setTimeout(() => toast.remove(), 300);
+    clearTimeout(autoHide);
+  };
+  toast.querySelector(".resume-no").onclick = () => {
+    toast.classList.remove("visible");
+    setTimeout(() => toast.remove(), 300);
+    clearTimeout(autoHide);
+  };
+  
+  setTimeout(() => toast.classList.add("visible"), 50);
 }
 
 document.addEventListener("DOMContentLoaded", initTheoryPage);

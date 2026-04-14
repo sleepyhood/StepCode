@@ -33,7 +33,7 @@ priority: 2
 **텍스트 메뉴 둘러보기**
 우선 사이드 패널의 텍스트 메뉴부터 살펴볼게요. 텍스트 작업의 출발점이 되는 곳으로, 미리 구성된 다양한 텍스트 스타일을 제공하여 디자인의 기본 구조를 잡는 데 유용합니다. 텍스트 메뉴는 프레젠테이션과 같이 처음부터 텍스트의 위계와 구조를 잡아야 하는 디자인 작업에 특히 유리합니다.
 
-| ![텍스트 메뉴 상단 구성](./data/theory/canva/Week02/images/p094_01.png) | ![텍스트 메뉴 하단 구성](./data/theory/canva/Week02/images/p094_02.png) |
+| ![텍스트 메뉴 상단 구성](/data/content/canva/assets/images/Week02/p094_01.png) | ![텍스트 메뉴 하단 구성](/data/content/canva/assets/images/Week02/p094_02.png) |
 | :-------------------------------------------------: | :-------------------------------------------------: |
 
 텍스트 메뉴에서 할 수 있는 주요 기능은 다음과 같습니다.
@@ -50,7 +50,7 @@ priority: 2
 - **동적 텍스트**: 콘텐츠에 맞춰 자동으로 생성되는 텍스트를 넣는 기능입니다. 대표적으로 현재 디자인의 각 페이지에 번호를 자동으로 매겨 주는 페이지 번호 기능이 있습니다. 페이지 순서가 바뀌거나 페이지가 추가/삭제되면 번호도 자동으로 업데이트되어 편리합니다.
 - **앱**: 텍스트와 관련된 다양한 캔바 내부 기능이나 외부 서비스를 사용할 수 있는 메뉴입니다. 무료 앱과 유료 앱이 있으며 기본 텍스트 도구 외에 추가적인 기능이 필요할 때 활용하면 디자인의 표현력을 크게 확장할 수 있습니다.
 
-![텍스트 스타일을 페이지에 추가하는 화면](./data/theory/canva/Week02/images/p095_01.png)
+![텍스트 스타일을 페이지에 추가하는 화면](/data/content/canva/assets/images/Week02/p095_01.png)
 
 - **최근에 사용함**: 사용자가 최근에 선택했던 폰트나 텍스트 스타일이 기록되어 있어 이전에 썼던 스타일을 다시 찾을 필요 없이 바로 꺼내 쓸 수 있습니다.
 - **글꼴 조합**: 미리 짝지어 놓은 ‘제목+본문’ 등의 폰트 세트입니다. 어떤 폰트끼리 어울릴지 고민할 필요 없이, 클릭 한 번으로 감각적인 타이포그래피를 적용할 수 있습니다.
@@ -62,7 +62,7 @@ priority: 2
 **사이드 패널에서 텍스트 스타일 고르기**
 에디터 - 사이드 패널 - [텍스트] 메뉴를 열면, 미리 구성된 텍스트 스타일들을 볼 수 있습니다. [텍스트 상자 추가] 또는 [기본 텍스트 스타일] 중에 원하는 스타일을 클릭해 페이지에 추가하면, 크기와 두께, 기본 정렬이 이미 세팅된 상태에서 작업을 시작할 수 있습니다. 특히 시리즈로 만드는 카드뉴스나 피드라면, [브랜드 글꼴 추가]를 클릭해 제목/부제/본문 구조를 한 번 정해 두고 계속 재사용하는 것이 디자인 일관성을 지키는 데 큰 도움이 됩니다.
 
-![사이드 패널에서 텍스트 스타일을 고르는 화면](./data/theory/canva/Week02/images/p096_01.png)
+![사이드 패널에서 텍스트 스타일을 고르는 화면](/data/content/canva/assets/images/Week02/p096_01.png)
 
 > **참고**
 > 텍스트의 폰트 종류와 크기, 굵기로 정보의 구조를 나누는 것이 중요합니다. 예를 들어, 제목은 굵고 크게, 부제목은 살짝 작고 가볍게, 본문은 읽기 편한 크기와 간격으로 맞추는 식이죠. 이렇게 텍스트에 위계 구조를 넣어 시선의 흐름을 설계해 두면, 보는 사람이 한 번에 어디를 먼저 읽어야 하는지를 직관적으로 알 수 있게 됩니다. 또한 디자인도 한결 깔끔하고 정돈되어 보이고 신뢰감을 줄 수 있습니다.
@@ -72,14 +72,14 @@ priority: 2
 
 ### 텍스트 기본 조작법 익히기
 
-![빠른 작업으로 텍스트 상자를 추가하는 화면](./data/theory/canva/Week02/images/p098_02.png)
+![빠른 작업으로 텍스트 상자를 추가하는 화면](/data/content/canva/assets/images/Week02/p098_02.png)
 
 작업 영역에 배치한 텍스트를 조절하는 기본 조작법을 간단하게 체크해 볼게요.
 
 **1. 텍스트 선택 · 드래그 · 커서 옮기기**
 텍스트 상자를 한 번 클릭하면 상자가 선택되고, 두 번 클릭하면 상자 안의 텍스트 편집 모드가 됩니다. 커서를 옮기고 싶은 위치를 클릭하면 그 지점에 커서가 깜빡입니다. 드래그해서 선택하려면 커서를 원하는 시작 부분에 놓고 마우스를 클릭한 채로 원하는 부분까지 드래그해 영역을 선택합니다.
 
-![작업 영역에 배치한 텍스트 상자 화면](./data/theory/canva/Week02/images/p096_03.png)
+![작업 영역에 배치한 텍스트 상자 화면](/data/content/canva/assets/images/Week02/p096_03.png)
 
 **2. 텍스트 내용 수정하기**
 수정할 텍스트 상자를 더블 클릭합니다. 기존에 입력된 내용은 Backspace/Delete 키로 지우고, 새 텍스트를 입력합니다.
@@ -87,7 +87,7 @@ priority: 2
 **3. 텍스트 상자 크기 조절하기**
 네 모서리와 변에 조절 핸들이 나타납니다. [모서리] 핸들을 드래그하면 텍스트 상자의 크기 및 텍스트 크기를 조절할 수 있습니다.
 
-![텍스트를 선택해 편집 모드로 들어간 화면](./data/theory/canva/Week02/images/p096_04.png)
+![텍스트를 선택해 편집 모드로 들어간 화면](/data/content/canva/assets/images/Week02/p096_04.png)
 
 **4. 텍스트 상자 이동하기**
 텍스트 상자 안(조절 핸들이 아닌 부분)을 클릭한 채로 원하는 위치로 드래그하면 텍스트 상자가 이동합니다. 이때, 텍스트 상자 안에 커서가 있는 상태로는 이동이 되지 않으니, 텍스트 상자 바깥을 한 번 클릭한 후에 다시 텍스트 상자 안을 클릭해서 드래그하세요. 텍스트 상자를 이동하면서 전체적인 디자인 레이아웃을 만들어 보세요.
@@ -95,19 +95,19 @@ priority: 2
 **5. 텍스트 상자 회전하기**
 [회전] 핸들을 드래그해 회전하거나, 더 정확한 각도로 회전하기 원한다면 에디터 툴 바 - [위치] - 고급 - 회전에 원하는 각도(예: -90)를 입력하고 Enter 키를 누르면 됩니다.
 
-![텍스트 상자 크기를 조절하는 화면](./data/theory/canva/Week02/images/p097_03.png)
+![텍스트 상자 크기를 조절하는 화면](/data/content/canva/assets/images/Week02/p097_03.png)
 
 **6. 텍스트 상자 편집 끝내기**
 편집을 마쳤다면, 작업 영역의 빈 공간을 한 번 클릭하면 편집 모드가 해제됩니다. 다른 요소를 바로 선택해서 계속 작업할 수 있어요.
 
-![위치 패널에서 텍스트 회전 각도를 설정하는 화면](./data/theory/canva/Week02/images/p097_04.png)
+![위치 패널에서 텍스트 회전 각도를 설정하는 화면](/data/content/canva/assets/images/Week02/p097_04.png)
 
 ### 텍스트 스타일 잡기: 에디터 툴 바와 편집 패널
 
 **에디터 툴 바 둘러보기**
 텍스트 상자를 선택하면, 작업 영역 상단에 텍스트를 위한 메뉴 구성의 에디터 툴 바가 나타납니다. 각 메뉴를 선택해 텍스트에 대한 세부 설정을 할 수 있어요.
 
-![텍스트 편집을 마친 최종 배치 화면](./data/theory/canva/Week02/images/p098_01.png)
+![텍스트 편집을 마친 최종 배치 화면](/data/content/canva/assets/images/Week02/p098_01.png)
 
 여기서 조정할 수 있는 대표적인 항목은 다음과 같습니다.
 
@@ -131,15 +131,15 @@ priority: 2
 **1. 글꼴 패널**
 에디터 툴 바에서 [글꼴]을 선택하면 열리는 패널로, 목록에서 원하는 폰트를 선택해 폰트를 바꿀 수 있습니다.
 
-![텍스트용 에디터 툴 바 전체 화면](./data/theory/canva/Week02/images/p100_01.png)
-![글꼴 패널의 검색과 추천 글꼴 화면](./data/theory/canva/Week02/images/p100_02.png)
+![텍스트용 에디터 툴 바 전체 화면](/data/content/canva/assets/images/Week02/p100_01.png)
+![글꼴 패널의 검색과 추천 글꼴 화면](/data/content/canva/assets/images/Week02/p100_02.png)
 
 - **글꼴 검색 바 및 필터**: 폰트를 이름이나 스타일 키워드로 검색할 수 있고, 언어/가격 등으로 검색 결과를 선택해서 볼 수 있습니다.
 - **빠른 추천**: 스타일 별로 폰트를 정리해 둔 영역으로 원하는 키워드를 클릭하면 선택한 스타일의 폰트 목록을 볼 수 있습니다.
 - **별표 표시된 글꼴**: 별표로 즐겨찾기 해둔 폰트들이 모여 있는 영역입니다.
 
-![글꼴 패널의 최근 사용함과 한국어 글꼴 화면](./data/theory/canva/Week02/images/p100_03.png)
-![글꼴 패널의 최근 사용함과 한국어 글꼴 화면](./data/theory/canva/Week02/images/p100_04.png)
+![글꼴 패널의 최근 사용함과 한국어 글꼴 화면](/data/content/canva/assets/images/Week02/p100_03.png)
+![글꼴 패널의 최근 사용함과 한국어 글꼴 화면](/data/content/canva/assets/images/Week02/p100_04.png)
 
 - **문서 글꼴**: 현재 페이지에 사용된 폰트 목록이 표시되는 영역입니다.
 - **추천 폰트**: 디자인에 어울리는 폰트를 자동 추천해 주는 영역입니다.
@@ -154,26 +154,26 @@ priority: 2
 > 1. 에디터 툴 바 - 글꼴 - 글꼴 패널 - 문서 글꼴 목록에서 한국어를 지원하지 않는 폰트가 있는지 확인합니다.
 > 2. 폰트 검색 바의 오른쪽 필터에서 언어 - 글꼴 언어 선택에서 한국어를 선택해 폰트를 다시 설정합니다.
 
-![글꼴 패널에서 별표 표시 글꼴을 관리하는 화면](./data/theory/canva/Week02/images/p101_01.png)
+![글꼴 패널에서 별표 표시 글꼴을 관리하는 화면](/data/content/canva/assets/images/Week02/p101_01.png)
 
 **2. 텍스트 색상 패널**
 에디터 툴 바에서 [텍스트]를 선택하면 열리는 패널로 폰트의 색상을 변경하고, 단색뿐 아니라 그라데이션 등 다양한 색 조합을 적용할 수 있습니다. 패널에 표시된 색상 중에 마음에 드는 색상을 클릭하거나, 새로운 색상 추가([+] 아이콘)를 클릭해 스포이드로 원하는 색상을 추출할 수도 있습니다.
 
-![텍스트 색상 패널 화면](./data/theory/canva/Week02/images/p102_01.png)
+![텍스트 색상 패널 화면](/data/content/canva/assets/images/Week02/p102_01.png)
 
-![텍스트 색상 패널에서 색상과 HEX 코드를 설정하는 화면](./data/theory/canva/Week02/images/p102_02.png)
+![텍스트 색상 패널에서 색상과 HEX 코드를 설정하는 화면](/data/content/canva/assets/images/Week02/p102_02.png)
 
 **3. 고급 설정 패널**
 에디터 툴 바에서 [고급 설정]을 선택하고, 나타나는 옵션 창에서 글자 간격(자간)과 줄 간격(행간)과 텍스트 상자 고정 위치를 설정할 수 있습니다.
 
-![고급 설정 옵션 창 화면](./data/theory/canva/Week02/images/p102_04.png)
+![고급 설정 옵션 창 화면](/data/content/canva/assets/images/Week02/p102_04.png)
 
-![고급 설정 패널에서 자간과 행간을 조절하는 화면](./data/theory/canva/Week02/images/p102_03.png)
+![고급 설정 패널에서 자간과 행간을 조절하는 화면](/data/content/canva/assets/images/Week02/p102_03.png)
 
 **4. 효과 패널**
 에디터 툴 바에서 [효과]를 선택하면 열리는 패널로 그림자, 네온, 배경, 테두리 등 텍스트에 다양한 시각 효과를 적용해 강조할 수 있습니다.
 
-![효과 패널에서 텍스트 효과를 선택하는 화면](./data/theory/canva/Week02/images/p103_01.png)
+![효과 패널에서 텍스트 효과를 선택하는 화면](/data/content/canva/assets/images/Week02/p103_01.png)
 
 > **테두리 효과로 폰트 굵기 조절하기**
 > 원하는 굵기 옵션이 없는 폰트의 경우, 디자인에 사용하는 데 제한적이어서 아쉽지요. 이럴 때는 효과 패널에서 테두리 기능을 활용해 보세요. [두께] 슬라이드를 좌우로 움직이거나 설정 칸에 수치를 입력해 폰트에 테두리가 생기면서 글자가 더 굵어지는 효과를 줄 수 있습니다.
@@ -189,20 +189,20 @@ priority: 2
 **플로팅 툴 바에서 텍스트 상자 간격 맞추기**
 세 개 이상의 텍스트 상자를 선택한 다음, 플로팅 툴 바 - [...] (더보기) - [고르게 띄우기]에서 원하는 옵션(예: 수직으로)을 선택합니다. 선택된 텍스트 상자들이 자동으로 일정한 간격으로 배치됩니다.
 
-![테두리 효과로 폰트 굵기를 조절하는 팁 화면](./data/theory/canva/Week02/images/p104_01.png)
+![테두리 효과로 폰트 굵기를 조절하는 팁 화면](/data/content/canva/assets/images/Week02/p104_01.png)
 
-![플로팅 툴 바에서 텍스트 상자 간격을 맞추는 화면](./data/theory/canva/Week02/images/p105_01.png)
+![플로팅 툴 바에서 텍스트 상자 간격을 맞추는 화면](/data/content/canva/assets/images/Week02/p105_01.png)
 
 **에디터 툴 바에서 텍스트 상자 정렬, 간격 맞추기**
 여러 개의 텍스트 상자를 선택한 다음, 에디터 툴 바 - 위치를 클릭해 [위치] 패널을 엽니다. [요소 정렬]과 [고르게 띄우기]에서 원하는 옵션(예: 왼쪽, 수직으로)을 선택합니다.
 
-![위치 패널에서 텍스트 상자를 정렬하는 화면](./data/theory/canva/Week02/images/p105_03.png)
+![위치 패널에서 텍스트 상자를 정렬하는 화면](/data/content/canva/assets/images/Week02/p105_03.png)
 
 ### 텍스트 작업의 중요 포인트는 위계 만들기
 
 텍스트 편집 작업 초기의 모습과 레이아웃 정리까지 마친 결과 모습을 비교해 볼게요. 텍스트 구성만으로도 전체적인 메시지와 디자인의 흐름이 한눈에 들어오죠? 정보의 중요도에 따라 텍스트의 크기 · 굵기 · 색상 · 간격을 조정하고 배치를 정돈하다 보면, 자연스럽게 ‘위계(hierarchy)’가 만들어집니다.
 
-![텍스트 레이아웃을 정리한 전후 비교 화면](./data/theory/canva/Week02/images/p106_01.png)
+![텍스트 레이아웃을 정리한 전후 비교 화면](/data/content/canva/assets/images/Week02/p106_01.png)
 
 
 이번 레슨에서 다룬 텍스트 편집 작업의 흐름을 다시 한 번 정리하면 다음과 같습니다.
@@ -229,7 +229,7 @@ priority: 2
 - **이미지 및 코드 생성**: 자연어 프롬프트를 입력하면 Canva AI가 이미지나 코드를 생성해 줍니다.
 - **최근에 사용함**: 최근에 사용한 요소들이 표시되는 영역입니다.
 - **카테고리 둘러보기**: 도형, 그래픽, 3D, 동영상 등 캔바가 제공하는 다양한 요소 카테고리가 표시됩니다.
-![요소 메뉴의 검색 바와 카테고리를 보여 주는 화면](./data/theory/canva/Week02/images/p108_01.png)
+![요소 메뉴의 검색 바와 카테고리를 보여 주는 화면](/data/content/canva/assets/images/Week02/p108_01.png)
 
 **요소의 종류 알아보기**
 
@@ -260,9 +260,9 @@ priority: 2
 > - **요소 패널에서 확인하기**: [요소] 패널에서 요소 썸네일 위에 마우스를 올리고 `[...]` - `[i](정보)`를 클릭하면 간편 라이선스 이용약관을 확인할 수 있습니다.
 > - **작업 페이지에서 확인하기**: 이미 페이지에 올린 요소는 선택한 뒤 플로팅 툴 바의 `[...]` - `[i](정보)`를 눌러 동일하게 확인할 수 있습니다.
 
-![요소 패널에서 간편 라이선스 이용약관을 여는 화면](./data/theory/canva/Week02/images/p110_09.png)
+![요소 패널에서 간편 라이선스 이용약관을 여는 화면](/data/content/canva/assets/images/Week02/p110_09.png)
 
-![작업 페이지에서 요소 정보를 확인하는 화면](./data/theory/canva/Week02/images/p111_01.png)
+![작업 페이지에서 요소 정보를 확인하는 화면](/data/content/canva/assets/images/Week02/p111_01.png)
 
 **요소 검색하고 선택해 배치하기**
 검색 바에 원하는 키워드를 입력하거나 필터 적용을 통해 필요한 요소를 검색할 수 있습니다. 추상적인 단어로 검색하면 폭넓은 결과가 나오고, 구체적인 표현과 키워드로 검색하면 보다 정확한 검색 결과를 얻을 수 있습니다.
@@ -271,11 +271,11 @@ priority: 2
 2. `Enter` 키를 누르거나 검색 버튼을 눌러 결과를 확인합니다. 검색 결과는 그래픽, 사진, 동영상처럼 카테고리별로 표시됩니다.
 3. 원하는 요소를 클릭하거나 드래그 앤 드롭해 작업 페이지에 배치합니다.
 
-![요소 검색 바에 키워드를 입력하는 화면](./data/theory/canva/Week02/images/p111_02.png)
+![요소 검색 바에 키워드를 입력하는 화면](/data/content/canva/assets/images/Week02/p111_02.png)
 
-![검색 결과가 카테고리별로 표시된 화면](./data/theory/canva/Week02/images/p112_01.png)
+![검색 결과가 카테고리별로 표시된 화면](/data/content/canva/assets/images/Week02/p112_01.png)
 
-![검색 결과에서 요소를 페이지에 배치한 화면](./data/theory/canva/Week02/images/p112_02.png)
+![검색 결과에서 요소를 페이지에 배치한 화면](/data/content/canva/assets/images/Week02/p112_02.png)
 
 **요소 검색 필터 활용하기**
 더 살펴보고 싶은 카테고리의 [필터] 또는 [모두 보기]를 클릭하면 원하는 결과만 더 좁혀 볼 수 있습니다. 색상, 비율, 애니메이션 유무, 투명 배경 여부, 무료/유료 여부 같은 조건을 함께 사용하면 더 정확하게 찾을 수 있습니다.
@@ -291,13 +291,13 @@ priority: 2
 3. **그래픽 에디터 툴 바**: 벡터 기반 그래픽은 클릭만으로 색상 변경이 가능하며, 아트 스타일 복사 기능도 지원합니다.
 4. **동영상 에디터 툴 바**: 편집, 다듬기, 배경 제거, 재생 속도 등 영상에 특화된 도구가 포함됩니다.
 
-![도형 요소의 에디터 툴 바 화면](./data/theory/canva/Week02/images/p116_01.png)
+![도형 요소의 에디터 툴 바 화면](/data/content/canva/assets/images/Week02/p116_01.png)
 
-![사진 요소의 에디터 툴 바 화면](./data/theory/canva/Week02/images/p116_02.png)
+![사진 요소의 에디터 툴 바 화면](/data/content/canva/assets/images/Week02/p116_02.png)
 
-![그래픽 요소의 에디터 툴 바 화면](./data/theory/canva/Week02/images/p117_01.png)
+![그래픽 요소의 에디터 툴 바 화면](/data/content/canva/assets/images/Week02/p117_01.png)
 
-![동영상 요소의 에디터 툴 바 화면](./data/theory/canva/Week02/images/p117_02.png)
+![동영상 요소의 에디터 툴 바 화면](/data/content/canva/assets/images/Week02/p117_02.png)
 
 **요소 편집 패널 둘러보기**
 선택한 요소에 대한 옵션을 세부적으로 편집하고 조정하는 공간입니다.
@@ -305,7 +305,7 @@ priority: 2
 **1. 도형 편집 패널**
 도형을 선택하고 편집 패널을 열면 원하는 도형 옵션으로 형태를 바로 변경할 수 있습니다.
 
-![도형 편집 패널에서 도형 옵션을 바꾸는 화면](./data/theory/canva/Week02/images/p118_01.png)
+![도형 편집 패널에서 도형 옵션을 바꾸는 화면](/data/content/canva/assets/images/Week02/p118_01.png)
 
 **2. 이미지 편집 패널**
 사진(이미지)을 선택한 후 에디터 툴 바 - [편집] - 이미지 패널을 열어 작업합니다.
@@ -314,36 +314,36 @@ priority: 2
 2. [조정]에서 밝기, 대비, 채도 등을 다듬고, 필요하다면 [Magic Studio]에서 배경 제거, Magic Eraser, Magic Grab 같은 AI 기능을 사용합니다.
 3. [필터], [fx 효과], [앱]을 차례로 살펴보며 디자인 분위기에 맞는 색감과 효과를 적용합니다.
 
-![이미지 편집 패널을 연 화면](./data/theory/canva/Week02/images/p118_02.png)
+![이미지 편집 패널을 연 화면](/data/content/canva/assets/images/Week02/p118_02.png)
 
 
 
 - **조정 패널**: 사진의 밝기, 대비, 채도 등을 조정합니다.
-![이미지 편집 패널 전체 구성 화면](./data/theory/canva/Week02/images/p119_02.png)
+![이미지 편집 패널 전체 구성 화면](/data/content/canva/assets/images/Week02/p119_02.png)
 
 
 - **Magic Studio**: AI를 활용해 배경 제거, 배경 생성, Magic Eraser, Magic Grab, 텍스트 추출, Magic Edit, Magic Expand 등을 수행합니다.
 - **필터 / fx 효과 / 앱**: 다양한 색감 및 특수 효과를 주거나 캔바 외부 확장 도구를 활용합니다.
-![Magic Studio 기능을 보여 주는 이미지 편집 패널 화면](./data/theory/canva/Week02/images/p120_01.png)
-![이미지 편집 패널의 필터 기능 화면](./data/theory/canva/Week02/images/p121_01.png)
-![이미지 편집 패널의 fx 효과 화면](./data/theory/canva/Week02/images/p122_01.png)
+![Magic Studio 기능을 보여 주는 이미지 편집 패널 화면](/data/content/canva/assets/images/Week02/p120_01.png)
+![이미지 편집 패널의 필터 기능 화면](/data/content/canva/assets/images/Week02/p121_01.png)
+![이미지 편집 패널의 fx 효과 화면](/data/content/canva/assets/images/Week02/p122_01.png)
 
 
 **3. 그래픽 편집 패널**
 그래픽 요소 선택 후 편집 패널을 열면, 스타일, 색감, 특수 효과를 다룰 수 있습니다. 사용 전/후에 따라 지원 도구가 달라지며, AI를 활용한 '스타일 매칭' 도 적용할 수 있습니다.
-![이미지 편집 패널의 앱 활용 화면](./data/theory/canva/Week02/images/p122_03.png)
+![이미지 편집 패널의 앱 활용 화면](/data/content/canva/assets/images/Week02/p122_03.png)
 
-![그래픽 요소 편집 패널의 기본 구성 화면](./data/theory/canva/Week02/images/p122_04.png)
+![그래픽 요소 편집 패널의 기본 구성 화면](/data/content/canva/assets/images/Week02/p122_04.png)
 
-![그래픽 요소 편집 패널의 기본 구성 화면](./data/theory/canva/Week02/images/p123_01.png)
+![그래픽 요소 편집 패널의 기본 구성 화면](/data/content/canva/assets/images/Week02/p123_01.png)
 
 
 **4. 동영상 편집 패널**
 동영상 특화 효과(어안 렌즈, 빛샘 등) 및 재생 속도, 자동 재생 여부를 설정합니다.
 
-![동영상 효과와 재생 옵션을 설정하는 화면](./data/theory/canva/Week02/images/p125_01.png)
+![동영상 효과와 재생 옵션을 설정하는 화면](/data/content/canva/assets/images/Week02/p125_01.png)
 
-![여러 요소를 정렬하고 배치하는 화면](./data/theory/canva/Week02/images/p125_02.png)
+![여러 요소를 정렬하고 배치하는 화면](/data/content/canva/assets/images/Week02/p125_02.png)
 
 ### 요소 레이아웃 다듬기: 플로팅 툴 바와 빠른 작업
 
@@ -351,29 +351,29 @@ priority: 2
 
 1. **정렬 및 배치**: 여러 요소를 선택하고 플로팅 툴 바나 에디터 툴 바의 [위치] 도구를 활용해 가운데, 상하좌우 정렬 및 고르게 띄우기를 수행합니다.
 
-![요소를 시선이 가는 레이아웃으로 정돈한 화면](./data/theory/canva/Week02/images/p126_02.png)
+![요소를 시선이 가는 레이아웃으로 정돈한 화면](/data/content/canva/assets/images/Week02/p126_02.png)
 
-![요소를 시선이 가는 레이아웃으로 정돈한 화면](./data/theory/canva/Week02/images/p126_01.png)
+![요소를 시선이 가는 레이아웃으로 정돈한 화면](/data/content/canva/assets/images/Week02/p126_01.png)
 
 
 2. **배치 정돈**: 디자인의 통일성을 위해 컬렉션 요소를 모으거나, 시선을 끌 수 있는 레이아웃으로 묶어 배치합니다.
 
-![요소를 시선이 가는 레이아웃으로 정돈한 화면](./data/theory/canva/Week02/images/p127_01.png)
+![요소를 시선이 가는 레이아웃으로 정돈한 화면](/data/content/canva/assets/images/Week02/p127_01.png)
 
-![컬렉션 요소를 한 화면에 맞춰 배치한 화면](./data/theory/canva/Week02/images/p127_02.png)
+![컬렉션 요소를 한 화면에 맞춰 배치한 화면](/data/content/canva/assets/images/Week02/p127_02.png)
 
-![겹친 요소의 레이어 순서를 조정하는 화면](./data/theory/canva/Week02/images/p127_03.png)
+![겹친 요소의 레이어 순서를 조정하는 화면](/data/content/canva/assets/images/Week02/p127_03.png)
 
 3. **요소 레이어 정리하기**: 2개 이상의 요소가 겹쳐 있을 때, 마우스 우클릭 - [레이어] 탭에서 맨 뒤/앞으로 보내기 등 순서를 조정할 수 있습니다.
 
-![레이어 메뉴에서 맨 앞과 맨 뒤 배치를 조절하는 화면](./data/theory/canva/Week02/images/p128_01.png)
-![레이어 메뉴에서 맨 앞과 맨 뒤 배치를 조절하는 화면](./data/theory/canva/Week02/images/p128_02.png)
-![레이어 메뉴에서 맨 앞과 맨 뒤 배치를 조절하는 화면](./data/theory/canva/Week02/images/p128_03.png)
-![레이어 메뉴에서 맨 앞과 맨 뒤 배치를 조절하는 화면](./data/theory/canva/Week02/images/p129_01.png)
+![레이어 메뉴에서 맨 앞과 맨 뒤 배치를 조절하는 화면](/data/content/canva/assets/images/Week02/p128_01.png)
+![레이어 메뉴에서 맨 앞과 맨 뒤 배치를 조절하는 화면](/data/content/canva/assets/images/Week02/p128_02.png)
+![레이어 메뉴에서 맨 앞과 맨 뒤 배치를 조절하는 화면](/data/content/canva/assets/images/Week02/p128_03.png)
+![레이어 메뉴에서 맨 앞과 맨 뒤 배치를 조절하는 화면](/data/content/canva/assets/images/Week02/p129_01.png)
 
 4. **그룹 기능**: 여러 요소를 한 덩어리로 묶어 크기 조절이나 이동을 한 번에 처리합니다. 플로팅 툴 바나 `Ctrl`+`G` (Mac은 `Cmd`+`G`)를 활용합니다.
 
-![여러 요소를 그룹으로 묶는 화면](./data/theory/canva/Week02/images/p129_02.png)
+![여러 요소를 그룹으로 묶는 화면](/data/content/canva/assets/images/Week02/p129_02.png)
 
 ### 요소 업로드해서 사용하기
 
@@ -383,13 +383,13 @@ priority: 2
 2. **페이지에 바로 드래그 앤 드롭하기**: 작업 중인 페이지에 파일을 바로 끌어다 놓아도 업로드됩니다.
 3. **업로드 후 배치하기**: 업로드가 끝난 파일은 항목 패널에서 바로 클릭하거나 드래그해 페이지에 추가합니다.
 
-![업로드 항목 패널에 파일을 추가하는 화면](./data/theory/canva/Week02/images/p130_01.png)
+![업로드 항목 패널에 파일을 추가하는 화면](/data/content/canva/assets/images/Week02/p130_01.png)
 
-![파일을 드래그 앤 드롭으로 업로드하는 화면](./data/theory/canva/Week02/images/p131_01.png)
+![파일을 드래그 앤 드롭으로 업로드하는 화면](/data/content/canva/assets/images/Week02/p131_01.png)
 
-![업로드한 이미지를 페이지에 배치하는 화면](./data/theory/canva/Week02/images/p131_02.png)
+![업로드한 이미지를 페이지에 배치하는 화면](/data/content/canva/assets/images/Week02/p131_02.png)
 
-![업로드한 그래픽 요소를 사용하는 화면](./data/theory/canva/Week02/images/p132_07.png)
+![업로드한 그래픽 요소를 사용하는 화면](/data/content/canva/assets/images/Week02/p132_07.png)
 
 
 ---
@@ -408,17 +408,17 @@ priority: 2
 3. 검색 바에 색상명이나 HEX 코드를 입력해 더 정확하게 찾을 수 있습니다.
 4. [새로운 색상 추가]를 눌러 단색 또는 그라데이션 색상을 직접 만들어 추가할 수도 있습니다.
 
-![배경 색상 패널의 기본 색상 선택 화면](./data/theory/canva/Week02/images/p135_10.png)
+![배경 색상 패널의 기본 색상 선택 화면](/data/content/canva/assets/images/Week02/p135_10.png)
 
-![단색 배경을 적용한 디자인 화면](./data/theory/canva/Week02/images/p136_01.png)
+![단색 배경을 적용한 디자인 화면](/data/content/canva/assets/images/Week02/p136_01.png)
 
-![그라데이션 배경을 선택하는 화면](./data/theory/canva/Week02/images/p136_02.png)
+![그라데이션 배경을 선택하는 화면](/data/content/canva/assets/images/Week02/p136_02.png)
 
-![사진 색상을 활용해 배경 색상을 맞추는 화면](./data/theory/canva/Week02/images/p137_01.png)
+![사진 색상을 활용해 배경 색상을 맞추는 화면](/data/content/canva/assets/images/Week02/p137_01.png)
 
-![HEX 코드로 새로운 배경 색상을 추가하는 화면](./data/theory/canva/Week02/images/p137_02.png)
+![HEX 코드로 새로운 배경 색상을 추가하는 화면](/data/content/canva/assets/images/Week02/p137_02.png)
 
-![배경 색상 적용 결과를 비교하는 화면](./data/theory/canva/Week02/images/p138_11.png)
+![배경 색상 적용 결과를 비교하는 화면](/data/content/canva/assets/images/Week02/p138_11.png)
 
 **영상 • 이미지를 배경으로 사용하기**
 
@@ -427,13 +427,13 @@ priority: 2
 3. 이미지를 더블 클릭해 자르기 모드로 들어가 배경의 위치와 크기를 알맞게 자르고 조절합니다.
 4. 배치를 마쳤다면 페이지 바깥을 클릭하거나 `Enter` 키를 눌러 자르기 모드를 종료합니다.
 
-![이미지를 페이지에 배치해 배경으로 준비한 화면](./data/theory/canva/Week02/images/p138_04.png)
+![이미지를 페이지에 배치해 배경으로 준비한 화면](/data/content/canva/assets/images/Week02/p138_04.png)
 
-![이미지를 배경으로 설정하는 메뉴 화면](./data/theory/canva/Week02/images/p139_02.png)
+![이미지를 배경으로 설정하는 메뉴 화면](/data/content/canva/assets/images/Week02/p139_02.png)
 
-![배경 이미지의 위치와 크기를 자르는 화면](./data/theory/canva/Week02/images/p139_03.png)
+![배경 이미지의 위치와 크기를 자르는 화면](/data/content/canva/assets/images/Week02/p139_03.png)
 
-![이미지를 배경으로 적용한 최종 화면](./data/theory/canva/Week02/images/p139_04.png)
+![이미지를 배경으로 적용한 최종 화면](/data/content/canva/assets/images/Week02/p139_04.png)
 
 **그래픽 요소를 배경으로 사용하기**
 
@@ -441,12 +441,12 @@ priority: 2
 2. 모서리 조절 핸들을 드래그해 캔버스를 꽉 채웁니다.
 3. 우클릭 - [레이어] - [맨 뒤로 보내기]를 통해 배경처럼 씁니다.
 
-![그래픽 요소를 페이지에 추가하는 화면](./data/theory/canva/Week02/images/p140_04.png)
+![그래픽 요소를 페이지에 추가하는 화면](/data/content/canva/assets/images/Week02/p140_04.png)
 
-![그래픽 요소를 캔버스 크기에 맞게 확대한 화면](./data/theory/canva/Week02/images/p141_01.png)
+![그래픽 요소를 캔버스 크기에 맞게 확대한 화면](/data/content/canva/assets/images/Week02/p141_01.png)
 
-![그래픽 요소를 맨 뒤로 보내 배경처럼 사용하는 화면](./data/theory/canva/Week02/images/p141_02.png)
-![그래픽 요소를 맨 뒤로 보내 배경처럼 사용하는 화면](./data/theory/canva/Week02/images/p141_03.png)
+![그래픽 요소를 맨 뒤로 보내 배경처럼 사용하는 화면](/data/content/canva/assets/images/Week02/p141_02.png)
+![그래픽 요소를 맨 뒤로 보내 배경처럼 사용하는 화면](/data/content/canva/assets/images/Week02/p141_03.png)
 
 ### 도형 요소를 중간 배경으로 활용하기
 
@@ -458,15 +458,15 @@ priority: 2
 4. 사각형을 복제해 선 도형으로 만들고, [색상 없음], [스트로크 스타일], [스트로크 색상]을 차례로 설정해 화면을 정돈합니다.
 5. 마지막으로 전체 레이어 순서를 정리해 텍스트가 더 또렷하게 읽히도록 맞춥니다.
 
-![반투명 도형을 중간 배경으로 추가한 화면](./data/theory/canva/Week02/images/p142_01.png)
+![반투명 도형을 중간 배경으로 추가한 화면](/data/content/canva/assets/images/Week02/p142_01.png)
 
-![도형 요소의 투명도를 조절하는 화면](./data/theory/canva/Week02/images/p142_02.png)
+![도형 요소의 투명도를 조절하는 화면](/data/content/canva/assets/images/Week02/p142_02.png)
 
-![텍스트 뒤에 도형 중간 배경을 배치한 화면](./data/theory/canva/Week02/images/p143_01.png)
+![텍스트 뒤에 도형 중간 배경을 배치한 화면](/data/content/canva/assets/images/Week02/p143_01.png)
 
-![중간 배경을 적용해 가독성을 높인 화면](./data/theory/canva/Week02/images/p143_02.png)
+![중간 배경을 적용해 가독성을 높인 화면](/data/content/canva/assets/images/Week02/p143_02.png)
 
-![도형 중간 배경 적용 결과 화면](./data/theory/canva/Week02/images/p143_03.png)
+![도형 중간 배경 적용 결과 화면](/data/content/canva/assets/images/Week02/p143_03.png)
 
 ### 전체 톤 스타일링하기: 스타일 적용 기능
 
@@ -478,15 +478,15 @@ priority: 2
 3. [색상만 적용]을 선택하면 템플릿의 색상 구성이 현재 디자인에 적용됩니다.
 4. 색상 셔플 기능을 눌러 원하는 조합이 나올 때까지 바꿔 볼 수 있습니다.
 
-![템플릿의 색상만 적용하는 메뉴 화면](./data/theory/canva/Week02/images/p146_01.png)
-![스타일 탭에서 색상과 글꼴 조합을 적용하는 화면](./data/theory/canva/Week02/images/p146_02.png)
+![템플릿의 색상만 적용하는 메뉴 화면](/data/content/canva/assets/images/Week02/p146_01.png)
+![스타일 탭에서 색상과 글꼴 조합을 적용하는 화면](/data/content/canva/assets/images/Week02/p146_02.png)
 
-![스타일 탭의 색상 팔레트 화면](./data/theory/canva/Week02/images/p146_05.png)
+![스타일 탭의 색상 팔레트 화면](/data/content/canva/assets/images/Week02/p146_05.png)
 
 **스타일 탭 활용하기**
 디자인 메뉴의 [스타일] 탭을 열면, 색상 팔레트와 글꼴 조합 세트를 한 번에 적용하고 셔플할 수 있습니다. [스타일] 검색, 최근 사용 스타일, 색상 팔레트, 글꼴 세트를 함께 살펴보며 전체 구성이 마음에 드는 방향을 먼저 정해 두면 이후 세부 조정이 훨씬 빨라집니다.
-![스타일 탭에서 색상과 글꼴 조합을 적용하는 화면](./data/theory/canva/Week02/images/p147_01.png)
-![스타일 탭에서 색상과 글꼴 조합을 적용하는 화면](./data/theory/canva/Week02/images/p147_02.png)
+![스타일 탭에서 색상과 글꼴 조합을 적용하는 화면](/data/content/canva/assets/images/Week02/p147_01.png)
+![스타일 탭에서 색상과 글꼴 조합을 적용하는 화면](/data/content/canva/assets/images/Week02/p147_02.png)
 
 **스마트하게 다듬기: 색상 추출 및 스타일 복사 기능**
 색상 패널의 [사진 색상] 추출하기를 활용하면 사진에 쓰인 주요 색상을 분석해 자동으로 컬러 팔레트를 구성해 줍니다.
@@ -496,11 +496,11 @@ priority: 2
 3. [사진 색상]에서 자동으로 추출된 컬러 팔레트를 확인하고, 원하는 색을 클릭해 요소나 배경 색상에 적용합니다.
 4. 배경 색감이나 패턴이 너무 강하면 [투명도] 슬라이더를 조절해 대비를 낮춰 줍니다.
 
-![사진 색상을 추출해 팔레트를 만드는 화면](./data/theory/canva/Week02/images/p148_01.png)
+![사진 색상을 추출해 팔레트를 만드는 화면](/data/content/canva/assets/images/Week02/p148_01.png)
 
-![추출한 색상을 디자인에 적용하는 화면](./data/theory/canva/Week02/images/p148_02.png)
+![추출한 색상을 디자인에 적용하는 화면](/data/content/canva/assets/images/Week02/p148_02.png)
 
-![배경 투명도를 낮춰 색감을 정리하는 화면](./data/theory/canva/Week02/images/p149_01.png)
+![배경 투명도를 낮춰 색감을 정리하는 화면](/data/content/canva/assets/images/Week02/p149_01.png)
 
 **스타일 복사와 스포이드로 마무리하기**
 한 요소의 색상과 스타일을 다른 요소에도 빠르게 적용하면 전체 통일감을 더 쉽게 맞출 수 있습니다.
@@ -509,20 +509,20 @@ priority: 2
 2. 페인트 롤러 아이콘이 나타나면 같은 스타일을 적용할 요소를 클릭합니다.
 3. 더 세밀한 색상 조정이 필요하면 [새로운 색상 추가] - [스포이드]를 눌러 화면 안의 원하는 색을 직접 추출합니다.
 
-![스타일 복사 기능을 선택하는 화면](./data/theory/canva/Week02/images/p150_01.png)
+![스타일 복사 기능을 선택하는 화면](/data/content/canva/assets/images/Week02/p150_01.png)
 
-![스포이드로 화면의 색상을 선택하는 화면](./data/theory/canva/Week02/images/p150_02.png)
+![스포이드로 화면의 색상을 선택하는 화면](/data/content/canva/assets/images/Week02/p150_02.png)
 
-![스타일 복사 후 요소에 동일한 색을 적용한 화면](./data/theory/canva/Week02/images/p151_01.png)
+![스타일 복사 후 요소에 동일한 색을 적용한 화면](/data/content/canva/assets/images/Week02/p151_01.png)
 
-![스포이드로 추출한 색으로 통일감을 맞추는 화면](./data/theory/canva/Week02/images/p152_01.png)
-![스포이드로 추출한 색으로 통일감을 맞추는 화면](./data/theory/canva/Week02/images/p152_02.png)
+![스포이드로 추출한 색으로 통일감을 맞추는 화면](/data/content/canva/assets/images/Week02/p152_01.png)
+![스포이드로 추출한 색으로 통일감을 맞추는 화면](/data/content/canva/assets/images/Week02/p152_02.png)
 
 ### 전체 디자인의 색상 밸런스 체크하기
 
 1. 디자인을 전체적으로 둘러보며 색상을 더 수정해야 할 곳이 있는지 확인합니다. 배경색을 좀 더 생동감 있으면서도 은은한 색으로 바꾸거나, 작은 텍스트 색도 더 자연스럽게 맞춰 줍니다.
 2. 색상 추출용으로 사용했던 사진이 있다면 페이지에서 삭제해 색상 편집 작업을 마무리합니다.
 
-![전체 디자인의 색상 밸런스를 조정하기 전 화면](./data/theory/canva/Week02/images/p152_03.png)
+![전체 디자인의 색상 밸런스를 조정하기 전 화면](/data/content/canva/assets/images/Week02/p152_03.png)
 
-![전체 디자인의 색상 밸런스를 조정한 후 화면](./data/theory/canva/Week02/images/p153_01.png)
+![전체 디자인의 색상 밸런스를 조정한 후 화면](/data/content/canva/assets/images/Week02/p153_01.png)
