@@ -110,8 +110,10 @@ async function renderTheoryMarkdown(target, mdText, mdPath = "") {
   enhanceIoBlocks(target);
   await enhanceInteractiveProblems(target);
   autoNumberHeadings(target);
+  wrapContentIntoSectionCards(target);
   buildFloatingTOC(target);
   buildRoadmap(target);
+  updateSectionProgress();
 }
 
 // 4. Interactive & Stage Gating
@@ -168,6 +170,7 @@ function unlockNextStage(currentCard) {
     stage.nextElementSibling.classList.remove("is-locked");
     stage.nextElementSibling.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+  updateSectionProgress();
 }
 
 function renderProblemUI(container, data) {
@@ -185,8 +188,15 @@ function renderMCQUI(container, data) {
     btn.className = "option-btn";
     btn.textContent = `${idx + 1}) ${opt}`;
     btn.onclick = () => {
-      if (idx === data.answer) { btn.classList.add("is-correct"); unlockNextStage(container); }
-      else { btn.classList.add("is-wrong"); setTimeout(() => btn.classList.remove("is-wrong"), 500); }
+      if (idx === data.answer) {
+        btn.classList.add("is-correct");
+        container.classList.add("is-solved");
+        unlockNextStage(container);
+        updateSectionProgress();
+      } else {
+        btn.classList.add("is-wrong");
+        setTimeout(() => btn.classList.remove("is-wrong"), 500);
+      }
     };
     wrap.appendChild(btn);
   });
@@ -353,6 +363,65 @@ function enhanceCodeBlocks(root) {
 function enhanceTraceGridBlocks(root) {}
 function enhanceIoBlocks(root) {}
 
+// 6.5. Section Card Wrapping (H1/H2 → Card containers)
+function wrapContentIntoSectionCards(root) {
+  const dividers = root.querySelectorAll('.theory-slide-divider');
+  // Only wrap if dividers exist (slide-based content)
+  if (dividers.length === 0) return;
+
+  const allChildren = Array.from(root.childNodes);
+  const sections = [];
+  let currentSection = [];
+
+  allChildren.forEach(node => {
+    if (node.classList && node.classList.contains('theory-slide-divider')) {
+      if (currentSection.length > 0) {
+        sections.push(currentSection);
+        currentSection = [];
+      }
+    } else {
+      currentSection.push(node);
+    }
+  });
+  if (currentSection.length > 0) sections.push(currentSection);
+
+  root.innerHTML = '';
+  sections.forEach((nodes, idx) => {
+    if (nodes.length === 0) return;
+    // Skip purely whitespace sections
+    const hasContent = nodes.some(n => n.textContent?.trim().length > 0);
+    if (!hasContent) return;
+
+    const card = document.createElement('div');
+    card.className = 'theory-section-card';
+    card.dataset.sectionIndex = idx;
+    nodes.forEach(n => card.appendChild(n));
+    root.appendChild(card);
+  });
+}
+
+// 6.6. Progress Tracking
+function updateSectionProgress() {
+  const total = document.querySelectorAll('.interactive-problem-card').length;
+  const solved = document.querySelectorAll('.interactive-problem-card.is-solved').length;
+
+  const milestoneEl = document.getElementById('dashboard-milestone-count');
+  if (milestoneEl) milestoneEl.textContent = `${solved}/${total}`;
+
+  const statusEl = document.getElementById('dashboard-status-text');
+  if (statusEl) {
+    if (total === 0) statusEl.textContent = 'Reading in progress...';
+    else if (solved === total) statusEl.textContent = '🎉 All milestones complete!';
+    else statusEl.textContent = `${solved} of ${total} milestones completed`;
+  }
+
+  const pct = total > 0 ? Math.round((solved / total) * 100) : 0;
+  const bar = document.getElementById('roadmap-progress-bar');
+  const txt = document.getElementById('roadmap-progress-text');
+  if (bar) bar.style.width = pct + '%';
+  if (txt) txt.textContent = pct + '% Complete';
+}
+
 // 7. Page Initialization
 async function initTheoryPage() {
   const contentEl = document.getElementById("theory-content");
@@ -495,7 +564,7 @@ function buildRoadmap(root) {
     if (match) { num = match[1]; text = match[2]; }
 
     node.innerHTML = `
-      <div class="roadmap-dot"></div>
+      <div class="roadmap-dot" data-num="${i + 1}"></div>
       <div class="roadmap-text">
         <span class="roadmap-num">${num}</span>
         <span class="roadmap-title-text">${text}</span>
@@ -544,7 +613,35 @@ function setupRoadmapScrollSpy(headings) {
       else if (i === currentIndex) node.classList.add("is-active");
     });
 
+    // Sync active node into view inside the roadmap sidebar
     const activeNode = nodes[currentIndex];
+    if (activeNode) {
+      const sticky = document.getElementById('theory-roadmap-sticky');
+      if (sticky) {
+        const nodeTop = activeNode.offsetTop;
+        const stickyScroll = sticky.scrollTop;
+        const stickyH = sticky.clientHeight;
+        if (nodeTop < stickyScroll + 60 || nodeTop > stickyScroll + stickyH - 60) {
+          sticky.scrollTo({ top: nodeTop - stickyH / 2, behavior: 'smooth' });
+        }
+      }
+    }
+
+    // Section card active/inactive dim effect
+    const sectionCards = document.querySelectorAll('.theory-section-card');
+    if (sectionCards.length > 0) {
+      const activeHeading = headings[currentIndex];
+      sectionCards.forEach(card => {
+        if (card.contains(activeHeading)) {
+          card.classList.add('is-active');
+          card.classList.remove('is-inactive');
+        } else {
+          card.classList.remove('is-active');
+          card.classList.add('is-inactive');
+        }
+      });
+    }
+
     if (activeNode) progressLine.style.height = (activeNode.offsetTop + 7) + "px";
   };
   window.addEventListener('scroll', updateScroll);

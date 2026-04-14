@@ -1,10 +1,11 @@
 :root {
   --theory-card-bg: rgba(255, 255, 255, 0.92);
   --theory-border: rgba(15, 23, 42, 0.1);
+  --topbar-height: 128px;
 }
 
 .theory-shell {
-  max-width: 1180px;
+  max-width: 1400px;
 }
 
 .theory-topbar {
@@ -67,20 +68,28 @@
 
 .theory-layout {
   display: grid;
-  grid-template-columns: 85px minmax(0, 1fr) 320px;
-  gap: 20px;
-}
-
-.theory-content,
-.theory-side-card {
-  border-radius: 16px;
-  border: 1px solid var(--theory-border);
-  background: var(--theory-card-bg);
-  padding: 16px;
+  grid-template-columns: 260px minmax(0, 1fr) 280px;
+  gap: 24px;
 }
 
 .theory-content {
+  background: transparent;
+  border: none;
+  padding: 0;
   line-height: 1.72;
+}
+
+.theory-side-card {
+  border-radius: 20px;
+  border: 1px solid var(--theory-border, #e2e8f0);
+  background: var(--theory-card-bg, #ffffff);
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px;
+}
+
+.mt-20 {
+  margin-top: 20px;
 }
 
 .theory-lang-toggle {
@@ -141,18 +150,18 @@
 }
 
 /* Section separation: when a new heading starts right after a block, add clear spacing/divider */
-.theory-content .theory-trace-grid + h1,
-.theory-content .theory-trace-grid + h2,
-.theory-content .theory-trace-grid + h3,
-.theory-content .theory-io + h1,
-.theory-content .theory-io + h2,
-.theory-content .theory-io + h3,
-.theory-content pre + h1,
-.theory-content pre + h2,
-.theory-content pre + h3,
-.theory-content table + h1,
-.theory-content table + h2,
-.theory-content table + h3 {
+.theory-content .theory-trace-grid+h1,
+.theory-content .theory-trace-grid+h2,
+.theory-content .theory-trace-grid+h3,
+.theory-content .theory-io+h1,
+.theory-content .theory-io+h2,
+.theory-content .theory-io+h3,
+.theory-content pre+h1,
+.theory-content pre+h2,
+.theory-content pre+h3,
+.theory-content table+h1,
+.theory-content table+h2,
+.theory-content table+h3 {
   margin-top: 1.45em;
   padding-top: 0.55em;
   border-top: 1px solid #e2e8f0;
@@ -182,7 +191,7 @@
   border-right: 1px solid rgba(226, 232, 240, 0.25);
 }
 
-.theory-content pre.line-numbers.theory-code .line-numbers-rows > span:before {
+.theory-content pre.line-numbers.theory-code .line-numbers-rows>span:before {
   color: #94a3b8;
 }
 
@@ -201,8 +210,8 @@
 }
 
 .theory-content pre[class*="language-"],
-.theory-content pre[class*="language-"] > code,
-.theory-content pre.line-numbers > code {
+.theory-content pre[class*="language-"]>code,
+.theory-content pre.line-numbers>code {
   white-space: pre-wrap !important;
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -216,7 +225,7 @@
   word-break: break-word;
 }
 
-.theory-content p > strong:only-child {
+.theory-content p>strong:only-child {
   display: inline-flex;
   margin: 10px 0 6px;
   padding: 3px 9px;
@@ -237,11 +246,11 @@
   padding: 10px 12px;
 }
 
-.theory-content .theory-example-block > p {
+.theory-content .theory-example-block>p {
   margin: 0 0 4px;
 }
 
-.theory-content .theory-example-block > p > strong:only-child {
+.theory-content .theory-example-block>p>strong:only-child {
   margin: 0 0 4px;
 }
 
@@ -308,7 +317,7 @@
   margin: 10px auto 2px;
 }
 
-.theory-content img + p > em:only-child {
+.theory-content img+p>em:only-child {
   display: block;
   margin-top: 0;
   color: #64748b;
@@ -317,7 +326,7 @@
   font-style: normal;
 }
 
-.theory-content img + p > em:only-child code {
+.theory-content img+p>em:only-child code {
   background: transparent;
   padding: 0;
   border-radius: 0;
@@ -499,7 +508,7 @@
   font-size: 0.98em;
 }
 
-.theory-mini-check-card p > code:only-child {
+.theory-mini-check-card p>code:only-child {
   display: block;
   border-radius: 10px;
   border: 1px solid #d6e0eb;
@@ -588,6 +597,7 @@
     font-size: 1rem;
   }
 }
+
 :root {
   --theory-bg: #f7f8fb;
   --theory-surface: rgba(255, 255, 255, 0.96);
@@ -605,7 +615,7 @@
   --theory-radius-md: 14px;
   --theory-radius-lg: 18px;
   --theory-radius-xl: 22px;
-  
+
   /* [Unified Design Tokens] */
   --glass-bg: rgba(255, 255, 255, 0.1);
   --glass-border: rgba(255, 255, 255, 0.15);
@@ -619,19 +629,26 @@
 
 /* --- Slide Mode (Premium Integrated) --- */
 .theory-slide-viewer {
-  display: none; flex-direction: column; align-items: center; justify-content: center;
-  padding: 40px 20px; border-radius: 24px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  border-radius: 24px;
   background: radial-gradient(circle at top, #2a3547 0%, #0f172a 100%);
-  box-shadow: inset 0 2px 20px rgba(0,0,0,0.5), 0 25px 50px rgba(0,0,0,0.2);
+  box-shadow: inset 0 2px 20px rgba(0, 0, 0, 0.5), 0 25px 50px rgba(0, 0, 0, 0.2);
   gap: 32px;
   margin-bottom: 20px;
 }
 
 #marp-container {
-  width: 100%; max-width: 1080px; 
+  width: 100%;
+  max-width: 1080px;
   aspect-ratio: 16 / 9;
-  background: white; border-radius: 12px; overflow: hidden;
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.08);
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
   position: relative;
   align-self: stretch;
   margin: 0 auto;
@@ -654,8 +671,11 @@
 }
 
 .slide-controls {
-  display: flex; align-items: center; gap: 24px; z-index: 10;
-  padding: 12px 32px; 
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  z-index: 10;
+  padding: 12px 32px;
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   border-radius: 100px;
@@ -673,45 +693,95 @@
 }
 
 .slide-controls button {
-  padding: 12px 30px; border: none; border-radius: 30px;
-  background: var(--theory-accent); color: white;
-  font-weight: 800; font-size: 1rem; cursor: pointer;
-  display: flex; align-items: center; gap: 12px;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30px;
+  background: var(--theory-accent);
+  color: white;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   transition: all 0.3s var(--premium-easing);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.slide-controls button:hover { 
-  background: white; color: var(--theory-accent); 
-  transform: translateY(-2px); 
+.slide-controls button:hover {
+  background: white;
+  color: var(--theory-accent);
+  transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(99, 91, 255, 0.3);
 }
 
-#slide-prev::before { content: '←'; font-size: 1.2rem; }
-#slide-next::after { content: '→'; font-size: 1.2rem; }
+#slide-prev::before {
+  content: '←';
+  font-size: 1.2rem;
+}
+
+#slide-next::after {
+  content: '→';
+  font-size: 1.2rem;
+}
 
 #slide-page-info {
-  color: white; font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 800;
-  min-width: 100px; text-align: center;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 800;
+  min-width: 100px;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* ... existing language badges and code blocks ... */
 
 /* --- Language Badges --- */
-.theory-lang-badge { display: inline-block; padding: 4px 10px; font-size: 0.8rem; font-weight: 800; border-radius: 6px; margin-right: 6px; vertical-align: middle; text-transform: uppercase; letter-spacing: 0.5px; }
-.theory-lang-badge--python { background: rgba(55, 118, 171, 0.1); color: #3776AB; border: 1px solid rgba(55, 118, 171, 0.2); }
-.theory-lang-badge--c { background: rgba(85, 86, 166, 0.1); color: #5556A6; border: 1px solid rgba(85, 86, 166, 0.2); }
-.theory-lang-badge--java { background: rgba(237, 139, 0, 0.1); color: #b06900; border: 1px solid rgba(237, 139, 0, 0.2); }
-.theory-lang-badge--csharp { background: rgba(35, 145, 32, 0.1); color: #239120; border: 1px solid rgba(35, 145, 32, 0.2); }
+.theory-lang-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border-radius: 6px;
+  margin-right: 6px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.theory-lang-badge--python {
+  background: rgba(55, 118, 171, 0.1);
+  color: #3776AB;
+  border: 1px solid rgba(55, 118, 171, 0.2);
+}
+
+.theory-lang-badge--c {
+  background: rgba(85, 86, 166, 0.1);
+  color: #5556A6;
+  border: 1px solid rgba(85, 86, 166, 0.2);
+}
+
+.theory-lang-badge--java {
+  background: rgba(237, 139, 0, 0.1);
+  color: #b06900;
+  border: 1px solid rgba(237, 139, 0, 0.2);
+}
+
+.theory-lang-badge--csharp {
+  background: rgba(35, 145, 32, 0.1);
+  color: #239120;
+  border: 1px solid rgba(35, 145, 32, 0.2);
+}
 
 
 /* --- Marp Code Block Enlargement --- */
 #marp-container pre {
-    font-size: 1.15em !important;
+  font-size: 1.15em !important;
 }
+
 #marp-container code {
-    font-size: 1.1em !important;
+  font-size: 1.1em !important;
 }
 
 
@@ -727,9 +797,9 @@
 /* 데스크탑 (전체화면): 사이드바 항상 확장 상태 고정 */
 .theory-roadmap-sticky {
   position: sticky;
-  top: 80px;
-  max-height: calc(100vh - 100px);
-  width: 100%; 
+  top: calc(var(--topbar-height) + 24px);
+  max-height: calc(100vh - var(--topbar-height) - 40px);
+  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 14px 10px;
@@ -741,12 +811,18 @@
 }
 
 /* 스크롤바 디자인 */
-.theory-roadmap-sticky::-webkit-scrollbar { width: 4px; }
-.theory-roadmap-sticky::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+.theory-roadmap-sticky::-webkit-scrollbar {
+  width: 4px;
+}
+
+.theory-roadmap-sticky::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
 
 /* 데스크탑에서는 햄버거 토글 버튼 숨기기 */
 .roadmap-toggle-btn {
-  display: none; 
+  display: none;
 }
 
 .roadmap-container {
@@ -758,7 +834,9 @@
 .roadmap-container::before {
   content: '';
   position: absolute;
-  top: 10px; bottom: 0; left: 20px;
+  top: 17px;
+  bottom: 0;
+  left: 25px;
   width: 2px;
   background: #e2e8f0;
   z-index: 1;
@@ -766,11 +844,12 @@
 
 .roadmap-progress-line {
   position: absolute;
-  top: 10px; left: 20px;
+  top: 17px;
+  left: 25px;
   width: 2px;
-  background: var(--theory-accent, #635bff);
+  background: linear-gradient(to bottom, var(--theory-accent, #635bff), #a78bfa);
   z-index: 2;
-  transition: height 0.3s ease;
+  transition: height 0.4s ease;
   height: 0;
 }
 
@@ -778,32 +857,41 @@
   position: relative;
   z-index: 3;
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+  padding: 6px 4px;
   text-decoration: none;
   color: #64748b;
   transition: all 0.2s ease;
+  border-radius: 12px;
 }
 
 .roadmap-dot {
-  width: 14px; height: 14px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: #f8fafc;
   border: 2px solid #cbd5e1;
-  margin-top: 2px; margin-left: 14px;
+  margin-top: 0;
+  margin-left: 8px;
   flex-shrink: 0;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.roadmap-dot::after {
+  content: attr(data-num);
 }
 
 .roadmap-node.is-past .roadmap-dot::after {
-  content: '';
-  position: absolute;
-  top: 3px; left: 3px;
-  width: 4px; height: 4px;
-  background: #fff;
-  border-radius: 50%;
+  content: '✓';
 }
 
 .roadmap-text {
@@ -813,7 +901,7 @@
   font-size: 0.85rem;
   line-height: 1.4;
   font-weight: 600;
-  white-space: nowrap; 
+  white-space: normal;
   margin-top: -1px;
 }
 
@@ -837,9 +925,10 @@
 }
 
 .roadmap-node.is-active .roadmap-dot {
+  background: #ffffff;
   border-color: var(--theory-accent, #635bff);
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.15);
+  color: var(--theory-accent, #635bff);
+  box-shadow: 0 0 0 5px rgba(99, 91, 255, 0.15);
 }
 
 .roadmap-node.is-active .roadmap-text .roadmap-num,
@@ -849,8 +938,9 @@
 }
 
 .roadmap-node.is-past .roadmap-dot {
-  background: var(--theory-accent, #635bff);
-  border-color: var(--theory-accent, #635bff);
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
 }
 
 /* =========================================
@@ -862,7 +952,7 @@
     gap: 20px;
     padding: 0 20px;
   }
-  
+
   .roadmap-toggle-btn {
     display: flex;
     align-items: center;
@@ -878,13 +968,14 @@
     margin-left: 5px;
     transition: all 0.2s;
   }
+
   .theory-roadmap-sticky {
-    width: 85px; 
+    width: 85px;
     background: transparent;
   }
-  
+
   .roadmap-text {
-    opacity: 0; 
+    opacity: 0;
     transform: translateX(-10px);
     pointer-events: none;
     transition: all 0.2s ease;
@@ -893,9 +984,10 @@
   .theory-roadmap-sticky.is-expanded {
     width: 320px;
     background: var(--theory-card-bg, #ffffff);
-    box-shadow: 20px 0 40px rgba(0,0,0,0.1);
+    box-shadow: 20px 0 40px rgba(0, 0, 0, 0.1);
     border: 1px solid var(--theory-border, #e2e8f0);
-    z-index: 1100; /* Ensure it stays on top */
+    z-index: 1100;
+    /* Ensure it stays on top */
   }
 
   .theory-roadmap-sticky.is-expanded .roadmap-text {
@@ -909,6 +1001,7 @@
   .theory-layout {
     grid-template-columns: minmax(0, 1fr) 320px;
   }
+
   .theory-roadmap-side {
     display: none;
   }
@@ -944,6 +1037,141 @@
   letter-spacing: 2px;
 }
 
+
+/* =========================================
+   Section Cards (Slide-based splitting)
+========================================= */
+.theory-section-card {
+  background: var(--theory-card-bg, #ffffff);
+  border-radius: 20px;
+  border: 1px solid var(--theory-border, #e2e8f0);
+  padding: 40px 48px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  margin-bottom: 24px;
+  transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s ease;
+}
+
+.theory-section-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+.theory-section-card.is-inactive {
+  opacity: 0.45;
+  transform: scale(0.985);
+}
+
+.theory-section-card.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.theory-section-card h1:first-child,
+.theory-section-card h2:first-child {
+  margin-top: 0;
+}
+
+/* =========================================
+   Roadmap Header & Progress Bar
+========================================= */
+.roadmap-header {
+  padding: 4px 8px 20px;
+}
+
+.roadmap-main-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--theory-accent, #635bff);
+  margin: 0 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.roadmap-progress-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.roadmap-progress-text {
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-style: italic;
+  color: #64748b;
+}
+
+.roadmap-progress-bar-bg {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.roadmap-progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--theory-accent, #635bff), #a78bfa);
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =========================================
+   Status Dashboard (Right Sidebar)
+========================================= */
+#theory-status-dashboard {
+  padding: 0 !important;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid var(--theory-border, #e2e8f0);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.dashboard-cover {
+  height: 110px;
+  background: linear-gradient(135deg, var(--theory-accent, #635bff) 0%, #a78bfa 100%);
+}
+
+.dashboard-content {
+  padding: 24px;
+  background: #ffffff;
+}
+
+.dashboard-content h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.dashboard-content p {
+  margin: 0 0 18px;
+  font-size: 0.85rem;
+  color: #64748b;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.dashboard-milestone {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+.dashboard-milestone strong {
+  color: var(--theory-accent, #635bff);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
 /* --- Resume Toast --- */
 .theory-resume-toast {
   position: fixed;
@@ -954,7 +1182,7 @@
   color: #fff;
   padding: 12px 20px;
   border-radius: 30px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -981,7 +1209,7 @@
 }
 
 .theory-resume-toast .resume-btn {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   color: #fff;
   padding: 6px 14px;
@@ -997,8 +1225,9 @@
 }
 
 .theory-resume-toast .resume-btn:hover {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
+
 .theory-resume-toast .resume-btn.resume-yes:hover {
   background: #4f46e5;
 }
@@ -1091,17 +1320,30 @@
   color: var(--theory-accent, #635bff);
 }
 
-.theory-toc-item.level-1 { font-weight: 600; padding-top: 12px; }
-.theory-toc-item.level-2 { padding-left: 36px; font-size: 0.9rem; }
-.theory-toc-item.level-3 { padding-left: 52px; font-size: 0.85rem; color: #666; }
+.theory-toc-item.level-1 {
+  font-weight: 600;
+  padding-top: 12px;
+}
+
+.theory-toc-item.level-2 {
+  padding-left: 36px;
+  font-size: 0.9rem;
+}
+
+.theory-toc-item.level-3 {
+  padding-left: 52px;
+  font-size: 0.85rem;
+  color: #666;
+}
 
 @media (max-width: 768px) {
   .theory-floating-widget {
     bottom: 20px;
     right: 20px;
   }
+
   .theory-toc-popup {
-    width:calc(100vw - 40px);
+    width: calc(100vw - 40px);
     right: 0;
   }
 }
