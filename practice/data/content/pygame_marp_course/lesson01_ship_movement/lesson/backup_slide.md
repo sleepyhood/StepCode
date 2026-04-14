@@ -1,21 +1,22 @@
 ---
-id: "pygame_l01_ship"
-contentType: "lesson"
-track: "pygame_course"
-lang: "python"
-categoryId: "pygame_l01"
-title: "1차시. 우주선 좌우 이동하기"
-status: "active"
-order: 101
-audience: "common"
-tags: ["pygame", "ship", "movement"]
+marp: true
+theme: default
+paginate: true
+header: "1차시: 우주선 좌우 이동하기"
+footer: "StepCode - Pygame Game Engine Course"
+style: |
+  @import '../../shared/themes/pygame_theme.css';
 ---
+
+<!-- _class: slide-title -->
 
 # 1차시. 우주선 좌우 이동하기
 
 ## 내 손으로 직접 만드는 게임의 첫 걸음
 
 ---
+
+<!-- _class: slide-section -->
 
 # 1.0. 목차
 
@@ -28,18 +29,23 @@ tags: ["pygame", "ship", "movement"]
 - **1.4. 게임 엔진 작동 원리**
   - 무한 반복 루프와 애니메이션의 마법
 
-![우주선 예시](../assets/real_ship_demo.png)
+![bg right:40%](../assets/real_ship_demo.png)
 
 ---
+
+<!-- _class: slide-part -->
 
 # 1.1. 실습 준비와 좌표계
 
 ---
 
+<!-- _class: slide-section -->
+
 # 1.1.1. 실습 파일 구조 확인
 
 - **학생 작업 구역:** 우리가 코드를 채울 `move_ship(keys)` 함수입니다.
 - **게임 엔진 구역:** 배경을 지우고, 캐릭터를 그려주는 '심장'입니다. (절대 수정 금지!)
+
 
 <div class="code-window">
 
@@ -56,6 +62,8 @@ def move_ship(keys):
 </div>
 
 ---
+
+<!-- _class: slide-section -->
 
 # 1.1.2. 컴퓨터의 좌표계 (X, Y)
 
@@ -74,9 +82,13 @@ graph LR
 
 ---
 
+<!-- _class: slide-part -->
+
 # 1.2. 우주선 첫 시동 걸기 (Move)
 
 ---
+
+<!-- _class: slide-section -->
 
 # 1.2.1. 화살표 키 인식하기
 
@@ -100,6 +112,10 @@ def move_ship(keys):
 
 ---
 
+<!-- _class: slide-section -->
+<!-- _stage: 1 -->
+<!-- _locked: true -->
+
 # 1.2.2. [Mission] 우주선 움직이기
 
 - **Logic Hole:** 오른쪽으로 가려면 X를 어떻게 해야 할까요?
@@ -112,9 +128,14 @@ def move_ship(keys):
 
 ---
 
+<!-- _class: slide-part -->
+<!-- _stage: 2 -->
+
 # 1.3. 화면 이탈 버그 막기 (Boundary)
 
 ---
+
+<!-- _class: slide-section -->
 
 # 1.3.1. 왜 화면 밖으로 나갈까요?
 
@@ -122,9 +143,11 @@ def move_ship(keys):
 - **경계 조건:** X가 0보다 작아지거나, 800보다 커지는 순간을 감시해야 합니다.
 - `ship_rect.left`와 `ship_rect.right` 테두리 센서를 사용합니다.
 
-![경계선 넘어가는 우주선](../assets/boundary_0_800.svg)
+![bg right:40%](../assets/boundary_0_800.svg)
 
 ---
+
+<!-- _class: slide-section -->
 
 # 1.3.2. 방어벽 로직 (if 조건문)
 
@@ -144,6 +167,10 @@ graph TD
 
 ---
 
+<!-- _class: slide-section -->
+<!-- _stage: 2 -->
+<!-- _locked: true -->
+
 # 1.3.3. [Mission] 방어벽 완성하기
 
 - 화면 오른쪽 끝(800)을 넘지 못하게 막는 코드를 완성하세요.
@@ -156,9 +183,14 @@ graph TD
 
 ---
 
+<!-- _class: slide-part -->
+<!-- _stage: 3 -->
+
 # 1.4. 게임 엔진 작동 원리
 
 ---
+
+<!-- _class: slide-section -->
 
 # 1.4.1. 애니메이션의 마법
 
@@ -166,9 +198,11 @@ graph TD
 - **조금씩 이동:** 한 번 부를 때마다 5px씩 이동합니다.
 - **결과:** 우리 눈에는 아주 부드러운 움직임으로 보입니다! (60 FPS)
 
-![이동 개요](../assets/move_ship_overview.svg)
+![bg right:40%](../assets/move_ship_overview.svg)
 
 ---
+
+<!-- _class: slide-section -->
 
 # 1.5. 1차시 완성 체크리스트
 
@@ -182,6 +216,8 @@ graph TD
 </div>
 
 ---
+
+<!-- _class: slide-title -->
 
 # 다음 시간에는...
 

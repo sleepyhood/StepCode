@@ -1,6 +1,5 @@
 /**
  * StepCode - Theory Page Logic (Ultimate Integrated Version)
- * Fixes: Undefined functions, Slide rendering sequence, and Mermaid theme bugs.
  */
 
 // 1. Core Utilities
@@ -45,14 +44,39 @@ function updateTitle(entry) {
   if (tEl) tEl.textContent = entry.title || "개념";
 }
 
+function fixRelativeImagePaths(root, mdPath) {
+  if (!mdPath) return;
+  const baseDir = mdPath.substring(0, mdPath.lastIndexOf("/"));
+  root.querySelectorAll("img").forEach(img => {
+    const src = img.getAttribute("src");
+    if (src && !src.startsWith("http") && !src.startsWith("data:") && !src.startsWith("/")) {
+      img.src = baseDir + (src.startsWith("./") ? src.slice(1) : "/" + src);
+    }
+  });
+}
+
 // 3. Markdown Rendering
-function renderTheoryMarkdown(target, mdText, mdPath = "") {
+async function renderTheoryMarkdown(target, mdText, mdPath = "") {
   const raw = stripFrontMatter(mdText);
   const md = getMdRenderer();
   if (!md) { target.textContent = raw; return; }
   
-  let html = window.DOMPurify.sanitize(md.render(raw));
-  target.innerHTML = replaceLangBadges(html);
+  // Render as a single comprehensive document
+  const rawHtml = md.render(raw);
+  const cleanHtml = window.DOMPurify.sanitize(rawHtml);
+  let finalHtml = replaceLangBadges(cleanHtml);
+  
+  // Convert standard <hr> into a stylish slide divider
+  finalHtml = finalHtml.replace(/<hr\s*\/?>/gi, '<div class="theory-slide-divider"></div>');
+  
+  target.innerHTML = finalHtml;
+  
+  // Flag as section-mode if dividers are detected (useful for roadmap filtering)
+  if (finalHtml.includes('theory-slide-divider')) {
+    target.classList.add("is-section-mode");
+  } else {
+    target.classList.remove("is-section-mode");
+  }
   
   // Mermaid Detection
   target.querySelectorAll('code.language-mermaid').forEach(c => {
@@ -64,9 +88,19 @@ function renderTheoryMarkdown(target, mdText, mdPath = "") {
   });
 
   if (window.mermaid && target.querySelectorAll('.mermaid').length > 0) {
-    setTimeout(() => {
-      try { window.mermaid.init(undefined, target.querySelectorAll('.mermaid')); } catch (e) {}
-    }, 200);
+    const renderMermaid = () => {
+      // Visibility check to prevent translate(undefined) errors
+      if (target.offsetWidth > 0 || target.offsetHeight > 0) {
+        try { 
+          window.mermaid.init(undefined, target.querySelectorAll('.mermaid')); 
+        } catch (e) {
+          console.warn("Mermaid init failed, retrying...", e);
+        }
+      } else {
+        setTimeout(renderMermaid, 500);
+      }
+    };
+    setTimeout(renderMermaid, 300);
   }
 
   fixRelativeImagePaths(target, mdPath);
@@ -74,21 +108,10 @@ function renderTheoryMarkdown(target, mdText, mdPath = "") {
   enhanceCodeBlocks(target);
   enhanceTraceGridBlocks(target);
   enhanceIoBlocks(target);
-  enhanceInteractiveProblems(target);
+  await enhanceInteractiveProblems(target);
   autoNumberHeadings(target);
   buildFloatingTOC(target);
   buildRoadmap(target);
-}
-
-function fixRelativeImagePaths(root, mdPath) {
-  if (!mdPath) return;
-  const baseDir = mdPath.substring(0, mdPath.lastIndexOf("/"));
-  root.querySelectorAll("img").forEach(img => {
-    const src = img.getAttribute("src");
-    if (src && !src.startsWith("http") && !src.startsWith("data:") && !src.startsWith("/")) {
-      img.src = baseDir + (src.startsWith("./") ? src.slice(1) : "/" + src);
-    }
-  });
 }
 
 // 4. Interactive & Stage Gating
@@ -113,7 +136,11 @@ async function enhanceInteractiveProblems(root) {
     else container.innerHTML = `<div class="callout warn">문제를 찾을 수 없습니다 (ID: ${pid})</div>`;
     tag.replaceWith(container);
   });
-  groupContentIntoStages(root);
+  
+  // Only apply stage gating if NOT in section mode (optional choice)
+  if (!root.classList.contains("is-section-mode")) {
+    groupContentIntoStages(root);
+  }
 }
 
 function groupContentIntoStages(root) {
@@ -121,6 +148,7 @@ function groupContentIntoStages(root) {
   let currentStage = document.createElement("div");
   currentStage.className = "content-stage";
   root.appendChild(currentStage);
+  
   children.forEach(child => {
     currentStage.appendChild(child);
     if (child.classList.contains("interactive-problem-card")) {
@@ -129,6 +157,7 @@ function groupContentIntoStages(root) {
       root.appendChild(currentStage);
     }
   });
+  
   const first = root.querySelector(".content-stage");
   if (first) first.classList.remove("is-locked");
 }
@@ -188,19 +217,6 @@ async function setupSlideMode(slidePath) {
   const marpContainer = document.getElementById("marp-container");
   if (!toggleBtn || !slideViewer || !marpContainer) return;
 
-  if (window.mermaid) {
-    window.mermaid.initialize({
-      startOnLoad: false, theme: 'base', securityLevel: 'loose',
-      themeVariables: {
-        primaryColor: 'rgba(99, 91, 255, 0.25)', primaryTextColor: '#ffffff',
-        primaryBorderColor: '#635bff', lineColor: 'rgba(255, 255, 255, 0.4)',
-        fontSize: '18px', fontFamily: 'JetBrains Mono, Pretendard, sans-serif',
-        nodePadding: 60
-      },
-      flowchart: { htmlLabels: false, useMaxWidth: false, padding: 50, curve: 'basis' }
-    });
-  }
-
   let slides = [];
   let currentIndex = 0;
   let isSlideMode = false;
@@ -213,7 +229,7 @@ async function setupSlideMode(slidePath) {
 
     const styleMatch = mdText.match(/style:\s*\|?\s*([\s\S]*?)(?=\n---)/);
     if (styleMatch) {
-      let css = styleMatch[1].trim().replace(/@import\s+['"](.+?)['"]/g, (m, p) => `@import "${baseDir}/${p}"`);
+      const css = styleMatch[1].trim().replace(/@import\s+['"](.+?)['"]/g, (m, p) => `@import "${baseDir}/${p}"`);
       let styleTag = document.getElementById("marp-injected-style") || document.createElement("style");
       styleTag.id = "marp-injected-style";
       styleTag.textContent = css.replace(/section/g, "#marp-container section");
@@ -234,14 +250,17 @@ async function setupSlideMode(slidePath) {
       
       const mLocked = chunk.match(/<!--\s*_locked:\s*(true|false)\s*-->/);
       if (mLocked && mLocked[1] === "true") sec.dataset.locked = "true";
-      let html = window.DOMPurify.sanitize(md.render(chunk));
+      
+      const html = window.DOMPurify.sanitize(md.render(chunk));
       sec.innerHTML = replaceLangBadges(html);
+      
       sec.querySelectorAll('code.language-mermaid').forEach(c => {
         const pre = c.closest('pre');
         const div = document.createElement('div');
         div.className = 'mermaid'; div.textContent = c.textContent;
         if (pre) pre.replaceWith(div);
       });
+      
       fixRelativeImagePaths(sec, slidePath);
       enhanceCodeBlocks(sec);
       return sec;
@@ -249,150 +268,34 @@ async function setupSlideMode(slidePath) {
 
     if (slides.length > 0) {
       toggleBtn.hidden = false;
-      enterSlideMode();
+      // Option: Start in document mode by default if it's a lesson
+      // enterSlideMode();
     }
-  } catch (e) { console.error(e); }
-
-  function showToast(message) {
-    let toast = document.getElementById("theory-toast-msg");
-    if (!toast) {
-      toast = document.createElement("div");
-      toast.id = "theory-toast-msg";
-      toast.className = "theory-toast";
-      document.body.appendChild(toast);
-    }
-    toast.textContent = message;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 3000);
-  }
-
-  function checkNavigationGuard() {
-    const currentSlide = slides[currentIndex];
-    if (currentSlide && currentSlide.dataset.locked === "true") {
-      const nextBtn = document.getElementById("slide-next");
-      if (nextBtn) {
-        nextBtn.classList.remove("shake-error");
-        void nextBtn.offsetWidth; // Reflow
-        nextBtn.classList.add("shake-error");
-      }
-      showToast("문제를 해결해야 다음 스테이지로 넘어갈 수 있습니다.");
-      return false;
-    }
-    return true;
-  }
-
-  function updateProgressUI() {
-    const infoContainer = document.getElementById("slide-page-info");
-    if (!infoContainer) return;
-    
-    // Check if stages exist
-    let hasStages = slides.some(s => s.dataset.stage);
-    if (!hasStages) {
-      infoContainer.textContent = `${currentIndex + 1} / ${slides.length}`;
-      return;
-    }
-
-    infoContainer.innerHTML = "";
-    infoContainer.classList.add("stage-progress-wrapper");
-
-    let currentStageNum = parseInt(slides[currentIndex].dataset.stage) || 1;
-    let stages = [];
-    slides.forEach((s, idx) => {
-      if (s.dataset.stage && !stages.some(st => st.stage === s.dataset.stage)) {
-        stages.push({ stage: s.dataset.stage, idx: idx, locked: s.dataset.locked === "true" });
-      }
-    });
-
-    stages.forEach((st, i) => {
-      const node = document.createElement("div");
-      node.className = "stage-node";
-      let stNum = parseInt(st.stage);
-
-      if (st.locked) {
-        node.classList.add("is-locked");
-      } else if (stNum < currentStageNum) {
-        node.classList.add("is-completed");
-        node.textContent = "✓";
-      } else if (stNum === currentStageNum) {
-        node.classList.add("is-current");
-        node.textContent = st.stage;
-      } else {
-        node.textContent = st.stage;
-      }
-
-      infoContainer.appendChild(node);
-
-      if (i < stages.length - 1) {
-        const line = document.createElement("div");
-        line.className = "stage-line";
-        if (parseInt(stages[i+1].stage) <= currentStageNum) {
-          line.classList.add("is-active");
-        }
-        infoContainer.appendChild(line);
-      }
-    });
-  }
+  } catch (e) { console.error("Slide setup failed:", e); }
 
   function renderSlide(idx) {
-    if (!isSlideMode) return; // Wait until visible to avoid width=0
+    if (!isSlideMode) return;
     if (idx < 0 || idx >= slides.length) return;
     currentIndex = idx;
     marpContainer.innerHTML = "";
     
-    // Flexbox shrink-wrap workaround
-    marpContainer.style.alignSelf = "stretch";
-    marpContainer.style.margin = "0 auto";
-    
     const node = slides[currentIndex].cloneNode(true);
     const sw = slideViewer.clientWidth ? slideViewer.clientWidth - 40 : 1080;
-    const cw = marpContainer.clientWidth || sw; // Fallback if 0
-    const scale = cw / 1280;
+    const scale = sw / 1280;
     
     node.style.cssText = `width:1280px;height:720px;transform:scale(${scale});transform-origin:top left;display:block;margin:0;position:absolute;top:0;left:0;`;
     marpContainer.style.height = `${720 * scale}px`;
     marpContainer.appendChild(node);
     
-    // Interactive Quiz Handlers (Step 4)
-    const unlockBtn = node.querySelector('.stage-unlock-btn');
-    if (unlockBtn) {
-      unlockBtn.onclick = () => {
-        const input = node.querySelector('.stage-key-input');
-        const card = node.querySelector('.theory-mini-check-card');
-        if (!input || !card) return;
-        
-        const expected = (card.dataset.answer || "").replace(/\s+/g, "").toLowerCase();
-        const given = (input.value || "").replace(/\s+/g, "").toLowerCase();
-        
-        if (expected === given) {
-          slides[currentIndex].dataset.locked = "false"; // Unlock master slide node
-          showToast("✅ 정답입니다! 다음 스테이지로 진입합니다.");
-          unlockBtn.textContent = "잠금 해제 성공!";
-          unlockBtn.style.background = "#10b981";
-          input.disabled = true;
-          setTimeout(() => renderSlide(currentIndex + 1), 800);
-        } else {
-          showToast("❌ 올바른 응답이 아닙니다. 코드를 지문과 비교해보세요.");
-          input.classList.remove("shake-error");
-          void input.offsetWidth;
-          input.classList.add("shake-error");
-          input.value = "";
-          input.focus();
-        }
-      };
-      
-      // Submit on Enter
-      const input = node.querySelector('.stage-key-input');
-      if (input) {
-        input.onkeydown = (e) => {
-          if (e.key === "Enter") unlockBtn.onclick();
-        };
-      }
+    // Mermaid render inside slide
+    if (window.mermaid) {
+      setTimeout(() => { 
+        try { window.mermaid.init(undefined, node.querySelectorAll('.mermaid')); } catch (e) {} 
+      }, 100);
     }
     
-    if (window.mermaid) {
-      setTimeout(() => { try { window.mermaid.init(undefined, node.querySelectorAll('.mermaid')); } catch (e) {} }, 100);
-    }
-    updateProgressUI();
+    const info = document.getElementById("slide-page-info");
+    if (info) info.textContent = `${currentIndex + 1} / ${slides.length}`;
   }
 
   function enterSlideMode() {
@@ -405,7 +308,7 @@ async function setupSlideMode(slidePath) {
     docContent.style.display = "none";
     const fw = document.getElementById("theory-filter-wrap"); if (fw) fw.style.display = "none";
     toggleBtn.textContent = "문서로 보기"; toggleBtn.classList.add("is-active");
-    window.scrollTo(0, 0); setTimeout(() => { renderSlide(currentIndex); }, 50);
+    window.scrollTo(0, 0); renderSlide(currentIndex);
   }
 
   function enterDocumentMode() {
@@ -422,15 +325,12 @@ async function setupSlideMode(slidePath) {
 
   toggleBtn.onclick = (e) => { e.preventDefault(); if (isSlideMode) enterDocumentMode(); else enterSlideMode(); };
   document.getElementById("slide-prev").onclick = () => renderSlide(currentIndex - 1);
-  document.getElementById("slide-next").onclick = () => {
-    if (checkNavigationGuard()) renderSlide(currentIndex + 1);
-  };
+  document.getElementById("slide-next").onclick = () => renderSlide(currentIndex + 1);
+  
   document.addEventListener("keydown", (e) => {
     if (!isSlideMode) return;
     if (e.key === "ArrowLeft") renderSlide(currentIndex - 1);
-    if (e.key === "ArrowRight") {
-      if (checkNavigationGuard()) renderSlide(currentIndex + 1);
-    }
+    if (e.key === "ArrowRight") renderSlide(currentIndex + 1);
   });
 }
 
@@ -444,17 +344,13 @@ function enhanceLessonCallouts(root) {
 function enhanceCodeBlocks(root) {
   root.querySelectorAll("pre > code").forEach(c => {
     const pre = c.closest("pre");
-    if (pre) { pre.classList.add("line-numbers", "theory-code"); if (window.Prism) window.Prism.highlightElement(c); }
-  });
-}
-function enhanceTraceGridBlocks(root) {
-  root.querySelectorAll("pre > code").forEach(codeEl => {
-    const classes = Array.from(codeEl.classList || []);
-    if (classes.some(cls => ["language-tracegrid", "language-trace-grid"].includes(cls))) {
-      // TraceGrid logic would go here if needed
+    if (pre) { 
+      pre.classList.add("line-numbers", "theory-code"); 
+      if (window.Prism) window.Prism.highlightElement(c); 
     }
   });
 }
+function enhanceTraceGridBlocks(root) {}
 function enhanceIoBlocks(root) {}
 
 // 7. Page Initialization
@@ -468,13 +364,14 @@ async function initTheoryPage() {
     if (!entry) return;
     updateTitle(entry);
     const res = await fetch(entry.mdPath);
+    if (!res.ok) throw new Error("MD fetch failed");
     const mdText = await res.text();
-    renderTheoryMarkdown(contentEl, mdText, entry.mdPath);
+    await renderTheoryMarkdown(contentEl, mdText, entry.mdPath);
     if (entry.slidePath) setupSlideMode(entry.slidePath);
 
     const savedPos = localStorage.getItem(`readPosition_${location.search}`);
     if (savedPos && parseInt(savedPos) > 150) {
-      setTimeout(() => showResumeToast(parseInt(savedPos)), 500);
+      setTimeout(() => showResumeToast(parseInt(savedPos)), 1000);
     }
   } catch (e) { console.error("Initialization failed:", e); }
 }
@@ -484,7 +381,6 @@ function autoNumberHeadings(root) {
   const headings = Array.from(root.querySelectorAll("h1, h2, h3, h4, h5, h6"));
   if (headings.length === 0) return;
 
-  // Find minimum level (root level)
   let minLevel = 6;
   headings.forEach(h => {
     const level = parseInt(h.tagName.charAt(1));
@@ -492,27 +388,21 @@ function autoNumberHeadings(root) {
   });
 
   const counters = [0, 0, 0, 0, 0, 0, 0];
-
   headings.forEach(h => {
-    // Skip if it sits inside interactive elements or has no real text
     if (h.closest('.interactive-problem-card') || h.closest('.theory-mini-check-card') || h.closest('.theory-toc-popup')) return;
-    if (!h.textContent.trim()) return;
-
     const level = parseInt(h.tagName.charAt(1));
-    
-    // Ignore levels greater than 6 just in case
     if(level > 6 || level < 1) return;
 
     counters[level]++;
-    // Reset deeper levels
-    for (let i = level + 1; i <= 6; i++) {
-        counters[i] = 0;
+    for (let i = level + 1; i <= 6; i++) counters[i] = 0;
+
+    // Check if the heading already starts with a number (e.g. "1. ", "1.1 ", "1.1. ")
+    if (/^\s*\d+(\.\d+)*\.?\s/.test(h.textContent)) {
+      return; // Skip adding generated number span
     }
 
     let numberStr = "";
-    for (let i = minLevel; i <= level; i++) {
-        numberStr += counters[i] + ".";
-    }
+    for (let i = minLevel; i <= level; i++) numberStr += counters[i] + ".";
 
     const numSpan = document.createElement("span");
     numSpan.className = "theory-heading-number";
@@ -530,7 +420,6 @@ function buildFloatingTOC(root) {
 
   const widget = document.createElement("div");
   widget.className = "theory-floating-widget";
-  
   widget.innerHTML = `
     <div id="theory-toc-popup" class="theory-toc-popup hidden">
       <div class="toc-header">목차</div>
@@ -546,7 +435,6 @@ function buildFloatingTOC(root) {
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </button>
   `;
-
   document.body.appendChild(widget);
 
   const tocContent = document.getElementById("theory-toc-content");
@@ -569,23 +457,18 @@ function buildFloatingTOC(root) {
   const bottomBtn = document.getElementById("theory-bottom-btn");
   const popup = document.getElementById("theory-toc-popup");
 
-  tocBtn.onclick = () => {
-    popup.classList.toggle("hidden");
-  };
-  
-  // Close popup when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!widget.contains(e.target)) {
-      popup.classList.add("hidden");
-    }
-  });
-
+  tocBtn.onclick = () => popup.classList.toggle("hidden");
+  document.addEventListener("click", (e) => { if (!widget.contains(e.target)) popup.classList.add("hidden"); });
   topBtn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
   bottomBtn.onclick = () => window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
 }
 
 function buildRoadmap(root) {
-  const headings = Array.from(root.querySelectorAll("h1, h2, h3"));
+  let query = "h1, h2, h3";
+  if (root.classList.contains("is-section-mode")) {
+    query = "h1, h2"; // Hide h3 in section mode to avoid roadmap overload
+  }
+  const headings = Array.from(root.querySelectorAll(query));
   if (headings.length === 0) return;
 
   const container = document.getElementById("theory-roadmap-container");
@@ -599,24 +482,17 @@ function buildRoadmap(root) {
 
   headings.forEach((h, i) => {
     if (!h.id) h.id = "heading-" + i;
-    
     const node = document.createElement("a");
     node.href = "#" + h.id;
     node.className = "roadmap-node";
-    node.dataset.targetId = h.id;
-    
-    // Add visual hierarchy offset for level 3
     const level = parseInt(h.tagName.charAt(1));
-    if (level === 3) {
-      node.style.marginLeft = "12px";
-    }
+    if (level === 3) node.style.marginLeft = "12px";
+
+    node.title = h.textContent;
 
     const match = h.textContent.match(/^([\d\.]+)\s+(.*)/);
     let num = "", text = h.textContent;
-    if (match) {
-      num = match[1];
-      text = match[2];
-    }
+    if (match) { num = match[1]; text = match[2]; }
 
     node.innerHTML = `
       <div class="roadmap-dot"></div>
@@ -625,7 +501,6 @@ function buildRoadmap(root) {
         <span class="roadmap-title-text">${text}</span>
       </div>
     `;
-    
     node.onclick = (e) => {
       e.preventDefault();
       const y = h.getBoundingClientRect().top + window.scrollY - 80;
@@ -641,56 +516,37 @@ function buildRoadmap(root) {
     toggleBtn.onclick = () => {
       stickyContainer.classList.toggle("is-expanded");
       const icon = toggleBtn.querySelector("path");
-      if (stickyContainer.classList.contains("is-expanded")) {
-        icon.setAttribute("d", "M15 18l-6-6 6-6"); // Left chevron
-      } else {
-        icon.setAttribute("d", "M9 18l6-6-6-6"); // Right chevron
-      }
+      icon.setAttribute("d", stickyContainer.classList.contains("is-expanded") ? "M15 18l-6-6 6-6" : "M9 18l6-6-6-6");
     };
   }
-
   setupRoadmapScrollSpy(headings);
 }
 
 function setupRoadmapScrollSpy(headings) {
   const nodes = document.querySelectorAll(".roadmap-node");
   const progressLine = document.getElementById("roadmap-progress-line");
-  
   if(nodes.length === 0) return;
 
   const updateScroll = () => {
     let currentIndex = 0;
     const scrollY = window.scrollY;
-    
-    if (scrollY > 150) {
-      localStorage.setItem(`readPosition_${window.location.search}`, scrollY);
-    } else if (scrollY <= 150) {
-      localStorage.removeItem(`readPosition_${window.location.search}`);
-    }
+    if (scrollY > 150) localStorage.setItem(`readPosition_${window.location.search}`, scrollY);
+    else if (scrollY <= 150) localStorage.removeItem(`readPosition_${window.location.search}`);
     
     headings.forEach((h, i) => {
       const top = h.getBoundingClientRect().top + scrollY - 150;
-      if (scrollY >= top) {
-        currentIndex = i;
-      }
+      if (scrollY >= top) currentIndex = i;
     });
 
     nodes.forEach((node, i) => {
       node.classList.remove("is-active", "is-past");
-      if (i < currentIndex) {
-        node.classList.add("is-past");
-      } else if (i === currentIndex) {
-        node.classList.add("is-active");
-      }
+      if (i < currentIndex) node.classList.add("is-past");
+      else if (i === currentIndex) node.classList.add("is-active");
     });
 
     const activeNode = nodes[currentIndex];
-    if (activeNode) {
-      const height = activeNode.offsetTop + 7;
-      progressLine.style.height = height + "px";
-    }
+    if (activeNode) progressLine.style.height = (activeNode.offsetTop + 7) + "px";
   };
-
   window.addEventListener('scroll', updateScroll);
   setTimeout(updateScroll, 100);
 }
@@ -706,26 +562,13 @@ function showResumeToast(yPosition) {
     </div>
   `;
   document.body.appendChild(toast);
-
-  const autoHide = setTimeout(() => {
-    if (toast.parentNode) {
-      toast.classList.remove("visible");
-      setTimeout(() => toast.remove(), 300);
-    }
-  }, 8000);
-
   toast.querySelector(".resume-yes").onclick = () => {
     window.scrollTo({ top: yPosition, behavior: "smooth" });
-    toast.classList.remove("visible");
-    setTimeout(() => toast.remove(), 300);
-    clearTimeout(autoHide);
+    toast.classList.remove("visible"); setTimeout(() => toast.remove(), 300);
   };
   toast.querySelector(".resume-no").onclick = () => {
-    toast.classList.remove("visible");
-    setTimeout(() => toast.remove(), 300);
-    clearTimeout(autoHide);
+    toast.classList.remove("visible"); setTimeout(() => toast.remove(), 300);
   };
-  
   setTimeout(() => toast.classList.add("visible"), 50);
 }
 

@@ -463,35 +463,35 @@
     },
     {
         "id": "pygame_project_ship_u01",
-        "name": "[Project] 우주선 피하기 - 1.이동",
+        "name": "[Project] 우주선 피하기 - [우주서 피하기] 1.우주선 이동하기",
         "lang": "Python",
         "track": "pygame_project",
         "order":  801
     },
     {
         "id": "pygame_project_ship_u02",
-        "name": "[Project] 우주선 피하기 - 2.낙하",
+        "name": "[Project] 우주선 피하기 - [우주서 피하기] 2.운석 낙하하기",
         "lang": "Python",
         "track": "pygame_project",
         "order":  802
     },
     {
         "id": "pygame_project_ship_u03",
-        "name": "[Project] 우주선 피하기 - 3.충돌",
+        "name": "[Project] 우주선 피하기 - [우주서 피하기] 3.충돌 조건 만들기",
         "lang": "Python",
         "track": "pygame_project",
         "order":  803
     },
     {
         "id": "pygame_project_ship_u04",
-        "name": "[Project] 우주선 피하기 - 4.점수",
+        "name": "[Project] 우주선 피하기 - [우주서 피하기] 4.점수 만들기",
         "lang": "Python",
         "track": "pygame_project",
         "order":  804
     },
     {
         "id": "pygame_project_ship_u05",
-        "name": "[Project] 우주선 피하기 - 5.완성",
+        "name": "[Project] 우주선 피하기 - [우주서 피하기] 5.완성 및 도전과제",
         "lang": "Python",
         "track": "pygame_project",
         "order":  805
