@@ -1,109 +1,109 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>StepCode - 개념</title>
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="stylesheet" href="assets/css/theory.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css"
-    />
-  </head>
-  <body>
-    <div class="app-container theory-shell">
-      <header class="theory-topbar">
-        <a id="theory-back-link" class="theory-back-link" href="index.html">← 목록</a>
-        <div class="theory-title-wrap">
-          <h1 id="theory-title">개념 페이지</h1>
-          <p id="theory-subtitle">관련 문제와 함께 학습합니다.</p>
-        </div>
-        <div class="theory-top-actions">
-          <button id="theory-mode-toggle" class="theory-action-btn theory-action-btn--secondary" hidden>슬라이드 보기</button>
-          <a id="theory-print-btn" class="theory-action-btn theory-action-btn--secondary" href="#" hidden>이론 출력</a>
-          <a id="theory-start-btn" class="theory-action-btn theory-action-btn--primary" href="#" hidden>대표 문제 풀기</a>
-        </div>
-      </header>
 
-      <main class="theory-layout">
-        <aside class="theory-roadmap-side" id="theory-roadmap-side">
-          <div class="theory-roadmap-sticky" id="theory-roadmap-sticky">
-            <button id="roadmap-toggle-btn" class="roadmap-toggle-btn" aria-label="로드맵 확장">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-            </button>
-            <div class="roadmap-header">
-              <h3 class="roadmap-main-title">MASTERY ROADMAP</h3>
-              <div class="roadmap-progress-wrap">
-                <span class="roadmap-progress-text" id="roadmap-progress-text">0% Complete</span>
-                <div class="roadmap-progress-bar-bg">
-                  <div class="roadmap-progress-bar-fill" id="roadmap-progress-bar"></div>
-                </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StepCode - 개념</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/theory.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.css" />
+</head>
+
+<body>
+  <div class="app-container theory-shell">
+    <header class="theory-topbar">
+      <a id="theory-back-link" class="theory-back-link" href="index.html">← 목록</a>
+      <div class="theory-title-wrap">
+        <h1 id="theory-title">개념 페이지</h1>
+        <p id="theory-subtitle">관련 문제와 함께 학습합니다.</p>
+      </div>
+      <div class="theory-top-actions">
+        <button id="theory-mode-toggle" class="theory-action-btn theory-action-btn--secondary" hidden>슬라이드 보기</button>
+        <a id="theory-print-btn" class="theory-action-btn theory-action-btn--secondary" href="#" hidden>이론 출력</a>
+        <a id="theory-start-btn" class="theory-action-btn theory-action-btn--primary" href="#" hidden>대표 문제 풀기</a>
+      </div>
+    </header>
+
+    <main class="theory-layout">
+      <aside class="theory-roadmap-side" id="theory-roadmap-side">
+        <div class="theory-roadmap-sticky" id="theory-roadmap-sticky">
+          <button id="roadmap-toggle-btn" class="roadmap-toggle-btn" aria-label="로드맵 확장">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+          <div class="roadmap-header">
+            <h3 class="roadmap-main-title">MASTERY ROADMAP</h3>
+            <div class="roadmap-progress-wrap">
+              <span class="roadmap-progress-text" id="roadmap-progress-text">0% Complete</span>
+              <div class="roadmap-progress-bar-bg">
+                <div class="roadmap-progress-bar-fill" id="roadmap-progress-bar"></div>
               </div>
             </div>
-            <div id="theory-roadmap-container" class="roadmap-container"></div>
           </div>
-        </aside>
+          <div id="theory-roadmap-container" class="roadmap-container"></div>
+        </div>
+      </aside>
 
-        <section class="theory-main">
-          <!-- 슬라이드 모드 전용 뷰어 -->
-          <div id="theory-slide-viewer" class="theory-slide-viewer" hidden>
-            <div id="marp-container"></div>
-            <div class="slide-controls">
-              <button id="slide-prev">이전</button>
-              <span id="slide-page-info">1 / 1</span>
-              <button id="slide-next">다음</button>
+      <section class="theory-main">
+        <!-- 슬라이드 모드 전용 뷰어 -->
+        <div id="theory-slide-viewer" class="theory-slide-viewer" hidden>
+          <div id="marp-container"></div>
+          <div class="slide-controls">
+            <button id="slide-prev">이전</button>
+            <span id="slide-page-info">1 / 1</span>
+            <button id="slide-next">다음</button>
+          </div>
+        </div>
+
+        <div id="theory-filter-wrap" class="theory-filter-wrap" hidden>
+          <section id="theory-audience-toggle" class="theory-lang-toggle" hidden></section>
+          <section id="theory-view-toggle" class="theory-lang-toggle" hidden></section>
+          <section id="theory-concept-toggle" class="theory-lang-toggle" hidden></section>
+          <section id="theory-lang-toggle" class="theory-lang-toggle" hidden></section>
+        </div>
+        <article id="theory-content" class="theory-content">
+          불러오는 중...
+        </article>
+      </section>
+
+      <aside class="theory-side">
+        <section class="theory-side-card" id="theory-status-dashboard">
+          <div class="dashboard-cover"></div>
+          <div class="dashboard-content">
+            <h3>Section Status</h3>
+            <p id="dashboard-status-text">Learning in progress...</p>
+            <div class="dashboard-milestone">
+              <span>Milestone</span>
+              <strong id="dashboard-milestone-count">0/0</strong>
             </div>
           </div>
-
-          <div id="theory-filter-wrap" class="theory-filter-wrap" hidden>
-            <section id="theory-audience-toggle" class="theory-lang-toggle" hidden></section>
-            <section id="theory-view-toggle" class="theory-lang-toggle" hidden></section>
-            <section id="theory-concept-toggle" class="theory-lang-toggle" hidden></section>
-            <section id="theory-lang-toggle" class="theory-lang-toggle" hidden></section>
-          </div>
-          <article id="theory-content" class="theory-content">
-            불러오는 중...
-          </article>
         </section>
+        <section class="theory-side-card mt-20">
+          <h2>관련 문제</h2>
+          <div id="theory-related-list" class="theory-related-list"></div>
+        </section>
+      </aside>
+    </main>
 
-        <aside class="theory-side">
-          <section class="theory-side-card" id="theory-status-dashboard">
-            <div class="dashboard-cover"></div>
-            <div class="dashboard-content">
-              <h3>Section Status</h3>
-              <p id="dashboard-status-text">Learning in progress...</p>
-              <div class="dashboard-milestone">
-                <span>Milestone</span>
-                <strong id="dashboard-milestone-count">0/0</strong>
-              </div>
-            </div>
-          </section>
-          <section class="theory-side-card mt-20">
-            <h2>관련 문제</h2>
-            <div id="theory-related-list" class="theory-related-list"></div>
-          </section>
-        </aside>
-      </main>
+  </div>
 
-    </div>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-csharp.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({ startOnLoad: false, theme: "dark" });</script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/services/problemService.local.js"></script>
+  <script src="assets/js/theory.js"></script>
+</body>
 
-    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-java.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-csharp.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({ startOnLoad: false, theme: "dark" });</script>
-    <script src="assets/js/config.js"></script>
-    <script src="assets/js/services/problemService.local.js"></script>
-    <script src="assets/js/theory.js"></script>
-  </body>
 </html>

@@ -11,10 +11,14 @@
             "id": "c564a63fce169905",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "data/content/pygame_marp_course/lesson01_ship_movement/lesson/backup_slide.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "새 탭"
+              "title": "backup_slide"
             }
           }
         ]
@@ -177,5 +181,24 @@
     }
   },
   "active": "c564a63fce169905",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/move_ship_overview.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/move_ship_overview.drawio copy.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/boundary_0_800.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/boundary_0_800.drawio copy.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/move_ship_overview.drawio.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/coordinate_system.drawio.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/boundary_0_800.drawio.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/move_ship_overview.drawio",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/boundary_0_800.drawio",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/coordinate_system.drawio",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/coordinate_system.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/boundary_logic.drawio.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/boundary_logic.drawio",
+    "data/content/pygame_marp_course/lesson01_ship_movement/assets/boundary_logic.svg",
+    "data/content/pygame_marp_course/lesson01_ship_movement/interactive.md",
+    "data/content/pygame_marp_course/lesson01_ship_movement/backup_interactive.md",
+    "data/content/pygame_marp_course/lesson01_ship_movement/lesson/slide.md",
+    "data/content/pygame_marp_course/lesson01_ship_movement/lesson/backup_slide.md"
+  ]
 }

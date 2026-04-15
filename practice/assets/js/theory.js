@@ -111,6 +111,7 @@ async function renderTheoryMarkdown(target, mdText, mdPath = "") {
   await enhanceInteractiveProblems(target);
   autoNumberHeadings(target);
   wrapContentIntoSectionCards(target);
+  setupMiniCheckCards(target);
   buildFloatingTOC(target);
   buildRoadmap(target);
   updateSectionProgress();
@@ -402,8 +403,12 @@ function wrapContentIntoSectionCards(root) {
 
 // 6.6. Progress Tracking
 function updateSectionProgress() {
-  const total = document.querySelectorAll('.interactive-problem-card').length;
-  const solved = document.querySelectorAll('.interactive-problem-card.is-solved').length;
+  // Count both legacy interactive-problem-cards and new mini-check-cards
+  const legacyCards  = document.querySelectorAll('.interactive-problem-card');
+  const miniCards    = document.querySelectorAll('.theory-mini-check-card');
+  const total  = legacyCards.length + miniCards.length;
+  const solved = document.querySelectorAll('.interactive-problem-card.is-solved').length
+               + document.querySelectorAll('.theory-mini-check-card.is-solved').length;
 
   const milestoneEl = document.getElementById('dashboard-milestone-count');
   if (milestoneEl) milestoneEl.textContent = `${solved}/${total}`;
@@ -422,7 +427,65 @@ function updateSectionProgress() {
   if (txt) txt.textContent = pct + '% Complete';
 }
 
-// 7. Page Initialization
+// 6.7. Mini Check Card Logic (theory-mini-check-card)
+/**
+ * Initializes all .theory-mini-check-card elements within the given root.
+ * Each card must have:
+ *   - data-answer: the expected answer string
+ *   - .stage-key-input: text input element
+ *   - .stage-unlock-btn: submit button element
+ *
+ * Normalizes both input and answer (trim + lowercase) before comparison.
+ * On correct answer: marks card as .is-solved, triggers progress update.
+ * On wrong answer: shakes the input briefly.
+ */
+function setupMiniCheckCards(root) {
+  const cards = root.querySelectorAll('.theory-mini-check-card');
+  if (cards.length === 0) return;
+
+  cards.forEach(card => {
+    // Prevent double-binding if re-rendered
+    if (card.dataset.bound === 'true') return;
+    card.dataset.bound = 'true';
+
+    const expectedAnswer = (card.dataset.answer || '').trim();
+    const input = card.querySelector('.stage-key-input');
+    const btn = card.querySelector('.stage-unlock-btn');
+
+    if (!input || !btn || !expectedAnswer) return;
+
+    // Normalize helper: remove all whitespace for flexible matching
+    const normalize = (s) => s.replace(/\s+/g, '').toLowerCase();
+
+    const submit = () => {
+      if (card.classList.contains('is-solved')) return; // Already solved
+
+      const val = input.value;
+      const isCorrect = normalize(val) === normalize(expectedAnswer);
+
+      if (isCorrect) {
+        card.classList.add('is-solved');
+        input.disabled = true;
+        btn.disabled = true;
+        btn.textContent = '✓ 완료!';
+        btn.classList.add('is-correct-btn');
+        updateSectionProgress();
+      } else {
+        input.classList.add('is-wrong');
+        input.classList.add('shake');
+        setTimeout(() => {
+          input.classList.remove('is-wrong', 'shake');
+        }, 600);
+      }
+    };
+
+    btn.addEventListener('click', submit);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submit();
+    });
+  });
+}
+
 async function initTheoryPage() {
   const contentEl = document.getElementById("theory-content");
   const params = new URLSearchParams(location.search);
@@ -606,6 +669,13 @@ function setupRoadmapScrollSpy(headings) {
       const top = h.getBoundingClientRect().top + scrollY - 150;
       if (scrollY >= top) currentIndex = i;
     });
+
+    // Bottom-of-page detection: if scrolled to within 50px of the document bottom,
+    // force-activate the last heading so the final node & section are always highlighted.
+    const atBottom = (window.innerHeight + scrollY) >= (document.documentElement.scrollHeight - 50);
+    if (atBottom && headings.length > 0) {
+      currentIndex = headings.length - 1;
+    }
 
     nodes.forEach((node, i) => {
       node.classList.remove("is-active", "is-past");

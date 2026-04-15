@@ -170,8 +170,8 @@
 .theory-content pre {
   margin: 10px 0;
   border-radius: 12px;
-  background: #0f172a;
-  color: #e2e8f0;
+  /* background: #0f172a;
+  color: #e2e8f0; */
   padding: 10px 12px;
   overflow-x: hidden;
   white-space: pre-wrap;
@@ -523,6 +523,101 @@
   border-color: #bfdbfe;
   background: #f8fbff;
 }
+
+/* --- Mini Check Card: Input & Button --- */
+.stage-key-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  background: #ffffff;
+  color: #1e293b;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.stage-key-input:focus {
+  outline: none;
+  border-color: var(--theory-accent, #635bff);
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.12);
+}
+
+.stage-key-input.is-wrong {
+  border-color: #f87171;
+  background: #fff5f5;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.15);
+}
+
+.stage-unlock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  background: var(--theory-accent, #635bff);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, opacity 0.2s;
+}
+
+.stage-unlock-btn:hover:not(:disabled) {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
+.stage-unlock-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+}
+
+.stage-unlock-btn.is-correct-btn {
+  background: #10b981;
+}
+
+/* --- Mini Check Card: Solved State --- */
+.theory-mini-check-card.is-solved {
+  border-color: #6ee7b7;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+}
+
+/* --- Shake Animation (wrong answer feedback) --- */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px);
+  }
+
+  40% {
+    transform: translateX(6px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+
 
 .theory-mini-check-progress {
   margin: 0 0 10px;
