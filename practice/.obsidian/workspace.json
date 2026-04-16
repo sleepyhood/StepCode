@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "data/content/canva/canva/l01_assignment/lesson/lesson.md",
+                "file": "data/theory/jungol/03_고등/2026년_1차_고등_수업_해설지_2019-2025.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "lesson"
+              "title": "2026년_1차_고등_수업_해설지_2019-2025"
             }
           }
         ]
@@ -182,6 +182,13 @@
   },
   "active": "c564a63fce169905",
   "lastOpenFiles": [
+    "data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.md",
+    "data/theory/jungol/03_고등/2026년_5차_고등_수업_해설지_2019-2025.md",
+    "data/theory/jungol/03_고등/2026년_1차_고등_수업_해설지_2019-2025.md",
+    "data/theory/jungol/03_고등/2026년_4차_고등_수업_해설지_2019-2025.md",
+    "data/theory/jungol/03_고등/2026년_4차_고등_수업_해설지_2019-2025.pdf",
+    "data/README.md",
+    "data/content/canva/canva/l01_assignment/lesson/lesson.md",
     "data/content/pygame_marp_course/lesson01_ship_movement/lesson/backup_slide.md",
     "data/content/pygame_marp_course/lesson01_ship_movement/assets/move_ship_overview.svg",
     "data/content/pygame_marp_course/lesson01_ship_movement/assets/move_ship_overview.drawio copy.svg",

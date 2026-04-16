@@ -6,6 +6,7 @@ import time
 import os
 import sys
 import queue
+import random
 
 # 상위 폴더나 외부 모듈 의존성 등을 위해 경로 추가
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -848,7 +849,9 @@ class CrawlerApp:
                 title = ""
                 try:
                     if domain == "baekjoon":
-                        result = scrape_baekjoon(target_url)
+                        # save_path 인자를 넘겨주어 이미지 저장 경로를 지정합니다.
+                        result = scrape_baekjoon(target_url, save_dir=save_path)
+                        # result = scrape_baekjoon(target_url)
                         prefix = "bj"
                     else:
                         result = scrape_doingcoding(
@@ -892,8 +895,11 @@ class CrawlerApp:
                         self.log(f"  ✅ [추출 성공] '{title}'")
                         self.log(f"  📂 저장 완료: {os.path.basename(filepath)}")
                         success_count += 1
+                    
+                    sleep_time = random.uniform(1.5, 3.5)
+                    self.log(f"  ⏳ 봇 탐지 우회를 위해 {sleep_time:.2f}초 대기합니다...")
 
-                    if not self._sleep_with_stop(1.5):
+                    if not self._sleep_with_stop(sleep_time):
                         stopped = True
                         self.log("[중단] 다음 항목 진행 전 중단 요청을 확인했습니다.")
                         break

@@ -8,6 +8,11 @@ import shutil
 import tempfile
 import zipfile
 from urllib.parse import urlparse
+import requests
+import time
+from bs4 import BeautifulSoup
+from markdownify import markdownify as md
+from urllib.parse import urljoin
 
 SECTION_HEADINGS = {
     "description": ["문제 설명", "문제설명", "설명"],
@@ -77,6 +82,200 @@ def _clean_text(value):
     value = re.sub(r"\n{3,}", "\n\n", value)
     return value.strip()
 
+def get_solvedac_tier_name(level):
+    if level == 0:
+        return "Unrated"
+
+    tiers = ["브론즈", "실버", "골드", "플래티넘", "다이아몬드", "루비"]
+    tier_idx = (level - 1) // 5
+    sub_tier = 5 - ((level - 1) % 5)
+
+    # 로마자 변환 (1->I, 2->II, 3->III, 4->IV, 5->V)
+    roman_numerals = {1: "I", 2: "II", 3: "III", 4: "IV", 5: "V"}
+
+    if tier_idx < len(tiers):
+        return f"{tiers[tier_idx]} {roman_numerals[sub_tier]}"
+    return "마스터" # 31 이상
+
+# --- [여기에 1단계 함수 추가] ---
+import json
+
+def get_solvedac_level_and_tags(browser, problem_id):
+    """
+    Playwright 브라우저의 '새 탭'을 이용해 Solved.ac API를 호출합니다.
+    브라우저의 통신망을 그대로 사용하므로 Cloudflare 봇 탐지를 100% 우회합니다.
+    """
+    url = f"https://solved.ac/api/v3/problem/show?problemId={problem_id}"
+    
+    # API 조회를 위한 임시 탭(Page) 생성
+    api_page = browser.new_page()
+    
+    try:
+        # 페이지 접속 후 네트워크가 안정될 때까지 대기
+        response = api_page.goto(url, wait_until="networkidle", timeout=15000)
+        
+        if response.status == 200:
+            # 화면에 출력된 순수 JSON 텍스트 파싱
+            json_text = api_page.locator("body").inner_text()
+            data = json.loads(json_text)
+            
+            level = data.get("level", 0)
+            
+            tags = []
+            for tag in data.get("tags", []):
+                for display in tag.get("displayNames", []):
+                    if display.get("language") == "ko":
+                        tags.append(display.get("name"))
+                        
+            return level, tags
+            
+        elif response.status == 429:
+            print(f"🚨 [경고] API 호출 제한! 60초 대기 후 재시도합니다... (문제: {problem_id})")
+            api_page.wait_for_timeout(60000)
+            return get_solvedac_level_and_tags(browser, problem_id)
+            
+        else:
+            print(f"⚠️ Solved.ac API 통신 실패 (상태 코드: {response.status})")
+            return 0, []
+            
+    except Exception as e:
+        print(f"⚠️ Solved.ac API 에러 ({problem_id}): {e}")
+        return 0, []
+    finally:
+        # 데이터를 무사히 가져왔든 에러가 났든 임시 탭은 반드시 닫아줍니다.
+        api_page.close()
+
+# --- [여기에 2단계 함수 추가] ---
+def process_html_and_download_images(html_content, base_url, save_dir, problem_id):
+    if not html_content or not html_content.strip():
+        return ""
+
+    soup = BeautifulSoup(html_content, 'html.parser')
+            
+    # 이미지를 저장할 하위 폴더 생성
+    images_dir = os.path.join(save_dir, "images")
+    os.makedirs(images_dir, exist_ok=True)
+    
+    for img in soup.find_all('img'):
+        src = img.get('src')
+        if not src:
+            continue
+            
+        img_url = urljoin(base_url, src)
+        original_filename = os.path.basename(src.split('?')[0])
+        if not original_filename:
+            original_filename = "image.png"
+            
+        local_filename = f"{problem_id}_{original_filename}"
+        local_filepath = os.path.join(images_dir, local_filename)
+        
+        try:
+            headers = {"User-Agent": "Mozilla/5.0"}
+            response = requests.get(img_url, stream=True, timeout=10, headers=headers)
+            
+            if response.status_code == 200:
+                with open(local_filepath, 'wb') as f:
+                    for chunk in response.iter_content(1024):
+                        f.write(chunk)
+                img['src'] = f"./images/{local_filename}"
+        except Exception as e:
+            print(f"⚠️ 이미지 다운로드 에러: {img_url} - {e}")
+            
+    # 🚨 [추가] 고전 문제(MathJax 미사용)의 HTML 윗첨자/아래첨자 복원 로직
+    # markdownify가 태그를 평탄화하기 전에, 개발자 친화적인 수식 형태로 강제 치환합니다.
+    # 예: 10<sup>5</sup> -> 10^{5} / s<sub>0</sub> -> s_{0}
+    for sup in soup.find_all('sup'):
+        sup.replace_with(f"^{{{sup.text}}}")
+    for sub in soup.find_all('sub'):
+        sub.replace_with(f"_{{{sub.text}}}")
+
+    modified_html = str(soup)
+    # sup, sub 태그를 살려서 마크다운으로 변환
+    markdown_text = md(modified_html, heading_style="ATX", keep=['sup', 'sub'])
+    
+    # 2. 마크다운 변환기가 멋대로 붙인 백슬래시를 다시 떼어줍니다.
+    markdown_text = markdown_text.replace(r"\_", "_")
+
+    # 🚨 [추가] 백준의 LaTeX 괄호를 범용 마크다운 $ 기호로 치환
+    # \( ... \)  ->  $ ... $ (인라인 수식)
+    # \[ ... \]  ->  $$ ... $$ (블록 수식)
+    markdown_text = markdown_text.replace(r"\(", "$").replace(r"\)", "$")
+    markdown_text = markdown_text.replace(r"\[", "$$").replace(r"\]", "$$")
+    
+    return markdown_text.strip()
+# def process_html_and_download_images(html_content, base_url, save_dir, problem_id):
+#     """
+#     HTML 본문에서 이미지를 찾아 다운로드하고, 
+#     로컬 경로로 치환된 마크다운 문자열을 반환합니다.
+#     """
+#     # 내용이 없으면 빈 문자열 반환
+#     if not html_content or not html_content.strip():
+#         return ""
+
+#     soup = BeautifulSoup(html_content, 'html.parser')
+    
+#     # 🚨 [수학 수식(MathJax) 원본 복원 로직 추가] 🚨
+#     # 1. MathJax가 화면에 렌더링하기 위해 만든 시각적 껍데기 요소들을 모두 파괴(삭제)합니다.
+#     for el in soup.find_all(class_=lambda c: c and any(m in c for m in ['MathJax', 'MathJax_Preview', 'mjx'])):
+#         el.decompose()
+        
+#     # 2. 백준이 숨겨둔 원본 LaTeX 코드가 담긴 script 태그를 찾습니다.
+#     for script in soup.find_all("script", type=lambda t: t and "math/tex" in t):
+#         latex_code = script.string or ""
+#         # 3. Next.js(MDX)가 인식할 수 있는 수학 수식 문법($ $)으로 예쁘게 치환합니다.
+#         if "mode=display" in script.get("type", ""):
+#             script.replace_with(f"$${latex_code}$$")
+#         else:
+#             script.replace_with(f"${latex_code}$")
+
+#     # 이미지를 저장할 하위 폴더 생성 (현재 저장 폴더 내의 'images' 폴더)
+#     images_dir = os.path.join(save_dir, "images")
+#     os.makedirs(images_dir, exist_ok=True)
+    
+#     # 본문 내의 모든 img 태그 탐색
+#     for img in soup.find_all('img'):
+#         src = img.get('src')
+#         if not src:
+#             continue
+            
+#         # 절대 경로 URL로 변환 (상대 경로 방어)
+#         img_url = urljoin(base_url, src)
+        
+#         # 파일명 추출 및 로컬 저장 경로 설정 (쿼리 파라미터 제거)
+#         original_filename = os.path.basename(src.split('?')[0])
+#         if not original_filename:
+#             original_filename = "image.png" # 파일명이 없을 경우를 대비한 기본값
+            
+#         # 중복 방지를 위해 파일명 앞에 문제번호(problem_id)를 붙임
+#         local_filename = f"{problem_id}_{original_filename}"
+#         local_filepath = os.path.join(images_dir, local_filename)
+        
+#         # 이미지 다운로드
+#         try:
+#             # 봇 차단을 막기 위해 헤더 추가
+#             headers = {"User-Agent": "Mozilla/5.0"}
+#             response = requests.get(img_url, stream=True, timeout=10, headers=headers)
+            
+#             if response.status_code == 200:
+#                 with open(local_filepath, 'wb') as f:
+#                     for chunk in response.iter_content(1024):
+#                         f.write(chunk)
+                
+#                 # HTML 태그의 src를 다운로드한 로컬 경로로 수정
+#                 # (Next.js 및 MDX 환경에 맞게 ./images/ 경로 사용)
+#                 img['src'] = f"./images/{local_filename}"
+#             else:
+#                 print(f"⚠️ 이미지 다운로드 실패 (상태 코드 {response.status_code}): {img_url}")
+                
+#         except Exception as e:
+#             print(f"⚠️ 이미지 다운로드 에러: {img_url} - {e}")
+            
+#     # 수정된 HTML을 마크다운으로 변환 (heading_style="ATX"는 # 방식의 헤딩 적용)
+#     modified_html = str(soup)
+#     markdown_text = md(modified_html, heading_style="ATX")
+    
+#     return markdown_text.strip()
+# ------------------------------
 
 def _normalize_heading(text):
     cleaned = _clean_text(text)
@@ -1004,12 +1203,99 @@ def collect_doingcoding_testcases(
         shutil.rmtree(temp_dir, ignore_errors=True)
 
 
-def scrape_baekjoon(url):
+# --- [여기에 4단계 함수 추가] ---
+def build_mdx_content(data):
+    """
+    수집된 딕셔너리 데이터를 바탕으로 Next.js 최적화 MDX 문자열을 생성합니다.
+    """
+    # 배열 데이터를 YAML 배열 포맷으로 안전하게 변환
+    tags_str = json.dumps(data.get("tags", []), ensure_ascii=False)
+    contest_str = json.dumps(data.get("contest", []), ensure_ascii=False)
+    
+    # Boolean 값을 YAML 표준 소문자(true/false)로 변환
+    has_subtask_str = "true" if data.get("has_subtask") else "false"
+    has_hint_str = "true" if data.get("has_hint") else "false"
+    
+    # 샘플 입출력 렌더링
+    samples_md = ""
+    for idx, (s_in, s_out) in enumerate(data.get("samples", []), 1):
+        samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
+    
+    # 서브태스크 제목 번호를 4로, 힌트를 5로 변경하여 깔끔하게 조립
+    subtask_section = f"## 4. 서브태스크\n\n{data['subtask_md']}\n\n---\n\n" if data.get('has_subtask') else ""
+    hint_section = f"## 5. 힌트\n{data['hint_md']}\n\n---\n\n"
+
+    # 최종 마크다운 조립
+    return f"""---
+id: bj_{data['problem_id']}
+title: "{data['title']}"
+level: {data['level']}
+tier: {get_solvedac_tier_name(data['level'])}
+time_limit: "{data['time_limit']}"
+memory_limit: "{data['memory_limit']}"
+has_subtask: {has_subtask_str}
+has_hint: {has_hint_str}
+contest: {contest_str}
+tags: {tags_str}
+source_url: "{data['url']}"
+---
+
+# [{data['problem_id']}번] {data['title']}
+
+## 1. 문제 설명
+{data['description']}
+
+---
+
+## 2. 입출력 설명
+
+* **입력:**
+{data['input_desc']}
+
+* **출력:**
+{data['output_desc']}
+
+---
+
+## 3. 예시
+
+{samples_md}
+
+---
+
+{subtask_section}
+
+{hint_section}
+
+## [정답 및 해설 (Ground Truth)]
+
+### 모범 코드 (Python)
+**(백준 크롤러에서는 정답 코드를 긁어올 수 없으므로, 선생님께서 아래에 직접 보충해 주세요)**
+
+```python
+A, B = map(int, input().split())
+print(A + B)
+```
+"""
+
+def scrape_baekjoon(url, save_dir=None):
+    """
+    백준 문제 페이지를 크롤링하여 이미지 다운로드 및 메타데이터가 포함된 MD 문자열을 반환합니다.
+    """
+    if save_dir is None:
+        save_dir = os.getcwd()
+
     with sync_playwright() as p:
         # headless=False로 띄워야 백준(acmicpc)의 봇 탐지(Cloudflare 등)를 우회하기 좋습니다.
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
 
+        # 🚨 [추가] MathJax 스크립트 로드 원천 차단 🚨
+        # 백준 서버에서 수식 변환기가 날아오는 것을 네트워크 단에서 격추시킵니다.
+        # 이렇게 하면 원래의 순수 LaTeX 코드가 HTML에 고스란히 남습니다.
+        page.route("**/*mathjax*", lambda route: route.abort())
+        page.route("**/*MathJax*", lambda route: route.abort())
+        
         try:
             _goto_with_retries(
                 page,
@@ -1020,24 +1306,111 @@ def scrape_baekjoon(url):
                 attempts=3,
             )
 
-            # CSS Selector(id 기반)를 이용한 핵심 요소 추출
             problem_id = url.split("/")[-1]
-            print(problem_id)
-            title = page.locator("#problem_title").text_content(timeout=5000).strip()
-            description = page.locator("#problem_description").inner_text().strip()
-            input_desc = page.locator("#problem_input").inner_text().strip()
-            output_desc = page.locator("#problem_output").inner_text().strip()
+            print(f"[{problem_id}번] 파싱 및 이미지 처리 시작...")
 
-            # 샘플 입출력 추출 (다중 샘플 대응)
+            # 1. Solved.ac API 연동 (1단계 함수 호출)
+            level, algo_tags = get_solvedac_level_and_tags(browser, problem_id)
+            
+            tags_list = ["baekjoon", "scraped"] + algo_tags
+
+            # 2. 기본 메타데이터 추출 (시간, 메모리)
+            problem_info = page.locator('#problem-info tbody tr td').all_inner_texts()
+            time_limit = problem_info[0].strip() if len(problem_info) > 0 else "N/A"
+            memory_limit = problem_info[1].strip() if len(problem_info) > 1 else "N/A"
+
+            # 3. 출처(기출 연도) 추출
+            # 3. 출처(기출 연도) 추출 및 중복 제거
+            source_elements = page.locator('#source a').all_inner_texts()
+            raw_contest_list = [text.strip() for text in source_elements if text.strip() != "Olympiad"]
+            # dict.fromkeys()를 이용해 순서를 유지하며 중복 제거
+            contest_list = list(dict.fromkeys(raw_contest_list))
+
+            # 4. 제목 추출
+            title = page.locator("#problem_title").text_content(timeout=5000).strip()
+
+            # 5. 본문 (문제/입력/출력) HTML 추출 및 로컬 이미지 변환 (2단계 함수 호출)
+# 5. 본문 HTML 추출 및 로컬 이미지 변환 (안전 추출 함수 도입)
+            
+            # 요소가 존재할 때만 inner_html()을 실행하는 기본 헬퍼
+            def get_html_safe(selector):
+                if page.locator(selector).count() > 0:
+                    return page.locator(selector).inner_html()
+                return ""
+                
+            # 🚨 [추가] 백준의 불규칙한 HTML ID를 무시하고 '화면에 보이는 제목'으로 강제 추적하는 헬퍼
+            def get_section_by_heading(heading_text):
+                # h2 태그에 특정 텍스트가 있는 section을 찾고, 그 안의 본문(.problem-text)을 가져옵니다.
+                selector = f"section:has(h2:has-text('{heading_text}')) .problem-text"
+                if page.locator(selector).count() > 0:
+                    return page.locator(selector).inner_html()
+                return ""
+
+            desc_html = get_html_safe("#problem_description")
+            description = process_html_and_download_images(desc_html, url, save_dir, problem_id)
+
+            input_html = get_html_safe("#problem_input")
+            input_desc = process_html_and_download_images(input_html, url, save_dir, problem_id)
+
+            output_html = get_html_safe("#problem_output")
+            output_desc = process_html_and_download_images(output_html, url, save_dir, problem_id)
+
+            # ----------------------------------------------------
+            # 👇 Playwright의 강력한 선택자를 활용한 엣지 케이스 완벽 대응 👇
+            # ----------------------------------------------------
+            
+            # 1. 인터랙션 (ID가 무엇이든 화면에 '인터랙션' 제목이 있으면 무조건 추출)
+            interaction_html = get_section_by_heading("인터랙션") or get_html_safe("#problem_interaction") or get_html_safe("#problem_interact")
+            if interaction_html:
+                interaction_desc = process_html_and_download_images(interaction_html, url, save_dir, problem_id)
+                if interaction_desc.strip():
+                    input_desc = f"(이 문제는 인터랙티브 문제입니다.)\n\n### 인터랙션\n{interaction_desc}\n\n" + input_desc
+
+            # 2. '제한' 유령 섹션 방어
+            limit_html = get_section_by_heading("제한") or get_html_safe("#problem_limit")
+            if limit_html:
+                limit_desc = process_html_and_download_images(limit_html, url, save_dir, problem_id)
+                if limit_desc.strip():
+                    description += f"\n\n### 제한\n{limit_desc}"
+
+            # 3. '노트' 유령 섹션 방어 (제목으로 직접 타겟팅)
+            note_html = get_section_by_heading("노트") or get_html_safe("#problem_note")
+            if note_html:
+                note_desc = process_html_and_download_images(note_html, url, save_dir, problem_id)
+                if note_desc.strip():
+                    output_desc += f"\n\n### 노트\n{note_desc}"
+                
+            # ----------------------------------------------------
+            # 6. 서브태스크 처리
+            subtask_locator = page.locator("#problem_subtask")
+            has_subtask = subtask_locator.count() > 0
+            subtask_md = ""
+            if has_subtask:
+                subtask_html = subtask_locator.inner_html()
+                subtask_md = process_html_and_download_images(subtask_html, url, save_dir, problem_id)
+
+            # 7. 힌트 처리
+            hint_locator = page.locator("#problem_hint")
+            has_hint = hint_locator.count() > 0 and hint_locator.inner_text().strip() != ""
+            hint_md = ""
+            if has_hint:
+                hint_html = hint_locator.inner_html()
+                # 🚨 [추가] 백준이 '노트'를 '힌트' HTML 태그 안에 욱여넣은 경우, 중복 추출(복사) 방지 로직
+                if note_html and hint_html.strip() == note_html.strip():
+                    has_hint = False
+                    hint_md = "(힌트가 없습니다.)"
+                else:
+                    hint_md = process_html_and_download_images(hint_html, url, save_dir, problem_id)
+            else:
+                hint_md = "(힌트가 없습니다.)"
+
+            # 8. 샘플 입출력 추출 (다중 샘플 대응) - 순수 텍스트 유지
             samples = []
             i = 1
             while True:
                 in_sel = f"#sample-input-{i}"
                 out_sel = f"#sample-output-{i}"
-                if (
-                    page.locator(in_sel).count() > 0
-                    and page.locator(out_sel).count() > 0
-                ):
+                if page.locator(in_sel).count() > 0 and page.locator(out_sel).count() > 0:
                     s_in = page.locator(in_sel).inner_text().strip()
                     s_out = page.locator(out_sel).inner_text().strip()
                     samples.append((s_in, s_out))
@@ -1045,82 +1418,189 @@ def scrape_baekjoon(url):
                 else:
                     break
 
-            # 힌트 추출 (있을 수도, 없을 수도 있음)
-            hint = ""
-            if page.locator("#problem_hint").count() > 0:
-                hint = page.locator("#problem_hint").inner_text().strip()
-
         except Exception as e:
-            print(f"크롤링 에러: {e}")
+            print(f"크롤링 에러({problem_id}): {e}")
             return None, None
         finally:
             browser.close()
 
-        missing_fields = _missing_required_fields(
-            {
-                "title": title,
-                "description": description,
-                "input": input_desc,
-                "output": output_desc,
-            }
-        )
-        if missing_fields:
-            print(
-                f"필수 필드 누락으로 저장하지 않음({problem_id}): {', '.join(missing_fields)}"
-            )
+        # 🚨 [엣지 케이스 대응] 엄격한 검사 폐지 및 빈칸 채우기 🚨
+        
+        # 1. 제목조차 없다면 진짜 잘못된 페이지이므로 버립니다.
+        if not title or title.strip() == "" or title == "(내용 없음)":
+            print(f"⚠️ 제목을 찾을 수 없는 페이지입니다 ({problem_id})")
             return None, None
+            
+        # 2. 본문이나 입출력이 아예 없는 기출/퍼즐 문제를 위한 방어 코드 (대체 텍스트 삽입)
+        description = description if description.strip() else "(본문이 없는 문제입니다.)"
+        input_desc = input_desc if input_desc.strip() else "(입력 조건이 없습니다.)"
+        output_desc = output_desc if output_desc.strip() else "(출력 조건이 없습니다.)"
+        
+        # missing_fields = _missing_required_fields({
+        #     "title": title,
+        #     "description": description,
+        #     "input": input_desc,
+        #     "output": output_desc,
+        # })
+        # if missing_fields:
+        #     print(f"필수 필드 누락으로 저장하지 않음({problem_id}): {', '.join(missing_fields)}")
+        #     return None, None
 
         # 샘플 MD 조립
         samples_md = ""
         for idx, (s_in, s_out) in enumerate(samples, 1):
             samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
 
-        # 수석 감수자 권장 마크다운(MD) 템플릿에 맞추어 문자열 포매팅
-        md_content = f"""---
-id: bj_{problem_id}
-tags: [baekjoon, scraped]
-source: {url}
----
+        # 배열 데이터를 YAML 포맷 문자열로 안전하게 변환
+        tags_str = '["' + '", "'.join(tags_list) + '"]' if tags_list else '[]'
+        contest_str = '["' + '", "'.join(contest_list) + '"]' if contest_list else '[]'
+        has_subtask_str = "true" if has_subtask else "false"
+        has_hint_str = "true" if has_hint else "false"
 
-# [{problem_id}번] {title}
+                # 수집한 데이터를 하나의 딕셔너리로 묶어 4단계 렌더링 함수로 전달
+        mdx_data = {
+            "problem_id": problem_id,
+            "title": title,
+            "level": level,
+            "time_limit": time_limit,
+            "memory_limit": memory_limit,
+            "has_subtask": has_subtask,
+            "has_hint": has_hint,
+            "contest": contest_list,
+            "tags": tags_list,
+            "url": url,
+            "description": description,
+            "input_desc": input_desc,
+            "output_desc": output_desc,
+            "samples": samples,
+            "subtask_md": subtask_md,
+            "hint_md": hint_md
+        }
 
-## 1. 문제 설명
-{description}
+           # 4단계 함수 호출을 통해 깔끔하게 MDX 생성!
+        md_content = build_mdx_content(mdx_data)
 
----
+    return title, md_content
 
-## 2. 입출력 설명
 
-* **입력:**
-{input_desc}
+# 이전버전: 백준 단순 텍스트로만 가져옴
+# def scrape_baekjoon(url):
+#     with sync_playwright() as p:
+#         # headless=False로 띄워야 백준(acmicpc)의 봇 탐지(Cloudflare 등)를 우회하기 좋습니다.
+#         browser = p.chromium.launch(headless=False)
+#         page = browser.new_page()
 
-* **출력:**
-{output_desc}
+#         try:
+#             _goto_with_retries(
+#                 page,
+#                 url,
+#                 wait_until="domcontentloaded",
+#                 timeout=10000,
+#                 ready_selector="#problem_title",
+#                 attempts=3,
+#             )
 
----
+#             # CSS Selector(id 기반)를 이용한 핵심 요소 추출
+#             problem_id = url.split("/")[-1]
+#             print(problem_id)
+#             title = page.locator("#problem_title").text_content(timeout=5000).strip()
+#             description = page.locator("#problem_description").inner_text().strip()
+#             input_desc = page.locator("#problem_input").inner_text().strip()
+#             output_desc = page.locator("#problem_output").inner_text().strip()
 
-## 3. 예시
+#             # 샘플 입출력 추출 (다중 샘플 대응)
+#             samples = []
+#             i = 1
+#             while True:
+#                 in_sel = f"#sample-input-{i}"
+#                 out_sel = f"#sample-output-{i}"
+#                 if (
+#                     page.locator(in_sel).count() > 0
+#                     and page.locator(out_sel).count() > 0
+#                 ):
+#                     s_in = page.locator(in_sel).inner_text().strip()
+#                     s_out = page.locator(out_sel).inner_text().strip()
+#                     samples.append((s_in, s_out))
+#                     i += 1
+#                 else:
+#                     break
 
-{samples_md}---
+#             # 힌트 추출 (있을 수도, 없을 수도 있음)
+#             hint = ""
+#             if page.locator("#problem_hint").count() > 0:
+#                 hint = page.locator("#problem_hint").inner_text().strip()
 
-## 4. 힌트
-{hint if hint else "(힌트가 없습니다.)"}
+#         except Exception as e:
+#             print(f"크롤링 에러: {e}")
+#             return None, None
+#         finally:
+#             browser.close()
 
----
+#         missing_fields = _missing_required_fields(
+#             {
+#                 "title": title,
+#                 "description": description,
+#                 "input": input_desc,
+#                 "output": output_desc,
+#             }
+#         )
+#         if missing_fields:
+#             print(
+#                 f"필수 필드 누락으로 저장하지 않음({problem_id}): {', '.join(missing_fields)}"
+#             )
+#             return None, None
 
-<!-- ANSWER_START -->
-## [정답 및 해설 (Ground Truth)]
+#         # 샘플 MD 조립
+#         samples_md = ""
+#         for idx, (s_in, s_out) in enumerate(samples, 1):
+#             samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
 
-### 모범 코드 (Python)
-**(백준 크롤러에서는 정답 코드를 긁어올 수 없으므로, 선생님께서 아래에 직접 보충해 주세요)**
+#         # 수석 감수자 권장 마크다운(MD) 템플릿에 맞추어 문자열 포매팅
+#         md_content = f"""---
+# id: bj_{problem_id}
+# tags: [baekjoon, scraped]
+# source: {url}
+# ---
 
-```python
-A, B = map(int, input().split())
-print(A + B)
-```
-<!-- ANSWER_END -->
-"""
-        return title, md_content
+# # [{problem_id}번] {title}
+
+# ## 1. 문제 설명
+# {description}
+
+# ---
+
+# ## 2. 입출력 설명
+
+# * **입력:**
+# {input_desc}
+
+# * **출력:**
+# {output_desc}
+
+# ---
+
+# ## 3. 예시
+
+# {samples_md}---
+
+# ## 4. 힌트
+# {hint if hint else "(힌트가 없습니다.)"}
+
+# ---
+
+# <!-- ANSWER_START -->
+# ## [정답 및 해설 (Ground Truth)]
+
+# ### 모범 코드 (Python)
+# **(백준 크롤러에서는 정답 코드를 긁어올 수 없으므로, 선생님께서 아래에 직접 보충해 주세요)**
+
+# ```python
+# A, B = map(int, input().split())
+# print(A + B)
+# ```
+# <!-- ANSWER_END -->
+# """
+#         return title, md_content
 
 
 def scrape_doingcoding(

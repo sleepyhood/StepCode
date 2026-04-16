@@ -1,5 +1,19 @@
 [
   {
+    "conceptId": "pygame_l01_ship",
+    "title": "1차시. 우주선 좌우 이동하기",
+    "categoryId": "pygame_l01",
+    "lang": "python",
+    "track": "pygame_marp_course",
+    "mdPath": "./data/content/pygame_marp_course/lesson01_ship_movement/interactive.md",
+    "recommendedSetId": "",
+    "relatedSetIds": [],
+    "prerequisites": [],
+    "nextConcepts": [],
+    "priority": 2,
+    "sourcePath": "./data/content/pygame_marp_course/lesson01_ship_movement/interactive.md"
+  },
+  {
     "conceptId": "canva_l01_assignment",
     "title": "1차시. 캔바 첫 세팅과 작업 영역 적응",
     "categoryId": "canva_l01_assignment",

@@ -1442,3 +1442,293 @@
     right: 0;
   }
 }
+
+/* =========================================
+   Interactive Problem Card (enhanced)
+========================================= */
+.interactive-problem-card {
+  margin: 0 0 18px;
+  padding: 20px 18px 16px;
+  border: 1.5px solid #dbe5f1;
+  border-radius: 16px;
+  background: #f8fbff;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+.interactive-problem-card.is-solved {
+  border-color: #6ee7b7;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08);
+}
+.problem-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.problem-question {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.65;
+  color: #1e293b;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+}
+.badge--code   { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
+.badge--trace  { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+.badge--short  { background: #e0f2fe; color: #075985; border-color: #bae6fd; }
+.badge--mcq    { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+
+/* -- MCQ Buttons -- */
+.problem-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--theory-accent, #635bff);
+  background: var(--theory-accent-soft, rgba(99,91,255,0.05));
+}
+.option-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.option-btn.is-correct { border-color: #10b981; background: #f0fdf4; color: #065f46; }
+.option-btn.is-wrong { border-color: #f87171; background: #fff5f5; color: #b91c1c; animation: shake 0.5s; }
+
+/* -- MCQ Multi -- */
+.problem-options--multi { gap: 10px; }
+.problem-multi-hint { margin: 0 0 10px; font-size: 0.9rem; color: #64748b; }
+.option-multi-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+.option-multi-label:hover { border-color: var(--theory-accent, #635bff); }
+.option-multi-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--theory-accent, #635bff); flex-shrink: 0; }
+
+/* -- Short Answer -- */
+.problem-input-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.short-answer-input {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  background: #fff;
+  color: #1e293b;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.short-answer-input:focus { outline: none; border-color: var(--theory-accent, #635bff); box-shadow: 0 0 0 3px rgba(99,91,255,0.12); }
+.short-answer-input.is-wrong { border-color: #f87171; background: #fff5f5; }
+
+/* -- Check Button -- */
+.check-btn {
+  padding: 9px 22px;
+  background: var(--theory-accent, #635bff);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.check-btn:hover:not(:disabled) { background: #4f46e5; transform: translateY(-1px); }
+.check-btn:disabled { opacity: 0.6; cursor: default; }
+
+/* -- Feedback Messages -- */
+.problem-feedback {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.is-correct-feedback { background: #f0fdf4; color: #065f46; border: 1px solid #6ee7b7; }
+.is-wrong-feedback { background: #fff5f5; color: #b91c1c; border: 1px solid #fca5a5; }
+
+/* -- Concept Ref Button -- */
+.problem-concept-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  color: #1d4ed8;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.problem-concept-ref:hover { background: #eff6ff; }
+.concept-flash { animation: conceptFlash 1.2s ease-out; }
+@keyframes conceptFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(99,91,255,0.45); }
+  60%  { box-shadow: 0 0 0 10px rgba(99,91,255,0.12); }
+  100% { box-shadow: 0 0 0 0 rgba(99,91,255,0); }
+}
+
+/* -- Code Editor -- */
+.problem-code-wrap { display: flex; flex-direction: column; gap: 10px; }
+.problem-code-textarea { display: none; } /* hidden, replaced by CodeMirror */
+.problem-code-wrap .CodeMirror {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  min-height: 120px;
+  max-height: 360px;
+  resize: vertical;
+  overflow: hidden;
+}
+.problem-code-wrap .CodeMirror-scroll { min-height: 120px; }
+
+/* -- Trace Panel (ported from practice.css) -- */
+.trace-panel {
+  margin: 12px 0 0;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 12px 14px;
+}
+.trace-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.trace-title { font-size: 0.9rem; font-weight: 800; color: #0f172a; }
+.trace-pager { font-size: 0.8rem; color: #64748b; }
+.trace-body {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 8px;
+}
+.trace-code {
+  margin: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px;
+  background: #f8fafc;
+  font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.trace-line { display: grid; grid-template-columns: 2.5ch 1fr; gap: 6px; padding: 2px 4px; border-radius: 6px; }
+.trace-line-no { color: #94a3b8; text-align: right; }
+.trace-line-text { color: #0f172a; }
+.trace-line.active { background: #bfdbfe; outline: 1px solid #60a5fa; }
+.trace-vars {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px;
+  background: #fff;
+  font-size: 0.82rem;
+  overflow-y: auto;
+  max-height: 280px;
+}
+.trace-var-row { display: flex; justify-content: space-between; gap: 6px; border-bottom: 1px dashed #e5e7eb; padding: 3px 0; }
+.trace-var-row:last-child { border-bottom: none; }
+.trace-var-key { color: #334155; font-weight: 700; }
+.trace-var-val { color: #0f172a; font-weight: 600; }
+.trace-var-empty { color: #94a3b8; }
+.trace-note { grid-column: 1 / -1; margin-top: 6px; font-size: 0.84rem; color: #475569; background: #fefce8; border-radius: 8px; padding: 6px 10px; }
+.trace-controls { margin-top: 10px; display: flex; gap: 8px; }
+.trace-controls button {
+  border: 1.5px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 9px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.trace-controls button:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+.trace-controls button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.problem-trace-quiz {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+@media (max-width: 720px) {
+  .trace-body { grid-template-columns: 1fr; }
+  .problem-input-wrap { flex-direction: column; }
+}
+
+/* -- Content Stage Gating -- */
+.content-stage.is-locked {
+  pointer-events: none;
+  opacity: 0.32;
+  filter: blur(1.5px);
+  user-select: none;
+  transition: opacity 0.5s, filter 0.5s;
+}
+.content-stage.is-locked::after {
+  content: '🔒 이전 문제를 먼저 풀어보세요';
+  display: block;
+  text-align: center;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #94a3b8;
+  padding: 8px;
+}
