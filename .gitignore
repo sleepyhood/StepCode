@@ -1,1 +1,4 @@
 .host_token
+.env
+.gemini/settings.json 
+.gemini/mcp_config.json
