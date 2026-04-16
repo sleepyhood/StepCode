@@ -6,6 +6,25 @@
         "-y",
         "@drawio/mcp"
       ]
+    },
+    "StitchMCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://stitch.googleapis.com/mcp",
+        "--header",
+        "X-Goog-Api-Key: AQ.Ab8RN6JTxtitGvp1cqNXlNPD51UAPcT31y7n-P9BahYPCGLMRw"
+      ],
+      "env": {}
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "env": {}
     }
   }
 }
