@@ -151,7 +151,23 @@ def process_html_and_download_images(html_content, base_url, save_dir, problem_i
         return ""
 
     soup = BeautifulSoup(html_content, 'html.parser')
-            
+
+# 🚨 [추가] 수식 복원 로직: HTML 속에 숨겨진 LaTeX 추출 🚨
+    # 1. MathJax 3.0+ (mjx-container) 대응
+    for mjx in soup.find_all('mjx-container'):
+        # 보통 mjx-container 내부에 수식 텍스트가 있거나, 
+        # MathJax가 로드되지 않았을 때의 원본 텍스트 노드를 찾습니다.
+        latex = mjx.get_text()
+        mjx.replace_with(f" ${latex.strip()}$ ")
+
+    # 2. MathJax 2.0 (script type="math/tex") 대응
+    for script in soup.find_all("script", type=lambda t: t and "math/tex" in t):
+        latex_code = script.string or ""
+        if "mode=display" in script.get("type", ""):
+            script.replace_with(f" $${latex_code.strip()}$$ ")
+        else:
+            script.replace_with(f" ${latex_code.strip()}$ ")
+
     # 이미지를 저장할 하위 폴더 생성
     images_dir = os.path.join(save_dir, "images")
     os.makedirs(images_dir, exist_ok=True)
@@ -193,13 +209,9 @@ def process_html_and_download_images(html_content, base_url, save_dir, problem_i
     # sup, sub 태그를 살려서 마크다운으로 변환
     markdown_text = md(modified_html, heading_style="ATX", keep=['sup', 'sub'])
     
-    # 2. 마크다운 변환기가 멋대로 붙인 백슬래시를 다시 떼어줍니다.
-    markdown_text = markdown_text.replace(r"\_", "_")
-
     # 🚨 [추가] 백준의 LaTeX 괄호를 범용 마크다운 $ 기호로 치환
-    # \( ... \)  ->  $ ... $ (인라인 수식)
-    # \[ ... \]  ->  $$ ... $$ (블록 수식)
-    markdown_text = markdown_text.replace(r"\(", "$").replace(r"\)", "$")
+    # 불필요한 이스케이프 제거 및 최종 수식 기호 정리
+    markdown_text = markdown_text.replace(r"\_", "_").replace(r"\(", "$").replace(r"\)", "$")
     markdown_text = markdown_text.replace(r"\[", "$$").replace(r"\]", "$$")
     
     return markdown_text.strip()
@@ -1211,7 +1223,7 @@ def build_mdx_content(data):
     # 배열 데이터를 YAML 배열 포맷으로 안전하게 변환
     tags_str = json.dumps(data.get("tags", []), ensure_ascii=False)
     contest_str = json.dumps(data.get("contest", []), ensure_ascii=False)
-    
+    authors_str = json.dumps(data.get("authors", []), ensure_ascii=False) # [추가]
     # Boolean 값을 YAML 표준 소문자(true/false)로 변환
     has_subtask_str = "true" if data.get("has_subtask") else "false"
     has_hint_str = "true" if data.get("has_hint") else "false"
@@ -1236,6 +1248,7 @@ memory_limit: "{data['memory_limit']}"
 has_subtask: {has_subtask_str}
 has_hint: {has_hint_str}
 contest: {contest_str}
+authors: {authors_str}
 tags: {tags_str}
 source_url: "{data['url']}"
 ---
@@ -1319,12 +1332,37 @@ def scrape_baekjoon(url, save_dir=None):
             time_limit = problem_info[0].strip() if len(problem_info) > 0 else "N/A"
             memory_limit = problem_info[1].strip() if len(problem_info) > 1 else "N/A"
 
-            # 3. 출처(기출 연도) 추출
-            # 3. 출처(기출 연도) 추출 및 중복 제거
-            source_elements = page.locator('#source a').all_inner_texts()
-            raw_contest_list = [text.strip() for text in source_elements if text.strip() != "Olympiad"]
-            # dict.fromkeys()를 이용해 순서를 유지하며 중복 제거
-            contest_list = list(dict.fromkeys(raw_contest_list))
+
+            # 3. 출처 및 제작진 분리 추출
+            # 상단 브레드크럼(대회 경로)과 하단 리스트(제작진)를 분리합니다.
+            source_section = page.locator('#source')
+            
+            # ✅ 수정: 직계 자식(>) 대신 자손(공백) 선택자를 사용하되, 리스트(ul) 안의 링크는 제외합니다.
+            # 리스트 밖의 p 태그나 div 안에 있는 대회 경로 링크들을 가져옵니다.
+            contest_elements = source_section.locator('p a, .problem-text > a, span > a').all_inner_texts()
+            
+            # 만약 위 방법으로도 못 가져온다면, 전체 a 태그 중 ul 소속이 아닌 것만 필터링합니다.
+            if not contest_elements:
+                all_links = source_section.locator('a').all()
+                contest_elements = []
+                for link in all_links:
+                    # 해당 링크가 ul 태그의 자손인지 확인하여 제외
+                    is_in_ul = page.evaluate("(el) => el.closest('ul') !== null", link)
+                    if not is_in_ul:
+                        contest_elements.append(link.inner_text())
+
+            contest_list = [t.strip() for t in contest_elements if t.strip() not in ["Olympiad", "출처", ""]]
+            contest_list = list(dict.fromkeys(contest_list)) # 중복 제거
+
+            # 제작/검수진 추출 (기존 로직 유지하되 안전성 강화)
+            author_list = []
+            if source_section.locator('ul').count() > 0:
+                li_elements = source_section.locator('ul li').all_inner_texts()
+                author_list = [t.strip() for t in li_elements if t.strip()]
+            # source_elements = page.locator('#source a').all_inner_texts()
+            # raw_contest_list = [text.strip() for text in source_elements if text.strip() != "Olympiad"]
+            # # dict.fromkeys()를 이용해 순서를 유지하며 중복 제거
+            # contest_list = list(dict.fromkeys(raw_contest_list))
 
             # 4. 제목 추출
             title = page.locator("#problem_title").text_content(timeout=5000).strip()
@@ -1355,6 +1393,13 @@ def scrape_baekjoon(url, save_dir=None):
             output_html = get_html_safe("#problem_output")
             output_desc = process_html_and_download_images(output_html, url, save_dir, problem_id)
 
+
+            # 🚨 [추가] 엣지 케이스 병합 전에 빈칸부터 먼저 채워줍니다!
+            description = description if description.strip() else "(본문이 없는 문제입니다.)"
+            input_desc = input_desc if input_desc.strip() else "(입력 조건이 없습니다.)"
+            output_desc = output_desc if output_desc.strip() else "(출력 조건이 없습니다.)"
+
+
             # ----------------------------------------------------
             # 👇 Playwright의 강력한 선택자를 활용한 엣지 케이스 완벽 대응 👇
             # ----------------------------------------------------
@@ -1364,8 +1409,10 @@ def scrape_baekjoon(url, save_dir=None):
             if interaction_html:
                 interaction_desc = process_html_and_download_images(interaction_html, url, save_dir, problem_id)
                 if interaction_desc.strip():
+                    # 🚨 기존에 '없습니다' 안내 문구가 있다면 지우고 인터랙션 룰로 대체
+                    if "(입력 조건이 없습니다.)" in input_desc:
+                        input_desc = ""
                     input_desc = f"(이 문제는 인터랙티브 문제입니다.)\n\n### 인터랙션\n{interaction_desc}\n\n" + input_desc
-
             # 2. '제한' 유령 섹션 방어
             limit_html = get_section_by_heading("제한") or get_html_safe("#problem_limit")
             if limit_html:
@@ -1378,6 +1425,9 @@ def scrape_baekjoon(url, save_dir=None):
             if note_html:
                 note_desc = process_html_and_download_images(note_html, url, save_dir, problem_id)
                 if note_desc.strip():
+                    # 🚨 기존에 '없습니다' 안내 문구가 있다면 지우고 노트로 대체
+                    if "(출력 조건이 없습니다.)" in output_desc:
+                        output_desc = ""
                     output_desc += f"\n\n### 노트\n{note_desc}"
                 
             # ----------------------------------------------------
@@ -1468,7 +1518,8 @@ def scrape_baekjoon(url, save_dir=None):
             "has_hint": has_hint,
             "contest": contest_list,
             "tags": tags_list,
-            "url": url,
+            "authors": author_list, # [추가]
+            "url": url, 
             "description": description,
             "input_desc": input_desc,
             "output_desc": output_desc,
