@@ -825,9 +825,10 @@ class CrawlerApp:
         admin_session = None
         stopped = False
 
+        shared_playwright = sync_playwright().start()
+        shared_browser = shared_playwright.chromium.launch(headless=not show_browser)
+
         if domain == "doingcoding" and get_testcases:
-            shared_playwright = sync_playwright().start()
-            shared_browser = shared_playwright.chromium.launch(headless=not show_browser)
             admin_session = open_doingcoding_admin_session(
                 shared_browser,
                 admin_username,
@@ -850,8 +851,7 @@ class CrawlerApp:
                 try:
                     if domain == "baekjoon":
                         # save_path 인자를 넘겨주어 이미지 저장 경로를 지정합니다.
-                        result = scrape_baekjoon(target_url, save_dir=save_path)
-                        # result = scrape_baekjoon(target_url)
+                        result = scrape_baekjoon(target_url, save_dir=save_path, browser=shared_browser)
                         prefix = "bj"
                     else:
                         result = scrape_doingcoding(

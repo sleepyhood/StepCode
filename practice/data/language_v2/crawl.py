@@ -117,17 +117,21 @@ def get_solvedac_level_and_tags(browser, problem_id):
     브라우저의 통신망을 그대로 사용하므로 Cloudflare 봇 탐지를 100% 우회합니다.
     """
     url = f"https://solved.ac/api/v3/problem/show?problemId={problem_id}"
+    print(f"  🔍 [Solved.ac API] 수준 및 태그 정보를 수집 중... (문제: {problem_id})")
     
     # API 조회를 위한 임시 탭(Page) 생성
     api_page = browser.new_page()
     
     try:
-        # 페이지 접속 후 네트워크가 안정될 때까지 대기
-        response = api_page.goto(url, wait_until="networkidle", timeout=15000)
+        # 페이지 접속 (가시성을 위해 창을 유지하며 로드)
+        response = api_page.goto(url, wait_until="domcontentloaded", timeout=15000)
+        
+        # 🚨 [사용자 요청] 웹 창이 보일 수 있도록 1.5초간 대기합니다.
+        api_page.wait_for_timeout(1500)
         
         if response.status == 200:
-            # 화면에 출력된 순수 JSON 텍스트 파싱
-            json_text = api_page.locator("body").inner_text()
+            # 화면에 출력된 순수 JSON 텍스트 파싱 (방어적 추출)
+            json_text = api_page.evaluate("() => document.body.innerText")
             data = json.loads(json_text)
             
             level = data.get("level", 0)
@@ -137,20 +141,22 @@ def get_solvedac_level_and_tags(browser, problem_id):
                 for display in tag.get("displayNames", []):
                     if display.get("language") == "ko":
                         tags.append(display.get("name"))
-                        
+            
+            if level > 0:
+                print(f"    ✅ [Solved.ac 성공] Level: {level}, Tags: {len(tags)}개 추출 완료")
             return level, tags
             
         elif response.status == 429:
-            print(f"🚨 [경고] API 호출 제한! 60초 대기 후 재시도합니다... (문제: {problem_id})")
+            print(f"  🚨 [경고] API 호출 제한! 60초 대기 후 재시도합니다... (문제: {problem_id})")
             api_page.wait_for_timeout(60000)
             return get_solvedac_level_and_tags(browser, problem_id)
             
         else:
-            print(f"⚠️ Solved.ac API 통신 실패 (상태 코드: {response.status})")
+            print(f"  ⚠️ Solved.ac API 통신 실패 (상태 코드: {response.status})")
             return 0, []
             
     except Exception as e:
-        print(f"⚠️ Solved.ac API 에러 ({problem_id}): {e}")
+        print(f"  ⚠️ Solved.ac API 에러 ({problem_id}): {e}")
         return 0, []
     finally:
         # 데이터를 무사히 가져왔든 에러가 났든 임시 탭은 반드시 닫아줍니다.
@@ -249,6 +255,15 @@ def process_html_and_download_images(html_content, base_url, save_dir, problem_i
         # 🚨 [패치 1] Base64 이미지 데이터는 다운로드 시도하지 않고 패스
         if src.startswith("data:image/"):
             continue 
+            
+        # 🚨 [패치 1.5] 구형 수식 이미지 탐지 (alt에 백슬래시가 있거나 src에 equation/latex 포함 시 수식 텍스트로 치환)
+        alt_text = img.get('alt', '').strip()
+        if ('\\' in alt_text and '{' in alt_text) or ('equation' in src or 'latex' in src):
+            math_latex = alt_text if alt_text else src.split('tex=')[-1]
+            new_tag = soup.new_tag("span")
+            new_tag.string = f" ${math_latex}$ "
+            img.replace_with(new_tag)
+            continue
             
         img_url = urljoin(base_url, src)
         import hashlib
@@ -1445,16 +1460,21 @@ print(A + B)
 ```
 """
 
-def scrape_baekjoon(url, save_dir=None):
+def scrape_baekjoon(url, save_dir=None, browser=None):
     """
     백준 문제 페이지를 크롤링하여 이미지 다운로드 및 메타데이터가 포함된 MD 문자열을 반환합니다.
     """
     if save_dir is None:
         save_dir = os.getcwd()
 
-    with sync_playwright() as p:
-        # headless=False로 띄워야 백준(acmicpc)의 봇 탐지(Cloudflare 등)를 우회하기 좋습니다.
-        browser = p.chromium.launch(headless=False)
+    own_playwright = None
+    own_browser = False
+    if browser is None:
+        own_playwright = sync_playwright().start()
+        browser = own_playwright.chromium.launch(headless=False)
+        own_browser = True
+
+    if True:
         page = browser.new_page()
 
         # 🚨 [수정됨] 정규식을 사용하여 URL 경로 어디에든 mathjax가 포함되어 있으면 완벽히 차단
@@ -1489,30 +1509,23 @@ def scrape_baekjoon(url, save_dir=None):
             memory_limit = problem_info[1].strip() if len(problem_info) > 1 else "N/A"
 
 
-            # 3. 출처 및 제작진 분리 추출
-            # 상단 브레드크럼(대회 경로)과 하단 리스트(제작진)를 분리합니다.
-            source_section = page.locator('#source')
+            # 3. 출처 및 대회 경로 추출 (Category Breadcrumbs)
+            # 백준 페이지의 '#source' 영역 내에서 '/category/'로 시작하는 링크만 수집합니다.
+            contest_elements = page.locator('#source a[href^="/category/"]').all_inner_texts()
             
-            # ✅ 수정: 직계 자식(>) 대신 자손(공백) 선택자를 사용하되, 리스트(ul) 안의 링크는 제외합니다.
-            # 리스트 밖의 p 태그나 div 안에 있는 대회 경로 링크들을 가져옵니다.
-            contest_elements = source_section.locator('p a, .problem-text > a, span > a').all_inner_texts()
+            # 수집된 텍스트 중 불필요한 메타 단어 제거
+            contest_list = []
+            filter_words = ["Olympiad", "출처", "문제", "상태", "제표", ""]
+            for t in contest_elements:
+                cleaned = t.strip()
+                if cleaned and cleaned not in filter_words:
+                    contest_list.append(cleaned)
             
-            # 만약 위 방법으로도 못 가져온다면, 전체 a 태그 중 ul 소속이 아닌 것만 필터링합니다.
-            if not contest_elements:
-                all_links = source_section.locator('a').all()
-                contest_elements = []
-                for link in all_links:
-                    # 해당 링크가 ul 태그의 자손인지 확인하여 제외
-                    # is_in_ul = page.evaluate("(el) => el.closest('ul') !== null", link)
-                    # 수정 후 (Playwright의 권장 방식)
-                    is_in_ul = link.evaluate("el => el.closest('ul') !== null")
-                    if not is_in_ul:
-                        contest_elements.append(link.inner_text())
-
-            contest_list = [t.strip() for t in contest_elements if t.strip() not in ["Olympiad", "출처", ""]]
-            contest_list = list(dict.fromkeys(contest_list)) # 중복 제거
+            # 중복 제거
+            contest_list = list(dict.fromkeys(contest_list))
 
             # 제작/검수진 추출 (기존 로직 유지하되 안전성 강화)
+            source_section = page.locator('#source')
             author_list = []
             if source_section.locator('ul').count() > 0:
                 li_elements = source_section.locator('ul li').all_inner_texts()
@@ -1638,7 +1651,10 @@ def scrape_baekjoon(url, save_dir=None):
             print(f"크롤링 에러({problem_id}): {e}")
             return None, None
         finally:
-            browser.close()
+            page.close()
+            if own_browser:
+                browser.close()
+                own_playwright.stop()
 
         # 🚨 [엣지 케이스 대응] 엄격한 검사 폐지 및 빈칸 채우기 🚨
         
