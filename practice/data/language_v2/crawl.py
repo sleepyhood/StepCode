@@ -12,6 +12,7 @@ import requests
 import time
 from bs4 import BeautifulSoup
 from markdownify import MarkdownConverter
+from datetime import datetime # 🚨 상단 임포트 섹션에 추가하거나 함수 내에 추가
 
 class CustomMarkdownConverter(MarkdownConverter):
     def convert_sup(self, el, text, **kwargs):
@@ -82,6 +83,7 @@ class DoingCodingAdminSession:
     page: object
     username: str
     password: str
+    owns_context: bool = True
 
 
 def _clean_text(value):
@@ -140,14 +142,30 @@ def get_solvedac_level_and_tags(context, problem_id):
             level = data.get("level", 0)
             
             tags = []
+            tag_keys = [] # 🚨 영문 키 저장을 위한 리스트 추가
             for tag in data.get("tags", []):
+                tag_keys.append(tag.get("key")) # 🚨 영문 키(bruteforcing 등) 수집
                 for display in tag.get("displayNames", []):
                     if display.get("language") == "ko":
                         tags.append(display.get("name"))
             
             if level > 0:
                 print(f"    ✅ [Solved.ac 성공] Level: {level}, Tags: {len(tags)}개 추출 완료")
-            return level, tags
+
+            # 추가 정보 추출
+            extra = {
+                "archived_at": datetime.now().strftime("%Y-%m-%d"), # 🚨 오늘 날짜 추가
+                "sprout": data.get("sprout", False),
+                "official": data.get("official", False),
+                "is_solvable": data.get("isSolvable", True), # 🚨 추가
+                "gives_no_rating": data.get("givesNoRating", False), # 🚨 추가
+                "accepted_user_count": data.get("acceptedUserCount", 0),
+                "average_tries": round(data.get("averageTries", 0), 2),
+                "is_level_locked": data.get("isLevelLocked", False), # 🚨 추가
+                "voted_user_count": data.get("votedUserCount", 0), # 🚨 추가
+                "tag_keys": tag_keys # 🚨 추가
+            }
+            return level, tags, extra
             
         elif response.status == 429:
             print(f"  🚨 [경고] API 호출 제한! 60초 대기 후 재시도합니다... (문제: {problem_id})")
@@ -569,11 +587,15 @@ def _goto_with_retries(
     timeout=10000,
     ready_selector=None,
     attempts=3,
+    referer=None,
 ):
     last_error = None
     for attempt in range(1, attempts + 1):
         try:
-            response = page.goto(url, wait_until=wait_until, timeout=timeout)
+            if referer:
+                response = page.goto(url, wait_until=wait_until, timeout=timeout, referer=referer)
+            else:
+                response = page.goto(url, wait_until=wait_until, timeout=timeout)
             status = response.status if response is not None else "no-response"
             print(f"[접속] {url} (시도 {attempt}/{attempts}, 상태: {status})")
             if ready_selector:
@@ -1224,10 +1246,17 @@ def upload_doingcoding_testcases(page, problem_id, zip_path, logger=None):
 
 
 def open_doingcoding_admin_session(
-    browser, admin_username, admin_password, logger=None
+    browser_or_context, admin_username, admin_password, logger=None
 ):
     _emit_log(logger, "[관리자 세션] 초기화 시작")
-    context = browser.new_context(accept_downloads=True)
+    if hasattr(browser_or_context, 'new_context'):
+        context = browser_or_context.new_context(accept_downloads=True)
+        owns_context = True
+    else:
+        # If it's a PersistentContext, it doesn't have 'new_context'
+        context = browser_or_context
+        owns_context = False
+
     page = context.new_page()
     try:
         login_doingcoding_admin(page, admin_username, admin_password, logger=logger)
@@ -1237,16 +1266,19 @@ def open_doingcoding_admin_session(
             page=page,
             username=admin_username,
             password=admin_password,
+            owns_context=owns_context,
         )
     except Exception:
-        context.close()
+        if owns_context:
+            context.close()
         raise
 
 
 def close_doingcoding_admin_session(session):
     if not session:
         return
-    session.context.close()
+    if session.owns_context:
+        session.context.close()
 
 
 def collect_doingcoding_testcases_with_session(
@@ -1407,6 +1439,15 @@ def build_mdx_content(data):
     prefix = data.get('prefix', 'bj')
     platform_name = "baekjoon" if prefix == "bj" else "doingcoding"
 
+    # 상단에 불리언 변환 로직 추가
+    sprout_str = "true" if data.get("sprout") else "false"
+    official_str = "true" if data.get("official") else "false"
+    level_locked_str = "true" if data.get("is_level_locked") else "false" # 🚨 추가
+    solvable_str = "true" if data.get("is_solvable") else "false" # 🚨 추가
+    no_rating_str = "true" if data.get("gives_no_rating") else "false" # 🚨 추가
+    # 리스트 데이터를 YAML 형식 문자열로 변환 (tag_keys)
+    tag_keys_str = json.dumps(data.get("tag_keys", []), ensure_ascii=False)
+
     # 최종 마크다운 조립
     return f"""---
 id: {prefix}_{data['problem_id']}
@@ -1415,6 +1456,15 @@ platform: "{platform_name}"
 is_scraped: true
 level: {data['level']}
 tier: "{get_solvedac_tier_name(data['level'])}"
+archived_at: "{data.get('archived_at', '')}"
+sprout: {sprout_str} 
+official: {official_str} 
+is_solvable: {solvable_str} 
+gives_no_rating: {no_rating_str}
+accepted_user_count: {data.get('accepted_user_count', 0)} 
+average_tries: {data.get('average_tries', 0)} 
+is_level_locked: {level_locked_str}
+voted_user_count: {data.get('voted_user_count', 0)}
 time_limit: "{data['time_limit']}"
 memory_limit: "{data['memory_limit']}"
 has_subtask: {has_subtask_str}
@@ -1422,6 +1472,7 @@ has_hint: {has_hint_str}
 contest: {contest_str}
 {authors_yaml}
 tags: {tags_str}
+tag_keys: {tag_keys_str}
 source_url: "{data['url']}"
 ---
 
@@ -1478,17 +1529,14 @@ def scrape_baekjoon(url, save_dir=None, context=None):
         context = browser.new_context()
         own_browser_context = True
 
-    if True:
+    try:
         page = context.new_page()
 
         # 🚨 [수정됨] 정규식을 사용하여 URL 경로 어디에든 mathjax가 포함되어 있으면 완벽히 차단
         page.route(re.compile(r"mathjax", re.IGNORECASE), lambda route: route.abort())
-        # 🚨 [추가] MathJax 스크립트 로드 원천 차단 🚨
-        # 백준 서버에서 수식 변환기가 날아오는 것을 네트워크 단에서 격추시킵니다.
-        # 이렇게 하면 원래의 순수 LaTeX 코드가 HTML에 고스란히 남습니다.
-        # page.route("**/*mathjax*", lambda route: route.abort())
-        # page.route("**/*MathJax*", lambda route: route.abort())
         
+        problem_id = url.split("/")[-1]
+
         try:
             _goto_with_retries(
                 page,
@@ -1497,13 +1545,19 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                 timeout=10000,
                 ready_selector="#problem_title",
                 attempts=3,
+                referer="https://www.acmicpc.net/problemset"
             )
+            
+            # 🚨 [분장 3] 리퍼러 위조 + 마우스 스크롤 + 랜덤 체류 시간 (인간미 추가)
+            import random
+            scroll_height = random.randint(300, 700)
+            page.mouse.wheel(0, scroll_height)
+            page.wait_for_timeout(random.randint(500, 1500))
 
-            problem_id = url.split("/")[-1]
             print(f"[{problem_id}번] 파싱 및 이미지 처리 시작...")
 
             # 1. Solved.ac API 연동 (1단계 함수 호출)
-            level, algo_tags = get_solvedac_level_and_tags(context, problem_id)
+            level, algo_tags, extra_info = get_solvedac_level_and_tags(context, problem_id)
             
             tags_list = ["baekjoon", "scraped"] + algo_tags
 
@@ -1702,6 +1756,7 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             "has_hint": has_hint,
             "contest": contest_list,
             "tags": tags_list,
+            **extra_info,
             "authors": author_list, # [추가]
             "url": url, 
             "description": description,
@@ -1714,6 +1769,17 @@ def scrape_baekjoon(url, save_dir=None, context=None):
 
            # 4단계 함수 호출을 통해 깔끔하게 MDX 생성!
         md_content = build_mdx_content(mdx_data)
+
+    finally:
+        try:
+            if 'page' in locals() and page:
+                page.close()
+            if own_browser_context:
+                context.close()
+                browser.close()
+                own_playwright.stop()
+        except Exception:
+            pass
 
     return title, md_content
 

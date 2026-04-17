@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "data/content/language/baekjoon/source/bj_1000.md",
+                "file": "data/content/language/baekjoon/source/bj_1000_2.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "bj_1000"
+              "title": "bj_1000_2"
             }
           }
         ]
@@ -182,17 +182,29 @@
   },
   "active": "05eb83a9287920b7",
   "lastOpenFiles": [
+    "data/content/language/baekjoon/source/bj_1000_1.md",
+    "data/language_v2/browser_session/Default/DIPS",
+    "data/language_v2/browser_session/Default/Network Action Predictor",
+    "data/content/language/baekjoon/source/bj_1000_2.md",
+    "data/language_v2/browser_session/Default/Code Cache/js/859d203891da5ad6_0",
+    "data/language_v2/browser_session/Default/Cache/Cache_Data/f_00002a",
+    "data/language_v2/browser_session/Default/Code Cache/js/75c9230b3e8865eb_0",
+    "data/language_v2/browser_session/Default/Cache/Cache_Data/f_000029",
+    "data/language_v2/browser_session/Default/Cache/Cache_Data/f_000028",
+    "data/language_v2/browser_session/Default/Cache/Cache_Data/f_000027",
+    "data/language_v2/browser_session/Default/Cache/Cache_Data/f_000026",
+    "data/language_v2/browser_session/Default/Cache/Cache_Data/f_000025",
+    "data/content/language/baekjoon/source/bj_1000.md",
+    "data/content/language/baekjoon/source/bj_1004.md",
+    "data/content/language/baekjoon/source/bj_1001.md",
+    "data/content/language/baekjoon/source/bj_1002.md",
+    "data/theory/jungol/02_중등/2026년_5차_중등_수업_해설지_2019-2025.md",
     "data/content/language/baekjoon/source/bj_1005.md",
     "data/content/language/baekjoon/source/images/1005_star.JPG",
-    "data/content/language/baekjoon/source/bj_1004.md",
     "data/content/language/baekjoon/source/images/1004_dfcmhrjj_113gw6bcng2_b.gif",
     "data/content/language/baekjoon/source/bj_1003.md",
-    "data/content/language/baekjoon/source/bj_1002.md",
     "data/content/language/baekjoon/source/images/1002_dfcmhrjj_142c3w76qg8_b.jpg",
-    "data/content/language/baekjoon/source/bj_1001.md",
-    "data/content/language/baekjoon/source/bj_1000.md",
     "data/content/language/baekjoon/source/bj_1001_1.md",
-    "data/content/language/baekjoon/source/bj_1000_1.md",
     "data/theory/jungol/02_중등/2026년_5차_중등_숙제_해설지_2019-2025.md",
     "data/content/language/baekjoon/source/images/15683_1.png",
     "data/content/language/baekjoon/무제 1.md",
@@ -214,18 +226,6 @@
     "data/content/language/baekjoon/source/images/23290_img_568e34e4.png",
     "data/content/language/baekjoon/source/images/23290_img_380cbe86.png",
     "data/content/language/baekjoon/source/images/23290_img_5ff6547c.png",
-    "data/content/language/baekjoon/source/bj_30917.md",
-    "data/language_v2/test_23290.py",
-    "data/content/language/baekjoon/source/bj_23290_1.md",
-    "data/content/language/baekjoon/source/bj_15683_1.md",
-    "data/language_v2/test_32666_only.py",
-    "data/language_v2/test_md5.py",
-    "data/language_v2/test_md4.py",
-    "data/language_v2/test_md3.py",
-    "data/language_v2/test_md2.py",
-    "data/language_v2/test_md.py",
-    "무제.base",
-    "data/content/language/baekjoon/source",
-    "data/language_v2/images"
+    "data/content/language/baekjoon/source/bj_30917.md"
   ]
 }

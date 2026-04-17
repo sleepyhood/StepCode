@@ -825,11 +825,36 @@ class CrawlerApp:
         admin_session = None
         stopped = False
 
+        import random
+        # 랜덤 User-Agent 로테이션
+        USER_AGENTS = [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/123.0"
+        ]
+        chosen_ua = random.choice(USER_AGENTS)
+
         shared_playwright = sync_playwright().start()
-        shared_browser = shared_playwright.chromium.launch(headless=not show_browser)
-        shared_context = shared_browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        user_data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "browser_session")
+        os.makedirs(user_data_dir, exist_ok=True)
+        
+        # 🚨 [분장 1] Persistent Context (단골손님 모드) 및 랜덤 User-Agent
+        shared_context = shared_playwright.chromium.launch_persistent_context(
+            user_data_dir=user_data_dir,
+            headless=not show_browser,
+            user_agent=chosen_ua,
+            locale="ko-KR",
+            viewport={'width': 1920, 'height': 1080},
+            accept_downloads=True
         )
+        shared_browser = shared_context # open_doingcoding_admin_session 호환을 위해 객체 별칭 할당
+
+        # 🚨 [분장 2] Stealth 스크립트 주입 (로봇 탐지 회피)
+        shared_context.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+            });
+        """)
 
         if domain == "doingcoding" and get_testcases:
             admin_session = open_doingcoding_admin_session(
@@ -840,6 +865,16 @@ class CrawlerApp:
             )
 
         try:
+            # 🚨 [고도화 1] 청크 기반 무작위 탐색 로직 추가
+            chunk_size = 50
+            processed_ids = []
+            for i in range(0, len(target_ids), chunk_size):
+                chunk = target_ids[i:i + chunk_size]
+                random.shuffle(chunk) # 50개 묶음 내부에서만 섞기
+                processed_ids.extend(chunk)
+            
+            target_ids = processed_ids # 섞인 리스트로 교체
+            
             for current_id in target_ids:
                 if self.stop_event.is_set():
                     stopped = True
@@ -913,11 +948,14 @@ class CrawlerApp:
         finally:
             close_doingcoding_admin_session(admin_session)
             if 'shared_context' in locals() and shared_context is not None:
-                shared_context.close()
-            if shared_browser is not None:
-                shared_browser.close()
-            if shared_playwright is not None:
-                shared_playwright.stop()
+                try: shared_context.close()
+                except Exception: pass
+            if 'shared_browser' in locals() and shared_browser is not None and shared_browser is not shared_context:
+                try: shared_browser.close()
+                except Exception: pass
+            if 'shared_playwright' in locals() and shared_playwright is not None:
+                try: shared_playwright.stop()
+                except Exception: pass
 
         if failures:
             failure_report = os.path.join(save_path, "crawl_failures.txt")
