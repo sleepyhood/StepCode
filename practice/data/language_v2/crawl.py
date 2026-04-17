@@ -11,7 +11,18 @@ from urllib.parse import urlparse
 import requests
 import time
 from bs4 import BeautifulSoup
-from markdownify import markdownify as md
+from markdownify import MarkdownConverter
+
+class CustomMarkdownConverter(MarkdownConverter):
+    def convert_sup(self, el, text, **kwargs):
+        return f"<sup>{text}</sup>"
+    def convert_sub(self, el, text, **kwargs):
+        return f"<sub>{text}</sub>"
+    def convert_u(self, el, text, **kwargs):
+        return f"<u>{text}</u>"
+
+def md(html, **options):
+    return CustomMarkdownConverter(**options).convert(html)
 from urllib.parse import urljoin
 
 SECTION_HEADINGS = {
@@ -146,29 +157,87 @@ def get_solvedac_level_and_tags(browser, problem_id):
         api_page.close()
 
 # --- [여기에 2단계 함수 추가] ---
+import re
+
 def process_html_and_download_images(html_content, base_url, save_dir, problem_id):
     if not html_content or not html_content.strip():
         return ""
+        
+    # 1. 래핑 (Raw LaTeX 기호 보호)
+    html_content = re.sub(r'\\\[(.*?)\\\]', r'<div class="raw-display-math">\1</div>', html_content, flags=re.DOTALL)
+    html_content = re.sub(r'\\\((.*?)\\\)', r'<span class="raw-inline-math">\1</span>', html_content, flags=re.DOTALL)
 
     soup = BeautifulSoup(html_content, 'html.parser')
+    math_placeholders = {}
+    placeholder_idx = 0
 
-# 🚨 [추가] 수식 복원 로직: HTML 속에 숨겨진 LaTeX 추출 🚨
-    # 1. MathJax 3.0+ (mjx-container) 대응
+    # 2. MathJax 3.0+ (mjx-container) 대응
     for mjx in soup.find_all('mjx-container'):
-        # 보통 mjx-container 내부에 수식 텍스트가 있거나, 
-        # MathJax가 로드되지 않았을 때의 원본 텍스트 노드를 찾습니다.
-        latex = mjx.get_text()
-        mjx.replace_with(f" ${latex.strip()}$ ")
+        latex = ""
+        is_display = mjx.get('display') == "true"
+        
+        annotation = mjx.find('annotation', encoding='application/x-tex')
+        copytext = mjx.find(class_='mjx-copytext')
+        
+        if annotation and annotation.string:
+            latex = annotation.string.strip()
+        elif copytext:
+            latex = copytext.get_text().strip()
+            latex = re.sub(r'^\\\[|\\\]$', '', latex).strip()
+            latex = re.sub(r'^\\\(|\\\)$', '', latex).strip()
+            latex = re.sub(r'^\$\$|\$\$$', '', latex).strip()
+            latex = re.sub(r'^\$|\$$', '', latex).strip()
+        else:
+            latex = mjx.get_text().strip()
 
-    # 2. MathJax 2.0 (script type="math/tex") 대응
+        placeholder = f"@@MATH{placeholder_idx}@@"
+        
+        if is_display:
+            math_placeholders[placeholder] = f"\n\n$$ {latex} $$\n\n"
+            new_tag = soup.new_tag("p")
+        else:
+            math_placeholders[placeholder] = f" ${latex}$ "
+            new_tag = soup.new_tag("span")
+            
+        new_tag.string = placeholder
+        mjx.replace_with(new_tag)
+        placeholder_idx += 1
+
+    # 3. MathJax 2.0 대응
     for script in soup.find_all("script", type=lambda t: t and "math/tex" in t):
         latex_code = script.string or ""
+        placeholder = f"@@MATH{placeholder_idx}@@"        
+        
         if "mode=display" in script.get("type", ""):
-            script.replace_with(f" $${latex_code.strip()}$$ ")
+            math_placeholders[placeholder] = f"\n\n$$ {latex_code.strip()} $$\n\n"
+            new_tag = soup.new_tag("p")
         else:
-            script.replace_with(f" ${latex_code.strip()}$ ")
+            math_placeholders[placeholder] = f" ${latex_code.strip()}$ "
+            new_tag = soup.new_tag("span")
+            
+        new_tag.string = placeholder
+        script.replace_with(new_tag)
+        placeholder_idx += 1
+        
+    # 4. 정규식 래핑 클래스 처리 (안전한 정규식 검색 사용)
+    for math_el in soup.find_all(class_=re.compile(r"^raw-")):
+        latex_code = math_el.string or math_el.get_text()
+        placeholder = f"@@MATH{placeholder_idx}@@"
+        
+        # class 속성은 리스트로 반환되므로 안전하게 확인
+        classes = math_el.get('class', [])
+        if any("display" in c for c in classes):
+            math_placeholders[placeholder] = f"\n\n$$ {latex_code.strip()} $$\n\n"
+            new_tag = soup.new_tag("p")
+        else:
+            math_placeholders[placeholder] = f" ${latex_code.strip()}$ "
+            new_tag = soup.new_tag("span")
+            
+        new_tag.string = placeholder
+        math_el.replace_with(new_tag)
+        placeholder_idx += 1
 
-    # 이미지를 저장할 하위 폴더 생성
+    # 5. 이미지 다운로드 로직
     images_dir = os.path.join(save_dir, "images")
     os.makedirs(images_dir, exist_ok=True)
     
@@ -177,10 +246,19 @@ def process_html_and_download_images(html_content, base_url, save_dir, problem_i
         if not src:
             continue
             
+        # 🚨 [패치 1] Base64 이미지 데이터는 다운로드 시도하지 않고 패스
+        if src.startswith("data:image/"):
+            continue 
+            
         img_url = urljoin(base_url, src)
-        original_filename = os.path.basename(src.split('?')[0])
-        if not original_filename:
-            original_filename = "image.png"
+        import hashlib
+        # 파일명 추출 (경로 끝이 슬래시인 경우 방어)
+        src_path = src.split('?')[0].strip('/')
+        original_filename = os.path.basename(src_path)
+        if not original_filename or original_filename == "preview":
+            # 파일명이 없거나 preview 같은 일반적인 이름이면 URL 해시로 고유이름 생성
+            hash_name = hashlib.md5(img_url.encode()).hexdigest()[:8]
+            original_filename = f"img_{hash_name}.png"
             
         local_filename = f"{problem_id}_{original_filename}"
         local_filepath = os.path.join(images_dir, local_filename)
@@ -196,25 +274,27 @@ def process_html_and_download_images(html_content, base_url, save_dir, problem_i
                 img['src'] = f"./images/{local_filename}"
         except Exception as e:
             print(f"⚠️ 이미지 다운로드 에러: {img_url} - {e}")
-            
-    # 🚨 [추가] 고전 문제(MathJax 미사용)의 HTML 윗첨자/아래첨자 복원 로직
-    # markdownify가 태그를 평탄화하기 전에, 개발자 친화적인 수식 형태로 강제 치환합니다.
-    # 예: 10<sup>5</sup> -> 10^{5} / s<sub>0</sub> -> s_{0}
-    for sup in soup.find_all('sup'):
-        sup.replace_with(f"^{{{sup.text}}}")
-    for sub in soup.find_all('sub'):
-        sub.replace_with(f"_{{{sub.text}}}")
 
     modified_html = str(soup)
-    # sup, sub 태그를 살려서 마크다운으로 변환
-    markdown_text = md(modified_html, heading_style="ATX", keep=['sup', 'sub'])
     
-    # 🚨 [추가] 백준의 LaTeX 괄호를 범용 마크다운 $ 기호로 치환
-    # 불필요한 이스케이프 제거 및 최종 수식 기호 정리
-    markdown_text = markdown_text.replace(r"\_", "_").replace(r"\(", "$").replace(r"\)", "$")
-    markdown_text = markdown_text.replace(r"\[", "$$").replace(r"\]", "$$")
+    # 🚨 [패치 2] 기하학 도형(svg, path), 동영상(iframe), ASCII 아트(pre, code) 절대 보존 구역 설정
+    safe_keep_tags = ['sup', 'sub', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'svg', 'path', 'iframe', 'pre', 'code']
+    # 테이블 셀 내부의 이미지 보존 (기본적으로 strip 되는 현상 방지)
+    keep_inline = ['td', 'th', 'a', 'span', 'p', 'div', 'strong', 'b', 'em', 'i']
     
+    try:
+        markdown_text = md(modified_html, heading_style="ATX", keep=safe_keep_tags, keep_inline_images_in=keep_inline)
+    except Exception as e:
+        print(f"⚠️ Markdown 변환 중 심각한 에러 발생 (HTML 강제 유지 모드로 렌더링): {e}")
+        # 최후의 수단: 에러가 나면 div, span까지 모두 살려서 어떻게든 저장시킵니다.
+        markdown_text = md(modified_html, heading_style="ATX", keep=safe_keep_tags + ['div', 'span', 'p'], keep_inline_images_in=keep_inline)
+    
+    # 6. Placeholder 롤백
+    for placeholder, original_math in math_placeholders.items():
+        markdown_text = markdown_text.replace(placeholder, original_math)
+        
     return markdown_text.strip()
+
 # def process_html_and_download_images(html_content, base_url, save_dir, problem_id):
 #     """
 #     HTML 본문에서 이미지를 찾아 다운로드하고, 
@@ -1216,39 +1296,113 @@ def collect_doingcoding_testcases(
 
 
 # --- [여기에 4단계 함수 추가] ---
+def __parse_authors(author_list):
+    """
+    '문제를 만든 사람: gggkik' 같은 문자열 배열을 구조화된 객체 배열로 변환하되,
+    예외 상황에서 터지지 않고 원본 문자열을 보존합니다.
+    """
+    structured = []
+    if not isinstance(author_list, list):
+        return structured
+        
+    role_map = {
+        "만든": "creator",
+        "출제": "creator",
+        "검수": "tester",
+        "번역": "translator",
+        "데이터": "contributor",
+        "기여": "contributor",
+        "고친": "editor",
+        "수정": "editor",
+    }
+    
+    for author_str in author_list:
+        if not isinstance(author_str, str):
+            continue
+            
+        # ':' 또는 '：' 기준으로 자르기
+        parts = re.split(r'[:：]', author_str, 1)
+        if len(parts) == 2:
+            role_kr = parts[0].strip()
+            names_raw = parts[1].strip()
+            
+            names = [n.strip() for n in names_raw.split(',') if n.strip()]
+            
+            assigned_role = "author" # 기본값
+            for kr_keyword, en_role in role_map.items():
+                if kr_keyword in role_kr:
+                    assigned_role = en_role
+                    break
+            
+            structured.append({"role": assigned_role, "names": names})
+        else:
+            # 패턴 매칭 실패 시 유연하게 폴백
+            structured.append({"role": "author", "names": [author_str.strip()]})
+            
+    return structured
+
 def build_mdx_content(data):
     """
     수집된 딕셔너리 데이터를 바탕으로 Next.js 최적화 MDX 문자열을 생성합니다.
     """
+    # 🚨 [개선 1] tags 배열에서 'baekjoon', 'scraped' 필터링 (UI 오염 방지)
+    clean_tags = [tag for tag in data.get("tags", []) if tag not in ("baekjoon", "scraped")]
+    tags_str = json.dumps(clean_tags, ensure_ascii=False)
+    
     # 배열 데이터를 YAML 배열 포맷으로 안전하게 변환
-    tags_str = json.dumps(data.get("tags", []), ensure_ascii=False)
     contest_str = json.dumps(data.get("contest", []), ensure_ascii=False)
-    authors_str = json.dumps(data.get("authors", []), ensure_ascii=False) # [추가]
+    
+    # 🚨 [개선 3] authors 필드 구조화 및 다중 포맷 대응
+    authors_structured = __parse_authors(data.get("authors", []))
+    if not authors_structured:
+        authors_yaml = "authors: []"
+    else:
+        authors_yaml_lines = ["authors:"]
+        for sa in authors_structured:
+            authors_yaml_lines.append(f"  - role: \"{sa['role']}\"")
+            if sa['names']:
+                names_json = json.dumps(sa['names'], ensure_ascii=False)
+                authors_yaml_lines.append(f"    names: {names_json}")
+            else:
+                authors_yaml_lines.append("    names: []")
+        authors_yaml = "\n".join(authors_yaml_lines)
+    
     # Boolean 값을 YAML 표준 소문자(true/false)로 변환
     has_subtask_str = "true" if data.get("has_subtask") else "false"
     has_hint_str = "true" if data.get("has_hint") else "false"
     
     # 샘플 입출력 렌더링
     samples_md = ""
-    for idx, (s_in, s_out) in enumerate(data.get("samples", []), 1):
+    for idx, sample_data in enumerate(data.get("samples", []), 1):
+        s_in = sample_data[0]
+        s_out = sample_data[1]
+        explain_md = sample_data[2] if len(sample_data) > 2 else ""
+        
         samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
-    
+        if explain_md.strip():
+            samples_md += f"{explain_md}\n\n"    
     # 서브태스크 제목 번호를 4로, 힌트를 5로 변경하여 깔끔하게 조립
     subtask_section = f"## 4. 서브태스크\n\n{data['subtask_md']}\n\n---\n\n" if data.get('has_subtask') else ""
     hint_section = f"## 5. 힌트\n{data['hint_md']}\n\n---\n\n"
 
+    # 🚨 [개선 2] Prefix를 통한 플랫폼 식별자 부여 (기본값 'bj')
+    prefix = data.get('prefix', 'bj')
+    platform_name = "baekjoon" if prefix == "bj" else "doingcoding"
+
     # 최종 마크다운 조립
     return f"""---
-id: bj_{data['problem_id']}
+id: {prefix}_{data['problem_id']}
 title: "{data['title']}"
+platform: "{platform_name}"
+is_scraped: true
 level: {data['level']}
-tier: {get_solvedac_tier_name(data['level'])}
+tier: "{get_solvedac_tier_name(data['level'])}"
 time_limit: "{data['time_limit']}"
 memory_limit: "{data['memory_limit']}"
 has_subtask: {has_subtask_str}
 has_hint: {has_hint_str}
 contest: {contest_str}
-authors: {authors_str}
+{authors_yaml}
 tags: {tags_str}
 source_url: "{data['url']}"
 ---
@@ -1303,11 +1457,13 @@ def scrape_baekjoon(url, save_dir=None):
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
 
+        # 🚨 [수정됨] 정규식을 사용하여 URL 경로 어디에든 mathjax가 포함되어 있으면 완벽히 차단
+        page.route(re.compile(r"mathjax", re.IGNORECASE), lambda route: route.abort())
         # 🚨 [추가] MathJax 스크립트 로드 원천 차단 🚨
         # 백준 서버에서 수식 변환기가 날아오는 것을 네트워크 단에서 격추시킵니다.
         # 이렇게 하면 원래의 순수 LaTeX 코드가 HTML에 고스란히 남습니다.
-        page.route("**/*mathjax*", lambda route: route.abort())
-        page.route("**/*MathJax*", lambda route: route.abort())
+        # page.route("**/*mathjax*", lambda route: route.abort())
+        # page.route("**/*MathJax*", lambda route: route.abort())
         
         try:
             _goto_with_retries(
@@ -1347,7 +1503,9 @@ def scrape_baekjoon(url, save_dir=None):
                 contest_elements = []
                 for link in all_links:
                     # 해당 링크가 ul 태그의 자손인지 확인하여 제외
-                    is_in_ul = page.evaluate("(el) => el.closest('ul') !== null", link)
+                    # is_in_ul = page.evaluate("(el) => el.closest('ul') !== null", link)
+                    # 수정 후 (Playwright의 권장 방식)
+                    is_in_ul = link.evaluate("el => el.closest('ul') !== null")
                     if not is_in_ul:
                         contest_elements.append(link.inner_text())
 
@@ -1463,7 +1621,15 @@ def scrape_baekjoon(url, save_dir=None):
                 if page.locator(in_sel).count() > 0 and page.locator(out_sel).count() > 0:
                     s_in = page.locator(in_sel).inner_text().strip()
                     s_out = page.locator(out_sel).inner_text().strip()
-                    samples.append((s_in, s_out))
+                    
+                    # 🚨 [추가] 샘플에 대한 '예제 설명' 추출 (이미지 포함된 마크다운 변환 활용)
+                    explain_sel = f"#problem_sample_explain_{i}"
+                    explain_md = ""
+                    if page.locator(explain_sel).count() > 0:
+                        explain_html = page.locator(explain_sel).inner_html()
+                        explain_md = process_html_and_download_images(explain_html, url, save_dir, problem_id)
+                        
+                    samples.append((s_in, s_out, explain_md))
                     i += 1
                 else:
                     break
@@ -1496,10 +1662,7 @@ def scrape_baekjoon(url, save_dir=None):
         #     print(f"필수 필드 누락으로 저장하지 않음({problem_id}): {', '.join(missing_fields)}")
         #     return None, None
 
-        # 샘플 MD 조립
-        samples_md = ""
-        for idx, (s_in, s_out) in enumerate(samples, 1):
-            samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
+        # 샘플 데이터는 build_mdx_content에서 조립됩니다.
 
         # 배열 데이터를 YAML 포맷 문자열로 안전하게 변환
         tags_str = '["' + '", "'.join(tags_list) + '"]' if tags_list else '[]'

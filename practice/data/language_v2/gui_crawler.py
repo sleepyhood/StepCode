@@ -887,7 +887,7 @@ class CrawlerApp:
                         break
 
                     if md_output:
-                        filename = f"01_{prefix}_{current_id}.md"
+                        filename = f"{prefix}_{current_id}.md"
                         filepath = build_output_filepath(save_path, filename)
                         with open(filepath, "w", encoding="utf-8-sig") as f:
                             f.write(md_output)
@@ -916,7 +916,7 @@ class CrawlerApp:
 
         if failures:
             failure_report = os.path.join(save_path, "crawl_failures.txt")
-            with open(failure_report, "w", encoding="utf-8-sig") as failure_file:
+            with open(failure_report, "a", encoding="utf-8-sig") as failure_file:
                 failure_file.write("\n".join(failures) + "\n")
             self.log(f"  ⚠ 실패 목록 저장: {os.path.basename(failure_report)}")
 
