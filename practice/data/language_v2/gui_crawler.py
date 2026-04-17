@@ -6,6 +6,7 @@ import time
 import os
 import sys
 import queue
+import random
 
 # 상위 폴더나 외부 모듈 의존성 등을 위해 경로 추가
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -163,9 +164,10 @@ class CrawlerApp:
         )
         self.check_testcases.pack(pady=4)
 
+        # 공통 옵션 (Headless 모드 제어)
         self.check_show_browser = tk.Checkbutton(
-            self.doingcoding_options_frame,
-            text="doingcoding 진행 화면 표시",
+            self.shared_settings_frame,
+            text="크롤링 진행 화면 표시 (Headless 모드 끄기)",
             variable=self.show_browser_var,
         )
         self.check_show_browser.pack(pady=4)
@@ -398,7 +400,6 @@ class CrawlerApp:
         self.doingcoding_options_frame.pack_forget()
         self.get_templates_var.set(False)
         self.get_testcases_var.set(False)
-        self.show_browser_var.set(False)
 
     def select_dir(self):
         initialdir = self._resolve_initial_dir(
@@ -824,9 +825,13 @@ class CrawlerApp:
         admin_session = None
         stopped = False
 
+        shared_playwright = sync_playwright().start()
+        shared_browser = shared_playwright.chromium.launch(headless=not show_browser)
+        shared_context = shared_browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+
         if domain == "doingcoding" and get_testcases:
-            shared_playwright = sync_playwright().start()
-            shared_browser = shared_playwright.chromium.launch(headless=not show_browser)
             admin_session = open_doingcoding_admin_session(
                 shared_browser,
                 admin_username,
@@ -848,7 +853,8 @@ class CrawlerApp:
                 title = ""
                 try:
                     if domain == "baekjoon":
-                        result = scrape_baekjoon(target_url)
+                        # save_path 인자를 넘겨주어 이미지 저장 경로를 지정합니다.
+                        result = scrape_baekjoon(target_url, save_dir=save_path, context=shared_context)
                         prefix = "bj"
                     else:
                         result = scrape_doingcoding(
@@ -884,7 +890,7 @@ class CrawlerApp:
                         break
 
                     if md_output:
-                        filename = f"01_{prefix}_{current_id}.md"
+                        filename = f"{prefix}_{current_id}.md"
                         filepath = build_output_filepath(save_path, filename)
                         with open(filepath, "w", encoding="utf-8-sig") as f:
                             f.write(md_output)
@@ -892,8 +898,11 @@ class CrawlerApp:
                         self.log(f"  ✅ [추출 성공] '{title}'")
                         self.log(f"  📂 저장 완료: {os.path.basename(filepath)}")
                         success_count += 1
+                    
+                    sleep_time = random.uniform(1.5, 3.5)
+                    self.log(f"  ⏳ 봇 탐지 우회를 위해 {sleep_time:.2f}초 대기합니다...")
 
-                    if not self._sleep_with_stop(1.5):
+                    if not self._sleep_with_stop(sleep_time):
                         stopped = True
                         self.log("[중단] 다음 항목 진행 전 중단 요청을 확인했습니다.")
                         break
@@ -903,6 +912,8 @@ class CrawlerApp:
                     failures.append(target_url)
         finally:
             close_doingcoding_admin_session(admin_session)
+            if 'shared_context' in locals() and shared_context is not None:
+                shared_context.close()
             if shared_browser is not None:
                 shared_browser.close()
             if shared_playwright is not None:
@@ -910,7 +921,7 @@ class CrawlerApp:
 
         if failures:
             failure_report = os.path.join(save_path, "crawl_failures.txt")
-            with open(failure_report, "w", encoding="utf-8-sig") as failure_file:
+            with open(failure_report, "a", encoding="utf-8-sig") as failure_file:
                 failure_file.write("\n".join(failures) + "\n")
             self.log(f"  ⚠ 실패 목록 저장: {os.path.basename(failure_report)}")
 

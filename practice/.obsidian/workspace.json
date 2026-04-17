@@ -8,13 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "c564a63fce169905",
+            "id": "05eb83a9287920b7",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "data/content/language/baekjoon/source/bj_1000.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "새 탭"
+              "title": "bj_1000"
             }
           }
         ]
@@ -74,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 241.5
   },
   "right": {
     "id": "91e772deee4be529",
@@ -176,6 +180,52 @@
       "bases:새 베이스 생성하기": false
     }
   },
-  "active": "c564a63fce169905",
-  "lastOpenFiles": []
+  "active": "05eb83a9287920b7",
+  "lastOpenFiles": [
+    "data/content/language/baekjoon/source/bj_1005.md",
+    "data/content/language/baekjoon/source/images/1005_star.JPG",
+    "data/content/language/baekjoon/source/bj_1004.md",
+    "data/content/language/baekjoon/source/images/1004_dfcmhrjj_113gw6bcng2_b.gif",
+    "data/content/language/baekjoon/source/bj_1003.md",
+    "data/content/language/baekjoon/source/bj_1002.md",
+    "data/content/language/baekjoon/source/images/1002_dfcmhrjj_142c3w76qg8_b.jpg",
+    "data/content/language/baekjoon/source/bj_1001.md",
+    "data/content/language/baekjoon/source/bj_1000.md",
+    "data/content/language/baekjoon/source/bj_1001_1.md",
+    "data/content/language/baekjoon/source/bj_1000_1.md",
+    "data/theory/jungol/02_중등/2026년_5차_중등_숙제_해설지_2019-2025.md",
+    "data/content/language/baekjoon/source/images/15683_1.png",
+    "data/content/language/baekjoon/무제 1.md",
+    "data/content/language/baekjoon/source/bj_23290.md",
+    "data/language_v2/images/1004_dfcmhrjj_113gw6bcng2_b.gif",
+    "data/content/language/baekjoon/source/bj_32666.md",
+    "data/content/language/baekjoon/source/bj_14891.md",
+    "data/content/language/baekjoon/source/images/15683_5.png",
+    "data/content/language/baekjoon/source/bj_34844_2.md",
+    "data/content/language/baekjoon/source/bj_34844_1.md",
+    "data/content/language/baekjoon/source/bj_33452_1.md",
+    "data/content/language/baekjoon/source/bj_32666_1.md",
+    "data/content/language/baekjoon/source/bj_23290_3.md",
+    "data/content/language/baekjoon/source/bj_18576_2.md",
+    "data/content/language/baekjoon/source/bj_15683.md",
+    "data/content/language/baekjoon/source/bj_10171.md",
+    "data/content/language/baekjoon/source/bj_23290_2.md",
+    "data/content/language/baekjoon/source/images/23290_img_0c9ab420.png",
+    "data/content/language/baekjoon/source/images/23290_img_568e34e4.png",
+    "data/content/language/baekjoon/source/images/23290_img_380cbe86.png",
+    "data/content/language/baekjoon/source/images/23290_img_5ff6547c.png",
+    "data/content/language/baekjoon/source/bj_30917.md",
+    "data/language_v2/test_23290.py",
+    "data/content/language/baekjoon/source/bj_23290_1.md",
+    "data/content/language/baekjoon/source/bj_15683_1.md",
+    "data/language_v2/test_32666_only.py",
+    "data/language_v2/test_md5.py",
+    "data/language_v2/test_md4.py",
+    "data/language_v2/test_md3.py",
+    "data/language_v2/test_md2.py",
+    "data/language_v2/test_md.py",
+    "무제.base",
+    "data/content/language/baekjoon/source",
+    "data/language_v2/images"
+  ]
 }
