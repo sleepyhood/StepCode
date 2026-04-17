@@ -298,7 +298,11 @@ def process_html_and_download_images(html_content, base_url, save_dir, problem_i
             
         local_filename = f"{problem_id}_{original_filename}"
         local_filepath = os.path.join(images_dir, local_filename)
-        
+        # 🚨 [추가] 이미 이미지가 있다면 다운로드 생략 (시간 단축)
+        if os.path.exists(local_filepath):
+            img['src'] = f"./images/{local_filename}"
+            continue
+
         try:
             headers = {"User-Agent": "Mozilla/5.0"}
             response = requests.get(img_url, stream=True, timeout=10, headers=headers)
@@ -1594,8 +1598,24 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             # contest_list = list(dict.fromkeys(raw_contest_list))
 
             # 4. 제목 추출
-            title = page.locator("#problem_title").text_content(timeout=5000).strip()
-
+            # 🚨 체크를 먼저 하고 텍스트를 가져옵니다.
+            title_element = page.locator("#problem_title")
+            if title_element.count() == 0:
+                print(f"  ⚠️ 무결성 체크 실패: 페이지에서 제목 요소를 찾을 수 없습니다.")
+                return None, None
+            
+            title = title_element.text_content(timeout=5000).strip()
+            # title = page.locator("#problem_title").text_content(timeout=5000).strip()
+            # title_element = page.locator("#problem_title")
+            # if title_element.count() == 0:
+            #     print(f"  ⚠️ 무결성 체크 실패: 페이지에서 제목 요소를 찾을 수 없습니다.")
+            #     return None, None
+            # Solved.ac API 제목과 대조 (제목이 너무 다르면 잘못된 페이지일 확률이 높음)
+            solvedac_title = extra_info.get('titleKo', '')
+            if solvedac_title and (solvedac_title not in title and title not in solvedac_title):
+                # 🚨 제목 불일치 시 '차단' 혹은 '비공개 문제'로 간주하고 실패 처리
+                print(f"  ⚠️ 무결성 체크 실패: API 제목('{solvedac_title}') vs 페이지 제목('{title}')")
+                return None, None
             # 5. 본문 (문제/입력/출력) HTML 추출 및 로컬 이미지 변환 (2단계 함수 호출)
 # 5. 본문 HTML 추출 및 로컬 이미지 변환 (안전 추출 함수 도입)
             
@@ -1769,6 +1789,15 @@ def scrape_baekjoon(url, save_dir=None, context=None):
 
            # 4단계 함수 호출을 통해 깔끔하게 MDX 생성!
         md_content = build_mdx_content(mdx_data)
+
+        # --- [3단계: 최종 무결성 검사] ---
+        # 1. 본문(description)이 너무 짧은 경우 (비정상 수집)
+        # 2. 결과물에 Cloudflare 차단 문구가 포함된 경우
+        error_keywords = ["Cloudflare", "Access Denied", "403 Forbidden", "무단 접근"]
+        # if len(description) < 50 or any(keyword in description for keyword in error_keywords):
+        if len(description.strip()) < 10 or any(keyword in md_content for keyword in error_keywords):
+            print(f"  ⚠️ 무결성 체크 실패: 본문이 너무 짧거나 차단 문구가 포함되어 있습니다.")
+            return None, None
 
     finally:
         try:
