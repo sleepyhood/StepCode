@@ -14,6 +14,13 @@ from bs4 import BeautifulSoup
 from markdownify import MarkdownConverter
 from datetime import datetime # 🚨 상단 임포트 섹션에 추가하거나 함수 내에 추가
 
+
+# 기존 import들 아래에 추가
+class ProblemNotFoundError(Exception):
+    """문제가 서버에 존재하지 않는 경우(404) 발생하는 예외"""
+    pass
+
+
 class CustomMarkdownConverter(MarkdownConverter):
     def convert_sup(self, el, text, **kwargs):
         return f"<sup>{text}</sup>"
@@ -126,7 +133,7 @@ def get_solvedac_level_and_tags(context, problem_id):
     
     try:
         # 페이지 접속 (가시성을 위해 창을 유지하며 로드)
-        response = api_page.goto(url, wait_until="domcontentloaded", timeout=15000)
+        response = api_page.goto(url, wait_until="domcontentloaded", timeout=30000)
         
         # 🚨 [패치됨] 고정 대기 대신, JSON 응답 고유 키가 나타날 때까지 대기 (최대 5초)
         try:
@@ -163,7 +170,8 @@ def get_solvedac_level_and_tags(context, problem_id):
                 "average_tries": round(data.get("averageTries", 0), 2),
                 "is_level_locked": data.get("isLevelLocked", False), # 🚨 추가
                 "voted_user_count": data.get("votedUserCount", 0), # 🚨 추가
-                "tag_keys": tag_keys # 🚨 추가
+                "tag_keys": tag_keys, # 🚨 추가
+                "titleKo": data.get("titleKo", "") # 🚨 제목 대조를 위해 추가
             }
             return level, tags, extra
             
@@ -174,11 +182,11 @@ def get_solvedac_level_and_tags(context, problem_id):
             
         else:
             print(f"  ⚠️ Solved.ac API 통신 실패 (상태 코드: {response.status})")
-            return 0, []
+            return 0, [], {}
             
     except Exception as e:
         print(f"  ⚠️ Solved.ac API 에러 ({problem_id}): {e}")
-        return 0, []
+        return 0, [], {}
     finally:
         # 데이터를 무사히 가져왔든 에러가 났든 임시 탭은 반드시 닫아줍니다.
         api_page.close()
@@ -186,7 +194,10 @@ def get_solvedac_level_and_tags(context, problem_id):
 # --- [여기에 2단계 함수 추가] ---
 import re
 
-def process_html_and_download_images(html_content, base_url, save_dir, problem_id):
+import time
+import random
+
+def process_html_and_download_images(html_content, base_url, save_dir, problem_id, context=None):
     if not html_content or not html_content.strip():
         return ""
         
@@ -304,14 +315,24 @@ def process_html_and_download_images(html_content, base_url, save_dir, problem_i
             continue
 
         try:
-            headers = {"User-Agent": "Mozilla/5.0"}
-            response = requests.get(img_url, stream=True, timeout=10, headers=headers)
-            
-            if response.status_code == 200:
-                with open(local_filepath, 'wb') as f:
-                    for chunk in response.iter_content(1024):
-                        f.write(chunk)
-                img['src'] = f"./images/{local_filename}"
+            if context is not None:
+                response = context.request.get(img_url, timeout=30000)
+                if response.status == 200:
+                    with open(local_filepath, 'wb') as f:
+                        f.write(response.body())
+                    img['src'] = f"./images/{local_filename}"
+                    # 순간적인 트래픽 폭주 방지
+                    time.sleep(random.uniform(0.5, 1.5))
+            else:
+                # context가 없을 경우의 Fallback
+                headers = {"User-Agent": "Mozilla/5.0"}
+                response = requests.get(img_url, stream=True, timeout=10, headers=headers)
+                
+                if response.status_code == 200:
+                    with open(local_filepath, 'wb') as f:
+                        for chunk in response.iter_content(1024):
+                            f.write(chunk)
+                    img['src'] = f"./images/{local_filename}"
         except Exception as e:
             print(f"⚠️ 이미지 다운로드 에러: {img_url} - {e}")
 
@@ -335,7 +356,74 @@ def process_html_and_download_images(html_content, base_url, save_dir, problem_i
         
     return markdown_text.strip()
 
-# def process_html_and_download_images(html_content, base_url, save_dir, problem_id):
+
+def process_html_and_download_attachments(html_content, base_url, save_dir, problem_id, context=None):
+    """
+    HTML 본문에서 첨부 파일 링크를 찾아 다운로드하고, 
+    로컬 경로로 치환된 마크다운 문자열을 반환합니다.
+    """
+    if not html_content or not html_content.strip():
+        return ""
+
+    soup = BeautifulSoup(html_content, 'html.parser')
+    attachments_dir = os.path.join(save_dir, "attachments")
+    os.makedirs(attachments_dir, exist_ok=True)
+
+    for a in soup.find_all('a'):
+        href = a.get('href')
+        if not href:
+            continue
+            
+        file_url = urljoin(base_url, href)
+        
+        # 파일명 추출 (링크 텍스트를 우선적으로 고려)
+        link_text = a.get_text().strip()
+        # 파일명으로 부적합한 문자 치환
+        safe_link_text = re.sub(r'[^\w\.-]', '_', link_text)
+        
+        # 텍스트에 확장자가 포함되어 있고 적절한 길이인 경우 파일명으로 채택
+        if '.' in safe_link_text and 1 <= len(safe_link_text.split('.')[-1]) <= 5:
+            original_filename = safe_link_text
+        else:
+            # 폴백: URL에서 추출 (경로 끝이 슬래시인 경우 방어)
+            src_path = href.split('?')[0].strip('/')
+            original_filename = os.path.basename(src_path)
+            if not original_filename:
+                import hashlib
+                hash_name = hashlib.md5(file_url.encode()).hexdigest()[:8]
+                original_filename = f"file_{hash_name}"
+            
+        local_filename = f"{problem_id}_{original_filename}"
+        local_filepath = os.path.join(attachments_dir, local_filename)
+
+        # 이미 파일이 있다면 다운로드 생략
+        if os.path.exists(local_filepath):
+            a['href'] = f"./attachments/{local_filename}"
+            continue
+
+        try:
+            if context is not None:
+                response = context.request.get(file_url, timeout=30000)
+                if response.status == 200:
+                    with open(local_filepath, 'wb') as f:
+                        f.write(response.body())
+                    a['href'] = f"./attachments/{local_filename}"
+                    time.sleep(random.uniform(0.5, 1.5))
+            else:
+                headers = {"User-Agent": "Mozilla/5.0"}
+                response = requests.get(file_url, stream=True, timeout=20, headers=headers)
+                if response.status_code == 200:
+                    with open(local_filepath, 'wb') as f:
+                        for chunk in response.iter_content(1024):
+                            f.write(chunk)
+                    a['href'] = f"./attachments/{local_filename}"
+        except Exception as e:
+            print(f"⚠️ 첨부 파일 다운로드 에러: {file_url} - {e}")
+
+    modified_html = str(soup)
+    return md(modified_html, heading_style="ATX").strip()
+
+# def process_html_and_download_images(html_content, base_url, save_dir, problem_id, context=context):
 #     """
 #     HTML 본문에서 이미지를 찾아 다운로드하고, 
 #     로컬 경로로 치환된 마크다운 문자열을 반환합니다.
@@ -588,7 +676,7 @@ def _goto_with_retries(
     page,
     url,
     wait_until="domcontentloaded",
-    timeout=10000,
+    timeout=30000,
     ready_selector=None,
     attempts=3,
     referer=None,
@@ -602,9 +690,18 @@ def _goto_with_retries(
                 response = page.goto(url, wait_until=wait_until, timeout=timeout)
             status = response.status if response is not None else "no-response"
             print(f"[접속] {url} (시도 {attempt}/{attempts}, 상태: {status})")
+
+            # --- 추가: 404 감지 시 즉시 중단 및 예외 발생 ---
+            if status == 404:
+                raise ProblemNotFoundError(f"문제를 찾을 수 없습니다 (404): {url}")
+            # ------------------------------------------
+
             if ready_selector:
                 page.wait_for_selector(ready_selector, timeout=timeout)
             return response
+        except ProblemNotFoundError:
+            # 404 에러는 재시도가 무의미하므로 즉시 상위로 던짐
+            raise
         except Exception as exc:
             last_error = exc
             print(f"[재시도] {url} (시도 {attempt}/{attempts}) 실패: {exc}")
@@ -614,9 +711,14 @@ def _goto_with_retries(
 
 
 def _emit_log(logger, message):
+    # datetime은 crawl.py 상단(L15)에 이미 임포트되어 있으므로 바로 사용 가능
+    timestamp = datetime.now().strftime("[%H:%M:%S] ")
     if callable(logger):
         logger(message)
-    print(message)
+    print(timestamp + message) # <--- 터미널 출력에도 시간 추가    
+    # if callable(logger):
+    #     logger(message)
+    # print(message)
 
 
 def _find_first_working_selector(page, selectors, timeout=10000, require_visible=False):
@@ -1438,6 +1540,11 @@ def build_mdx_content(data):
     # 서브태스크 제목 번호를 4로, 힌트를 5로 변경하여 깔끔하게 조립
     subtask_section = f"## 4. 서브태스크\n\n{data['subtask_md']}\n\n---\n\n" if data.get('has_subtask') else ""
     hint_section = f"## 5. 힌트\n{data['hint_md']}\n\n---\n\n"
+    
+    # [신규] 첨부 섹션 조립 (노트 아래, 출처 위에 배치)
+    attachment_section = ""
+    if data.get("attachment_md") and data["attachment_md"].strip():
+        attachment_section = f"## 6. 첨부\n\n{data['attachment_md']}\n\n---\n\n"
 
     # 🚨 [개선 2] Prefix를 통한 플랫폼 식별자 부여 (기본값 'bj')
     prefix = data.get('prefix', 'bj')
@@ -1458,6 +1565,7 @@ id: {prefix}_{data['problem_id']}
 title: "{data['title']}"
 platform: "{platform_name}"
 is_scraped: true
+is_existent: true
 level: {data['level']}
 tier: "{get_solvedac_tier_name(data['level'])}"
 archived_at: "{data.get('archived_at', '')}"
@@ -1503,6 +1611,7 @@ source_url: "{data['url']}"
 
 ---
 
+{attachment_section}
 {subtask_section}
 
 {hint_section}
@@ -1527,6 +1636,7 @@ def scrape_baekjoon(url, save_dir=None, context=None):
 
     own_playwright = None
     own_browser_context = False
+    browser = None
     if context is None:
         own_playwright = sync_playwright().start()
         browser = own_playwright.chromium.launch(headless=False)
@@ -1546,7 +1656,7 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                 page,
                 url,
                 wait_until="domcontentloaded",
-                timeout=10000,
+                timeout=30000,
                 ready_selector="#problem_title",
                 attempts=3,
                 referer="https://www.acmicpc.net/problemset"
@@ -1611,11 +1721,14 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             #     print(f"  ⚠️ 무결성 체크 실패: 페이지에서 제목 요소를 찾을 수 없습니다.")
             #     return None, None
             # Solved.ac API 제목과 대조 (제목이 너무 다르면 잘못된 페이지일 확률이 높음)
+            # 🚨 [개선] 다국어/인터랙티브 배지 등 공백 무시하고 알맹이만 비교
             solvedac_title = extra_info.get('titleKo', '')
-            if solvedac_title and (solvedac_title not in title and title not in solvedac_title):
-                # 🚨 제목 불일치 시 '차단' 혹은 '비공개 문제'로 간주하고 실패 처리
-                print(f"  ⚠️ 무결성 체크 실패: API 제목('{solvedac_title}') vs 페이지 제목('{title}')")
-                return None, None
+            if solvedac_title:
+                clean_solved = re.sub(r'\s+', '', solvedac_title)
+                clean_target = re.sub(r'\s+', '', title)
+                if clean_solved not in clean_target and clean_target not in clean_solved:
+                    print(f"  ⚠️ 무결성 체크 실패: API 제목('{solvedac_title}') vs 페이지 제목('{title}')")
+                    return None, None
             # 5. 본문 (문제/입력/출력) HTML 추출 및 로컬 이미지 변환 (2단계 함수 호출)
 # 5. 본문 HTML 추출 및 로컬 이미지 변환 (안전 추출 함수 도입)
             
@@ -1634,13 +1747,17 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                 return ""
 
             desc_html = get_html_safe("#problem_description")
-            description = process_html_and_download_images(desc_html, url, save_dir, problem_id)
+            # 🚨 [추가] 다국어 대응: 한국어 본문이 없거나 너무 작으면 영문 본문(#problem_description_en) 시도
+            if not desc_html or len(desc_html.strip()) < 20:
+                desc_html = get_html_safe("#problem_description_en") or desc_html
+            
+            description = process_html_and_download_images(desc_html, url, save_dir, problem_id, context=context)
 
-            input_html = get_html_safe("#problem_input")
-            input_desc = process_html_and_download_images(input_html, url, save_dir, problem_id)
+            input_html = get_html_safe("#problem_input") or get_html_safe("#problem_input_en")
+            input_desc = process_html_and_download_images(input_html, url, save_dir, problem_id, context=context)
 
-            output_html = get_html_safe("#problem_output")
-            output_desc = process_html_and_download_images(output_html, url, save_dir, problem_id)
+            output_html = get_html_safe("#problem_output") or get_html_safe("#problem_output_en")
+            output_desc = process_html_and_download_images(output_html, url, save_dir, problem_id, context=context)
 
 
             # 🚨 [추가] 엣지 케이스 병합 전에 빈칸부터 먼저 채워줍니다!
@@ -1656,7 +1773,7 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             # 1. 인터랙션 (ID가 무엇이든 화면에 '인터랙션' 제목이 있으면 무조건 추출)
             interaction_html = get_section_by_heading("인터랙션") or get_html_safe("#problem_interaction") or get_html_safe("#problem_interact")
             if interaction_html:
-                interaction_desc = process_html_and_download_images(interaction_html, url, save_dir, problem_id)
+                interaction_desc = process_html_and_download_images(interaction_html, url, save_dir, problem_id, context=context)
                 if interaction_desc.strip():
                     # 🚨 기존에 '없습니다' 안내 문구가 있다면 지우고 인터랙션 룰로 대체
                     if "(입력 조건이 없습니다.)" in input_desc:
@@ -1665,19 +1782,25 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             # 2. '제한' 유령 섹션 방어
             limit_html = get_section_by_heading("제한") or get_html_safe("#problem_limit")
             if limit_html:
-                limit_desc = process_html_and_download_images(limit_html, url, save_dir, problem_id)
+                limit_desc = process_html_and_download_images(limit_html, url, save_dir, problem_id, context=context)
                 if limit_desc.strip():
                     description += f"\n\n### 제한\n{limit_desc}"
 
             # 3. '노트' 유령 섹션 방어 (제목으로 직접 타겟팅)
             note_html = get_section_by_heading("노트") or get_html_safe("#problem_note")
             if note_html:
-                note_desc = process_html_and_download_images(note_html, url, save_dir, problem_id)
+                note_desc = process_html_and_download_images(note_html, url, save_dir, problem_id, context=context)
                 if note_desc.strip():
                     # 🚨 기존에 '없습니다' 안내 문구가 있다면 지우고 노트로 대체
                     if "(출력 조건이 없습니다.)" in output_desc:
                         output_desc = ""
                     output_desc += f"\n\n### 노트\n{note_desc}"
+            
+            # 4. [신규] '첨부 (Attachment)' 섹션 수집
+            attachment_html = get_section_by_heading("첨부") or get_html_safe("#problem_attachment")
+            attachment_md = ""
+            if attachment_html:
+                attachment_md = process_html_and_download_attachments(attachment_html, url, save_dir, problem_id, context=context)
                 
             # ----------------------------------------------------
             # 6. 서브태스크 처리
@@ -1686,7 +1809,7 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             subtask_md = ""
             if has_subtask:
                 subtask_html = subtask_locator.inner_html()
-                subtask_md = process_html_and_download_images(subtask_html, url, save_dir, problem_id)
+                subtask_md = process_html_and_download_images(subtask_html, url, save_dir, problem_id, context=context)
 
             # 7. 힌트 처리
             hint_locator = page.locator("#problem_hint")
@@ -1699,7 +1822,7 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                     has_hint = False
                     hint_md = "(힌트가 없습니다.)"
                 else:
-                    hint_md = process_html_and_download_images(hint_html, url, save_dir, problem_id)
+                    hint_md = process_html_and_download_images(hint_html, url, save_dir, problem_id, context=context)
             else:
                 hint_md = "(힌트가 없습니다.)"
 
@@ -1718,7 +1841,7 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                     explain_md = ""
                     if page.locator(explain_sel).count() > 0:
                         explain_html = page.locator(explain_sel).inner_html()
-                        explain_md = process_html_and_download_images(explain_html, url, save_dir, problem_id)
+                        explain_md = process_html_and_download_images(explain_html, url, save_dir, problem_id, context=context)
                         
                     samples.append((s_in, s_out, explain_md))
                     i += 1
@@ -1784,7 +1907,8 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             "output_desc": output_desc,
             "samples": samples,
             "subtask_md": subtask_md,
-            "hint_md": hint_md
+            "hint_md": hint_md,
+            "attachment_md": attachment_md # [추가]
         }
 
            # 4단계 함수 호출을 통해 깔끔하게 MDX 생성!
@@ -1793,10 +1917,12 @@ def scrape_baekjoon(url, save_dir=None, context=None):
         # --- [3단계: 최종 무결성 검사] ---
         # 1. 본문(description)이 너무 짧은 경우 (비정상 수집)
         # 2. 결과물에 Cloudflare 차단 문구가 포함된 경우
-        error_keywords = ["Cloudflare", "Access Denied", "403 Forbidden", "무단 접근"]
-        # if len(description) < 50 or any(keyword in description for keyword in error_keywords):
-        if len(description.strip()) < 10 or any(keyword in md_content for keyword in error_keywords):
-            print(f"  ⚠️ 무결성 체크 실패: 본문이 너무 짧거나 차단 문구가 포함되어 있습니다.")
+        # 🚨 [개선] 다국어/인터랙티브 문제는 본문이 짧을 수 있으므로 전체 MD 길이를 함께 고려
+        error_keywords = ["Access Denied", "403 Forbidden", "무단 접근"] # Cloudflare는 본문에 섞일 수 있어 제외하거나 정교화
+        is_blocked = any(kw in md_content for kw in error_keywords) and "Cloudflare" in md_content
+        
+        if (len(description.strip()) < 5 and len(md_content) < 500) or is_blocked:
+            print(f"  ⚠️ 무결성 체크 실패: 본문이 비어있거나 차단 페이지로 의심됩니다.")
             return None, None
 
     finally:
@@ -1804,9 +1930,12 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             if 'page' in locals() and page:
                 page.close()
             if own_browser_context:
-                context.close()
-                browser.close()
-                own_playwright.stop()
+                if 'context' in locals() and context:
+                    context.close()
+                if browser:
+                    browser.close()
+                if own_playwright:
+                    own_playwright.stop()
         except Exception:
             pass
 

@@ -8,6 +8,8 @@ import sys
 import queue
 import random
 from concurrent.futures import ThreadPoolExecutor # 🚨 추가
+from datetime import datetime  # <--- 추가
+
 MAX_WORKERS = 3 # 🚨 시스템 사양(8GB RAM)에 맞춰 3개 권장
 
 # 상위 폴더나 외부 모듈 의존성 등을 위해 경로 추가
@@ -23,6 +25,7 @@ try:
         scrape_baekjoon,
         scrape_doingcoding,
         upload_doingcoding_testcases_with_session,
+        ProblemNotFoundError
     )
     from .testcase_zip_export import (
         build_default_zip_name,
@@ -37,6 +40,7 @@ except ImportError:
         scrape_baekjoon,
         scrape_doingcoding,
         upload_doingcoding_testcases_with_session,
+        ProblemNotFoundError
     )
     from testcase_zip_export import (
         build_default_zip_name,
@@ -89,6 +93,7 @@ class CrawlerApp:
         self.get_templates_var = tk.BooleanVar(value=False)
         self.get_testcases_var = tk.BooleanVar(value=False)
         self.show_browser_var = tk.BooleanVar(value=False)
+        self.skip_existing_var = tk.BooleanVar(value=True)
         self.save_dir = tk.StringVar(value=os.getcwd())
         self.testcase_md_path = tk.StringVar(value="")
         self.testcase_zip_dir = tk.StringVar(value=os.getcwd())
@@ -120,16 +125,14 @@ class CrawlerApp:
         self._set_doingcoding_option_visibility()
         self.root.after(100, self.process_ui_queue)
 
-    def _execute_single_crawl(self, current_id, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, worker_id,force_show_browser=False):
-        """각 스레드(워커)가 실행할 독립적인 크롤링 태스크"""
+    def _worker_loop(self, task_queue, result_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, worker_id, force_show_browser=False, skip_existing=True):
+        """각 스레드(워커)가 실행할 독립적인 크롤링 루프"""
+        import queue
         worker_prefix = f"[Worker-{worker_id}]"
         worker_session_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "browser_session", f"worker_{worker_id}")
         os.makedirs(worker_session_dir, exist_ok=True)
         
-        # 🚨 일반 모드 또는 강제 브라우저 노출 모드 결정
         is_headless = not (show_browser or force_show_browser)
-
-        # 🚨 더 풍부한 실제 사용자 환경 리스트
         modern_user_agents = [
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
@@ -137,74 +140,116 @@ class CrawlerApp:
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15",
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
         ]
-
-                
-        # 🚨 워커끼리 서로 다른 타이밍에 시작하도록 미세 지연 추가 (Jitter)
+        
+        import random
         time.sleep(random.uniform(0.5, 2.0))
-
-
-        # 각 워커는 독립적인 Playwright 인스턴스를 시작해야 합니다 (스레드 안전)
+        
         with sync_playwright() as p:
+            context = None
+            browser_engine = random.choice(['chromium', 'msedge', 'firefox'])
+            
+            for attempt in range(3):
+                try:
+                    kwargs = {
+                        'user_data_dir': worker_session_dir,
+                        'headless': is_headless,
+                        'user_agent': random.choice(modern_user_agents),
+                        'locale': "ko-KR",
+                        'viewport': {'width': random.randint(1200, 1400), 'height': random.randint(700, 900)}
+                    }
+                    if browser_engine == 'msedge':
+                        context = p.chromium.launch_persistent_context(**kwargs, channel='msedge')
+                    elif browser_engine == 'firefox':
+                        context = p.firefox.launch_persistent_context(**kwargs)
+                    else:
+                        context = p.chromium.launch_persistent_context(**kwargs)
+                    break
+                except Exception as e:
+                    if browser_engine != 'chromium':
+                        self.log(f"{worker_prefix} ⚠️ {browser_engine} 실행 실패, 기본 chromium으로 폴백합니다. ({e})")
+                        browser_engine = 'chromium'
+                        continue # 즉시 다음 시도로 이동하여 chromium으로 재시도
+                    
+                    if attempt < 2:
+                        self.log(f"{worker_prefix} ⏳ 세션 잠금 해제 대기 중... ({attempt + 1}/3)")
+                        time.sleep(3.0)
+                    else:
+                        self.log(f"{worker_prefix} ❌ 브라우저 시작 실패: {e}")
+                        return
+
             try:
-                # 1. 워커 전용 브라우저/컨텍스트 시작
-                # 1. 워커 전용 브라우저/컨텍스트 시작 (세션 잠금 방지를 위한 재시도 로직)
-                context = None
-                for attempt in range(3): # 최대 3번 재시도
+                while not task_queue.empty():
+                    if self.stop_event.is_set():
+                        break
+                    
                     try:
-                        context = p.chromium.launch_persistent_context(
-                            user_data_dir=worker_session_dir,
-                            # headless=not show_browser,
-                            headless=is_headless,
-                            user_agent=random.choice(modern_user_agents), # 🚨 랜덤 UA
+                        current_id = task_queue.get_nowait()
+                    except queue.Empty:
+                        break
 
-                            locale="ko-KR",
-                            viewport={'width': random.randint(1200, 1400), 'height': random.randint(700, 900)})
-                        break # 성공 시 루프 탈출
-                    except Exception as e:
-                        if attempt < 2:
-                            self.log(f"{worker_prefix} ⏳ 세션 잠금 해제 대기 중... ({attempt + 1}/3)")
-                            time.sleep(3.0) # 3초 대기 후 재시도
-                        else:
-                            raise e # 3번 모두 실패 시 에러 발생
+                    target_url = template.replace("{id}", current_id)
+                    prefix = "bj" if domain == "baekjoon" else "dc"
+                    filename = f"{prefix}_{current_id}.md"
 
-                # context = p.chromium.launch_persistent_context(
-                #     user_data_dir=worker_session_dir,
-                #     headless=not show_browser,
-                #     user_agent=random.choice([
-                #         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-                #         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/123.0"
-                #     ]),
-                #     locale="ko-KR",
-                #     viewport={'width': 1280, 'height': 800}
-                # )
 
-                # 2. 크롤링 수행 전 중단 여부 확인
-                if self.stop_event.is_set():
-                    return False
+                    # 
+                    base_filepath = os.path.join(save_path, filename);
 
-                
-                # 2. 크롤링 수행
-                target_url = template.replace("{id}", current_id)
-                self.log(f"{worker_prefix} {current_id}번 수집 중...")
-                
-                # scrape_baekjoon 호출 (crawl.py 함수 활용)
-                result = scrape_baekjoon(target_url, save_dir=save_path, context=context)
-                
-                # 3. 데이터 검증 및 저장 (무결성 검사 포함)
-                if result and result[0] and result[1]:
-                    title, md_output = result
-                    filename = f"bj_{current_id}.md"
                     filepath = build_output_filepath(save_path, filename)
-                    with open(filepath, "w", encoding="utf-8-sig") as f:
-                        f.write(md_output)
-                    self.log(f"{worker_prefix} ✅ {current_id}번 저장 완료: {title}")
-                    return True
-                return False
-            except Exception as e:
-                self.log(f"{worker_prefix} ❌ {current_id}번 에러: {e}")
-                return False
+
+                    if skip_existing and os.path.exists(base_filepath):
+                        self.log(f"{worker_prefix} ⏩ 이미 존재하여 건너뜀: {current_id}")
+                        result_queue.put((current_id, True))
+                        task_queue.task_done()
+                        continue
+
+                    self.log(f"{worker_prefix} [{browser_engine}] {current_id}번 수집 중...")
+                    
+                    result_ok = False
+                    try:
+                        result = scrape_baekjoon(target_url, save_dir=save_path, context=context)
+                            
+                        if result and result[0] and result[1]:
+                            title, md_output = result
+                            with open(filepath, "w", encoding="utf-8-sig") as f:
+                                f.write(md_output)
+                            self.log(f"{worker_prefix} ✅ {current_id}번 저장 완료: {title}")
+                            result_ok = True
+                    # except Exception as e:
+                    #     self.log(f"{worker_prefix} ❌ {current_id}번 에러: {e}")
+                    # --- 추가: 존재하지 않는 문제 처리 ---
+                    except ProblemNotFoundError as e:
+                        self.log(f"{worker_prefix} 📝 {current_id}번: 존재하지 않는 문제 (더미 파일 생성)")
+                        dummy_content = f"""---
+id: bj_{current_id}
+title: "삭제되거나 존재하지 않는 문제"
+platform: "baekjoon"
+is_scraped: false
+is_existent: false
+archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
+---
+
+# [{current_id}번] 존재하지 않는 문제
+
+이 문제는 백준에서 삭제되었거나 존재하지 않는 번호입니다.
+"""
+                        with open(filepath, "w", encoding="utf-8-sig") as f: 
+                            f.write(dummy_content) 
+                        result_ok = True # 재시도하지 않도록 완료 처리 # ---------------------------------- 
+                    except Exception as e: 
+                        self.log(f"{worker_prefix} ❌ {current_id}번 에러: {e}") 
+
+                    result_queue.put((current_id, result_ok))
+                    task_queue.task_done()
+                    
+                    if not result_ok:
+                        time.sleep(random.uniform(6.0, 10.0))
+                    else:
+                        time.sleep(random.uniform(4.0, 7.0))
+
             finally:
-                context.close()
+                if context:
+                    context.close()
 
 
     def _build_shared_settings(self):
@@ -260,6 +305,13 @@ class CrawlerApp:
             variable=self.show_browser_var,
         )
         self.check_show_browser.pack(pady=4)
+
+        self.check_skip_existing = tk.Checkbutton(
+            self.shared_settings_frame,
+            text="이미 크롤링된 문제 건너뛰기 (추천)",
+            variable=self.skip_existing_var,
+        )
+        self.check_skip_existing.pack(pady=4)
 
         self.admin_frame = tk.Frame(self.doingcoding_options_frame)
         self.admin_frame.pack(pady=(4, 0))
@@ -772,7 +824,9 @@ class CrawlerApp:
         self.root.after(100, self.process_ui_queue)
 
     def log(self, message):
-        self.ui_queue.put(("log", message))
+        timestamp = datetime.now().strftime("[%H:%M:%S] ") # <--- 시간 생성
+        self.ui_queue.put(("log", timestamp + message))   # <--- 시간 합쳐서 전송
+        # self.ui_queue.put(("log", message))
 
     def start_crawl(self):
         if self.is_crawling:
@@ -817,6 +871,7 @@ class CrawlerApp:
         get_templates = self.get_templates_var.get()
         get_testcases = self.get_testcases_var.get()
         show_browser = self.show_browser_var.get()
+        skip_existing = self.skip_existing_var.get()
         admin_username, admin_password = resolve_admin_credentials(
             self.admin_username.get(),
             self.admin_password.get(),
@@ -866,6 +921,7 @@ class CrawlerApp:
                 admin_username,
                 admin_password,
                 show_browser,
+                skip_existing,
             ),
         )
         self.worker_thread.daemon = True
@@ -903,6 +959,7 @@ class CrawlerApp:
         admin_username,
         admin_password,
         show_browser,
+        skip_existing,
     ):
         if not hasattr(self, "stop_event") or self.stop_event is None:
             self.stop_event = threading.Event()
@@ -955,163 +1012,70 @@ class CrawlerApp:
         #     )
 
         try:
-            # 🚨 [고도화 1] 청크 기반 무작위 탐색 로직 추가
             self.log(f"🎲 수집 순서를 무작위로 재배치합니다 (Deep Shuffle)...")
-
             random.shuffle(target_ids) 
-
-            # 🚨 [수정 2] 925번 줄의 기존 for 루프 전체를 아래 코드로 대체합니다.
-            self.log(f"🚀 병렬 크롤링 시작 (Worker 수: {MAX_WORKERS})")
             
-            with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-                futures = []
-                for i, current_id in enumerate(target_ids):
-                    if self.stop_event.is_set(): break
-                    
-                    worker_id = i % MAX_WORKERS 
-                    future = executor.submit(
-                        self._execute_single_crawl, 
-                        current_id, domain, template, save_path, 
-                        get_templates, get_testcases, admin_username, 
-                        admin_password, show_browser, worker_id
-                    )
-                    futures.append(future)
-                    time.sleep(random.uniform(0.5, 1.5))
+            import queue
+            
+            def run_workers(targets, workers_count, force_show=False):
+                t_queue = queue.Queue()
+                r_queue = queue.Queue()
+                for tid in targets:
+                    t_queue.put(tid)
                 
-                for i, future in enumerate(futures):
-                    try:
-                        if future.result(): 
-                            success_count += 1
-                        else:
-                            # 🚨 실패한 경우 target_ids에서 해당 ID를 찾아 failures에 추가
-                            failures.append(target_ids[i])
-                    except Exception:
-                        failures.append(target_ids[i])
-
-                # 모든 작업 완료 및 성공 합계 계산
-                # --- [2단계: 재시도 큐 시작] ---
-                max_retries = 2 # 1차 수집 후 최대 2번 더 시도
-                for retry_round in range(1, max_retries + 1):
-                    if not failures or self.stop_event.is_set():
-                        break
+                threads = []
+                for i in range(workers_count):
+                    t = threading.Thread(
+                        target=self._worker_loop,
+                        args=(t_queue, r_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, i, force_show, skip_existing)
+                    )
+                    t.start()
+                    threads.append(t)
+                
+                while any(t.is_alive() for t in threads):
+                    if self.stop_event.is_set():
+                        # Clear queue so workers stop
+                        while not t_queue.empty():
+                            try: t_queue.get_nowait()
+                            except queue.Empty: break
+                    time.sleep(0.5)
+                
+                for t in threads:
+                    t.join()
                     
-                    retry_targets = [f.split('/')[-1] for f in failures] # URL에서 ID만 추출
-                    failures.clear() # 이번 라운드 결과를 위해 비움
-                    
-                    # 재시도는 더 신중하게 (Exponential Backoff 적용)
-                    retry_delay = retry_round * 10 
-                    self.log(f"\n🔄 [재시도 {retry_round}회차] 실패한 {len(retry_targets)}개 문제 재공략 시작...")
-                    self.log(f"⏳ 안정적인 접속을 위해 {retry_delay}초간 대기 후 시작합니다.")
-                    if not self._sleep_with_stop(retry_delay): break
+                oks = 0
+                fails = []
+                while not r_queue.empty():
+                    tid, ok = r_queue.get()
+                    if ok: oks += 1
+                    else: fails.append(tid)
+                return oks, fails
 
-                    # 재시도 시에는 워커 수를 1개로 줄여서 집중 수집하거나, 
-                    # 3회차에는 브라우저를 직접 띄우는(force_show_browser) 전략을 사용합니다.
-                    with ThreadPoolExecutor(max_workers=2) as retry_executor:
-                        retry_futures = []
-                        for i, rid in enumerate(retry_targets):
-                            f = retry_executor.submit(
-                                self._execute_single_crawl, 
-                                rid, domain, template, save_path, 
-                                get_templates, get_testcases, admin_username, 
-                                admin_password, show_browser, 
-                                worker_id=(i % 2),
-                                force_show_browser=(retry_round >= 2) # 2회차부터는 브라우저 직접 노출
-                            )
-                            retry_futures.append(f)
-                        
-                        for i, rf in enumerate(retry_futures):
-                            if rf.result(): success_count += 1
-                            else: failures.append(retry_targets[i] if '/' in retry_targets[i] else f"https://www.acmicpc.net/problem/{retry_targets[i]}")
-                # --- [2단계 종료] ---
+            self.log(f"🚀 병렬 크롤링 시작 (Worker 수: {MAX_WORKERS})")
+            oks, fails = run_workers(target_ids, MAX_WORKERS, False)
+            success_count += oks
+            failures.extend(fails)
 
+            max_retries = 2
+            for retry_round in range(1, max_retries + 1):
+                if not failures or self.stop_event.is_set():
+                    break
+                
+                retry_targets = [f.split('/')[-1] for f in failures]
+                failures.clear()
+                
+                retry_delay = retry_round * 10 
+                self.log(f"\n🔄 [재시도 {retry_round}회차] 실패한 {len(retry_targets)}개 문제 재공략 시작...")
+                self.log(f"⏳ 안정적인 접속을 위해 {retry_delay}초간 대기 후 시작합니다.")
+                if not self._sleep_with_stop(retry_delay): break
 
-            
-            # target_ids = processed_ids # 섞인 리스트로 교체
-            
-            # for current_id in target_ids:
-            #     if self.stop_event.is_set():
-            #         stopped = True
-            #         self.log("\n[중단] 사용자 요청으로 크롤링을 중단합니다.")
-            #         break
-
-            #     target_url = template.replace("{id}", current_id)
-            #     self.log(f"\n[접속 시도] {target_url}")
-
-            #     md_output = None
-            #     title = ""
-            #     try:
-            #         if domain == "baekjoon":
-            #             # save_path 인자를 넘겨주어 이미지 저장 경로를 지정합니다.
-            #             result = scrape_baekjoon(target_url, save_dir=save_path, context=shared_context)
-            #             prefix = "bj"
-            #         else:
-            #             result = scrape_doingcoding(
-            #                 target_url,
-            #                 get_templates=get_templates,
-            #                 get_testcases=get_testcases,
-            #                 admin_username=admin_username,
-            #                 admin_password=admin_password,
-            #                 testcase_download_dir=save_path,
-            #                 show_browser=show_browser,
-            #                 logger=self.log,
-            #                 browser=shared_browser,
-            #                 admin_session=admin_session,
-            #             )
-            #             prefix = "dc"
-
-            #         if result == (None, None):
-            #             self.log(
-            #                 f"  ❌ 크롤링 실패 (요소를 찾을 수 없거나 삭제된 문제입니다)"
-            #             )
-            #             failures.append(target_url)
-            #             if not self._sleep_with_stop(1):
-            #                 stopped = True
-            #                 self.log("[중단] 실패 처리 대기 중 중단 요청을 확인했습니다.")
-            #                 break
-            #             continue
-
-            #         title, md_output = result
-
-            #         if self.stop_event.is_set():
-            #             stopped = True
-            #             self.log("[중단] 현재 항목 저장 전에 중단 요청을 확인했습니다.")
-            #             break
-
-            #         if md_output:
-            #             filename = f"{prefix}_{current_id}.md"
-            #             filepath = build_output_filepath(save_path, filename)
-            #             with open(filepath, "w", encoding="utf-8-sig") as f:
-            #                 f.write(md_output)
-
-            #             self.log(f"  ✅ [추출 성공] '{title}'")
-            #             self.log(f"  📂 저장 완료: {os.path.basename(filepath)}")
-            #             success_count += 1
-                    
-            #         sleep_time = random.uniform(1.5, 3.5)
-            #         self.log(f"  ⏳ 봇 탐지 우회를 위해 {sleep_time:.2f}초 대기합니다...")
-
-            #         if not self._sleep_with_stop(sleep_time):
-            #             stopped = True
-            #             self.log("[중단] 다음 항목 진행 전 중단 요청을 확인했습니다.")
-            #             break
-
-            #     except Exception as e:
-            #         self.log(f"  ❌ 시스템 에러 발생: {e}")
-            #         failures.append(target_url)
+                oks, fails = run_workers(retry_targets, 2, retry_round >= 2)
+                success_count += oks
+                failures.extend(fails)
+                
         finally:
-            # 공유 세션을 쓰지 않으므로 아래와 같이 간단히 정리합니다.
             if admin_session:
-                close_doingcoding_admin_session(admin_session)            
-            # close_doingcoding_admin_session(admin_session)
-            # if 'shared_context' in locals() and shared_context is not None:
-            #     try: shared_context.close()
-            #     except Exception: pass
-            # if 'shared_browser' in locals() and shared_browser is not None and shared_browser is not shared_context:
-            #     try: shared_browser.close()
-            #     except Exception: pass
-            # if 'shared_playwright' in locals() and shared_playwright is not None:
-            #     try: shared_playwright.stop()
-            #     except Exception: pass
+                close_doingcoding_admin_session(admin_session)
 
         if failures:
             failure_report = os.path.join(save_path, "crawl_failures.txt")

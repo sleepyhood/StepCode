@@ -1,6 +1,0 @@
-2026/04/18-02:07:42.405 777c Reusing MANIFEST c:\Users\osw\Desktop\Workspace\Projects\StepCode\practice\data\language_v2\browser_session\Default\Local Storage\leveldb/MANIFEST-000001
-2026/04/18-02:07:42.432 777c Recovering log #7
-2026/04/18-02:07:42.449 777c Reusing old log c:\Users\osw\Desktop\Workspace\Projects\StepCode\practice\data\language_v2\browser_session\Default\Local Storage\leveldb/000007.log 
-2026/04/18-02:08:46.963 777c Level-0 table #10: started
-2026/04/18-02:08:46.975 777c Level-0 table #10: 14209 bytes OK
-2026/04/18-02:08:46.978 777c Delete type=0 #7

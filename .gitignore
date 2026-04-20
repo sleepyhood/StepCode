@@ -2,3 +2,12 @@
 .env
 .gemini/settings.json 
 .gemini/mcp_config.json
+**/browser_session/
+*.zip
+__pycache__/
+*.py[cod]
+.venv/
+**/.obsidian/
+**/.pytest_cache/
+**/node_modules/
+**/.vscode/
