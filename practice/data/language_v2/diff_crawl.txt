@@ -1,0 +1,268 @@
+--- C:\Users\DCT2\Desktop\crawl.py
++++ C:\Users\DCT2\Desktop\DCT2_공유폴더\StepCode\practice\data\language_v2\crawl.py
+@@ -12,6 +12,7 @@
+ import time
+ from bs4 import BeautifulSoup
+ from markdownify import MarkdownConverter
++from datetime import datetime # 🚨 상단 임포트 섹션에 추가하거나 함수 내에 추가
+ 
+ class CustomMarkdownConverter(MarkdownConverter):
+     def convert_sup(self, el, text, **kwargs):
+@@ -82,6 +83,7 @@
+     page: object
+     username: str
+     password: str
++    owns_context: bool = True
+ 
+ 
+ def _clean_text(value):
+@@ -140,14 +142,30 @@
+             level = data.get("level", 0)
+             
+             tags = []
++            tag_keys = [] # 🚨 영문 키 저장을 위한 리스트 추가
+             for tag in data.get("tags", []):
++                tag_keys.append(tag.get("key")) # 🚨 영문 키(bruteforcing 등) 수집
+                 for display in tag.get("displayNames", []):
+                     if display.get("language") == "ko":
+                         tags.append(display.get("name"))
+             
+             if level > 0:
+                 print(f"    ✅ [Solved.ac 성공] Level: {level}, Tags: {len(tags)}개 추출 완료")
+-            return level, tags
++
++            # 추가 정보 추출
++            extra = {
++                "archived_at": datetime.now().strftime("%Y-%m-%d"), # 🚨 오늘 날짜 추가
++                "sprout": data.get("sprout", False),
++                "official": data.get("official", False),
++                "is_solvable": data.get("isSolvable", True), # 🚨 추가
++                "gives_no_rating": data.get("givesNoRating", False), # 🚨 추가
++                "accepted_user_count": data.get("acceptedUserCount", 0),
++                "average_tries": round(data.get("averageTries", 0), 2),
++                "is_level_locked": data.get("isLevelLocked", False), # 🚨 추가
++                "voted_user_count": data.get("votedUserCount", 0), # 🚨 추가
++                "tag_keys": tag_keys # 🚨 추가
++            }
++            return level, tags, extra
+             
+         elif response.status == 429:
+             print(f"  🚨 [경고] API 호출 제한! 60초 대기 후 재시도합니다... (문제: {problem_id})")
+@@ -280,7 +298,11 @@
+             
+         local_filename = f"{problem_id}_{original_filename}"
+         local_filepath = os.path.join(images_dir, local_filename)
+-        
++        # 🚨 [추가] 이미 이미지가 있다면 다운로드 생략 (시간 단축)
++        if os.path.exists(local_filepath):
++            img['src'] = f"./images/{local_filename}"
++            continue
++
+         try:
+             headers = {"User-Agent": "Mozilla/5.0"}
+             response = requests.get(img_url, stream=True, timeout=10, headers=headers)
+@@ -569,11 +591,15 @@
+     timeout=10000,
+     ready_selector=None,
+     attempts=3,
++    referer=None,
+ ):
+     last_error = None
+     for attempt in range(1, attempts + 1):
+         try:
+-            response = page.goto(url, wait_until=wait_until, timeout=timeout)
++            if referer:
++                response = page.goto(url, wait_until=wait_until, timeout=timeout, referer=referer)
++            else:
++                response = page.goto(url, wait_until=wait_until, timeout=timeout)
+             status = response.status if response is not None else "no-response"
+             print(f"[접속] {url} (시도 {attempt}/{attempts}, 상태: {status})")
+             if ready_selector:
+@@ -1224,10 +1250,17 @@
+ 
+ 
+ def open_doingcoding_admin_session(
+-    browser, admin_username, admin_password, logger=None
++    browser_or_context, admin_username, admin_password, logger=None
+ ):
+     _emit_log(logger, "[관리자 세션] 초기화 시작")
+-    context = browser.new_context(accept_downloads=True)
++    if hasattr(browser_or_context, 'new_context'):
++        context = browser_or_context.new_context(accept_downloads=True)
++        owns_context = True
++    else:
++        # If it's a PersistentContext, it doesn't have 'new_context'
++        context = browser_or_context
++        owns_context = False
++
+     page = context.new_page()
+     try:
+         login_doingcoding_admin(page, admin_username, admin_password, logger=logger)
+@@ -1237,16 +1270,19 @@
+             page=page,
+             username=admin_username,
+             password=admin_password,
++            owns_context=owns_context,
+         )
+     except Exception:
+-        context.close()
++        if owns_context:
++            context.close()
+         raise
+ 
+ 
+ def close_doingcoding_admin_session(session):
+     if not session:
+         return
+-    session.context.close()
++    if session.owns_context:
++        session.context.close()
+ 
+ 
+ def collect_doingcoding_testcases_with_session(
+@@ -1407,6 +1443,15 @@
+     prefix = data.get('prefix', 'bj')
+     platform_name = "baekjoon" if prefix == "bj" else "doingcoding"
+ 
++    # 상단에 불리언 변환 로직 추가
++    sprout_str = "true" if data.get("sprout") else "false"
++    official_str = "true" if data.get("official") else "false"
++    level_locked_str = "true" if data.get("is_level_locked") else "false" # 🚨 추가
++    solvable_str = "true" if data.get("is_solvable") else "false" # 🚨 추가
++    no_rating_str = "true" if data.get("gives_no_rating") else "false" # 🚨 추가
++    # 리스트 데이터를 YAML 형식 문자열로 변환 (tag_keys)
++    tag_keys_str = json.dumps(data.get("tag_keys", []), ensure_ascii=False)
++
+     # 최종 마크다운 조립
+     return f"""---
+ id: {prefix}_{data['problem_id']}
+@@ -1415,6 +1460,15 @@
+ is_scraped: true
+ level: {data['level']}
+ tier: "{get_solvedac_tier_name(data['level'])}"
++archived_at: "{data.get('archived_at', '')}"
++sprout: {sprout_str} 
++official: {official_str} 
++is_solvable: {solvable_str} 
++gives_no_rating: {no_rating_str}
++accepted_user_count: {data.get('accepted_user_count', 0)} 
++average_tries: {data.get('average_tries', 0)} 
++is_level_locked: {level_locked_str}
++voted_user_count: {data.get('voted_user_count', 0)}
+ time_limit: "{data['time_limit']}"
+ memory_limit: "{data['memory_limit']}"
+ has_subtask: {has_subtask_str}
+@@ -1422,6 +1476,7 @@
+ contest: {contest_str}
+ {authors_yaml}
+ tags: {tags_str}
++tag_keys: {tag_keys_str}
+ source_url: "{data['url']}"
+ ---
+ 
+@@ -1478,17 +1533,14 @@
+         context = browser.new_context()
+         own_browser_context = True
+ 
+-    if True:
++    try:
+         page = context.new_page()
+ 
+         # 🚨 [수정됨] 정규식을 사용하여 URL 경로 어디에든 mathjax가 포함되어 있으면 완벽히 차단
+         page.route(re.compile(r"mathjax", re.IGNORECASE), lambda route: route.abort())
+-        # 🚨 [추가] MathJax 스크립트 로드 원천 차단 🚨
+-        # 백준 서버에서 수식 변환기가 날아오는 것을 네트워크 단에서 격추시킵니다.
+-        # 이렇게 하면 원래의 순수 LaTeX 코드가 HTML에 고스란히 남습니다.
+-        # page.route("**/*mathjax*", lambda route: route.abort())
+-        # page.route("**/*MathJax*", lambda route: route.abort())
+         
++        problem_id = url.split("/")[-1]
++
+         try:
+             _goto_with_retries(
+                 page,
+@@ -1497,13 +1549,19 @@
+                 timeout=10000,
+                 ready_selector="#problem_title",
+                 attempts=3,
++                referer="https://www.acmicpc.net/problemset"
+             )
+-
+-            problem_id = url.split("/")[-1]
++            
++            # 🚨 [분장 3] 리퍼러 위조 + 마우스 스크롤 + 랜덤 체류 시간 (인간미 추가)
++            import random
++            scroll_height = random.randint(300, 700)
++            page.mouse.wheel(0, scroll_height)
++            page.wait_for_timeout(random.randint(500, 1500))
++
+             print(f"[{problem_id}번] 파싱 및 이미지 처리 시작...")
+ 
+             # 1. Solved.ac API 연동 (1단계 함수 호출)
+-            level, algo_tags = get_solvedac_level_and_tags(context, problem_id)
++            level, algo_tags, extra_info = get_solvedac_level_and_tags(context, problem_id)
+             
+             tags_list = ["baekjoon", "scraped"] + algo_tags
+ 
+@@ -1540,8 +1598,24 @@
+             # contest_list = list(dict.fromkeys(raw_contest_list))
+ 
+             # 4. 제목 추출
+-            title = page.locator("#problem_title").text_content(timeout=5000).strip()
+-
++            # 🚨 체크를 먼저 하고 텍스트를 가져옵니다.
++            title_element = page.locator("#problem_title")
++            if title_element.count() == 0:
++                print(f"  ⚠️ 무결성 체크 실패: 페이지에서 제목 요소를 찾을 수 없습니다.")
++                return None, None
++            
++            title = title_element.text_content(timeout=5000).strip()
++            # title = page.locator("#problem_title").text_content(timeout=5000).strip()
++            # title_element = page.locator("#problem_title")
++            # if title_element.count() == 0:
++            #     print(f"  ⚠️ 무결성 체크 실패: 페이지에서 제목 요소를 찾을 수 없습니다.")
++            #     return None, None
++            # Solved.ac API 제목과 대조 (제목이 너무 다르면 잘못된 페이지일 확률이 높음)
++            solvedac_title = extra_info.get('titleKo', '')
++            if solvedac_title and (solvedac_title not in title and title not in solvedac_title):
++                # 🚨 제목 불일치 시 '차단' 혹은 '비공개 문제'로 간주하고 실패 처리
++                print(f"  ⚠️ 무결성 체크 실패: API 제목('{solvedac_title}') vs 페이지 제목('{title}')")
++                return None, None
+             # 5. 본문 (문제/입력/출력) HTML 추출 및 로컬 이미지 변환 (2단계 함수 호출)
+ # 5. 본문 HTML 추출 및 로컬 이미지 변환 (안전 추출 함수 도입)
+             
+@@ -1702,6 +1776,7 @@
+             "has_hint": has_hint,
+             "contest": contest_list,
+             "tags": tags_list,
++            **extra_info,
+             "authors": author_list, # [추가]
+             "url": url, 
+             "description": description,
+@@ -1714,6 +1789,26 @@
+ 
+            # 4단계 함수 호출을 통해 깔끔하게 MDX 생성!
+         md_content = build_mdx_content(mdx_data)
++
++        # --- [3단계: 최종 무결성 검사] ---
++        # 1. 본문(description)이 너무 짧은 경우 (비정상 수집)
++        # 2. 결과물에 Cloudflare 차단 문구가 포함된 경우
++        error_keywords = ["Cloudflare", "Access Denied", "403 Forbidden", "무단 접근"]
++        # if len(description) < 50 or any(keyword in description for keyword in error_keywords):
++        if len(description.strip()) < 10 or any(keyword in md_content for keyword in error_keywords):
++            print(f"  ⚠️ 무결성 체크 실패: 본문이 너무 짧거나 차단 문구가 포함되어 있습니다.")
++            return None, None
++
++    finally:
++        try:
++            if 'page' in locals() and page:
++                page.close()
++            if own_browser_context:
++                context.close()
++                browser.close()
++                own_playwright.stop()
++        except Exception:
++            pass
+ 
+     return title, md_content
+ 

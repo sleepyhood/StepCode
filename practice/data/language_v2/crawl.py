@@ -135,6 +135,10 @@ def get_solvedac_level_and_tags(context, problem_id):
         # 페이지 접속 (가시성을 위해 창을 유지하며 로드)
         response = api_page.goto(url, wait_until="domcontentloaded", timeout=30000)
         
+        # 🚨 [신규] 404 Not Found 확인 시 즉시 예외 발생 (더미 파일 생성을 위함)
+        if response.status == 404:
+            raise ProblemNotFoundError(f"Solved.ac 확인 결과 존재하지 않는 문제입니다 (404): {problem_id}")
+            
         # 🚨 [패치됨] 고정 대기 대신, JSON 응답 고유 키가 나타날 때까지 대기 (최대 5초)
         try:
             api_page.wait_for_function("() => document.body.innerText.includes('problemId')", timeout=5000)
@@ -184,6 +188,9 @@ def get_solvedac_level_and_tags(context, problem_id):
             print(f"  ⚠️ Solved.ac API 통신 실패 (상태 코드: {response.status})")
             return 0, [], {}
             
+    except ProblemNotFoundError:
+        # 404 에러는 상위로 던져서 더미 파일을 생성하게 함
+        raise
     except Exception as e:
         print(f"  ⚠️ Solved.ac API 에러 ({problem_id}): {e}")
         return 0, [], {}
@@ -1558,6 +1565,7 @@ def build_mdx_content(data):
     no_rating_str = "true" if data.get("gives_no_rating") else "false" # 🚨 추가
     # 리스트 데이터를 YAML 형식 문자열로 변환 (tag_keys)
     tag_keys_str = json.dumps(data.get("tag_keys", []), ensure_ascii=False)
+    badges_str = json.dumps(data.get("badges", []), ensure_ascii=False) # 🚨 [신규] 배지 배열 변환
 
     # 최종 마크다운 조립
     return f"""---
@@ -1585,6 +1593,7 @@ contest: {contest_str}
 {authors_yaml}
 tags: {tags_str}
 tag_keys: {tag_keys_str}
+badges: {badges_str}
 source_url: "{data['url']}"
 ---
 
@@ -1627,6 +1636,110 @@ print(A + B)
 ```
 """
 
+def patch_file_badges(filepath, badges):
+    """
+    기존 마크다운 파일의 프론트매터에 badges 필드만 삽입하거나 교체합니다.
+    본문은 절대 수정하지 않습니다.
+    반환값: True(성공), False(프론트매터 구조 이상)
+    """
+    import re as _re
+    try:
+        with open(filepath, "r", encoding="utf-8-sig") as f:
+            content = f.read()
+
+        # 프론트매터 분리: --- 으로 시작하고 끝나는 영역
+        fm_match = _re.match(r"^(---\n)(.*?)(---\n?)(.*)", content, _re.DOTALL)
+        if not fm_match:
+            print(f"  ⚠️ [Light] 프론트매터 구조 이상: {filepath}")
+            return False
+
+        pre_delim  = fm_match.group(1)   # 첫 번째 ---\n
+        frontmatter = fm_match.group(2)  # 프론트매터 본문
+        end_delim  = fm_match.group(3)   # 두 번째 ---\n
+        body       = fm_match.group(4)   # 마크다운 본문
+
+        badges_str = json.dumps(badges, ensure_ascii=False)
+        new_field  = f"badges: {badges_str}\n"
+
+        if _re.search(r"^badges:", frontmatter, _re.MULTILINE):
+            # 이미 존재 → 값만 교체
+            frontmatter = _re.sub(
+                r"^badges:.*$",
+                new_field.rstrip(),
+                frontmatter,
+                flags=_re.MULTILINE
+            )
+        else:
+            # 없으면 프론트매터 마지막 줄 바로 위에 삽입
+            frontmatter = frontmatter.rstrip("\n") + "\n" + new_field
+
+        new_content = pre_delim + frontmatter + end_delim + body
+        with open(filepath, "w", encoding="utf-8-sig") as f:
+            f.write(new_content)
+        return True
+    except Exception as e:
+        print(f"  ❌ [Light] 파일 패치 실패 ({filepath}): {e}")
+        return False
+
+
+def scrape_baekjoon_light(url, context=None):
+    """
+    [초고속 배지 패치용] 백준 문제 페이지에서 problem-label 배지 텍스트만 수집합니다.
+    - Solved.ac API 호출 없음
+    - 이미지/CSS/폰트 등 비텍스트 리소스 전면 차단
+    - 반환값: badges_list (list[str]) | None (접속 실패)
+    """
+    own_playwright = None
+    own_browser_context = False
+    browser = None
+    if context is None:
+        own_playwright = sync_playwright().start()
+        browser = own_playwright.chromium.launch(headless=False)
+        context = browser.new_context()
+        own_browser_context = True
+
+    page = context.new_page()
+
+    # ★ 리소스 최소화: 이미지·CSS·폰트·미디어 전면 차단
+    BLOCK_TYPES = {"image", "stylesheet", "font", "media"}
+    def _block_heavy(route):
+        if route.request.resource_type in BLOCK_TYPES:
+            route.abort()
+        else:
+            route.continue_()
+    page.route("**/*", _block_heavy)
+    # MathJax도 차단
+    page.route(re.compile(r"mathjax", re.IGNORECASE), lambda r: r.abort())
+
+    problem_id = url.split("/")[-1]
+    try:
+        print(f"  🏃 [Light] {problem_id}번 배지 수집 중...")
+        _goto_with_retries(
+            page,
+            url,
+            wait_until="domcontentloaded",
+            timeout=20000,
+            ready_selector="#problem_title",
+            attempts=2,
+        )
+        badge_elements = page.locator("span.problem-label").all_inner_texts()
+        badges = [b.strip() for b in badge_elements if b.strip()]
+        print(f"  ✅ [Light] {problem_id}번 배지: {badges if badges else '없음'}")
+        return badges
+    except ProblemNotFoundError:
+        print(f"  ⚠️ [Light] {problem_id}번: 페이지 없음(404) - 스킵")
+        return None
+    except Exception as e:
+        print(f"  ❌ [Light] {problem_id}번 접속 실패: {e}")
+        return None
+    finally:
+        page.close()
+        if own_browser_context:
+            context.close()
+            browser.close()
+            own_playwright.stop()
+
+
 def scrape_baekjoon(url, save_dir=None, context=None):
     """
     백준 문제 페이지를 크롤링하여 이미지 다운로드 및 메타데이터가 포함된 MD 문자열을 반환합니다.
@@ -1652,6 +1765,12 @@ def scrape_baekjoon(url, save_dir=None, context=None):
         problem_id = url.split("/")[-1]
 
         try:
+            # 1. [Early Exit 방어 로직] Solved.ac API 연동을 가장 먼저 수행하여 404 조기 차단
+            print(f"[{problem_id}번] Solved.ac API 기반 사전 검증 및 데이터 수집 시작...")
+            level, algo_tags, extra_info = get_solvedac_level_and_tags(context, problem_id)
+            tags_list = ["baekjoon", "scraped"] + algo_tags
+
+            print(f"[{problem_id}번] 백준 본문 페이지 접속 및 파싱 시작...")
             _goto_with_retries(
                 page,
                 url,
@@ -1668,12 +1787,7 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             page.mouse.wheel(0, scroll_height)
             page.wait_for_timeout(random.randint(500, 1500))
 
-            print(f"[{problem_id}번] 파싱 및 이미지 처리 시작...")
-
-            # 1. Solved.ac API 연동 (1단계 함수 호출)
-            level, algo_tags, extra_info = get_solvedac_level_and_tags(context, problem_id)
-            
-            tags_list = ["baekjoon", "scraped"] + algo_tags
+            # 1. Solved.ac API 연동 (1단계 함수 호출) - 위치 위로 이동됨
 
             # 2. 기본 메타데이터 추출 (시간, 메모리)
             problem_info = page.locator('#problem-info tbody tr td').all_inner_texts()
@@ -1729,6 +1843,11 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                 if clean_solved not in clean_target and clean_target not in clean_solved:
                     print(f"  ⚠️ 무결성 체크 실패: API 제목('{solvedac_title}') vs 페이지 제목('{title}')")
                     return None, None
+                    
+            # 🚨 [신규] 배지(problem-label) 수집
+            badge_elements = page.locator('span.problem-label').all_inner_texts()
+            badges_list = [b.strip() for b in badge_elements if b.strip()]
+            
             # 5. 본문 (문제/입력/출력) HTML 추출 및 로컬 이미지 변환 (2단계 함수 호출)
 # 5. 본문 HTML 추출 및 로컬 이미지 변환 (안전 추출 함수 도입)
             
@@ -1848,6 +1967,8 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                 else:
                     break
 
+        except ProblemNotFoundError:
+            raise # 🚨 [버그 픽스] 404 에러를 상위(gui_crawler)로 전파하여 더미 파일 생성을 유도
         except Exception as e:
             print(f"크롤링 에러({problem_id}): {e}")
             return None, None
@@ -1908,7 +2029,8 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             "samples": samples,
             "subtask_md": subtask_md,
             "hint_md": hint_md,
-            "attachment_md": attachment_md # [추가]
+            "attachment_md": attachment_md, # [추가]
+            "badges": badges_list # 🚨 [신규] 배지 정보 추가
         }
 
            # 4단계 함수 호출을 통해 깔끔하게 MDX 생성!

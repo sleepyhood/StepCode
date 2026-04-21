@@ -8,8 +8,6 @@ import sys
 import queue
 import random
 from concurrent.futures import ThreadPoolExecutor # 🚨 추가
-from datetime import datetime  # <--- 추가
-
 MAX_WORKERS = 3 # 🚨 시스템 사양(8GB RAM)에 맞춰 3개 권장
 
 # 상위 폴더나 외부 모듈 의존성 등을 위해 경로 추가
@@ -23,11 +21,8 @@ try:
         close_doingcoding_admin_session,
         open_doingcoding_admin_session,
         scrape_baekjoon,
-        scrape_baekjoon_light,
-        patch_file_badges,
         scrape_doingcoding,
         upload_doingcoding_testcases_with_session,
-        ProblemNotFoundError
     )
     from .testcase_zip_export import (
         build_default_zip_name,
@@ -40,11 +35,8 @@ except ImportError:
         close_doingcoding_admin_session,
         open_doingcoding_admin_session,
         scrape_baekjoon,
-        scrape_baekjoon_light,
-        patch_file_badges,
         scrape_doingcoding,
         upload_doingcoding_testcases_with_session,
-        ProblemNotFoundError
     )
     from testcase_zip_export import (
         build_default_zip_name,
@@ -98,7 +90,6 @@ class CrawlerApp:
         self.get_testcases_var = tk.BooleanVar(value=False)
         self.show_browser_var = tk.BooleanVar(value=False)
         self.skip_existing_var = tk.BooleanVar(value=True)
-        self.light_mode_var = tk.BooleanVar(value=False)  # 🚨 [신규] 배지 전용 라이트 모드
         self.save_dir = tk.StringVar(value=os.getcwd())
         self.testcase_md_path = tk.StringVar(value="")
         self.testcase_zip_dir = tk.StringVar(value=os.getcwd())
@@ -130,16 +121,7 @@ class CrawlerApp:
         self._set_doingcoding_option_visibility()
         self.root.after(100, self.process_ui_queue)
 
-    def _on_light_mode_toggle(self):
-        """라이트 모드 활성 시 건너뛰기 체크박스 강제 비활성화."""
-        if self.light_mode_var.get():
-            self.check_skip_existing.config(state=tk.DISABLED)
-            self.skip_existing_var.set(False)
-        else:
-            self.check_skip_existing.config(state=tk.NORMAL)
-            self.skip_existing_var.set(True)
-
-    def _worker_loop(self, task_queue, result_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, worker_id, force_show_browser=False, skip_existing=True, light_mode=False):
+    def _worker_loop(self, task_queue, result_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, worker_id, force_show_browser=False, skip_existing=True):
         """각 스레드(워커)가 실행할 독립적인 크롤링 루프"""
         import queue
         worker_prefix = f"[Worker-{worker_id}]"
@@ -204,92 +186,29 @@ class CrawlerApp:
                     target_url = template.replace("{id}", current_id)
                     prefix = "bj" if domain == "baekjoon" else "dc"
                     filename = f"{prefix}_{current_id}.md"
-
-                    base_filepath = os.path.join(save_path, filename)
                     filepath = build_output_filepath(save_path, filename)
 
-                    # 🚨 [신규] 404 더미 파일 전용 경로 설정
-                    dummy_dir = os.path.join(save_path, "404_not_found")
-                    dummy_filepath = os.path.join(dummy_dir, filename)
+                    if skip_existing and os.path.exists(filepath):
+                        self.log(f"{worker_prefix} ⏩ 이미 존재하여 건너뜀: {current_id}")
+                        result_queue.put((current_id, True))
+                        task_queue.task_done()
+                        continue
 
-                    # 🚨 [개선] 건너뛰기(Skip) 로직 세분화 및 하위 폴더 연동
-                    if skip_existing:
-                        if os.path.exists(base_filepath) and os.path.getsize(base_filepath) > 200:
-                            self.log(f"{worker_prefix} ⏩ 이미 존재하여 건너뜀: {current_id}")
-                            result_queue.put((current_id, True))
-                            task_queue.task_done()
-                            continue
-                        elif os.path.exists(dummy_filepath):
-                            self.log(f"{worker_prefix} ⏩ [404] 삭제된 문제로 판명되어 건너뜀: {current_id}")
-                            result_queue.put((current_id, True))
-                            task_queue.task_done()
-                            continue
-
-                    # 🚨 [신규] 라이트 모드 분기
-                    if light_mode:
-                        # 대상 검사: 기존 파일이 있는 경우에만 진행
-                        if os.path.exists(dummy_filepath):
-                            self.log(f"{worker_prefix} ⏩ [Light] {current_id}번: 이미 없는 문제 - 스킵")
-                            result_queue.put((current_id, True))
-                            task_queue.task_done()
-                            continue
-                        if not os.path.exists(base_filepath):
-                            self.log(f"{worker_prefix} ⏩ [Light] {current_id}번: 기존 파일 없음 - 스킵")
-                            result_queue.put((current_id, True))
-                            task_queue.task_done()
-                            continue
-
-                        self.log(f"{worker_prefix} 🏃 [Light] {current_id}번 배지 수집 중...")
-                        result_ok = False
-                        try:
-                            badges = scrape_baekjoon_light(target_url, context=context)
-                            if badges is not None:
-                                ok = patch_file_badges(base_filepath, badges)
-                                if ok:
-                                    label = f"{badges}" if badges else "배지 없음"
-                                    self.log(f"{worker_prefix} ✅ [Light] {current_id}번 패치 완료: {label}")
-                                    result_ok = True
-                                else:
-                                    self.log(f"{worker_prefix} ⚠️ [Light] {current_id}번: 프론트매터 구조 이상")
-                        except Exception as e:
-                            self.log(f"{worker_prefix} ❌ [Light] {current_id}번 에러: {e}")
-
-                    else:
-                        # 기존 일반 크롤링 로직
-                        self.log(f"{worker_prefix} [{browser_engine}] {current_id}번 수집 중...")
-                        result_ok = False
-                        try:
-                            result = scrape_baekjoon(target_url, save_dir=save_path, context=context)
-
-                            if result and result[0] and result[1]:
-                                title, md_output = result
-                                with open(filepath, "w", encoding="utf-8-sig") as f:
-                                    f.write(md_output)
-                                self.log(f"{worker_prefix} ✅ {current_id}번 저장 완료: {title}")
-                                result_ok = True
-                        # --- 추가: 존재하지 않는 문제 처리 ---
-                        except ProblemNotFoundError as e:
-                            self.log(f"{worker_prefix} 📝 {current_id}번: 존재하지 않는 문제 (404 하위 폴더로 격리)")
-                            os.makedirs(dummy_dir, exist_ok=True)
-                            dummy_content = f"""---
-id: bj_{current_id}
-title: "삭제되거나 존재하지 않는 문제"
-platform: "baekjoon"
-is_scraped: false
-is_existent: false
-archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
----
-
-# [{current_id}번] 존재하지 않는 문제
-
-이 문제는 백준에서 삭제되었거나 존재하지 않는 번호입니다.
-"""
-                            with open(dummy_filepath, "w", encoding="utf-8-sig") as f:
-                                f.write(dummy_content)
+                    self.log(f"{worker_prefix} [{browser_engine}] {current_id}번 수집 중...")
+                    
+                    result_ok = False
+                    try:
+                        result = scrape_baekjoon(target_url, save_dir=save_path, context=context)
+                            
+                        if result and result[0] and result[1]:
+                            title, md_output = result
+                            with open(filepath, "w", encoding="utf-8-sig") as f:
+                                f.write(md_output)
+                            self.log(f"{worker_prefix} ✅ {current_id}번 저장 완료: {title}")
                             result_ok = True
-                        except Exception as e:
-                            self.log(f"{worker_prefix} ❌ {current_id}번 에러: {e}") 
-
+                    except Exception as e:
+                        self.log(f"{worker_prefix} ❌ {current_id}번 에러: {e}")
+                    
                     result_queue.put((current_id, result_ok))
                     task_queue.task_done()
                     
@@ -363,16 +282,6 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
             variable=self.skip_existing_var,
         )
         self.check_skip_existing.pack(pady=4)
-
-        # 🚨 [신규] 배지 전용 라이트 모드 체크박스
-        self.check_light_mode = tk.Checkbutton(
-            self.shared_settings_frame,
-            text="배지만 업데이트 [라이트 모드] (기존 파일 대상, 건너뛰기 무시)",
-            variable=self.light_mode_var,
-            fg="blue",
-            command=self._on_light_mode_toggle,
-        )
-        self.check_light_mode.pack(pady=4)
 
         self.admin_frame = tk.Frame(self.doingcoding_options_frame)
         self.admin_frame.pack(pady=(4, 0))
@@ -885,9 +794,7 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
         self.root.after(100, self.process_ui_queue)
 
     def log(self, message):
-        timestamp = datetime.now().strftime("[%H:%M:%S] ") # <--- 시간 생성
-        self.ui_queue.put(("log", timestamp + message))   # <--- 시간 합쳐서 전송
-        # self.ui_queue.put(("log", message))
+        self.ui_queue.put(("log", message))
 
     def start_crawl(self):
         if self.is_crawling:
@@ -933,7 +840,6 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
         get_testcases = self.get_testcases_var.get()
         show_browser = self.show_browser_var.get()
         skip_existing = self.skip_existing_var.get()
-        light_mode = self.light_mode_var.get()  # 🚨 [신규] 라이트 모드 여부
         admin_username, admin_password = resolve_admin_credentials(
             self.admin_username.get(),
             self.admin_password.get(),
@@ -984,7 +890,6 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
                 admin_password,
                 show_browser,
                 skip_existing,
-                light_mode,  # 🚨 [신규]
             ),
         )
         self.worker_thread.daemon = True
@@ -1023,7 +928,6 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
         admin_password,
         show_browser,
         skip_existing,
-        light_mode=False,  # 🚨 [신규]
     ):
         if not hasattr(self, "stop_event") or self.stop_event is None:
             self.stop_event = threading.Event()
@@ -1091,7 +995,7 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
                 for i in range(workers_count):
                     t = threading.Thread(
                         target=self._worker_loop,
-                        args=(t_queue, r_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, i, force_show, skip_existing, light_mode)  # 🚨 [신규] light_mode 전달
+                        args=(t_queue, r_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, i, force_show, skip_existing)
                     )
                     t.start()
                     threads.append(t)
