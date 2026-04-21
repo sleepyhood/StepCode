@@ -687,6 +687,7 @@ def _goto_with_retries(
     ready_selector=None,
     attempts=3,
     referer=None,
+    ready_selector_state="visible",  # 🔧 [FIX] 12096처럼 title이 hidden인 경우 "attached" 전달
 ):
     last_error = None
     for attempt in range(1, attempts + 1):
@@ -704,7 +705,7 @@ def _goto_with_retries(
             # ------------------------------------------
 
             if ready_selector:
-                page.wait_for_selector(ready_selector, timeout=timeout)
+                page.wait_for_selector(ready_selector, timeout=timeout, state=ready_selector_state)
             return response
         except ProblemNotFoundError:
             # 404 에러는 재시도가 무의미하므로 즉시 상위로 던짐
@@ -1778,7 +1779,8 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                 timeout=30000,
                 ready_selector="#problem_title",
                 attempts=3,
-                referer="https://www.acmicpc.net/problemset"
+                referer="https://www.acmicpc.net/problemset",
+                ready_selector_state="attached",  # 🔧 [FIX] 12096처럼 title이 hidden인 경우 대응
             )
             
             # 🚨 [분장 3] 리퍼러 위조 + 마우스 스크롤 + 랜덤 체류 시간 (인간미 추가)
@@ -1829,6 +1831,15 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                 return None, None
             
             title = title_element.text_content(timeout=5000).strip()
+            # 🔧 [FIX] 페이지 제목이 비어있는 경우 (예: 12096번 IQ Test)
+            # Solved.ac API에서 미리 수집한 titleKo를 폴백으로 사용
+            if not title:
+                fallback_title = extra_info.get('titleKo', '')
+                if fallback_title:
+                    title = fallback_title
+                    print(f"  ⚠️ [{problem_id}번] #problem_title 비어있음 - Solved.ac 제목으로 폴백: '{title}'")
+                else:
+                    title = f"문제 {problem_id}"
             # title = page.locator("#problem_title").text_content(timeout=5000).strip()
             # title_element = page.locator("#problem_title")
             # if title_element.count() == 0:
@@ -1860,9 +1871,11 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             # 🚨 [추가] 백준의 불규칙한 HTML ID를 무시하고 '화면에 보이는 제목'으로 강제 추적하는 헬퍼
             def get_section_by_heading(heading_text):
                 # h2 태그에 특정 텍스트가 있는 section을 찾고, 그 안의 본문(.problem-text)을 가져옵니다.
+                # 🔧 [FIX] .first 사용: 함수 구현형 문제 등 동일 heading이 2개 이상인 경우
+                # Playwright strict mode violation (2 elements matched) 방지
                 selector = f"section:has(h2:has-text('{heading_text}')) .problem-text"
                 if page.locator(selector).count() > 0:
-                    return page.locator(selector).inner_html()
+                    return page.locator(selector).first.inner_html()
                 return ""
 
             desc_html = get_html_safe("#problem_description")
@@ -1949,8 +1962,10 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             samples = []
             i = 1
             while True:
-                in_sel = f"#sample-input-{i}"
-                out_sel = f"#sample-output-{i}"
+                # 🔧 [FIX] 2029번처럼 description 안에 동일 ID(<pre>)가 존재하는 경우
+                # pre.sampledata 클래스 조건 추가로 실제 예제 박스만 정확히 타겟팅
+                in_sel = f"pre.sampledata#sample-input-{i}"
+                out_sel = f"pre.sampledata#sample-output-{i}"
                 if page.locator(in_sel).count() > 0 and page.locator(out_sel).count() > 0:
                     s_in = page.locator(in_sel).inner_text().strip()
                     s_out = page.locator(out_sel).inner_text().strip()
