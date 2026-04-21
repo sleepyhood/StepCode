@@ -1662,26 +1662,81 @@ def patch_file_badges(filepath, badges):
         badges_str = json.dumps(badges, ensure_ascii=False)
         new_field  = f"badges: {badges_str}\n"
 
-        if _re.search(r"^badges:", frontmatter, _re.MULTILINE):
-            # 이미 존재 → 값만 교체
-            frontmatter = _re.sub(
-                r"^badges:.*$",
-                new_field.rstrip(),
-                frontmatter,
-                flags=_re.MULTILINE
-            )
-        else:
-            # 없으면 프론트매터 마지막 줄 바로 위에 삽입
-            frontmatter = frontmatter.rstrip("\n") + "\n" + new_field
+        # [핵심] 기존 badges 라인이 어디에 있든 일단 제거 (위치 교정을 위해)
+        frontmatter = _re.sub(r"^badges:.*$\n?", "", frontmatter, flags=_re.MULTILINE)
 
+        # [핵심] 항상 source_url 바로 위에 삽입
+        if _re.search(r"^source_url:", frontmatter, _re.MULTILINE):
+            frontmatter = _re.sub(r"^(source_url:)", new_field + r"\1", frontmatter, flags=_re.MULTILINE)
+        else:
+            frontmatter = frontmatter.rstrip("\n") + "\n" + new_field
         new_content = pre_delim + frontmatter + end_delim + body
         with open(filepath, "w", encoding="utf-8-sig") as f:
             f.write(new_content)
         return True
-    except Exception as e:
-        print(f"  ❌ [Light] 파일 패치 실패 ({filepath}): {e}")
-        return False
+    except Exception: return False
 
+
+    #     if _re.search(r"^badges:", frontmatter, _re.MULTILINE):
+    #         # 이미 존재 → 값만 교체
+    #         frontmatter = _re.sub(
+    #             r"^badges:.*$",
+    #             new_field.rstrip(),
+    #             frontmatter,
+    #             flags=_re.MULTILINE
+    #         )
+    #     else:
+    #         # 없으면 프론트매터 마지막 줄 바로 위에 삽입
+    #         # frontmatter = frontmatter.rstrip("\n") + "\n" + new_field
+    #         if _re.search(r"^source_url:", frontmatter, _re.MULTILINE):
+    #             frontmatter = _re.sub(r"^(source_url:)", new_field + r"\1", frontmatter, flags=_re.MULTILINE)
+    #         else:
+    #             frontmatter = frontmatter.rstrip("\n") + "\n" + new_field
+
+    #     new_content = pre_delim + frontmatter + end_delim + body
+    #     with open(filepath, "w", encoding="utf-8-sig") as f:
+    #         f.write(new_content)
+    #     return True
+    # except Exception as e:
+    #     print(f"  ❌ [Light] 파일 패치 실패 ({filepath}): {e}")
+    #     return False
+# 특수 배지: 본문 구조가 표준과 달라 재수집이 필요한 배지 목록
+SPECIAL_BADGES = {
+    "인터랙티브", "함수 구현", "클래스 구현", "투 스텝",
+    "스페셜 저지", "서브태스크", "점수", "전체 채점",
+    "언어 제한", "피드백", "번외", "채점 준비 중",
+}
+
+
+def has_special_badge(badges: list) -> bool:
+    """badges 리스트에 특수 배지가 하나라도 포함되어 있으면 True."""
+    if not badges:
+        return False
+    return bool(set(badges) & SPECIAL_BADGES)
+
+
+# 배지 상태 분석 함수
+def analyze_badge_status(filepath):
+    """
+    파일을 읽어 배지 상태 분석: ("CORRECT", badges), ("WRONG_POSITION", badges), ("MISSING", None)
+    """
+    import re as _re
+    try:
+        with open(filepath, "r", encoding="utf-8-sig") as f:
+            fm_match = _re.match(r"^---\n(.*?)\n---", f.read(), _re.DOTALL)
+        if not fm_match: return "MISSING", None
+        fm = fm_match.group(1)
+        # 값 추출
+        b_match = _re.search(r"^badges:\s*(.*)$", fm, _re.MULTILINE)
+        if not b_match: return "MISSING", None
+        
+        try: badges = json.loads(b_match.group(1))
+        except: badges = []
+        # 위치 검사: badges 바로 다음 줄이 source_url인지 확인
+        if _re.search(r"^badges:.*\nsource_url:", fm, _re.MULTILINE):
+            return "CORRECT", badges
+        return "WRONG_POSITION", badges
+    except: return "MISSING", None
 
 def scrape_baekjoon_light(url, context=None):
     """

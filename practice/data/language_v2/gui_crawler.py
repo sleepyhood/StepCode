@@ -25,6 +25,8 @@ try:
         scrape_baekjoon,
         scrape_baekjoon_light,
         patch_file_badges,
+        analyze_badge_status,
+        has_special_badge,
         scrape_doingcoding,
         upload_doingcoding_testcases_with_session,
         ProblemNotFoundError
@@ -42,6 +44,8 @@ except ImportError:
         scrape_baekjoon,
         scrape_baekjoon_light,
         patch_file_badges,
+        analyze_badge_status,
+        has_special_badge,
         scrape_doingcoding,
         upload_doingcoding_testcases_with_session,
         ProblemNotFoundError
@@ -226,33 +230,91 @@ class CrawlerApp:
                             continue
 
                     # 🚨 [신규] 라이트 모드 분기
+                    # 🚨 [개선] 3분기 라이트 모드 (분석 후 필요한 경우만 크롤링)
                     if light_mode:
-                        # 대상 검사: 기존 파일이 있는 경우에만 진행
+                        # [GUARD] 404 더미 파일이 있는 문제 -> 크롤링 불필요, 즉시 스킵
                         if os.path.exists(dummy_filepath):
-                            self.log(f"{worker_prefix} ⏩ [Light] {current_id}번: 이미 없는 문제 - 스킵")
+                            self.log(f"{worker_prefix} [{worker_prefix}] [Light] {current_id}번: 삭제된 문제 (404) - 스킵")
                             result_queue.put((current_id, True))
                             task_queue.task_done()
                             continue
+                        # [GUARD] 원본 파일 자체가 없는 경우 -> 라이트 모드 대상 아님, 스킵
                         if not os.path.exists(base_filepath):
-                            self.log(f"{worker_prefix} ⏩ [Light] {current_id}번: 기존 파일 없음 - 스킵")
+                            self.log(f"{worker_prefix} [Light] {current_id}번: 기존 파일 없음 - 스킵")
                             result_queue.put((current_id, True))
                             task_queue.task_done()
                             continue
 
-                        self.log(f"{worker_prefix} 🏃 [Light] {current_id}번 배지 수집 중...")
-                        result_ok = False
-                        try:
-                            badges = scrape_baekjoon_light(target_url, context=context)
-                            if badges is not None:
-                                ok = patch_file_badges(base_filepath, badges)
-                                if ok:
-                                    label = f"{badges}" if badges else "배지 없음"
-                                    self.log(f"{worker_prefix} ✅ [Light] {current_id}번 패치 완료: {label}")
+                        # [STEP 1] 로컬 상태 분석
+                        status, current_badges = analyze_badge_status(base_filepath)
+
+                        # [STEP 2] 특수 배지 검사 -> Full Re-crawl 강제 전환
+                        if has_special_badge(current_badges):
+                            label = ", ".join(current_badges)
+                            self.log(f"{worker_prefix} 🔥 [Light] {current_id}번: 특수 배지({label}) -> 전체 재수집")
+                            result_ok = False
+                            try:
+                                result = scrape_baekjoon(target_url, save_dir=save_path, context=context)
+                                if result and result[0] and result[1]:
+                                    title, md_output = result
+                                    with open(base_filepath, "w", encoding="utf-8-sig") as f:
+                                        f.write(md_output)
+                                    self.log(f"{worker_prefix} ✅ [Light/Full] {current_id}번 재수집 완료: {title}")
                                     result_ok = True
-                                else:
-                                    self.log(f"{worker_prefix} ⚠️ [Light] {current_id}번: 프론트매터 구조 이상")
-                        except Exception as e:
-                            self.log(f"{worker_prefix} ❌ [Light] {current_id}번 에러: {e}")
+                            except ProblemNotFoundError:
+                                self.log(f"{worker_prefix} ⚠️ [Light] {current_id}번: 특수 배지 문제가 404 (스킵)")
+                                result_ok = True
+                            except Exception as e:
+                                self.log(f"{worker_prefix} ❌ [Light] {current_id}번 재수집 에러: {e}")
+
+                        elif status == "CORRECT":
+                            # 시나리오 1: 완벽함 -> 스킵
+                            self.log(f"{worker_prefix} ✅ [Light] {current_id}번: 이미 정위치에 존재 - 스킵")
+                            result_ok = True
+
+                        elif status == "WRONG_POSITION":
+                            # 시나리오 2: 위치만 틀림 -> 크롤링 없이 로컬 수정만 수행
+                            self.log(f"{worker_prefix} 🔧 [Light] {current_id}번: 위치 교정 중 (크롤링 불필요)...")
+                            result_ok = patch_file_badges(base_filepath, current_badges)
+
+                        else:
+                            # 시나리오 3: 아예 없음 -> 경량 크롤링 수행
+                            result_ok = False
+                            self.log(f"{worker_prefix} 🏃 [Light] {current_id}번: 정보 없음 - 크롤링 시작...")
+                            try:
+                                badges = scrape_baekjoon_light(target_url, context=context)
+                                if badges is not None:
+                                    result_ok = patch_file_badges(base_filepath, badges)
+                            except Exception as e:
+                                self.log(f"{worker_prefix} ❌ [Light] {current_id}번 에러: {e}")
+                    
+                    # if light_mode:
+                    #     # 대상 검사: 기존 파일이 있는 경우에만 진행
+                    #     if os.path.exists(dummy_filepath):
+                    #         self.log(f"{worker_prefix} ⏩ [Light] {current_id}번: 이미 없는 문제 - 스킵")
+                    #         result_queue.put((current_id, True))
+                    #         task_queue.task_done()
+                    #         continue
+                    #     if not os.path.exists(base_filepath):
+                    #         self.log(f"{worker_prefix} ⏩ [Light] {current_id}번: 기존 파일 없음 - 스킵")
+                    #         result_queue.put((current_id, True))
+                    #         task_queue.task_done()
+                    #         continue
+
+                    #     self.log(f"{worker_prefix} 🏃 [Light] {current_id}번 배지 수집 중...")
+                    #     result_ok = False
+                    #     try:
+                    #         badges = scrape_baekjoon_light(target_url, context=context)
+                    #         if badges is not None:
+                    #             ok = patch_file_badges(base_filepath, badges)
+                    #             if ok:
+                    #                 label = f"{badges}" if badges else "배지 없음"
+                    #                 self.log(f"{worker_prefix} ✅ [Light] {current_id}번 패치 완료: {label}")
+                    #                 result_ok = True
+                    #             else:
+                    #                 self.log(f"{worker_prefix} ⚠️ [Light] {current_id}번: 프론트매터 구조 이상")
+                    #     except Exception as e:
+                    #         self.log(f"{worker_prefix} ❌ [Light] {current_id}번 에러: {e}")
 
                     else:
                         # 기존 일반 크롤링 로직
