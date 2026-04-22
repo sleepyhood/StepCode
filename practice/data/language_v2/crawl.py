@@ -557,6 +557,31 @@ def _extract_section_after_heading(content_root, labels):
     return ""
 
 
+def _extract_section_html_after_heading(content_root, labels):
+    """
+    특정 헤더 이후의 내용을 HTML 문자열로 추출합니다. (이미지 수집용)
+    """
+    children = list(_iter_direct_children(content_root))
+    for index, child in enumerate(children):
+        text = _element_text(child)
+        if not _matches_heading(text, labels):
+            continue
+
+        chunks = []
+        for sibling in children[index + 1 :]:
+            sibling_text = _element_text(sibling)
+            # 다음 섹션 헤더를 만나면 중단
+            if _looks_like_section_heading(sibling_text):
+                break
+            # HTML 요소 자체를 문자열로 변환
+            chunks.append(html.tostring(sibling, encoding="unicode"))
+
+        if chunks:
+            return "".join(chunks)
+
+    return ""
+
+
 def _find_doingcoding_content_root(tree):
     roots = tree.xpath('//*[@id="problem-content"]')
     return roots[0] if roots else None
@@ -1821,10 +1846,17 @@ def scrape_baekjoon(url, save_dir=None, context=None):
         problem_id = url.split("/")[-1]
 
         try:
-            # 1. [Early Exit 방어 로직] Solved.ac API 연동을 가장 먼저 수행하여 404 조기 차단
-            print(f"[{problem_id}번] Solved.ac API 기반 사전 검증 및 데이터 수집 시작...")
-            level, algo_tags, extra_info = get_solvedac_level_and_tags(context, problem_id)
-            tags_list = ["baekjoon", "scraped"] + algo_tags
+            # 1. [Early Exit 방어 로직] Solved.ac API 연동 (백준 도메인일 때만 수행)
+            level, algo_tags, extra_info = 0, [], {}
+            is_baekjoon = "acmicpc.net" in url
+            
+            if is_baekjoon:
+                print(f"[{problem_id}번] Solved.ac API 기반 사전 검증 및 데이터 수집 시작...")
+                level, algo_tags, extra_info = get_solvedac_level_and_tags(context, problem_id)
+                tags_list = ["baekjoon", "scraped"] + algo_tags
+            else:
+                print(f"[{problem_id}번] 백준 외 도메인으로 감지됨. Solved.ac API 수집을 생략합니다.")
+                tags_list = ["scraped"]
 
             print(f"[{problem_id}번] 백준 본문 페이지 접속 및 파싱 시작...")
             _goto_with_retries(
@@ -2304,52 +2336,81 @@ def scrape_doingcoding(
             except:
                 return "(내용 없음)"
 
-        title = _find_doingcoding_title(tree) or get_text(
-            '//*[@id="problem-main"]/div[3]/div[1]/div/div', 5000
-        )
+        # 1. 제목 및 메타데이터(시간/메모리 제한) 정밀 추출
+        time_limit = "1s"
+        memory_limit = "256MB"
+        title = "Unknown Title"
+        
+        try:
+            # 제목 추출: .panel-title > div
+            title_el = page.locator(".panel-title > div").first
+            if title_el.count() > 0:
+                title = title_el.inner_text().strip()
+            
+            # 메타데이터 추출: #info p
+            meta_locator = page.locator("#info p").first
+            if meta_locator.count() > 0:
+                meta_text = meta_locator.inner_text().strip()
+                import re as _re
+                # 예: "문제 ID : ALLv05001 | 시간 제한 : 1000MS | 메모리 제한 : 256MB"
+                t_m = _re.search(r"시간 제한\s*:\s*(\d+)MS", meta_text)
+                m_m = _re.search(r"메모리 제한\s*:\s*(\d+)MB", meta_text)
+                if t_m: 
+                    # MS -> s 변환 (예: 1000MS -> 1s)
+                    ms_val = int(t_m.group(1))
+                    time_limit = f"{ms_val/1000:g}s"
+                if m_m: 
+                    memory_limit = f"{m_m.group(1)}MB"
+        except Exception as e:
+            print(f"DoingCoding 메타데이터 추출 중 오류: {e}")
+
         if title == "(내용 없음)" or not _clean_text(title):
-            # 제목마저 못가져오면 진짜 아예 페이지가 없거나 로딩이 실패한 것임
-            raise Exception("제목 요소를 찾을 수 없음")
+            # 폴백: 기존 h1~h3 검색
+            title_fallback = _find_doingcoding_title(tree)
+            if title_fallback and _clean_text(title_fallback):
+                title = title_fallback
+            else:
+                raise Exception("제목 요소를 찾을 수 없음")
 
         description = ""
         input_desc = ""
         output_desc = ""
-        if content_root is not None:
-            description = _extract_section_after_heading(
-                content_root, SECTION_HEADINGS["description"]
-            )
-            input_desc = _extract_section_after_heading(
-                content_root, SECTION_HEADINGS["input"]
-            )
-            output_desc = _extract_section_after_heading(
-                content_root, SECTION_HEADINGS["output"]
-            )
+        save_dir = testcase_download_dir # GUI에서 md 저장 폴더 경로로 전달됨
+        
+        # 섹션별 HTML 추출 및 이미지 처리
+        # DoingCoding은 .title과 .content 가 쌍으로 나타남
+        problem_content_el = page.locator("#problem-content")
+        if problem_content_el.count() > 0:
+            titles = page.locator("#problem-content .title").all()
+            contents = page.locator("#problem-content .content").all()
+            
+            for t_el, c_el in zip(titles, contents):
+                t_text = t_el.inner_text().strip()
+                c_html = c_el.inner_html()
+                
+                # 이미지 처리 및 마크다운 변환
+                # browser 변수가 실제로는 BrowserContext이므로 context 인자로 전달
+                processed_html = process_html_and_download_images(c_html, url, save_dir, problem_id, context=browser)
+                md_text = processed_html # process_html_and_download_images가 이미 md를 반환함 (함수 내부에서 md() 호출)
+                
+                if _matches_heading(t_text, SECTION_HEADINGS["description"]):
+                    description = md_text
+                elif _matches_heading(t_text, SECTION_HEADINGS["input"]):
+                    input_desc = md_text
+                elif _matches_heading(t_text, SECTION_HEADINGS["output"]):
+                    output_desc = md_text
 
-        description = description or get_text('//*[@id="problem-content"]/p[2]')
-        input_desc = input_desc or get_text('//*[@id="problem-content"]/p[4]')
-        output_desc = output_desc or get_text('//*[@id="problem-content"]/p[6]')
+        # 샘플 입출력 추출 (.sample-input, .sample-output 기반)
+        samples = []
+        sample_in_els = page.locator(".sample-input pre").all()
+        sample_out_els = page.locator(".sample-output pre").all()
+        
+        for si, so in zip(sample_in_els, sample_out_els):
+            samples.append((si.inner_text().strip(), so.inner_text().strip()))
 
-        # 샘플 입출력 추출 (다중 샘플 대응)
-        samples = (
-            _extract_sample_pairs(content_root) if content_root is not None else []
-        )
-        if not samples:
-            i = 1
-            while True:
-                in_xpath = f'//*[@id="problem-content"]/div[{i}]/div/div[1]/pre'
-                out_xpath = f'//*[@id="problem-content"]/div[{i}]/div/div[2]/pre'
+        # 힌트 추출 (DoingCoding은 표준 힌트 섹션이 명확하지 않아 비워둠)
+        hint = ""
 
-                s_in = get_text(in_xpath, timeout=1000)
-                s_out = get_text(out_xpath, timeout=1000)
-
-                if s_in == "(내용 없음)" and s_out == "(내용 없음)":
-                    break
-
-                samples.append((s_in, s_out))
-                i += 1
-
-        # 힌트 추출 (사용자 제공 XPath)
-        hint = get_text('//*[@id="problem-content"]/div[2]/div/div/div')
 
         # 코드 템플릿 추출 (C, C++, Python3, Java) - 옵션 선택 시에만 동작
         templates = {}
@@ -2466,8 +2527,13 @@ def scrape_doingcoding(
     # 수석 감수자 권장 마크다운(MD) 템플릿에 맞추어 문자열 포매팅
     md_content = f"""---
 id: dc_{problem_id}
+title: "{title}"
+platform: "doingcoding"
+is_scraped: true
+time_limit: "{time_limit}"
+memory_limit: "{memory_limit}"
 tags: [doingcoding, scraped]
-source: {url}
+source_url: "{url}"
 ---
 
 # [{problem_id}번] {title}

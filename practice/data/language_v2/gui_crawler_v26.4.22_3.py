@@ -202,6 +202,13 @@ class CrawlerApp:
                     
                     try:
                         current_id = task_queue.get_nowait()
+                        # 🚨 [신규] 진행 카운트 증가 및 로컬 인덱스 확보
+                        with self.count_lock:
+                            self.processed_count += 1
+                            current_idx = self.processed_count
+                            total_count = self.total_tasks
+                        
+                        progress_info = f"({current_idx}/{total_count})"
                     except queue.Empty:
                         break
 
@@ -219,12 +226,12 @@ class CrawlerApp:
                     # 🚨 [개선] 건너뛰기(Skip) 로직 세분화 및 하위 폴더 연동
                     if skip_existing:
                         if os.path.exists(base_filepath) and os.path.getsize(base_filepath) > 200:
-                            self.log(f"{worker_prefix} ⏩ 이미 존재하여 건너뜀: {current_id}")
+                            self.log(f"{worker_prefix} {progress_info} ⏩ 이미 존재하여 건너뜀: {current_id}")
                             result_queue.put((current_id, True))
                             task_queue.task_done()
                             continue
                         elif os.path.exists(dummy_filepath):
-                            self.log(f"{worker_prefix} ⏩ [404] 삭제된 문제로 판명되어 건너뜀: {current_id}")
+                            self.log(f"{worker_prefix} {progress_info} ⏩ [404] 삭제된 문제로 판명되어 건너뜀: {current_id}")
                             result_queue.put((current_id, True))
                             task_queue.task_done()
                             continue
@@ -234,13 +241,13 @@ class CrawlerApp:
                     if light_mode:
                         # [GUARD] 404 더미 파일이 있는 문제 -> 크롤링 불필요, 즉시 스킵
                         if os.path.exists(dummy_filepath):
-                            self.log(f"{worker_prefix} [{worker_prefix}] [Light] {current_id}번: 삭제된 문제 (404) - 스킵")
+                            self.log(f"{worker_prefix} {progress_info} [Light] {current_id}번: 삭제된 문제 (404) - 스킵")
                             result_queue.put((current_id, True))
                             task_queue.task_done()
                             continue
                         # [GUARD] 원본 파일 자체가 없는 경우 -> 라이트 모드 대상 아님, 스킵
                         if not os.path.exists(base_filepath):
-                            self.log(f"{worker_prefix} [Light] {current_id}번: 기존 파일 없음 - 스킵")
+                            self.log(f"{worker_prefix} {progress_info} [Light] {current_id}번: 기존 파일 없음 - 스킵")
                             result_queue.put((current_id, True))
                             task_queue.task_done()
                             continue
@@ -251,7 +258,7 @@ class CrawlerApp:
                         # [STEP 2] 특수 배지 검사 -> Full Re-crawl 강제 전환
                         if has_special_badge(current_badges):
                             label = ", ".join(current_badges)
-                            self.log(f"{worker_prefix} 🔥 [Light] {current_id}번: 특수 배지({label}) -> 전체 재수집")
+                            self.log(f"{worker_prefix} {progress_info} 🔥 [Light] {current_id}번: 특수 배지({label}) -> 전체 재수집")
                             result_ok = False
                             try:
                                 result = scrape_baekjoon(target_url, save_dir=save_path, context=context)
@@ -259,34 +266,34 @@ class CrawlerApp:
                                     title, md_output = result
                                     with open(base_filepath, "w", encoding="utf-8-sig") as f:
                                         f.write(md_output)
-                                    self.log(f"{worker_prefix} ✅ [Light/Full] {current_id}번 재수집 완료: {title}")
+                                    self.log(f"{worker_prefix} {progress_info} ✅ [Light/Full] {current_id}번 재수집 완료: {title}")
                                     result_ok = True
                             except ProblemNotFoundError:
-                                self.log(f"{worker_prefix} ⚠️ [Light] {current_id}번: 특수 배지 문제가 404 (스킵)")
+                                self.log(f"{worker_prefix} {progress_info} ⚠️ [Light] {current_id}번: 특수 배지 문제가 404 (스킵)")
                                 result_ok = True
                             except Exception as e:
-                                self.log(f"{worker_prefix} ❌ [Light] {current_id}번 재수집 에러: {e}")
+                                self.log(f"{worker_prefix} {progress_info} ❌ [Light] {current_id}번 재수집 에러: {e}")
 
                         elif status == "CORRECT":
                             # 시나리오 1: 완벽함 -> 스킵
-                            self.log(f"{worker_prefix} ✅ [Light] {current_id}번: 이미 정위치에 존재 - 스킵")
+                            self.log(f"{worker_prefix} {progress_info} ✅ [Light] {current_id}번: 이미 정위치에 존재 - 스킵")
                             result_ok = True
 
                         elif status == "WRONG_POSITION":
                             # 시나리오 2: 위치만 틀림 -> 크롤링 없이 로컬 수정만 수행
-                            self.log(f"{worker_prefix} 🔧 [Light] {current_id}번: 위치 교정 중 (크롤링 불필요)...")
+                            self.log(f"{worker_prefix} {progress_info} 🔧 [Light] {current_id}번: 위치 교정 중 (크롤링 불필요)...")
                             result_ok = patch_file_badges(base_filepath, current_badges)
 
                         else:
                             # 시나리오 3: 아예 없음 -> 경량 크롤링 수행
                             result_ok = False
-                            self.log(f"{worker_prefix} 🏃 [Light] {current_id}번: 정보 없음 - 크롤링 시작...")
+                            self.log(f"{worker_prefix} {progress_info} 🏃 [Light] {current_id}번: 정보 없음 - 크롤링 시작...")
                             try:
                                 badges = scrape_baekjoon_light(target_url, context=context)
                                 if badges is not None:
                                     result_ok = patch_file_badges(base_filepath, badges)
                             except Exception as e:
-                                self.log(f"{worker_prefix} ❌ [Light] {current_id}번 에러: {e}")
+                                self.log(f"{worker_prefix} {progress_info} ❌ [Light] {current_id}번 에러: {e}")
                     
                     # if light_mode:
                     #     # 대상 검사: 기존 파일이 있는 경우에만 진행
@@ -317,21 +324,35 @@ class CrawlerApp:
                     #         self.log(f"{worker_prefix} ❌ [Light] {current_id}번 에러: {e}")
 
                     else:
-                        # 기존 일반 크롤링 로직
-                        self.log(f"{worker_prefix} [{browser_engine}] {current_id}번 수집 중...")
+                        # 도메인별 전용 엔진 호출 (백준 vs 학원사이트)
+                        self.log(f"{worker_prefix} {progress_info} [{browser_engine}] {current_id}번 수집 중...")
                         result_ok = False
                         try:
-                            result = scrape_baekjoon(target_url, save_dir=save_path, context=context)
+                            if domain == "baekjoon":
+                                result = scrape_baekjoon(target_url, save_dir=save_path, context=context)
+                            else:
+                                # 학원 사이트 전용 엔진 호출 (context를 browser 인자로 전달)
+                                result = scrape_doingcoding(
+                                    target_url,
+                                    get_templates=get_templates,
+                                    get_testcases=get_testcases,
+                                    admin_username=admin_username,
+                                    admin_password=admin_password,
+                                    testcase_download_dir=save_path,
+                                    show_browser=show_browser,
+                                    logger=self.log,
+                                    browser=context
+                                )
 
                             if result and result[0] and result[1]:
                                 title, md_output = result
                                 with open(filepath, "w", encoding="utf-8-sig") as f:
                                     f.write(md_output)
-                                self.log(f"{worker_prefix} ✅ {current_id}번 저장 완료: {title}")
+                                self.log(f"{worker_prefix} {progress_info} ✅ {current_id}번 저장 완료: {title}")
                                 result_ok = True
                         # --- 추가: 존재하지 않는 문제 처리 ---
                         except ProblemNotFoundError as e:
-                            self.log(f"{worker_prefix} 📝 {current_id}번: 존재하지 않는 문제 (404 하위 폴더로 격리)")
+                            self.log(f"{worker_prefix} {progress_info} 📝 {current_id}번: 존재하지 않는 문제 (404 하위 폴더로 격리)")
                             os.makedirs(dummy_dir, exist_ok=True)
                             dummy_content = f"""---
 id: bj_{current_id}
@@ -659,9 +680,12 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
     def _set_doingcoding_option_visibility(self):
         if self.domain_var.get() == "doingcoding":
             self.doingcoding_options_frame.pack(fill="x", pady=(12, 0))
+            self.check_light_mode.pack_forget() # 🚨 [추가] 학원 사이트 모드에서는 뱃지 전용 모드 숨김
+            self.light_mode_var.set(False)      # 🚨 [추가] 상태 초기화
             return
 
         self.doingcoding_options_frame.pack_forget()
+        self.check_light_mode.pack(pady=4)      # 🚨 [추가] 백준 모드에서 다시 표시
         self.get_templates_var.set(False)
         self.get_testcases_var.set(False)
 
@@ -1093,6 +1117,12 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
         start_time = time.time() # 🚨 시작 시각 기록
         success_count = 0
         failures = []
+        
+        # 🚨 [신규] 진행 상태 추적 변수 초기화
+        self.total_tasks = len(target_ids)
+        self.processed_count = 0
+        self.count_lock = threading.Lock()
+
         shared_playwright = None
         shared_browser = None
         admin_session = None
