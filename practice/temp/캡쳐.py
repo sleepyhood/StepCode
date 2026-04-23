@@ -3,9 +3,17 @@ import threading
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from pathlib import Path
+import ctypes
+from datetime import datetime
+import ctypes
+
+try:
+    ctypes.windll.shcore.SetProcessDpiAwareness(1)
+except Exception:
+    pass
 
 import mss
-from PIL import Image
+from PIL import Image, ImageTk
 import pygetwindow as gw
 from pynput import keyboard
 
@@ -14,18 +22,26 @@ class AutoCaptureApp:
     def __init__(self, root: tk.Tk):
         self.root = root
         self.root.title("창 지정 타이머 자동 캡처 도구")
-        self.root.geometry("550x450")
+        
+        # GUI 스타일 및 폰트 설정
+        self.style = ttk.Style()
+        self.style.configure(".", font=("Malgun Gothic", 10))
+        self.style.configure("TLabelframe.Label", font=("Malgun Gothic", 11, "bold"))
+
+        self.root.geometry("600x1200")
         self.root.resizable(False, False)
 
         self.stop_requested = False
         self.is_running = False
         self.hotkey_listener = None
+        self.preview_photo = None  # ImageTk 참조 유지용
 
         self.target_window_var = tk.StringVar()
         self.output_dir_var = tk.StringVar(value=str(Path.cwd() / "output" / "auto_capture"))
         self.file_prefix_var = tk.StringVar(value="capture")
         self.start_index_var = tk.IntVar(value=1)
         self.capture_count_var = tk.IntVar(value=100)
+        self.unlimited_var = tk.BooleanVar(value=False)
         self.interval_var = tk.DoubleVar(value=0.5)
         self.status_var = tk.StringVar(value="창을 선택하고 캡처를 시작하세요.")
 
@@ -47,7 +63,13 @@ class AutoCaptureApp:
         row1.pack(fill="x", padx=12, pady=10)
         self.combo_windows = ttk.Combobox(row1, textvariable=self.target_window_var, state="readonly", width=40)
         self.combo_windows.pack(side="left", fill="x", expand=True, padx=(0, 10))
+        self.combo_windows.bind("<<ComboboxSelected>>", lambda _e: self._update_preview())
         ttk.Button(row1, text="새로고침", command=self._refresh_windows).pack(side="left")
+
+        # 미리보기 영역
+        self.preview_label = ttk.Label(win_box, text="창을 선택하면 미리보기가 표시됩니다.",
+                                       anchor="center", relief="sunken")
+        self.preview_label.pack(padx=12, pady=(0, 10), fill="x")
 
         # 2. 저장 설정
         out_box = ttk.LabelFrame(container, text="2. 저장 설정")
@@ -61,7 +83,15 @@ class AutoCaptureApp:
         opt_box.pack(fill="x", pady=(0, 10))
         
         self._labeled_spinbox(opt_box, "시작 번호", self.start_index_var, 1, 999999, 1)
-        self._labeled_spinbox(opt_box, "캡처 장수", self.capture_count_var, 1, 999999, 1)
+        
+        # 캡처 장수 + 제한없음
+        count_row = ttk.Frame(opt_box)
+        count_row.pack(fill="x", padx=12, pady=5)
+        ttk.Label(count_row, text="캡처 장수", width=14).pack(side="left")
+        self.spin_count = ttk.Spinbox(count_row, textvariable=self.capture_count_var, from_=1, to=999999, increment=1, width=10)
+        self.spin_count.pack(side="left")
+        ttk.Checkbutton(count_row, text="제한없음", variable=self.unlimited_var, command=self._toggle_unlimited).pack(side="left", padx=10)
+        
         self._labeled_spinbox(opt_box, "캡처 간격(초)", self.interval_var, 0.1, 3600.0, 0.1)
 
         # 제어부
@@ -71,7 +101,18 @@ class AutoCaptureApp:
         ttk.Button(action_row, text="캡처 시작", command=self.start_capture).pack(side="left")
         ttk.Button(action_row, text="중지 요청 (F8)", command=self.request_stop).pack(side="left", padx=10)
         
-        ttk.Label(container, textvariable=self.status_var, foreground="#003366", wraplength=500).pack(anchor="w", pady=(10, 0))
+        ttk.Label(container, textvariable=self.status_var, foreground="#003366", wraplength=550).pack(anchor="w", pady=(10, 0))
+
+        # 4. 실행 로그
+        log_box = ttk.LabelFrame(container, text="4. 실행 로그")
+        log_box.pack(fill="both", expand=True, pady=(10, 0))
+        
+        self.log_text = tk.Text(log_box, height=12, font=("Consolas", 9), state="disabled", bg="#f8f9fa")
+        self.log_text.pack(side="left", fill="both", expand=True, padx=5, pady=5)
+        
+        log_scroll = ttk.Scrollbar(log_box, command=self.log_text.yview)
+        log_scroll.pack(side="right", fill="y")
+        self.log_text.configure(yscrollcommand=log_scroll.set)
 
     def _labeled_entry(self, parent, label: str, variable: tk.StringVar, browse=None):
         frame = ttk.Frame(parent)
@@ -95,7 +136,97 @@ class AutoCaptureApp:
         self.combo_windows["values"] = valid_titles
         if valid_titles:
             self.combo_windows.current(0)
+            self._update_preview()
+        else:
+            self._clear_preview()
         self._set_status(f"창 목록 갱신 완료 ({len(valid_titles)}개 감지됨)")
+
+    def _clear_preview(self):
+        """미리보기 영역을 초기 상태로 되돌린다."""
+        self.preview_photo = None
+        self.preview_label.configure(image="", text="창을 선택하면 미리보기가 표시됩니다.")
+
+    def _update_preview(self):
+        """현재 선택된 창의 썸네일을 캡처하여 미리보기에 표시한다."""
+        target_title = self.target_window_var.get()
+        if not target_title:
+            self._clear_preview()
+            return
+
+        try:
+            windows = gw.getWindowsWithTitle(target_title)
+            if not windows:
+                self.preview_label.configure(image="", text="창을 찾을 수 없습니다.")
+                self.preview_photo = None
+                return
+
+            win = windows[0]
+
+            # 최소화 상태이면 미리보기 불가
+            if getattr(win, 'isMinimized', False):
+                self.preview_label.configure(image="", text="최소화된 창은 미리보기할 수 없습니다.")
+                self.preview_photo = None
+                return
+
+            if win.width <= 0 or win.height <= 0:
+                self.preview_label.configure(image="", text="창 크기가 유효하지 않습니다.")
+                self.preview_photo = None
+                return
+
+            rect = {
+                "left": win.left,
+                "top": win.top,
+                "width": win.width,
+                "height": win.height,
+            }
+
+            with mss.mss() as sct:
+                shot = sct.grab(rect)
+                img = Image.frombytes("RGB", shot.size, shot.rgb)
+
+            # 미리보기 최대 크기에 맞춰 축소
+            max_w, max_h = 500, 200
+            scale = min(max_w / img.width, max_h / img.height, 1.0)
+            thumb = img.resize(
+                (max(1, int(img.width * scale)), max(1, int(img.height * scale))),
+                Image.Resampling.LANCZOS,
+            )
+
+            self.preview_photo = ImageTk.PhotoImage(thumb)
+            self.preview_label.configure(
+                image=self.preview_photo,
+                text="",
+            )
+        except Exception as exc:
+            self.preview_label.configure(image="", text=f"미리보기 실패: {exc}")
+            self.preview_photo = None
+
+    def _toggle_unlimited(self):
+        """제한없음 체크 시 장수 입력칸 비활성화"""
+        if self.unlimited_var.get():
+            self.spin_count.configure(state="disabled")
+        else:
+            self.spin_count.configure(state="normal")
+
+    def _toggle_unlimited(self):
+        """제한없음 체크 시 장수 입력칸 비활성화"""
+        if self.unlimited_var.get():
+            self.spin_count.configure(state="disabled")
+        else:
+            self.spin_count.configure(state="normal")
+
+    def _add_log(self, message: str):
+        """로그창에 시간과 함께 메시지 기록"""
+        now = datetime.now().strftime("[%H:%M:%S]")
+        full_msg = f"{now} {message}\n"
+        
+        def append():
+            self.log_text.configure(state="normal")
+            self.log_text.insert("end", full_msg)
+            self.log_text.see("end")
+            self.log_text.configure(state="disabled")
+            
+        self.root.after(0, append)
 
     def choose_output_dir(self):
         selected = filedialog.askdirectory(initialdir=self.output_dir_var.get() or str(Path.cwd()))
@@ -151,11 +282,14 @@ class AutoCaptureApp:
         try:
             prefix = self.file_prefix_var.get().strip() or "capture"
             start_idx = self.start_index_var.get()
-            count = self.capture_count_var.get()
+            is_unlimited = self.unlimited_var.get()
+            count = 999999999 if is_unlimited else self.capture_count_var.get()
             interval = self.interval_var.get()
 
             self._set_status("3초 후 캡처를 시작합니다. 대상 창을 최상단으로 꺼내주세요...")
+            self._add_log(f"캡처 작업 준비... (대상: {target_title})")
             time.sleep(3)
+            self._add_log("캡처 시작!")
 
             saved_count = 0
             with mss.mss() as sct:
@@ -194,7 +328,9 @@ class AutoCaptureApp:
                     img.save(save_path)
                     
                     saved_count += 1
-                    self._set_status(f"[{saved_count}/{count}] 저장 완료: {save_path.name}")
+                    status_text = f"[{saved_count}/무제한] 저장 완료: {save_path.name}" if is_unlimited else f"[{saved_count}/{count}] 저장 완료: {save_path.name}"
+                    self._set_status(status_text)
+                    self._add_log(f"#{saved_count} 저장 완료: {save_path.name}")
 
                     # 남은 캡처가 있고 중지 요청이 없다면 interval만큼 대기
                     if i < count - 1 and not self.stop_requested:
@@ -202,8 +338,10 @@ class AutoCaptureApp:
 
             if self.stop_requested:
                 self._set_status(f"중지됨. 총 {saved_count}장 저장 완료.")
+                self._add_log(f"작업이 사용자에 의해 중지되었습니다. (총 {saved_count}장)")
             else:
                 self._set_status(f"캡처 완료! 총 {saved_count}장 저장됨.")
+                self._add_log(f"모든 캡처 작업이 완료되었습니다. (총 {saved_count}장)")
                 
         except Exception as e:
             self._set_status(f"오류 발생: {e}")

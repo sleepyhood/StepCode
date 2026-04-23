@@ -2,7 +2,6 @@
 .env
 .gemini/settings.json 
 .gemini/mcp_config.json
-**/browser_session/
 *.zip
 __pycache__/
 *.py[cod]
@@ -11,3 +10,10 @@ __pycache__/
 **/.pytest_cache/
 **/node_modules/
 **/.vscode/
+
+# 크롤링된 백준 문제 데이터 제외
+practice/data/content/programming/baekjoon/scraped/
+# 크롤링 과정에서 생성되는 임시/실패 기록 파일들
+**/404_not_found/
+**/crawl_failures.txt
+**/browser_session/
