@@ -19,7 +19,7 @@ if MODULE_DIR not in sys.path:
 
 # 기존 선생님이 작성/보유하신 크롤링 모듈 임포트
 try:
-    from .crawl import (
+    from .crawler_baekjoon_engine import (
         close_doingcoding_admin_session,
         open_doingcoding_admin_session,
         scrape_baekjoon,
@@ -31,14 +31,14 @@ try:
         upload_doingcoding_testcases_with_session,
         ProblemNotFoundError
     )
-    from .testcase_zip_export import (
+    from .crawler_testcase_zip_export import (
         build_default_zip_name,
         build_testcase_preview,
         export_testcases_to_zip,
         parse_testcases_from_markdown,
     )
 except ImportError:
-    from crawl import (
+    from crawler_baekjoon_engine import (
         close_doingcoding_admin_session,
         open_doingcoding_admin_session,
         scrape_baekjoon,
@@ -50,7 +50,7 @@ except ImportError:
         upload_doingcoding_testcases_with_session,
         ProblemNotFoundError
     )
-    from testcase_zip_export import (
+    from crawler_testcase_zip_export import (
         build_default_zip_name,
         build_testcase_preview,
         export_testcases_to_zip,
