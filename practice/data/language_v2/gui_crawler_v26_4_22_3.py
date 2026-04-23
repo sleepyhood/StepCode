@@ -103,6 +103,7 @@ class CrawlerApp:
         self.show_browser_var = tk.BooleanVar(value=False)
         self.skip_existing_var = tk.BooleanVar(value=True)
         self.light_mode_var = tk.BooleanVar(value=False)  # 🚨 [신규] 배지 전용 라이트 모드
+        self.dynamic_mode_var = tk.BooleanVar(value=False)  # [신규] 특수 배지 동적 재수집 모드
         self.save_dir = tk.StringVar(value=os.getcwd())
         self.testcase_md_path = tk.StringVar(value="")
         self.testcase_zip_dir = tk.StringVar(value=os.getcwd())
@@ -139,11 +140,27 @@ class CrawlerApp:
         if self.light_mode_var.get():
             self.check_skip_existing.config(state=tk.DISABLED)
             self.skip_existing_var.set(False)
+            # 라이트 모드 ON → 동적 모드 OFF
+            self.dynamic_mode_var.set(False)
+            self.check_dynamic_mode.config(state=tk.DISABLED)
         else:
             self.check_skip_existing.config(state=tk.NORMAL)
             self.skip_existing_var.set(True)
+            self.check_dynamic_mode.config(state=tk.NORMAL)
 
-    def _worker_loop(self, task_queue, result_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, worker_id, force_show_browser=False, skip_existing=True, light_mode=False):
+    def _on_dynamic_mode_toggle(self):
+        """동적 모드 활성 시 건너뛰기·라이트 모드 강제 비활성화."""
+        if self.dynamic_mode_var.get():
+            self.check_skip_existing.config(state=tk.DISABLED)
+            self.skip_existing_var.set(False)
+            self.check_light_mode.config(state=tk.DISABLED)
+            self.light_mode_var.set(False)
+        else:
+            self.check_skip_existing.config(state=tk.NORMAL)
+            self.skip_existing_var.set(True)
+            self.check_light_mode.config(state=tk.NORMAL)
+
+    def _worker_loop(self, task_queue, result_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, worker_id, force_show_browser=False, skip_existing=True, light_mode=False, dynamic_mode=False):
         """각 스레드(워커)가 실행할 독립적인 크롤링 루프"""
         import queue
         worker_prefix = f"[Worker-{worker_id}]"
@@ -238,7 +255,47 @@ class CrawlerApp:
 
                     # 🚨 [신규] 라이트 모드 분기
                     # 🚨 [개선] 3분기 라이트 모드 (분석 후 필요한 경우만 크롤링)
-                    if light_mode:
+                    if dynamic_mode:
+                        # [GUARD-1] 404 더미 파일 → 스킵
+                        if os.path.exists(dummy_filepath):
+                            self.log(f"{worker_prefix} {progress_info} [Dyn] {current_id}번: 삭제된 문제 (404) - 스킵")
+                            result_queue.put((current_id, True))
+                            task_queue.task_done()
+                            continue
+                        # [GUARD-2] 기존 파일 없음 → 스킵 (동적 모드는 업데이트 전용)
+                        if not os.path.exists(base_filepath):
+                            self.log(f"{worker_prefix} {progress_info} [Dyn] {current_id}번: 기존 파일 없음 - 스킵")
+                            result_queue.put((current_id, True))
+                            task_queue.task_done()
+                            continue
+                        # [STEP-1] 배지 읽기 → 구조 변경 배지 검사
+                        status, current_badges = analyze_badge_status(base_filepath)
+                        if not has_special_badge(current_badges or []):
+                            label = ", ".join(current_badges) if current_badges else "배지 없음"
+                            self.log(f"{worker_prefix} {progress_info} [Dyn] {current_id}번: 동적 재수집 대상 아님 ({label}) - 스킵")
+                            result_queue.put((current_id, True))
+                            task_queue.task_done()
+                            continue
+                        # [STEP-2] 구조 변경 배지 있음 → 동적 재수집 시작
+                        label = ", ".join(current_badges)
+                        self.log(f"{worker_prefix} {progress_info} 🔄 [Dyn] {current_id}번: ({label}) → 동적 재수집 시작")
+                        result_ok = False
+                        try:
+                            result = scrape_baekjoon(target_url, save_dir=save_path, context=context, dynamic_mode=True)
+                            if result and result[0] and result[1]:
+                                title, md_output = result
+                                # [STEP-3] base_filepath에 직접 덮어쓰기
+                                with open(base_filepath, "w", encoding="utf-8-sig") as f:
+                                    f.write(md_output)
+                                self.log(f"{worker_prefix} {progress_info} ✅ [Dyn] {current_id}번 재수집 완료: {title}")
+                                result_ok = True
+                        except ProblemNotFoundError:
+                            self.log(f"{worker_prefix} {progress_info} ⚠️ [Dyn] {current_id}번: 문제 없음 (404) - 스킵")
+                            result_ok = True
+                        except Exception as e:
+                            self.log(f"{worker_prefix} {progress_info} ❌ [Dyn] {current_id}번 재수집 에러: {e}")
+
+                    elif light_mode:
                         # [GUARD] 404 더미 파일이 있는 문제 -> 크롤링 불필요, 즉시 스킵
                         if os.path.exists(dummy_filepath):
                             self.log(f"{worker_prefix} {progress_info} [Light] {current_id}번: 삭제된 문제 (404) - 스킵")
@@ -456,6 +513,16 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
             command=self._on_light_mode_toggle,
         )
         self.check_light_mode.pack(pady=4)
+
+        # [신규] 특수 배지 동적 재수집 모드 체크박스
+        self.check_dynamic_mode = tk.Checkbutton(
+            self.shared_settings_frame,
+            text="특수 배지 문제 동적 재수집 [동적 모드] (기존 파일 덮어쓰기, 정답 섹션 초기화 주의)",
+            variable=self.dynamic_mode_var,
+            fg="#8B0000",
+            command=self._on_dynamic_mode_toggle,
+        )
+        self.check_dynamic_mode.pack(pady=4)
 
         self.admin_frame = tk.Frame(self.doingcoding_options_frame)
         self.admin_frame.pack(pady=(4, 0))
@@ -1020,6 +1087,19 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
         show_browser = self.show_browser_var.get()
         skip_existing = self.skip_existing_var.get()
         light_mode = self.light_mode_var.get()  # 🚨 [신규] 라이트 모드 여부
+        dynamic_mode = self.dynamic_mode_var.get()  # [신규] 동적 모드 여부
+
+        # 동적 모드 시작 전 경고 (정답 섹션 초기화 주의)
+        if dynamic_mode:
+            import tkinter.messagebox as _mb
+            proceed = _mb.askyesno(
+                "[동적 모드] 시작 전 확인",
+                "동적 재수집 모드는 특수 배지가 붙은 문제의 MD 파일을 전체 새로 생성합니다.\n"
+                "정답 섹션(## [정답 및 해설])에 직접 작성한 내용이 있다면 초기화됩니다.\n\n"
+                "계속 진행하시겠습니까?"
+            )
+            if not proceed:
+                return
         admin_username, admin_password = resolve_admin_credentials(
             self.admin_username.get(),
             self.admin_password.get(),
@@ -1071,6 +1151,7 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
                 show_browser,
                 skip_existing,
                 light_mode,  # 🚨 [신규]
+                dynamic_mode,  # [신규]
             ),
         )
         self.worker_thread.daemon = True
@@ -1110,6 +1191,7 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
         show_browser,
         skip_existing,
         light_mode=False,  # 🚨 [신규]
+        dynamic_mode=False,  # [신규]
     ):
         if not hasattr(self, "stop_event") or self.stop_event is None:
             self.stop_event = threading.Event()
@@ -1183,7 +1265,7 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
                 for i in range(workers_count):
                     t = threading.Thread(
                         target=self._worker_loop,
-                        args=(t_queue, r_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, i, force_show, skip_existing, light_mode)  # 🚨 [신규] light_mode 전달
+                        args=(t_queue, r_queue, domain, template, save_path, get_templates, get_testcases, admin_username, admin_password, show_browser, i, force_show, skip_existing, light_mode, dynamic_mode)  # [신규] dynamic_mode 전달
                     )
                     t.start()
                     threads.append(t)

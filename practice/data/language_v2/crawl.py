@@ -1560,7 +1560,7 @@ def build_mdx_content(data):
     has_subtask_str = "true" if data.get("has_subtask") else "false"
     has_hint_str = "true" if data.get("has_hint") else "false"
     
-    # 샘플 입출력 렌더링
+    # 샘플 입출력 렌더링 (동적 모드 fallback 포함)
     samples_md = ""
     for idx, sample_data in enumerate(data.get("samples", []), 1):
         s_in = sample_data[0]
@@ -1569,7 +1569,16 @@ def build_mdx_content(data):
         
         samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
         if explain_md.strip():
-            samples_md += f"{explain_md}\n\n"    
+            samples_md += f"{explain_md}\n\n"
+
+    # [동적 모드 fallback] 표준 샘플이 없으면 custom_example 섹션 사용 (Case A)
+    if not samples_md.strip():
+        custom_example_md = data.get("custom_example_md", "").strip()
+        if custom_example_md:
+            samples_md = custom_example_md  # 이미지/표 포함 예시 그대로 삽입
+        else:
+            samples_md = "*(이 문제는 공개된 예시가 없습니다. 첨부 파일을 참고하세요.)*"  # Case C
+
     # 서브태스크 제목 번호를 4로, 힌트를 5로 변경하여 깔끔하게 조립
     subtask_section = f"## 4. 서브태스크\n\n{data['subtask_md']}\n\n---\n\n" if data.get('has_subtask') else ""
     hint_section = f"## 5. 힌트\n{data['hint_md']}\n\n---\n\n"
@@ -1578,6 +1587,12 @@ def build_mdx_content(data):
     attachment_section = ""
     if data.get("attachment_md") and data["attachment_md"].strip():
         attachment_section = f"## 6. 첨부\n\n{data['attachment_md']}\n\n---\n\n"
+
+    # [동적 모드] extra_sections 렌더링 (구현, 제출할 수 있는 언어, custom_* 등)
+    extra_sections_md = ""
+    for sec_title, sec_content in data.get("extra_sections", []):
+        if sec_content.strip():
+            extra_sections_md += f"## {sec_title}\n\n{sec_content}\n\n---\n\n"
 
     # 🚨 [개선 2] Prefix를 통한 플랫폼 식별자 부여 (기본값 'bj')
     prefix = data.get('prefix', 'bj')
@@ -1646,8 +1661,7 @@ source_url: "{data['url']}"
 
 ---
 
-{attachment_section}
-{subtask_section}
+{attachment_section}{extra_sections_md}{subtask_section}
 
 {hint_section}
 
@@ -1725,19 +1739,27 @@ def patch_file_badges(filepath, badges):
     # except Exception as e:
     #     print(f"  ❌ [Light] 파일 패치 실패 ({filepath}): {e}")
     #     return False
-# 특수 배지: 본문 구조가 표준과 달라 재수집이 필요한 배지 목록
+# 특수 배지 (기존 — 하위 호환 유지, 직접 참조하지 않음)
 SPECIAL_BADGES = {
     "인터랙티브", "함수 구현", "클래스 구현", "투 스텝",
     "스페셜 저지", "서브태스크", "점수", "전체 채점",
     "언어 제한", "피드백", "번외", "채점 준비 중",
 }
 
+# 구조 변경 배지: 본문 HTML 구조가 표준과 달라 동적 재수집이 필요한 배지
+# - 제외: 서브태스크, 다국어, 언어 제한, 스페셜 저지 등 일반 문제에도 붙는 배지
+STRUCTURE_ALTERING_BADGES = {
+    "인터랙티브", "함수 구현", "클래스 구현", "투 스텝",
+}
+
 
 def has_special_badge(badges: list) -> bool:
-    """badges 리스트에 특수 배지가 하나라도 포함되어 있으면 True."""
+    """badges 리스트에 구조 변경 배지가 하나라도 포함되어 있으면 True.
+    동적 재수집 트리거로 사용됨 (STRUCTURE_ALTERING_BADGES 기준).
+    """
     if not badges:
         return False
-    return bool(set(badges) & SPECIAL_BADGES)
+    return bool(set(badges) & STRUCTURE_ALTERING_BADGES)
 
 
 # 배지 상태 분석 함수
@@ -1821,7 +1843,146 @@ def scrape_baekjoon_light(url, context=None):
             own_playwright.stop()
 
 
-def scrape_baekjoon(url, save_dir=None, context=None):
+def extract_sections_dynamic(page, url, save_dir, problem_id, context=None):
+    """
+    [동적 모드 전용] Playwright page로 로드된 백준 문제 페이지에서
+    모든 <section> 태그를 순회하여 콘텐츠를 수집합니다.
+
+    반환값: mdx_data에 병합할 딕셔너리
+    {
+        "description": str,
+        "input_desc": str,
+        "output_desc": str,
+        "samples": list[(in, out, explain)],
+        "custom_example_md": str,   # custom_example 섹션 (예시 fallback)
+        "subtask_md": str,
+        "has_subtask": bool,
+        "hint_md": str,
+        "has_hint": bool,
+        "attachment_md": str,
+        "extra_sections": list[(title, md)],  # 동적 수집 섹션 (구현, 제출언어 등)
+    }
+    """
+    # 스킵할 섹션 id (메타데이터로 따로 처리되거나 불필요)
+    SKIP_IDS = {"source", "problem-judge-info"}
+    # 표준 입출력 샘플 섹션 id 패턴
+    import re as _re
+
+    result = {
+        "description": "",
+        "input_desc": "",
+        "output_desc": "",
+        "samples": [],
+        "custom_example_md": "",
+        "subtask_md": "",
+        "has_subtask": False,
+        "hint_md": "(힌트가 없습니다.)",
+        "has_hint": False,
+        "attachment_md": "",
+        "extra_sections": [],
+    }
+
+    # 1. 전체 HTML을 BeautifulSoup으로 파싱
+    from bs4 import BeautifulSoup
+    html_content = page.content()
+    soup = BeautifulSoup(html_content, "html.parser")
+
+    # 2. 표준 샘플 I/O 수집 (Playwright locator 사용 — 기존 방식 유지)
+    i = 1
+    while True:
+        in_sel  = f"pre.sampledata#sample-input-{i}"
+        out_sel = f"pre.sampledata#sample-output-{i}"
+        if page.locator(in_sel).count() > 0 and page.locator(out_sel).count() > 0:
+            s_in  = page.locator(in_sel).inner_text().strip()
+            s_out = page.locator(out_sel).inner_text().strip()
+            explain_sel = f"#problem_sample_explain_{i}"
+            explain_md = ""
+            if page.locator(explain_sel).count() > 0:
+                explain_html = page.locator(explain_sel).inner_html()
+                explain_md = process_html_and_download_images(explain_html, url, save_dir, problem_id, context=context)
+            result["samples"].append((s_in, s_out, explain_md))
+            i += 1
+        else:
+            break
+
+    # 3. section 태그 순회
+    sections = soup.select("#problem-body section")
+    for sec in sections:
+        sec_id = (sec.get("id") or "").strip()
+
+        # 스킵 대상
+        if sec_id in SKIP_IDS:
+            continue
+        # 표준 샘플 섹션 (sampleinputN, sampleoutputN) — 이미 위에서 처리
+        if _re.match(r"^sample(input|output)\d+$", sec_id, _re.IGNORECASE):
+            continue
+
+        # 제목 추출
+        title_tag = sec.find(["h2", "h3"])
+        display_title = title_tag.get_text(strip=True) if title_tag else ""
+
+        # 본문 추출 (div.problem-text 내부 HTML)
+        content_div = sec.find("div", class_="problem-text")
+        if not content_div:
+            continue
+        content_html = str(content_div)
+        content_md = process_html_and_download_images(content_html, url, save_dir, problem_id, context=context)
+        content_text = content_md.strip()
+
+        if not content_text:
+            continue  # 빈 섹션 스킵
+
+        # 4. 섹션 ID/제목에 따라 고정 필드에 배치
+        if sec_id == "description":
+            result["description"] = content_md
+
+        elif sec_id == "input":
+            result["input_desc"] = content_md
+
+        elif sec_id == "output":
+            result["output_desc"] = content_md
+
+        elif sec_id == "limit":
+            # 제한은 description 뒤에 append
+            result["description"] += f"\n\n### 제한\n{content_md}"
+
+        elif sec_id == "subtask":
+            result["subtask_md"] = content_md
+            result["has_subtask"] = True
+
+        elif sec_id == "hint":
+            result["hint_md"] = content_md
+            result["has_hint"] = True
+
+        elif _re.match(r"^custom_att+achment$", sec_id):
+            # custom_attachment 또는 custom_atttachment (오타 변종) 통합
+            result["attachment_md"] = content_md
+
+        elif sec_id == "custom_example":
+            # 이미지/표가 포함된 예시 섹션 (표준 sample-input-N 대체)
+            result["custom_example_md"] = content_md
+
+        else:
+            # 그 외 모든 동적 섹션 (custom_implementation, language_restrict 등)
+            result["extra_sections"].append((display_title, content_md))
+
+    # 5. 빈칸 채우기
+    if not result["description"].strip():
+        result["description"] = "(본문이 없는 문제입니다.)"
+    if not result["input_desc"].strip():
+        result["input_desc"] = "(입력 조건이 없습니다.)"
+    if not result["output_desc"].strip():
+        result["output_desc"] = "(출력 조건이 없습니다.)"
+
+    print(f"  [Dynamic] {problem_id}번 섹션 수집 완료 — "
+          f"samples={len(result['samples'])}, "
+          f"custom_example={'있음' if result['custom_example_md'] else '없음'}, "
+          f"extra={len(result['extra_sections'])}개")
+    return result
+
+
+def scrape_baekjoon(url, save_dir=None, context=None, dynamic_mode=False):
+
     """
     백준 문제 페이지를 크롤링하여 이미지 다운로드 및 메타데이터가 포함된 MD 문자열을 반환합니다.
     """
@@ -2069,6 +2230,25 @@ def scrape_baekjoon(url, save_dir=None, context=None):
                 else:
                     break
 
+            # ★ [동적 모드] section 순회 방식으로 본문 수집 경로 전환
+            if dynamic_mode:
+                dyn = extract_sections_dynamic(page, url, save_dir, problem_id, context=context)
+                description    = dyn["description"]
+                input_desc     = dyn["input_desc"]
+                output_desc    = dyn["output_desc"]
+                samples        = dyn["samples"]
+                subtask_md     = dyn["subtask_md"]
+                has_subtask    = dyn["has_subtask"]
+                hint_md        = dyn["hint_md"]
+                has_hint       = dyn["has_hint"]
+                attachment_md  = dyn["attachment_md"]
+                # custom_example_md 와 extra_sections 는 mdx_data에 별도 전달
+                _custom_example_md = dyn["custom_example_md"]
+                _extra_sections    = dyn["extra_sections"]
+            else:
+                _custom_example_md = ""
+                _extra_sections    = []
+
         except ProblemNotFoundError:
             raise # 🚨 [버그 픽스] 404 에러를 상위(gui_crawler)로 전파하여 더미 파일 생성을 유도
         except Exception as e:
@@ -2132,7 +2312,9 @@ def scrape_baekjoon(url, save_dir=None, context=None):
             "subtask_md": subtask_md,
             "hint_md": hint_md,
             "attachment_md": attachment_md, # [추가]
-            "badges": badges_list # 🚨 [신규] 배지 정보 추가
+            "badges": badges_list, # 🚨 [신규] 배지 정보 추가
+            "custom_example_md": _custom_example_md,  # 동적 모드: 이미지/표 예시 섹션
+            "extra_sections": _extra_sections,         # 동적 모드: 구현/제출언어 등 추가 섹션
         }
 
            # 4단계 함수 호출을 통해 깔끔하게 MDX 생성!
