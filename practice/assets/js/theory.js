@@ -163,9 +163,15 @@ async function renderTheoryMarkdown(target, mdText, mdPath = "") {
   autoNumberHeadings(target);
   wrapContentIntoSectionCards(target);
   setupMiniCheckCards(target);
+  setupMCQCards(target);
   buildFloatingTOC(target);
   buildRoadmap(target);
   updateSectionProgress();
+  
+  if (!window.teacherModeInitialized) {
+    initTeacherMode();
+    window.teacherModeInitialized = true;
+  }
 }
 
 // 4. Interactive & Stage Gating
@@ -742,12 +748,14 @@ function wrapContentIntoSectionCards(root) {
 
 // 6.6. Progress Tracking
 function updateSectionProgress() {
-  // Count both legacy interactive-problem-cards and new mini-check-cards
+  // Count legacy cards, mini-check-cards, and new MCQ cards
   const legacyCards  = document.querySelectorAll('.interactive-problem-card');
   const miniCards    = document.querySelectorAll('.theory-mini-check-card');
-  const total  = legacyCards.length + miniCards.length;
+  const mcqCards     = document.querySelectorAll('.theory-mcq-card');
+  const total  = legacyCards.length + miniCards.length + mcqCards.length;
   const solved = document.querySelectorAll('.interactive-problem-card.is-solved').length
-               + document.querySelectorAll('.theory-mini-check-card.is-solved').length;
+               + document.querySelectorAll('.theory-mini-check-card.is-solved').length
+               + document.querySelectorAll('.theory-mcq-card.is-solved').length;
 
   const milestoneEl = document.getElementById('dashboard-milestone-count');
   if (milestoneEl) milestoneEl.textContent = `${solved}/${total}`;
@@ -796,6 +804,19 @@ function setupMiniCheckCards(root) {
     // Normalize helper: remove all whitespace for flexible matching
     const normalize = (s) => s.replace(/\s+/g, '').toLowerCase();
 
+    const pageKey = window.location.pathname + window.location.search;
+    const storageKey = `stepcode_mini_${pageKey}_${expectedAnswer}`;
+
+    // Restore state
+    if (localStorage.getItem(storageKey) === 'solved') {
+      card.classList.add('is-solved');
+      input.value = expectedAnswer;
+      input.disabled = true;
+      btn.disabled = true;
+      btn.textContent = '✓ 완료!';
+      btn.classList.add('is-correct-btn');
+    }
+
     const submit = () => {
       if (card.classList.contains('is-solved')) return; // Already solved
 
@@ -808,6 +829,7 @@ function setupMiniCheckCards(root) {
         btn.disabled = true;
         btn.textContent = '✓ 완료!';
         btn.classList.add('is-correct-btn');
+        localStorage.setItem(storageKey, 'solved');
         updateSectionProgress();
       } else {
         input.classList.add('is-wrong');
@@ -823,6 +845,96 @@ function setupMiniCheckCards(root) {
       if (e.key === 'Enter') submit();
     });
   });
+}
+
+function setupMCQCards(root) {
+  const cards = root.querySelectorAll('.theory-mcq-card');
+  if (cards.length === 0) return;
+
+  cards.forEach((card, index) => {
+    if (card.dataset.bound === 'true') return;
+    card.dataset.bound = 'true';
+
+    const pageKey = window.location.pathname + window.location.search;
+    const storageKey = `stepcode_mcq_${pageKey}_${index}`;
+    
+    const options = card.querySelectorAll('.mcq-option');
+    const hintBox = card.querySelector('.mcq-hint');
+
+    if (localStorage.getItem(storageKey) === 'solved') {
+      card.classList.add('is-solved');
+      options.forEach(opt => opt.classList.add('is-disabled'));
+      const correctOpt = Array.from(options).find(opt => opt.dataset.correct === 'true');
+      if (correctOpt) correctOpt.classList.add('is-selected');
+    }
+
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (card.classList.contains('is-solved')) return;
+
+        options.forEach(o => o.classList.remove('is-wrong'));
+        if (hintBox) {
+          hintBox.classList.remove('is-visible');
+          hintBox.textContent = '';
+        }
+
+        const isCorrect = opt.dataset.correct === 'true';
+
+        if (isCorrect) {
+          card.classList.add('is-solved');
+          opt.classList.add('is-selected');
+          options.forEach(o => o.classList.add('is-disabled'));
+          if (hintBox) {
+            hintBox.textContent = '✅ 정답입니다!';
+            hintBox.classList.add('is-visible');
+            hintBox.style.color = '#065f46';
+            hintBox.style.backgroundColor = '#ecfdf5';
+            hintBox.style.borderColor = '#a7f3d0';
+          }
+          localStorage.setItem(storageKey, 'solved');
+          updateSectionProgress();
+        } else {
+          opt.classList.add('is-wrong');
+          if (hintBox && opt.dataset.hint) {
+            hintBox.textContent = '💡 ' + opt.dataset.hint;
+            hintBox.classList.add('is-visible');
+            hintBox.style.color = '#854d0e';
+            hintBox.style.backgroundColor = '#fefce8';
+            hintBox.style.borderColor = '#fef08a';
+          }
+        }
+      });
+    });
+  });
+}
+
+function initTeacherMode() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('teacher') === '1') {
+    if (document.querySelector('.teacher-toggle-btn')) return;
+    
+    const btn = document.createElement('button');
+    btn.className = 'teacher-toggle-btn is-active';
+    btn.innerHTML = '👁️ 정답 보기 ON';
+    let isRevealed = true;
+    
+    document.querySelectorAll('.theory-mcq-card, .theory-mini-check-card').forEach(c => c.classList.add('show-answer'));
+    
+    btn.onclick = () => {
+      isRevealed = !isRevealed;
+      if (isRevealed) {
+        btn.innerHTML = '👁️ 정답 보기 ON';
+        btn.classList.add('is-active');
+        document.querySelectorAll('.theory-mcq-card, .theory-mini-check-card').forEach(c => c.classList.add('show-answer'));
+      } else {
+        btn.innerHTML = '👀 정답 보기 OFF';
+        btn.classList.remove('is-active');
+        document.querySelectorAll('.theory-mcq-card, .theory-mini-check-card').forEach(c => c.classList.remove('show-answer'));
+      }
+    };
+    
+    document.body.appendChild(btn);
+  }
 }
 
 // 7. Related Problems Rendering

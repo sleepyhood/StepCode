@@ -28,7 +28,7 @@ tags: ["pygame", "ship", "movement"]
 - **2.3. 엔진의 심장: 타이머 (Engine)**
   - 주기적인 이벤트 발생 원리 이해
 
-![bg right:40%](../assets/meteor_preview.png)
+<!-- ![bg right:40%](../assets/meteor_preview.png) -->
 
 ---
 
@@ -58,7 +58,7 @@ graph LR
 # 2.1.2. [Mission] 운석 공장 조립하기
 
 - `step2_student.py` 파일의 `spawn_meteor()` 함수를 완성하세요.
-- **Logic Hole:** 운석이 화면 밖으로 나가지 않게 하려면 X의 최대값은 얼마여야 할까요?
+<!-- - **Logic Hole:** 운석이 화면 밖으로 나가지 않게 하려면 X의 최대값은 얼마여야 할까요? -->
 - **힌트:** `random.randint(0, ???)`
 
 <div class="code-window">

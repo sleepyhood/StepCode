@@ -1994,3 +1994,220 @@ li:has(.theory-checkbox) {
   color: #94a3b8;
   padding: 8px;
 }
+
+/* --- Theory MCQ Card --- */
+.theory-mcq-card {
+  margin: 0 0 14px;
+  padding: 16px 18px 14px;
+  border: 1.5px solid #dbe5f1;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.theory-mcq-card.is-solved {
+  border-color: #6ee7b7;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+}
+
+.theory-mcq-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.mcq-options {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.mcq-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.mcq-option:hover:not(.is-disabled) {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.mcq-option.is-selected {
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+
+.mcq-option.is-wrong {
+  border-color: #f87171;
+  background: #fff5f5;
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+.mcq-option.is-disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.mcq-hint {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  color: #854d0e;
+  font-size: 0.9rem;
+  display: none;
+}
+
+.mcq-hint.is-visible {
+  display: block;
+}
+
+/* --- Teacher Toggle Button --- */
+.teacher-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s;
+}
+
+.teacher-toggle-btn:hover {
+  transform: scale(1.05);
+}
+
+.teacher-toggle-btn.is-active {
+  background: #10b981;
+}
+
+/* --- Teacher Mode Reveal --- */
+.theory-mcq-card.show-answer .mcq-option[data-correct="true"] {
+  border-color: #10b981 !important;
+  background: #ecfdf5 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.theory-mcq-card.show-answer .mcq-option[data-correct="true"]::after {
+  content: " (정답)";
+  color: #10b981;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.theory-mini-check-card.show-answer .stage-key-input {
+  border-color: #10b981;
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.theory-mini-check-card.show-answer .stage-key-input::placeholder {
+  color: #065f46;
+  opacity: 0.8;
+}
+
+/* --- Floating TOC Widget --- */
+.theory-floating-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 990; /* below teacher toggle */
+}
+
+.floating-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.floating-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #94a3b8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+.theory-toc-popup {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 12px;
+  width: 280px;
+  max-height: 400px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 0.2s, transform 0.2s;
+  transform-origin: bottom right;
+}
+
+.theory-toc-popup.hidden {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+}
+
+.theory-toc-popup .toc-header {
+  padding: 12px 16px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.theory-toc-popup .toc-content {
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+.theory-toc-item {
+  display: block;
+  padding: 6px 16px;
+  color: #475569;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.theory-toc-item:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.theory-toc-item.level-2 { padding-left: 24px; }
+.theory-toc-item.level-3 { padding-left: 36px; font-size: 0.8rem; }
