@@ -1,14 +1,16 @@
 ---
-marp: true
-theme: default
-paginate: true
-header: "2차시: 운석 낙하와 리스트 관리"
-footer: "StepCode - Pygame Game Engine Course"
-style: |
-  @import '../../shared/themes/pygame_theme.css';
+id: "pygame_l02_drop"
+contentType: "lesson"
+track: "pygame_course"
+lang: "python"
+categoryId: "pygame_l02"
+title: "2차시. 운석 낙하와 리스트 관리"
+status: "active"
+order: 101
+audience: "common"
+tags: ["pygame", "ship", "movement"]
 ---
 
-<!-- _class: slide-title -->
 
 # 2차시. 운석 낙하와 리스트 관리
 
@@ -16,7 +18,6 @@ style: |
 
 ---
 
-<!-- _class: slide-section -->
 
 # 2.0. 목차
 
@@ -31,13 +32,11 @@ style: |
 
 ---
 
-<!-- _class: slide-part -->
 
 # 2.1. 운석 공장 가동하기 (Spawn)
 
 ---
 
-<!-- _class: slide-section -->
 
 # 2.1.1. 운석을 만드는 원리
 
@@ -55,7 +54,6 @@ graph LR
 
 ---
 
-<!-- _class: slide-section -->
 
 # 2.1.2. [Mission] 운석 공장 조립하기
 
@@ -84,13 +82,11 @@ def spawn_meteor():
 
 ---
 
-<!-- _class: slide-part -->
 
 # 2.2. 무한 낙하와 메모리 청소 (Update)
 
 ---
 
-<!-- _class: slide-section -->
 
 # 2.2.1. 운석 처리 프로세스
 
@@ -109,7 +105,6 @@ graph TD
 
 ---
 
-<!-- _class: slide-section -->
 
 # 2.2.2. 리스트 순회와 삭제
 
@@ -139,13 +134,8 @@ def update_meteors():
 
 ---
 
-<!-- _class: slide-part -->
 
-# 2.3. 엔진의 심장: 타이머 (Engine)
 
----
-
-<!-- _class: slide-section -->
 
 # 2.3.1. 0.6초마다 뛰는 심장
 
@@ -171,8 +161,6 @@ if event.type == SPAWN_METEOR_EVENT:
 </div>
 
 ---
-
-<!-- _class: slide-section -->
 
 # 2.4. 2차시 완성 체크리스트
 

@@ -5,6 +5,8 @@ import glob
 import subprocess
 import threading
 import queue
+import time
+import shlex # 추가
 
 # draw.io 데스크톱 앱 경로 (필수)
 DRAWIO_EXE_PATH = r"C:\Program Files\draw.io\draw.io.exe"
@@ -106,44 +108,40 @@ class DrawioAutomatorApp:
         self.log_text.config(state="disabled")
         
         threading.Thread(target=self.run_orchestration, args=(bg_img, save_dir, user_prompt), daemon=True).start()
-
+    
     def run_orchestration(self, bg_img, save_dir, user_prompt):
         try:
-            # ---------------------------------------------------------
-            # 2단계: AI에게 명령 하달 (gemini-cli 호출)
-            # ---------------------------------------------------------
-
-            self.log("=======================================")
             self.log("[STEP 1] AI 다이어그램 설계 시작")
-            self.log("=======================================")
             
-            # [수정 1] AI가 헛짓거리(검색, 탐색)를 하지 않도록 "강력한 통제 지시어" 부여
-            # 저장할 경로도 프롬프트에 직접 명시합니다.
+            # 1. 프로세스 시작 시간 기록 (이 시간 이후에 생성된 파일만 유효)
+            start_time = time.time()
+            
             internal_instruction = (
                 f"[시스템 중요 지시사항]\n"
-                f"1. 당신은 이미 'drawio' MCP 도구에 연결되어 있습니다. 도구를 찾기 위해 웹 검색(google_web_search)이나 "
-                f"디렉토리 탐색을 절대 하지 마십시오.\n"
+                f"1. 당신은 'drawio' MCP 도구에 연결되어 있습니다. 웹 검색이나 디렉토리 탐색을 하지 마십시오.\n"
                 f"2. 즉시 drawio 도구를 실행하여 다이어그램을 생성하십시오.\n"
-                f"3. 반드시 다음 배경 이미지를 캔버스 맨 뒤에 깔아야 합니다. (배경 경로: '{bg_img}')\n"
-                f"4. 결과물은 반드시 다음 폴더 안에 저장하십시오. (저장 폴더: '{save_dir}')\n\n"
+                f"3. 배경 이미지 경로: '{bg_img}'\n"
+                f"4. 저장 위치: '{save_dir}'\n\n"
             )
-            
             final_command_prompt = f"{internal_instruction}사용자 요청 사항: {user_prompt}"
             
-            cmd_str = f'gemini "{final_command_prompt}"'
-            
-            # [수정 2] cwd=save_dir 삭제 (gemini-cli가 전역 설정(.gemini)을 읽을 수 있도록 샌드박스 해제)
+            # 2. 명령어 이스케이프 처리 (쌍따옴표 충돌 방지)
+            safe_prompt = shlex.quote(final_command_prompt)
+            # 윈도우에서 npm으로 설치한 gemini는 gemini.cmd로 실행해야 안전합니다.
+            cmd_args = ["gemini.cmd", final_command_prompt] 
+
+            # shell=False로 보안 및 파싱 에러 방지 (윈도우 .cmd 실행 위해 shell=True 유지시에는 텍스트 결합 주의)
             process = subprocess.Popen(
-                cmd_str,
+                cmd_args,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 text=True,
-                encoding='cp949',
+                encoding='utf-8', # cp949보다는 범용적인 utf-8 권장 (Gemini CLI 출력에 따라 조정)
                 errors='replace',
                 bufsize=1,
-                shell=True
-                # cwd=save_dir 제거됨!
+                shell=True # Windows 환경에서 글로벌 npm 명령어(.cmd) 실행 시 필요할 수 있음
             )            
+            
             for line in iter(process.stdout.readline, ''):
                 if line:
                     self.log(line.strip())
@@ -160,22 +158,90 @@ class DrawioAutomatorApp:
             # ---------------------------------------------------------
             # 3단계: 파일 감지 및 PNG 다이렉트 변환
             # ---------------------------------------------------------
-            self.log("\n=======================================")
-            self.log("[STEP 2] PNG 고화질 렌더링 시작")
-            self.log("=======================================")
             
-            # 지정된 폴더에서 .drawio 파일들을 모두 찾아 수정 시간 기준으로 정렬
             search_pattern = os.path.join(save_dir, "*.drawio")
             drawio_files = glob.glob(search_pattern)
             
-            if not drawio_files:
-                self.log("❌ 해당 폴더에서 생성된 .drawio 파일을 찾을 수 없습니다.")
+            # 3. 시간 기반 필터링: 스크립트 실행 이후에 수정/생성된 파일만 추출
+            new_files = [f for f in drawio_files if os.path.getmtime(f) > start_time]
+            
+            if not new_files:
+                self.log("❌ 해당 폴더에서 방금 생성된 .drawio 파일을 찾을 수 없습니다. (AI가 파일을 만들지 않음)")
                 return
                 
-            # 가장 최근에 만들어진 파일(방금 AI가 만든 파일) 선택
-            latest_drawio = max(drawio_files, key=os.path.getmtime)
+            latest_drawio = max(new_files, key=os.path.getmtime)
             file_name = os.path.basename(latest_drawio)
             self.log(f"🔎 최신 다이어그램 감지됨: {file_name}")
+
+    # def run_orchestration(self, bg_img, save_dir, user_prompt):
+    #     try:
+    #         # ---------------------------------------------------------
+    #         # 2단계: AI에게 명령 하달 (gemini-cli 호출)
+    #         # ---------------------------------------------------------
+
+    #         self.log("=======================================")
+    #         self.log("[STEP 1] AI 다이어그램 설계 시작")
+    #         self.log("=======================================")
+            
+    #         # [수정 1] AI가 헛짓거리(검색, 탐색)를 하지 않도록 "강력한 통제 지시어" 부여
+    #         # 저장할 경로도 프롬프트에 직접 명시합니다.
+    #         internal_instruction = (
+    #             f"[시스템 중요 지시사항]\n"
+    #             f"1. 당신은 이미 'drawio' MCP 도구에 연결되어 있습니다. 도구를 찾기 위해 웹 검색(google_web_search)이나 "
+    #             f"디렉토리 탐색을 절대 하지 마십시오.\n"
+    #             f"2. 즉시 drawio 도구를 실행하여 다이어그램을 생성하십시오.\n"
+    #             f"3. 반드시 다음 배경 이미지를 캔버스 맨 뒤에 깔아야 합니다. (배경 경로: '{bg_img}')\n"
+    #             f"4. 결과물은 반드시 다음 폴더 안에 저장하십시오. (저장 폴더: '{save_dir}')\n\n"
+    #         )
+            
+    #         final_command_prompt = f"{internal_instruction}사용자 요청 사항: {user_prompt}"
+            
+    #         cmd_str = f'gemini "{final_command_prompt}"'
+            
+    #         # [수정 2] cwd=save_dir 삭제 (gemini-cli가 전역 설정(.gemini)을 읽을 수 있도록 샌드박스 해제)
+    #         process = subprocess.Popen(
+    #             cmd_str,
+    #             stdout=subprocess.PIPE,
+    #             stderr=subprocess.STDOUT,
+    #             text=True,
+    #             encoding='cp949',
+    #             errors='replace',
+    #             bufsize=1,
+    #             shell=True
+    #             # cwd=save_dir 제거됨!
+    #         )            
+    #         for line in iter(process.stdout.readline, ''):
+    #             if line:
+    #                 self.log(line.strip())
+            
+    #         process.stdout.close()
+    #         return_code = process.wait()
+
+    #         if return_code != 0:
+    #             self.log(f"❌ gemini-cli 실행 중 오류 발생 (코드: {return_code})")
+    #             return
+
+    #         self.log("✅ AI 설계 완료. (gemini-cli 종료)")
+            
+    #         # ---------------------------------------------------------
+    #         # 3단계: 파일 감지 및 PNG 다이렉트 변환
+    #         # ---------------------------------------------------------
+    #         self.log("\n=======================================")
+    #         self.log("[STEP 2] PNG 고화질 렌더링 시작")
+    #         self.log("=======================================")
+            
+    #         # 지정된 폴더에서 .drawio 파일들을 모두 찾아 수정 시간 기준으로 정렬
+    #         search_pattern = os.path.join(save_dir, "*.drawio")
+    #         drawio_files = glob.glob(search_pattern)
+            
+    #         if not drawio_files:
+    #             self.log("❌ 해당 폴더에서 생성된 .drawio 파일을 찾을 수 없습니다.")
+    #             return
+                
+    #         # 가장 최근에 만들어진 파일(방금 AI가 만든 파일) 선택
+    #         latest_drawio = max(drawio_files, key=os.path.getmtime)
+    #         file_name = os.path.basename(latest_drawio)
+    #         self.log(f"🔎 최신 다이어그램 감지됨: {file_name}")
 
             if not os.path.exists(DRAWIO_EXE_PATH):
                 self.log(f"❌ draw.io 엔진을 찾을 수 없습니다. 경로를 확인하세요: {DRAWIO_EXE_PATH}")

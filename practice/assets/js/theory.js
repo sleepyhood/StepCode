@@ -25,6 +25,16 @@ function replaceLangBadges(html) {
   });
 }
 
+function replaceCheckboxes(html) {
+  if (!html) return "";
+  // Converts [ ] and [x] into interactive-looking checkboxes and wraps text for styling
+  return html
+    .replace(/(<li>|<p>)\s*\[ \]\s*(.*?)(<\/li>|<\/p>)/g, 
+      '$1<label class="theory-task-item"><input type="checkbox" class="theory-checkbox"> <span class="theory-task-text">$2</span></label>$3')
+    .replace(/(<li>|<p>)\s*\[x\]\s*(.*?)(<\/li>|<\/p>)/gi, 
+      '$1<label class="theory-task-item"><input type="checkbox" class="theory-checkbox" checked> <span class="theory-task-text">$2</span></label>$3');
+}
+
 // 1.5. Problem Rendering Utilities (ported from practice.js)
 function normalizeCode(str) {
   return (str || '')
@@ -105,6 +115,7 @@ async function renderTheoryMarkdown(target, mdText, mdPath = "") {
   const rawHtml = md.render(raw);
   const cleanHtml = window.DOMPurify.sanitize(rawHtml);
   let finalHtml = replaceLangBadges(cleanHtml);
+  finalHtml = replaceCheckboxes(finalHtml);
   
   // Convert standard <hr> into a stylish slide divider
   finalHtml = finalHtml.replace(/<hr\s*\/?>/gi, '<div class="theory-slide-divider"></div>');
@@ -814,6 +825,60 @@ function setupMiniCheckCards(root) {
   });
 }
 
+// 7. Related Problems Rendering
+function renderRelatedProblems(entry, setMap) {
+  const listEl = document.getElementById("theory-related-list");
+  const startBtn = document.getElementById("theory-start-btn");
+  if (!listEl) return;
+
+  listEl.innerHTML = "";
+
+  if (entry.recommendedSetId && startBtn) {
+    startBtn.hidden = false;
+    startBtn.href = `practice.html?set=${encodeURIComponent(entry.recommendedSetId)}`;
+  } else if (startBtn) {
+    startBtn.hidden = true;
+  }
+
+  let relatedSets = [];
+  if (Array.isArray(entry.relatedSetIds) && entry.relatedSetIds.length > 0) {
+    relatedSets = entry.relatedSetIds.map(id => setMap[id]).filter(Boolean);
+  } else if (entry.categoryId) {
+    relatedSets = Object.values(setMap).filter(s => s.categoryId === entry.categoryId);
+  }
+
+  relatedSets.sort((a, b) => (a.round || 0) - (b.round || 0));
+
+  if (relatedSets.length === 0) {
+    const emptyMsg = document.createElement("p");
+    emptyMsg.style.fontSize = "14px";
+    emptyMsg.style.color = "var(--color-gray-500)";
+    emptyMsg.textContent = "관련 문제가 없습니다.";
+    listEl.appendChild(emptyMsg);
+    return;
+  }
+
+  const row = document.createElement("div");
+  row.className = "part-round-row";
+  row.style.display = "flex";
+  row.style.flexWrap = "wrap";
+  row.style.gap = "8px";
+  row.style.marginTop = "10px";
+
+  relatedSets.forEach(setMeta => {
+    const a = document.createElement("a");
+    a.className = "part-round-chip";
+    a.href = `practice.html?set=${encodeURIComponent(setMeta.id)}`;
+    a.style.textDecoration = "none";
+    const diff = setMeta.difficulty === "challenge" ? "Challenge" : "Basic";
+    a.textContent = `R${setMeta.round || 1} · ${diff}`;
+    if (setMeta.title) a.title = setMeta.title;
+    row.appendChild(a);
+  });
+
+  listEl.appendChild(row);
+}
+
 async function initTheoryPage() {
   const contentEl = document.getElementById("theory-content");
   const params = new URLSearchParams(location.search);
@@ -828,6 +893,8 @@ async function initTheoryPage() {
     const mdText = await res.text();
     await renderTheoryMarkdown(contentEl, mdText, entry.mdPath);
     if (entry.slidePath) setupSlideMode(entry.slidePath);
+    
+    renderRelatedProblems(entry, setMap);
 
     const savedPos = localStorage.getItem(`readPosition_${location.search}`);
     if (savedPos && parseInt(savedPos) > 150) {

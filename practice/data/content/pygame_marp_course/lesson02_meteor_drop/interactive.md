@@ -1,92 +1,194 @@
+---
+id: "pygame_l02_drop"
+contentType: "lesson"
+track: "pygame_course"
+lang: "python"
+categoryId: "pygame_l02"
+title: "2차시. 운석 낙하와 리스트 관리"
+status: "active"
+order: 101
+audience: "common"
+tags: ["pygame", "ship", "movement"]
+---
+
+<!-- _class: slide-title -->
+
 # 2차시. 운석 낙하와 리스트 관리
-> **학습 목표:** `random` 함수와 `List`를 활용하여 수많은 운석이 쏟아지는 게임의 핵심 로직을 완성합니다.
+
+## 하늘에서 쏟아지는 운석을 피하라!
 
 ---
 
-## 1. 운석 공장 가동하기 (Spawn)
-우주선이 움직이는 것만으로는 게임이 완성되지 않습니다. 이제 하늘에서 무작위로 쏟아지는 운석을 만들어 봅시다.
+<!-- _class: slide-section -->
 
-### 1.1. 무작위 X 좌표 결정
-운석은 매번 다른 위치에서 나타나야 합니다. 파이썬의 `random.randint(a, b)` 함수는 `a`와 `b` 사이의 정수를 무작위로 골라줍니다.
+# 2.0. 목차
+
+- **2.1. 운석 공장 가동하기 (Spawn)**
+  - 무작위 위치 설정 및 리스트 추가
+- **2.2. 무한 낙하와 메모리 청소 (Update)**
+  - 다중 객체 이동 및 화면 밖 삭제
+- **2.3. 엔진의 심장: 타이머 (Engine)**
+  - 주기적인 이벤트 발생 원리 이해
+
+![bg right:40%](../assets/meteor_preview.png)
+
+---
+
+<!-- _class: slide-part -->
+
+# 2.1. 운석 공장 가동하기 (Spawn)
+
+---
+
+<!-- _class: slide-section -->
+
+# 2.1.1. 운석을 만드는 원리
+
+- **무작위 위치:** `random.randint`를 사용하여 매번 다른 X 좌표를 고릅니다.
+- **사각형 제작:** `pygame.Rect`를 사용하여 운석의 크기와 위치를 정의합니다.
+- **창고 보관:** 생성한 운석을 `meteors` 리스트에 보관합니다.
 
 ```mermaid
 graph LR
-    A[시작점 0] -- "random.randint" --> B{무작위 X 좌표}
-    B -- "800 - 운석크기" --> C[끝점 760]
-    style B fill:#ffeb3b,stroke:#333
+    A[random.randint] -- "X 좌표 결정" --> B[pygame.Rect]
+    B -- "사각형 객체 생성" --> C[meteors.append]
+    C -- "리스트에 추가" --> D((완료))
+    style C fill:#ffeb3b,stroke:#333
 ```
-
-### 📝 Checkpoint 1: 무작위 함수 이해하기
-> **Q. 운석의 크기가 40일 때, 운석이 화면 오른쪽 벽(800)을 뚫고 나가지 않게 하려면 `random.randint`의 최대값은 얼마여야 할까요?**
-> 1) 800
-> 2) 760
-> 3) 40
->
-> **[문제 ID: mcq-02-01]**
 
 ---
 
-### 1.2. 운석 사각형(Rect) 제작과 보관
-결정된 X 좌표를 바탕으로 운석의 모양(`Rect`)을 만들고, 이를 `meteors`라는 리스트(창고)에 보관합니다.
+<!-- _class: slide-section -->
+
+# 2.1.2. [Mission] 운석 공장 조립하기
+
+- `step2_student.py` 파일의 `spawn_meteor()` 함수를 완성하세요.
+- **Logic Hole:** 운석이 화면 밖으로 나가지 않게 하려면 X의 최대값은 얼마여야 할까요?
+- **힌트:** `random.randint(0, ???)`
+
+<div class="code-window">
 
 ```python
-# [A] 무작위 X 좌표 결정
-random_x = random.randint(0, 760)
+def spawn_meteor():
+    global meteors
+    meteor_size = 40
 
-# [B] 운석 사각형 생성 (y=-40에서 시작하여 위에서 나타남)
-new_meteor = pygame.Rect(random_x, -40, 40, 40)
+    # TODO: [A] 무작위 X 좌표 결정
+    random_x = random.randint(0, ???)
 
-# [C] 리스트에 추가 (append)
-meteors.append(new_meteor)
+    # TODO: [B] 운석 사각형 생성
+    new_m = pygame.Rect(random_x, -meteor_size, 40, 40)
+
+    # TODO: [C] 리스트에 추가
+    meteors.append(???)
 ```
 
-### 💻 실습 미션 1: 운석 생성 함수 완성
-`step2_student.py` 파일의 `spawn_meteor()` 함수 안에 있는 `pass`를 지우고, 위의 로직을 직접 구현해 보세요. 
-*   **Mission:** 운석이 리스트에 성공적으로 추가되어 화면에 나타나게 하세요.
-*   **[문제 ID: code-02-01]**
+</div>
 
 ---
 
-## 2. 무한 낙하와 메모리 청소 (Update)
-리스트에 운석을 넣었다면, 이제 이 운석들을 아래로 움직이고 화면 밖으로 나간 것들은 지워줘야 합니다.
+<!-- _class: slide-part -->
 
-### 2.1. 왜 삭제해야 할까요? (메모리 관리)
-화면 아래로 사라진 운석도 컴퓨터는 계속해서 위치를 계산합니다. 삭제하지 않으면 수만 개의 운석이 쌓여 게임이 점점 느려집니다.
+# 2.2. 무한 낙하와 메모리 청소 (Update)
 
-![메모리 관리 원리 도식](./assets/memory_logic.svg)
+---
+
+<!-- _class: slide-section -->
+
+# 2.2.1. 운석 처리 프로세스
+
+- **Update:** 모든 운석의 Y 좌표를 증가시켜 낙하시킵니다.
+- **Check:** 화면 끝(600)을 넘었는지 확인합니다.
+- **Remove:** 넘었다면 목록에서 지워 메모리를 절약합니다.
 
 ```mermaid
 graph TD
-    A[운석 리스트 순회] --> B[Y 좌표 증가]
-    B --> C{화면 밖(Y > 600)?}
-    C -- Yes --> D[meteors.remove 삭제]
-    C -- No --> E[계속 유지]
-    style D fill:#f44336,color:#fff
+    A[운석 리스트 순회] --> B[Y 좌표 + Speed]
+    B --> C{Y > 600?}
+    C -- Yes --> D[리스트에서 삭제]
+    C -- No --> E[다음 운석]
+    style D fill:#ffeb3b,stroke:#333
 ```
 
-### 📝 Checkpoint 2: 안전한 리스트 삭제
-> **Q. 리스트를 한 바퀴 돌면서(for문) 항목을 삭제할 때, 순서가 꼬이지 않게 하려면 리스트의 복사본을 사용해야 합니다. 이때 사용하는 기호는 무엇일까요?**
-> 1) `meteors[]`
-> 2) `meteors[:]`
-> 3) `meteors.copy`
->
-> **[문제 ID: mcq-02-02]**
+---
+
+<!-- _class: slide-section -->
+
+# 2.2.2. 리스트 순회와 삭제
+
+- `for m in meteors:`를 사용하여 모든 운석을 하나씩 꺼냅니다. [A]
+- 각 운석의 `y` 값을 증가시켜 아래로 떨어뜨립니다. [B]
+- 바닥(600)을 통과하면 목록에서 제거합니다. [C]
+
+<div class="code-window">
+
+```python
+def update_meteors():
+    # [A] 모든 운석 꺼내기
+    # 안전한 삭제를 위해 복사본[:] 사용
+    for m in meteors[:]:
+        m.y += 7 # [B] 이동
+
+        # [C] 화면 밖으로 나가면 삭제
+        if m.y > 600:
+            meteors.remove(m)
+```
+
+</div>
+
+<div class="callout tip">
+복사본(`meteors[:]`)을 사용하는 이유는 리스트를 순회하는 도중에 항목을 삭제해도 순서가 꼬이지 않게 하기 위해서입니다.
+</div>
 
 ---
 
-### 💻 실습 미션 2: 낙하 및 삭제 로직 구현
-`update_meteors()` 함수를 완성하세요. 
-1. `for m in meteors[:]`를 사용하여 모든 운석을 꺼냅니다.
-2. `m.y += 7`을 사용하여 아래로 떨어뜨립니다.
-3. `if m.y > 600:` 이라면 리스트에서 제거(`remove`) 하세요.
+<!-- _class: slide-part -->
 
-*   **[문제 ID: code-02-02]**
+# 2.3. 엔진의 심장: 타이머 (Engine)
 
 ---
 
-## 🏆 2차시 완료 체크리스트
-- [ ] `random.randint`를 사용하여 운석 위치가 매번 달라지나요?
-- [ ] `meteors.append`로 운석이 리스트에 잘 들어가나요?
-- [ ] 화면 밖으로 나간 운석이 `remove` 되어 리스트에서 사라지나요?
+<!-- _class: slide-section -->
 
-> **다음 단계:** 모든 미션을 완료했다면 3차시 **[충돌 판정]** 스테이지로 이동하세요!
+# 2.3.1. 0.6초마다 뛰는 심장
+
+- 매 프레임(1/60초)마다 운석을 만들면 화면이 운석으로 가득 찹니다.
+- **타이머 이벤트:** 우리가 정한 시간 간격으로 신호를 보냅니다.
+- 엔진 구역에 이미 설정된 `set_timer`가 `spawn_meteor`를 호출합니다.
+
+<div class="code-window">
+
+```python
+# [엔진 구역] 600ms(0.6초)마다 이벤트 신호
+pygame.time.set_timer(SPAWN_METEOR_EVENT, 600)
+
+# [Main Loop] 신호가 오면 함수 실행
+if event.type == SPAWN_METEOR_EVENT:
+    spawn_meteor()
+```
+
+</div>
+
+<div class="callout ok">
+이 구역은 이미 완성되어 있습니다. 여러분이 만든 함수가 엔진에 의해 어떻게 실행되는지 확인해보세요!
+</div>
+
+---
+
+<!-- _class: slide-section -->
+
+# 2.4. 2차시 완성 체크리스트
+
+<div class="callout tip">
+
+- [ ] `random.randint`를 사용하여 운석이 제각각 다른 곳에서 나오나요?
+- [ ] 운석이 아래로 부드럽게 떨어지나요?
+- [ ] 화면 밖으로 나간 운석이 리스트에서 정상적으로 제거되나요?
+- [ ] 우주선과 운석이 겹쳐도 아직은 죽지 않습니다. (3차시 예고!)
+
+</div>
+
+### 다음 시간에는...
+
+**3차시: 충돌 판정과 게임 오버**
+운석에 부딪히면 게임이 멈추고 "Game Over"를 띄우는 법을 배웁니다.

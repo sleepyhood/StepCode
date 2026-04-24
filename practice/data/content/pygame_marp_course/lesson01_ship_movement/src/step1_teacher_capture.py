@@ -2,10 +2,17 @@ import pygame
 import sys
 import os
 
-# utils 폴더 경로 추가 (src의 2단계 위)
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
-from utils.recorder import PygameRecorder
+# 현재 파일 위치에서 6단계 위(StepCode 루트)로 이동 후 Resources/tools 경로 계산
+tools_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../../Resources/tools"))
+if tools_path not in sys.path:
+    sys.path.append(tools_path)
+# 이제 util_pygame_recorder 파일에서 PygameRecorder 클래스를 직접 가져옵니다.
+from util_pygame_recorder import PygameRecorder
 
+# utils 폴더 경로 추가 (src의 2단계 위)
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
+# from Resources.tools.util_pygame_recorder import PygameRecorder
 # =========================================================
 # 🧑‍💻 [학생 작업 구역] 1차시: 우주선 좌우 이동하기
 # =========================================================

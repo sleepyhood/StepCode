@@ -6,6 +6,10 @@
 
 .theory-shell {
   max-width: 1400px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .theory-topbar {
@@ -330,7 +334,74 @@
   background: transparent;
   padding: 0;
   border-radius: 0;
-  font-size: inherit;
+  font-family: inherit;
+}
+
+/* Theory Checkbox & Task List */
+li:has(.theory-checkbox) {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: -5px; /* Offset to align with regular text */
+}
+
+.theory-task-item {
+  display: inline-flex;
+  align-items: flex-start;
+  cursor: pointer;
+  width: 100%;
+}
+
+.theory-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #cbd5e1;
+  border-radius: 4px;
+  background-color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  margin-top: 3px; /* Align with first line of text */
+  vertical-align: middle;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.theory-checkbox:checked {
+  background-color: #635bff;
+  border-color: #635bff;
+}
+
+.theory-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.theory-task-text {
+  transition: all 0.3s ease;
+  color: var(--theory-text-main, #333);
+}
+
+.theory-checkbox:checked + .theory-task-text {
+  color: #94a3b8;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.theory-checkbox:focus-visible {
+  outline: 2px solid #635bff;
+  outline-offset: 2px;
 }
 
 .theory-content th,
@@ -1150,10 +1221,10 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
 }
 
-.theory-section-card.is-inactive {
+/* .theory-section-card.is-inactive {
   opacity: 0.45;
   transform: scale(0.985);
-}
+} */
 
 .theory-section-card.is-active {
   opacity: 1;
@@ -1454,17 +1525,20 @@
   background: #f8fbff;
   transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
 }
+
 .interactive-problem-card.is-solved {
   border-color: #6ee7b7;
   background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
   box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08);
 }
+
 .problem-header {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 12px;
 }
+
 .problem-question {
   margin: 0 0 12px;
   font-size: 1rem;
@@ -1472,6 +1546,7 @@
   line-height: 1.65;
   color: #1e293b;
 }
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -1485,10 +1560,30 @@
   background: #f8fafc;
   color: #475569;
 }
-.badge--code   { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
-.badge--trace  { background: #fef3c7; color: #92400e; border-color: #fde68a; }
-.badge--short  { background: #e0f2fe; color: #075985; border-color: #bae6fd; }
-.badge--mcq    { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+
+.badge--code {
+  background: #ede9fe;
+  color: #6d28d9;
+  border-color: #c4b5fd;
+}
+
+.badge--trace {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.badge--short {
+  background: #e0f2fe;
+  color: #075985;
+  border-color: #bae6fd;
+}
+
+.badge--mcq {
+  background: #f1f5f9;
+  color: #334155;
+  border-color: #cbd5e1;
+}
 
 /* -- MCQ Buttons -- */
 .problem-options {
@@ -1496,6 +1591,7 @@
   flex-direction: column;
   gap: 8px;
 }
+
 .option-btn {
   display: flex;
   align-items: center;
@@ -1511,10 +1607,12 @@
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
 }
+
 .option-btn:hover:not(:disabled) {
   border-color: var(--theory-accent, #635bff);
-  background: var(--theory-accent-soft, rgba(99,91,255,0.05));
+  background: var(--theory-accent-soft, rgba(99, 91, 255, 0.05));
 }
+
 .option-num {
   display: inline-flex;
   align-items: center;
@@ -1528,12 +1626,31 @@
   font-weight: 700;
   flex-shrink: 0;
 }
-.option-btn.is-correct { border-color: #10b981; background: #f0fdf4; color: #065f46; }
-.option-btn.is-wrong { border-color: #f87171; background: #fff5f5; color: #b91c1c; animation: shake 0.5s; }
+
+.option-btn.is-correct {
+  border-color: #10b981;
+  background: #f0fdf4;
+  color: #065f46;
+}
+
+.option-btn.is-wrong {
+  border-color: #f87171;
+  background: #fff5f5;
+  color: #b91c1c;
+  animation: shake 0.5s;
+}
 
 /* -- MCQ Multi -- */
-.problem-options--multi { gap: 10px; }
-.problem-multi-hint { margin: 0 0 10px; font-size: 0.9rem; color: #64748b; }
+.problem-options--multi {
+  gap: 10px;
+}
+
+.problem-multi-hint {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
 .option-multi-label {
   display: flex;
   align-items: center;
@@ -1546,8 +1663,17 @@
   font-size: 0.95rem;
   transition: border-color 0.2s;
 }
-.option-multi-label:hover { border-color: var(--theory-accent, #635bff); }
-.option-multi-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--theory-accent, #635bff); flex-shrink: 0; }
+
+.option-multi-label:hover {
+  border-color: var(--theory-accent, #635bff);
+}
+
+.option-multi-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--theory-accent, #635bff);
+  flex-shrink: 0;
+}
 
 /* -- Short Answer -- */
 .problem-input-wrap {
@@ -1555,6 +1681,7 @@
   gap: 8px;
   align-items: stretch;
 }
+
 .short-answer-input {
   flex: 1;
   padding: 9px 12px;
@@ -1566,8 +1693,17 @@
   color: #1e293b;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.short-answer-input:focus { outline: none; border-color: var(--theory-accent, #635bff); box-shadow: 0 0 0 3px rgba(99,91,255,0.12); }
-.short-answer-input.is-wrong { border-color: #f87171; background: #fff5f5; }
+
+.short-answer-input:focus {
+  outline: none;
+  border-color: var(--theory-accent, #635bff);
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.12);
+}
+
+.short-answer-input.is-wrong {
+  border-color: #f87171;
+  background: #fff5f5;
+}
 
 /* -- Check Button -- */
 .check-btn {
@@ -1583,8 +1719,16 @@
   transition: background 0.2s, transform 0.15s;
   white-space: nowrap;
 }
-.check-btn:hover:not(:disabled) { background: #4f46e5; transform: translateY(-1px); }
-.check-btn:disabled { opacity: 0.6; cursor: default; }
+
+.check-btn:hover:not(:disabled) {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
+.check-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
 
 /* -- Feedback Messages -- */
 .problem-feedback {
@@ -1594,8 +1738,18 @@
   font-size: 0.9rem;
   font-weight: 600;
 }
-.is-correct-feedback { background: #f0fdf4; color: #065f46; border: 1px solid #6ee7b7; }
-.is-wrong-feedback { background: #fff5f5; color: #b91c1c; border: 1px solid #fca5a5; }
+
+.is-correct-feedback {
+  background: #f0fdf4;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+}
+
+.is-wrong-feedback {
+  background: #fff5f5;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
 
 /* -- Concept Ref Button -- */
 .problem-concept-ref {
@@ -1614,17 +1768,41 @@
   cursor: pointer;
   transition: background 0.2s;
 }
-.problem-concept-ref:hover { background: #eff6ff; }
-.concept-flash { animation: conceptFlash 1.2s ease-out; }
+
+.problem-concept-ref:hover {
+  background: #eff6ff;
+}
+
+.concept-flash {
+  animation: conceptFlash 1.2s ease-out;
+}
+
 @keyframes conceptFlash {
-  0%   { box-shadow: 0 0 0 0 rgba(99,91,255,0.45); }
-  60%  { box-shadow: 0 0 0 10px rgba(99,91,255,0.12); }
-  100% { box-shadow: 0 0 0 0 rgba(99,91,255,0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 91, 255, 0.45);
+  }
+
+  60% {
+    box-shadow: 0 0 0 10px rgba(99, 91, 255, 0.12);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 91, 255, 0);
+  }
 }
 
 /* -- Code Editor -- */
-.problem-code-wrap { display: flex; flex-direction: column; gap: 10px; }
-.problem-code-textarea { display: none; } /* hidden, replaced by CodeMirror */
+.problem-code-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.problem-code-textarea {
+  display: none;
+}
+
+/* hidden, replaced by CodeMirror */
 .problem-code-wrap .CodeMirror {
   border: 1.5px solid #e2e8f0;
   border-radius: 12px;
@@ -1634,7 +1812,10 @@
   resize: vertical;
   overflow: hidden;
 }
-.problem-code-wrap .CodeMirror-scroll { min-height: 120px; }
+
+.problem-code-wrap .CodeMirror-scroll {
+  min-height: 120px;
+}
 
 /* -- Trace Panel (ported from practice.css) -- */
 .trace-panel {
@@ -1644,6 +1825,7 @@
   background: #ffffff;
   padding: 12px 14px;
 }
+
 .trace-head {
   display: flex;
   align-items: center;
@@ -1651,13 +1833,24 @@
   gap: 8px;
   margin-bottom: 10px;
 }
-.trace-title { font-size: 0.9rem; font-weight: 800; color: #0f172a; }
-.trace-pager { font-size: 0.8rem; color: #64748b; }
+
+.trace-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.trace-pager {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
 .trace-body {
   display: grid;
   grid-template-columns: 1.3fr 0.7fr;
   gap: 8px;
 }
+
 .trace-code {
   margin: 0;
   border: 1px solid #e2e8f0;
@@ -1670,10 +1863,29 @@
   max-height: 280px;
   overflow-y: auto;
 }
-.trace-line { display: grid; grid-template-columns: 2.5ch 1fr; gap: 6px; padding: 2px 4px; border-radius: 6px; }
-.trace-line-no { color: #94a3b8; text-align: right; }
-.trace-line-text { color: #0f172a; }
-.trace-line.active { background: #bfdbfe; outline: 1px solid #60a5fa; }
+
+.trace-line {
+  display: grid;
+  grid-template-columns: 2.5ch 1fr;
+  gap: 6px;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+
+.trace-line-no {
+  color: #94a3b8;
+  text-align: right;
+}
+
+.trace-line-text {
+  color: #0f172a;
+}
+
+.trace-line.active {
+  background: #bfdbfe;
+  outline: 1px solid #60a5fa;
+}
+
 .trace-vars {
   border: 1px solid #e2e8f0;
   border-radius: 12px;
@@ -1683,13 +1895,49 @@
   overflow-y: auto;
   max-height: 280px;
 }
-.trace-var-row { display: flex; justify-content: space-between; gap: 6px; border-bottom: 1px dashed #e5e7eb; padding: 3px 0; }
-.trace-var-row:last-child { border-bottom: none; }
-.trace-var-key { color: #334155; font-weight: 700; }
-.trace-var-val { color: #0f172a; font-weight: 600; }
-.trace-var-empty { color: #94a3b8; }
-.trace-note { grid-column: 1 / -1; margin-top: 6px; font-size: 0.84rem; color: #475569; background: #fefce8; border-radius: 8px; padding: 6px 10px; }
-.trace-controls { margin-top: 10px; display: flex; gap: 8px; }
+
+.trace-var-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  border-bottom: 1px dashed #e5e7eb;
+  padding: 3px 0;
+}
+
+.trace-var-row:last-child {
+  border-bottom: none;
+}
+
+.trace-var-key {
+  color: #334155;
+  font-weight: 700;
+}
+
+.trace-var-val {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.trace-var-empty {
+  color: #94a3b8;
+}
+
+.trace-note {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  font-size: 0.84rem;
+  color: #475569;
+  background: #fefce8;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.trace-controls {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
 .trace-controls button {
   border: 1.5px solid #d1d5db;
   background: #ffffff;
@@ -1701,8 +1949,16 @@
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
-.trace-controls button:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
-.trace-controls button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.trace-controls button:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.trace-controls button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 
 .problem-trace-quiz {
   margin-top: 16px;
@@ -1711,8 +1967,13 @@
 }
 
 @media (max-width: 720px) {
-  .trace-body { grid-template-columns: 1fr; }
-  .problem-input-wrap { flex-direction: column; }
+  .trace-body {
+    grid-template-columns: 1fr;
+  }
+
+  .problem-input-wrap {
+    flex-direction: column;
+  }
 }
 
 /* -- Content Stage Gating -- */
@@ -1723,6 +1984,7 @@
   user-select: none;
   transition: opacity 0.5s, filter 0.5s;
 }
+
 .content-stage.is-locked::after {
   content: '🔒 이전 문제를 먼저 풀어보세요';
   display: block;
@@ -1731,4 +1993,4 @@
   font-weight: 600;
   color: #94a3b8;
   padding: 8px;
-}
+}

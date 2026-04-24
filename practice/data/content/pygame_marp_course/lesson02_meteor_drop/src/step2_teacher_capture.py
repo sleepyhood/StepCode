@@ -1,6 +1,14 @@
 import pygame
 import sys
 import random
+import os
+
+# 현재 파일 위치에서 6단계 위(StepCode 루트)로 이동 후 Resources/tools 경로 계산
+tools_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../../Resources/tools"))
+if tools_path not in sys.path:
+    sys.path.append(tools_path)
+# 이제 util_pygame_recorder 파일에서 PygameRecorder 클래스를 직접 가져옵니다.
+from util_pygame_recorder import PygameRecorder
 
 # =========================================================
 # 🧑‍💻 [학생 작업 구역] 1차시 코드 (완성) + 2차시: 운석 생성과 낙하
@@ -82,6 +90,7 @@ def draw_meteors(surface):
         pygame.draw.rect(surface, meteor_color, m)
 
 def main():
+    recorder = PygameRecorder(screen, "../assets/output_animation.gif")
     running = True
     while running:
         for event in pygame.event.get():
@@ -106,7 +115,9 @@ def main():
         
         pygame.display.flip()
         clock.tick(60)
+        recorder.capture()
 
+    recorder.save()
     pygame.quit()
     sys.exit()
 

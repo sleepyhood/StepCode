@@ -26,7 +26,7 @@ tags: ["pygame", "ship", "movement"]
 - **1.4. 게임 엔진 작동 원리**
   - 무한 반복 루프와 애니메이션의 마법
 
-![우주선 예시](assets/real_ship_demo.png)
+![우주선 예시](assets/output_animation.gif)
 
 ---
 
@@ -184,7 +184,7 @@ def move_ship(keys):
 - **경계 조건:** X가 0보다 작아지거나, 800보다 커지는 순간을 감시해야 합니다.
 - `ship_rect.left`와 `ship_rect.right` 테두리 센서를 사용합니다.
 
-![경계선 넘어가는 우주선](assets/boundary_0_800.svg)
+![경계선 넘어가는 우주선](assets/boundary_0_800.drawio.svg)
 
 ---
 

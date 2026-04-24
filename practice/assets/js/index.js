@@ -440,26 +440,6 @@ function buildPartCard(part, lang, theoryByCategoryId, viewState) {
       createActionLink("개념 보기", `theory.html?${q.toString()}`, "theory", viewState)
     );
   }
-  if (entry.basics[0]) {
-    secondary.appendChild(
-      createActionLink(
-        "기초 시작",
-        `practice.html?set=${encodeURIComponent(entry.basics[0].id)}`,
-        "basic",
-        viewState
-      )
-    );
-  }
-  if (entry.challenges[0]) {
-    secondary.appendChild(
-      createActionLink(
-        "챌린지 시작",
-        `practice.html?set=${encodeURIComponent(entry.challenges[0].id)}`,
-        "challenge",
-        viewState
-      )
-    );
-  }
   if (secondary.childElementCount) rounds.appendChild(secondary);
 
   if (entry.basics.length) {
