@@ -5,7 +5,6 @@ from tkinter import ttk, filedialog, messagebox
 from pathlib import Path
 import ctypes
 from datetime import datetime
-import ctypes
 
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(1)
@@ -40,6 +39,7 @@ class AutoCaptureApp:
         self.output_dir_var = tk.StringVar(value=str(Path.cwd() / "output" / "auto_capture"))
         self.file_prefix_var = tk.StringVar(value="capture")
         self.start_index_var = tk.IntVar(value=1)
+        self.auto_continue_var = tk.BooleanVar(value=False)
         self.capture_count_var = tk.IntVar(value=100)
         self.unlimited_var = tk.BooleanVar(value=False)
         self.interval_var = tk.DoubleVar(value=0.5)
@@ -82,7 +82,13 @@ class AutoCaptureApp:
         opt_box = ttk.LabelFrame(container, text="3. 캡처 옵션")
         opt_box.pack(fill="x", pady=(0, 10))
         
-        self._labeled_spinbox(opt_box, "시작 번호", self.start_index_var, 1, 999999, 1)
+        # 시작 번호 + 이어가기 체크박스 + 찾기 버튼
+        start_row = ttk.Frame(opt_box)
+        start_row.pack(fill="x", padx=12, pady=5)
+        ttk.Label(start_row, text="시작 번호", width=14).pack(side="left")
+        ttk.Spinbox(start_row, textvariable=self.start_index_var, from_=1, to=999999, increment=1, width=10).pack(side="left")
+        ttk.Checkbutton(start_row, text="마지막 번호부터 이어가기", variable=self.auto_continue_var).pack(side="left", padx=10)
+        ttk.Button(start_row, text="찾기", command=self._update_start_index_from_folder, width=5).pack(side="left")
         
         # 캡처 장수 + 제한없음
         count_row = ttk.Frame(opt_box)
@@ -208,12 +214,39 @@ class AutoCaptureApp:
         else:
             self.spin_count.configure(state="normal")
 
-    def _toggle_unlimited(self):
-        """제한없음 체크 시 장수 입력칸 비활성화"""
-        if self.unlimited_var.get():
-            self.spin_count.configure(state="disabled")
-        else:
-            self.spin_count.configure(state="normal")
+    def _find_next_index(self) -> int:
+        """저장 폴더 내의 파일들을 확인하여 다음 번호를 결정한다."""
+        out_dir = Path(self.output_dir_var.get()).expanduser()
+        if not out_dir.exists():
+            return 1
+
+        prefix = self.file_prefix_var.get().strip() or "capture"
+        pattern = f"{prefix}_*.png"
+        
+        max_idx = 0
+        found = False
+        for p in out_dir.glob(pattern):
+            try:
+                name = p.stem
+                if name.startswith(prefix + "_"):
+                    idx_str = name[len(prefix)+1:]
+                    if idx_str.isdigit():
+                        idx = int(idx_str)
+                        if idx > max_idx:
+                            max_idx = idx
+                            found = True
+            except (ValueError, IndexError):
+                continue
+        
+        return max_idx + 1 if found else 1
+
+    def _update_start_index_from_folder(self, silent=False):
+        """저장 폴더를 스캔하여 시작 번호를 업데이트한다."""
+        next_idx = self._find_next_index()
+        self.start_index_var.set(next_idx)
+        if not silent:
+            self._add_log(f"저장 폴더 스캔 완료: 다음 번호를 {next_idx}로 설정했습니다.")
+
 
     def _add_log(self, message: str):
         """로그창에 시간과 함께 메시지 기록"""
@@ -270,6 +303,10 @@ class AutoCaptureApp:
 
         out_dir = Path(self.output_dir_var.get()).expanduser()
         out_dir.mkdir(parents=True, exist_ok=True)
+
+        # 이어가기 옵션이 켜져있으면 시작 전 번호 업데이트
+        if self.auto_continue_var.get():
+            self._update_start_index_from_folder(silent=True)
 
         self.is_running = True
         self.stop_requested = False
