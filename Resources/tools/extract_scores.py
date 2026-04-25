@@ -8,6 +8,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext, ttk
 from urllib.parse import quote, urlparse
 from datetime import datetime
+import random
 
 try:
     from selenium import webdriver
@@ -116,9 +117,32 @@ class ScoreExtractorApp:
         
         # 엑셀 문제 제목 포함 옵션 추가 (기본값 False)
         self.include_titles_var = tk.BooleanVar(value=False)
-        self.include_titles_cb = tk.Checkbutton(exec_frame, text="[개발중] 엑셀에 문제 제목 포함 (API 추가 호출)", 
+        self.include_titles_cb = tk.Checkbutton(exec_frame, text="엑셀에 문제 제목 포함 (API 추가 호출)", 
                                               variable=self.include_titles_var)
         self.include_titles_cb.grid(row=2, column=0, columnspan=3, sticky="w", pady=5)
+        
+        # 5. 속도 및 보안 설정
+        speed_frame = tk.LabelFrame(self.root, text="[ 5. 조회 속도 및 보안 설정 ]", padx=10, pady=10)
+        speed_frame.pack(fill="x", padx=10, pady=5)
+        
+        tk.Label(speed_frame, text="기본 지연(초):").grid(row=0, column=0, sticky="e")
+        self.min_delay_var = tk.DoubleVar(value=0.5)
+        tk.Entry(speed_frame, textvariable=self.min_delay_var, width=5).grid(row=0, column=1, sticky="w", padx=5)
+        tk.Label(speed_frame, text="~").grid(row=0, column=2)
+        self.max_delay_var = tk.DoubleVar(value=1.5)
+        tk.Entry(speed_frame, textvariable=self.max_delay_var, width=5).grid(row=0, column=3, sticky="w", padx=5)
+        
+        tk.Label(speed_frame, text="배치 크기:").grid(row=0, column=4, sticky="e", padx=10)
+        self.batch_size_var = tk.IntVar(value=10)
+        tk.Entry(speed_frame, textvariable=self.batch_size_var, width=5).grid(row=0, column=5, sticky="w", padx=5)
+        
+        tk.Label(speed_frame, text="배치 휴식(초):").grid(row=0, column=6, sticky="e", padx=10)
+        self.batch_pause_var = tk.DoubleVar(value=5.0)
+        tk.Entry(speed_frame, textvariable=self.batch_pause_var, width=5).grid(row=0, column=7, sticky="w", padx=5)
+        
+        self.auto_relogin_var = tk.BooleanVar(value=True)
+        self.auto_relogin_cb = tk.Checkbutton(speed_frame, text="배치 크기 도달 시 자동 세션 갱신(재로그인) (권장)", variable=self.auto_relogin_var)
+        self.auto_relogin_cb.grid(row=1, column=0, columnspan=8, sticky="w", pady=5)
         
         # 초기 상태 설정 (테스트 모드면 브라우저 옵션 비활성화)
         self._on_mock_mode_toggle()
@@ -243,56 +267,119 @@ class ScoreExtractorApp:
             except:
                 self.log("⚠️ 체크포인트 파일을 읽을 수 없어 새로 시작합니다.")
                 
-        print(f"[분석] 추출 대상 문제 목록: {problem_ids}")                
-        # Main Loop
-        for i, username in enumerate(self.student_list):
-            if self.stop_event.is_set():
+        # Main Loop with Retry Pass
+        current_students = self.student_list
+        max_retries = 1
+        
+        for attempt in range(max_retries + 1):
+            if not current_students or self.stop_event.is_set():
                 break
                 
-            if username in processed_users:
-                continue
-                
-            self.log(f"조회 중 ({i+1}/{len(self.student_list)}): {username}")
-            
-            try:
-                if is_mock:
-                    time.sleep(0.05) # 모의 지연
-                    import random
-                    student_scores = {"username": username}
-                    # 20% 확률로 미제출, 나머지는 무작위 점수
-                    for pid in problem_ids:
-                        if random.random() > 0.2:
-                            student_scores[pid] = random.choice([0, 50, 80, 100, 100, 100])
-                    all_data.append(student_scores)
-                else:
-                    res = session.get(f"{base_url}/api/profile?username={quote(username)}", timeout=10)
-                    data = res.json()
-                    print(data)
-                    if data.get("error"):
-                        self.log(f"  ! Error: {data['error']}")
-                        error_students.append(username)
-                    else:
-                        problems = data.get("data", {}).get("oi_problems_status", {}).get("problems", {})
-                        student_scores = {"username": username}
-                        for internal_id, p_info in problems.items():
-                            public_id = p_info.get("_id") # 실제 문제 번호인 'P101v0101'을 꺼냄
-                            # 👇 이 줄을 추가해서 GUI에서 생성된 ID 목록과 실제 ID를 눈으로 비교해 보세요.
-                            print(f"[진단] 실제 ID: '{public_id}' | 내가 찾는 ID 목록에 있는가?: {public_id in problem_ids}")
-                            print(f"[진단] 실제 ID: '{public_id}' (타입: {type(public_id)})")
-                            print(f"[진단] 대상 목록의 첫 번째 값: '{problem_ids[0]}' (타입: {type(problem_ids[0])})")
-
-                            if public_id in problem_ids: # 'P101v0101'과 'P101v0101'을 비교해서 성공!
-                                student_scores[public_id] = p_info.get("score", 0)
-                        all_data.append(student_scores)
-                    time.sleep(0.15)
+            if attempt > 0:
+                self.log("="*50)
+                self.log(f"⚠️ 1차 수집 실패자 {len(current_students)}명에 대한 2차 재수집을 준비합니다.")
+                self.log("🕒 서버 IP 차단 해제를 위해 60초간 대기합니다...")
+                for idx in range(60, 0, -1):
+                    if self.stop_event.is_set(): break
+                    if idx % 10 == 0 or idx <= 5: 
+                        self.log(f"   남은 대기 시간: {idx}초")
+                    time.sleep(1)
                     
-            except Exception as e:
-                self.log(f"  ! Exception: {e}")
-                error_students.append(username)
+                if self.stop_event.is_set(): break
                 
-            # Checkpoint save
-            if (i + 1) % 50 == 0:
-                self._save_checkpoint(checkpoint_file, all_data)
+                if not is_mock:
+                    self.log("🔄 재수집 전 세션을 완전히 초기화(재로그인)합니다...")
+                    new_session = None
+                    if use_browser and HAS_SELENIUM:
+                        new_session = self._login_selenium(base_url, admin_id, admin_pw, headless)
+                    else:
+                        new_session = self._login(base_url, admin_id, admin_pw)
+                    if new_session:
+                        session = new_session
+                        self.log("✅ 재수집용 세션 갱신 성공!")
+                    else:
+                        self.log("⚠️ 세션 갱신 실패. 기존 세션으로 재시도합니다.")
+            
+            error_students = []
+            
+            for i, username in enumerate(current_students):
+                if self.stop_event.is_set():
+                    break
+                    
+                if username in processed_users:
+                    continue
+                    
+                prefix_msg = "2차 조회 중" if attempt > 0 else "조회 중"
+                self.log(f"{prefix_msg} ({i+1}/{len(current_students)}): {username}")
+                
+                has_error = False
+                try:
+                    if is_mock:
+                        time.sleep(0.05) # 모의 지연
+                        student_scores = {"username": username}
+                        # 20% 확률로 미제출, 나머지는 무작위 점수
+                        for pid in problem_ids:
+                            if random.random() > 0.2:
+                                student_scores[pid] = random.choice([0, 50, 80, 100, 100, 100])
+                        all_data.append(student_scores)
+                        processed_users.add(username)
+                    else:
+                        res = session.get(f"{base_url}/api/profile?username={quote(username)}", timeout=10)
+                        data = res.json()
+                        if data.get("error"):
+                            self.log(f"  ! Error: {data['error']}")
+                            error_students.append(username)
+                            has_error = True
+                        else:
+                            problems = data.get("data", {}).get("oi_problems_status", {}).get("problems", {})
+                            student_scores = {"username": username}
+                            for internal_id, p_info in problems.items():
+                                public_id = p_info.get("_id") 
+                                if public_id in problem_ids: 
+                                     student_scores[public_id] = p_info.get("score", 0)
+                            all_data.append(student_scores)
+                            processed_users.add(username)
+                except Exception as e:
+                    self.log(f"  ! Exception: {e}")
+                    error_students.append(username)
+                    has_error = True
+                finally:
+                    # 1. 에러 발생 시 추가 쿨다운 (연쇄 차단 방지)
+                    if has_error and not is_mock:
+                        self.log("⚠️ 에러 감지됨. 연쇄 차단 방지를 위해 5초간 추가 쿨다운 대기...")
+                        time.sleep(5.0)
+                        
+                    # 2. 지능적 속도 조절: 랜덤 지연 (항상 실행)
+                    delay = random.uniform(self.min_delay_var.get(), self.max_delay_var.get())
+                    time.sleep(delay)
+                    
+                    # 3. 배치 단위 휴식 및 세션 갱신 (항상 실행)
+                    batch_size = self.batch_size_var.get()
+                    if (i + 1) % batch_size == 0 and (i + 1) < len(current_students):
+                        if self.auto_relogin_var.get() and not is_mock:
+                            self.log(f"🔄 {batch_size}명 단위 차단 우회를 위해 세션을 갱신(재로그인)합니다...")
+                            new_session = None
+                            if use_browser and HAS_SELENIUM:
+                                new_session = self._login_selenium(base_url, admin_id, admin_pw, headless)
+                            else:
+                                new_session = self._login(base_url, admin_id, admin_pw)
+                            
+                            if new_session:
+                                session = new_session
+                                self.log("✅ 세션 갱신 성공!")
+                            else:
+                                self.log("⚠️ 세션 갱신 실패. 기존 세션을 유지합니다.")
+                                
+                        pause_time = self.batch_pause_var.get()
+                        self.log(f"💤 {batch_size}명 조회 완료. {pause_time}초간 휴식하며 서버 차단을 방지합니다...")
+                        time.sleep(pause_time)
+                    
+                # Checkpoint save
+                if (i + 1) % 50 == 0:
+                    self._save_checkpoint(checkpoint_file, all_data)
+                    
+            # 1차 시도가 끝나면 error_students를 다음 시도의 current_students로 설정
+            current_students = error_students
                 
         # Final Processing
         self.log("✅ 조회 루프 완료. 엑셀 생성을 준비합니다.")
@@ -614,9 +701,10 @@ class ScoreExtractorApp:
         # 점수 열과 합계/평균 열에 색상 적용
         # 문제 열 범위: 3 ~ 2+len(problem_ids)
         # 통계 열 범위: base_col ~ base_col+1 (Total, Average)
-        for col_idx in range(3, base_col + 2):
-            col_letter = get_column_letter(col_idx)
-            ws.conditional_formatting.add(f'{col_letter}2:{col_letter}{len(data)+1}', rule)
+        if len(data) > 0:
+            for col_idx in range(3, base_col + 2):
+                col_letter = get_column_letter(col_idx)
+                ws.conditional_formatting.add(f'{col_letter}2:{col_letter}{len(data)+1}', rule)
                 
         output_path = os.path.join(save_dir, "student_scores.xlsx")
         try:
