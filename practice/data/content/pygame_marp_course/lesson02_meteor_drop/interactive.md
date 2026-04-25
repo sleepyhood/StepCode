@@ -166,13 +166,7 @@ if __name__ == "__main__":
 - **사각형 제작:** `pygame.Rect`를 사용하여 운석의 크기와 위치를 정의합니다.
 - **창고 보관:** 생성한 운석을 `meteors` 리스트에 보관합니다.
 
-```mermaid
-graph LR
-    A[random.randint] -- "X 좌표 결정" --> B[pygame.Rect]
-    B -- "사각형 객체 생성" --> C[meteors.append]
-    C -- "리스트에 추가" --> D((완료))
-    style C fill:#ffeb3b,stroke:#333
-```
+![](./assets/운석원리.drawio.svg)
 
 ---
 
