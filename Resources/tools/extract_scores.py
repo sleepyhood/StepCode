@@ -10,6 +10,18 @@ from urllib.parse import quote, urlparse
 from datetime import datetime
 
 try:
+    from selenium import webdriver
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.chrome.service import Service
+    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.common.keys import Keys
+    from webdriver_manager.chrome import ChromeDriverManager
+    HAS_SELENIUM = True
+except ImportError:
+    HAS_SELENIUM = False
+
+
+try:
     from openpyxl import Workbook
     from openpyxl.styles import PatternFill, Font, Alignment
     from openpyxl.formatting.rule import ColorScaleRule
@@ -88,8 +100,23 @@ class ScoreExtractorApp:
         tk.Button(exec_frame, text="변경", command=self._select_dir).grid(row=0, column=2)
         
         self.mock_mode_var = tk.BooleanVar(value=True) # 기본값을 True로 설정 (테스트용)
-        tk.Checkbutton(exec_frame, text="테스트 모드 (네트워크 접속 안 함)", variable=self.mock_mode_var).grid(row=1, column=1, sticky="w", pady=5)
+        self.mock_cb = tk.Checkbutton(exec_frame, text="테스트 모드 (네트워크 접속 안 함)", 
+                                    variable=self.mock_mode_var, command=self._on_mock_mode_toggle)
+        self.mock_cb.grid(row=1, column=0, sticky="w", pady=5)
         
+        self.use_browser_var = tk.BooleanVar(value=False) # 테스트 모드와 모순되지 않게 기본값 False
+        self.use_browser_cb = tk.Checkbutton(exec_frame, text="브라우저 자동 로그인 사용 (Selenium)", 
+                                           variable=self.use_browser_var)
+        self.use_browser_cb.grid(row=1, column=1, sticky="w", pady=5)
+        
+        self.headless_var = tk.BooleanVar(value=False)
+        self.headless_cb = tk.Checkbutton(exec_frame, text="브라우저 창 숨기기 (Headless)", 
+                                        variable=self.headless_var)
+        self.headless_cb.grid(row=1, column=2, sticky="w", pady=5)
+        
+        # 초기 상태 설정 (테스트 모드면 브라우저 옵션 비활성화)
+        self._on_mock_mode_toggle()
+
         btn_frame = tk.Frame(exec_frame)
         btn_frame.grid(row=2, column=0, columnspan=3, pady=10)
         
@@ -107,6 +134,19 @@ class ScoreExtractorApp:
         d = filedialog.askdirectory(initialdir=self.save_dir_var.get())
         if d:
             self.save_dir_var.set(d)
+            
+    def _on_mock_mode_toggle(self):
+        """테스트 모드 활성화 여부에 따라 브라우저 관련 옵션 제어"""
+        if self.mock_mode_var.get():
+            # 테스트 모드일 때: 브라우저 옵션 비활성화 및 해제
+            self.use_browser_cb.config(state=tk.DISABLED)
+            self.headless_cb.config(state=tk.DISABLED)
+            self.use_browser_var.set(False)
+            self.headless_var.set(False)
+        else:
+            # 일반 모드일 때: 브라우저 옵션 활성화
+            self.use_browser_cb.config(state=tk.NORMAL)
+            self.headless_cb.config(state=tk.NORMAL)
             
     def log(self, msg):
         self.log_area.config(state="normal")
@@ -152,19 +192,27 @@ class ScoreExtractorApp:
         is_mock = self.mock_mode_var.get()
         save_dir = self.save_dir_var.get()
         
+        use_browser = self.use_browser_var.get()
+        headless = self.headless_var.get()
+        
         # 문제 ID 리스트 생성
         problem_ids = [f"{prefix}{str(i).zfill(pad)}" for i in range(start_id, end_id + 1)]
         self.log(f"대상 문제: {problem_ids[0]} ~ {problem_ids[-1]} ({len(problem_ids)}개)")
         
-        session = None
         if not is_mock:
-            self.log("서버 로그인 시도 중...")
-            session = self._login(base_url, admin_id, admin_pw)
+            self.log("인증 시도 중...")
+            if use_browser and HAS_SELENIUM:
+                session = self._login_selenium(base_url, admin_id, admin_pw, headless)
+            else:
+                if use_browser and not HAS_SELENIUM:
+                    self.log("⚠️ Selenium이 설치되어 있지 않아 일반 요청 방식으로 시도합니다.")
+                session = self._login(base_url, admin_id, admin_pw)
+                
             if not session:
                 self.log("❌ 로그인 실패. 중단합니다.")
                 self._finish_task()
                 return
-            self.log("✅ 로그인 성공!")
+            self.log("✅ 로그인 성공! (세션 획득)")
         else:
             self.log("⚠️ 테스트 모드로 실행 (가짜 데이터 생성)")
             
@@ -183,6 +231,7 @@ class ScoreExtractorApp:
             except:
                 self.log("⚠️ 체크포인트 파일을 읽을 수 없어 새로 시작합니다.")
                 
+        print(f"[분석] 추출 대상 문제 목록: {problem_ids}")                
         # Main Loop
         for i, username in enumerate(self.student_list):
             if self.stop_event.is_set():
@@ -206,16 +255,22 @@ class ScoreExtractorApp:
                 else:
                     res = session.get(f"{base_url}/api/profile?username={quote(username)}", timeout=10)
                     data = res.json()
-                    
+                    print(data)
                     if data.get("error"):
                         self.log(f"  ! Error: {data['error']}")
                         error_students.append(username)
                     else:
                         problems = data.get("data", {}).get("oi_problems_status", {}).get("problems", {})
                         student_scores = {"username": username}
-                        for p_id_string, p_info in problems.items():
-                            if p_id_string in problem_ids:
-                                student_scores[p_id_string] = p_info.get("score", 0)
+                        for internal_id, p_info in problems.items():
+                            public_id = p_info.get("_id") # 실제 문제 번호인 'P101v0101'을 꺼냄
+                            # 👇 이 줄을 추가해서 GUI에서 생성된 ID 목록과 실제 ID를 눈으로 비교해 보세요.
+                            print(f"[진단] 실제 ID: '{public_id}' | 내가 찾는 ID 목록에 있는가?: {public_id in problem_ids}")
+                            print(f"[진단] 실제 ID: '{public_id}' (타입: {type(public_id)})")
+                            print(f"[진단] 대상 목록의 첫 번째 값: '{problem_ids[0]}' (타입: {type(problem_ids[0])})")
+
+                            if public_id in problem_ids: # 'P101v0101'과 'P101v0101'을 비교해서 성공!
+                                student_scores[public_id] = p_info.get("score", 0)
                         all_data.append(student_scores)
                     time.sleep(0.15)
                     
@@ -240,17 +295,171 @@ class ScoreExtractorApp:
         self._generate_excel(all_data, problem_ids, save_dir)
         self._finish_task()
         
-    def _login(self, base_url, username, password):
-        # 실제 로그인 로직 구현 필요 (CSRF, JSON 등 사이트 구조에 맞게)
-        # 이 부분은 legacy API에 맞춘 더미 형태입니다. 실제 환경에서는 수정이 필요합니다.
-        session = requests.Session()
+    def _login_selenium(self, base_url, username, password, headless):
+        """Selenium을 이용한 브라우저 기반 로그인 및 세션 획득 (login.py 방식)"""
+        if not HAS_SELENIUM:
+            self.log("❌ Selenium 라이브러리가 없습니다.")
+            return None
+            
+        self.log(f"브라우저 실행 중 (Headless={headless})...")
+        driver = None
         try:
-            # 예시 로그인
-            res = session.post(f"{base_url}/api/login", json={"username": username, "password": password})
-            if res.status_code == 200 and res.json().get("error") is None:
-                return session
-        except Exception:
-            pass
+            options = Options()
+            if headless:
+                options.add_argument("--headless")
+            
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_experimental_option("excludeSwitches", ["enable-automation"])
+            options.add_experimental_option("useAutomationExtension", False)
+            options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+
+            # ChromeDriver 자동 관리 및 실행
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+            
+            # 봇 감지 우회를 위한 스크립트 실행
+            driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+                "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            })
+
+            # 1. 메인 페이지 접속
+            self.log(f"메인 페이지 접속 중: {base_url}")
+            driver.get(base_url)
+            time.sleep(3) # Vue 컴포넌트 로딩 대기
+            
+            # 2. 로그인 버튼 클릭 (사용자 제공 최신 XPath 적용)
+            self.log("로그인 버튼 탐색 중...")
+            try:
+                # 1순위: 사용자 제공 정확한 경로
+                # 2순위: 유연한 텍스트/클래스 탐색
+                login_btn = None
+                try:
+                    login_btn = driver.find_element(By.XPATH, '//*[@id="header"]/div[1]/div[2]/div[1]/button[1]')
+                except:
+                    login_btn = driver.find_element(By.XPATH, "//button[contains(text(), '로그인') or contains(text(), 'Login')]")
+                
+                login_btn.click()
+                time.sleep(1.5) # 팝업 애니메이션 대기
+            except Exception as e:
+                self.log(f"⚠️ 로그인 버튼 자동 클릭 실패: {e}")
+                if not headless:
+                    self.log("창에서 직접 로그인 버튼을 클릭해 주세요. (30초 대기)")
+                    time.sleep(30)
+                else:
+                    raise Exception("로그인 버튼 탐색 실패")
+
+            # 3. 로그인 정보 입력
+            self.log("로그인 정보 입력 중...")
+            try:
+                # 팝업 내 입력창 (id_input, pw_input은 구조가 고정적이므로 상대경로 권장하나 일단 기존 로직 유지)
+                id_input = driver.find_element(By.XPATH, '/html/body/div[3]/div[2]/div/div/div[2]/div/form/div[1]/div/div[1]/input')
+                id_input.send_keys(username)
+                
+                pw_input = driver.find_element(By.XPATH, '/html/body/div[3]/div[2]/div/div/div[2]/div/form/div[2]/div/div/input')
+                pw_input.send_keys(password)
+                
+                # 4. 로그인 제출
+                self.log("인증 요청 중...")
+                pw_input.send_keys(Keys.ENTER)
+                time.sleep(3) # 인증 처리 및 페이지 전환 대기
+
+                # 로그인이 완료되어 쿠키가 구워질 때까지 최대 10초 대기
+                self.log("인증 완료 대기 중...")
+                for _ in range(10):
+                    cookies = driver.get_cookies()
+                    if any(c['name'] == 'csrftoken' for c in cookies):
+                        break
+                    time.sleep(1)
+            except Exception as e:
+                self.log("⚠️ 자동 폼 입력 실패. 브라우저 창에서 수동 로그인이 필요합니다.")
+                if not headless:
+                    time.sleep(60)
+
+            # 5. 세션 추출 및 requests 연결 (CSRF 헤더 포함)
+            self.log("인증 세션 추출 및 CSRF 설정 중...")
+            cookies = driver.get_cookies()
+            session = requests.Session()
+            session.headers.update({
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Referer": base_url
+            })
+            
+            csrf_token = None
+            for cookie in cookies:
+                session.cookies.set(cookie['name'], cookie['value'], domain=cookie.get('domain'))
+                if cookie['name'] == 'csrftoken':
+                    csrf_token = cookie['value']
+            
+            if csrf_token:
+                session.headers.update({"X-CSRFToken": csrf_token})
+                self.log("✅ CSRF 토큰 설정 완료.")
+            else:
+                self.log("⚠️ CSRF 토큰을 찾지 못했습니다. 요청이 거부될 수 있습니다.")
+            
+            driver.quit()
+            return session
+
+        except Exception as e:
+            self.log(f"❌ 브라우저 로그인 에러: {e}")
+            if driver:
+                driver.quit()
+            return None
+
+    def _login(self, base_url, username, password):
+        """CSRF 토큰을 처리하는 정밀 로그인 로직"""
+        session = requests.Session()
+        # 브라우저처럼 보이기 위한 기본 헤더
+        session.headers.update({
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        })
+        
+        try:
+            self.log("초기 보안 토큰(CSRF) 획득 중...")
+            # 1. 초기 토큰 획득을 위한 GET 요청
+            session.get(base_url, timeout=10) 
+            csrf_token = session.cookies.get('csrftoken')
+            
+            if not csrf_token:
+                self.log("⚠️ 메인 페이지에서 CSRF 토큰을 찾을 수 없습니다. 로그인 페이지에서 재시도합니다.")
+                session.get(f"{base_url}/login", timeout=10)
+                csrf_token = session.cookies.get('csrftoken')
+
+            if not csrf_token:
+                self.log("❌ 보안 토큰(CSRF)을 가져오지 못했습니다. 서버 상태나 도메인을 확인하세요.")
+                return None
+
+            self.log("✅ 보안 토큰 획득 완료. 인증을 시도합니다.")
+
+            # 2. 헤더 구성
+            headers = {
+                "X-CSRFToken": csrf_token,
+                "Referer": f"{base_url}/login",
+                "Content-Type": "application/json"
+            }
+            
+            # 3. 로그인 시도
+            login_data = {"username": username, "password": password}
+            res = session.post(f"{base_url}/api/login", json=login_data, headers=headers, timeout=10)
+            
+            # 4. 결과 확인
+            if res.status_code == 200:
+                try:
+                    res_json = res.json()
+                    if res_json.get("error") is None:
+                        return session
+                    else:
+                        self.log(f"❌ 로그인 거부 (API 에러): {res_json.get('data', '알 수 없는 오류')}")
+                except Exception:
+                    self.log("❌ 로그인 응답이 정상적인 JSON 형식이 아닙니다.")
+            else:
+                self.log(f"❌ 로그인 실패: HTTP {res.status_code}")
+                
+        except requests.RequestException as e:
+            self.log(f"❌ 네트워크 통신 오류: {e}")
+        except Exception as e:
+            self.log(f"❌ 로그인 프로세스 예외 발생: {e}")
+        
         return None
 
     def _save_checkpoint(self, path, data):
