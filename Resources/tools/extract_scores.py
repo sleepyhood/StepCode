@@ -116,7 +116,7 @@ class ScoreExtractorApp:
         
         # 엑셀 문제 제목 포함 옵션 추가 (기본값 False)
         self.include_titles_var = tk.BooleanVar(value=False)
-        self.include_titles_cb = tk.Checkbutton(exec_frame, text="엑셀에 문제 제목 포함 (API 추가 호출)", 
+        self.include_titles_cb = tk.Checkbutton(exec_frame, text="[개발중] 엑셀에 문제 제목 포함 (API 추가 호출)", 
                                               variable=self.include_titles_var)
         self.include_titles_cb.grid(row=2, column=0, columnspan=3, sticky="w", pady=5)
         
@@ -588,6 +588,7 @@ class ScoreExtractorApp:
         
         # Data & Missing styles
         missing_fill = PatternFill(start_color="FFCCCC", end_color="FFCCCC", fill_type="solid")
+        base_col = 3 + len(problem_ids)
         for row_idx, row_data in enumerate(data, 2):
             # 1. Rank & Username (1, 2열)
             ws.cell(row=row_idx, column=1, value=row_data.get("Rank", ""))
@@ -601,7 +602,6 @@ class ScoreExtractorApp:
                     cell.fill = missing_fill
             
             # 3. Stats (문제 열 종료 후 순차 기록)
-            base_col = 3 + len(problem_ids)
             ws.cell(row=row_idx, column=base_col, value=row_data.get("Total", 0))
             ws.cell(row=row_idx, column=base_col + 1, value=row_data.get("Average", 0))
             ws.cell(row=row_idx, column=base_col + 2, value=row_data.get("Feedback", ""))
