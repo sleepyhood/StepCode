@@ -114,11 +114,17 @@ class ScoreExtractorApp:
                                         variable=self.headless_var)
         self.headless_cb.grid(row=1, column=2, sticky="w", pady=5)
         
+        # 엑셀 문제 제목 포함 옵션 추가 (기본값 False)
+        self.include_titles_var = tk.BooleanVar(value=False)
+        self.include_titles_cb = tk.Checkbutton(exec_frame, text="엑셀에 문제 제목 포함 (API 추가 호출)", 
+                                              variable=self.include_titles_var)
+        self.include_titles_cb.grid(row=2, column=0, columnspan=3, sticky="w", pady=5)
+        
         # 초기 상태 설정 (테스트 모드면 브라우저 옵션 비활성화)
         self._on_mock_mode_toggle()
 
         btn_frame = tk.Frame(exec_frame)
-        btn_frame.grid(row=2, column=0, columnspan=3, pady=10)
+        btn_frame.grid(row=3, column=0, columnspan=3, pady=10)
         
         self.start_btn = tk.Button(btn_frame, text="🚀 추출 시작", font=("Helvetica", 12, "bold"), bg="#4CAF50", fg="black", command=self._start_extraction)
         self.start_btn.pack(side="left", padx=10)
@@ -215,6 +221,12 @@ class ScoreExtractorApp:
             self.log("✅ 로그인 성공! (세션 획득)")
         else:
             self.log("⚠️ 테스트 모드로 실행 (가짜 데이터 생성)")
+            session = None
+            
+        # 문제 제목 가져오기 연동
+        self.title_map = {}
+        if self.include_titles_var.get() and session:
+            self.title_map = self._fetch_problem_titles(base_url, session, problem_ids)
             
         all_data = []
         error_students = []
@@ -292,7 +304,7 @@ class ScoreExtractorApp:
                 f.write("\n".join(error_students))
             self.log(f"⚠️ 실패한 학생 {len(error_students)}명은 error_students.log에 저장되었습니다.")
             
-        self._generate_excel(all_data, problem_ids, save_dir)
+        self._generate_excel(all_data, problem_ids, save_dir, getattr(self, 'title_map', {}))
         self._finish_task()
         
     def _login_selenium(self, base_url, username, password, headless):
@@ -462,6 +474,49 @@ class ScoreExtractorApp:
         
         return None
 
+    def _fetch_problem_titles(self, base_url, session, problem_ids):
+        """
+        API를 통해 지정된 범위 내 문제들의 제목을 가져옵니다.
+        """
+        self.log("[분석] 문제 제목 정보를 가져오는 중...")
+        title_map = {}
+        target_set = set(problem_ids)
+        page = 1
+        limit = 100
+        
+        try:
+            while target_set:
+                params = {
+                    "paging": "true",
+                    "offset": (page - 1) * limit,
+                    "limit": limit,
+                    "page": page,
+                }
+                res = session.get(f"{base_url}/api/problem", params=params, timeout=10)
+                res.raise_for_status()
+                
+                data = res.json() or {}
+                batch = (data.get("data") or {}).get("results") or []
+                
+                if not batch:
+                    break # 더 이상 페이지가 없으면 종료
+                    
+                for item in batch:
+                    pid = item.get("_id")
+                    title = item.get("title")
+                    if pid in target_set:
+                        title_map[pid] = title
+                        target_set.remove(pid) # 찾은 문제는 타겟에서 제거
+                
+                page += 1
+                time.sleep(0.1) # 서버 부하 방지
+                
+            self.log(f"✅ {len(title_map)}개의 문제 제목을 확보했습니다.")
+        except Exception as e:
+            self.log(f"⚠️ 문제 제목 가져오기 실패: {e}")
+            
+        return title_map
+
     def _save_checkpoint(self, path, data):
         try:
             with open(path, "w", encoding="utf-8") as f:
@@ -470,10 +525,13 @@ class ScoreExtractorApp:
         except Exception as e:
             self.log(f"⚠️ 체크포인트 저장 실패: {e}")
 
-    def _generate_excel(self, data, problem_ids, save_dir):
+    def _generate_excel(self, data, problem_ids, save_dir, title_map=None):
         if not HAS_OPENPYXL:
             self.log("❌ openpyxl이 없어 엑셀을 생성할 수 없습니다.")
             return
+            
+        if title_map is None:
+            title_map = {}
             
         self.log("📊 데이터 집계 및 엑셀 포맷팅 시작...")
         
@@ -506,33 +564,59 @@ class ScoreExtractorApp:
         ws = wb.active
         ws.title = "Scores"
         
-        headers = ["Rank", "username"] + problem_ids + ["Total", "Average", "Feedback"]
+        # 헤더 생성: title_map에 제목이 있으면 병기
+        headers = ["Rank", "username"]
+        for pid in problem_ids:
+            title = title_map.get(pid)
+            if title:
+                headers.append(f"{pid}\n({title})")
+            else:
+                headers.append(pid)
+        headers.extend(["Total", "Average", "Feedback"])
+        
         ws.append(headers)
         
         # Style headers
         for col_idx, _ in enumerate(headers, 1):
             cell = ws.cell(row=1, column=col_idx)
             cell.font = Font(bold=True)
-            cell.alignment = Alignment(horizontal="center")
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            # 텍스트 길이에 따라 적절히 너비 조절
+            ws.column_dimensions[get_column_letter(col_idx)].width = 15
             
+        ws.row_dimensions[1].height = 30 # 줄바꿈된 헤더를 위해 높이 지정
+        
         # Data & Missing styles
         missing_fill = PatternFill(start_color="FFCCCC", end_color="FFCCCC", fill_type="solid")
         for row_idx, row_data in enumerate(data, 2):
-            for col_idx, header in enumerate(headers, 1):
-                val = row_data.get(header, "")
-                cell = ws.cell(row=row_idx, column=col_idx, value=val)
-                if header in problem_ids and val == "미제출":
+            # 1. Rank & Username (1, 2열)
+            ws.cell(row=row_idx, column=1, value=row_data.get("Rank", ""))
+            ws.cell(row=row_idx, column=2, value=row_data.get("username", ""))
+            
+            # 2. Problems (3열부터 시작, 원래 ID로 데이터 조회)
+            for j, pid in enumerate(problem_ids):
+                val = row_data.get(pid, "미제출")
+                cell = ws.cell(row=row_idx, column=3+j, value=val)
+                if val == "미제출":
                     cell.fill = missing_fill
+            
+            # 3. Stats (문제 열 종료 후 순차 기록)
+            base_col = 3 + len(problem_ids)
+            ws.cell(row=row_idx, column=base_col, value=row_data.get("Total", 0))
+            ws.cell(row=row_idx, column=base_col + 1, value=row_data.get("Average", 0))
+            ws.cell(row=row_idx, column=base_col + 2, value=row_data.get("Feedback", ""))
                     
         # Conditional Formatting (Gradient)
         rule = ColorScaleRule(start_type='num', start_value=0, start_color='FF6347', # Red
                               mid_type='num', mid_value=50, mid_color='FFD700',      # Yellow
                               end_type='num', end_value=100, end_color='90EE90')     # Green
                               
-        for col_idx, header in enumerate(headers, 1):
-            if header in problem_ids or header in ["Total", "Average"]:
-                col_letter = get_column_letter(col_idx)
-                ws.conditional_formatting.add(f'{col_letter}2:{col_letter}{len(data)+1}', rule)
+        # 점수 열과 합계/평균 열에 색상 적용
+        # 문제 열 범위: 3 ~ 2+len(problem_ids)
+        # 통계 열 범위: base_col ~ base_col+1 (Total, Average)
+        for col_idx in range(3, base_col + 2):
+            col_letter = get_column_letter(col_idx)
+            ws.conditional_formatting.add(f'{col_letter}2:{col_letter}{len(data)+1}', rule)
                 
         output_path = os.path.join(save_dir, "student_scores.xlsx")
         try:
