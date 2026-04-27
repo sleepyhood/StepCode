@@ -13,7 +13,16 @@ __pycache__/
 
 # 크롤링된 백준 문제 데이터 제외
 practice/data/content/programming/baekjoon/scraped/
+practice/data/content/programming/baekjoon/mycode/
+
 # 크롤링 과정에서 생성되는 임시/실패 기록 파일들
 **/404_not_found/
 **/crawl_failures.txt
 **/browser_session/
+
+# 백준 아카이버 툴 관련
+Resources/tools/user_data/ 
+Resources/tools/test_user_data/ 
+Resources/tools/auth.json 
+Resources/tools/manual_cookies.json 
+Resources/tools/cookies_tool.json 
