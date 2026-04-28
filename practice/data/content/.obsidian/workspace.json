@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "programming/baekjoon/Lv.26 재귀.md",
+                "file": "canva/canva/l04_assignment/lesson/lesson.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lv.26 재귀"
+              "title": "lesson"
             }
           }
         ],
@@ -93,7 +93,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "55438ae67fcb9537",
@@ -201,11 +202,11 @@
   },
   "active": "b1701079775e5876",
   "lastOpenFiles": [
+    "programming/baekjoon/Lv.26 재귀.md",
     "pygame_marp_course/lesson02_meteor_drop/assets/운석원리.drawio.svg.crswap",
     "pygame_marp_course/lesson02_meteor_drop/assets/운석원리.drawio.svg",
     "pygame_marp_course/lesson02_meteor_drop/assets/drawio.svg",
     "programming/baekjoon/scraped/bj_10994.md",
-    "programming/baekjoon/Lv.26 재귀.md",
     "programming/baekjoon/scraped/bj_7113.md",
     "programming/baekjoon/scraped/bj_5956.md",
     "programming/baekjoon/scraped/bj_35489.md",
@@ -238,7 +239,6 @@
     "pygame/round01/안씀_problem_map_round01.json",
     "pygame/worksheets",
     "pygame/lesson",
-    "pygame/interactive/interactive_basic_r01.json",
     "pygame/round01/reference_images/problem06_correct.gif",
     "pygame/round01/reference_images/problem05_correct.gif",
     "pygame/round01/reference_images/problem06_correct.png",
