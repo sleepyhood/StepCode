@@ -1,36 +1,39 @@
 ---
 id: dc_SALLv05010
-legacy_id: dc_SP301v2604
-title: "10. [재귀함수 - 10] 2진수 변환"
+legacy_id: 
+title: "10. [재귀함수 - 10] 정사각형 타일 개수 (GCD 재귀)"
 platform: "doingcoding"
-is_scraped: true
+is_scraped: false
 time_limit: "1s"
 memory_limit: "256MB"
-tags: [doingcoding, scraped]
-source_url: "http://edu.doingcoding.com/problem/SP301v2604"
+tags: [doingcoding, recursion, practice]
 ---
 
-# [SALLv05010번] 10. [재귀함수 - 10] 2진수 변환
+# [SALLv05010번] 10. [재귀함수 - 10] 정사각형 타일 개수 (GCD 재귀)
 
 ## 1. 문제 설명
-어떤 10진수 n이 주어지면 2진수로 변환해서 출력하시오.
+수업 시간에 배운 직사각형 자르기 문제를 기억하시나요?
 
-예)
-10 ----> 1010
-0----> 0
-1----> 1
-2----> 10
-1024---->10000000000
+$N \times M$ 크기의 직사각형에서 잘라낼 수 있는 최대 정사각형의 크기는 결국 **$N$과 $M$의 최대공약수(GCD)**와 같습니다.
+
+이번에는 한 걸음 더 나아가, 직사각형에서 **가로 방향으로만** 정사각형을 잘라내는 과정을 구현해 봅시다.
+
+규칙은 다음과 같습니다:
+- $N \times M$ 직사각형에서 한 변의 길이가 $\min(N, M)$인 정사각형을 최대한 잘라냅니다.
+- 남은 직사각형에 대해 이 과정을 재귀적으로 반복합니다.
+- 남은 부분이 정사각형($N = M$)이 되면 1개를 추가하고 종료합니다.
+
+$N$과 $M$이 주어졌을 때, 최종적으로 얻을 수 있는 **정사각형의 총 개수**를 출력하세요.
 
 ---
 
 ## 2. 입출력 설명
 
 * **입력:**
-10진수 정수 n이 입력된다. (n은 0이상 21억 이하)
+두 정수 $N$과 $M$이 공백으로 구분되어 입력됩니다. ($1 \le N, M \le 10{,}000$)
 
 * **출력:**
-2진수로 변환해서 출력한다.
+잘라낸 정사각형의 총 개수를 출력합니다.
 
 ---
 
@@ -38,18 +41,40 @@ source_url: "http://edu.doingcoding.com/problem/SP301v2604"
 
 ### 예시 입력 1
 ```text
-7
+3 7
 ```
 
 ### 예시 출력 1
 ```text
-111
+5
 ```
+*(설명: 3×7에서 3×3 정사각형 2개를 자르면 3×1이 남고, 3×1에서 1×1 정사각형 3개가 나옵니다. 총 2+3=5개)*
+
+### 예시 입력 2
+```text
+6 4
+```
+
+### 예시 출력 2
+```text
+3
+```
+*(설명: 6×4에서 4×4 정사각형 1개를 자르면 2×4가 남고, 2×4에서 2×2 정사각형 2개가 나옵니다. 총 1+2=3개)*
 
 ---
 
 ## 4. 힌트
-수업(ALLv05010)에서 배운 진법 변환의 원리를 2진수에 적용해 보세요.
+수업에서 배운 직사각형 자르기와 동일한 로직입니다.
+- 큰 변을 작은 변으로 나눴을 때의 **몫**: 이번 단계에서 잘라낸 정사각형 개수
+- 큰 변을 작은 변으로 나눴을 때의 **나머지**: 다음 단계의 큰 변 길이
+
+```
+cut(n, m):
+    if n == m: return 1
+    big = max(n, m)
+    small = min(n, m)
+    return (big / small) + cut(small, big % small)
+```
 
 ---
 
@@ -60,17 +85,21 @@ source_url: "http://edu.doingcoding.com/problem/SP301v2604"
 ```c
 #include <stdio.h>
 
-void toBinary(int n) {
-    if (n == 0) return;
-    toBinary(n / 2);
-    printf("%d", n % 2);
+int cut(int n, int m) {
+    // 정사각형이 되면 1개로 종료
+    if (n == m) return 1;
+
+    int big = (n > m) ? n : m;
+    int small = (n < m) ? n : m;
+
+    // 이번 단계에서 잘라낼 수 있는 정사각형 수 + 나머지 직사각형 처리
+    return (big / small) + cut(small, big % small);
 }
 
 int main() {
-    int n;
-    scanf("%d", &n);
-    if (n == 0) printf("0");
-    else toBinary(n);
+    int n, m;
+    scanf("%d %d", &n, &m);
+    printf("%d", cut(n, m));
     return 0;
 }
 ```

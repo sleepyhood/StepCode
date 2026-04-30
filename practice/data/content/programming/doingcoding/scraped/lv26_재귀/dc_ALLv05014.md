@@ -1,45 +1,40 @@
 ---
 id: dc_ALLv05014
-legacy_id: bj_25501
-title: "14. [재귀함수 - 14] 재귀의 귀재 (호출 횟수 측정)"
-platform: "baekjoon"
+legacy_id: 
+title: "14. [재귀함수 - 14] 숫자를 붙여 N자리 수 만들기"
+platform: "doingcoding"
 is_scraped: false
 time_limit: "1s"
 memory_limit: "256MB"
-tags: [baekjoon, recursion, tutorial]
+tags: [doingcoding, recursion, tutorial]
 ---
 
-# [ALLv05014번] 14. 재귀의 귀재 (호출 횟수 측정)
+# [ALLv05014번] 13. 숫자를 붙여 N자리 수 만들기
 
 ## 1. 문제 설명
-재귀 함수를 공부하던 정우는 팰린드롬(Palindrome)을 판별하는 함수에 흥미를 느끼게 되었습니다. 팰린드롬이란 앞에서부터 읽었을 때와 뒤에서부터 읽었을 때가 같은 문자열을 말합니다.
+지금까지 우리는 재귀를 이용해 숫자를 더하거나 출력하는 방법을 배웠습니다. 이번에는 재귀를 사용하여 **새로운 숫자를 조합해내는 방법**을 배워보겠습니다.
 
-아래는 정우가 작성한 팰린드롬 판별 함수입니다.
+우리가 숫자를 읽을 때, `1` 다음에 `2`가 오면 `12`가 됩니다. 이것을 수학적으로 표현하면 `(기존 숫자 * 10) + 새로운 숫자`가 됩니다. 
 
-```c
-int recursion(const char *s, int l, int r){
-    if(l >= r) return 1;
-    else if(s[l] != s[r]) return 0;
-    else return recursion(s, l+1, r-1);
-}
+이 원리를 이용하여, 숫자 `1`과 `2`만을 사용하여 만들 수 있는 모든 **$N$자리의 숫자**를 출력하는 프로그램을 작성해 봅시다.
 
-int isPalindrome(const char *s){
-    return recursion(s, 0, strlen(s)-1);
-}
-```
+### ① 상태 트리 (State Space Tree) 이해하기
+매 순간 우리는 `1`을 붙일지, `2`를 붙일지 선택할 수 있습니다. 
+* 1단계: `1`, `2`
+* 2단계: `11`, `12`, `21`, `22`
+* 3단계: `111`, `112`, `121`, `122`, `211`, `212`, `221`, `222`
 
-정우는 문득 **"이 함수를 실행할 때 `recursion` 함수가 총 몇 번 호출될까?"**라는 궁금증이 생겼습니다. 여러분이 정우를 도와 팰린드롬 여부와 함께 함수의 호출 횟수를 출력하는 프로그램을 작성해 주세요.
+이렇게 선택의 가지가 뻗어나가는 구조를 이해하는 것이 백트래킹(응용 재귀)의 시작입니다.
 
 ---
 
 ## 2. 입출력 설명
 
 * **입력:**
-첫째 줄에 테스트 케이스의 개수 $T$가 주어집니다. ($1 \le T \le 1,000$)
-둘째 줄부터 $T$개의 줄에 걸쳐 알파벳 대문자로 구성된 문자열 $S$가 주어집니다. ($1 \le |S| \le 1,000$)
+만들고자 하는 숫자의 자릿수 $N$이 입력됩니다. ($1 \le N \le 10$)
 
 * **출력:**
-각 테스트 케이스마다 팰린드롬 여부(맞으면 1, 아니면 0)와 `recursion` 함수의 호출 횟수를 공백으로 구분하여 출력합니다.
+숫자 `1`과 `2`로만 구성된 모든 $N$자리의 숫자를 사전순으로 출력합니다.
 
 ---
 
@@ -47,27 +42,22 @@ int isPalindrome(const char *s){
 
 ### 예시 입력 1
 ```text
-5
-AAA
-ABBA
-ABCA
-PALINDROME
-LEVEL
+2
 ```
 
 ### 예시 출력 1
 ```text
-1 2
-1 3
-0 2
-0 1
-1 3
+11
+12
+21
+22
 ```
 
 ---
 
 ## 4. 힌트
-전역 변수를 하나 선언하고, `recursion` 함수가 시작될 때마다 그 변수의 값을 1씩 증가시켜 보세요. 각 테스트 케이스를 처리하기 전에 전역 변수를 다시 0으로 초기화하는 것을 잊지 마세요!
+재귀 함수의 매개변수로 `(현재까지 만들어진 숫자)`와 `(현재 몇 번째 자리인지)`를 넘겨보세요.
+`solve(count + 1, current * 10 + 1)` 과 같은 형태로 자릿수를 늘릴 수 있습니다.
 
 ---
 
@@ -77,31 +67,29 @@ LEVEL
 ### 모범 코드 (C)
 ```c
 #include <stdio.h>
-#include <string.h>
 
-int cnt; // 호출 횟수를 기록할 전역 변수
+int target_n;
 
-int recursion(const char *s, int l, int r) {
-    cnt++; // 함수 호출 시마다 카운트 증가
-    if (l >= r) return 1;
-    else if (s[l] != s[r]) return 0;
-    else return recursion(s, l + 1, r - 1);
-}
+// k: 현재까지 결정된 자릿수
+// val: 현재까지 만들어진 숫자의 값
+void solve(int k, int val) {
+    // 목표 자릿수에 도달하면 출력하고 종료
+    if (k == target_n) {
+        printf("%d\n", val);
+        return;
+    }
 
-int isPalindrome(const char *s) {
-    return recursion(s, 0, strlen(s) - 1);
+    // 1을 붙이는 경우와 2를 붙이는 경우를 각각 호출
+    solve(k + 1, val * 10 + 1);
+    solve(k + 1, val * 10 + 2);
 }
 
 int main() {
-    int t;
-    char s[1001];
-    scanf("%d", &t);
-    while (t--) {
-        scanf("%s", s);
-        cnt = 0; // 테스트 케이스마다 초기화
-        int result = isPalindrome(s);
-        printf("%d %d\n", result, cnt);
-    }
+    scanf("%d", &target_n);
+    
+    // 처음에 아무 숫자도 없는 상태(val=0)에서 시작
+    solve(0, 0);
+    
     return 0;
 }
 ```

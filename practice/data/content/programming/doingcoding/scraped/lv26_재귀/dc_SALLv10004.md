@@ -1,4 +1,4 @@
-﻿---
+---
 id: dc_SALLv10004
 legacy_id: dc_SALLv10002
 title: "04. [재귀함수 - 2] N과 M - 2"

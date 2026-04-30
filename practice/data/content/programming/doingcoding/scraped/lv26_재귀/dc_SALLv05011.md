@@ -1,39 +1,36 @@
 ---
 id: dc_SALLv05011
-legacy_id: dc_SALLv05002
-title: "11. [재귀함수 - 11] 단어 나누기"
+legacy_id: dc_SP301v2604
+title: "11. [재귀함수 - 11] 2진수 변환"
 platform: "doingcoding"
 is_scraped: true
-time_limit: "2s"
-memory_limit: "128MB"
+time_limit: "1s"
+memory_limit: "256MB"
 tags: [doingcoding, scraped]
-source_url: "http://edu.doingcoding.com/problem/SALLv05002"
+source_url: "http://edu.doingcoding.com/problem/SP301v2604"
 ---
 
-# [SALLv05011번] 11. [재귀함수 - 11] 단어 나누기
+# [SALLv05011번] 10. [재귀함수 - 11] 2진수 변환
 
 ## 1. 문제 설명
-알파벳 소문자로 이루어진 단어를 가지고 아래와 같은 과정을 해 보려고 한다.
+어떤 10진수 n이 주어지면 2진수로 변환해서 출력하시오.
 
-먼저 단어에서 임의의 두 부분을 골라서 단어를 쪼갠다. 즉, 주어진 단어를 세 개의 더 작은 단어로 나누는 것이다. 각각은 적어도 길이가 1 이상인 단어여야 한다. 이제 이렇게 나눈 세 개의 작은 단어들을 앞뒤를 뒤집고, 이를 다시 원래의 순서대로 합친다.
-
-예를 들어,
-* 단어 : arrested
-* 세 단어로 나누기 : ar / rest / ed
-* 각각 뒤집기 : ra / tser / de
-* 합치기 : ratserde
-
-단어가 주어지면, 이렇게 만들 수 있는 단어 중에서 사전순으로 가장 앞서는 단어를 출력하는 프로그램을 작성하시오.
+예)
+10 ----> 1010
+0----> 0
+1----> 1
+2----> 10
+1024---->10000000000
 
 ---
 
 ## 2. 입출력 설명
 
 * **입력:**
-첫째 줄에 영어 소문자로 된 단어가 주어진다. 길이는 3 이상 50 이하이다.
+10진수 정수 n이 입력된다. (n은 0이상 21억 이하)
 
 * **출력:**
-첫째 줄에 구하고자 하는 단어를 출력하면 된다.
+2진수로 변환해서 출력한다.
 
 ---
 
@@ -41,18 +38,18 @@ source_url: "http://edu.doingcoding.com/problem/SALLv05002"
 
 ### 예시 입력 1
 ```text
-mobitel
+7
 ```
 
 ### 예시 출력 1
 ```text
-bometil
+111
 ```
 
 ---
 
 ## 4. 힌트
-단어를 세 부분으로 나누는 모든 경우를 재귀 또는 반복문을 통해 탐색해 보세요.
+수업(ALLv05010)에서 배운 진법 변환의 원리를 2진수에 적용해 보세요.
 
 ---
 
@@ -62,40 +59,18 @@ bometil
 ### 모범 코드 (C)
 ```c
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
-char input[55];
-char best[55];
-
-void reverse(char *s, int start, int end) {
-    while (start < end) {
-        char temp = s[start];
-        s[start] = s[end];
-        s[end] = temp;
-        start++;
-        end--;
-    }
+void toBinary(int n) {
+    if (n == 0) return;
+    toBinary(n / 2);
+    printf("%d", n % 2);
 }
 
 int main() {
-    scanf("%s", input);
-    int len = strlen(input);
-    strcpy(best, "{"); // 사전순으로 가장 뒤에 오는 문자
-
-    for (int i = 1; i < len - 1; i++) {
-        for (int j = i + 1; j < len; j++) {
-            char current[55];
-            strcpy(current, input);
-            reverse(current, 0, i - 1);
-            reverse(current, i, j - 1);
-            reverse(current, j, len - 1);
-            if (strcmp(current, best) < 0) {
-                strcpy(best, current);
-            }
-        }
-    }
-    printf("%s", best);
+    int n;
+    scanf("%d", &n);
+    if (n == 0) printf("0");
+    else toBinary(n);
     return 0;
 }
 ```

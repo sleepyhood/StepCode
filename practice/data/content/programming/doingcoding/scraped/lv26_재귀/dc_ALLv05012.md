@@ -1,0 +1,82 @@
+---
+id: dc_ALLv05012
+legacy_id: 
+title: "12. [재귀함수 - 12] 문자열 거꾸로 출력하기"
+platform: "doingcoding"
+is_scraped: false
+time_limit: "1s"
+memory_limit: "256MB"
+tags: [doingcoding, recursion, tutorial]
+---
+
+# [ALLv05012번] 11. 문자열 거꾸로 출력하기
+
+## 1. 문제 설명
+지금까지는 숫자를 다루는 재귀를 배웠지만, 재귀는 문자열이나 배열을 처리할 때도 매우 유용합니다. 이번에는 입력받은 문자열을 재귀를 이용해 거꾸로 출력해 보겠습니다.
+
+### ① 문자열과 인덱스
+문자열은 각 문자가 상자에 담겨 번호(인덱스)가 매겨진 것과 같습니다. `str[0]`, `str[1]` 처럼 말이죠.
+재귀 함수를 호출할 때마다 **인덱스를 1씩 키우며** 문자열의 끝까지 들어갔다가, 돌아 나오면서 해당 인덱스의 문자를 출력하면 문자열이 뒤집혀 보입니다.
+
+```c
+void reverse(int i) {
+    if (str[i] == '\0') return; // 문자열의 끝(\0)을 만나면 종료
+    reverse(i + 1);             // 다음 문자로 파고듭니다.
+    printf("%c", str[i]);       // 돌아 나오면서 현재 문자를 출력합니다.
+}
+```
+
+---
+
+## 2. 입출력 설명
+
+* **입력:**
+공백이 없는 문자열이 입력됩니다. (최대 길이 100)
+
+* **출력:**
+문자열을 거꾸로 뒤집어서 출력합니다.
+
+---
+
+## 3. 예시
+
+### 예시 입력 1
+```text
+apple
+```
+
+### 예시 출력 1
+```text
+elppa
+```
+
+---
+
+## 4. 힌트
+문자열의 끝을 나타내는 문자인 `'\0'` (NULL 문자)를 탈출 조건으로 사용해 보세요.
+
+---
+
+<!-- ANSWER_START -->
+## [정답 및 해설 (Ground Truth)]
+
+### 모범 코드 (C)
+```c
+#include <stdio.h>
+#include <string.h>
+
+char str[105];
+
+void reversePrint(int i) {
+    if (str[i] == '\0') return;
+    reversePrint(i + 1);
+    printf("%c", str[i]);
+}
+
+int main() {
+    scanf("%s", str);
+    reversePrint(0);
+    return 0;
+}
+```
+<!-- ANSWER_END -->

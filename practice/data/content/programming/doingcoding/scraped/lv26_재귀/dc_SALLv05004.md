@@ -1,35 +1,35 @@
 ---
 id: dc_SALLv05004
-legacy_id: 
-title: "04. [재귀함수 - 4] 트리보나치 수열 (Tribonacci)"
+legacy_id: dc_SP301v2603
+title: "04. [재귀함수 - 4] 팩토리얼 계산"
 platform: "doingcoding"
-is_scraped: false
+is_scraped: true
 time_limit: "1s"
 memory_limit: "256MB"
-tags: [doingcoding, recursion, practice]
+tags: [doingcoding, scraped]
+source_url: "http://edu.doingcoding.com/problem/SP301v2603"
 ---
 
-# [SALLv05004번] 04. 트리보나치 수열 (Tribonacci)
+# [SALLv05004번] 03. [재귀함수 - 4] 팩토리얼 계산
 
 ## 1. 문제 설명
-피보나치 수열이 앞의 두 항을 더하는 것이라면, **트리보나치(Tribonacci) 수열**은 앞의 세 항을 더하여 만드는 수열입니다.
+팩토리얼(!)은 다음과 같이 정의된다.
 
-수열의 시작이 다음과 같을 때, $n$번째 트리보나치 수를 구하는 프로그램을 재귀 함수로 작성해 보세요.
+n! = n \* (n-1) \* (n-2) \* ...2 \* 1
 
-* $T(0) = 0$
-* $T(1) = 0$
-* $T(2) = 1$
-* $T(n) = T(n-1) + T(n-2) + T(n-3)$ (단, $n \ge 3$)
+즉, 5! =  5 \* 4 \* 3 \* 2 \* 1 = 120이다.
+
+n이 입력되면 n!의 값을 출력하시오.
 
 ---
 
 ## 2. 입출력 설명
 
 * **입력:**
-정수 $n$이 입력됩니다. ($0 \le n \le 20$)
+자연수 n이 입력된다. (n <=12)
 
 * **출력:**
-$n$번째 트리보나치 수를 출력합니다.
+n!의 값을 출력한다.
 
 ---
 
@@ -42,46 +42,24 @@ $n$번째 트리보나치 수를 출력합니다.
 
 ### 예시 출력 1
 ```text
-2
-```
-
-
-### 예시 입력 2
-```text
-4
-```
-
-### 예시 출력 2
-```text
-2
+120
 ```
 
 ---
 
 ## 4. 힌트
-수업에서 배운 피보나치 로직에서 재귀 호출을 하나 더 추가하면 됩니다. `return f(n-1) + f(n-2) + f(n-3);` 형태를 생각해 보세요.
+(힌트가 없습니다.)
 
 ---
 
 <!-- ANSWER_START -->
 ## [정답 및 해설 (Ground Truth)]
 
-### 모범 코드 (C)
-```c
-#include <stdio.h>
+### 모범 코드 (Python)
+**(백준 크롤러에서는 정답 코드를 긁어올 수 없으므로, 선생님께서 아래에 직접 보충해 주세요)**
 
-int tribonacci(int n) {
-    if (n == 0) return 0;
-    if (n == 1) return 0;
-    if (n == 2) return 1;
-    return tribonacci(n - 1) + tribonacci(n - 2) + tribonacci(n - 3);
-}
-
-int main() {
-    int n;
-    scanf("%d", &n);
-    printf("%d", tribonacci(n));
-    return 0;
-}
+```python
+A, B = map(int, input().split())
+print(A + B)
 ```
 <!-- ANSWER_END -->

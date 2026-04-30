@@ -1,41 +1,34 @@
 ---
 id: dc_SALLv05014
-legacy_id: 
-title: "14. [재귀함수 - 14] 재귀의 함정 (피보나치 카운트)"
+legacy_id: dc_SALLv05004
+title: "14. [재귀함수 - 14] 숫자 만들기"
 platform: "doingcoding"
-is_scraped: false
+is_scraped: true
 time_limit: "1s"
 memory_limit: "256MB"
-tags: [doingcoding, recursion, practice]
+tags: [doingcoding, scraped]
+source_url: "http://edu.doingcoding.com/problem/SALLv05004"
 ---
 
-# [SALLv05014번] 14. 재귀의 함정 (피보나치 카운트)
+# [SALLv05014번] 13. [재귀함수 - 14] 숫자 만들기
 
 ## 1. 문제 설명
-수업 시간에 배운 대로, 재귀 함수는 자기 자신을 호출하며 문제를 해결합니다. 하지만 어떤 재귀 함수는 똑같은 연산을 수없이 반복하여 매우 느려지기도 합니다. 이를 **"재귀의 함정"**이라고 부릅니다.
+숫자 $N$과 집합 $Q$의 원소 개수 $K$, 그리고 $Q$의 원소들이 주어집니다.
 
-대표적인 예가 바로 피보나치 수열($F_n = F_{n-1} + F_{n-2}$)입니다.
+$N$보다 작거나 같은 자연수 중 $Q$의 원소들로만(중복 가능) 구성된 가장 큰 수를 출력하는 프로그램을 작성하세요. 집합 $Q$는 1부터 9 사이의 자연수로만 이루어져 있습니다.
 
-입력으로 정수 $N$이 주어졌을 때, 아래의 `fibo` 함수를 사용하여 $F_N$의 값과, **함수가 총 몇 번 호출되었는지**를 구하는 프로그램을 작성하세요.
-
-```c
-int fibo(int n) {
-    // 여기에 호출 횟수를 카운트하는 로직이 들어가야 합니다.
-    if (n <= 1) return n;
-    return fibo(n - 1) + fibo(n - 2);
-}
-```
+예를 들어, $N=657$이고 $Q=\{1, 5, 7\}$일 때, 1, 5, 7로 만들 수 있는 657 이하의 가장 큰 숫자는 577입니다.
 
 ---
 
 ## 2. 입출력 설명
 
 * **입력:**
-정수 $N$이 주어집니다. ($1 \le N \le 25$)
+첫째 줄에 $N$과 $K$가 공백으로 구분되어 입력됩니다. ($10 \le N \le 100,000,000$, $1 \le K \le 3$)
+둘째 줄에 집합 $Q$의 원소 $K$개가 입력됩니다.
 
 * **출력:**
-첫째 줄에 피보나치 수 $F_N$의 값을 출력합니다.
-둘째 줄에 `fibo` 함수가 호출된 총 횟수를 출력합니다.
+$N$보다 작거나 같은 자연수 중 $Q$의 원소로만 구성된 가장 큰 수를 출력합니다.
 
 ---
 
@@ -43,20 +36,30 @@ int fibo(int n) {
 
 ### 예시 입력 1
 ```text
-5
+42 2
+1 9
 ```
 
 ### 예시 출력 1
 ```text
-5
-15
+19
 ```
-*(설명: F(5)=5이며, 호출 횟수는 F(5):1 + F(4):1 + F(3):2 + F(2):3 + F(1):5 + F(0):3 ... 등등 총 15번입니다.)*
+
+### 예시 입력 2
+```text
+7449 2
+6 7
+```
+
+### 예시 출력 2
+```text
+6777
+```
 
 ---
 
 ## 4. 힌트
-수업 시간에 배운 `cnt` 전역 변수를 활용하세요. $N$이 커질수록 호출 횟수가 기하급수적으로 늘어나는 것을 확인할 수 있습니다. $N=25$일 때 호출 횟수가 얼마나 커지는지 직접 확인해 보세요!
+재귀를 통해 가능한 모든 조합을 탐색하며 $N$ 이하의 최대값을 찾아보세요. 이 문제는 백트래킹(탐색)의 기초 원리를 익히기에 좋습니다.
 
 ---
 
@@ -67,19 +70,31 @@ int fibo(int n) {
 ```c
 #include <stdio.h>
 
-int cnt = 0; // 전역 변수
+int N, K;
+int Q[5];
+int max_val = -1;
 
-int fibo(int n) {
-    cnt++; // 호출될 때마다 1 증가
-    if (n <= 1) return n;
-    return fibo(n - 1) + fibo(n - 2);
+void solve(int current) {
+    if (current > N) return;
+    if (current > max_val) max_val = current;
+    
+    // N이 1억까지이므로, 현재 값이 1억을 넘지 않을 때만 다음 숫자를 붙임
+    if (current > 10000000) return;
+
+    for (int i = 0; i < K; i++) {
+        solve(current * 10 + Q[i]);
+    }
 }
 
 int main() {
-    int n;
-    scanf("%d", &n);
-    int result = fibo(n);
-    printf("%d\n%d", result, cnt);
+    scanf("%d %d", &N, &K);
+    for (int i = 0; i < K; i++) {
+        scanf("%d", &Q[i]);
+    }
+    for (int i = 0; i < K; i++) {
+        solve(Q[i]);
+    }
+    printf("%d", max_val);
     return 0;
 }
 ```
