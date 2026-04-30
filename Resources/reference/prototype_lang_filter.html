@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StepCode - 언어별 맞춤형 본문 프로토타입</title>
+    
+    <!-- Prism.js 추가 (코드 하이라이팅) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --python-color: #3776ab;
+            --c-color: #a8b9cc;
+            --java-color: #ed8b00;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        header {
+            border-bottom: 2px solid var(--bg-color);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+            color: #222;
+        }
+
+        /* 언어 선택 탭 스타일 */
+        .lang-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: var(--bg-color);
+            padding: 5px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .lang-tab {
+            padding: 8px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: #666;
+        }
+
+        .lang-tab:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .lang-tab.active {
+            background: #fff;
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 본문 스타일 */
+        .content-body {
+            font-size: 1.1rem;
+        }
+
+        /* 핵심: 언어별 컨텐츠 필터링 */
+        .lang-node {
+            display: none;
+            /* 기본적으로 숨김 */
+            background-color: rgba(74, 144, 226, 0.05);
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* 선택된 언어에 따른 노출 설정 */
+        [data-user-lang="c"] .lang-c {
+            display: inline;
+            color: #444;
+            border-bottom: 2px solid var(--c-color);
+        }
+
+        [data-user-lang="python"] .lang-python {
+            display: inline;
+            color: #222;
+            border-bottom: 2px solid var(--python-color);
+        }
+
+        [data-user-lang="java"] .lang-java {
+            display: inline;
+            color: #222;
+            border-bottom: 2px solid var(--java-color);
+        }
+
+        /* 블록 형태의 코드 예시 등을 위한 처리 */
+        .lang-node.is-block {
+            display: none;
+            margin: 15px 0;
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            background: #f1f3f5;
+            border-radius: 4px;
+        }
+
+        [data-user-lang="c"] .lang-c.is-block {
+            display: block;
+            border-left-color: var(--c-color);
+        }
+
+        [data-user-lang="python"] .lang-python.is-block {
+            display: block;
+            border-left-color: var(--python-color);
+        }
+
+        [data-user-lang="java"] .lang-java.is-block {
+            display: block;
+            border-left-color: var(--java-color);
+        }
+
+        code {
+            background: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Cascadia Code', Consolas, monospace;
+        }
+
+        /* Prism.js 테마 커스텀 */
+        pre[class*="language-"] {
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body data-user-lang="python"> <!-- 초기값: 파이썬 -->
+
+    <div class="container">
+        <header>
+            <h1>문제: 1부터 20까지 출력하기</h1>
+            <p>난이도: <span style="color: #40c057;">Bronze V</span></p>
+        </header>
+
+        <!-- 언어 선택기 -->
+        <div class="lang-selector">
+            <button class="lang-tab" onclick="setLang('c')">C언어</button>
+            <button class="lang-tab active" onclick="setLang('python')">Python</button>
+            <button class="lang-tab" onclick="setLang('java')">Java</button>
+        </div>
+
+        <!-- 문제 본문 (동적으로 렌더링될 영역) -->
+        <div class="content-body" id="content">
+            <p>
+                반복문을 사용하여 1부터 20까지 화면에 출력하는 프로그램을 작성하세요.
+            </p>
+
+            <p>
+                이 문제의 핵심은 반복문의 범위 설정입니다.
+                [[lang:c]]C언어에서는 <code>for(int i=1; i<=20; i++)</code>와 같이 조건식을 명확히 작성해야 합니다.[[/lang]]
+                [[lang:python]]파이썬의 <code>range(start, end)</code> 함수는 마지막 숫자를 포함하지 않으므로 <code>range(1, 21)</code>로 작성해야
+                함에 유의하세요.[[/lang]]
+                [[lang:java]]자바에서는 <code>System.out.println()</code>을 사용하여 한 줄씩 출력할 수 있습니다.[[/lang]]
+            </p>
+
+            <div class="lang-node is-block lang-c">
+                <strong>C언어 구현 팁:</strong><br>
+                줄바꿈을 위해 <code>\n</code> 서식 문자를 잊지 마세요.
+                <pre class="language-c"><code>for (int i = 1; i <= 20; i++) {
+    printf("%d\n", i);
+}</code></pre>
+            </div>
+
+            <div class="lang-node is-block lang-python">
+                <strong>Python 구현 팁:</strong><br>
+                파이썬은 <code>print()</code> 함수가 기본적으로 줄바꿈을 포함합니다.
+                <pre class="language-python"><code>for i in range(1, 21):
+    print(i)</code></pre>
+            </div>
+
+            <div class="lang-node is-block lang-java">
+                <strong>Java 구현 팁:</strong><br>
+                정적 메소드인 <code>main</code> 안에서 로직을 구현하세요.
+                <pre class="language-java"><code>for (int i = 1; i <= 20; i++) {
+    System.out.println(i);
+}</code></pre>
+            </div>
+
+            <p>
+                모든 숫자가 출력된 후에는 프로그램이 정상적으로 종료되어야 합니다.
+            </p>
+        </div>
+
+        <div class="info-box">
+            <strong>💡</strong><br>
+            위의 탭을 클릭해 보세요. 본문 내의 설명과 팁 박스가 학생이 선택한 언어에 맞춰 실시간으로 변경됩니다.
+        </div>
+    </div>
+
+    <script>
+        // 초기 로드 시 텍스트 가공 (마크다운 엔진에서 처리될 부분의 모사)
+        function processContent() {
+            const contentDiv = document.getElementById('content');
+            let html = contentDiv.innerHTML;
+
+            // [[lang:xxx]] ... [[/lang]] 패턴을 span 태그로 치환
+            html = html.replace(/\[\[lang:(\w+)\]\]([\s\S]*?)\[\[\/lang\]\]/g, function (match, lang, text) {
+                return `<span class="lang-node lang-${lang.toLowerCase()}">${text}</span>`;
+            });
+
+            contentDiv.innerHTML = html;
+
+            // Prism.js 하이라이팅 적용
+            if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+            }
+        }
+
+        // 언어 변경 함수
+        function setLang(lang) {
+            // body 속성 변경 (CSS가 이를 감지하여 노출 제어)
+            document.body.setAttribute('data-user-lang', lang);
+
+            // 탭 활성화 상태 업데이트
+            const tabs = document.querySelectorAll('.lang-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.innerText.toLowerCase().includes(lang)) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+
+        // 실행
+        window.onload = processContent;
+    </script>
+</body>
+
+</html>
