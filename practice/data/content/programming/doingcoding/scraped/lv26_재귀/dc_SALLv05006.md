@@ -1,20 +1,21 @@
-﻿---
-id: dc_P301v2605
-title: "05. [재귀함수 - 5] 우박수 (3n+1)"
+---
+id: dc_SALLv05006
+legacy_id: dc_SP301v2605
+title: "06. [재귀함수 - 5] 우박수 (3n+1)(reverse)"
 platform: "doingcoding"
 is_scraped: true
 time_limit: "1s"
 memory_limit: "256MB"
 tags: [doingcoding, scraped]
-source_url: "http://edu.doingcoding.com/problem/P301v2605"
+source_url: "http://edu.doingcoding.com/problem/SP301v2605"
 ---
 
-# [P301v2605번] 05. [재귀함수 - 5] 우박수 (3n+1)
+# [SALLv05006번] 06. [재귀함수 - 5] 우박수 (3n+1)(reverse)
 
 ## 1. 문제 설명
 콜라츠의 추측, 3n +1 문제, 우박수 문제라고 불리는 문제는 다음과 같다.
 
-1. 어떤 자연수 n이 입력되면,(n이 1이면 출력하고 끝남)
+1. 어떤 자연수 n이 입력되면,
 
 2. n이 홀수이면 3n+1을 하고,
 
@@ -24,6 +25,10 @@ source_url: "http://edu.doingcoding.com/problem/P301v2605"
 
 예를 들어 5는 5 -> 16 -> 8 -> 4-> 2 -> 1이 된다.
 
+그런데 이번에는 이 순서의 역순을 출력하고자 한다.
+
+즉, 1 2 4 8 16 5가 출력되어야 한다.
+
 이 처럼 어떤 자연수 n이 입력되면 위 알고리즘에 의해 1이 되는 과정을 모두 출력하시오.
 
 ---
@@ -31,9 +36,7 @@ source_url: "http://edu.doingcoding.com/problem/P301v2605"
 ## 2. 입출력 설명
 
 * **입력:**
-자연수 n이 입력된다.(n은 1이상 10000000이하)
-
-단 3n+1이 되는 과정에서 int 범위를 넘는 수는 입력으로 주어지지 않는다.
+자연수 n이 입력된다.(n은 1이상 10,000,000이하)
 
 * **출력:**
 3n+1의 과정을 출력한다.
@@ -49,51 +52,12 @@ source_url: "http://edu.doingcoding.com/problem/P301v2605"
 
 ### 예시 출력 1
 ```text
-5
-16
-8
-4
+1
 2
-1
-```
-
-### 예시 입력 2
-```text
-9
-```
-
-### 예시 출력 2
-```text
-9
-28
-14
-7
-22
-11
-34
-17
-52
-26
-13
-40
-20
-10
-5
-16
-8
 4
-2
-1
-```
-
-### 예시 입력 3
-```text
-1
-```
-
-### 예시 출력 3
-```text
-1
+8
+16
+5
 ```
 
 ---

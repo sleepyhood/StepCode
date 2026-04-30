@@ -1,0 +1,92 @@
+---
+id: dc_SALLv10010
+legacy_id: 
+title: "07. [재귀함수 - 7] 주사위 던지기 (목표 합 S)"
+platform: "doingcoding"
+is_scraped: false
+time_limit: "1s"
+memory_limit: "256MB"
+tags: [doingcoding, recursion, backtracking]
+---
+
+# [SALLv10010번] 07. 주사위 던지기 (목표 합 S)
+
+## 1. 문제 설명
+$N$개의 주사위를 동시에 던졌을 때, 나온 눈의 수의 합이 **정확히 $S$**가 되는 모든 경우의 수를 구하는 프로그램을 작성하세요.
+
+주사위의 눈은 $1$부터 $6$까지 있으며, 주사위의 순서가 다르면 다른 경우로 취급합니다.
+예를 들어 $N=2, S=5$인 경우:
+1. `1 4`
+2. `2 3`
+3. `3 2`
+4. `4 1`
+총 4가지입니다.
+
+---
+
+## 2. 입출력 설명
+
+* **입력:**
+던지는 주사위의 개수 $N$과 목표 합 $S$가 공백으로 구분되어 입력됩니다.
+($1 \le N \le 8$, $1 \le S \le 48$)
+
+* **출력:**
+눈의 합이 $S$가 되는 모든 경우의 수를 출력합니다.
+
+---
+
+## 3. 예시
+
+### 예시 입력 1
+```text
+3 10
+```
+
+### 예시 출력 1
+```text
+27
+```
+
+---
+
+## 4. 힌트
+재귀 함수를 호출할 때마다 주사위 한 개의 눈($1 \sim 6$)을 결정하고, 이를 $N$번 반복하여 최종 합을 확인해 보세요.
+
+---
+
+<!-- ANSWER_START -->
+## [정답 및 해설 (Ground Truth)]
+
+### 모범 코드 (C)
+```c
+#include <stdio.h>
+
+int target_n, target_s;
+int count = 0;
+
+void solve(int dice_count, int current_sum) {
+    // 모든 주사위를 다 던졌을 때
+    if (dice_count == target_n) {
+        if (current_sum == target_s) {
+            count++;
+        }
+        return;
+    }
+
+    // 가지치기: 현재 합이 이미 목표를 초과했거나, 남은 주사위로 최소/최대 합을 만들어도 범위를 벗어나는 경우
+    if (current_sum > target_s) return;
+    if (current_sum + (target_n - dice_count) * 6 < target_s) return;
+
+    for (int i = 1; i <= 6; i++) {
+        solve(dice_count + 1, current_sum + i);
+    }
+}
+
+int main() {
+    scanf("%d %d", &target_n, &target_s);
+    solve(0, 0);
+    printf("%d", count);
+    return 0;
+}
+```
+<!-- ANSWER_END -->

@@ -13,28 +13,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv05001_v2.md",
+                "file": "practice/data/content/programming/baekjoon/scraped/bj_17478.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "dc_ALLv05001_v2"
-            }
-          },
-          {
-            "id": "92be0dd7ed6471c4",
-            "type": "leaf",
-            "state": {
-              "type": "excalidraw",
-              "state": {
-                "file": "Resources/Excalidraw/Drawing 2026-04-29 13.57.14.excalidraw.md"
-              },
-              "icon": "excalidraw-icon",
-              "title": "Drawing 2026-04-29 13.57.14.excalidraw"
+              "title": "bj_17478"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -91,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 331.5,
+    "width": 287.5,
     "collapsed": true
   },
   "right": {
@@ -198,25 +185,42 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "92be0dd7ed6471c4",
+  "active": "2bc83c8b67bd0891",
   "lastOpenFiles": [
+    "practice/data/content/programming/baekjoon/Lv.26 재귀.md",
+    "practice/data/content/programming/baekjoon/scraped/bj_10994.md",
+    "practice/data/content/programming/baekjoon/scraped/bj_17478.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv05014.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv05014.md",
+    "practice/data/content/programming/baekjoon/scraped/bj_25501.md",
+    "practice/data/content/programming/baekjoon/scraped/bj_33786.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv05013.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv10001.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv10007.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv10006.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv10005.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv10002.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv10008.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv10007.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv10006.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv10010.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv10005.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv10009.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv05005.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv05008.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv05013.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv05012.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv05010.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv05005.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SALLv05004.md",
+    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_SP301v2601.md.tmp",
     "Pasted Image 20260430135810_848.png",
-    "Resources/Excalidraw/Drawing 2026-04-29 13.57.14.excalidraw.md",
     "Pasted Image 20260430135820_143.png",
     "Resources/Excalidraw/260429.png",
-    "practice/data/content/programming/doingcoding/scraped/lv26_재귀/dc_ALLv05001_v2.md",
     "Pasted image 20260430015214.png",
-    "Excalidraw/Drawing 2026-04-30 01.51.13.excalidraw.md",
     "Excalidraw",
-    "README.md",
     "Resources/reference/prototype_lang_filter.html",
-    "practice/data/theory/jungol/03_고등/2026년_5차_고등_수업_해설지_2019-2025.md",
     "무제.base",
-    "practice/data/theory/jungol/02_중등/2026년_5차_중등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/03_고등/2026년_4차_고등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/02_중등/2026년_4차_중등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/02_중등/2026년_2차_중등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/02_중등/2026년_1차_중등_수업_해설지_2019-2025.md",
     "practice/data/theory/jungol/03_고등/5주차/~$26년_5차_고등_수업_학생용_2019-2025.docx",
     "image.png",
     "image5.png",
@@ -224,27 +228,11 @@
     "image3.png",
     "image1.png",
     "image2.png",
-    "practice/data/theory/jungol/03_고등/2026년_1차_고등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/03_고등/2026년_5차_고등_숙제_해설지_2019-2025.md",
     "practice/data/theory/jungol/03_고등/2026년_5차_고등_수업_해설지_2019-2025.pdf",
-    "practice/data/content/pygame_marp_course/lesson01_ship_movement/lesson/slide.md",
     "practice/data/theory/jungol/02_중등/2026년_5차_중등_수업_해설지_2019-2025.pdf",
-    "practice/data/content/pygame_marp_course/lesson02_meteor_drop/interactive.md",
     "practice/data/content/pygame_marp_course/lesson02_meteor_drop/quarto_sample_files/libs/quarto-html/tippy.umd.min.js",
     "practice/data/content/pygame_marp_course/lesson02_meteor_drop/quarto_sample_files/libs/quarto-html/tippy.css",
     "practice/data/content/pygame_marp_course/lesson02_meteor_drop/quarto_sample_files/libs/quarto-html/tabby.min.js",
-    "practice/data/content/pygame_marp_course/lesson02_meteor_drop/quarto_sample_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css",
-    "practice/data/theory/jungol/03_고등/2026년_3차_고등_숙제_해설지_2019-2025.md",
-    "practice/data/theory/jungol/해설지_작성_가이드.md",
-    "practice/data/theory/jungol/02_중등/2026년_3차_중등_숙제_해설지_2019-2025.md",
-    "practice/data/theory/jungol/02_중등/2026년_3차_중등_수업_해설지_2019-2025.md",
-    "practice/data/theory/jungol/03_고등/2026년_6차_고등_수업_해설지_2024.md",
-    "practice/data/theory/jungol/02_중등/2026년_5차_중등_숙제_해설지_2019-2025.md",
-    "practice/data/content/pygame_marp_course/lesson02_meteor_drop/lesson/slide.md",
-    "practice/data/content/pygame_marp_course/세션이어감.md",
-    "practice/data/content/pygame_marp_course/curriculum.md",
-    "practice/data/content/pygame_marp_course/marp_slide_guide.md",
-    "practice/data/theory/jungol/03_고등/2026년_3차_고등_수업_해설지_2019-2025.md",
     "practice/data/theory/무제.canvas",
     "practice/data/theory/무제 1.canvas",
     "Resources/reference/project_maps/content_workflow.canvas",

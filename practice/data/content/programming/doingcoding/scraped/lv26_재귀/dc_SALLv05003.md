@@ -1,28 +1,35 @@
-﻿---
-id: dc_SP301v2601
-title: "01. [재귀함수 - 1]1부터 n까지 역순으로 출력하기"
+---
+id: dc_SALLv05003
+legacy_id: dc_SP301v2603
+title: "03. [재귀함수 - 3] 팩토리얼 계산"
 platform: "doingcoding"
 is_scraped: true
 time_limit: "1s"
 memory_limit: "256MB"
 tags: [doingcoding, scraped]
-source_url: "http://edu.doingcoding.com/problem/SP301v2601"
+source_url: "http://edu.doingcoding.com/problem/SP301v2603"
 ---
 
-# [SP301v2601번] 01. [재귀함수 - 1]1부터 n까지 역순으로 출력하기
+# [SALLv05003번] 03. [재귀함수 - 3] 팩토리얼 계산
 
 ## 1. 문제 설명
-정수 n부터 1까지 출력하는 재귀함수를 설계하시오
+팩토리얼(!)은 다음과 같이 정의된다.
+
+n! = n \* (n-1) \* (n-2) \* ...2 \* 1
+
+즉, 5! =  5 \* 4 \* 3 \* 2 \* 1 = 120이다.
+
+n이 입력되면 n!의 값을 출력하시오.
 
 ---
 
 ## 2. 입출력 설명
 
 * **입력:**
-정수 n이 입력된다(n은 1이상 200이하)
+자연수 n이 입력된다. (n <=12)
 
 * **출력:**
-n부터 1까지 한 줄에 하나씩 출력한다.
+n!의 값을 출력한다.
 
 ---
 
@@ -30,21 +37,12 @@ n부터 1까지 한 줄에 하나씩 출력한다.
 
 ### 예시 입력 1
 ```text
-10
+5
 ```
 
 ### 예시 출력 1
 ```text
-10
-9
-8
-7
-6
-5
-4
-3
-2
-1
+120
 ```
 
 ---

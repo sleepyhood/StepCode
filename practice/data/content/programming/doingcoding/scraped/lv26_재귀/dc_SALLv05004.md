@@ -1,46 +1,35 @@
-﻿---
+---
 id: dc_SALLv05004
-title: "03. [재귀함수 - 3] 숫자 만들기"
+legacy_id: 
+title: "04. [재귀함수 - 4] 트리보나치 수열 (Tribonacci)"
 platform: "doingcoding"
-is_scraped: true
+is_scraped: false
 time_limit: "1s"
 memory_limit: "256MB"
-tags: [doingcoding, scraped]
-source_url: "http://edu.doingcoding.com/problem/SALLv05004"
+tags: [doingcoding, recursion, practice]
 ---
 
-# [SALLv05004번] 03. [재귀함수 - 3] 숫자 만들기
+# [SALLv05004번] 04. 트리보나치 수열 (Tribonacci)
 
 ## 1. 문제 설명
-숫자 N과 집합 Q의 원소 개수 K, Q의 원소들이 주어집니다.
+피보나치 수열이 앞의 두 항을 더하는 것이라면, **트리보나치(Tribonacci) 수열**은 앞의 세 항을 더하여 만드는 수열입니다.
 
-N보다 작거나 같은 자연수 중 Q의 원소로만(중복가능) 만든 수 중 가장 큰 수를 출력해주세요. 집합 Q는 1부터 9 사이의 자연수로만 이루어져 있습니다.
+수열의 시작이 다음과 같을 때, $n$번째 트리보나치 수를 구하는 프로그램을 재귀 함수로 작성해 보세요.
 
-예를 들어,  N= 657이고 Q = {1,5,7}일 때 답은 577입니다.
-
-예를들어
-
-657 3
-
-1 5 7
-
-의 입력이 있을 때
-
-1, 5, 7 로 만들 수 있는 가장 큰 숫자는 577입니다.
+* $T(0) = 0$
+* $T(1) = 0$
+* $T(2) = 1$
+* $T(n) = T(n-1) + T(n-2) + T(n-3)$ (단, $n \ge 3$)
 
 ---
 
 ## 2. 입출력 설명
 
 * **입력:**
-첫 줄에 N K가 공백으로 구분되어 입력됩니다. (10 <= N <= 1억, 1 <= K <=3)
-
-두 번째 줄에 집합 Q의 원소 K개가 입력됩니다. 각 원소는 1 부터 9 사이의 자연수 입니다.
-
-단, 항상 Q의 원소로만 구성된 N 보다 작거나 같은 자연수를 만들 수 있는 경우만 입력으로 주어집니다.
+정수 $n$이 입력됩니다. ($0 \le n \le 20$)
 
 * **출력:**
-N보다 작거나 같은 자연수 중 Q의 원소로만 구성된 가장 큰 수를 출력해주세요.
+$n$번째 트리보나치 수를 출력합니다.
 
 ---
 
@@ -48,52 +37,51 @@ N보다 작거나 같은 자연수 중 Q의 원소로만 구성된 가장 큰 �
 
 ### 예시 입력 1
 ```text
-42 2
-1 9
+5
 ```
 
 ### 예시 출력 1
 ```text
-19
+2
 ```
+
 
 ### 예시 입력 2
 ```text
-86 1
-6
+4
 ```
 
 ### 예시 출력 2
 ```text
-66
-```
-
-### 예시 입력 3
-```text
-7449 2
-6 7
-```
-
-### 예시 출력 3
-```text
-6777
+2
 ```
 
 ---
 
 ## 4. 힌트
-(힌트가 없습니다.)
+수업에서 배운 피보나치 로직에서 재귀 호출을 하나 더 추가하면 됩니다. `return f(n-1) + f(n-2) + f(n-3);` 형태를 생각해 보세요.
 
 ---
 
 <!-- ANSWER_START -->
 ## [정답 및 해설 (Ground Truth)]
 
-### 모범 코드 (Python)
-**(백준 크롤러에서는 정답 코드를 긁어올 수 없으므로, 선생님께서 아래에 직접 보충해 주세요)**
+### 모범 코드 (C)
+```c
+#include <stdio.h>
 
-```python
-A, B = map(int, input().split())
-print(A + B)
+int tribonacci(int n) {
+    if (n == 0) return 0;
+    if (n == 1) return 0;
+    if (n == 2) return 1;
+    return tribonacci(n - 1) + tribonacci(n - 2) + tribonacci(n - 3);
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    printf("%d", tribonacci(n));
+    return 0;
+}
 ```
 <!-- ANSWER_END -->

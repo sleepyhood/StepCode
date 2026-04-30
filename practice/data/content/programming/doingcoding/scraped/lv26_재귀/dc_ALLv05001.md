@@ -1,5 +1,6 @@
-﻿---
+---
 id: dc_ALLv05001
+legacy_id: dc_ALLv05001
 title: "01. [재귀함수 - 1] 재귀함수 튜토리얼"
 platform: "doingcoding"
 is_scraped: true

@@ -1,5 +1,6 @@
 ---
 id: dc_ALLv05001_v2
+legacy_id: dc_ALLv05001_v2
 title: "01. [재귀함수 - 1] 재귀함수의 원리와 실행 흐름"
 platform: "doingcoding"
 is_scraped: false

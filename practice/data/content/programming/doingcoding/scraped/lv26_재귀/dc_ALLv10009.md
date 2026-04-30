@@ -1,5 +1,6 @@
-﻿---
-id: dc_P301v2612
+---
+id: dc_ALLv10009
+legacy_id: dc_P301v2612
 title: "12. [재귀함수 - 12] 격자이동"
 platform: "doingcoding"
 is_scraped: true
@@ -9,7 +10,7 @@ tags: [doingcoding, scraped]
 source_url: "http://edu.doingcoding.com/problem/P301v2612"
 ---
 
-# [P301v2612번] 12. [재귀함수 - 12] 격자이동
+# [ALLv10009번] 12. [재귀함수 - 12] 격자이동
 
 ## 1. 문제 설명
 n\*n크기의 격자가 있습니다. (n은 3이상 5 이하)

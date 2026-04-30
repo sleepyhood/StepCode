@@ -1,5 +1,6 @@
-﻿---
-id: dc_P301v2607
+---
+id: dc_ALLv05007
+legacy_id: dc_P301v2607
 title: "07. [재귀함수 - 7] 기묘한 수열"
 platform: "doingcoding"
 is_scraped: true
@@ -9,7 +10,7 @@ tags: [doingcoding, scraped]
 source_url: "http://edu.doingcoding.com/problem/P301v2607"
 ---
 
-# [P301v2607번] 07. [재귀함수 - 7] 기묘한 수열
+# [ALLv05007번] 07. [재귀함수 - 7] 기묘한 수열
 
 ## 1. 문제 설명
 수열이 있습니다.

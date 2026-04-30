@@ -1,5 +1,6 @@
-﻿---
-id: dc_P301v2613
+---
+id: dc_ALLv10010
+legacy_id: dc_P301v2613
 title: "13. [재귀함수 - 13] 이상한 주사위"
 platform: "doingcoding"
 is_scraped: true
@@ -9,7 +10,7 @@ tags: [doingcoding, scraped]
 source_url: "http://edu.doingcoding.com/problem/P301v2613"
 ---
 
-# [P301v2613번] 13. [재귀함수 - 13] 이상한 주사위
+# [ALLv10010번] 13. [재귀함수 - 13] 이상한 주사위
 
 ## 1. 문제 설명
 이상한 주사위가 있습니다.

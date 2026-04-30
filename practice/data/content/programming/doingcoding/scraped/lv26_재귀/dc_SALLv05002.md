@@ -1,39 +1,31 @@
-﻿---
+---
 id: dc_SALLv05002
-title: "02. [재귀함수 - 2] 단어 나누기"
+legacy_id: dc_SP301v2602
+title: "02. [재귀함수 - 2] 두 수 사이의 짝수 출력하기"
 platform: "doingcoding"
 is_scraped: true
-time_limit: "2s"
-memory_limit: "128MB"
+time_limit: "1s"
+memory_limit: "256MB"
 tags: [doingcoding, scraped]
-source_url: "http://edu.doingcoding.com/problem/SALLv05002"
+source_url: "http://edu.doingcoding.com/problem/SP301v2602"
 ---
 
-# [SALLv05002번] 02. [재귀함수 - 2] 단어 나누기
+# [SALLv05002번] 02. [재귀함수 - 2] 두 수 사이의 짝수 출력하기
 
 ## 1. 문제 설명
-알파벳 소문자로 이루어진 단어를 가지고 아래와 같은 과정을 해 보려고 한다.
+시작수(a)와 마지막 수(b)가 입력되면
 
-먼저 단어에서 임의의 두 부분을 골라서 단어를 쪼갠다. 즉, 주어진 단어를 세 개의 더 작은 단어로 나누는 것이다. 각각은 적어도 길이가 1 이상인 단어여야 한다. 이제 이렇게 나눈 세 개의 작은 단어들을 앞뒤를 뒤집고, 이를 다시 원래의 순서대로 합친다.
-
-예를 들어,
-
-* 단어 : arrested
-* 세 단어로 나누기 : ar / rest / ed
-* 각각 뒤집기 : ra / tser / de
-* 합치기 : ratserde
-
-단어가 주어지면, 이렇게 만들 수 있는 단어 중에서 사전순으로 가장 앞서는 단어를 출력하는 프로그램을 작성하시오.
+시작수와 마지막수 까지의 모든 짝수를 출력하시오.
 
 ---
 
 ## 2. 입출력 설명
 
 * **입력:**
-첫째 줄에 영어 소문자로 된 단어가 주어진다. 길이는 3 이상 50 이하이다.
+두 수 a,b가 입력된다.
 
 * **출력:**
-첫째 줄에 구하고자 하는 단어를 출력하면 된다.
+a~b사이의 모든 짝수를 출력한다.
 
 ---
 
@@ -41,12 +33,12 @@ source_url: "http://edu.doingcoding.com/problem/SALLv05002"
 
 ### 예시 입력 1
 ```text
-mobitel
+2 7
 ```
 
 ### 예시 출력 1
 ```text
-bometil
+2 4 6
 ```
 
 ---
