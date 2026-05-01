@@ -1,4 +1,4 @@
-﻿---
+---
 id: dc_SALLv10002
 legacy_id: dc_SALLv10003
 title: "02. [재귀함수 - 5] 주사위 게임"

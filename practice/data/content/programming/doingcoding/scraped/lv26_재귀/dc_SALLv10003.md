@@ -1,34 +1,44 @@
 ---
 id: dc_SALLv10003
-legacy_id: dc_SALLv10001
-title: "03. [재귀함수 - 1] N과 M - 1"
+legacy_id: 
+title: "03. [재귀함수 - 3] 재귀적 눈금 그리기"
 platform: "doingcoding"
-is_scraped: true
+is_scraped: false
 time_limit: "1s"
-memory_limit: "512MB"
-tags: [doingcoding, scraped]
-source_url: "http://edu.doingcoding.com/problem/SALLv10001"
+memory_limit: "256MB"
+tags: [doingcoding, recursion, fractal]
 ---
 
-# [SALLv10003번] 03. [재귀함수 - 1] N과 M - 1
+# [SALLv10003번] 03. [재귀함수 - 3] 재귀적 눈금 그리기
 
 ## 1. 문제 설명
-자연수 N과 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오.
 
-* 1부터 N까지 자연수 중에서 중복 없이 M개를 고른 수열
-* 고른 수열은 오름차순이어야 한다.
+수업에서 알파벳 트리 구조를 배웠습니다.
+
+> **깊이 N의 결과 = 깊이 (N-1)의 결과 + 현재 값 + 깊이 (N-1)의 결과**
+
+이번에는 이 구조를 알파벳이 아닌 **숫자**에 적용해 봅시다.
+
+눈금을 그릴 때 다음과 같은 규칙을 사용합니다.
+
+```
+깊이 1:      1
+깊이 2:    1 2 1
+깊이 3:  1 2 1 3 1 2 1
+깊이 4: 1 2 1 3 1 2 1 4 1 2 1 3 1 2 1
+```
+
+$N$이 주어지면 깊이 $N$의 눈금 수열을 공백으로 구분하여 한 줄에 출력하세요.
 
 ---
 
 ## 2. 입출력 설명
 
 * **입력:**
-첫째 줄에 자연수 N과 M이 주어진다. (1 ≤ M ≤ N ≤ 8)
+깊이를 나타내는 정수 $N$이 입력됩니다. ($1 \le N \le 16$)
 
 * **출력:**
-한 줄에 하나씩 문제의 조건을 만족하는 수열을 출력한다. 중복되는 수열을 여러 번 출력하면 안되며, 각 수열은 공백으로 구분해서 출력해야 한다.
-
-수열은 사전 순으로 증가하는 순서로 출력해야 한다.
+깊이 $N$의 눈금 수열을 공백으로 구분하여 한 줄에 출력합니다.
 
 ---
 
@@ -36,56 +46,93 @@ source_url: "http://edu.doingcoding.com/problem/SALLv10001"
 
 ### 예시 입력 1
 ```text
-3 1
+1
 ```
 
 ### 예시 출력 1
 ```text
 1
-2
-3
 ```
 
 ### 예시 입력 2
 ```text
-4 2
+2
 ```
 
 ### 예시 출력 2
 ```text
-1 2
-1 3
-1 4
-2 3
-2 4
-3 4
+1 2 1
 ```
 
 ### 예시 입력 3
 ```text
-4 4
+3
 ```
 
 ### 예시 출력 3
 ```text
-1 2 3 4
+1 2 1 3 1 2 1
 ```
 
 ---
 
 ## 4. 힌트
-(힌트가 없습니다.)
+
+* 수업(`ALLv10003`)의 알파벳 트리 코드에서 알파벳 출력 부분만 숫자로 바꾸면 됩니다.
+* 공백 처리: `printf(" %d", depth)` 방식으로 출력하면 맨 앞에 공백이 생깁니다. 대신 가장 첫 번째 숫자를 따로 처리하거나, 전역 변수 `first`를 이용하여 깔끔하게 출력할 수 있습니다.
 
 ---
 
 <!-- ANSWER_START -->
 ## [정답 및 해설 (Ground Truth)]
 
-### 모범 코드 (Python)
-**(백준 크롤러에서는 정답 코드를 긁어올 수 없으므로, 선생님께서 아래에 직접 보충해 주세요)**
+### 핵심 아이디어
+수업(`ALLv10003`)의 `print_tree` 구조와 **동일**합니다.
+다른 점은 알파벳 대신 정수 `depth`를 출력한다는 것뿐입니다.
 
-```python
-A, B = map(int, input().split())
-print(A + B)
+### 모범 코드 (C)
+```c
+#include <stdio.h>
+
+int is_first = 1; // 첫 번째 숫자 앞에는 공백을 붙이지 않기 위한 플래그
+
+void ruler(int depth) {
+    if (depth == 0) return;
+
+    ruler(depth - 1);
+
+    // 첫 번째 출력이면 공백 없이, 이후엔 공백으로 구분
+    if (is_first) {
+        printf("%d", depth);
+        is_first = 0;
+    } else {
+        printf(" %d", depth);
+    }
+
+    ruler(depth - 1);
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    ruler(n);
+    printf("\n");
+    return 0;
+}
+```
+
+### 실행 추적 (N=2)
+```
+ruler(2)
+  ruler(1)
+    ruler(0) → 반환
+    출력: "1"    ← is_first=0 이 됨
+    ruler(0) → 반환
+  출력: " 2"
+  ruler(1)
+    ruler(0) → 반환
+    출력: " 1"
+    ruler(0) → 반환
+결과: 1 2 1
 ```
 <!-- ANSWER_END -->

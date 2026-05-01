@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.2"/>
+    </filter>
+    <style>
+      .bg { fill: #f8f9fa; }
+      .card { fill: #ffffff; stroke: #e0e0e0; stroke-width: 1; }
+      .step-title { font-family: 'Pretendard', sans-serif; font-size: 18px; font-weight: 800; fill: #1a73e8; }
+      .label-text { font-family: 'Pretendard', sans-serif; font-size: 14px; font-weight: 600; fill: #555; }
+      .dim-line { stroke: #888; stroke-width: 1.5; marker-end: url(#arrowhead); marker-start: url(#arrowhead); }
+      .grid-line { stroke: #eee; stroke-width: 1; }
+      .main-border { stroke: #333; stroke-width: 2; fill: none; }
+      .num-big { font-family: 'Pretendard', sans-serif; font-size: 28px; font-weight: 900; fill: #fff; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3)); }
+      .num-small { font-family: 'Pretendard', sans-serif; font-size: 16px; font-weight: 900; fill: #fff; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#888" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg"/>
+
+  <text x="500" y="40" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="bold" fill="#333">직사각형 분할 과정 시각화 (3 x 7)</text>
+
+  <g transform="translate(50, 70)">
+    <rect width="430" height="280" rx="15" class="card"/>
+    <text x="20" y="35" class="step-title">1. 초기 상태 (3 x 7)</text>
+    <g transform="translate(75, 80)">
+      <rect width="280" height="120" fill="#fff" class="main-border"/>
+      <path d="M40 0v120 M80 0v120 M120 0v120 M160 0v120 M200 0v120 M240 0v120" class="grid-line"/>
+      <path d="M0 40h280 M0 80h280" class="grid-line"/>
+      <line x1="0" y1="-20" x2="280" y2="-20" class="dim-line"/>
+      <text x="140" y="-30" text-anchor="middle" class="label-text">7</text>
+      <line x1="-20" y1="0" x2="-20" y2="120" class="dim-line"/>
+      <text x="-35" y="65" text-anchor="end" class="label-text">3</text>
+    </g>
+  </g>
+
+  <g transform="translate(520, 70)">
+    <rect width="430" height="280" rx="15" class="card"/>
+    <text x="20" y="35" class="step-title">2. 첫 번째 정사각형 절단 (3 x 3)</text>
+    <g transform="translate(75, 80)">
+      <rect width="120" height="120" fill="#4A90E2" class="main-border" filter="url(#shadow)"/>
+      <text x="60" y="70" text-anchor="middle" class="num-big">1</text>
+      <rect x="120" width="160" height="120" fill="#fff" class="main-border" stroke-dasharray="4"/>
+      <text x="60" y="-15" text-anchor="middle" class="label-text">3</text>
+      <text x="200" y="-15" text-anchor="middle" class="label-text">나머지: 4</text>
+    </g>
+  </g>
+
+  <g transform="translate(50, 380)">
+    <rect width="430" height="280" rx="15" class="card"/>
+    <text x="20" y="35" class="step-title">3. 두 번째 정사각형 절단 (3 x 3)</text>
+    <g transform="translate(75, 80)">
+      <rect width="120" height="120" fill="#4A90E2" opacity="0.6" class="main-border"/>
+      <rect x="120" width="120" height="120" fill="#50E3C2" class="main-border" filter="url(#shadow)"/>
+      <text x="180" y="70" text-anchor="middle" class="num-big">2</text>
+      <rect x="240" width="40" height="120" fill="#fff" class="main-border" stroke-dasharray="4"/>
+      <text x="180" y="-15" text-anchor="middle" class="label-text">3</text>
+      <text x="260" y="-15" text-anchor="middle" class="label-text">1</text>
+    </g>
+  </g>
+
+  <g transform="translate(520, 380)">
+    <rect width="430" height="280" rx="15" class="card"/>
+    <text x="20" y="35" class="step-title">4. 나머지 3x1 분할 (1x1 x 3개)</text>
+    <g transform="translate(75, 80)">
+      <rect width="120" height="120" fill="#4A90E2" opacity="0.3" class="main-border"/>
+      <rect x="120" width="120" height="120" fill="#50E3C2" opacity="0.3" class="main-border"/>
+      
+      <rect x="240" y="0" width="40" height="40" fill="#F8E71C" class="main-border" filter="url(#shadow)"/>
+      <text x="260" y="27" text-anchor="middle" class="num-small" fill="#333">3</text>
+      
+      <rect x="240" y="40" width="40" height="40" fill="#F5A623" class="main-border" filter="url(#shadow)"/>
+      <text x="260" y="67" text-anchor="middle" class="num-small">4</text>
+      
+      <rect x="240" y="80" width="40" height="40" fill="#D0021B" class="main-border" filter="url(#shadow)"/>
+      <text x="260" y="107" text-anchor="middle" class="num-small">5</text>
+      
+      <line x1="290" y1="80" x2="290" y2="120" class="dim-line"/>
+      <text x="300" y="105" class="label-text">1</text>
+      <text x="260" y="145" text-anchor="middle" class="label-text">1</text>
+    </g>
+    <text x="215" y="250" text-anchor="middle" font-size="20" font-weight="bold" fill="#d0021b">총 정답: 5개</text>
+  </g>
+
+  <g stroke="#ccc" stroke-width="3" fill="none">
+    <path d="M485 210 h30" marker-end="url(#arrowhead)"/>
+    <path d="M485 520 h30" marker-end="url(#arrowhead)"/>
+    <path d="M265 355 v20" marker-end="url(#arrowhead)"/>
+  </g>
+</svg>

@@ -1,4 +1,4 @@
-﻿---
+---
 id: dc_SALLv10001
 legacy_id: dc_SP301v2606
 title: "01. [재귀함수 - 6] 정사면체 주사위"
