@@ -28,6 +28,14 @@ class CustomMarkdownConverter(MarkdownConverter):
         return f"<sub>{text}</sub>"
     def convert_u(self, el, text, **kwargs):
         return f"<u>{text}</u>"
+    
+    def convert_img(self, el, text, **kwargs):
+        """헤딩 내부에서도 이미지를 텍스트로 치환하지 않고 ![]() 형식을 유지하도록 오버라이드"""
+        alt = el.get('alt') or ''
+        src = el.get('src') or ''
+        title = el.get('title') or ''
+        title_part = ' "%s"' % title.replace('"', r'\"') if title else ''
+        return '![%s](%s%s)' % (alt, src, title_part)
 
 def md(html, **options):
     return CustomMarkdownConverter(**options).convert(html)
@@ -44,6 +52,7 @@ DOINGCODING_CSRF_SEED_URL = "http://edu.doingcoding.com/api/profile"
 DOINGCODING_CSRF_FALLBACK_URL = "http://edu.doingcoding.com/api/website"
 DOINGCODING_ADMIN_LOGIN_URL = "http://edu.doingcoding.com/admin/login"
 DOINGCODING_ADMIN_PROBLEMS_URL = "http://edu.doingcoding.com/admin/problems"
+DOINGCODING_ADMIN_TESTCASE_API = "http://edu.doingcoding.com/api/admin/test_case?problem_id={db_id}"
 DOINGCODING_ADMIN_ID_SELECTOR = 'xpath=//*[@id="app"]/form/div[1]/div/div/input'
 DOINGCODING_ADMIN_PASSWORD_SELECTOR = 'xpath=//*[@id="app"]/form/div[2]/div/div/input'
 DOINGCODING_ADMIN_LOGIN_BUTTON_SELECTOR = 'xpath=//*[@id="app"]/form/div[3]/div/button'
@@ -55,13 +64,7 @@ DOINGCODING_ADMIN_SEARCH_SELECTORS = [
 ]
 DOINGCODING_ADMIN_ROW_SELECTORS = [
     'xpath=//*[@id="app"]/div/div[3]/div[1]/div[1]/div/div[1]/div[4]/div[2]/table/tbody/tr',
-    'xpath=//*[@id="app"]//table/tbody/tr',
-    "css=table tbody tr",
-]
-DOINGCODING_ADMIN_DOWNLOAD_BUTTON_SELECTORS = [
-    'xpath=//*[@id="app"]/div/div[3]/div[1]/div[1]/div/div[1]/div[4]/div[2]/table/tbody/tr/td[7]/div/div/div[2]/button',
-    'xpath=//*[@id="app"]//table/tbody/tr[1]//button',
-    "css=table tbody tr button",
+    'xpath=//*[@id="app"]//table/tbody/tr[1]',
 ]
 DOINGCODING_ADMIN_EDIT_BUTTON_SELECTORS = [
     'xpath=//*[@id="app"]/div/div[3]/div[1]/div[1]/div/div[1]/div[4]/div[2]/table/tbody/tr/td[7]/div/div/div[1]',
@@ -101,6 +104,26 @@ def _clean_text(value):
     value = re.sub(r"[ \t]+", " ", value)
     value = re.sub(r"\n{3,}", "\n\n", value)
     return value.strip()
+
+
+def _to_yaml(data):
+    """딕셔너리를 간단한 YAML 문자열로 변환 (프론트매터용)"""
+    lines = []
+    for k, v in data.items():
+        if isinstance(v, list):
+            if not v:
+                lines.append(f"{k}: []")
+            else:
+                lines.append(f"{k}:")
+                for item in v:
+                    lines.append(f"  - \"{item}\"")
+        elif isinstance(v, str):
+            # 줄바꿈이나 따옴표가 포함된 경우 안전하게 처리
+            safe_v = v.replace('"', '\\"')
+            lines.append(f"{k}: \"{safe_v}\"")
+        else:
+            lines.append(f"{k}: {v}")
+    return "\n".join(lines)
 
 def process_html_and_download_images(html_content, base_url, save_dir, problem_id, context=None):
     if not html_content or not html_content.strip():
@@ -1064,67 +1087,34 @@ def login_doingcoding_admin(page, username, password, logger=None):
     return True
 
 
-def download_doingcoding_testcases(page, problem_id, download_dir, db_id=None):
+def download_doingcoding_testcases(page, problem_id, download_dir, db_id):
+    """
+    UI 검색 및 클릭 대신, 관리자 세션 쿠키를 이용해 직접 API로 테스트케이스 ZIP을 다운로드합니다.
+    db_id (숫자 ID)를 필수 파라미터로 사용합니다.
+    """
+    if not db_id:
+        raise ValueError(f"테스트케이스 다운로드를 위해 db_id가 필요합니다. (problem_id: {problem_id})")
+
     os.makedirs(download_dir, exist_ok=True)
-    search_selector = _find_first_working_selector(
-        page,
-        DOINGCODING_ADMIN_SEARCH_SELECTORS,
-        timeout=15000,
-        require_visible=False,
-    )
-    # 1. 검색어 입력 및 대기
-    # Vue.js v-model 이벤트를 확실히 트리거하기 위해 fill 대신 type 사용
-    page.click(search_selector)
-    page.fill(search_selector, "")
-    page.type(search_selector, problem_id, delay=50)
-    page.press(search_selector, "Enter")
-
-    # 2. 결과 행 순회 및 정확한 매칭 (최대 10초간 폴링)
-    target_row = None
-    target_download_button = None
     
-    for _ in range(20):
-        page.wait_for_timeout(500) # DOM 갱신 대기
-        
-        # DOM 트리에서 분리(detached)되는 것을 방지하기 위해 매번 새로 요소를 가져옴
-        rows = page.locator("table tbody tr").all()
-        for i, row in enumerate(rows):
-            cells = row.locator("td").all()
-            if len(cells) < 3:
-                continue
-                
-            row_db_id = _clean_text(cells[0].inner_text() or "")
-            row_problem_id = _clean_text(cells[1].inner_text() or "")
-            
-            # 원인 분석을 위한 한 줄 출력 (최대 100자)
-            print(f"🔍 [Row {i}] 1열(DB_ID):'{row_db_id}', 2열(문제ID):'{row_problem_id}'")
-            
-            # db_id가 있으면 1열과 비교, 없으면 problem_id를 2열과 비교
-            if (db_id and str(db_id) == row_db_id) or (row_problem_id == problem_id):
-                target_row = row
-                # 다운로드 버튼 찾기
-                buttons = row.locator("button").all()
-                if len(buttons) >= 2:
-                    target_download_button = buttons[1] 
-                else:
-                    target_download_button = row.locator("button").first
-                break
-                
-        if target_row:
-            break
-            
-    if not target_row or not target_download_button:
-        raise RuntimeError(
-            f"관리자 문제 목록에서 문제(db_id={db_id}, problem_id={problem_id})를 찾을 수 없거나 다운로드 버튼이 없습니다."
-        )
+    # 1. API URL 구성 (db_id 사용)
+    download_url = DOINGCODING_ADMIN_TESTCASE_API.format(db_id=db_id)
+    
+    # 2. 직접 API 요청
+    response = page.request.get(download_url)
+    if not response.ok:
+        raise RuntimeError(f"테스트케이스 API 호출 실패 (상태: {response.status}, URL: {download_url})")
+    
+    # 3. 파일명 결정 및 저장
+    suggested_filename = f"{problem_id}.zip"
+    cd_header = response.headers.get("content-disposition", "")
+    if "filename=" in cd_header:
+        suggested_filename = cd_header.split("filename=")[-1].strip('" ')
 
-    with page.expect_download(timeout=30000) as download_info:
-        target_download_button.click(force=True)
-        
-    download = download_info.value
-    suggested_filename = download.suggested_filename or f"{problem_id}.zip"
     download_path = os.path.join(download_dir, suggested_filename)
-    download.save_as(download_path)
+    with open(download_path, "wb") as f:
+        f.write(response.body())
+        
     return download_path
 
 
@@ -1767,73 +1757,9 @@ def scrape_doingcoding(
     page = browser.new_page()
 
     try:
-        # 타임아웃을 넉넉하게 주고 네트워크 통신이 끝날 때까지 기다립니다.
-        _goto_with_retries(
-            page,
-            url,
-            wait_until="domcontentloaded",
-            timeout=10000,
-            ready_selector="#problem-main",
-            attempts=3,
-        )
-
         problem_id = url.split("/")[-1]
-        tree = html.fromstring(page.content())
-        content_root = _find_doingcoding_content_root(tree)
-
-        # 요소가 없을 경우에 봇이 죽지 않도록 방어 코드(Safe Extraction)를 적용합니다.
-        def get_text(xpath, timeout=2000):
-            try:
-                el = page.locator(xpath).first
-                el.wait_for(timeout=timeout)
-                return el.inner_text().strip()
-            except:
-                return "(내용 없음)"
-
-        # 1. 제목 및 메타데이터(시간/메모리 제한) 정밀 추출
-        time_limit = "1s"
-        memory_limit = "256MB"
-        title = "Unknown Title"
         
-        try:
-            # 제목 추출: .panel-title > div
-            title_el = page.locator(".panel-title > div").first
-            if title_el.count() > 0:
-                title = title_el.inner_text().strip()
-            
-            # 메타데이터 추출: #info p
-            meta_locator = page.locator("#info p").first
-            if meta_locator.count() > 0:
-                meta_text = meta_locator.inner_text().strip()
-                import re as _re
-                # 예: "문제 ID : ALLv05001 | 시간 제한 : 1000MS | 메모리 제한 : 256MB"
-                t_m = _re.search(r"시간 제한\s*:\s*(\d+)MS", meta_text)
-                m_m = _re.search(r"메모리 제한\s*:\s*(\d+)MB", meta_text)
-                if t_m: 
-                    # MS -> s 변환 (예: 1000MS -> 1s)
-                    ms_val = int(t_m.group(1))
-                    time_limit = f"{ms_val/1000:g}s"
-                if m_m: 
-                    memory_limit = f"{m_m.group(1)}MB"
-        except Exception as e:
-            print(f"DoingCoding 메타데이터 추출 중 오류: {e}")
-
-        scraped_tags = []
-        supported_languages = []
-        db_id = ""
-        accepted_user_count = 0
-        level = "Unrated"
-        authors = []
-        has_hint = "false"
-
-        if title == "(내용 없음)" or not _clean_text(title):
-            # 폴백: 기존 h1~h3 검색
-            title_fallback = _find_doingcoding_title(tree)
-            if title_fallback and _clean_text(title_fallback):
-                title = title_fallback
-            else:
-                raise Exception("제목 요소를 찾을 수 없음")
-
+        # --- [1. 관리자 세션 확보] ---
         local_admin_session = admin_session
         if local_admin_session is None and admin_username and admin_password:
             try:
@@ -1843,265 +1769,180 @@ def scrape_doingcoding(
             except Exception as e:
                 _emit_log(logger, f"  [오류] 관리자 세션 생성 실패: {e}")
 
-        if local_admin_session is not None:
+        # --- [2. API 데이터 선제적 수집] ---
+        api_data = {}
+        if local_admin_session:
             try:
-                _emit_log(logger, f"  [Dynamic] API 호출을 통해 메타데이터 수집: {problem_id}")
                 api_url = f"http://edu.doingcoding.com/api/problem?problem_id={problem_id}"
-                
-                # local_admin_session.page.request 를 사용하여 CSRF 쿠키 포함 호출
                 response = local_admin_session.page.request.get(api_url)
                 if response.ok:
-                    res_json = response.json()
-                    data = res_json.get("data", {})
-                    # print("data: ", data)
-                    if data:
-                        db_id = data.get("id", "")
-                        scraped_tags = data.get("tags", [])
-                        supported_languages = data.get("languages", [])
-                        accepted_user_count = data.get("accepted_number", 0)
-                        level = data.get("difficulty", "Unrated")
-                        
-                        created_by = data.get("created_by", {})
-                        if created_by and "username" in created_by:
-                            authors.append(created_by["username"])
-                            
-                        hint_text = data.get("hint", "")
-                        has_hint = "true" if hint_text and len(hint_text.strip()) > 0 else "false"
-                        
-                        _emit_log(logger, f"  [Dynamic] API 메타데이터 수집 성공 (DB_ID: {db_id})")
+                    api_data = response.json().get("data", {})
+                    _emit_log(logger, f"  [API] 문제 데이터 수집 성공: {problem_id}")
                 else:
-                    _emit_log(logger, f"  [오류] API 호출 실패: {response.status}")
+                    _emit_log(logger, f"  [오류] API 호출 실패 (상태: {response.status})")
             except Exception as e:
-                _emit_log(logger, f"  [오류] API 데이터 추출 및 테스트케이스 저장 실패: {e}")
+                _emit_log(logger, f"  [오류] API 호출 중 예외: {e}")
 
-        description = ""
-        input_desc = ""
-        output_desc = ""
-        save_dir = testcase_download_dir # GUI에서 md 저장 폴더 경로로 전달됨
+        # --- [3. 데이터 초기화 및 매핑] ---
+        title = api_data.get("title", "Unknown Title")
+        time_limit = f"{api_data.get('time_limit', 1000)/1000:g}s"
+        memory_limit = f"{api_data.get('memory_limit', 256)}MB"
+        db_id = api_data.get("id", "")
+        scraped_tags = api_data.get("tags", [])
+        supported_languages = api_data.get("languages", [])
+        accepted_user_count = api_data.get("accepted_number", 0)
+        level = api_data.get("difficulty", "Unrated")
+        authors = []
+        if api_data.get("created_by"):
+            authors.append(api_data["created_by"].get("username", ""))
         
-        # 섹션별 HTML 추출 및 이미지 처리
-        # DoingCoding은 .title과 .content 가 쌍으로 나타남
-        problem_content_el = page.locator("#problem-content")
-        if problem_content_el.count() > 0:
-            titles = page.locator("#problem-content .title").all()
-            contents = page.locator("#problem-content .content").all()
-            
-            for t_el, c_el in zip(titles, contents):
-                t_text = t_el.inner_text().strip()
-                c_html = c_el.inner_html()
-                
-                # 이미지 처리 및 마크다운 변환
-                # browser 변수가 실제로는 BrowserContext이므로 context 인자로 전달
-                processed_html = process_html_and_download_images(c_html, url, save_dir, problem_id, context=browser)
-                md_text = processed_html # process_html_and_download_images가 이미 md를 반환함 (함수 내부에서 md() 호출)
-                
-                if _matches_heading(t_text, SECTION_HEADINGS["description"]):
-                    description = md_text
-                elif _matches_heading(t_text, SECTION_HEADINGS["input"]):
-                    input_desc = md_text
-                elif _matches_heading(t_text, SECTION_HEADINGS["output"]):
-                    output_desc = md_text
-
-        # 샘플 입출력 추출 (.sample-input, .sample-output 기반)
+        hint_text = api_data.get("hint", "")
+        has_hint = "true" if hint_text and len(hint_text.strip()) > 0 else "false"
+        
+        # 샘플 데이터 매핑
         samples = []
-        sample_in_els = page.locator(".sample-input pre").all()
-        sample_out_els = page.locator(".sample-output pre").all()
+        for s in api_data.get("samples", []):
+            samples.append((s.get("input", ""), s.get("output", "")))
+
+        # 템플릿(코드) 매핑
+        templates = api_data.get("template", {})
+
+        # --- [4. 이미지 유무 검사 및 분기] ---
+        full_html_body = (api_data.get("description") or "") + (api_data.get("input_description") or "") + \
+                         (api_data.get("output_description") or "") + (api_data.get("hint") or "")
+        has_images = "<img" in full_html_body.lower()
         
-        for si, so in zip(sample_in_els, sample_out_els):
-            samples.append((si.inner_text().strip(), so.inner_text().strip()))
+        # API 데이터를 기본값으로 설정 (이미지 다운로드 로직 포함)
+        api_base_url = "http://edu.doingcoding.com" # API 데이터의 이미지는 도메인 루트 기준일 가능성이 높음
+        save_dir = testcase_download_dir
+        
+        description = process_html_and_download_images(api_data.get("description", ""), api_base_url, save_dir, problem_id, context=browser)
+        input_desc = process_html_and_download_images(api_data.get("input_description", ""), api_base_url, save_dir, problem_id, context=browser)
+        output_desc = process_html_and_download_images(api_data.get("output_description", ""), api_base_url, save_dir, problem_id, context=browser)
+        hint_text = process_html_and_download_images(api_data.get("hint", ""), api_base_url, save_dir, problem_id, context=browser)
+        
+        save_dir = testcase_download_dir
 
-        # 힌트 추출 (DoingCoding은 표준 힌트 섹션이 명확하지 않아 비워둠)
-        hint = ""
+        if has_images:
+            _emit_log(logger, f"  [수집] 본문 내 이미지 감지됨. UI 크롤링 병행.")
+            _goto_with_retries(
+                page,
+                url,
+                wait_until="domcontentloaded",
+                timeout=10000,
+                ready_selector="#problem-main",
+                attempts=2,
+            )
+            
+            # UI에서 섹션별 HTML 추출 및 이미지 처리
+            problem_content_el = page.locator("#problem-content")
+            if problem_content_el.count() > 0:
+                titles_els = page.locator("#problem-content .title").all()
+                contents_els = page.locator("#problem-content .content").all()
+                
+                for t_el, c_el in zip(titles_els, contents_els):
+                    t_text = t_el.inner_text().strip()
+                    c_html = c_el.inner_html()
+                    
+                    processed_html = process_html_and_download_images(c_html, url, save_dir, problem_id, context=browser)
+                    md_text = processed_html
+                    
+                    if _matches_heading(t_text, SECTION_HEADINGS["description"]):
+                        description = md_text
+                    elif _matches_heading(t_text, SECTION_HEADINGS["input"]):
+                        input_desc = md_text
+                    elif _matches_heading(t_text, SECTION_HEADINGS["output"]):
+                        output_desc = md_text
+                    elif _matches_heading(t_text, SECTION_HEADINGS["hint"]):
+                        hint_text = md_text
+        else:
+            _emit_log(logger, f"  [수집] 텍스트 중심 문제 (API 데이터 활용)")
+            # 이미 위에서 API 데이터를 기반으로 이미지를 처리했으므로 추가 작업 불필요
+            pass
 
-
-        # 코드 템플릿 추출 (C, C++, Python3, Java) - 옵션 선택 시에만 동작
-        templates = {}
-        if get_templates:
+        # --- [5. 테스트케이스 수집 (선택)] ---
+        if get_testcases and local_admin_session:
+            _emit_log(logger, f"  [수집] 테스트케이스 다운로드 시도: {problem_id}")
             try:
-                # 언어 선택 드롭다운이 있는지 확인
-                dropdown = page.locator("div.ivu-select-selection").first
-                if dropdown.count() > 0:
-                    for lang_name in ["C", "C++", "Python3", "Java"]:
-                        # 드롭다운 클릭
-                        dropdown.click()
-                        page.wait_for_timeout(500)
+                # 개편된 API 방식의 다운로드 함수 호출 (db_id 필수 전달)
+                download_doingcoding_testcases(local_admin_session.page, problem_id, save_dir, db_id=db_id)
+                _emit_log(logger, f"  [수집] 테스트케이스 저장 성공.")
+            except Exception as de:
+                _emit_log(logger, f"  [오류] 테스트케이스 다운로드 실패: {de}")
 
-                        # 해당 언어 옵션 클릭
-                        lang_option = page.locator(
-                            f'li.ivu-select-item:has-text("{lang_name}")'
-                        ).first
-                        if lang_option.count() > 0:
-                            lang_option.click()
-                            page.wait_for_timeout(500)
-
-                            # 새로고침(초기화) 버튼 클릭 시도 (템플릿 강제 로드)
-                            reset_btn = page.locator("button.ivu-btn-icon-only")
-                            if reset_btn.count() > 0:
-                                reset_btn.first.click()
-                                page.wait_for_timeout(500)
-                                # 확인 모달의 '예' 버튼
-                                confirm_btn = page.locator(
-                                    'button.ivu-btn-primary:has-text("예")'
-                                )
-                                if confirm_btn.count() > 0:
-                                    confirm_btn.click()
-                                    page.wait_for_timeout(1000)
-
-                            code_text = _extract_editor_code(page)
-                            if code_text:
-                                templates[lang_name] = code_text
-            except Exception as te:
-                # 템플릿 추출 실패는 전체 크롤링 실패로 간주하지 않음
-                print(f"템플릿 추출 중 경미한 에러 (문제 없음): {te}")
-
-        testcase_bundle = {}
-        if get_testcases:
-            if admin_session is not None:
-                work_root = testcase_download_dir or os.getcwd()
-                temp_dir = tempfile.mkdtemp(
-                    prefix=f"dc_tc_{problem_id}_", dir=work_root
-                )
-                try:
-                    bundle_path = collect_doingcoding_testcases_with_session(
-                        admin_session,
-                        problem_id,
-                        temp_dir,
-                        logger=logger,
-                        db_id=db_id,
-                    )
-                    extract_dir = os.path.join(temp_dir, "extract")
-                    bundle = parse_testcase_bundle(bundle_path, extract_dir)
-                    testcase_bundle = {
-                        "info": bundle.get("info", {}),
-                        "cases": bundle.get("cases", []),
-                    }
-                finally:
-                    shutil.rmtree(temp_dir, ignore_errors=True)
-            else:
-                testcase_bundle = collect_doingcoding_testcases(
-                    browser,
-                    problem_id,
-                    admin_username,
-                    admin_password,
-                    base_download_dir=testcase_download_dir,
-                    logger=logger,
-                    db_id=db_id,
-                )
-
-    except Exception as e:
-        print(f"XPath 크롤링 에러({url}): {e}")
-        return None, None
-    finally:
-        if hasattr(page, "close"):
-            page.close()
-        if owned_browser:
-            browser.close()
-        if owned_playwright is not None and hasattr(owned_playwright, "stop"):
-            owned_playwright.stop()
-
-    missing_fields = _missing_required_fields(
-        {
+        # --- [6. 최종 마크다운 조립] ---
+        # API 데이터가 samples를 가지고 있으므로 이를 그대로 사용 (위에서 이미 mapping 완료)
+        
+        # 프론트매터 생성
+        front_matter = {
+            "id": problem_id,
+            "db_id": db_id,
             "title": title,
-            "description": description,
-            "input": input_desc,
-            "output": output_desc,
+            "platform": "doingcoding",
+            "level": level,
+            "tags": scraped_tags,
+            "authors": authors,
+            "supported_languages": supported_languages,
+            "time_limit": time_limit,
+            "memory_limit": memory_limit,
+            "accepted_user_count": accepted_user_count,
+            "has_hint": has_hint,
+            "archived_at": datetime.now().strftime("%Y-%m-%d"),
         }
-    )
-    if missing_fields:
-        print(
-            f"필수 필드 누락으로 저장하지 않음({problem_id}): {', '.join(missing_fields)}"
-        )
-        return None, None
 
-    # 샘플 MD 조립
-    samples_md = ""
-    for idx, (s_in, s_out) in enumerate(samples, 1):
-        samples_md += f"### 예시 입력 {idx}\n```text\n{s_in}\n```\n\n### 예시 출력 {idx}\n```text\n{s_out}\n```\n\n"
+        # 템플릿 코드 처리
+        template_blocks = ""
+        if get_templates and templates:
+            for lang, code in templates.items():
+                if code and code.strip():
+                    template_blocks += f"\n## {lang} Template\n\n```{lang.lower()}\n{code}\n```\n"
 
-    next_section_number = 5
-    testcases_md = ""
-    if testcase_bundle:
-        testcases_md = render_testcases_md(
-            testcase_bundle, section_number=next_section_number
-        )
-        next_section_number += 1
-
-    templates_md = render_templates_md(templates, section_number=next_section_number)
-
-    tags_str = '["' + '", "'.join(scraped_tags) + '"]' if scraped_tags else '[]'
-    lang_str = '["' + '", "'.join(supported_languages) + '"]' if supported_languages else '[]'
-    authors_str = '["' + '", "'.join(authors) + '"]' if authors else '[]'
-    
-    # 수석 감수자 권장 마크다운(MD) 템플릿에 맞추어 문자열 포매팅
-    md_content = f"""---
-id: {problem_id}
-legacy_id: dc_{problem_id}
-db_id: {db_id}
-title: "{title}"
-platform: "doingcoding"
-is_scraped: true
-is_existent: true
-level: "{level}"
-time_limit: "{time_limit}"
-memory_limit: "{memory_limit}"
-accepted_user_count: {accepted_user_count}
-has_hint: {has_hint}
-authors: {authors_str}
-tags: {tags_str}
-supported_languages: {lang_str}
-source_url: "{url}"
+        # 최종 내용 조립
+        md_output = f"""---
+{_to_yaml(front_matter)}
 ---
 
-# [{problem_id}번] {title}
+# {title}
 
-## 1. 문제 설명
+## 문제 설명
 {description}
 
----
-
-## 2. 입출력 설명
-
-* **입력:**
+## 입력
 {input_desc}
 
-* **출력:**
+## 출력
 {output_desc}
 
----
-
-## 3. 예시
-
-{samples_md}---
-
-## 4. 힌트
-{hint if hint and hint != "(내용 없음)" else "(힌트가 없습니다.)"}
-
----
-
-{testcases_md}{templates_md}<!-- ANSWER_START -->
-## [정답 및 해설 (Ground Truth)]
-
-### 모범 코드 (Python)
-**(백준 크롤러에서는 정답 코드를 긁어올 수 없으므로, 선생님께서 아래에 직접 보충해 주세요)**
-
-```python
-A, B = map(int, input().split())
-print(A + B)
-```
-<!-- ANSWER_END -->
+## 예제 입출력
 """
-    return title, md_content
+        for i, (sin, sout) in enumerate(samples, 1):
+            md_output += f"### 예제 {i}\n- **입력**: \n```text\n{sin}\n```\n- **출력**: \n```text\n{sout}\n```\n\n"
 
+        if hint_text and has_hint == "true":
+            md_output += f"## 힌트\n{hint_text}\n"
+
+        md_output += template_blocks
+
+        return title, md_output,  db_id
+
+    except Exception as e:
+        _emit_log(logger, f"  [치명적 오류] {problem_id} 수집 실패: {e}")
+        raise e
+    finally:
+        if page:
+            page.close()
 
 if __name__ == "__main__":
-    target_url = "http://edu.doingcoding.com/problem/P101v0701"
+    target_url = "http://edu.doingcoding.com/problem/P101v0101"
     print(f"[크롤링 시작] {target_url}")
 
-    title, md_output = scrape_doingcoding(target_url, get_templates=False)
+    title, md_output, db_id = scrape_doingcoding(target_url, get_templates=False)
 
     if md_output:
         # 결과를 현재 폴더에 저장
-        save_path = f"01_dc_{target_url.split('/')[-1]}.md"
+        problem_id = target_url.split('/')[-1]
+        save_path = f"{problem_id}_{db_id}.md"
+        # save_path = f"01_dc_{target_url.split('/')[-1]}.md"
         with open(save_path, "w", encoding="utf-8-sig") as f:
             f.write(md_output)
         print(f"[성공] 크롤링 완료! 파일이 저장되었습니다: '{save_path}'")

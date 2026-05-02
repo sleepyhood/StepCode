@@ -89,9 +89,10 @@ class CrawlerApp:
 
         self.domain_var = tk.StringVar(value="doingcoding")
         self.get_templates_var = tk.BooleanVar(value=False)
-        self.get_testcases_var = tk.BooleanVar(value=False)
-        self.show_browser_var = tk.BooleanVar(value=False)
-        self.skip_existing_var = tk.BooleanVar(value=True)
+        self.use_admin_login_var = tk.BooleanVar(value=True) # 신규: 관리자 로그인 활성화 여부
+        self.download_zip_var = tk.BooleanVar(value=False) # 신규: ZIP 다운로드 여부
+        self.show_browser_var = tk.BooleanVar(value=True)
+        self.skip_existing_var = tk.BooleanVar(value=False)
         self.save_dir = tk.StringVar(value=os.getcwd())
         self.testcase_md_path = tk.StringVar(value="")
         self.testcase_zip_dir = tk.StringVar(value=os.getcwd())
@@ -176,13 +177,25 @@ class CrawlerApp:
                         return
 
             try:
+                # --- [신규] 관리자 세션 사전 생성 (워커당 1회) ---
+                admin_session = None
+                # 로그인이 활성화되어 있고 정보가 있을 때만 세션 생성
+                if domain == "doingcoding" and admin_username and admin_password:
+                    try:
+                        self.log(f"{worker_prefix} 🔐 관리자 세션 로그인 중...")
+                        admin_session = open_doingcoding_admin_session(
+                            context, admin_username, admin_password, logger=self.log
+                        )
+                    except Exception as e:
+                        self.log(f"{worker_prefix} ⚠️ 관리자 로그인 실패 (일반 모드로 진행): {e}")
+
                 while not task_queue.empty():
                     if self.stop_event.is_set():
                         break
                     
                     try:
                         current_id = task_queue.get_nowait()
-                        # 🚨 [신규] 진행 카운트 증가 및 로컬 인덱스 확보
+                        # 진행 카운트 증가 및 로컬 인덱스 확보
                         with self.count_lock:
                             self.processed_count += 1
                             current_idx = self.processed_count
@@ -199,63 +212,71 @@ class CrawlerApp:
                     base_filepath = os.path.join(save_path, filename)
                     filepath = build_output_filepath(save_path, filename)
 
-                    # 🚨 [신규] 404 더미 파일 전용 경로 설정
+                    # 404 더미 파일 전용 경로 설정
                     dummy_dir = os.path.join(save_path, "404_not_found")
                     dummy_filepath = os.path.join(dummy_dir, filename)
 
-                    # 🚨 [개선] 건너뛰기(Skip) 로직 세분화 및 하위 폴더 연동
+                    # 건너뛰기(Skip) 로직 세분화 및 하위 폴더 연동
+                    # 건너뛰기(Skip) 로직 세분화 및 패턴 매칭 적용
                     if skip_existing:
+                        is_already_scraped = False
+                        
+                        # 1. 고정 경로 체크 (기존 방식 또는 백준용)
                         if os.path.exists(base_filepath) and os.path.getsize(base_filepath) > 200:
-                            self.log(f"{worker_prefix} {progress_info} ⏩ 이미 존재하여 건너뜀: {current_id}")
+                            is_already_scraped = True
+                        
+                        # 2. DoingCoding용 패턴 매칭 체크 ([문제ID]_[db_id].md 형태 검색)
+                        if not is_already_scraped and domain == "doingcoding":
+                            import glob
+                            # 파일명 시작이 current_id이고 .md로 끝나는 모든 파일 검색
+                            pattern = os.path.join(save_path, f"{current_id}_*.md")
+                            matches = glob.glob(pattern)
+                            if matches and os.path.getsize(matches[0]) > 200:
+                                is_already_scraped = True
+
+                        if is_already_scraped:
+                            self.log(f"{worker_prefix} {progress_info} ⏩ 이미 존재하여 건너뜜: {current_id}")
                             result_queue.put((current_id, True))
                             task_queue.task_done()
                             continue
+
                         elif os.path.exists(dummy_filepath):
                             self.log(f"{worker_prefix} {progress_info} ⏩ [404] 삭제된 문제로 판명되어 건너뜀: {current_id}")
                             result_queue.put((current_id, True))
                             task_queue.task_done()
                             continue
 
-                    # 도메인별 전용 엔진 호출 (백준 vs 학원사이트)
+                    # 도메인별 전용 엔진 호출
                     self.log(f"{worker_prefix} {progress_info} [{browser_engine}] {current_id}번 수집 중...")
                     result_ok = False
                     try:
-                        if True:
-                            result = scrape_doingcoding(
-                                target_url,
-                                get_templates=get_templates,
-                                get_testcases=get_testcases,
-                                admin_username=admin_username,
-                                admin_password=admin_password,
-                                testcase_download_dir=save_path,
-                                show_browser=show_browser,
-                                logger=self.log,
-                                browser=context
-                            )
+                        result = scrape_doingcoding(
+                            target_url,
+                            get_templates=get_templates,
+                            get_testcases=get_testcases,
+                            admin_username=admin_username,
+                            admin_password=admin_password,
+                            testcase_download_dir=save_path,
+                            show_browser=show_browser,
+                            logger=self.log,
+                            browser=context,
+                            admin_session=admin_session # 🚨 [세션 재사용]
+                        )
 
                         if result and result[0] and result[1]:
-                            title, md_output = result
+                            title, md_output, db_id  = result
+                            # 신규 규칙 [문제ID]_[db_id].md 적용
+                            filename = f"{current_id}_{db_id}.md"
+                            filepath = os.path.join(save_path, filename)
+                            
                             with open(filepath, "w", encoding="utf-8-sig") as f:
                                 f.write(md_output)
                             self.log(f"{worker_prefix} {progress_info} ✅ {current_id}번 저장 완료: {title}")
                             result_ok = True
-                    # --- 추가: 존재하지 않는 문제 처리 ---
                     except ProblemNotFoundError as e:
                         self.log(f"{worker_prefix} {progress_info} 📝 {current_id}번: 존재하지 않는 문제 (404 하위 폴더로 격리)")
                         os.makedirs(dummy_dir, exist_ok=True)
-                        dummy_content = f"""---
-id: bj_{current_id}
-title: "삭제되거나 존재하지 않는 문제"
-platform: "baekjoon"
-is_scraped: false
-is_existent: false
-archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
----
-
-# [{current_id}번] 존재하지 않는 문제
-
-이 문제는 백준에서 삭제되었거나 존재하지 않는 번호입니다.
-"""
+                        dummy_content = f"---\nid: bj_{current_id}\ntitle: \"삭제되거나 존재하지 않는 문제\"\nplatform: \"baekjoon\"\nis_scraped: false\nis_existent: false\narchived_at: \"{datetime.now().strftime('%Y-%m-%d')}\"\n---\n\n# [{current_id}번] 존재하지 않는 문제\n\n이 문제는 백준에서 삭제되었거나 존재하지 않는 번호입니다.\n"
                         with open(dummy_filepath, "w", encoding="utf-8-sig") as f:
                             f.write(dummy_content)
                         result_ok = True
@@ -265,12 +286,15 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
                     result_queue.put((current_id, result_ok))
                     task_queue.task_done()
                     
-                    if not result_ok:
-                        time.sleep(random.uniform(6.0, 10.0))
-                    else:
-                        time.sleep(random.uniform(4.0, 7.0))
+                    # 수집 간격 조절 (API 중심이므로 지연시간 단축 가능)
+                    time.sleep(random.uniform(1.0, 3.0))
 
             finally:
+                if admin_session:
+                    try:
+                        close_doingcoding_admin_session(admin_session)
+                        self.log(f"{worker_prefix} 🔓 관리자 세션 종료.")
+                    except: pass
                 if context:
                     context.close()
 
@@ -278,67 +302,76 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
     def _build_shared_settings(self):
         self.domain_var.trace("w", self.update_url_template)
 
+        # 1. URL 템플릿 (상단 전체 너비)
         tk.Label(
             self.shared_settings_frame,
-            text="[ URL 템플릿 ( '{id}' 위치에 조합된 ID가 삽입됩니다 ) ]",
-            font=("Helvetica", 10, "bold"),
-        ).pack(pady=(12, 5))
+            text="[ 1. 대상 URL 설정 ( '{id}' 위치에 문제 번호가 삽입됩니다 ) ]",
+            font=("Helvetica", 9, "bold"),
+        ).pack(anchor="w", padx=10, pady=(5, 2))
         self.url_template = tk.Entry(self.shared_settings_frame, width=80)
         self.url_template.insert(0, "http://edu.doingcoding.com/problem/{id}")
-        self.url_template.pack(fill="x", padx=10)
+        self.url_template.pack(fill="x", padx=10, pady=(0, 10))
 
+        # 2. 하단 2열 배치 프레임
         self.doingcoding_options_frame = tk.Frame(self.shared_settings_frame)
-        self.check_template = tk.Checkbutton(
-            self.doingcoding_options_frame,
-            text="코드 템플릿 포함 (수집 속도가 현저히 느려질 수 있습니다)",
-            variable=self.get_templates_var,
+        self.doingcoding_options_frame.pack(fill="x", padx=5)
+
+        # --- 좌측: 일반 옵션 ---
+        left_frame = tk.LabelFrame(self.doingcoding_options_frame, text="일반 수집 옵션", padx=10, pady=10)
+        left_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=5)
+
+        tk.Checkbutton(left_frame, text="크롤링 진행 화면 표시", variable=self.show_browser_var).pack(anchor="w")
+        tk.Checkbutton(left_frame, text="이미 수집된 문제 건너뛰기", variable=self.skip_existing_var).pack(anchor="w")
+        tk.Checkbutton(left_frame, text="코드 템플릿 포함 (속도 저하)", variable=self.get_templates_var).pack(anchor="w")
+
+        # --- 우측: 관리자 전용 옵션 ---
+        right_frame = tk.LabelFrame(self.doingcoding_options_frame, text="관리자 권한 옵션", padx=10, pady=10)
+        right_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=5)
+
+        self.check_admin_login = tk.Checkbutton(
+            right_frame, text="관리자 로그인 (고성능 데이터)", 
+            variable=self.use_admin_login_var, command=self._on_admin_login_toggle
         )
-        self.check_template.pack(pady=4)
+        self.check_admin_login.pack(anchor="w")
 
-        self.check_testcases = tk.Checkbutton(
-            self.doingcoding_options_frame,
-            text="채점용 테스트케이스 및 관리자 태그 포함 (doingcoding 관리자 로그인 필요)",
-            variable=self.get_testcases_var,
-            command=self._on_testcases_toggle
+        self.check_testcase_zip = tk.Checkbutton(
+            right_frame, text="테스트케이스(ZIP) 다운로드", 
+            variable=self.download_zip_var, command=self._on_zip_download_toggle
         )
-        self.check_testcases.pack(pady=4)
+        self.check_testcase_zip.pack(anchor="w")
 
-        # 공통 옵션 (Headless 모드 제어)
-        self.check_show_browser = tk.Checkbutton(
-            self.shared_settings_frame,
-            text="크롤링 진행 화면 표시 (Headless 모드 끄기)",
-            variable=self.show_browser_var,
-        )
-        self.check_show_browser.pack(pady=4)
-
-        self.check_skip_existing = tk.Checkbutton(
-            self.shared_settings_frame,
-            text="이미 크롤링된 문제 건너뛰기 (추천)",
-            variable=self.skip_existing_var,
-        )
-        self.check_skip_existing.pack(pady=4)
-
-
-        self.admin_frame = tk.Frame(self.doingcoding_options_frame)
-        self.admin_frame.pack(pady=(4, 0))
-        tk.Label(self.admin_frame, text="관리자 ID").pack(side=tk.LEFT)
-        self.admin_username = tk.Entry(self.admin_frame, width=18)
-        self.admin_username.pack(side=tk.LEFT, padx=(5, 10))
-        tk.Label(self.admin_frame, text="관리자 PW").pack(side=tk.LEFT)
-        self.admin_password = tk.Entry(self.admin_frame, width=18, show="*")
-        self.admin_password.pack(side=tk.LEFT, padx=(5, 0))
+        # 관리자 ID/PW 입력란 (한 줄로)
+        self.admin_input_frame = tk.Frame(right_frame)
+        self.admin_input_frame.pack(fill="x", pady=(5, 0))
         
-        self.admin_username.config(state=tk.DISABLED)
-        self.admin_password.config(state=tk.DISABLED)
+        tk.Label(self.admin_input_frame, text="ID:").pack(side=tk.LEFT)
+        self.admin_username = tk.Entry(self.admin_input_frame, width=12)
+        self.admin_username.pack(side=tk.LEFT, padx=(2, 5))
+        
+        tk.Label(self.admin_input_frame, text="PW:").pack(side=tk.LEFT)
+        self.admin_password = tk.Entry(self.admin_input_frame, width=12, show="*")
+        self.admin_password.pack(side=tk.LEFT, padx=(2, 0))
+
+        # 초기 상태 동기화
+        self._on_admin_login_toggle()
 
 
-    def _on_testcases_toggle(self):
-        if self.get_testcases_var.get():
+    def _on_admin_login_toggle(self):
+        if self.use_admin_login_var.get():
             self.admin_username.config(state=tk.NORMAL)
             self.admin_password.config(state=tk.NORMAL)
+            self.check_testcase_zip.config(state=tk.NORMAL)
         else:
             self.admin_username.config(state=tk.DISABLED)
             self.admin_password.config(state=tk.DISABLED)
+            self.download_zip_var.set(False)
+            self.check_testcase_zip.config(state=tk.DISABLED)
+
+    def _on_zip_download_toggle(self):
+        # ZIP 다운로드 시 로그인은 필수이므로 강제 활성화 (선택 사항)
+        if self.download_zip_var.get() and not self.use_admin_login_var.get():
+            self.use_admin_login_var.set(True)
+            self._on_admin_login_toggle()
 
     def _build_crawl_tab(self):
         tk.Label(
@@ -348,27 +381,27 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
         ).pack(pady=(0, 10))
 
         self.frame_input = tk.Frame(self.crawl_tab)
-        self.frame_input.pack()
+        self.frame_input.pack(pady=10)
 
-        tk.Label(self.frame_input, text="접두어(Prefix):\n(예: P101v)").pack(side=tk.LEFT)
-        self.prefix_id = tk.Entry(self.frame_input, width=10)
+        # ID 범위 설정을 한 줄로 나란히 배치 (Grid 사용)
+        tk.Label(self.frame_input, text="접두어:").grid(row=0, column=0, padx=5)
+        self.prefix_id = tk.Entry(self.frame_input, width=8)
         self.prefix_id.insert(0, "ALLv")
-        self.prefix_id.pack(side=tk.LEFT, padx=(5, 15))
+        self.prefix_id.grid(row=0, column=1, padx=(0, 15))
 
-        tk.Label(self.frame_input, text="시작 번호:\n(예: 01)").pack(side=tk.LEFT)
+        tk.Label(self.frame_input, text="시작:").grid(row=0, column=2, padx=5)
         self.start_id = tk.Entry(self.frame_input, width=8)
         self.start_id.insert(0, "1000")
-        self.start_id.pack(side=tk.LEFT, padx=(5, 5))
+        self.start_id.grid(row=0, column=3, padx=(0, 5))
 
-        tk.Label(self.frame_input, text="~ 종료 번호:\n(예: 10)").pack(side=tk.LEFT)
+        tk.Label(self.frame_input, text="~ 종료:").grid(row=0, column=4, padx=5)
         self.end_id = tk.Entry(self.frame_input, width=8)
         self.end_id.insert(0, "1005")
-        self.end_id.pack(side=tk.LEFT, padx=(5, 15))
+        self.end_id.grid(row=0, column=5, padx=(0, 15))
 
-        tk.Label(self.frame_input, text="접미어(Suffix):\n(선택)").pack(side=tk.LEFT)
+        tk.Label(self.frame_input, text="접미어:").grid(row=0, column=6, padx=5)
         self.suffix_id = tk.Entry(self.frame_input, width=8)
-        self.suffix_id.insert(0, "")
-        self.suffix_id.pack(side=tk.LEFT, padx=5)
+        self.suffix_id.grid(row=0, column=7, padx=(0, 5))
 
         self.frame_dir = tk.Frame(self.crawl_tab)
         self.frame_dir.pack(fill="x", pady=20)
@@ -867,13 +900,17 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
         template = self.url_template.get().strip()
         save_path = self.save_dir.get()
         get_templates = self.get_templates_var.get()
-        get_testcases = self.get_testcases_var.get()
+        use_admin_login = self.use_admin_login_var.get()
+        get_testcases = self.download_zip_var.get()
         show_browser = self.show_browser_var.get()
         skip_existing = self.skip_existing_var.get()
-        admin_username, admin_password = resolve_admin_credentials(
-            self.admin_username.get(),
-            self.admin_password.get(),
-        )
+        
+        admin_username, admin_password = "", ""
+        if use_admin_login:
+            admin_username, admin_password = resolve_admin_credentials(
+                self.admin_username.get(),
+                self.admin_password.get(),
+            )
 
         if "{id}" not in template:
             messagebox.showerror(
@@ -882,17 +919,10 @@ archived_at: "{datetime.now().strftime('%Y-%m-%d')}"
             )
             return
 
-        if get_testcases and domain != "doingcoding":
+        if use_admin_login and (not admin_username or not admin_password):
             messagebox.showerror(
                 "입력 오류",
-                "채점용 테스트케이스 수집은 doingcoding에서만 사용할 수 있습니다.",
-            )
-            return
-
-        if get_testcases and (not admin_username or not admin_password):
-            messagebox.showerror(
-                "입력 오류",
-                "채점용 테스트케이스 수집에는 관리자 ID/PW가 필요합니다. 입력란 또는 환경변수를 확인해 주세요.",
+                "관리자 기능을 사용하려면 ID/PW가 필요합니다. 입력란 또는 환경변수를 확인해 주세요.",
             )
             return
 
