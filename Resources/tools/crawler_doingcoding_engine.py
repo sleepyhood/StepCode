@@ -1775,11 +1775,26 @@ def scrape_doingcoding(
             try:
                 api_url = f"http://edu.doingcoding.com/api/problem?problem_id={problem_id}"
                 response = local_admin_session.page.request.get(api_url)
+                
+                # 404인 경우 특수 신호 반환
+                if response.status == 404:
+                    return "404_NOT_FOUND", None, "NULL"
+                
                 if response.ok:
-                    api_data = response.json().get("data", {})
+                    json_res = response.json()
+                    api_data = json_res.get("data", {})
+                    
+                    # 데이터가 없거나(None), 문자열인 경우(에러 메시지 등) 404로 간주
+                    if not api_data or isinstance(api_data, str):
+                        _emit_log(logger, f"  [확인] API 응답에 유효한 데이터가 없음: {problem_id}")
+                        return "404_NOT_FOUND", None, "NULL"
+                        
                     _emit_log(logger, f"  [API] 문제 데이터 수집 성공: {problem_id}")
                 else:
+                    # 404를 포함한 모든 실패 상태에 대해 격리 처리
                     _emit_log(logger, f"  [오류] API 호출 실패 (상태: {response.status})")
+                    return "404_NOT_FOUND", None, "NULL"
+
             except Exception as e:
                 _emit_log(logger, f"  [오류] API 호출 중 예외: {e}")
 
@@ -1833,7 +1848,8 @@ def scrape_doingcoding(
                 ready_selector="#problem-main",
                 attempts=2,
             )
-            
+            page.wait_for_timeout(1000) # 중요: 동적 콘텐츠(Vue/React 등)가 그려질 시간 확보
+
             # UI에서 섹션별 HTML 추출 및 이미지 처리
             problem_content_el = page.locator("#problem-content")
             if problem_content_el.count() > 0:

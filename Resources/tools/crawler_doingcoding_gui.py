@@ -263,16 +263,32 @@ class CrawlerApp:
                             admin_session=admin_session # 🚨 [세션 재사용]
                         )
 
-                        if result and result[0] and result[1]:
+                        time.sleep(random.uniform(1.0, 2.5)) 
+
+                        if result and result[0] == "404_NOT_FOUND":
+                            # 404 전용 폴더 및 파일명 규칙 적용
+                            not_found_dir = os.path.join(save_path, "404_not_found")
+                            os.makedirs(not_found_dir, exist_ok=True)
+                            
+                            filename = f"{current_id}_NULL.md" # DB ID가 없으므로 NULL로 식별
+                            filepath = os.path.join(not_found_dir, filename)
+                            # 프론트매터에도 db_id: "NULL" 명시
+                            md_output = f"---\nid: \"{current_id}\"\ndb_id: \"NULL\"\nstatus: \"404_not_found\"\narchived_at: \"{datetime.now().strftime('%Y-%m-%d')}\"\n---"
+
+                            with open(filepath, "w", encoding="utf-8-sig") as f:
+                                f.write(md_output)
+                            self.log(f"{worker_prefix} {progress_info} 📝 [격리] 404_not_found 폴더에 배치됨: {current_id}")
+                            result_ok = True
+                        
+                        elif result and result[0] and result[1]:
                             title, md_output, db_id  = result
-                            # 신규 규칙 [문제ID]_[db_id].md 적용
                             filename = f"{current_id}_{db_id}.md"
                             filepath = os.path.join(save_path, filename)
                             
                             with open(filepath, "w", encoding="utf-8-sig") as f:
                                 f.write(md_output)
-                            self.log(f"{worker_prefix} {progress_info} ✅ {current_id}번 저장 완료: {title}")
                             result_ok = True
+
                     except ProblemNotFoundError as e:
                         self.log(f"{worker_prefix} {progress_info} 📝 {current_id}번: 존재하지 않는 문제 (404 하위 폴더로 격리)")
                         os.makedirs(dummy_dir, exist_ok=True)
