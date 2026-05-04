@@ -85,6 +85,7 @@ graph TD
 
 - 파일명 형식: `ALLv{단원번호}{순번}_{db_id}.md` (예: `ALLv05001_519.md`)
 - YAML front-matter의 `id`, `db_id`, `legacy_id`를 테이블과 100% 일치시킵니다.
+- **YAML 따옴표 규칙**: string 값(`id`, `title`, `platform`, `level`, `time_limit`, `memory_limit`, `has_hint`, `archived_at` 등)은 반드시 큰따옴표(`"..."`)로 감쌉니다. 숫자형인 `db_id`와 `accepted_user_count`는 따옴표 없이 기입합니다.
 - **자동화 도구**: `scripts/rename_local_suffix.py` (링크 업데이트도 포함)
 
 **Step 5 (2차)**: `README.md`에 계획된 신규 문제들을 배치합니다.
@@ -219,3 +220,4 @@ with zipfile.ZipFile("04_testcases/ALLv05015_LOCAL.zip") as zf:
 | **Python 포맷** | C-style 포맷 문자열 (`'%d' % n`) 사용. |
 | **원본 보존** | `scraped/` 폴더는 절대 수정하지 않음. |
 | **커리큘럼 정합성** | README 주제(Topic)와 파일 내용 일치 여부를 Step 3에서 반드시 검증. |
+| **YAML 따옴표** | string 값은 큰따옴표(`"..."`) 필수. `db_id`, `accepted_user_count`만 예외(숫자형). |
