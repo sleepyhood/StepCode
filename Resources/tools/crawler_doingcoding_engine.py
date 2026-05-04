@@ -1893,6 +1893,7 @@ def scrape_doingcoding(
         front_matter = {
             "id": problem_id,
             "db_id": db_id,
+            "legacy_id": problem_id,
             "title": title,
             "platform": "doingcoding",
             "level": level,
@@ -1914,30 +1915,70 @@ def scrape_doingcoding(
                     template_blocks += f"\n## {lang} Template\n\n```{lang.lower()}\n{code}\n```\n"
 
         # 최종 내용 조립
+        # 최종 내용 조립
         md_output = f"""---
 {_to_yaml(front_matter)}
 ---
 
 # {title}
 
-## 문제 설명
+## 1. 문제 설명
 {description}
 
-## 입력
+---
+
+## 2. 입출력 설명
+
+* **입력:**
 {input_desc}
 
-## 출력
+* **출력:**
 {output_desc}
 
-## 예제 입출력
+---
+
+## 3. 예시
 """
+        # 예시(Sample) 반복문: 불렛 포인트 제거 및 헤더 기반으로 변경
         for i, (sin, sout) in enumerate(samples, 1):
-            md_output += f"### 예제 {i}\n- **입력**: \n```text\n{sin}\n```\n- **출력**: \n```text\n{sout}\n```\n\n"
-
+            md_output += f"### 예시 입력 {i}\n```text\n{sin}\n```\n\n### 예시 출력 {i}\n```text\n{sout}\n```\n\n"
+ 
+        # 힌트 섹션 (항상 생성하여 1-4번 구조 유지)
+        md_output += "---\n\n## 4. 힌트\n"
         if hint_text and has_hint == "true":
-            md_output += f"## 힌트\n{hint_text}\n"
+            md_output += f"{hint_text}\n"
+        else:
+            md_output += "(힌트가 없습니다.)\n"
 
-        md_output += template_blocks
+
+        # 마지막 구분선 및 템플릿 코드 추가
+        md_output += f"---\n\n{template_blocks}"
+
+#         md_output = f"""---
+# {_to_yaml(front_matter)}
+# ---
+
+# # {title}
+
+# ## 1. 문제 설명
+# {description}
+
+# ## 2. 입력
+# {input_desc}
+
+# ## 3. 출력
+# {output_desc}
+
+# ## 4. 예제 입출력
+# """
+#         for i, (sin, sout) in enumerate(samples, 1):
+#             md_output += f"### 예제 {i}\n- **입력**: \n```text\n{sin}\n```\n- **출력**: \n```text\n{sout}\n```\n\n"
+
+#         if hint_text and has_hint == "true":
+#             md_output += f"## 5. 힌트\n{hint_text}\n"
+
+#         md_output += template_blocks
+
 
         return title, md_output,  db_id
 

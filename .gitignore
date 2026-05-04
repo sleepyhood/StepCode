@@ -20,6 +20,11 @@ practice/data/content/programming/baekjoon/mycode/
 **/crawl_failures.txt
 **/browser_session/
 
+# DoingCoding LV26_재귀 임시 폴더
+practice/data/content/programming/doingcoding/LV26_재귀/scripts/
+practice/data/content/programming/doingcoding/LV26_재귀/temp/
+
+
 # 백준 아카이버 툴 관련
 Resources/tools/user_data/ 
 Resources/tools/test_user_data/ 
