@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv10003
+id: "SALLv10003"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - fractal
-time_limit: 1s
-title: 03. [재귀2 - 3] 재귀적 눈금 그리기
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "fractal"
+time_limit: "1s"
+title: "03. [재귀2 - 3] 재귀적 눈금 그리기"
 ---
 
 

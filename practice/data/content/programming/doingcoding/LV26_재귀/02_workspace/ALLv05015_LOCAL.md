@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: ALLv05015
+id: "ALLv05015"
 is_scraped: false
-legacy_id: bj_25501
-memory_limit: 256MB
-platform: baekjoon
-tags:
-  - baekjoon
-  - recursion
-  - tutorial
-time_limit: 1s
-title: 15. [재귀1 - 15] 재귀의 귀재 (호출 횟수 측정)
+legacy_id: "bj_25501"
+memory_limit: "256MB"
+platform: "baekjoon"
+tags: 
+  - "baekjoon"
+  - "recursion"
+  - "tutorial"
+time_limit: "1s"
+title: "15. [재귀1 - 15] 재귀의 귀재 (호출 횟수 측정)"
 ---
 
 

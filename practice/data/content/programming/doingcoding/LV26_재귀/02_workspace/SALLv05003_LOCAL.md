@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv05003
+id: "SALLv05003"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - practice
-time_limit: 1s
-title: 03. [재귀1 - 3] 마트료시카 (러시아 인형)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "practice"
+time_limit: "1s"
+title: "03. [재귀1 - 3] 마트료시카 (러시아 인형)"
 ---
 
 

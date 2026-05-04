@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv05015
+id: "SALLv05015"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - practice
-time_limit: 1s
-title: 15. [재귀1 - 15] 재귀의 함정 (피보나치 카운트)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "practice"
+time_limit: "1s"
+title: "15. [재귀1 - 15] 재귀의 함정 (피보나치 카운트)"
 ---
 
 

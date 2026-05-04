@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv05012
+id: "SALLv05012"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - practice
-time_limit: 1s
-title: 12. [재귀1 - 12] 재귀적 문자열 포장
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "practice"
+time_limit: "1s"
+title: "12. [재귀1 - 12] 재귀적 문자열 포장"
 ---
 
 

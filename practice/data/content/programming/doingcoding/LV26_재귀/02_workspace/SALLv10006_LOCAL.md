@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv10006
+id: "SALLv10006"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - backtracking
-time_limit: 1s
-title: 06. [재귀2 - 6] 숫자 카드 조합 (목표 합 만들기)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "backtracking"
+time_limit: "1s"
+title: "06. [재귀2 - 6] 숫자 카드 조합 (목표 합 만들기)"
 ---
 
 

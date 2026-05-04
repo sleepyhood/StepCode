@@ -1,18 +1,18 @@
 ---
 db_id: LOCAL
-id: SALLv10004
+id: "SALLv10004"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - fractal
-  - 2d
-  - quadtree
-time_limit: 1s
-title: 04. [재귀2 - 4] 쿼드트리 번호 매기기
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "fractal"
+  - "2d"
+  - "quadtree"
+time_limit: "1s"
+title: "04. [재귀2 - 4] 쿼드트리 번호 매기기"
 ---
 
 

@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: ALLv10003
+id: "ALLv10003"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - fractal
-time_limit: 1s
-title: 03. [재귀2 - 3] 알파벳 트리
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "fractal"
+time_limit: "1s"
+title: "03. [재귀2 - 3] 알파벳 트리"
 ---
 
 

@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv05006
+id: "SALLv05006"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - practice
-time_limit: 1s
-title: 06. [재귀1 - 6] 가중치 피보나치 수열
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "practice"
+time_limit: "1s"
+title: "06. [재귀1 - 6] 가중치 피보나치 수열"
 ---
 
 

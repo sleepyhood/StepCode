@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: ALLv05012
+id: "ALLv05012"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - tutorial
-time_limit: 1s
-title: 12. [재귀1 - 12] 문자열 거꾸로 출력하기
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "tutorial"
+time_limit: "1s"
+title: "12. [재귀1 - 12] 문자열 거꾸로 출력하기"
 ---
 
 

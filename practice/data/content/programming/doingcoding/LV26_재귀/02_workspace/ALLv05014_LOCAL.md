@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: ALLv05014
+id: "ALLv05014"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - tutorial
-time_limit: 1s
-title: 14. [재귀1 - 14] 숫자를 붙여 N자리 수 만들기
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "tutorial"
+time_limit: "1s"
+title: "14. [재귀1 - 14] 숫자를 붙여 N자리 수 만들기"
 ---
 
 

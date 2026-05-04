@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv05009
+id: "SALLv05009"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - practice
-time_limit: 1s
-title: 09. [재귀1 - 9] 역삼각형 출력하기
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "practice"
+time_limit: "1s"
+title: "09. [재귀1 - 9] 역삼각형 출력하기"
 ---
 
 

@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv05008
+id: "SALLv05008"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - practice
-time_limit: 1s
-title: 08. [재귀1 - 8] 계단식 재귀 함수
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "practice"
+time_limit: "1s"
+title: "08. [재귀1 - 8] 계단식 재귀 함수"
 ---
 
 

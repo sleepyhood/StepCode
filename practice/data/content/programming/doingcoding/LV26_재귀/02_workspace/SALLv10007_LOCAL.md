@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv10007
+id: "SALLv10007"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - practice
-time_limit: 1s
-title: 07. [재귀2 - 7] 타일 채우기 기초 (2 x N)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "practice"
+time_limit: "1s"
+title: "07. [재귀2 - 7] 타일 채우기 기초 (2 x N)"
 ---
 
 

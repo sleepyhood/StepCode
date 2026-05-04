@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv10010
+id: "SALLv10010"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - backtracking
-time_limit: 1s
-title: 10. [재귀2- 10] 주사위 던지기 (목표 합 S)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "backtracking"
+time_limit: "1s"
+title: "10. [재귀2- 10] 주사위 던지기 (목표 합 S)"
 ---
 
 

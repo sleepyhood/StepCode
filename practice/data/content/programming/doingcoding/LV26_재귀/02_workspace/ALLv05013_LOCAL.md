@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: ALLv05013
+id: "ALLv05013"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - tutorial
-time_limit: 1s
-title: 13. [재귀1 - 13] 8진수 변환 (진법 변환 심화)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "tutorial"
+time_limit: "1s"
+title: "13. [재귀1 - 13] 8진수 변환 (진법 변환 심화)"
 ---
 
 

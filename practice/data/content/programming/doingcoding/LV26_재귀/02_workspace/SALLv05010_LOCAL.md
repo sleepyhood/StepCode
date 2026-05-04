@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv05010
+id: "SALLv05010"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - practice
-time_limit: 1s
-title: 10. [재귀1 - 10] 정사각형 타일 개수 (GCD 재귀)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "practice"
+time_limit: "1s"
+title: "10. [재귀1 - 10] 정사각형 타일 개수 (GCD 재귀)"
 ---
 
 

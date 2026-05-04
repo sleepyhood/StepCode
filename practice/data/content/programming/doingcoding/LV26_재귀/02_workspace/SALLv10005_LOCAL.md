@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv10005
+id: "SALLv10005"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - backtracking
-time_limit: 1s
-title: 05. [재귀2 - 5] 암호 해독 (연속된 1 없는 이진수)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "backtracking"
+time_limit: "1s"
+title: "05. [재귀2 - 5] 암호 해독 (연속된 1 없는 이진수)"
 ---
 
 

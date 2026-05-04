@@ -1,17 +1,17 @@
 ---
 db_id: LOCAL
-id: ALLv05003
+id: "ALLv05003"
 is_scraped: false
-legacy_id: bj_17478
-memory_limit: 256MB
-platform: baekjoon
-source_url: https://www.acmicpc.net/problem/17478
-tags:
-  - baekjoon
-  - recursion
-  - tutorial
-time_limit: 1s
-title: 03. [재귀1 - 3] 재귀 챗봇
+legacy_id: "bj_17478"
+memory_limit: "256MB"
+platform: "baekjoon"
+source_url: "https://www.acmicpc.net/problem/17478"
+tags: 
+  - "baekjoon"
+  - "recursion"
+  - "tutorial"
+time_limit: "1s"
+title: "03. [재귀1 - 3] 재귀 챗봇"
 ---
 
 

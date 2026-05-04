@@ -1,17 +1,17 @@
 ---
 db_id: LOCAL
-id: ALLv10004
+id: "ALLv10004"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - fractal
-  - 2d
-time_limit: 1s
-title: 04. [재귀2 - 4] 프랙탈 십자 그리기
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "fractal"
+  - "2d"
+time_limit: "1s"
+title: "04. [재귀2 - 4] 프랙탈 십자 그리기"
 ---
 
 

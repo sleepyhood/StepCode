@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv10008
+id: "SALLv10008"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - backtracking
-time_limit: 1s
-title: 08. [재귀2 - 8] 국가대표 선발 (조합 nCr)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "backtracking"
+time_limit: "1s"
+title: "08. [재귀2 - 8] 국가대표 선발 (조합 nCr)"
 ---
 
 

@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv10009
+id: "SALLv10009"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - backtracking
-time_limit: 1s
-title: 09. [재귀2 - 9] 미로 탐색 기초 (장애물 있는 격자)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "backtracking"
+time_limit: "1s"
+title: "09. [재귀2 - 9] 미로 탐색 기초 (장애물 있는 격자)"
 ---
 
 

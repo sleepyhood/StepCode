@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: SALLv05005
+id: "SALLv05005"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - practice
-time_limit: 1s
-title: 05. [재귀1 - 5] 트리보나치 수열 (Tribonacci)
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "practice"
+time_limit: "1s"
+title: "05. [재귀1 - 5] 트리보나치 수열 (Tribonacci)"
 ---
 
 

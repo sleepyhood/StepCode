@@ -1,16 +1,16 @@
 ---
 db_id: LOCAL
-id: ALLv05011
+id: "ALLv05011"
 is_scraped: false
-legacy_id:
-memory_limit: 256MB
-platform: doingcoding
-tags:
-  - doingcoding
-  - recursion
-  - tutorial
-time_limit: 1s
-title: 11. [재귀1 - 11] 10진수를 N진수로 변환하기
+legacy_id: 
+memory_limit: "256MB"
+platform: "doingcoding"
+tags: 
+  - "doingcoding"
+  - "recursion"
+  - "tutorial"
+time_limit: "1s"
+title: "11. [재귀1 - 11] 10진수를 N진수로 변환하기"
 ---
 
 
