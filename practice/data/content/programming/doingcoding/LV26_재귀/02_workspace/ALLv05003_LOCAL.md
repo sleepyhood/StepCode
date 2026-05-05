@@ -10,6 +10,11 @@ tags:
   - "baekjoon"
   - "recursion"
   - "tutorial"
+supported_languages:
+  - "C"
+  - "C++"
+  - "Java"
+  - "Python3"
 time_limit: "1s"
 title: "03. [재귀1 - 3] 재귀 챗봇"
 ---
