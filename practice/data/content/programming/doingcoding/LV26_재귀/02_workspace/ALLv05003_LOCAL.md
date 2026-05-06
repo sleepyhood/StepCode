@@ -10,6 +10,7 @@ tags:
   - "Lv26 재귀함수"
   - "ALLv6 재귀함수"
   - "ALLv5 재귀함수1"
+  - "ALLv05 재귀함수 1"
 supported_languages:
   - "C"
   - "C++"

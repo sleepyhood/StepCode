@@ -58,7 +58,10 @@ def embed_local_images_as_base64(md_content, md_file_path):
             return f'<img src="{final_url}" alt="{alt_text}" width="{width}">'
         else:
             # 지정된 크기가 없으면 화면을 벗어나지 않도록 max-width 100% 적용
-            return f'<img src="{final_url}" alt="{alt_text}" style="max-width: 100%; height: auto;">'
+            # return f'<img src="{final_url}" alt="{alt_text}" style="max-width: 100%; height: auto;">'
+            
+            # 지정된 크기가 없다면, 그나마 최적인 700px 고정 크기로 리턴 (너무 큰 이미지는 화면을 벗어날 수 있기 때문)
+            return f'<img src="{final_url}" alt="{alt_text}" width="700">'
 
     # 본문의 모든 이미지 링크 치환
     return re.sub(pattern, replace_with_base64, md_content)
