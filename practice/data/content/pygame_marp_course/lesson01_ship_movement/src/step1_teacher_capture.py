@@ -64,7 +64,7 @@ def draw_ship(surface):
 
 def main():
     recorder = PygameRecorder(screen, "../assets/output_animation.gif")
-    
+    frame_count = 0  # 프레임 카운트 변수 추가
     running = True
     while running:
         # 1. 이벤트 확인
@@ -83,7 +83,11 @@ def main():
         draw_ship(screen)
 
         pygame.display.flip()
-        recorder.capture()
+        # 4프레임마다 1번씩만 캡처 (60 FPS 게임 -> 15 FPS 캡처)
+        frame_count += 1
+        if frame_count % 4 == 0:
+            recorder.capture()
+        
         clock.tick(60)
 
     pygame.quit()

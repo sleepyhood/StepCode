@@ -1,9 +1,9 @@
 ---
-id: "pygame_l03_collision"
+id: "pygame_u03"
 contentType: "lesson"
-track: "pygame_course"
+track: "pygame_project"
 lang: "python"
-categoryId: "pygame_l03"
+categoryId: "pygame_project_ship_u03"
 title: "3차시. 충돌 판정과 게임 오버"
 status: "active"
 order: 103

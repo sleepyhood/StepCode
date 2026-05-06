@@ -484,16 +484,23 @@
     },
     {
         "id": "pygame_project_ship_u04",
-        "name": "[Project] 우주선 피하기 - [운석 피하기] 4.점수 만들기",
+        "name": "[Project] 우주선 피하기 - [운석 피하기] 4.점수와 난이도 조절하기",
         "lang": "Python",
         "track": "pygame_project",
         "order": 804
     },
     {
         "id": "pygame_project_ship_u05",
-        "name": "[Project] 우주선 피하기 - [운석 피하기] 5.완성 및 도전과제",
+        "name": "[Project] 우주선 피하기 - [운석 피하기] 5.나만의 우주선 확장하기",
         "lang": "Python",
         "track": "pygame_project",
         "order": 805
+    },
+    {
+        "id": "pygame_project_ship_u06",
+        "name": "[Project] 우주선 피하기 - [운석 피하기] 6.이미지와 최종 완성",
+        "lang": "Python",
+        "track": "pygame_project",
+        "order": 806
     }
 ]

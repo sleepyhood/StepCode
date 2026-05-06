@@ -1483,5 +1483,14 @@
         "difficulty": "basic",
         "numProblems": 4,
         "file": "pygame/u05.json"
+    },
+    {
+        "id": "pygame_u06",
+        "categoryId": "pygame_project_ship_u06",
+        "title": "Pygame 6차시: 이미지와 폴리싱",
+        "round": 6,
+        "difficulty": "basic",
+        "numProblems": 4,
+        "file": "pygame/u06.json"
     }
 ]

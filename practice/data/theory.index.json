@@ -1288,5 +1288,17 @@
         "priority":  1,
         "recommendedSetId":  "pygame_u05",
         "slidePath":  "./data/content/pygame_marp_course/lesson05_extensions/lesson/slide.md"
+    },
+    {
+        "conceptId":  "pygame_u06",
+        "lang":  "python",
+        "title":  "Pygame 6차시: 이미지와 폴리싱",
+        "mdPath":  "./data/content/pygame_marp_course/lesson06_image_polish/interactive.md",
+        "categoryId":  "pygame_project_ship_u06",
+        "relatedSetIds":  [
+                              "pygame_u06"
+                          ],
+        "priority":  1,
+        "recommendedSetId":  "pygame_u06"
     }
 ]

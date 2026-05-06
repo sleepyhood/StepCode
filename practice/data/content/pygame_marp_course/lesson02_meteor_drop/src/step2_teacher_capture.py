@@ -91,6 +91,8 @@ def draw_meteors(surface):
 
 def main():
     recorder = PygameRecorder(screen, "../assets/output_animation.gif")
+    frame_count = 0  # 프레임 카운트 변수 추가
+
     running = True
     while running:
         for event in pygame.event.get():
@@ -115,7 +117,11 @@ def main():
         
         pygame.display.flip()
         clock.tick(60)
-        recorder.capture()
+
+        # 4프레임마다 1번씩만 캡처 (60 FPS 게임 -> 15 FPS 캡처)
+        frame_count += 1
+        if frame_count % 4 == 0:
+            recorder.capture()
 
     recorder.save()
     pygame.quit()
