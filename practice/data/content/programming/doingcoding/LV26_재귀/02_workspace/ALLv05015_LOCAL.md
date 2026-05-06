@@ -10,6 +10,11 @@ tags:
   - "ALLv6 재귀함수"
   - "ALLv5 재귀함수1"
   - "ALLv05 재귀함수 1"
+supported_languages: 
+  - "C"
+  - "C++"
+  - "Java"
+  - "Python3"  
 time_limit: "1s"
 title: "15. [재귀1 - 15] 재귀의 귀재 (호출 횟수 측정)"
 ---

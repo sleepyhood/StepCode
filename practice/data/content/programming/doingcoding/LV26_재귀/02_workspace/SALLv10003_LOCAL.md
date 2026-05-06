@@ -6,9 +6,13 @@ legacy_id:
 memory_limit: "256MB"
 platform: "doingcoding"
 tags: 
-  - "doingcoding"
-  - "recursion"
-  - "fractal"
+  - "SLv26 재귀함수"
+  - "SALLv10 재귀함수 2"
+supported_languages: 
+  - "C"
+  - "C++"
+  - "Java"
+  - "Python3"  
 time_limit: "1s"
 title: "03. [재귀2 - 3] 재귀적 눈금 그리기"
 ---

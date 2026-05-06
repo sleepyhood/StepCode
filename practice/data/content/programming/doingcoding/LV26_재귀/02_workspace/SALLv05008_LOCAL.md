@@ -6,9 +6,13 @@ legacy_id:
 memory_limit: "256MB"
 platform: "doingcoding"
 tags: 
-  - "doingcoding"
-  - "recursion"
-  - "practice"
+  - "SLv26 재귀함수"
+  - "SALLv5 재귀함수1"
+supported_languages: 
+  - "C"
+  - "C++"
+  - "Java"
+  - "Python3"
 time_limit: "1s"
 title: "08. [재귀1 - 8] 계단식 재귀 함수"
 ---

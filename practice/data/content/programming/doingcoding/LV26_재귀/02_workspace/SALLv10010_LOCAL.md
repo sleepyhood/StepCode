@@ -6,9 +6,13 @@ legacy_id:
 memory_limit: "256MB"
 platform: "doingcoding"
 tags: 
-  - "doingcoding"
-  - "recursion"
-  - "backtracking"
+  - "SLv26 재귀함수"
+  - "SALLv10 재귀함수 2"
+supported_languages: 
+  - "C"
+  - "C++"
+  - "Java"
+  - "Python3"  
 time_limit: "1s"
 title: "10. [재귀2- 10] 주사위 던지기 (목표 합 S)"
 ---

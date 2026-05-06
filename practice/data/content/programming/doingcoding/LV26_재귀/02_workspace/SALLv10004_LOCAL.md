@@ -6,11 +6,13 @@ legacy_id:
 memory_limit: "256MB"
 platform: "doingcoding"
 tags: 
-  - "doingcoding"
-  - "recursion"
-  - "fractal"
-  - "2d"
-  - "quadtree"
+  - "SLv26 재귀함수"
+  - "SALLv10 재귀함수 2"
+supported_languages: 
+  - "C"
+  - "C++"
+  - "Java"
+  - "Python3"  
 time_limit: "1s"
 title: "04. [재귀2 - 4] 쿼드트리 번호 매기기"
 ---

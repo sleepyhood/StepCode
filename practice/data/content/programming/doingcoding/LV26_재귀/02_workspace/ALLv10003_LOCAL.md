@@ -9,6 +9,11 @@ tags:
   - "Lv26 재귀함수"
   - "ALLv6 재귀함수"
   - "ALLv10 재귀함수2"
+supported_languages: 
+  - "C"
+  - "C++"
+  - "Java"
+  - "Python3"  
 time_limit: "1s"
 title: "03. [재귀2 - 3] 알파벳 트리"
 ---

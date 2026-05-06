@@ -10,6 +10,11 @@ tags:
   - "ALLv6 재귀함수"
   - "ALLv5 재귀함수1"
   - "ALLv05 재귀함수 1"
+supported_languages: 
+  - "C"
+  - "C++"
+  - "Java"
+  - "Python3"  
 time_limit: "1s"
 title: "13. [재귀1 - 13] 8진수 변환 (진법 변환 심화)"
 ---

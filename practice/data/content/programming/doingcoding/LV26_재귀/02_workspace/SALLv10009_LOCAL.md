@@ -6,9 +6,13 @@ legacy_id:
 memory_limit: "256MB"
 platform: "doingcoding"
 tags: 
-  - "doingcoding"
-  - "recursion"
-  - "backtracking"
+  - "SLv26 재귀함수"
+  - "SALLv10 재귀함수 2"
+supported_languages: 
+  - "C"
+  - "C++"
+  - "Java"
+  - "Python3"  
 time_limit: "1s"
 title: "09. [재귀2 - 9] 미로 탐색 기초 (장애물 있는 격자)"
 ---
