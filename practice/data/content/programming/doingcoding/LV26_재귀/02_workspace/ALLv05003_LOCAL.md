@@ -7,9 +7,9 @@ memory_limit: "256MB"
 platform: "baekjoon"
 source_url: "https://www.acmicpc.net/problem/17478"
 tags: 
-  - "baekjoon"
-  - "recursion"
-  - "tutorial"
+  - "Lv26 재귀함수"
+  - "ALLv6 재귀함수"
+  - "ALLv5 재귀함수1"
 supported_languages:
   - "C"
   - "C++"

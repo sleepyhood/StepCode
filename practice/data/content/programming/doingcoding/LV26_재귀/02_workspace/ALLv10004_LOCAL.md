@@ -6,10 +6,9 @@ legacy_id:
 memory_limit: "256MB"
 platform: "doingcoding"
 tags: 
-  - "doingcoding"
-  - "recursion"
-  - "fractal"
-  - "2d"
+  - "Lv26 재귀함수"
+  - "ALLv6 재귀함수"
+  - "ALLv10 재귀함수2"
 time_limit: "1s"
 title: "04. [재귀2 - 4] 프랙탈 십자 그리기"
 ---

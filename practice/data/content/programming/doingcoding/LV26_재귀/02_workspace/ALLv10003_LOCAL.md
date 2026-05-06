@@ -6,9 +6,9 @@ legacy_id:
 memory_limit: "256MB"
 platform: "doingcoding"
 tags: 
-  - "doingcoding"
-  - "recursion"
-  - "fractal"
+  - "Lv26 재귀함수"
+  - "ALLv6 재귀함수"
+  - "ALLv10 재귀함수2"
 time_limit: "1s"
 title: "03. [재귀2 - 3] 알파벳 트리"
 ---

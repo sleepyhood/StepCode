@@ -13,6 +13,56 @@ from playwright.sync_api import sync_playwright
 # uploader_engine.py 내부에 추가 및 수정
 import json
 
+import base64
+import mimetypes
+
+def embed_local_images_as_base64(md_content, md_file_path):
+    """마크다운 본문의 로컬 이미지를 찾아 Base64 텍스트로 변환하여 치환합니다."""
+    base_dir = os.path.dirname(os.path.abspath(md_file_path))
+    
+    # 파이프(|) 기호를 이용해 이미지 크기(width)를 추출하는 정규식
+    pattern = r'!\[(.*?)(?:\|(\d+))?\]\((.*?)\)'
+
+    def replace_with_base64(match):
+        alt_text = match.group(1).strip()
+        width = match.group(2)         # '500' 또는 None
+        image_path = match.group(3).strip()
+        
+        # 이미 웹 URL이거나 Base64인 경우 무시 (크기 조절 태그로만 바꿈)
+        if image_path.startswith(('http://', 'https://', 'data:')):
+            final_url = image_path
+        else:
+            # 로컬 절대 경로 계산
+            full_image_path = os.path.join(base_dir, image_path)
+            
+            if os.path.exists(full_image_path):
+                # 이미지 확장자에 따른 MIME 타입 추론
+                mime_type, _ = mimetypes.guess_type(full_image_path)
+                if not mime_type:
+                    mime_type = 'image/png'
+                    
+                # 이미지 파일을 읽어서 Base64 텍스트로 인코딩
+                with open(full_image_path, "rb") as img_file:
+                    encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
+                    
+                final_url = f"data:{mime_type};base64,{encoded_string}"
+            else:
+                print(f"⚠️ 경고: 이미지를 찾을 수 없습니다 -> {full_image_path}")
+                return match.group(0) # 파일이 없으면 원본 그대로 둠
+
+        # ==========================================
+        # [핵심 수정 부분] 마크다운 문법이 아닌 HTML <img> 태그로 리턴!
+        # ==========================================
+        if width:
+            # 지정된 크기가 있으면 width 속성 추가
+            return f'<img src="{final_url}" alt="{alt_text}" width="{width}">'
+        else:
+            # 지정된 크기가 없으면 화면을 벗어나지 않도록 max-width 100% 적용
+            return f'<img src="{final_url}" alt="{alt_text}" style="max-width: 100%; height: auto;">'
+
+    # 본문의 모든 이미지 링크 치환
+    return re.sub(pattern, replace_with_base64, md_content)
+
 # ==========================================
 # 신규 추가: 로그인 전용 함수 (세션 저장)
 # ==========================================
@@ -90,7 +140,8 @@ def parse_markdown(md_path):
         'samples': []
     }
     
-    content = post.content
+    # content = post.content
+    content = embed_local_images_as_base64(post.content, md_path)
     
     # 정규식으로 각 섹션 추출
     desc_match = re.search(r'## 1\. 문제 설명\n(.*?)(?=## 2\. 입출력 설명|## 3\. 예시|## 4\. 힌트|$)', content, re.DOTALL)
@@ -122,10 +173,16 @@ def parse_markdown(md_path):
 
     # 3. 힌트 파싱 ("힌트가 없습니다" 예외 처리)
     hint_match = re.search(r'## 4\. 힌트\n(.*?)$', content, re.DOTALL)
+    
     if hint_match:
         raw_hint = strip_markdown_hr(hint_match.group(1))
-        # 힌트 내용이 비어있거나, "힌트가 없습니다"라는 문맥이 포함되어 있으면 통째로 무시
-        if not raw_hint or "힌트가 없습니다" in raw_hint.replace(" ", ""):
+
+        # 띄어쓰기, 괄호, 마침표 등 모든 특수기호를 제거하여 순수 글자만 남깁니다.
+        # 예: "(힌트가 없습니다.)" -> "힌트가없습니다"
+        clean_hint = re.sub(r'[\s\(\)\.\-]', '', raw_hint)
+
+        # 힌트 내용이 아예 없거나, "힌트가없습니다", "없음" 등의 의미면 통째로 무시
+        if not clean_hint or "힌트가없습니다" in clean_hint or clean_hint in ["없음", "힌트없음"]:
             data['hint'] = ''
         else:
             data['hint'] = raw_hint
@@ -308,6 +365,11 @@ def run_uploader(target_url, md_path, zip_path, state_path="state.json", log_cal
                 # Playwright의 context.request를 사용하면 현재 로그인된 세션(쿠키)을 들고 API를 호출합니다!
                 response = context.request.get(api_url)
                 
+# [세션 만료 처리 1] API 찔렀을 때 권한이 없다고 튕기는 경우
+                if response.status in [401, 403]:
+                    log_callback(" > ❌ API 요청 거부됨 (401/403). 로그인 세션이 만료되었습니다.")
+                    return "SESSION_EXPIRED"
+
                 if response.ok:
                     res_json = response.json()
                     
@@ -335,6 +397,12 @@ def run_uploader(target_url, md_path, zip_path, state_path="state.json", log_cal
 
         log_callback(f" > 타겟 페이지로 이동: {final_url}")
         page.goto(final_url, wait_until="domcontentloaded", timeout=60000)
+
+        # [세션 만료 처리 2] 페이지 접속 후 로그인 창으로 튕긴 경우
+        if "/admin/login" in page.url or "/login" in page.url:
+            log_callback(" > ❌ 로그인 페이지로 리다이렉트 되었습니다. 세션이 만료되었습니다.")
+            return "SESSION_EXPIRED"
+
         # ==========================================
         # 수정 2: 번호 및 제목 주입 방식 변경
         # ==========================================
@@ -468,12 +536,12 @@ def run_uploader(target_url, md_path, zip_path, state_path="state.json", log_cal
             # (2) 프론트매터의 새 태그 주입
             for tag in data['tags']:
                 page.locator(f'{tags_container_xpath}//button').click() # '+ New Tag' 버튼 클릭
-                time.sleep(0.2)
+                time.sleep(0.3)
                 
                 tag_input = page.locator(f'{tags_container_xpath}//div/div[1]/input')
                 tag_input.fill(tag)
                 tag_input.press("Enter")
-                time.sleep(0.2)
+                time.sleep(0.3)
                 
             log_callback(" > 태그 주입 및 동기화 완료.")
         except Exception as e:
