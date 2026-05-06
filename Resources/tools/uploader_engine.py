@@ -59,16 +59,30 @@ def perform_login(admin_id, admin_pwd, state_path="state.json", log_callback=pri
         finally:
             browser.close()
 
+def strip_markdown_hr(text):
+    """문자열 끝에 붙어있는 마크다운 수평선(---, * * *) 찌꺼기를 제거합니다."""
+    if not text: return ""
+    # 정규식: 줄바꿈 뒤에 -, *, _ 가 3번 이상 반복되고 끝나는 패턴
+    text = re.sub(r'\n+\s*(?:[-*_]\s*){3,}$', '', text)
+    return text.strip()
+
 def parse_markdown(md_path):
     """MD 파일을 읽어 딕셔너리로 반환"""
     with open(md_path, 'r', encoding='utf-8-sig') as f:
         post = frontmatter.load(f)
+
+    # 시간(s -> ms 변환) 및 메모리 제한 (단위 제거)
+    time_limit_raw = str(post.get('time_limit', '1s')).lower().replace('s', '')
+    memory_limit_raw = str(post.get('memory_limit', '256MB')).upper().replace('MB', '')        
     
     data = {
         'id': post.get('id', ''),
+        'db_id': post.get('db_id', ''), # 신규: 수정 여부 판단용
         'title': post.get('title', ''),
         'tags': post.get('tags', []),
         'supported_languages': post.get('supported_languages', []),
+        'time_limit': int(float(time_limit_raw) * 1000) if time_limit_raw.replace('.', '', 1).isdigit() else 1000,
+        'memory_limit': int(memory_limit_raw) if memory_limit_raw.isdigit() else 256,
         'description': '',
         'input_desc': '',
         'output_desc': '',
@@ -80,35 +94,41 @@ def parse_markdown(md_path):
     
     # 정규식으로 각 섹션 추출
     desc_match = re.search(r'## 1\. 문제 설명\n(.*?)(?=## 2\. 입출력 설명|## 3\. 예시|## 4\. 힌트|$)', content, re.DOTALL)
+    
     if desc_match:
-        data['description'] = desc_match.group(1).strip()
+        data['description'] = strip_markdown_hr(desc_match.group(1))
         
     # ==========================================
     # 수정: 마크다운 기호를 무시하고 깔끔하게 입/출력 분리
     # ==========================================
     io_match = re.search(r'## 2\. 입출력 설명\n(.*?)(?=## 3\. 예시|## 4\. 힌트|$)', content, re.DOTALL)
     if io_match:
-        io_content = io_match.group(1).strip()
-        
+        io_content = strip_markdown_hr(io_match.group(1))
         # '입력'과 '출력' 키워드 주변의 각종 마크다운 특수기호(*, -, #, 공백)를 모두 무시하고 자르는 똑똑한 정규식
-        in_pattern = r'(?:^|\n)[\*\s\#\-]*\**입력(?: 설명)?\**\s*[:-]?\s*\n*(.*?)(?=(?:^|\n)[\*\s\#\-]*\**출력(?: 설명)?\**\s*[:-]?|$)'
-        out_pattern = r'(?:^|\n)[\*\s\#\-]*\**출력(?: 설명)?\**\s*[:-]?\s*\n*(.*)'
+# [핵심 수정] 콜론(:) 뒤에 붙는 ** 닫기 기호까지 깔끔하게 잡아먹도록 \** 위치 조정
+        in_pattern = r'(?:^|\n)[\*\s\#\-]*\**입력(?: 설명)?\**\s*[:\-]?\s*\**\n*(.*?)(?=(?:^|\n)[\*\s\#\-]*\**출력(?: 설명)?\**|$)'
+        out_pattern = r'(?:^|\n)[\*\s\#\-]*\**출력(?: 설명)?\**\s*[:\-]?\s*\**\n*(.*)'
         
         in_match = re.search(in_pattern, io_content, re.DOTALL | re.IGNORECASE)
         out_match = re.search(out_pattern, io_content, re.DOTALL | re.IGNORECASE)
         
         if out_match:
-            data['input_desc'] = in_match.group(1).strip() if in_match else io_content
-            data['output_desc'] = out_match.group(1).strip()
+            data['input_desc'] = strip_markdown_hr(in_match.group(1)) if in_match else io_content
+            data['output_desc'] = strip_markdown_hr(out_match.group(1))
         else:
-            # 기본적으로 반반 나누기 어렵지만, 줄바꿈으로 대략 추정
             parts = io_content.split('\n\n')
-            data['input_desc'] = parts[0].strip() if len(parts) > 0 else ''
-            data['output_desc'] = parts[1].strip() if len(parts) > 1 else ''
+            data['input_desc'] = strip_markdown_hr(parts[0]) if len(parts) > 0 else ''
+            data['output_desc'] = strip_markdown_hr(parts[1]) if len(parts) > 1 else ''
 
+    # 3. 힌트 파싱 ("힌트가 없습니다" 예외 처리)
     hint_match = re.search(r'## 4\. 힌트\n(.*?)$', content, re.DOTALL)
     if hint_match:
-        data['hint'] = hint_match.group(1).strip()
+        raw_hint = strip_markdown_hr(hint_match.group(1))
+        # 힌트 내용이 비어있거나, "힌트가 없습니다"라는 문맥이 포함되어 있으면 통째로 무시
+        if not raw_hint or "힌트가 없습니다" in raw_hint.replace(" ", ""):
+            data['hint'] = ''
+        else:
+            data['hint'] = raw_hint
 
     # 예시 추출 (정규표현식)
     # ### 예시 입력 1\n```text\n(내용)\n```
@@ -270,7 +290,51 @@ def run_uploader(target_url, md_path, zip_path, state_path="state.json", log_cal
         # page.wait_for_selector("//input[@placeholder='번호']", timeout=30000)
         page.wait_for_selector("input[placeholder='번호'], input[placeholder='Display ID']", timeout=30000)
         log_callback(" > 웹 페이지 로드 완료. 폼 입력을 시작합니다...")
-        
+        time.sleep(1)
+
+        # ==========================================
+        # 신규: Create vs Edit 스마트 라우팅
+        # ==========================================
+        final_url = target_url
+        db_id = str(data.get('db_id', '')).strip()
+        is_edit_mode = False
+
+        # db_id가 존재하고, 'LOCAL' 같은 임시 문자열이 아닌 순수 숫자 형태일 때만 API 검증 시도
+        if db_id and db_id.isdigit():
+            api_url = f"http://edu.doingcoding.com/api/admin/problem?id={db_id}"
+            log_callback(f" > 🔍 기존 문제(db_id: {db_id})가 서버에 존재하는지 API로 검증합니다...")
+            
+            try:
+                # Playwright의 context.request를 사용하면 현재 로그인된 세션(쿠키)을 들고 API를 호출합니다!
+                response = context.request.get(api_url)
+                
+                if response.ok:
+                    res_json = response.json()
+                    
+                    # API가 정상적으로 데이터를 반환했는지 확인 (빈 객체가 아니거나 에러가 없는지 체크)
+                    # *팁: 실제 서버에서 "없는 ID"를 찔렀을 때 반환하는 JSON 형태에 따라 아래 조건을 살짝 수정하셔도 좋습니다.
+                    if res_json and res_json.get("error") is None: 
+                        is_edit_mode = True
+                        log_callback(" > ✅ 서버에 문제가 존재합니다! [수정(Edit) 모드]로 진행합니다.")
+                    else:
+                        log_callback(" > ⚠️ DB에 해당 ID가 없습니다 (삭제되었거나 잘못된 ID).")
+                else:
+                    log_callback(f" > ⚠️ API 응답 에러 (상태 코드: {response.status}).")
+            except Exception as e:
+                log_callback(f" > ⚠️ API 검증 중 오류 발생: {e}")
+        else:
+            # db_id가 'LOCAL' 이거나 비어있는 경우
+            if db_id:
+                log_callback(f" > 💡 db_id가 '{db_id}'로 설정되어 있어 기존 문제 조회를 생략합니다.")
+
+        # 최종 라우팅 결정
+        if is_edit_mode:
+            final_url = f"http://edu.doingcoding.com/admin/problem/edit/{db_id}"
+        else:
+            log_callback(" > ✨ 신규 문제 [생성(Create) 모드]로 진행합니다.")
+
+        log_callback(f" > 타겟 페이지로 이동: {final_url}")
+        page.goto(final_url, wait_until="domcontentloaded", timeout=60000)
         # ==========================================
         # 수정 2: 번호 및 제목 주입 방식 변경
         # ==========================================
@@ -289,6 +353,22 @@ def run_uploader(target_url, md_path, zip_path, state_path="state.json", log_cal
         except Exception as e:
             log_callback(f" > 기본 정보 입력 실패: {e}")
             
+        # ==========================================
+        # 신규: 시간 제한 / 메모리 제한 주입
+        # ==========================================
+        try:
+            # 웹페이지의 시간/메모리 input XPath (실제 환경에 맞게 수정 필요)
+            time_xpath = '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[4]/div[1]/div/div/div/input'
+            memory_xpath = '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[4]/div[2]/div/div/div/input'
+            
+            # fill()로 깔끔하게 덮어쓰기
+            page.locator(time_xpath).fill(str(data['time_limit']))
+            page.locator(memory_xpath).fill(str(data['memory_limit']))
+            log_callback(f" > 시간/메모리 제한 설정 완료 ({data['time_limit']}ms, {data['memory_limit']}MB)")
+        except Exception as e:
+            log_callback(f" > ⚠️ 시간/메모리 제한 설정 실패 (무시됨): {e}")
+
+
         # 2. 본문 리치 텍스트 (click & insert_text)
         # 2. 본문 리치 텍스트 (버튼 XPATH와 텍스트창 XPATH 명시적 전달)
         try:
@@ -334,41 +414,82 @@ def run_uploader(target_url, md_path, zip_path, state_path="state.json", log_cal
         try:
             log_callback(" > 지원 언어 설정을 동기화합니다...")
             # 1. 언어별 XPath 매핑 딕셔너리
-            language_xpaths = {
-                "C": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[1]/span[1]/input',
-                "C++": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[2]/span[1]/input',
-                "Java": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[3]/span[1]/input',
-                "Python2": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[4]/span[1]/input',
-                "Python3": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[5]/span[1]/input',
-                "Golang": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[6]/span[1]/input'
+            language_label_xpaths = {
+                "C": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[1]',
+                "C++": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[2]',
+                "Java": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[3]',
+                "Python2": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[4]',
+                "Python3": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[5]',
+                "Golang": '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[4]/div/div/div/label[6]'
             }
 
-            # 2. 모든 체크박스를 강제로 해제 (False 초기화)
-            # 숨겨진 input 태그일 수 있으므로 force=True 옵션 사용
-            for xpath in language_xpaths.values():
-                page.locator(xpath).uncheck(force=True)
+            # 1. 모든 체크박스를 '해제' 상태로 만들기 위해 현재 체크 상태를 확인 후 클릭
+            # label을 클릭하면 상태가 반전되므로, 현재 체크되어 있는지 먼저 확인해야 합니다.
+            for lang, xpath in language_label_xpaths.items():
+                # label 안의 숨겨진 input 태그 상태 확인 (is_checked()는 숨겨져 있어도 동작함)
+                is_checked = page.locator(f"{xpath}/span[1]/input").is_checked()
+                if is_checked:
+                    # 체크되어 있다면 라벨을 클릭해서 체크 해제
+                    page.locator(xpath).click()
+            
             time.sleep(0.5)
 
-            # 3. MD 파일의 프론트매터에 정의된 언어만 골라서 체크 (True 설정)
+            # 2. MD 파일에 정의된 언어만 골라서 다시 '체크'
             for lang in data.get('supported_languages', []):
-                if lang in language_xpaths:
-                    page.locator(language_xpaths[lang]).check(force=True)
+                if lang in language_label_xpaths:
+                    # 현재 상태가 체크 해제(False)인지 한 번 더 확인 후 클릭
+                    is_checked = page.locator(f"{language_label_xpaths[lang]}/span[1]/input").is_checked()
+                    if not is_checked:
+                        page.locator(language_label_xpaths[lang]).click()
             
             log_callback(" > 언어 설정 동기화 완료.")
         except Exception as e:
             log_callback(f" > 언어 설정 실패: {e}")
-
-        # 3. 태그 입력
+        
+        # ==========================================
+        # 3. 태그 입력 (기존 태그 초기화 후 주입)
+        # ==========================================
         try:
+            # 태그 영역 전체를 감싸는 컨테이너의 XPATH
+            tags_container_xpath = '//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[3]/div'
+            
+            # (1) 기존 태그 초기화 (수정 모드일 때 중복 방지)
+            # Element UI의 태그 닫기 버튼(아이콘) 클래스인 'el-tag__close'를 타겟팅합니다.
+            close_btns = page.locator(f'{tags_container_xpath}//i[contains(@class, "el-tag__close")]')
+            
+            close_count = close_btns.count()
+            if close_count > 0:
+                log_callback(f" > 기존에 등록된 태그 {close_count}개를 찾아 초기화합니다...")
+                for _ in range(close_count):
+                    # 삭제할 때마다 DOM이 당겨지므로 항상 '첫 번째(first)' 요소를 클릭
+                    close_btns.first.click()
+                    time.sleep(0.1)
+
+            # (2) 프론트매터의 새 태그 주입
             for tag in data['tags']:
-                page.locator('//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[3]/div/div/button').click()
+                page.locator(f'{tags_container_xpath}//button').click() # '+ New Tag' 버튼 클릭
                 time.sleep(0.2)
-                tag_input = page.locator('//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[3]/div/div/div/div[1]/input')
+                
+                tag_input = page.locator(f'{tags_container_xpath}//div/div[1]/input')
                 tag_input.fill(tag)
                 tag_input.press("Enter")
                 time.sleep(0.2)
+                
+            log_callback(" > 태그 주입 및 동기화 완료.")
         except Exception as e:
-            log_callback(f" > 태그 입력 실패: {e}")
+            log_callback(f" > 태그 주입 중 예외 발생 (무시됨): {e}")
+
+        # # 3. 태그 입력
+        # try:
+        #     for tag in data['tags']:
+        #         page.locator('//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[3]/div/div/button').click()
+        #         time.sleep(0.2)
+        #         tag_input = page.locator('//*[@id="app"]/div/div[3]/div[1]/div/div/form/div[5]/div[3]/div/div/div/div[1]/input')
+        #         tag_input.fill(tag)
+        #         tag_input.press("Enter")
+        #         time.sleep(0.2)
+        # except Exception as e:
+        #     log_callback(f" > 태그 입력 실패: {e}")
 
         # 4. 예시 입력
         try:

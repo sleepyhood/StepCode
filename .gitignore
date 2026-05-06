@@ -31,3 +31,6 @@ Resources/tools/test_user_data/
 Resources/tools/auth.json 
 Resources/tools/manual_cookies.json 
 Resources/tools/cookies_tool.json 
+
+# Doingcoding 쿠기 관련
+state.json
