@@ -27,17 +27,7 @@ title: "06. [재귀1 - 6] 재귀의 귀재 (호출 횟수 측정)"
 
 아래는 정우가 작성한 팰린드롬 판별 함수입니다.
 
-```c
-int recursion(const char *s, int l, int r){
-    if(l >= r) return 1;
-    else if(s[l] != s[r]) return 0;
-    else return recursion(s, l+1, r-1);
-}
-
-int isPalindrome(const char *s){
-    return recursion(s, 0, strlen(s)-1);
-}
-```
+![alt text](image-12.png)
 
 정우는 문득 **"이 함수를 실행할 때 `recursion` 함수가 총 몇 번 호출될까?"**라는 궁금증이 생겼습니다. 여러분이 정우를 도와 팰린드롬 여부와 함께 함수의 호출 횟수를 출력하는 프로그램을 작성해 주세요.
 
