@@ -1,6 +1,6 @@
 ---
 db_id: LOCAL
-id: "ALLv10003"
+id: "ALLv10002"
 is_scraped: false
 legacy_id: 
 memory_limit: "256MB"
@@ -15,11 +15,11 @@ supported_languages:
   - "Java"
   - "Python3"  
 time_limit: "1s"
-title: "03. [재귀2 - 3] 알파벳 트리"
+title: "02. [재귀2 - 2] 알파벳 트리"
 ---
 
 
-# 03. [재귀2 - 3] 알파벳 트리
+# 02. [재귀2 - 2] 알파벳 트리
 
 ## 1. 문제 설명
 

@@ -1,38 +1,28 @@
 #include <stdio.h>
+#include <string.h>
 
-int N;
-int values[] = {1, 5, 10, 50};
-bool possible_sums[1001]; // N=20, Max=50 -> MaxSum = 1000
-int total_distinct_sums = 0;
+int cnt; // 호출 횟수를 기록할 전역 변수
 
-// count: 현재까지 선택한 숫자의 개수
-// current_sum: 현재까지의 합
-// start_idx: 중복 조합을 피하기 위한 시작 인덱스
-void solve(int count, int current_sum, int start_idx) {
-  if (count == N) {
-    if (!possible_sums[current_sum]) {
-      possible_sums[current_sum] = true;
-      total_distinct_sums++;
-    }
-    return;
-  }
+int recursion(const char *s, int l, int r) {
+    cnt++; // 함수 호출 시마다 카운트 증가
+    if (l >= r) return 1;
+    else if (s[l] != s[r]) return 0;
+    else return recursion(s, l + 1, r - 1);
+}
 
-  for (int i = start_idx; i < 4; i++) {
-    solve(count + 1, current_sum + values[i], i);
-  }
+int isPalindrome(const char *s) {
+    return recursion(s, 0, strlen(s) - 1);
 }
 
 int main() {
-  if (scanf("%d", &N) != 1)
+    int t;
+    char s[1001];
+    scanf("%d", &t);
+    while (t--) {
+        scanf("%s", s);
+        cnt = 0; // 테스트 케이스마다 초기화
+        int result = isPalindrome(s);
+        printf("%d %d\n", result, cnt);
+    }
     return 0;
-
-  // 가능한 합 초기화
-  for (int i = 0; i <= 1000; i++)
-    possible_sums[i] = false;
-
-  solve(0, 0, 0);
-
-  printf("%d\n", total_distinct_sums);
-
-  return 0;
 }

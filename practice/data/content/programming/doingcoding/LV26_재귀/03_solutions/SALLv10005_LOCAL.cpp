@@ -1,30 +1,26 @@
 #include <stdio.h>
 
-long long count = 0;
-int target_n;
+int n, m;
+int maze[15][15];
 
-// pos: 현재 자릿수 (0~n-1), last: 직전 자리에 놓인 숫자 (0 or 1)
-void solve(int pos, int last) {
-    if (pos == target_n) {
-        count++;
-        return;
-    }
+int solve(int r, int c) {
+    // 범위를 벗어나거나 장애물을 만난 경우
+    if (r >= n || c >= m || maze[r][c] == 1) return 0;
+    
+    // 도착점에 도달한 경우
+    if (r == n - 1 && c == m - 1) return 1;
 
-    // 현재 자리에 0을 놓는 경우 (언제나 가능)
-    solve(pos + 1, 0);
-
-    // 현재 자리에 1을 놓는 경우 (직전 자리가 1이 아닐 때만 가능)
-    if (last == 0) {
-        solve(pos + 1, 1);
-    }
+    // 오른쪽으로 가는 경우 + 아래쪽으로 가는 경우
+    return solve(r, c + 1) + solve(r + 1, c);
 }
 
 int main() {
-    scanf("%d", &target_n);
-    // 첫 자리는 직전 값이 없으므로 last=0으로 취급하여 0과 1 모두 올 수 있게 함
-    // 또는 첫 자리에 0을 놓는 경우와 1을 놓는 경우를 직접 호출
-    solve(1, 0); // 첫 자리에 0
-    solve(1, 1); // 첫 자리에 1
-    printf("%lld", count);
+    scanf("%d %d", &n, &m);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            scanf("%1d", &maze[i][j]);
+        }
+    }
+    printf("%d", solve(0, 0));
     return 0;
 }
