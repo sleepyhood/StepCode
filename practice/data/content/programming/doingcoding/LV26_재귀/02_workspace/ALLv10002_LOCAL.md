@@ -31,9 +31,9 @@ title: "02. [재귀2 - 2] 알파벳 트리"
 다음 규칙으로 만들어지는 문자열을 생각해 봅시다.
 
 ```
-깊이 1:      A
-깊이 2:    A B A
-깊이 3:  A B A C A B A
+깊이 1:               A
+깊이 2:             A B A
+깊이 3:         A B A C A B A
 깊이 4: A B A C A B A D A B A C A B A
 ```
 
