@@ -1,19 +1,20 @@
 ---
-db_id: SALLv05006
+db_id: LOCAL
 id: SALLv05006
 is_scraped: false
 legacy_id: SALLv05006
-platform: "doingcoding"
-tags: 
-  - "SLv26 재귀함수"
-  - "SALLv5 재귀함수1"
-supported_languages: 
-  - "C"
-  - "C++"
-  - "Java"
-  - "Python3"  
-time_limit: "1s"
-title: "재귀적 문자열 포장"---
+platform: doingcoding
+tags:
+  - SLv26 재귀함수
+  - SALLv5 재귀함수1
+supported_languages:
+  - C
+  - C++
+  - Java
+  - Python3
+time_limit: 1s
+title: 재귀적 문자열 포장
+---
 
 
 # 12. [재귀1 - 12] 재귀적 문자열 포장

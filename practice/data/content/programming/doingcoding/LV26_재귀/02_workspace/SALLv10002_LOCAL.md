@@ -1,19 +1,20 @@
 ---
-db_id: SALLv10002
+db_id: LOCAL
 id: SALLv10002
 is_scraped: false
 legacy_id: SALLv10002
-platform: "doingcoding"
-tags: 
-  - "SLv26 재귀함수"
-  - "SALLv5 재귀함수1"
-supported_languages: 
-  - "C"
-  - "C++"
-  - "Java"
-  - "Python3"  
-time_limit: "1s"
-title: "트리보나치 수열 (Tribonacci)"---
+platform: doingcoding
+tags:
+  - SLv26 재귀함수
+  - SALLv5 재귀함수1
+supported_languages:
+  - C
+  - C++
+  - Java
+  - Python3
+time_limit: 1s
+title: 트리보나치 수열 (Tribonacci)
+---
 
 
 # 05. [재귀1 - 5] 트리보나치 수열 (Tribonacci)

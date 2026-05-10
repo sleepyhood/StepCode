@@ -1,19 +1,20 @@
 ---
-db_id: SALLv10005
+db_id: LOCAL
 id: SALLv10005
 is_scraped: false
 legacy_id: SALLv10005
-platform: "doingcoding"
-tags: 
-  - "SLv26 재귀함수"
-  - "SALLv5 재귀함수1"
-supported_languages: 
-  - "C"
-  - "C++"
-  - "Java"
-  - "Python3"  
-time_limit: "1s"
-title: "재귀의 함정 (피보나치 카운트)"---
+platform: doingcoding
+tags:
+  - SLv26 재귀함수
+  - SALLv5 재귀함수1
+supported_languages:
+  - C
+  - C++
+  - Java
+  - Python3
+time_limit: 1s
+title: 재귀의 함정 (피보나치 카운트)
+---
 
 
 # 06. [재귀1 - 6] 재귀의 함정 (피보나치 카운트)

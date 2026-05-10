@@ -1,22 +1,23 @@
 ---
-db_id: ALLv10005
+db_id: LOCAL
 id: ALLv10005
 is_scraped: false
 legacy_id: ALLv10005
-memory_limit: "256MB"
-platform: "baekjoon"
-tags: 
-  - "Lv26 재귀함수"
-  - "ALLv6 재귀함수"
-  - "ALLv5 재귀함수1"
-  - "ALLv05 재귀함수 1"
-supported_languages: 
-  - "C"
-  - "C++"
-  - "Java"
-  - "Python3"  
-time_limit: "1s"
-title: "재귀의 귀재 (호출 횟수 측정)"---
+memory_limit: 256MB
+platform: baekjoon
+tags:
+  - Lv26 재귀함수
+  - ALLv6 재귀함수
+  - ALLv5 재귀함수1
+  - ALLv05 재귀함수 1
+supported_languages:
+  - C
+  - C++
+  - Java
+  - Python3
+time_limit: 1s
+title: 재귀의 귀재 (호출 횟수 측정)
+---
 
 
 # 06. [재귀1 - 6] 재귀의 귀재 (호출 횟수 측정)

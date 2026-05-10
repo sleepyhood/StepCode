@@ -1,21 +1,22 @@
 ---
-db_id: ALLv05006
+db_id: LOCAL
 id: ALLv05006
 is_scraped: false
 legacy_id: ALLv05006
-platform: "doingcoding"
-tags: 
-  - "Lv26 재귀함수"
-  - "ALLv6 재귀함수"
-  - "ALLv5 재귀함수1"
-  - "ALLv05 재귀함수 1"
-supported_languages: 
-  - "C"
-  - "C++"
-  - "Java"
-  - "Python3"  
-time_limit: "1s"
-title: "문자열 거꾸로 출력하기"---
+platform: doingcoding
+tags:
+  - Lv26 재귀함수
+  - ALLv6 재귀함수
+  - ALLv5 재귀함수1
+  - ALLv05 재귀함수 1
+supported_languages:
+  - C
+  - C++
+  - Java
+  - Python3
+time_limit: 1s
+title: 문자열 거꾸로 출력하기
+---
 
 
 # 12. [재귀1 - 12] 문자열 거꾸로 출력하기

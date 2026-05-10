@@ -1,19 +1,20 @@
 ---
-db_id: SALLv10001
+db_id: LOCAL
 id: SALLv10001
 is_scraped: false
 legacy_id: SALLv10001
-platform: "doingcoding"
-tags: 
-  - "SLv26 재귀함수"
-  - "SALLv5 재귀함수1"
-supported_languages: 
-  - "C"
-  - "C++"
-  - "Java"
-  - "Python3"  
-time_limit: "1s"
-title: "마트료시카 (러시아 인형)"---
+platform: doingcoding
+tags:
+  - SLv26 재귀함수
+  - SALLv5 재귀함수1
+supported_languages:
+  - C
+  - C++
+  - Java
+  - Python3
+time_limit: 1s
+title: 마트료시카 (러시아 인형)
+---
 
 
 # 03. [재귀1 - 3] 마트료시카 (러시아 인형)

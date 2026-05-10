@@ -1,21 +1,22 @@
 ---
-db_id: ALLv10004
+db_id: LOCAL
 id: ALLv10004
 is_scraped: false
 legacy_id: ALLv10004
-platform: "doingcoding"
-tags: 
-  - "Lv26 재귀함수"
-  - "ALLv6 재귀함수"
-  - "ALLv5 재귀함수1"
-  - "ALLv05 재귀함수 1"
-supported_languages: 
-  - "C"
-  - "C++"
-  - "Java"
-  - "Python3"  
-time_limit: "1s"
-title: "숫자를 붙여 N자리 수 만들기"---
+platform: doingcoding
+tags:
+  - Lv26 재귀함수
+  - ALLv6 재귀함수
+  - ALLv5 재귀함수1
+  - ALLv05 재귀함수 1
+supported_languages:
+  - C
+  - C++
+  - Java
+  - Python3
+time_limit: 1s
+title: 숫자를 붙여 N자리 수 만들기
+---
 
 
 # 07. [재귀1 - 7] 숫자를 붙여 N자리 수 만들기
