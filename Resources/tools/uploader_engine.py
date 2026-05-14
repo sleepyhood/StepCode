@@ -19,52 +19,51 @@ import mimetypes
 def embed_local_images_as_base64(md_content, md_file_path):
     """마크다운 본문의 로컬 이미지를 찾아 Base64 텍스트로 변환하여 치환합니다."""
     base_dir = os.path.dirname(os.path.abspath(md_file_path))
-    
-    # 파이프(|) 기호를 이용해 이미지 크기(width)를 추출하는 정규식
-    pattern = r'!\[(.*?)(?:\|(\d+))?\]\((.*?)\)'
+
+    # 파이프(|) 기호로 이미지 크기(width)를 추출하는 정규식.
+    # CommonMark: 공백이 포함된 경로는 <path> 형태로 꺾쇠 안에 쓸 수 있음.
+    pattern = r'!\[(.*?)(?:\|(\d+))?\]\(<?([^)>]*?)>?\)'
+
+    # 확장자 -> MIME 타입 명시 매핑 (Windows mimetypes 오인식 방지)
+    # SVG도 수동 업로드와 동일한 data:image/svg+xml;base64 방식으로 처리
+    _MIME_MAP = {
+        '.svg':  'image/svg+xml',
+        '.svgz': 'image/svg+xml',
+        '.png':  'image/png',
+        '.jpg':  'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.webp': 'image/webp',
+        '.gif':  'image/gif',
+    }
 
     def replace_with_base64(match):
-        alt_text = match.group(1).strip()
-        width = match.group(2)         # '500' 또는 None
-        image_path = match.group(3).strip()
-        
-        # 이미 웹 URL이거나 Base64인 경우 무시 (크기 조절 태그로만 바꿈)
+        alt_text   = match.group(1).strip()
+        width      = match.group(2)          # 미지정 시 700 사용
+        image_path = match.group(3).strip()  # 꺾쇠는 regex에서 이미 제외됨
+
+        # 이미 웹 URL이거나 Base64 Data URI이면 그대로 img 태그만 생성
         if image_path.startswith(('http://', 'https://', 'data:')):
             final_url = image_path
         else:
-            # 로컬 절대 경로 계산
             full_image_path = os.path.join(base_dir, image_path)
-            
-            if os.path.exists(full_image_path):
-                # 이미지 확장자에 따른 MIME 타입 추론
-                mime_type, _ = mimetypes.guess_type(full_image_path)
-                if not mime_type:
-                    mime_type = 'image/png'
-                    
-                # 이미지 파일을 읽어서 Base64 텍스트로 인코딩
-                with open(full_image_path, "rb") as img_file:
-                    encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
-                    
-                final_url = f"data:{mime_type};base64,{encoded_string}"
-            else:
+            if not os.path.exists(full_image_path):
                 print(f"⚠️ 경고: 이미지를 찾을 수 없습니다 -> {full_image_path}")
-                return match.group(0) # 파일이 없으면 원본 그대로 둠
+                return match.group(0)
 
-        # ==========================================
-        # [핵심 수정 부분] 마크다운 문법이 아닌 HTML <img> 태그로 리턴!
-        # ==========================================
-        if width:
-            # 지정된 크기가 있으면 width 속성 추가
-            return f'<img src="{final_url}" alt="{alt_text}" width="{width}">'
-        else:
-            # 지정된 크기가 없으면 화면을 벗어나지 않도록 max-width 100% 적용
-            # return f'<img src="{final_url}" alt="{alt_text}" style="max-width: 100%; height: auto;">'
-            
-            # 지정된 크기가 없다면, 그나마 최적인 700px 고정 크기로 리턴 (너무 큰 이미지는 화면을 벗어날 수 있기 때문)
-            return f'<img src="{final_url}" alt="{alt_text}" width="700">'
+            ext = os.path.splitext(full_image_path)[1].lower()
+            mime_type = _MIME_MAP.get(ext) or mimetypes.guess_type(full_image_path)[0] or 'image/png'
 
-    # 본문의 모든 이미지 링크 치환
+            with open(full_image_path, "rb") as img_file:
+                encoded = base64.b64encode(img_file.read()).decode("utf-8")
+
+            final_url = f"data:{mime_type};base64,{encoded}"
+
+        # width 미지정 시 기본값 700 (수동 업로드 기본값과 일치)
+        final_width = width if width else "700"
+        return f'<img src="{final_url}" alt="{alt_text}" width="{final_width}">'
+
     return re.sub(pattern, replace_with_base64, md_content)
+
 
 # ==========================================
 # 신규 추가: 로그인 전용 함수 (세션 저장)
