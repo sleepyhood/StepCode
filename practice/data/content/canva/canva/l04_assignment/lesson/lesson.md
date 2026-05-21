@@ -20,6 +20,8 @@ priority: 2
 
 ## 디자인 실전에서 놓치지 말아야 할 원칙들
 
+🔗 [**실습안내**](https://sijae.my.canva.site/creator-lab/-)
+
 색상 모드부터 4대 디자인 원칙, 그리고 효율적인 실전 워크플로우까지 예비 디자이너가 반드시 갖춰야 할 디자인 기본기를 배워 볼게요. 단순히 예쁜 결과물을 만드는 것을 넘어, 구매자의 만족을 이끌어내고 수익으로 연결되는 ‘상품형 템플릿’의 기준도 체크해 봅니다.
 
 디자인 실습의 문을 본격적으로 열기 전, 먼저 세워야 할 기준이 있습니다. 바로 ‘무엇을 근거로 잘 된 디자인과 어색한 디자인을 판단할 것인가’에 대한 것입니다. 감에만 의존하는 디자인은 수정이 어렵고 상품으로서의 신뢰도도 떨어집니다. 이번 레슨에서는 단순한 캔바 기능 설명을 넘어, 색·글자·레이아웃을 바라보는 디자이너의 시각 기준을 정립합니다. 특히 판매용 템플릿을 설계할 때 반드시 지켜야 할 구조적 원칙을 익혀, 이후 진행될 실습에서 흔들림 없는 기준점을 세워 볼게요.
@@ -194,6 +196,8 @@ RGB와 CMYK의 색 영역(색을 표현할 수 있는 범위)이 달라 완전 �
 
 ### [실습 01] 심플한 구조에 감성을 담아 완성하는 디자인: 휴무 안내 인스타그램 게시물
 
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAG-XZq9rAg/54D9J0IFe1y0EhGbP7GHdw/view?utm_content=DAG-XZq9rAg&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 ![작업 사이즈 | 인스타그램 게시물 (xpx ) 예시 이미지](/data/content/canva/assets/images/Week04/p237_03.png)
 
 **작업 사이즈** | 인스타그램 게시물 (1080x1350px, 4:5)
@@ -283,6 +287,9 @@ RGB와 CMYK의 색 영역(색을 표현할 수 있는 범위)이 달라 완전 �
 
 ### [실습 02] 도형과 프레임 구조로 완성하는 주목성 좋은 디자인: 운영 시간 안내 인스타그램 게시물
 
+
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAG-X83pBfI/UuLwiUXK6lfAmEcJZ2C66g/view?utm_content=DAG-X83pBfI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 ![작업 사이즈 | 인스타그램 게시물 (Xpx ) 예시 이미지](/data/content/canva/assets/images/Week04/p243_04.png)
 
 **작업 사이즈** | 인스타그램 게시물 (1080X1350px, 4:5)
@@ -328,6 +335,9 @@ RGB와 CMYK의 색 영역(색을 표현할 수 있는 범위)이 달라 완전 �
 ---
 
 ### [실습 03] 세련되고 감각적인 타이포그래피로 완성하는 디자인: 한정 메뉴 홍보 인스타그램 게시물
+
+
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAG-YIRQNRw/LwEj0UJ5z07C-fhtgyJYcA/view?utm_content=DAG-YIRQNRw&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
 
 ![작업 사이즈 | 인스타그램 게시물 (Xpx ) 예시 이미지](/data/content/canva/assets/images/Week04/p247_03.png)
 
@@ -385,6 +395,8 @@ RGB와 CMYK의 색 영역(색을 표현할 수 있는 범위)이 달라 완전 �
 
 ### [실습 04] 애니메이션 기능으로 생동감을 더한 디자인: 오늘의 메뉴 홍보 인스타그램 스토리
 
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAG-YZ7yPUI/uan2J9Pch8tLoAHQe0stpg/view?utm_content=DAG-YZ7yPUI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 ![작업 사이즈 | 인스타그램 스토리 (X px) 예시 이미지](/data/content/canva/assets/images/Week04/p251_05.png)
 
 
@@ -425,6 +437,8 @@ RGB와 CMYK의 색 영역(색을 표현할 수 있는 범위)이 달라 완전 �
 ---
 
 ### [실습 05] 입체적인 이미지와 폰트 페어링으로 완성하는 디자인: 신메뉴 홍보 포스터
+
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBdcPwo-s/nGDlSqo_8sFg-ST3V6-Y3w/view?utm_content=DAHBdcPwo-s&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
 
 ![](/data/content/canva/assets/images/Week04/p254_01_01.png)
 
@@ -485,6 +499,8 @@ RGB와 CMYK의 색 영역(색을 표현할 수 있는 범위)이 달라 완전 �
 
 ### [실습 06] 고객의 참여를 부르는 직관적인 레이아웃의 디자인: 인증샷 이벤트 홍보 미니 포스터
 
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBdpDAoIU/Re-t3f-d40gWjgYziS3X9w/view?utm_content=DAHBdpDAoIU&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 
 **작업 사이즈** | 포스터 (210X297mm, A4)
 **디자인 포인트** |
@@ -531,6 +547,8 @@ QR 코드는 템플릿 사용자가 이 자리의 용도를 알 수 있도록 �
 
 ### [실습 07] 브랜드의 진심을 굿즈 안에 담는 디자인: 포장 스티커
 
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBdpYd-ek/RY0gQisg0LAZlDMlX0mHVg/view?utm_content=DAHBdpYd-ek&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 ![작업 사이즈 | 원형 스티커 (xmm) 예시 이미지](/data/content/canva/assets/images/Week04/p262_01.png)
 
 **작업 사이즈** | 원형 스티커 (100x100mm)
@@ -571,6 +589,8 @@ QR 코드는 템플릿 사용자가 이 자리의 용도를 알 수 있도록 �
 
 ### [실습 08] 입체적인 이미지와 폰트 페어링으로 완성하는 디자인: 스탬프 적립 카드
 
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBdiohJGw/dzZ_xWTE7cKwZNOhTRnVcA/view?utm_content=DAHBdiohJGw&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 ![작업 사이즈 | 스탬프 적립 카드 (90X50mm) 예시 이미지](/data/content/canva/assets/images/Week04/p265_03.png)
 
 **작업 사이즈** | 스탬프 적립 카드 (90X50mm)
@@ -602,7 +622,9 @@ QR 코드는 템플릿 사용자가 이 자리의 용도를 알 수 있도록 �
 
 ### [실습 09] 정렬의 힘으로 완성하는 직관적인 디자인: 매장용 메뉴판
 
-![작업 사이즈 | 세로형 메뉴판 (Xmm A) 예시 이미지](/data/content/canva/assets/images/Week04/p267_05.png)
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBdktOVvo/INC7AJh_QxavJQsgV_gXDw/view?utm_content=DAHBdktOVvo&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
+![작업 사이즈 | 세로형 메뉴판 (210X297mm, A4) 예시 이미지](/data/content/canva/assets/images/Week04/p267_05.png)
 
 **작업 사이즈** | 세로형 메뉴판 (210X297mm, A4)
 **디자인 포인트** |

@@ -9,8 +9,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/c/lv06_if/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/c/lv06_if/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/c/lv06_if/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/c/lv06_if/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_print_b1",
@@ -22,8 +22,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv01_print/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv01_print/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv01_print/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv01_print/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_print_b2",
@@ -35,8 +35,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv01_print/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv01_print/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv01_print/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv01_print/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_print_b3",
@@ -48,8 +48,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r03.json",
-    "dataPath": "./data/content/language/python/lv01_print/interactive/interactive_basic_r03.json",
-    "sourcePath": "./data/content/language/python/lv01_print/interactive/interactive_basic_r03.json"
+    "dataPath": "./data/content/programming/python/lv01_print/interactive/interactive_basic_r03.json",
+    "sourcePath": "./data/content/programming/python/lv01_print/interactive/interactive_basic_r03.json"
   },
   {
     "id": "py_print_c1",
@@ -61,8 +61,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r04.json",
-    "dataPath": "./data/content/language/python/lv01_print/interactive/interactive_challenge_r04.json",
-    "sourcePath": "./data/content/language/python/lv01_print/interactive/interactive_challenge_r04.json"
+    "dataPath": "./data/content/programming/python/lv01_print/interactive/interactive_challenge_r04.json",
+    "sourcePath": "./data/content/programming/python/lv01_print/interactive/interactive_challenge_r04.json"
   },
   {
     "id": "py_var_b1",
@@ -74,8 +74,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv02_var/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv02_var/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv02_var/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv02_var/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_var_b2",
@@ -87,8 +87,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv02_var/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv02_var/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv02_var/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv02_var/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_var_b3",
@@ -100,8 +100,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r03.json",
-    "dataPath": "./data/content/language/python/lv02_var/interactive/interactive_basic_r03.json",
-    "sourcePath": "./data/content/language/python/lv02_var/interactive/interactive_basic_r03.json"
+    "dataPath": "./data/content/programming/python/lv02_var/interactive/interactive_basic_r03.json",
+    "sourcePath": "./data/content/programming/python/lv02_var/interactive/interactive_basic_r03.json"
   },
   {
     "id": "py_var_b4",
@@ -113,8 +113,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r04.json",
-    "dataPath": "./data/content/language/python/lv02_var/interactive/interactive_basic_r04.json",
-    "sourcePath": "./data/content/language/python/lv02_var/interactive/interactive_basic_r04.json"
+    "dataPath": "./data/content/programming/python/lv02_var/interactive/interactive_basic_r04.json",
+    "sourcePath": "./data/content/programming/python/lv02_var/interactive/interactive_basic_r04.json"
   },
   {
     "id": "py_var_c1",
@@ -126,8 +126,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r01.json",
-    "dataPath": "./data/content/language/python/lv02_var/interactive/interactive_challenge_r01.json",
-    "sourcePath": "./data/content/language/python/lv02_var/interactive/interactive_challenge_r01.json"
+    "dataPath": "./data/content/programming/python/lv02_var/interactive/interactive_challenge_r01.json",
+    "sourcePath": "./data/content/programming/python/lv02_var/interactive/interactive_challenge_r01.json"
   },
   {
     "id": "py_input_b1",
@@ -139,8 +139,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv03_input/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv03_input/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv03_input/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv03_input/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_input_b2",
@@ -152,8 +152,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv03_input/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv03_input/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv03_input/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv03_input/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_input_b3",
@@ -165,8 +165,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r03.json",
-    "dataPath": "./data/content/language/python/lv03_input/interactive/interactive_basic_r03.json",
-    "sourcePath": "./data/content/language/python/lv03_input/interactive/interactive_basic_r03.json"
+    "dataPath": "./data/content/programming/python/lv03_input/interactive/interactive_basic_r03.json",
+    "sourcePath": "./data/content/programming/python/lv03_input/interactive/interactive_basic_r03.json"
   },
   {
     "id": "py_input_c1",
@@ -178,8 +178,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r04.json",
-    "dataPath": "./data/content/language/python/lv03_input/interactive/interactive_challenge_r04.json",
-    "sourcePath": "./data/content/language/python/lv03_input/interactive/interactive_challenge_r04.json"
+    "dataPath": "./data/content/programming/python/lv03_input/interactive/interactive_challenge_r04.json",
+    "sourcePath": "./data/content/programming/python/lv03_input/interactive/interactive_challenge_r04.json"
   },
   {
     "id": "py_lv04_operator_b01",
@@ -191,8 +191,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv04_operator/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv04_operator/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv04_operator/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv04_operator/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_lv04_operator_b02",
@@ -204,8 +204,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv04_operator/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv04_operator/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv04_operator/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv04_operator/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_lv04_operator_c01",
@@ -217,8 +217,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r03.json",
-    "dataPath": "./data/content/language/python/lv04_operator/interactive/interactive_challenge_r03.json",
-    "sourcePath": "./data/content/language/python/lv04_operator/interactive/interactive_challenge_r03.json"
+    "dataPath": "./data/content/programming/python/lv04_operator/interactive/interactive_challenge_r03.json",
+    "sourcePath": "./data/content/programming/python/lv04_operator/interactive/interactive_challenge_r03.json"
   },
   {
     "id": "py_lv05_cast_b01",
@@ -230,8 +230,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv05_cast/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv05_cast/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv05_cast/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv05_cast/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_lv05_cast_b02",
@@ -243,8 +243,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv05_cast/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv05_cast/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv05_cast/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv05_cast/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_lv05_cast_c01",
@@ -256,8 +256,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r04.json",
-    "dataPath": "./data/content/language/python/lv05_cast/interactive/interactive_challenge_r04.json",
-    "sourcePath": "./data/content/language/python/lv05_cast/interactive/interactive_challenge_r04.json"
+    "dataPath": "./data/content/programming/python/lv05_cast/interactive/interactive_challenge_r04.json",
+    "sourcePath": "./data/content/programming/python/lv05_cast/interactive/interactive_challenge_r04.json"
   },
   {
     "id": "py_if_b1",
@@ -269,8 +269,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv06_if/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv06_if/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv06_if/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv06_if/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_if_b2",
@@ -282,8 +282,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv06_if/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv06_if/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv06_if/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv06_if/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_if_b3",
@@ -295,8 +295,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r03.json",
-    "dataPath": "./data/content/language/python/lv06_if/interactive/interactive_basic_r03.json",
-    "sourcePath": "./data/content/language/python/lv06_if/interactive/interactive_basic_r03.json"
+    "dataPath": "./data/content/programming/python/lv06_if/interactive/interactive_basic_r03.json",
+    "sourcePath": "./data/content/programming/python/lv06_if/interactive/interactive_basic_r03.json"
   },
   {
     "id": "py_if_b4",
@@ -308,8 +308,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r04.json",
-    "dataPath": "./data/content/language/python/lv06_if/interactive/interactive_basic_r04.json",
-    "sourcePath": "./data/content/language/python/lv06_if/interactive/interactive_basic_r04.json"
+    "dataPath": "./data/content/programming/python/lv06_if/interactive/interactive_basic_r04.json",
+    "sourcePath": "./data/content/programming/python/lv06_if/interactive/interactive_basic_r04.json"
   },
   {
     "id": "py_if_c1",
@@ -321,8 +321,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r05.json",
-    "dataPath": "./data/content/language/python/lv06_if/interactive/interactive_challenge_r05.json",
-    "sourcePath": "./data/content/language/python/lv06_if/interactive/interactive_challenge_r05.json"
+    "dataPath": "./data/content/programming/python/lv06_if/interactive/interactive_challenge_r05.json",
+    "sourcePath": "./data/content/programming/python/lv06_if/interactive/interactive_challenge_r05.json"
   },
   {
     "id": "py_if_c2",
@@ -334,8 +334,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r06.json",
-    "dataPath": "./data/content/language/python/lv06_if/interactive/interactive_challenge_r06.json",
-    "sourcePath": "./data/content/language/python/lv06_if/interactive/interactive_challenge_r06.json"
+    "dataPath": "./data/content/programming/python/lv06_if/interactive/interactive_challenge_r06.json",
+    "sourcePath": "./data/content/programming/python/lv06_if/interactive/interactive_challenge_r06.json"
   },
   {
     "id": "py_lv07_for_b01",
@@ -347,8 +347,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv07_for/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv07_for/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_lv07_for_b02",
@@ -360,8 +360,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv07_for/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv07_for/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_lv07_for_b03",
@@ -373,8 +373,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r03.json",
-    "dataPath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r03.json",
-    "sourcePath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r03.json"
+    "dataPath": "./data/content/programming/python/lv07_for/interactive/interactive_basic_r03.json",
+    "sourcePath": "./data/content/programming/python/lv07_for/interactive/interactive_basic_r03.json"
   },
   {
     "id": "py_lv07_for_b04",
@@ -386,8 +386,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r04.json",
-    "dataPath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r04.json",
-    "sourcePath": "./data/content/language/python/lv07_for/interactive/interactive_basic_r04.json"
+    "dataPath": "./data/content/programming/python/lv07_for/interactive/interactive_basic_r04.json",
+    "sourcePath": "./data/content/programming/python/lv07_for/interactive/interactive_basic_r04.json"
   },
   {
     "id": "py_lv07_for_c01",
@@ -399,8 +399,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r02.json",
-    "dataPath": "./data/content/language/python/lv07_for/interactive/interactive_challenge_r02.json",
-    "sourcePath": "./data/content/language/python/lv07_for/interactive/interactive_challenge_r02.json"
+    "dataPath": "./data/content/programming/python/lv07_for/interactive/interactive_challenge_r02.json",
+    "sourcePath": "./data/content/programming/python/lv07_for/interactive/interactive_challenge_r02.json"
   },
   {
     "id": "py_while_b1",
@@ -412,8 +412,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv08_while/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv08_while/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv08_while/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv08_while/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_while_b2",
@@ -425,8 +425,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv08_while/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv08_while/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv08_while/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv08_while/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_while_c1",
@@ -438,8 +438,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r01.json",
-    "dataPath": "./data/content/language/python/lv08_while/interactive/interactive_challenge_r01.json",
-    "sourcePath": "./data/content/language/python/lv08_while/interactive/interactive_challenge_r01.json"
+    "dataPath": "./data/content/programming/python/lv08_while/interactive/interactive_challenge_r01.json",
+    "sourcePath": "./data/content/programming/python/lv08_while/interactive/interactive_challenge_r01.json"
   },
   {
     "id": "py_nfor_b1",
@@ -451,8 +451,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv09_nfor/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv09_nfor/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv09_nfor/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv09_nfor/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_nfor_b2",
@@ -464,8 +464,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv09_nfor/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv09_nfor/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv09_nfor/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv09_nfor/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_nfor_b3",
@@ -477,8 +477,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r03.json",
-    "dataPath": "./data/content/language/python/lv09_nfor/interactive/interactive_basic_r03.json",
-    "sourcePath": "./data/content/language/python/lv09_nfor/interactive/interactive_basic_r03.json"
+    "dataPath": "./data/content/programming/python/lv09_nfor/interactive/interactive_basic_r03.json",
+    "sourcePath": "./data/content/programming/python/lv09_nfor/interactive/interactive_basic_r03.json"
   },
   {
     "id": "py_nfor_c1",
@@ -490,8 +490,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r01.json",
-    "dataPath": "./data/content/language/python/lv09_nfor/interactive/interactive_challenge_r01.json",
-    "sourcePath": "./data/content/language/python/lv09_nfor/interactive/interactive_challenge_r01.json"
+    "dataPath": "./data/content/programming/python/lv09_nfor/interactive/interactive_challenge_r01.json",
+    "sourcePath": "./data/content/programming/python/lv09_nfor/interactive/interactive_challenge_r01.json"
   },
   {
     "id": "py_lv10_array_b01",
@@ -503,8 +503,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv10_array/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv10_array/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv10_array/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv10_array/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_lv10_array_b02",
@@ -516,8 +516,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv10_array/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv10_array/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv10_array/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv10_array/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_lv10_array_b03",
@@ -529,8 +529,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r03.json",
-    "dataPath": "./data/content/language/python/lv10_array/interactive/interactive_basic_r03.json",
-    "sourcePath": "./data/content/language/python/lv10_array/interactive/interactive_basic_r03.json"
+    "dataPath": "./data/content/programming/python/lv10_array/interactive/interactive_basic_r03.json",
+    "sourcePath": "./data/content/programming/python/lv10_array/interactive/interactive_basic_r03.json"
   },
   {
     "id": "py_lv10_array_c01",
@@ -542,8 +542,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r04.json",
-    "dataPath": "./data/content/language/python/lv10_array/interactive/interactive_challenge_r04.json",
-    "sourcePath": "./data/content/language/python/lv10_array/interactive/interactive_challenge_r04.json"
+    "dataPath": "./data/content/programming/python/lv10_array/interactive/interactive_challenge_r04.json",
+    "sourcePath": "./data/content/programming/python/lv10_array/interactive/interactive_challenge_r04.json"
   },
   {
     "id": "py_lv10_array_c02",
@@ -555,8 +555,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r05.json",
-    "dataPath": "./data/content/language/python/lv10_array/interactive/interactive_challenge_r05.json",
-    "sourcePath": "./data/content/language/python/lv10_array/interactive/interactive_challenge_r05.json"
+    "dataPath": "./data/content/programming/python/lv10_array/interactive/interactive_challenge_r05.json",
+    "sourcePath": "./data/content/programming/python/lv10_array/interactive/interactive_challenge_r05.json"
   },
   {
     "id": "py_lv15_array2d_b01",
@@ -568,8 +568,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r01.json",
-    "dataPath": "./data/content/language/python/lv15_array2d/interactive/interactive_basic_r01.json",
-    "sourcePath": "./data/content/language/python/lv15_array2d/interactive/interactive_basic_r01.json"
+    "dataPath": "./data/content/programming/python/lv15_array2d/interactive/interactive_basic_r01.json",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/interactive/interactive_basic_r01.json"
   },
   {
     "id": "py_lv15_array2d_b02",
@@ -581,8 +581,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r02.json",
-    "dataPath": "./data/content/language/python/lv15_array2d/interactive/interactive_basic_r02.json",
-    "sourcePath": "./data/content/language/python/lv15_array2d/interactive/interactive_basic_r02.json"
+    "dataPath": "./data/content/programming/python/lv15_array2d/interactive/interactive_basic_r02.json",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/interactive/interactive_basic_r02.json"
   },
   {
     "id": "py_lv15_array2d_b03",
@@ -594,8 +594,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_basic_r03.json",
-    "dataPath": "./data/content/language/python/lv15_array2d/interactive/interactive_basic_r03.json",
-    "sourcePath": "./data/content/language/python/lv15_array2d/interactive/interactive_basic_r03.json"
+    "dataPath": "./data/content/programming/python/lv15_array2d/interactive/interactive_basic_r03.json",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/interactive/interactive_basic_r03.json"
   },
   {
     "id": "py_lv15_array2d_c01",
@@ -607,8 +607,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r04.json",
-    "dataPath": "./data/content/language/python/lv15_array2d/interactive/interactive_challenge_r04.json",
-    "sourcePath": "./data/content/language/python/lv15_array2d/interactive/interactive_challenge_r04.json"
+    "dataPath": "./data/content/programming/python/lv15_array2d/interactive/interactive_challenge_r04.json",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/interactive/interactive_challenge_r04.json"
   },
   {
     "id": "py_lv15_array2d_c02",
@@ -620,8 +620,8 @@
     "track": "language",
     "status": "active",
     "file": "interactive_challenge_r05.json",
-    "dataPath": "./data/content/language/python/lv15_array2d/interactive/interactive_challenge_r05.json",
-    "sourcePath": "./data/content/language/python/lv15_array2d/interactive/interactive_challenge_r05.json"
+    "dataPath": "./data/content/programming/python/lv15_array2d/interactive/interactive_challenge_r05.json",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/interactive/interactive_challenge_r05.json"
   },
   {
     "id": "py_pygame_w01_b01",

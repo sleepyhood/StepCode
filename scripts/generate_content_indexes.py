@@ -86,6 +86,8 @@ def validate_asset_refs(path: Path, body: str):
             continue
         if target.startswith("./data/"):
             actual = DATA_ROOT / target[len("./data/") :]
+        elif target.startswith("/data/"):
+            actual = DATA_ROOT / target[len("/data/") :]
         else:
             actual = (path.parent / target).resolve()
         if not actual.exists():

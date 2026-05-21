@@ -10,9 +10,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv01_print/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv01_print/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv01_print/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv01_print/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv01_print/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv01_print/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv01_print_basic_r02",
@@ -25,9 +25,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv01_print/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv01_print/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv01_print/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv01_print/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv01_print/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv01_print/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv01_print_basic_r03",
@@ -40,9 +40,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv01_print/worksheets/worksheet_basic_r03.md",
-    "answerMdPath": "./data/content/language/python/lv01_print/worksheets/answer_basic_r03.md",
-    "sourcePath": "./data/content/language/python/lv01_print/worksheets/worksheet_basic_r03.md"
+    "mdPath": "./data/content/programming/python/lv01_print/worksheets/worksheet_basic_r03.md",
+    "answerMdPath": "./data/content/programming/python/lv01_print/worksheets/answer_basic_r03.md",
+    "sourcePath": "./data/content/programming/python/lv01_print/worksheets/worksheet_basic_r03.md"
   },
   {
     "id": "py_lv01_print_challenge_r04",
@@ -55,9 +55,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv01_print/worksheets/worksheet_challenge_r04.md",
-    "answerMdPath": "./data/content/language/python/lv01_print/worksheets/answer_challenge_r04.md",
-    "sourcePath": "./data/content/language/python/lv01_print/worksheets/worksheet_challenge_r04.md"
+    "mdPath": "./data/content/programming/python/lv01_print/worksheets/worksheet_challenge_r04.md",
+    "answerMdPath": "./data/content/programming/python/lv01_print/worksheets/answer_challenge_r04.md",
+    "sourcePath": "./data/content/programming/python/lv01_print/worksheets/worksheet_challenge_r04.md"
   },
   {
     "id": "py_lv02_var_basic_r01",
@@ -70,9 +70,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv02_var/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv02_var/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv02_var/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv02_var/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv02_var/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv02_var/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv02_var_basic_r02",
@@ -85,9 +85,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv02_var/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv02_var/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv02_var/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv02_var/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv02_var/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv02_var/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv02_var_basic_r03",
@@ -100,9 +100,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv02_var/worksheets/worksheet_basic_r03.md",
-    "answerMdPath": "./data/content/language/python/lv02_var/worksheets/answer_basic_r03.md",
-    "sourcePath": "./data/content/language/python/lv02_var/worksheets/worksheet_basic_r03.md"
+    "mdPath": "./data/content/programming/python/lv02_var/worksheets/worksheet_basic_r03.md",
+    "answerMdPath": "./data/content/programming/python/lv02_var/worksheets/answer_basic_r03.md",
+    "sourcePath": "./data/content/programming/python/lv02_var/worksheets/worksheet_basic_r03.md"
   },
   {
     "id": "py_lv02_var_basic_r04",
@@ -115,9 +115,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv02_var/worksheets/worksheet_basic_r04.md",
-    "answerMdPath": "./data/content/language/python/lv02_var/worksheets/answer_basic_r04.md",
-    "sourcePath": "./data/content/language/python/lv02_var/worksheets/worksheet_basic_r04.md"
+    "mdPath": "./data/content/programming/python/lv02_var/worksheets/worksheet_basic_r04.md",
+    "answerMdPath": "./data/content/programming/python/lv02_var/worksheets/answer_basic_r04.md",
+    "sourcePath": "./data/content/programming/python/lv02_var/worksheets/worksheet_basic_r04.md"
   },
   {
     "id": "py_lv02_var_challenge_r01",
@@ -130,9 +130,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv02_var/worksheets/worksheet_challenge_r01.md",
-    "answerMdPath": "./data/content/language/python/lv02_var/worksheets/answer_challenge_r01.md",
-    "sourcePath": "./data/content/language/python/lv02_var/worksheets/worksheet_challenge_r01.md"
+    "mdPath": "./data/content/programming/python/lv02_var/worksheets/worksheet_challenge_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv02_var/worksheets/answer_challenge_r01.md",
+    "sourcePath": "./data/content/programming/python/lv02_var/worksheets/worksheet_challenge_r01.md"
   },
   {
     "id": "py_lv03_input_basic_r01",
@@ -145,9 +145,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv03_input/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv03_input/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv03_input/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv03_input/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv03_input/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv03_input/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv03_input_basic_r02",
@@ -160,9 +160,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv03_input/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv03_input/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv03_input/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv03_input/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv03_input/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv03_input/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv03_input_basic_r03",
@@ -175,9 +175,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv03_input/worksheets/worksheet_basic_r03.md",
-    "answerMdPath": "./data/content/language/python/lv03_input/worksheets/answer_basic_r03.md",
-    "sourcePath": "./data/content/language/python/lv03_input/worksheets/worksheet_basic_r03.md"
+    "mdPath": "./data/content/programming/python/lv03_input/worksheets/worksheet_basic_r03.md",
+    "answerMdPath": "./data/content/programming/python/lv03_input/worksheets/answer_basic_r03.md",
+    "sourcePath": "./data/content/programming/python/lv03_input/worksheets/worksheet_basic_r03.md"
   },
   {
     "id": "py_lv03_input_challenge_r04",
@@ -190,9 +190,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv03_input/worksheets/worksheet_challenge_r04.md",
-    "answerMdPath": "./data/content/language/python/lv03_input/worksheets/answer_challenge_r04.md",
-    "sourcePath": "./data/content/language/python/lv03_input/worksheets/worksheet_challenge_r04.md"
+    "mdPath": "./data/content/programming/python/lv03_input/worksheets/worksheet_challenge_r04.md",
+    "answerMdPath": "./data/content/programming/python/lv03_input/worksheets/answer_challenge_r04.md",
+    "sourcePath": "./data/content/programming/python/lv03_input/worksheets/worksheet_challenge_r04.md"
   },
   {
     "id": "py_lv04_operator_basic_r01",
@@ -205,9 +205,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv04_operator/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv04_operator/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv04_operator/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv04_operator/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv04_operator/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv04_operator/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv04_operator_basic_r02",
@@ -220,9 +220,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv04_operator/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv04_operator/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv04_operator/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv04_operator/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv04_operator/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv04_operator/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv04_operator_challenge_r03",
@@ -235,9 +235,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv04_operator/worksheets/worksheet_challenge_r03.md",
-    "answerMdPath": "./data/content/language/python/lv04_operator/worksheets/answer_challenge_r03.md",
-    "sourcePath": "./data/content/language/python/lv04_operator/worksheets/worksheet_challenge_r03.md"
+    "mdPath": "./data/content/programming/python/lv04_operator/worksheets/worksheet_challenge_r03.md",
+    "answerMdPath": "./data/content/programming/python/lv04_operator/worksheets/answer_challenge_r03.md",
+    "sourcePath": "./data/content/programming/python/lv04_operator/worksheets/worksheet_challenge_r03.md"
   },
   {
     "id": "py_lv05_cast_basic_r01",
@@ -250,9 +250,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv05_cast/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv05_cast/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv05_cast/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv05_cast/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv05_cast/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv05_cast/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv05_cast_basic_r02",
@@ -265,9 +265,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv05_cast/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv05_cast/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv05_cast/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv05_cast/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv05_cast/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv05_cast/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv05_cast_challenge_r04",
@@ -280,9 +280,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv05_cast/worksheets/worksheet_challenge_r04.md",
-    "answerMdPath": "./data/content/language/python/lv05_cast/worksheets/answer_challenge_r04.md",
-    "sourcePath": "./data/content/language/python/lv05_cast/worksheets/worksheet_challenge_r04.md"
+    "mdPath": "./data/content/programming/python/lv05_cast/worksheets/worksheet_challenge_r04.md",
+    "answerMdPath": "./data/content/programming/python/lv05_cast/worksheets/answer_challenge_r04.md",
+    "sourcePath": "./data/content/programming/python/lv05_cast/worksheets/worksheet_challenge_r04.md"
   },
   {
     "id": "py_lv06_if_basic_r01",
@@ -295,9 +295,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv06_if/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv06_if/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv06_if/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv06_if/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv06_if/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv06_if/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv06_if_basic_r02",
@@ -310,9 +310,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv06_if/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv06_if/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv06_if/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv06_if/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv06_if/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv06_if/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv06_if_basic_r03",
@@ -325,9 +325,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv06_if/worksheets/worksheet_basic_r03.md",
-    "answerMdPath": "./data/content/language/python/lv06_if/worksheets/answer_basic_r03.md",
-    "sourcePath": "./data/content/language/python/lv06_if/worksheets/worksheet_basic_r03.md"
+    "mdPath": "./data/content/programming/python/lv06_if/worksheets/worksheet_basic_r03.md",
+    "answerMdPath": "./data/content/programming/python/lv06_if/worksheets/answer_basic_r03.md",
+    "sourcePath": "./data/content/programming/python/lv06_if/worksheets/worksheet_basic_r03.md"
   },
   {
     "id": "py_lv06_if_basic_r04",
@@ -340,9 +340,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv06_if/worksheets/worksheet_basic_r04.md",
-    "answerMdPath": "./data/content/language/python/lv06_if/worksheets/answer_basic_r04.md",
-    "sourcePath": "./data/content/language/python/lv06_if/worksheets/worksheet_basic_r04.md"
+    "mdPath": "./data/content/programming/python/lv06_if/worksheets/worksheet_basic_r04.md",
+    "answerMdPath": "./data/content/programming/python/lv06_if/worksheets/answer_basic_r04.md",
+    "sourcePath": "./data/content/programming/python/lv06_if/worksheets/worksheet_basic_r04.md"
   },
   {
     "id": "py_lv06_if_challenge_r05",
@@ -355,9 +355,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv06_if/worksheets/worksheet_challenge_r05.md",
-    "answerMdPath": "./data/content/language/python/lv06_if/worksheets/answer_challenge_r05.md",
-    "sourcePath": "./data/content/language/python/lv06_if/worksheets/worksheet_challenge_r05.md"
+    "mdPath": "./data/content/programming/python/lv06_if/worksheets/worksheet_challenge_r05.md",
+    "answerMdPath": "./data/content/programming/python/lv06_if/worksheets/answer_challenge_r05.md",
+    "sourcePath": "./data/content/programming/python/lv06_if/worksheets/worksheet_challenge_r05.md"
   },
   {
     "id": "py_lv06_if_challenge_r06",
@@ -370,9 +370,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv06_if/worksheets/worksheet_challenge_r06.md",
-    "answerMdPath": "./data/content/language/python/lv06_if/worksheets/answer_challenge_r06.md",
-    "sourcePath": "./data/content/language/python/lv06_if/worksheets/worksheet_challenge_r06.md"
+    "mdPath": "./data/content/programming/python/lv06_if/worksheets/worksheet_challenge_r06.md",
+    "answerMdPath": "./data/content/programming/python/lv06_if/worksheets/answer_challenge_r06.md",
+    "sourcePath": "./data/content/programming/python/lv06_if/worksheets/worksheet_challenge_r06.md"
   },
   {
     "id": "py_lv07_for_basic_r01",
@@ -385,9 +385,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv07_for/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv07_for/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv07_for/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv07_for/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv07_for_basic_r02",
@@ -400,9 +400,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv07_for/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv07_for/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv07_for/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv07_for/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv07_for_basic_r03",
@@ -415,9 +415,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r03.md",
-    "answerMdPath": "./data/content/language/python/lv07_for/worksheets/answer_basic_r03.md",
-    "sourcePath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r03.md"
+    "mdPath": "./data/content/programming/python/lv07_for/worksheets/worksheet_basic_r03.md",
+    "answerMdPath": "./data/content/programming/python/lv07_for/worksheets/answer_basic_r03.md",
+    "sourcePath": "./data/content/programming/python/lv07_for/worksheets/worksheet_basic_r03.md"
   },
   {
     "id": "py_lv07_for_basic_r04",
@@ -430,9 +430,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r04.md",
-    "answerMdPath": "./data/content/language/python/lv07_for/worksheets/answer_basic_r04.md",
-    "sourcePath": "./data/content/language/python/lv07_for/worksheets/worksheet_basic_r04.md"
+    "mdPath": "./data/content/programming/python/lv07_for/worksheets/worksheet_basic_r04.md",
+    "answerMdPath": "./data/content/programming/python/lv07_for/worksheets/answer_basic_r04.md",
+    "sourcePath": "./data/content/programming/python/lv07_for/worksheets/worksheet_basic_r04.md"
   },
   {
     "id": "py_lv07_for_challenge_r02",
@@ -445,9 +445,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv07_for/worksheets/worksheet_challenge_r02.md",
-    "answerMdPath": "./data/content/language/python/lv07_for/worksheets/answer_challenge_r02.md",
-    "sourcePath": "./data/content/language/python/lv07_for/worksheets/worksheet_challenge_r02.md"
+    "mdPath": "./data/content/programming/python/lv07_for/worksheets/worksheet_challenge_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv07_for/worksheets/answer_challenge_r02.md",
+    "sourcePath": "./data/content/programming/python/lv07_for/worksheets/worksheet_challenge_r02.md"
   },
   {
     "id": "py_lv08_while_basic_r01",
@@ -460,9 +460,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv08_while/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv08_while/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv08_while/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv08_while/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv08_while/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv08_while/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv08_while_basic_r02",
@@ -475,9 +475,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv08_while/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv08_while/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv08_while/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv08_while/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv08_while/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv08_while/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv08_while_challenge_r01",
@@ -490,9 +490,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv08_while/worksheets/worksheet_challenge_r01.md",
-    "answerMdPath": "./data/content/language/python/lv08_while/worksheets/answer_challenge_r01.md",
-    "sourcePath": "./data/content/language/python/lv08_while/worksheets/worksheet_challenge_r01.md"
+    "mdPath": "./data/content/programming/python/lv08_while/worksheets/worksheet_challenge_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv08_while/worksheets/answer_challenge_r01.md",
+    "sourcePath": "./data/content/programming/python/lv08_while/worksheets/worksheet_challenge_r01.md"
   },
   {
     "id": "py_lv09_nfor_basic_r01",
@@ -505,9 +505,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv09_nfor/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv09_nfor/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv09_nfor/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv09_nfor/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv09_nfor/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv09_nfor/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv09_nfor_basic_r02",
@@ -520,9 +520,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv09_nfor/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv09_nfor/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv09_nfor/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv09_nfor/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv09_nfor/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv09_nfor/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv09_nfor_basic_r03",
@@ -535,9 +535,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv09_nfor/worksheets/worksheet_basic_r03.md",
-    "answerMdPath": "./data/content/language/python/lv09_nfor/worksheets/answer_basic_r03.md",
-    "sourcePath": "./data/content/language/python/lv09_nfor/worksheets/worksheet_basic_r03.md"
+    "mdPath": "./data/content/programming/python/lv09_nfor/worksheets/worksheet_basic_r03.md",
+    "answerMdPath": "./data/content/programming/python/lv09_nfor/worksheets/answer_basic_r03.md",
+    "sourcePath": "./data/content/programming/python/lv09_nfor/worksheets/worksheet_basic_r03.md"
   },
   {
     "id": "py_lv09_nfor_challenge_r01",
@@ -550,9 +550,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv09_nfor/worksheets/worksheet_challenge_r01.md",
-    "answerMdPath": "./data/content/language/python/lv09_nfor/worksheets/answer_challenge_r01.md",
-    "sourcePath": "./data/content/language/python/lv09_nfor/worksheets/worksheet_challenge_r01.md"
+    "mdPath": "./data/content/programming/python/lv09_nfor/worksheets/worksheet_challenge_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv09_nfor/worksheets/answer_challenge_r01.md",
+    "sourcePath": "./data/content/programming/python/lv09_nfor/worksheets/worksheet_challenge_r01.md"
   },
   {
     "id": "py_lv10_array_basic_r01",
@@ -565,9 +565,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv10_array/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv10_array/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv10_array/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv10_array/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv10_array/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv10_array/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv10_array_basic_r02",
@@ -580,9 +580,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv10_array/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv10_array/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv10_array/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv10_array/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv10_array/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv10_array/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv10_array_basic_r03",
@@ -595,9 +595,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv10_array/worksheets/worksheet_basic_r03.md",
-    "answerMdPath": "./data/content/language/python/lv10_array/worksheets/answer_basic_r03.md",
-    "sourcePath": "./data/content/language/python/lv10_array/worksheets/worksheet_basic_r03.md"
+    "mdPath": "./data/content/programming/python/lv10_array/worksheets/worksheet_basic_r03.md",
+    "answerMdPath": "./data/content/programming/python/lv10_array/worksheets/answer_basic_r03.md",
+    "sourcePath": "./data/content/programming/python/lv10_array/worksheets/worksheet_basic_r03.md"
   },
   {
     "id": "py_lv10_array_challenge_r04",
@@ -610,9 +610,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv10_array/worksheets/worksheet_challenge_r04.md",
-    "answerMdPath": "./data/content/language/python/lv10_array/worksheets/answer_challenge_r04.md",
-    "sourcePath": "./data/content/language/python/lv10_array/worksheets/worksheet_challenge_r04.md"
+    "mdPath": "./data/content/programming/python/lv10_array/worksheets/worksheet_challenge_r04.md",
+    "answerMdPath": "./data/content/programming/python/lv10_array/worksheets/answer_challenge_r04.md",
+    "sourcePath": "./data/content/programming/python/lv10_array/worksheets/worksheet_challenge_r04.md"
   },
   {
     "id": "py_lv10_array_challenge_r05",
@@ -625,9 +625,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv10_array/worksheets/worksheet_challenge_r05.md",
-    "answerMdPath": "./data/content/language/python/lv10_array/worksheets/answer_challenge_r05.md",
-    "sourcePath": "./data/content/language/python/lv10_array/worksheets/worksheet_challenge_r05.md"
+    "mdPath": "./data/content/programming/python/lv10_array/worksheets/worksheet_challenge_r05.md",
+    "answerMdPath": "./data/content/programming/python/lv10_array/worksheets/answer_challenge_r05.md",
+    "sourcePath": "./data/content/programming/python/lv10_array/worksheets/worksheet_challenge_r05.md"
   },
   {
     "id": "py_lv15_array2d_basic_r01",
@@ -640,9 +640,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_basic_r01.md",
-    "answerMdPath": "./data/content/language/python/lv15_array2d/worksheets/answer_basic_r01.md",
-    "sourcePath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_basic_r01.md"
+    "mdPath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_basic_r01.md",
+    "answerMdPath": "./data/content/programming/python/lv15_array2d/worksheets/answer_basic_r01.md",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_basic_r01.md"
   },
   {
     "id": "py_lv15_array2d_basic_r02",
@@ -655,9 +655,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_basic_r02.md",
-    "answerMdPath": "./data/content/language/python/lv15_array2d/worksheets/answer_basic_r02.md",
-    "sourcePath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_basic_r02.md"
+    "mdPath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_basic_r02.md",
+    "answerMdPath": "./data/content/programming/python/lv15_array2d/worksheets/answer_basic_r02.md",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_basic_r02.md"
   },
   {
     "id": "py_lv15_array2d_basic_r03",
@@ -670,9 +670,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_basic_r03.md",
-    "answerMdPath": "./data/content/language/python/lv15_array2d/worksheets/answer_basic_r03.md",
-    "sourcePath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_basic_r03.md"
+    "mdPath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_basic_r03.md",
+    "answerMdPath": "./data/content/programming/python/lv15_array2d/worksheets/answer_basic_r03.md",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_basic_r03.md"
   },
   {
     "id": "py_lv15_array2d_challenge_r04",
@@ -685,9 +685,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_challenge_r04.md",
-    "answerMdPath": "./data/content/language/python/lv15_array2d/worksheets/answer_challenge_r04.md",
-    "sourcePath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_challenge_r04.md"
+    "mdPath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_challenge_r04.md",
+    "answerMdPath": "./data/content/programming/python/lv15_array2d/worksheets/answer_challenge_r04.md",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_challenge_r04.md"
   },
   {
     "id": "py_lv15_array2d_challenge_r05",
@@ -700,9 +700,9 @@
     "status": "active",
     "audience": "common",
     "printDefault": true,
-    "mdPath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_challenge_r05.md",
-    "answerMdPath": "./data/content/language/python/lv15_array2d/worksheets/answer_challenge_r05.md",
-    "sourcePath": "./data/content/language/python/lv15_array2d/worksheets/worksheet_challenge_r05.md"
+    "mdPath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_challenge_r05.md",
+    "answerMdPath": "./data/content/programming/python/lv15_array2d/worksheets/answer_challenge_r05.md",
+    "sourcePath": "./data/content/programming/python/lv15_array2d/worksheets/worksheet_challenge_r05.md"
   },
   {
     "id": "py_pygame_w01_basic_r01",

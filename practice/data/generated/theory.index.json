@@ -1,19 +1,5 @@
 [
   {
-    "conceptId": "pygame_l01_ship",
-    "title": "1차시. 우주선 좌우 이동하기",
-    "categoryId": "pygame_l01",
-    "lang": "python",
-    "track": "pygame_marp_course",
-    "mdPath": "./data/content/pygame_marp_course/lesson01_ship_movement/interactive.md",
-    "recommendedSetId": "",
-    "relatedSetIds": [],
-    "prerequisites": [],
-    "nextConcepts": [],
-    "priority": 2,
-    "sourcePath": "./data/content/pygame_marp_course/lesson01_ship_movement/interactive.md"
-  },
-  {
     "conceptId": "canva_l01_assignment",
     "title": "1차시. 캔바 첫 세팅과 작업 영역 적응",
     "categoryId": "canva_l01_assignment",
@@ -161,7 +147,7 @@
     "categoryId": "py_print",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv01_print/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv01_print/lesson/lesson.md",
     "recommendedSetId": "py_print_b1",
     "relatedSetIds": [
       "py_print_b1",
@@ -174,7 +160,7 @@
       "py_lv02_var"
     ],
     "priority": 2,
-    "sourcePath": "./data/content/language/python/lv01_print/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv01_print/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv02_var",
@@ -182,7 +168,7 @@
     "categoryId": "py_var",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv02_var/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv02_var/lesson/lesson.md",
     "recommendedSetId": "py_var_b1",
     "relatedSetIds": [
       "py_var_b1",
@@ -198,7 +184,7 @@
       "py_lv03_input"
     ],
     "priority": 2,
-    "sourcePath": "./data/content/language/python/lv02_var/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv02_var/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv03_input",
@@ -206,7 +192,7 @@
     "categoryId": "py_input",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv03_input/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv03_input/lesson/lesson.md",
     "recommendedSetId": "py_input_b1",
     "relatedSetIds": [
       "py_input_b1",
@@ -221,7 +207,7 @@
       "py_lv04_operator"
     ],
     "priority": 2,
-    "sourcePath": "./data/content/language/python/lv03_input/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv03_input/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv04_operator",
@@ -229,7 +215,7 @@
     "categoryId": "py_operator",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv04_operator/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv04_operator/lesson/lesson.md",
     "recommendedSetId": "py_lv04_operator_b01",
     "relatedSetIds": [
       "py_lv04_operator_b01",
@@ -243,7 +229,7 @@
       "py_lv05_cast"
     ],
     "priority": 2,
-    "sourcePath": "./data/content/language/python/lv04_operator/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv04_operator/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv05_cast",
@@ -251,7 +237,7 @@
     "categoryId": "py_cast",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv05_cast/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv05_cast/lesson/lesson.md",
     "recommendedSetId": "py_lv05_cast_b01",
     "relatedSetIds": [
       "py_lv05_cast_b01",
@@ -265,7 +251,7 @@
       "py_lv06_if"
     ],
     "priority": 2,
-    "sourcePath": "./data/content/language/python/lv05_cast/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv05_cast/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv06_if",
@@ -273,7 +259,7 @@
     "categoryId": "py_if",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv06_if/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv06_if/lesson/lesson.md",
     "recommendedSetId": "py_if_b1",
     "relatedSetIds": [
       "py_if_b1",
@@ -290,7 +276,7 @@
       "py_lv07_for"
     ],
     "priority": 3,
-    "sourcePath": "./data/content/language/python/lv06_if/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv06_if/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv07_for",
@@ -298,7 +284,7 @@
     "categoryId": "py_for",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv07_for/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv07_for/lesson/lesson.md",
     "recommendedSetId": "py_lv07_for_b01",
     "relatedSetIds": [
       "py_lv07_for_b01"
@@ -310,7 +296,7 @@
       "py_lv08_while"
     ],
     "priority": 3,
-    "sourcePath": "./data/content/language/python/lv07_for/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv07_for/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv08_while",
@@ -318,7 +304,7 @@
     "categoryId": "py_while",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv08_while/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv08_while/lesson/lesson.md",
     "recommendedSetId": "py_while_b1",
     "relatedSetIds": [
       "py_while_b1",
@@ -332,7 +318,7 @@
       "py_lv09_nfor"
     ],
     "priority": 3,
-    "sourcePath": "./data/content/language/python/lv08_while/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv08_while/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv09_nfor",
@@ -340,7 +326,7 @@
     "categoryId": "py_nfor",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv09_nfor/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv09_nfor/lesson/lesson.md",
     "recommendedSetId": "py_lv09_nfor_b01",
     "relatedSetIds": [
       "py_lv09_nfor_b01",
@@ -355,7 +341,7 @@
       "py_lv10_array"
     ],
     "priority": 3,
-    "sourcePath": "./data/content/language/python/lv09_nfor/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv09_nfor/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv10_array",
@@ -363,7 +349,7 @@
     "categoryId": "py_array",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv10_array/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv10_array/lesson/lesson.md",
     "recommendedSetId": "py_lv10_array_b01",
     "relatedSetIds": [
       "py_lv10_array_b01",
@@ -379,7 +365,7 @@
       "py_lv15_array2d"
     ],
     "priority": 3,
-    "sourcePath": "./data/content/language/python/lv10_array/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv10_array/lesson/lesson.md"
   },
   {
     "conceptId": "py_lv15_array2d",
@@ -387,7 +373,7 @@
     "categoryId": "py_array2d",
     "lang": "python",
     "track": "language",
-    "mdPath": "./data/content/language/python/lv15_array2d/lesson/lesson.md",
+    "mdPath": "./data/content/programming/python/lv15_array2d/lesson/lesson.md",
     "recommendedSetId": "py_lv15_array2d_b01",
     "relatedSetIds": [
       "py_lv15_array2d_b01",
@@ -401,7 +387,7 @@
     ],
     "nextConcepts": [],
     "priority": 3,
-    "sourcePath": "./data/content/language/python/lv15_array2d/lesson/lesson.md"
+    "sourcePath": "./data/content/programming/python/lv15_array2d/lesson/lesson.md"
   },
   {
     "conceptId": "py_pygame_w01_intro",
