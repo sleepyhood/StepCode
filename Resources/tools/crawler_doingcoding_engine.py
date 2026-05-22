@@ -1106,10 +1106,8 @@ def download_doingcoding_testcases(page, problem_id, download_dir, db_id):
         raise RuntimeError(f"테스트케이스 API 호출 실패 (상태: {response.status}, URL: {download_url})")
     
     # 3. 파일명 결정 및 저장
-    suggested_filename = f"{problem_id}.zip"
-    cd_header = response.headers.get("content-disposition", "")
-    if "filename=" in cd_header:
-        suggested_filename = cd_header.split("filename=")[-1].strip('" ')
+    # 서버의 content-disposition (db_id.zip)을 따르지 않고, 로컬 규칙에 맞게 logical ID와 db_id로 강제 저장합니다.
+    suggested_filename = f"{problem_id}_{db_id}.zip"
 
     download_path = os.path.join(download_dir, suggested_filename)
     with open(download_path, "wb") as f:

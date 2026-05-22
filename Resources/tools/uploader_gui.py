@@ -147,24 +147,17 @@ class UploaderGUI:
             self.md_path_var.set(path)
             
             # ==========================================
-            # 신규: MD 파일 선택 시 스마트 ZIP 경로 초기화 로직
+            # 개선: 수정/생성 모드와 상관없이 매칭되는 ZIP 자동 찾기
             # ==========================================
             try:
-                import frontmatter
-                with open(path, 'r', encoding='utf-8-sig') as f:
-                    post = frontmatter.load(f)
-                
-                db_id = str(post.get('db_id', '')).strip()
-                
-                # db_id가 존재하고 LOCAL이 아니라면 수정(Edit) 모드!
-                if db_id and db_id.upper() != "LOCAL":
-                    # 기존에 남아있던 엉뚱한 ZIP 경로를 강제로 비워버립니다.
-                    self.zip_path_var.set("") 
-                    self._log(f" > ⚠️ [수정 모드 감지] 잘못된 파일 업로드 방지를 위해 ZIP 경로를 초기화했습니다. (필요시 새로 선택하세요)")
+                # 02_workspace 경로를 04_testcases 경로로 치환하여 자동 ZIP 경로 추론
+                inferred_zip = path.replace("02_workspace", "04_testcases").replace(".md", ".zip")
+                if os.path.exists(inferred_zip):
+                    self.zip_path_var.set(inferred_zip)
+                    self._log(f" > 🎯 매칭되는 ZIP 파일을 자동으로 감지하여 연결했습니다: {os.path.basename(inferred_zip)}")
                 else:
-                    # 신규 생성 모드일 때는 편의를 위해 자동으로 추론해 줍니다.
-                    self._auto_infer_zip()
-                    
+                    self.zip_path_var.set("")
+                    self._log(f" > ⚠️ 매칭되는 ZIP 파일({os.path.basename(inferred_zip)})을 찾지 못해 경로를 비웠습니다.")
             except Exception as e:
                 self._log(f" > MD 파일 분석 중 오류: {e}")
             
