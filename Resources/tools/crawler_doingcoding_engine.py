@@ -675,7 +675,7 @@ def _emit_log(logger, message):
     # print(message)
 
 
-def _find_first_working_selector(page, selectors, timeout=10000, require_visible=False):
+def _find_first_working_selector(page, selectors, timeout=30000, require_visible=False):
     state = "visible" if require_visible else "attached"
     last_error = None
     for selector in selectors:
@@ -736,7 +736,7 @@ def ensure_doingcoding_admin_csrf(page, logger=None):
         page,
         DOINGCODING_CSRF_SEED_URL,
         wait_until="domcontentloaded",
-        timeout=10000,
+        timeout=30000,
         ready_selector=None,
         attempts=3,
     )
@@ -753,7 +753,7 @@ def ensure_doingcoding_admin_csrf(page, logger=None):
             page,
             DOINGCODING_CSRF_FALLBACK_URL,
             wait_until="domcontentloaded",
-            timeout=10000,
+            timeout=30000,
             ready_selector=None,
             attempts=3,
         )
@@ -772,7 +772,7 @@ def ensure_doingcoding_admin_csrf(page, logger=None):
             page,
             DOINGCODING_ADMIN_LOGIN_URL,
             wait_until="domcontentloaded",
-            timeout=10000,
+            timeout=30000,
             ready_selector=DOINGCODING_ADMIN_ID_SELECTOR,
             attempts=3,
         )
@@ -1037,12 +1037,12 @@ def login_doingcoding_admin(page, username, password, logger=None):
         page,
         DOINGCODING_ADMIN_LOGIN_URL,
         wait_until="domcontentloaded",
-        timeout=10000,
+        timeout=30000,
         ready_selector=DOINGCODING_ADMIN_ID_SELECTOR,
         attempts=3,
     )
     page.wait_for_selector(
-        DOINGCODING_ADMIN_PASSWORD_SELECTOR, timeout=10000, state="attached"
+        DOINGCODING_ADMIN_PASSWORD_SELECTOR, timeout=30000, state="attached"
     )
     _emit_log(logger, "[관리자 로그인] 로그인 폼 확인 완료")
 
@@ -1077,7 +1077,7 @@ def login_doingcoding_admin(page, username, password, logger=None):
         page,
         DOINGCODING_ADMIN_PROBLEMS_URL,
         wait_until="domcontentloaded",
-        timeout=10000,
+        timeout=30000,
         ready_selector=None,
         attempts=3,
     )
@@ -1844,7 +1844,7 @@ def scrape_doingcoding(
                 page,
                 url,
                 wait_until="domcontentloaded",
-                timeout=10000,
+                timeout=30000,
                 ready_selector="#problem-main",
                 attempts=2,
             )

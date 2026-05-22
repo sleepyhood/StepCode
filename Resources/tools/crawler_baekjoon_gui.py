@@ -5,6 +5,7 @@ import threading
 import time
 import os
 import sys
+import tempfile
 import queue
 import random
 from concurrent.futures import ThreadPoolExecutor # 🚨 추가
@@ -164,7 +165,7 @@ class CrawlerApp:
         """각 스레드(워커)가 실행할 독립적인 크롤링 루프"""
         import queue
         worker_prefix = f"[Worker-{worker_id}]"
-        worker_session_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "browser_session", f"worker_{worker_id}")
+        worker_session_dir = os.path.join(tempfile.gettempdir(), "stepcode_browser_session_bj", f"worker_{worker_id}")
         os.makedirs(worker_session_dir, exist_ok=True)
         
         is_headless = not (show_browser or force_show_browser)

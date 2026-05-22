@@ -3,6 +3,7 @@ from tkinter import filedialog, scrolledtext, messagebox
 import threading
 import os
 import time
+import tempfile
 from playwright.sync_api import sync_playwright
 
 def normalize_cookies(raw_cookies):
@@ -33,7 +34,7 @@ class MyCodeArchiverGUI:
         
         self.auth_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "auth.json")
         self.manual_cookies_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual_cookies.json")
-        self.user_data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "user_data")
+        self.user_data_dir = os.path.join(tempfile.gettempdir(), "stepcode_archiver_user_data")
         self.headless_var = tk.BooleanVar(value=True) # 기본값: 창 숨김(True)
         self.browser_context = None
         self.playwright_instance = None
