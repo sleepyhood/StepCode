@@ -2,11 +2,11 @@
 id: "SP101v0614"
 db_id: "LOCAL"
 legacy_id: null
-title: "[숙제 4] 도형 넓이 계산기"
+title: "14. [조건-switch case default] 도형 넓이 계산기"
 platform: "doingcoding"
 level: "Low"
 tags:
-  - "Lv6 조건"
+  - "SLv6 조건"
 authors:
   - "LOCAL"
 supported_languages:
@@ -21,7 +21,7 @@ has_hint: "true"
 archived_at: "2026-05-19"
 ---
 
-# [숙제 4] 도형 넓이 계산기
+# 14. [조건-switch case default] 도형 넓이 계산기
 
 ## 1. 문제 설명
 도형의 종류를 나타내는 문자와 가로, 세로 길이를 입력받아 넓이를 출력하는 프로그램을 작성하세요.
@@ -102,25 +102,4 @@ Q 4 5
 ### 💡 힌트 2 (전략) — 두 개의 제어 구조를 어떻게 조합할까?
 `switch`문으로 도형을 분기하고, 각 `case` 내부에서 `if`문으로 길이를 검사하세요.
 수업 시간에 배운 **18번 계산기 문제**에서 나누기 0을 `case '/'` 안의 `if`로 처리한 방법과 동일한 패턴입니다.
-
-### 💡 힌트 3 (구현 방향) — 의사 코드
-```
-입력: shape, w, h
-
-switch(shape):
-    case 'T', 't':
-        if (w 또는 h가 0 이하):
-            출력: "잘못된 길이입니다"
-        else:
-            출력: (w * h) / 2
-        break
-    case 'R', 'r':
-        if (w 또는 h가 0 이하):
-            출력: "잘못된 길이입니다"
-        else:
-            출력: w * h
-        break
-    default:
-        출력: "잘못된 도형"
-```
 ---

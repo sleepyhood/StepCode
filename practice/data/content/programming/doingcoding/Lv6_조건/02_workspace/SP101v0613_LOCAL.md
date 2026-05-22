@@ -2,11 +2,11 @@
 id: "SP101v0613"
 db_id: "LOCAL"
 legacy_id: null
-title: "[숙제 3] 등급 판정기"
+title: "13. [조건-switch case default] 등급 판정기"
 platform: "doingcoding"
 level: "Low"
 tags:
-  - "Lv6 조건"
+  - "SLv6 조건"
 authors:
   - "LOCAL"
 supported_languages:
@@ -21,7 +21,7 @@ has_hint: "true"
 archived_at: "2026-05-19"
 ---
 
-# [숙제 3] 등급 판정기
+# 13. [조건-switch case default] 등급 판정기
 
 ## 1. 문제 설명
 학생의 학점을 의미하는 알파벳을 입력받아, 해당하는 평가 결과를 출력하는 프로그램을 작성하세요.

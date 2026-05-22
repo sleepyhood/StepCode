@@ -2,11 +2,11 @@
 id: "SP101v0611"
 db_id: "LOCAL"
 legacy_id: null
-title: "[숙제 1] 음료수 자판기"
+title: "11. [조건-switch case default] 음료수 자판기"
 platform: "doingcoding"
 level: "Low"
 tags:
-  - "Lv6 조건"
+  - "SLv6 조건"
 authors:
   - "LOCAL"
 supported_languages:
@@ -21,7 +21,7 @@ has_hint: "true"
 archived_at: "2026-05-19"
 ---
 
-# [숙제 1] 음료수 자판기
+# 11. [조건-switch case default] 음료수 자판기
 
 ## 1. 문제 설명
 자판기에서 메뉴 번호를 입력받아 해당 음료의 이름을 출력하는 프로그램을 작성하세요.

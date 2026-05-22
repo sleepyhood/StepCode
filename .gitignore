@@ -22,7 +22,12 @@ practice/data/content/programming/baekjoon/mycode/
 
 # DoingCoding LV26_재귀 임시 폴더
 practice/data/content/programming/doingcoding/LV26_재귀/scripts/
-practice/data/content/programming/doingcoding/LV26_재귀/temp/
+
+# Doingcoding test cases and generators
+!practice/data/content/programming/doingcoding/**/04_testcases/*.zip
+practice/data/content/programming/doingcoding/**/temp/**/*
+!practice/data/content/programming/doingcoding/**/temp/**/
+!practice/data/content/programming/doingcoding/**/temp/**/input_gen.py
 
 
 # 백준 아카이버 툴 관련

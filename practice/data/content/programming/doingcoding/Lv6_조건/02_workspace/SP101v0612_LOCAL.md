@@ -2,11 +2,11 @@
 id: "SP101v0612"
 db_id: "LOCAL"
 legacy_id: null
-title: "[숙제 2] 계절 구분기"
+title: "12. [조건-switch case default] 계절 구분기"
 platform: "doingcoding"
 level: "Low"
 tags:
-  - "Lv6 조건"
+  - "SLv6 조건"
 authors:
   - "LOCAL"
 supported_languages:
@@ -21,7 +21,7 @@ has_hint: "true"
 archived_at: "2026-05-19"
 ---
 
-# [숙제 2] 계절 구분기
+# 12. [조건-switch case default] 계절 구분기
 
 ## 1. 문제 설명
 월(Month)을 나타내는 번호를 입력받아 해당하는 계절을 출력하는 프로그램을 작성하세요.
