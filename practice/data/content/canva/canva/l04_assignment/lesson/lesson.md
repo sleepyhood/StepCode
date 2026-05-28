@@ -735,6 +735,9 @@ QR 코드는 템플릿 사용자가 이 자리의 용도를 알 수 있도록 �
 
 ### [실습 01] 초심자의 고민을 해결해 주는 명확한 구조의 디자인: 자주 묻는 질문 안내 인스타그램 게시물
 
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBdyBodm4/eqeGKRJLPd2lqeqv-0xAAA/view?utm_content=DAHBdyBodm4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
+
 ![초심자의 고민을 해결해 주는 명확한 구조의 디자인 자주 묻는 질문 안내 인스타그램 게시물 예시 이미지](/data/content/canva/assets/images/Week04/p273_07.png)
 
 **작업 사이즈** | 인스타그램 게시물 (1080 x 1350px, 4:5)
@@ -774,6 +777,8 @@ FAQ 게시물 템플릿은 캐러셀(여러 장의 슬라이드, 카드뉴스) �
 ---
 
 ### [실습 02] 신뢰가는 전문가로 브랜딩해 주는 디자인: 강사 프로필 인스타그램 게시물
+
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBd5NRoBc/wmuhvpVoxy2Jj9AinIGN6Q/view?utm_content=DAHBd5NRoBc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
 
 <!-- p.276 -->
 
@@ -823,6 +828,8 @@ FAQ 게시물 템플릿은 캐러셀(여러 장의 슬라이드, 카드뉴스) �
 
 ### [실습 03] 고객의 망설임을 끝내주는 혜택 정보 시각화 디자인: 체험 수업 홍보 인스타그램 게시물
 
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBkyVaHCo/Mz49xnrRrerliECrLaD-BQ/view?utm_content=DAHBkyVaHCo&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 ![작업 사이즈 | 인스타그램 게시물 (xpx ) 설명 이미지](/data/content/canva/assets/images/Week04/p279_05.png)
 
 **작업 사이즈** | 인스타그램 게시물 (1080x1350px, 4:5)
@@ -850,6 +857,8 @@ FAQ 게시물 템플릿은 캐러셀(여러 장의 슬라이드, 카드뉴스) �
 ---
 
 ### [실습 04] 혜택을 감각적인 그래픽 스타일로 시각화한 디자인: 리뷰 이벤트 안내 인스타그램 게시물
+
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBky_hYac/vCdaZaQCMZqnXO8k7FS6pQ/view?utm_content=DAHBky_hYac&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
 
 ![작업 사이즈 | 인스타그램 게시물 (Xpx ) 설명 이미지](/data/content/canva/assets/images/Week04/p281_04.png)
 
@@ -889,6 +898,8 @@ FAQ 게시물 템플릿은 캐러셀(여러 장의 슬라이드, 카드뉴스) �
 ---
 
 ### [실습 05] 백마디 말보다 강력한 한 장의 변화로 보여 주는 디자인: 전후 비교 리뷰 인스타그램 게시물
+
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBk8Gizmk/rbKZnfrX1hWjCzaob3BluA/view?utm_content=DAHBk8Gizmk&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
 
 ![작업 사이즈 | 인스타그램 게시물 (xpx ) 설명 이미지](/data/content/canva/assets/images/Week04/p284_04.png)
 
@@ -935,6 +946,8 @@ FAQ 게시물 템플릿은 캐러셀(여러 장의 슬라이드, 카드뉴스) �
 ---
 
 ### [실습 06] 링크 기능으로 완성하는 맞춤형 랜딩 페이지 디자인: 모바일 멀티 링크 페이지
+
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBlLtffNU/LdWJkl70PjEvydq329zhUg/view?utm_content=DAHBlLtffNU&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
 
 ![작업 사이즈 | 인스타그램 스토리 (Xpx) 설명 이미지](/data/content/canva/assets/images/Week04/p287_04.png)
 
@@ -1002,6 +1015,8 @@ FAQ 게시물 템플릿은 캐러셀(여러 장의 슬라이드, 카드뉴스) �
 
 ### [실습 07] 클릭을 부르는 정보 집약형 구성의 디자인: 온라인 클래스 유튜브 섬네일
 
+🔗[**실습 바로가기**](https://www.canva.com/design/DAHBlCXLw_A/954KROsTPHdUqlrCSb36OQ/view?utm_content=DAHBlCXLw_A&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 ![작업 사이즈 | 유튜브 섬네일 (Xpx) 설명 이미지](/data/content/canva/assets/images/Week04/p293_06.png)
 
 **작업 사이즈** | 유튜브 섬네일 (1920X1080px)
@@ -1028,6 +1043,8 @@ FAQ 게시물 템플릿은 캐러셀(여러 장의 슬라이드, 카드뉴스) �
 ---
 
 ### [실습 08] 혜택을 감각적인 그래픽 스타일로 시각화한 디자인: 개업 이벤트 홍보 전단지
+
+🔗[**실습 바로가기**](https://www.canva.com/design/DAHBlAjJRYA/h6eWMbciw6sQoXuFIz_uEw/view?utm_content=DAHBlAjJRYA&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
 
 ![작업 사이즈 | 전단지 (x mm A) 설명 이미지](/data/content/canva/assets/images/Week04/p295_03.png)
 
@@ -1060,6 +1077,8 @@ FAQ 게시물 템플릿은 캐러셀(여러 장의 슬라이드, 카드뉴스) �
 
 ### [실습 09] 복잡한 가격 정보를 깔끔하게 전달하는 디자인: 수강료 안내 배너
 
+🔗[**실습 바로가기**](https://www.canva.com/design/DAHBlCGmXu4/sZv1FsluVNROWGI7JaMckg/view?utm_content=DAHBlCGmXu4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 ![](/data/content/canva/assets/images/Week04/p298_02_01.png)
 
 **작업 사이즈** | 세로형 소형 배너 (400X1200mm)
@@ -1090,6 +1109,8 @@ FAQ 게시물 템플릿은 캐러셀(여러 장의 슬라이드, 카드뉴스) �
 ---
 
 ### [실습 10] 한눈에 들어오는 조화로운 정보 구성의 디자인: 레슨 시간표 포스터
+
+🔗 [**실습 바로가기**](https://www.canva.com/design/DAHBlH3p2l0/4nTXUJmlGFd8eVb69Pv45Q/view?utm_content=DAHBlH3p2l0&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
 
 ![작업 사이즈 | 포스터 ( x mm A) 설명 이미지](/data/content/canva/assets/images/Week04/p301_05.png)
 
