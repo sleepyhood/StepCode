@@ -5,8 +5,7 @@ is_scraped: false
 legacy_id: SALLv10002
 platform: doingcoding
 tags:
-  - SLv26 재귀함수
-  - SALLv5 재귀함수1
+  - SALLv10 재귀함수 2
 supported_languages:
   - C
   - C++

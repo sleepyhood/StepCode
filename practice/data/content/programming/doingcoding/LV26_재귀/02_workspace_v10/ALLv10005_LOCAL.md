@@ -6,10 +6,7 @@ legacy_id: ALLv10005
 memory_limit: 256MB
 platform: baekjoon
 tags:
-  - Lv26 재귀함수
-  - ALLv6 재귀함수
-  - ALLv5 재귀함수1
-  - ALLv05 재귀함수 1
+  - ALLv10 재귀함수 2
 supported_languages:
   - C
   - C++
