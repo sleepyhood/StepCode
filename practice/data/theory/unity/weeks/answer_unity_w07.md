@@ -7,18 +7,18 @@
 ## 정답표
 | 문항 ID | 정답 | 한 줄 근거 |
 |---|---|---|
-| P01 | B, C | B: 현재 총구의 위치/회전을 본따서 프리팹을 복제 생성(Instantiate)하는 동작 설명, C: 복제된 물체에 로컬 전방(Z축) 방향으로 등속 물리 속도(velocity)를 대입하는 동작 설명 |
+| P01 | B | B: 현재 총구의 위치/회전을 본따서 프리팹을 복제 생성(Instantiate)하는 동작 설명(B), C: 복제된 물체에 로컬 전방(Z축) 방향으로 등속 물리 속도(velocity)를 대입하는 동작 설명(C)의 조합 선택지 |
 | P02 | C | `GetComponent<Rigidbody>()`가 돌려주는 반환 타입이 `Rigidbody`이므로, 대입 받는 변수도 정확히 동일한 `Rigidbody` 자료형이어야 컴파일 통과 |
-| P03 | ① `transform.forward`, ② `speedForce` | ①은 캐릭터가 현재 바라보는 전방 단위 방향 벡터, ②는 Inspector에서 조절 가능하도록 `public`으로 선언된 힘 크기 실수형 변수 |
-| P04 | ① `Init`, ② `OnTriggerEnter` | ①은 풀에서 꺼낼 때마다 속도/체력을 리셋하는 커스텀 초기화 함수, ②는 `IsTrigger=true` 콜라이더 투과 충돌을 감지하는 엔진 내장 이벤트 |
-| X01 | 예: `if (Input.GetButtonDown("Fire1")) {`<br>`Rigidbody clone = Instantiate(projectile, transform.position, transform.rotation);`<br>`clone.velocity = transform.forward * 10f;` | 입력 감지(Fire1 Down) -> 프리팹 복제 생성(Instantiate) -> 전방 속도 할당(velocity)의 3단계 발사 로직 |
+| P03 | transform.forward, speedForce | ①은 캐릭터가 현재 바라보는 전방 단위 방향 벡터, ②는 Inspector에서 조절 가능하도록 `public`으로 선언된 힘 크기 실수형 변수 |
+| P04 | Init, OnTriggerEnter | ①은 풀에서 꺼낼 때마다 속도/체력을 리셋하는 커스텀 초기화 함수, ②는 `IsTrigger=true` 콜라이더 투과 충돌을 감지하는 엔진 내장 이벤트 |
+| X01 | B | 입력 감지(Fire1 Down) -> 프리팹 복제 생성(Instantiate) -> 전방 속도 할당(velocity)의 3단계 발사 루틴 선택 |
 | X02 | B | `IsTrigger=true` Collider는 물리적 반발 없이 겹침만 감지하므로, 유니티 엔진이 호출하는 이벤트는 `OnTriggerEnter(Collider other)` |
 
 ## 해설
 ### P01
 - 개념 정의: `Instantiate(프리팹, 위치, 회전)`는 지정 위치에 원본 오브젝트의 물리적 사본(Clone)을 생성하는 유니티 핵심 API이며, 생성 직후 `velocity` 속성에 값을 넣어주면 해당 방향으로 등속도 선형 이동이 즉시 시작됩니다.
 - 오답 포인트: 원본 프리팹(`projectile`)을 파괴한다거나, 인공지능 요소로 유도 명중한다는 등 코드에 절대 존재하지 않는 부가 동작을 지어내서 주석에 포함시킵니다.
-- 판별 기준: 2줄 코드 각각이 수행하는 **실재하는 단일 동작**(위치-회전 기반 복제(Instantiate), 전방 방향 등속도 부여(velocity))만 정확히 기술한 보기를 고릅니다.
+- 판별 기준: 2줄 코드 각각이 수행하는 **실재하는 단일 동작**(위치-회전 기반 복제(Instantiate), 전방 방향 등속도 부여(velocity))만 정확히 기술한 보기를 조합한 선택지 B(B, C)를 고릅니다.
 
 ### P02
 - 개념 정의: C#에서 제네릭 메서드 `GetComponent<T>()`가 반환하는 타입은 `<T>` 안에 기입한 컴포넌트 타입 그 자체이며, 대입 받는 좌변 변수도 이 타입과 반드시 일치해야 형 안전(Type Safety)이 보장됩니다.
@@ -37,8 +37,8 @@
 
 ### X01
 - 개념 정의: FPS/TPS 무기 발사 시스템의 기본 구조는 **① 입력 감지** → **② 프리팹 복제 생성** → **③ 물리 속성 대입**의 3단계입니다.
-- 오답 포인트: 생성(`Instantiate`)만 하고 방향 속도를 주지 않아 탄막이 그 자리에 멈춰 있거나, 입력 확인 분기(`GetButtonDown`) 없이 매 프레임 무한 발사하는 치명적 로직을 만듭니다.
-- 판별 기준: `if (Input.GetButtonDown("Fire1"))` 조건문, `Instantiate` 생성 캐싱, `clone.velocity` 방향 속도 대입이 3줄에 걸쳐 올바른 순서와 문법으로 기재되어 있는지 확인합니다.
+- 오답 포인트: `GameObject` 형태로 받아서 물리 속성인 `velocity`를 주어 컴파일 에러를 내거나(A), `AddForce`를 이용해 가속도를 누적시키거나(C), 복제본 객체를 참조하지 않고 원본 프리팹에 속도를 부과하려는 오류(D) 등이 있습니다.
+- 판별 기준: `Instantiate`가 반환하는 타입(`Rigidbody`)과 생성된 클론에 올바르게 앞쪽 방향 `transform.forward` 속도(`velocity`)를 할당하고 있는 B를 선택합니다.
 
 ### X02
 - 개념 정의: 유니티 물리 시스템은 콜라이더의 `IsTrigger` 체크박스 状態에 따라 **완전히 다른 이벤트 함수**를 호출합니다. 체크되어 있으면(`true`) `OnTriggerEnter(Collider)`를, 체크 해제면(`false`) `OnCollisionEnter(Collision)`를 각각 자동 분배합니다.

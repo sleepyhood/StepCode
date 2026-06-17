@@ -1,266 +1,288 @@
 {
-    "id": "unity_u01_inspector",
-    "title": "Unity U01 인스펙터 기초",
-    "categoryId": "unity_u01_inspector",
-    "availableLanguages": [
-        "csharp"
-    ],
-    "problems": [
-        {
-            "id": "p01",
-            "conceptRef": "u01_c1",
-            "conceptRefs": [
-                "u01_c1"
-            ],
-            "type": "short",
-            "level": "basic",
-            "title": "Inspector 기능 판별",
-            "description": "다음은 유니티 에디터의 Inspector(검사기) 창 및 주요 속성에 대한 설명입니다.\n각 문장의 참/거짓을 판별하세요.\n\n(1) 오브젝트의 Static 체크박스는 라이트맵 베이킹, 네비게이션 메시 등 화면과 물리 환경의 정적 최적화 워크플로에 활용되는 설정이다.\n(2) 오브젝트의 Tag(태그) 정보는 C# 스크립트에서 같은 분류의 오브젝트 그룹을 손쉽게 찾거나 충돌 시 대상을 식별하는 데 사용할 수 있다.\n(3) Prefab(프리팹)으로 만들어진 인스턴스를 하이어라키 창에 배치한 이후에는 인스펙터(Inspector) 창에서 개별 프로퍼티를 수정하거나 오버라이드(Override)할 수 없다.",
-            "answerUi": {
-                "kind": "grid",
-                "rows": [
-                    "(1) Static 최적화 활용",
-                    "(2) Tag 그룹 분류/식별",
-                    "(3) Prefab 인스턴스 수정"
-                ],
-                "columns": [
-                    "참/거짓"
-                ],
-                "narrowAnswerColumn": true,
-                "rowSep": "\n",
-                "colSep": " "
-            },
-            "expectedGrid": [
-                [
-                    "참"
-                ],
-                [
-                    "참"
-                ],
-                [
-                    "거짓"
-                ]
-            ],
-            "teacherExplainMd": "### P01 해설\n- **핵심 개념**: Static, Tag, Prefab은 Inspector에서 가장 자주 다루는 속성입니다.\n- **(1) 참**: Static 체크는 정적 오브젝트로 간주하여 라이트맵이나 내비게이션 계산 시 최적화에 사용됩니다.\n- **(2) 참**: Tag는 `GameObject.FindWithTag` 등으로 특정 그룹을 찾거나 충돌 시 `other.CompareTag`로 대상을 식별할 때 필수적입니다.\n- **(3) 거짓**: 프리팹 인스턴스라도 계층 구조에 배치된 후에는 개별적으로 값을 수정할 수 있으며, 이를 '오버라이드'라고 부릅니다."
-        },
-        {
-            "id": "p02",
-            "conceptRef": "u01_c2",
-            "conceptRefs": [
-                "u01_c2"
-            ],
-            "type": "short",
-            "level": "basic",
-            "title": "Unity 창 역할 매칭",
-            "description": "유니티 에디터를 구성하는 아래의 4가지 주요 창 이름을 기능 후보(A~D)와 1:1로 연결하세요.\n\n**기능 후보:**\nA. 현재 열려 있는 씬(Scene) 내에 존재하는 모든 게임 오브젝트의 계층 구조 목록을 보여준다.\nB. 시각적으로 2D/3D 환경을 오가며 오브젝트를 화면에 배치하고 트랜스폼 도구로 조작하는 실제 작업 공간이다.\nC. 게임 개발에 필요한 머티리얼, 스크립트, 오디오 원본 에셋(Asset) 파일들을 폴더별로 보관 및 탐색한다.\nD. 현재 마우스로 선택된 특정 게임 오브젝트나 에셋의 세부 컴포넌트 목록과 속성 파라미터 값을 보여주고 조작하게 해준다.",
-            "answerUi": {
-                "kind": "grid",
-                "rows": [
-                    "Hierarchy",
-                    "Scene",
-                    "Project",
-                    "Inspector"
-                ],
-                "columns": [
-                    "기능(A-D)"
-                ],
-                "narrowAnswerColumn": true,
-                "rowSep": "\n",
-                "colSep": " "
-            },
-            "expectedGrid": [
-                [
-                    "A"
-                ],
-                [
-                    "B"
-                ],
-                [
-                    "C"
-                ],
-                [
-                    "D"
-                ]
-            ],
-            "teacherExplainMd": "### P02 해설\n- **창별 역할 정의**:\n  - **Hierarchy**: 현재 씬에 있는 '오브젝트'들의 계층 구조 목록.\n  - **Scene**: 실제 '작업'이 이루어지는 시각적 뷰 창.\n  - **Project**: 하드디스크에 저장된 '파일(에셋)'들의 탐색기.\n  - **Inspector**: 선택한 특정 대상의 '상세 속성' 편집 창.\n- **팁**: Hierarchy와 Project를 혼동하지 않도록 주의하세요. Hierarchy는 씬에 배치된 것, Project는 아직 파일 상태인 것을 다룹니다."
-        },
-        {
-            "id": "p03",
-            "conceptRef": "u01_c3",
-            "conceptRefs": [
-                "u01_c3"
-            ],
-            "type": "short",
-            "level": "basic",
-            "title": "IDE 설정 위치",
-            "description": "Unity 상단 메뉴의 **Edit > Preferences** 창에서, Visual Studio나 VS Code 같은 C# 스크립트 편집기(IDE) 프로그램을 연결하기 위해 지정하는 드롭다운 옵션의 정확한 영문 이름을 쓰세요. (3단어)",
-            "expectedAnyOf": [
-                "External Script Editor"
-            ],
-            "teacherExplainMd": "### P03 해설\n- **설정 경로**: `Edit > Preferences > External Tools` 탭에 위치합니다.\n- **정답**: `External Script Editor` 옵션을 통해 유니티에서 스크립트 파일을 더블클릭했을 때 열릴 기본 프로그램을 지정할 수 있습니다."
-        },
-        {
-            "id": "p04",
-            "conceptRef": "u01_c4",
-            "conceptRefs": [
-                "u01_c4"
-            ],
-            "type": "short",
-            "level": "basic",
-            "title": "Scene 배치 설명 참/거짓",
-            "description": "다음 문장의 참/거짓을 판별하세요.\n\n(1) Scene View에서 오브젝트를 조작할 때, 툴 핸들의 기준 좌표계를 Local(로컬)과 Global(글로벌) 모드 간에 전환할 수 있다.\n(2) 툴바 상단의 Transform(또는 Universal) 도구를 선택하면, 이동(Move), 회전(Rotate), 스케일(Scale) 조작 기즈모가 한데 결합되어 표시된다.\n(3) Vertex Snapping(꼭지점 스냅)은 선택한 모델 메시의 꼭지점을 반드시 장면의 그리드에만 맞추는 용도로만 허용된다.\n(4) 게임 오브젝트의 이동 좌표, 회전 각도, 스케일 크기 수치는 3D Scene View 화면에서 마우스로 드래그해야만 조정할 수 있다.",
-            "answerUi": {
-                "kind": "grid",
-                "rows": [
-                    "(1) Local/Global 전환",
-                    "(2) Universal 도구 결합",
-                    "(3) Vertex Snap 용도",
-                    "(4) 수치 조정 방식"
-                ],
-                "columns": [
-                    "참/거짓"
-                ],
-                "narrowAnswerColumn": true,
-                "rowSep": "\n",
-                "colSep": " "
-            },
-            "expectedGrid": [
-                [
-                    "참"
-                ],
-                [
-                    "참"
-                ],
-                [
-                    "거짓"
-                ],
-                [
-                    "거짓"
-                ]
-            ],
-            "teacherExplainMd": "### P04 해설\n- **(1) 참**: 상단 툴바의 버튼(또는 단축키)을 통해 기준 축을 로컬/글로벌로 바꿀 수 있습니다.\n- **(2) 참**: Universal Tool은 세 가지 기본 변환 조작을 하나로 합친 편리한 도구입니다.\n- **(3) 거짓**: Vertex Snapping은 그리드보다는 **다른 오브젝트의 꼭지점**에 정확히 갖다 붙일 때 훨씬 많이 사용됩니다 (단축키 `V` 사용).\n- **(4) 거짓**: Scene 뷰 드래그 외에도 **Inspector 창의 Transform 컴포넌트**에서 숫자를 직접 입력하여 정밀하게 수정할 수 있습니다."
-        },
-        {
-            "id": "p05",
-            "conceptRef": "u01_c5",
-            "conceptRefs": [
-                "u01_c5"
-            ],
-            "type": "code",
-            "level": "challenge",
-            "title": "Inspector 변수 노출",
-            "description": "스크립트에 선언된 변수는 `public`으로 작성될 때만 Inspector 창에 기본 표시됩니다.\n외부 클래스에서의 무분별한 접근을 막는 캡슐화(`private`)를 유지하면서도, 유니티 에디터의 Inspector 창에서는 값을 설정할 수 있도록 아래 코드를 한 줄로 수정하세요.",
-            "code": "private int speed;",
-            "expectedCode": "[SerializeField] private int speed;",
-            "teacherExplainMd": "### P05 해설\n- **핵심 포인트**: 유니티는 '직렬화(Serialization)' 가능한 필드를 인스펙터에 노출합니다.\n- **해결책**: 변수 앞에 `[SerializeField]` 특성(Attribute)을 붙여주면, `private` 상태를 유지하면서도 에디터에서 값을 수정할 수 있어 객체지향 원칙을 지키며 개발할 수 있습니다."
-        },
-        {
-            "id": "x01",
-            "conceptRef": "u01_c6",
-            "conceptRefs": [
-                "u01_c6",
-                "u01_c1"
-            ],
-            "type": "code",
-            "level": "challenge",
-            "title": "Tag 검색 API 작성",
-            "description": "C# 스크립트 내에서 `Enemy` 태그를 가지고 있는 모든 게임 오브젝트를 찾아내어, 배열 변수 `enemies`에 할당하는 코드를 단 한 줄로 작성하세요.",
-            "code": "GameObject[] enemies = ",
-            "expectedCode": "GameObject[] enemies = GameObject.FindGameObjectsWithTag(\"Enemy\");",
-            "teacherExplainMd": "### X01 해설\n- **단일 검색**: `GameObject.FindWithTag` (하나의 오브젝트 반환)\n- **다중 검색**: `GameObject.FindGameObjectsWithTag` (오브젝트 배열 반환)\n- **주의**: 배열 타입이므로 함수명 뒤에 `s`가 붙는 `Objects` 형태를 사용해야 하며, 큰따옴표(`\" \"`)로 태그 이름을 정확히 감싸야 합니다."
-        },
-        {
-            "id": "x02",
-            "conceptRef": "u01_c5",
-            "conceptRefs": [
-                "u01_c5"
-            ],
-            "type": "mcq",
-            "level": "challenge",
-            "title": "함정 - 필드 노출 가능 여부 판단",
-            "description": "별도의 추가 작업 없이 기본 상태 그대로는 유니티 에디터의 Inspector 창에 노출(표시)되지 않는 변수 선언 코드를 고르세요.",
-            "options": [
-                "public int hp;",
-                "[SerializeField] private float moveSpeed;",
-                "private int score;",
-                "public string playerName;"
-            ],
-            "optionLabels": [
-                "A",
-                "B",
-                "C",
-                "D"
-            ],
-            "correctIndex": 2,
-            "teacherExplainMd": "### X02 해설\n- **노출 조건**:\n  - `public` 필드: 기본적으로 노출됨 (A, D)\n  - `private` + `[SerializeField]`: 명시적 요청으로 노출됨 (B)\n  - **단순 `private` 필드**: 외부 및 에디터에서 모두 감춰짐 (C)\n- **정답**: `private int score;`는 인스펙터에 나타나지 않습니다."
-        }
-    ],
-    "concepts": [
-        {
-            "id": "u01_c1",
-            "label": "Inspector 기본 기능",
-            "summary": "Static, Tag, Prefab의 역할과 오답 포인트",
-            "badge": "Inspector",
-            "aliases": [
-                "Static",
-                "Tag",
-                "Prefab"
-            ]
-        },
-        {
-            "id": "u01_c2",
-            "label": "Unity 주요 창 역할",
-            "summary": "Hierarchy, Scene, Project, Inspector의 역할 구분",
-            "badge": "Editor",
-            "aliases": [
-                "Hierarchy",
-                "Scene",
-                "Project",
-                "Inspector"
-            ]
-        },
-        {
-            "id": "u01_c3",
-            "label": "External Script Editor 설정",
-            "summary": "External Tools와 External Script Editor 옵션 구분",
-            "badge": "IDE",
-            "aliases": [
-                "External Tools",
-                "External Script Editor"
-            ]
-        },
-        {
-            "id": "u01_c4",
-            "label": "Scene 배치 도구와 좌표계",
-            "summary": "Local/Global, Universal Tool, Vertex Snapping, Transform 수치 입력",
-            "badge": "Scene",
-            "aliases": [
-                "Local",
-                "Global",
-                "Universal Tool",
-                "Vertex Snapping"
-            ]
-        },
-        {
-            "id": "u01_c5",
-            "label": "Inspector 필드 노출",
-            "summary": "public, private, [SerializeField]에 따른 Inspector 노출 규칙",
-            "badge": "SerializeField",
-            "aliases": [
-                "public",
-                "private",
-                "[SerializeField]"
-            ]
-        },
-        {
-            "id": "u01_c6",
-            "label": "Tag 검색 API",
-            "summary": "FindGameObjectsWithTag와 배열 반환 패턴",
-            "badge": "Tag",
-            "aliases": [
-                "FindGameObjectsWithTag",
-                "GameObject[]"
-            ]
-        }
-    ]
+  "id": "unity_u01_inspector",
+  "title": "Unity U01 인스펙터 기초",
+  "categoryId": "unity_u01_inspector",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "p01",
+      "conceptRef": "u01_c1",
+      "conceptRefs": [
+        "u01_c1"
+      ],
+      "type": "short",
+      "level": "basic",
+      "title": "Inspector 기능 판별",
+      "description": "다음은 유니티 에디터의 Inspector(검사기) 창 및 주요 속성에 대한 설명입니다.\n각 문장의 참/거짓을 판별하세요.\n\n(1) 오브젝트의 Static 체크박스는 라이트맵 베이킹, 네비게이션 메시 등 화면과 물리 환경의 정적 최적화 워크플로에 활용되는 설정이다.\n(2) 오브젝트의 Tag(태그) 정보는 C# 스크립트에서 같은 분류의 오브젝트 그룹을 손쉽게 찾거나 충돌 시 대상을 식별하는 데 사용할 수 있다.\n(3) Prefab(프리팹)으로 만들어진 인스턴스를 하이어라키 창에 배치한 이후에는 인스펙터(Inspector) 창에서 개별 프로퍼티를 수정하거나 오버라이드(Override)할 수 없다.",
+      "answerUi": {
+        "kind": "grid",
+        "rows": [
+          "(1) Static 최적화 활용",
+          "(2) Tag 그룹 분류/식별",
+          "(3) Prefab 인스턴스 수정"
+        ],
+        "columns": [
+          "참/거짓"
+        ],
+        "narrowAnswerColumn": true,
+        "rowSep": "\n",
+        "colSep": " "
+      },
+      "expectedGrid": [
+        [
+          "참"
+        ],
+        [
+          "참"
+        ],
+        [
+          "거짓"
+        ]
+      ],
+      "teacherExplainMd": "### P01 해설\n- **핵심 개념**: Static, Tag, Prefab은 Inspector에서 가장 자주 다루는 속성입니다.\n- **(1) 참**: Static 체크는 정적 오브젝트로 간주하여 라이트맵이나 내비게이션 계산 시 최적화에 사용됩니다.\n- **(2) 참**: Tag는 `GameObject.FindWithTag` 등으로 특정 그룹을 찾거나 충돌 시 `other.CompareTag`로 대상을 식별할 때 필수적입니다.\n- **(3) 거짓**: 프리팹 인스턴스라도 계층 구조에 배치된 후에는 개별적으로 값을 수정할 수 있으며, 이를 '오버라이드'라고 부릅니다."
+    },
+    {
+      "id": "p02",
+      "conceptRef": "u01_c2",
+      "conceptRefs": [
+        "u01_c2"
+      ],
+      "type": "short",
+      "level": "basic",
+      "title": "Unity 창 역할 매칭",
+      "description": "유니티 에디터를 구성하는 아래의 4가지 주요 창 이름을 기능 후보(A~D)와 1:1로 연결하세요.\n\n**기능 후보:**\nA. 현재 열려 있는 씬(Scene) 내에 존재하는 모든 게임 오브젝트의 계층 구조 목록을 보여준다.\nB. 시각적으로 2D/3D 환경을 오가며 오브젝트를 화면에 배치하고 트랜스폼 도구로 조작하는 실제 작업 공간이다.\nC. 게임 개발에 필요한 머티리얼, 스크립트, 오디오 원본 에셋(Asset) 파일들을 폴더별로 보관 및 탐색한다.\nD. 현재 마우스로 선택된 특정 게임 오브젝트나 에셋의 세부 컴포넌트 목록과 속성 파라미터 값을 보여주고 조작하게 해준다.",
+      "answerUi": {
+        "kind": "grid",
+        "rows": [
+          "Hierarchy",
+          "Scene",
+          "Project",
+          "Inspector"
+        ],
+        "columns": [
+          "기능(A-D)"
+        ],
+        "narrowAnswerColumn": true,
+        "rowSep": "\n",
+        "colSep": " "
+      },
+      "expectedGrid": [
+        [
+          "A"
+        ],
+        [
+          "B"
+        ],
+        [
+          "C"
+        ],
+        [
+          "D"
+        ]
+      ],
+      "teacherExplainMd": "### P02 해설\n- **창별 역할 정의**:\n  - **Hierarchy**: 현재 씬에 있는 '오브젝트'들의 계층 구조 목록.\n  - **Scene**: 실제 '작업'이 이루어지는 시각적 뷰 창.\n  - **Project**: 하드디스크에 저장된 '파일(에셋)'들의 탐색기.\n  - **Inspector**: 선택한 특정 대상의 '상세 속성' 편집 창.\n- **팁**: Hierarchy와 Project를 혼동하지 않도록 주의하세요. Hierarchy는 씬에 배치된 것, Project는 아직 파일 상태인 것을 다룹니다."
+    },
+    {
+      "id": "p03",
+      "conceptRef": "u01_c3",
+      "conceptRefs": [
+        "u01_c3"
+      ],
+      "type": "mcq",
+      "level": "basic",
+      "title": "IDE 설정 위치",
+      "description": "Unity 상단 메뉴의 **Edit > Preferences** 창에서, Visual Studio나 VS Code 같은 C# 스크립트 편집기(IDE) 프로그램을 연결하기 위해 지정하는 드롭다운 옵션의 정확한 이름을 고르세요. (힌트: External Tools 탭에 위치합니다)",
+      "options": [
+        "External Tool Editor",
+        "External Script Editor",
+        "External IDE Connector",
+        "Script Editor Tool"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 1,
+      "teacherExplainMd": "### P03 해설\n- **설정 경로**: `Edit > Preferences > External Tools` 탭에 위치합니다.\n- **정답**: `External Script Editor` (B) 옵션을 통해 유니티에서 스크립트 파일을 더블클릭했을 때 열릴 기본 프로그램을 지정할 수 있습니다."
+    },
+    {
+      "id": "p04",
+      "conceptRef": "u01_c4",
+      "conceptRefs": [
+        "u01_c4"
+      ],
+      "type": "short",
+      "level": "basic",
+      "title": "Scene 배치 설명 참/거짓",
+      "description": "다음 문장의 참/거짓을 판별하세요.\n\n(1) Scene View에서 오브젝트를 조작할 때, 툴 핸들의 기준 좌표계를 Local(로컬)과 Global(글로벌) 모드 간에 전환할 수 있다.\n(2) 툴바 상단의 Transform(또는 Universal) 도구를 선택하면, 이동(Move), 회전(Rotate), 스케일(Scale) 조작 기즈모가 한데 결합되어 표시된다.\n(3) Vertex Snapping(꼭지점 스냅)은 선택한 모델 메시의 꼭지점을 반드시 장면의 그리드에만 맞추는 용도로만 허용된다.\n(4) 게임 오브젝트의 이동 좌표, 회전 각도, 스케일 크기 수치는 3D Scene View 화면에서 마우스로 드래그해야만 조정할 수 있다.",
+      "answerUi": {
+        "kind": "grid",
+        "rows": [
+          "(1) Local/Global 전환",
+          "(2) Universal 도구 결합",
+          "(3) Vertex Snap 용도",
+          "(4) 수치 조정 방식"
+        ],
+        "columns": [
+          "참/거짓"
+        ],
+        "narrowAnswerColumn": true,
+        "rowSep": "\n",
+        "colSep": " "
+      },
+      "expectedGrid": [
+        [
+          "참"
+        ],
+        [
+          "참"
+        ],
+        [
+          "거짓"
+        ],
+        [
+          "거짓"
+        ]
+      ],
+      "teacherExplainMd": "### P04 해설\n- **(1) 참**: 상단 툴바의 버튼(또는 단축키)을 통해 기준 축을 로컬/글로벌로 바꿀 수 있습니다.\n- **(2) 참**: Universal Tool은 세 가지 기본 변환 조작을 하나로 합친 편리한 도구입니다.\n- **(3) 거짓**: Vertex Snapping은 그리드보다는 **다른 오브젝트의 꼭지점**에 정확히 갖다 붙일 때 훨씬 많이 사용됩니다 (단축키 `V` 사용).\n- **(4) 거짓**: Scene 뷰 드래그 외에도 **Inspector 창의 Transform 컴포넌트**에서 숫자를 직접 입력하여 정밀하게 수정할 수 있습니다."
+    },
+    {
+      "id": "p05",
+      "conceptRef": "u01_c5",
+      "conceptRefs": [
+        "u01_c5"
+      ],
+      "type": "short",
+      "level": "challenge",
+      "title": "Inspector 변수 노출",
+      "description": "외부 클래스에서의 무분별한 접근을 막는 캡슐화(`private`)를 유지하면서도, 유니티 에디터의 Inspector 창에서는 값을 GUI로 설정할 수 있게 하려고 합니다.\n아래 코드의 ①번 빈칸에 들어갈 유니티 C# 특성(Attribute)의 이름을 쓰세요.\n\n```csharp\n[①]\nprivate int speed;\n```\n\n**답안 작성 주의**: 대괄호 `[` 와 `]` 를 제외하고 영문 특성 이름만 대소문자를 정확히 구별하여 한 단어로 작성하세요. (예: `SerializeField`)",
+      "expectedAnyOf": [
+        "SerializeField"
+      ],
+      "teacherExplainMd": "### P05 해설\n- **핵심 포인트**: 유니티는 '직렬화(Serialization)' 가능한 필드를 인스펙터에 노출합니다.\n- **해결책**: 변수 앞에 `[SerializeField]` 특성(Attribute)을 붙여주면, `private` 상태를 유지하면서도 에디터에서 값을 수정할 수 있어 객체지향 원칙을 지키며 개발할 수 있습니다. 여기서는 해당 특성의 이름인 `SerializeField`를 작성합니다."
+    },
+    {
+      "id": "x01",
+      "conceptRef": "u01_c6",
+      "conceptRefs": [
+        "u01_c6",
+        "u01_c1"
+      ],
+      "type": "mcq",
+      "level": "challenge",
+      "title": "Tag 검색 API 작성",
+      "description": "유니티 C# 스크립트 내에서 `Enemy` 태그를 가지고 있는 모든 게임 오브젝트를 찾아내어, `GameObject[]` 타입의 배열 변수 `enemies`를 선언함과 동시에 할당(초기화)하는 가장 올바른 코드를 고르세요.",
+      "options": [
+        "GameObject enemy = GameObject.FindWithTag(\"Enemy\");",
+        "GameObject[] enemies = GameObject.FindWithTag(\"Enemy\");",
+        "GameObject[] enemies = GameObject.FindGameObjectsWithTag(\"Enemy\");",
+        "GameObject[] enemies = FindGameObjectsWithTag(\"Enemy\");"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2,
+      "teacherExplainMd": "### X01 해설\n- **단일 검색**: `GameObject.FindWithTag` (하나의 오브젝트 반환)\n- **다중 검색**: `GameObject.FindGameObjectsWithTag` (오브젝트 배열 반환)\n- **주의**: 결과 변수의 타입이 `GameObject[]` (배열)이므로, 호출하는 함수명에 `s`가 붙고 `GameObject` 클래스를 통해 정적 메서드로 호출하는 C를 골라야 합니다."
+    },
+    {
+      "id": "x02",
+      "conceptRef": "u01_c5",
+      "conceptRefs": [
+        "u01_c5"
+      ],
+      "type": "mcq",
+      "level": "challenge",
+      "title": "함정 - 필드 노출 가능 여부 판단",
+      "description": "별도의 추가 작업 없이 기본 상태 그대로는 유니티 에디터의 Inspector 창에 노출(표시)되지 않는 변수 선언 코드를 고르세요.",
+      "options": [
+        "public int hp;",
+        "[SerializeField] private float moveSpeed;",
+        "private int score;",
+        "public string playerName;"
+      ],
+      "optionLabels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "correctIndex": 2,
+      "teacherExplainMd": "### X02 해설\n- **노출 조건**:\n  - `public` 필드: 기본적으로 노출됨 (A, D)\n  - `private` + `[SerializeField]`: 명시적 요청으로 노출됨 (B)\n  - **단순 `private` 필드**: 외부 및 에디터에서 모두 감춰짐 (C)\n- **정답**: `private int score;`는 인스펙터에 나타나지 않습니다."
+    }
+  ],
+  "concepts": [
+    {
+      "id": "u01_c1",
+      "label": "Inspector 기본 기능",
+      "summary": "Static, Tag, Prefab의 역할과 오답 포인트",
+      "badge": "Inspector",
+      "aliases": [
+        "Static",
+        "Tag",
+        "Prefab"
+      ]
+    },
+    {
+      "id": "u01_c2",
+      "label": "Unity 주요 창 역할",
+      "summary": "Hierarchy, Scene, Project, Inspector의 역할 구분",
+      "badge": "Editor",
+      "aliases": [
+        "Hierarchy",
+        "Scene",
+        "Project",
+        "Inspector"
+      ]
+    },
+    {
+      "id": "u01_c3",
+      "label": "External Script Editor 설정",
+      "summary": "External Tools와 External Script Editor 옵션 구분",
+      "badge": "IDE",
+      "aliases": [
+        "External Tools",
+        "External Script Editor"
+      ]
+    },
+    {
+      "id": "u01_c4",
+      "label": "Scene 배치 도구와 좌표계",
+      "summary": "Local/Global, Universal Tool, Vertex Snapping, Transform 수치 입력",
+      "badge": "Scene",
+      "aliases": [
+        "Local",
+        "Global",
+        "Universal Tool",
+        "Vertex Snapping"
+      ]
+    },
+    {
+      "id": "u01_c5",
+      "label": "Inspector 필드 노출",
+      "summary": "public, private, [SerializeField]에 따른 Inspector 노출 규칙",
+      "badge": "SerializeField",
+      "aliases": [
+        "public",
+        "private",
+        "[SerializeField]"
+      ]
+    },
+    {
+      "id": "u01_c6",
+      "label": "Tag 검색 API",
+      "summary": "FindGameObjectsWithTag와 배열 반환 패턴",
+      "badge": "Tag",
+      "aliases": [
+        "FindGameObjectsWithTag",
+        "GameObject[]"
+      ]
+    }
+  ]
 }

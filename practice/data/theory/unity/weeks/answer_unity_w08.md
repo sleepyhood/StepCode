@@ -7,12 +7,12 @@
 ## 정답표
 | 문항 ID | 정답 | 한 줄 근거 |
 |---|---|---|
-| P01 | ① `using UnityEngine.UI;` ② `public Text myText;` ③ `myText.text = ("Score: " + score.ToString());` | UI Text 사용에 네임스페이스 import, 컴포넌트 변수 선언, 문자열 변환 대입이 모두 갖춰져야 함 |
-| P02 | ① `void` ② `SetMessageToDisplay` ③ `(string stringToDisplay)` | 값을 돌려주지 않으므로 void, 호출 코드와 대소문자 일치, 본문에서 참조하는 파라미터 이름 동기화 필수 |
-| P03 | ① `private` ② `void` ③ `OnMouseUp` | 외부 노출 불필요하므로 private, 반환값 없으므로 void, 마우스 버튼 해제 시 엔진이 자동 호출하는 정확한 내장 이름 |
-| P04 | 1 참, 2 거짓, 3 참 | Start 1회 등록은 정상 동작, OnTriggerEnter2D는 물리 전용이므로 클릭 대체 불가, Update 등록은 동작하지만 중복 누적 부작용 발생 |
-| X01 | 예: `void Start() { button2.onClick.AddListener(LightBulbOn); }` | 1회성 초기화 메서드 안에서 AddListener를 호출하여 중복 등록 원천 차단 |
-| X02 | B | 매 프레임 루프(Update/LateUpdate)나 물리 이벤트(OnTriggerEnter2D)가 아닌, 씬 시작 시 단 1회 호출되는 Start()가 최적 |
+| P01 | ① `using UnityEngine.UI;` ② `public Text myText;` ③ `myText.text = ("Score: " + score.ToString());` | UI 사용 네임스페이스 가져오기 -> 인스펙터 노출용 Text 변수 선언 -> String 변환 대입문 갱신 |
+| P02 | ① `void` ② `SetMessageToDisplay` ③ `(string stringToDisplay)` | 외부 호출 인자와 컴파일 성공 요건을 매칭한 시그니처 3대 요소 |
+| P03 | ① `private` ② `void` ③ `OnMouseUp` | 접근 제한을 최소화(private)하고 해제 타이밍(OnMouseUp)에 반응하는 콜백 선언 |
+| P04 | 1 참, 2 거짓, 3 참 | 각 생명주기 위치에 리스너를 넣었을 때의 고유 동작 결과 판별 |
+| X01 | B | 중복 누적 등록 사고가 절대로 나지 않도록 하는 초기화 1회 호출 시점(Start)의 등록 코드 선택 |
+| X02 | B | `Start()`는 씬이 적재되어 시작될 때 단 한 번만 실행되는 안전지대이므로, 여기에 등록해야 중복 호출 사고가 없음 |
 
 ## 해설
 ### P01

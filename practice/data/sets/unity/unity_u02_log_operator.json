@@ -1,223 +1,236 @@
 {
-    "id": "unity_u02_log_operator",
-    "title": "Unity U02 로그/연산자 기초",
-    "categoryId": "unity_u02_log_operator",
-    "availableLanguages": [
-        "csharp"
-    ],
-    "problems": [
-        {
-            "id": "p01",
-            "conceptRef": "u02_c1",
-            "conceptRefs": [
-                "u02_c1"
-            ],
-            "type": "mcq",
-            "level": "basic",
-            "title": "콘솔 출력 API",
-            "description": "유니티(Unity) C# 스크립트에서, 에디터 하단의 콘솔(Console) 창에 문자열 `\"Hello World!\"`를 출력하여 디버깅하고자 할 때 사용하는 가장 올바른 코드를 고르세요.",
-            "options": [
-                "`Console.Log(\"Hello World!\");`",
-                "`Debug.Log(\"Hello World!\");`",
-                "`print.log(\"Hello World!\");`",
-                "`System.Log(\"Hello World!\");`"
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 1,
-            "teacherExplainMd": "### P01 해설\n- **정답**: `Debug.Log(\"Hello World!\");` \n- **설명**: Unity에서 콘솔 창에 메시지를 출력하는 표준 API는 `Debug` 클래스의 `Log` 메서드입니다. C# 표준인 `Console.WriteLine`은 유니티 콘솔에 찍히지 않으므로 주의가 필요합니다."
-        },
-        {
-            "id": "p02",
-            "conceptRef": "u02_c2",
-            "conceptRefs": [
-                "u02_c2",
-                "u02_c1"
-            ],
-            "type": "short",
-            "level": "basic",
-            "title": "연산자 의미 매칭",
-            "description": "C# 스크립트에서 자주 사용되는 다음 연산자 기호들을 그 올바른 기능과 연결하세요.\n\n**의미 후보:**\n값 할당, 양변이 같음(비교), 양변이 같지 않음(비교), 변수 1 증가, 문자열 연결",
-            "answerUi": {
-                "kind": "grid",
-                "rows": ["=", "==", "!=", "++", "+"],
-                "columns": ["기능"],
-                "narrowAnswerColumn": true,
-                "rowSep": "\n",
-                "colSep": " "
-            },
-            "expectedGrid": [
-                ["값 할당"],
-                ["양변이 같음(비교)"],
-                ["양변이 같지 않음(비교)"],
-                ["변수 1 증가"],
-                ["문자열 연결"]
-            ],
-            "teacherExplainMd": "### P02 해설\n- **핵심 포인트**: `=` (대입)와 `==` (비교)를 혼동하지 않는 것이 가장 중요합니다.\n- **+ 연산자**: 숫자 사이에서는 덧셈이지만, 문자열이 포함되면 문자열을 이어붙이는 역할을 합니다."
-        },
-        {
-            "id": "p03",
-            "conceptRef": "u02_c3",
-            "conceptRefs": [
-                "u02_c3",
-                "u02_c2"
-            ],
-            "type": "mcq",
-            "level": "basic",
-            "title": "OR 조건식 판별",
-            "description": "플레이어의 체력 `hp`가 0 이하이거나, 시간 종료 `timeOver`가 `true`일 때 실행되는 `if` 문 조건식을 고르세요.",
-            "options": [
-                "`if (hp <= 0 && timeOver == true)`",
-                "`if (hp <= 0 || timeOver == true)`",
-                "`if (hp <= 0 = timeOver == true)`",
-                "`if (hp <= 0 != timeOver == true)`"
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 1,
-            "teacherExplainMd": "### P03 해설\n- **정답**: `if (hp <= 0 || timeOver == true)`\n- **설명**: '~하거나(또는)' 조건을 만족하는 논리 연산자는 `||` (OR)입니다. `&&`는 '그리고(AND)' 조건이므로 두 가지가 모두 참일 때만 실행됩니다."
-        },
-        {
-            "id": "p04",
-            "conceptRef": "u02_c3",
-            "conceptRefs": [
-                "u02_c3",
-                "u02_c2"
-            ],
-            "type": "short",
-            "level": "basic",
-            "title": "나머지 연산",
-            "description": "정수형 변수 `i`의 값이 짝수인지 판별하여 참(`true`)이 되도록 하는 C# 조건식을 산술 연산자(`%`)와 비교 연산자(`==`)를 활용하여 작성하세요.",
-            "expectedAnyOf": ["i % 2 == 0", "i%2==0", "(i % 2) == 0"],
-            "teacherExplainMd": "### P04 해설\n- **정담**: `i % 2 == 0` \n- **설명**: 어떤 수를 2로 나누었을 때 나머지가 0이면 짝수입니다. 비교 시에는 반드시 `==`를 사용해야 합니다."
-        },
-        {
-            "id": "p05",
-            "conceptRef": "u02_c4",
-            "conceptRefs": [
-                "u02_c4"
-            ],
-            "type": "short",
-            "level": "challenge",
-            "title": "명명 규칙 판별 1",
-            "description": "유니티와 C#의 식별자 대소문자 구분 규칙에 대한 참/거짓을 판별하세요.\n\n(1) `MonoBehaviour`는 반드시 대소문자를 정확히 일치시켜야 컴파일 오류가 나지 않는다.\n(2) 유니티 이벤트 함수(예: 충돌 감지)는 `ontriggerenter`처럼 소문자로 써도 엔진이 인식한다.",
-            "answerUi": {
-                "kind": "grid",
-                "rows": ["(1) 클래스 상속명 고정", "(2) 이벤트 함수 소문자 허용"],
-                "columns": ["참/거짓"],
-                "narrowAnswerColumn": true,
-                "rowSep": "\n",
-                "colSep": " "
-            },
-            "expectedGrid": [
-                ["참"],
-                ["거짓"]
-            ],
-            "teacherExplainMd": "### P05 해설\n- **(1) 참**: 클래스 이름은 식별자이므로 대소문자가 틀리면 찾을 수 없습니다.\n- **(2) 거짓**: `OnTriggerEnter`와 같은 유니티 메시지는 엔진이 미리 약속된 이름을 찾아서 호출하므로, 소문자로 시작하면 호출되지 않습니다 (조용한 실패)."
-        },
-        {
-            "id": "p06",
-            "conceptRef": "u02_c4",
-            "conceptRefs": [
-                "u02_c4"
-            ],
-            "type": "mcq",
-            "level": "challenge",
-            "title": "명명 규칙 판별 2",
-            "description": "다음 중 C# 기본 키워드와 유니티 API 명명 규칙이 모두 올바른 항목을 고르세요.",
-            "options": [
-                "`compareTag`, `Enabled`, `Public`",
-                "`CompareTag`, `enabled`, `public`",
-                "`Comparetag`, `enabled`, `Public`",
-                "`comparetag`, `Enabled`, `public`"
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 1,
-            "teacherExplainMd": "### P06 해설\n- **정답**: B\n- **설명**: C# 키워드인 `public`은 소문자여야 하며, 유니티 메서드인 `CompareTag`는 파스칼 케이스(또는 메서드 규칙)를 따릅니다. 컴포넌트의 프로퍼티인 `enabled`는 소문자로 시작합니다."
-        },
-        {
-            "id": "x01",
-            "conceptRef": "u02_c3",
-            "conceptRefs": [
-                "u02_c3",
-                "u02_c1",
-                "u02_c2"
-            ],
-            "type": "code",
-            "level": "challenge",
-            "title": "변형 - 로그 + 판별 결과 출력",
-            "description": "정수 변수 `n`이 홀수인지 판별한 결과를 `isOdd` 변수에 저장하고, 콘솔에 `\"isOdd=\"`와 그 결과를 출력하는 두 줄의 코드를 작성하세요.",
-            "code": "bool isOdd = // 여기에 작성\nDebug.Log( // 여기에 작성 );",
-            "expectedCode": "bool isOdd = n % 2 != 0;\nDebug.Log(\"isOdd=\" + isOdd);",
-            "teacherExplainMd": "### X01 해설\n- **홀수 판별**: `n % 2 != 0` 또는 `n % 2 == 1`을 사용할 수 있습니다.\n- **로그 출력**: 문자열과 변수를 `+` 연산자로 연결하여 출력합니다."
-        },
-        {
-            "id": "x02",
-            "conceptRef": "u02_c4",
-            "conceptRefs": [
-                "u02_c4"
-            ],
-            "type": "mcq",
-            "level": "challenge",
-            "title": "함정 - 대소문자 오류 찾기",
-            "description": "철자나 대소문자 오류로 인해 엔진이 의도대로 자동 호출해주지 않는 코드를 고르세요.",
-            "options": [
-                "`other.CompareTag(\"Player\")`",
-                "`void OnTriggerEnter(Collider other)`",
-                "`void onTriggerEnter(Collider other)`",
-                "`Debug.Log(\"ok\")`"
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 2,
-            "teacherExplainMd": "### X02 해설\n- **정답**: C\n- **설명**: `OnTriggerEnter`에서 `O`가 소문자가 되면 유니티 엔진이 이를 이벤트 함수로 인식하지 못해 충돌 처리가 일어나지 않습니다. 이는 컴파일 에러가 아니라 논리 에러로 이어집니다."
-        }
-    ],
-    "concepts": [
-        {
-            "id": "u02_c1",
-            "label": "Debug.Log와 콘솔 출력",
-            "summary": "Unity 콘솔 출력 API와 문자열 결합 기본형",
-            "badge": "Debug.Log",
-            "aliases": [
-                "Debug.Log",
-                "Console"
-            ]
-        },
-        {
-            "id": "u02_c2",
-            "label": "기본 연산자 구분",
-            "summary": "=, ==, !=, ++, +의 역할 구분",
-            "badge": "Operators",
-            "aliases": [
-                "=",
-                "==",
-                "!=",
-                "++",
-                "+"
-            ]
-        },
-        {
-            "id": "u02_c3",
-            "label": "OR 조건식과 나머지 연산",
-            "summary": "||, %, ==, !=를 이용한 조건식과 짝수/홀수 판별",
-            "badge": "Conditions",
-            "aliases": [
-                "||",
-                "%",
-                "짝수",
-                "홀수"
-            ]
-        },
-        {
-            "id": "u02_c4",
-            "label": "Unity/C# 명명 규칙",
-            "summary": "MonoBehaviour, OnTriggerEnter, CompareTag, enabled, public의 대소문자 규칙",
-            "badge": "Naming",
-            "aliases": [
-                "MonoBehaviour",
-                "OnTriggerEnter",
-                "CompareTag",
-                "enabled",
-                "public"
-            ]
-        }
-    ]
+  "id": "unity_u02_log_operator",
+  "title": "Unity U02 로그/연산자 기초",
+  "categoryId": "unity_u02_log_operator",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "p01",
+      "conceptRef": "u02_c1",
+      "conceptRefs": [
+        "u02_c1"
+      ],
+      "type": "mcq",
+      "level": "basic",
+      "title": "콘솔 출력 API",
+      "description": "유니티(Unity) C# 스크립트에서, 에디터 하단의 콘솔(Console) 창에 문자열 `\"Hello World!\"`를 출력하여 디버깅하고자 할 때 사용하는 가장 올바른 코드를 고르세요.",
+      "options": [
+        "`Console.Log(\"Hello World!\");`",
+        "`Debug.Log(\"Hello World!\");`",
+        "`print.log(\"Hello World!\");`",
+        "`System.Log(\"Hello World!\");`"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### P01 해설\n- **정답**: `Debug.Log(\"Hello World!\");` \n- **설명**: Unity에서 콘솔 창에 메시지를 출력하는 표준 API는 `Debug` 클래스의 `Log` 메서드입니다. C# 표준인 `Console.WriteLine`은 유니티 콘솔에 찍히지 않으므로 주의가 필요합니다."
+    },
+    {
+      "id": "p02",
+      "conceptRef": "u02_c2",
+      "conceptRefs": [
+        "u02_c2",
+        "u02_c1"
+      ],
+      "type": "short",
+      "level": "basic",
+      "title": "연산자 의미 매칭",
+      "description": "C# 스크립트에서 자주 사용되는 다음 연산자 기호들을 그 올바른 기능과 연결하세요.\n\n**의미 후보:**\n값 할당, 양변이 같음(비교), 양변이 같지 않음(비교), 변수 1 증가, 문자열 연결",
+      "answerUi": {
+        "kind": "grid",
+        "rows": ["=", "==", "!=", "++", "+"],
+        "columns": ["기능"],
+        "narrowAnswerColumn": true,
+        "rowSep": "\n",
+        "colSep": " "
+      },
+      "expectedGrid": [
+        ["값 할당"],
+        ["양변이 같음(비교)"],
+        ["양변이 같지 않음(비교)"],
+        ["변수 1 증가"],
+        ["문자열 연결"]
+      ],
+      "teacherExplainMd": "### P02 해설\n- **핵심 포인트**: `=` (대입)와 `==` (비교)를 혼동하지 않는 것이 가장 중요합니다.\n- **+ 연산자**: 숫자 사이에서는 덧셈이지만, 문자열이 포함되면 문자열을 이어붙이는 역할을 합니다."
+    },
+    {
+      "id": "p03",
+      "conceptRef": "u02_c3",
+      "conceptRefs": [
+        "u02_c3",
+        "u02_c2"
+      ],
+      "type": "mcq",
+      "level": "basic",
+      "title": "OR 조건식 판별",
+      "description": "플레이어의 체력 `hp`가 0 이하이거나, 시간 종료 `timeOver`가 `true`일 때 실행되는 `if` 문 조건식을 고르세요.",
+      "options": [
+        "`if (hp <= 0 && timeOver == true)`",
+        "`if (hp <= 0 || timeOver == true)`",
+        "`if (hp <= 0 = timeOver == true)`",
+        "`if (hp <= 0 != timeOver == true)`"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### P03 해설\n- **정답**: `if (hp <= 0 || timeOver == true)`\n- **설명**: '~하거나(또는)' 조건을 만족하는 논리 연산자는 `||` (OR)입니다. `&&`는 '그리고(AND)' 조건이므로 두 가지가 모두 참일 때만 실행됩니다."
+    },
+    {
+      "id": "p04",
+      "conceptRef": "u02_c3",
+      "conceptRefs": [
+        "u02_c3",
+        "u02_c2"
+      ],
+      "type": "mcq",
+      "level": "basic",
+      "title": "나머지 연산",
+      "description": "임의의 정수형 변수 `i`의 값이 짝수인지 판별하여, 짝수일 때만 결과가 참(`true`)이 되도록 하는 C# 조건식으로 가장 올바른 수식을 고르세요.",
+      "options": [
+        "`i % 2 = 0`",
+        "`i % 2 == 0`",
+        "`i / 2 == 0`",
+        "`i % 2 != 0`"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### P04 해설\n- **정답**: `i % 2 == 0` (B)\n- **설명**: 어떤 수를 2로 나누었을 때 나머지가 0이면 짝수입니다. 비교 시에는 반드시 비교 연산자 `==`를 사용해야 합니다."
+    },
+    {
+      "id": "p05",
+      "conceptRef": "u02_c4",
+      "conceptRefs": [
+        "u02_c4"
+      ],
+      "type": "short",
+      "level": "challenge",
+      "title": "명명 규칙 판별 1",
+      "description": "유니티와 C#의 식별자 대소문자 구분 규칙에 대한 참/거짓을 판별하세요.\n\n(1) `MonoBehaviour`는 반드시 대소문자를 정확히 일치시켜야 컴파일 오류가 나지 않는다.\n(2) 유니티 이벤트 함수(예: 충돌 감지)는 `ontriggerenter`처럼 소문자로 써도 엔진이 인식한다.",
+      "answerUi": {
+        "kind": "grid",
+        "rows": ["(1) 클래스 상속명 고정", "(2) 이벤트 함수 소문자 허용"],
+        "columns": ["참/거짓"],
+        "narrowAnswerColumn": true,
+        "rowSep": "\n",
+        "colSep": " "
+      },
+      "expectedGrid": [
+        ["참"],
+        ["거짓"]
+      ],
+      "teacherExplainMd": "### P05 해설\n- **(1) 참**: 클래스 이름은 식별자이므로 대소문자가 틀리면 찾을 수 없습니다.\n- **(2) 거짓**: `OnTriggerEnter`와 같은 유니티 메시지는 엔진이 미리 약속된 이름을 찾아서 호출하므로, 소문자로 시작하면 호출되지 않습니다 (조용한 실패)."
+    },
+    {
+      "id": "p06",
+      "conceptRef": "u02_c4",
+      "conceptRefs": [
+        "u02_c4"
+      ],
+      "type": "mcq",
+      "level": "challenge",
+      "title": "명명 규칙 판별 2",
+      "description": "다음 중 C# 기본 키워드와 유니티 API 명명 규칙이 모두 올바른 항목을 고르세요.",
+      "options": [
+        "`compareTag`, `Enabled`, `Public`",
+        "`CompareTag`, `enabled`, `public`",
+        "`Comparetag`, `enabled`, `Public`",
+        "`comparetag`, `Enabled`, `public`"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### P06 해설\n- **정답**: B\n- **설명**: C# 키워드인 `public`은 소문자여야 하며, 유니티 메서드인 `CompareTag`는 파스칼 케이스(또는 메서드 규칙)를 따릅니다. 컴포넌트의 프로퍼티인 `enabled`는 소문자로 시작합니다."
+    },
+    {
+      "id": "x01",
+      "conceptRef": "u02_c3",
+      "conceptRefs": [
+        "u02_c3",
+        "u02_c1",
+        "u02_c2"
+      ],
+      "type": "mcq",
+      "level": "challenge",
+      "title": "변형 - 로그 + 판별 결과 출력",
+      "description": "임의의 정수 변수 `n`이 홀수인지 판별한 결과를 bool 변수 `isOdd`에 저장한 뒤, 콘솔 창에 `\"isOdd=\"` 문자열과 그 결과를 결합하여 출력하는 C# 코드로 가장 올바른 것을 고르세요.",
+      "options": [
+        "`bool isOdd = n % 2 == 0; Debug.Log(\"isOdd=\" + isOdd);`",
+        "`bool isOdd = n % 2 != 0; Debug.Log(\"isOdd=\" + isOdd);`",
+        "`bool isOdd = n % 2 != 0; Console.WriteLine(\"isOdd=\" + isOdd);`",
+        "`bool isOdd = n % 2 == 1; Debug.Log(\"isOdd=\" + isodd);`"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### X01 해설\n- **홀수 판별**: `n % 2 != 0` 또는 `n % 2 == 1`을 사용할 수 있으나, C#에서는 음수 홀수(예: `-3`)의 나머지 연산 결과가 `-1`이 되므로 `n % 2 != 0`을 쓰는 것이 가장 안전하고 모범적입니다.\n- **로그 출력**: 문자열과 변수를 `+` 연산자로 연결하여 출력하며, 변수명 대소문자(`isOdd`)에 유의해야 하는 B가 정답입니다."
+    },
+    {
+      "id": "x02",
+      "conceptRef": "u02_c4",
+      "conceptRefs": [
+        "u02_c4"
+      ],
+      "type": "mcq",
+      "level": "challenge",
+      "title": "함정 - 대소문자 오류 찾기",
+      "description": "철자나 대소문자 오류로 인해 엔진이 의도대로 자동 호출해주지 않는 코드를 고르세요.",
+      "options": [
+        "`other.CompareTag(\"Player\")`",
+        "`void OnTriggerEnter(Collider other)`",
+        "`void onTriggerEnter(Collider other)`",
+        "`Debug.Log(\"ok\")`"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 2,
+      "teacherExplainMd": "### X02 해설\n- **정답**: C\n- **설명**: `OnTriggerEnter`에서 `O`가 소문자가 되면 유니티 엔진이 이를 이벤트 함수로 인식하지 못해 충돌 처리가 일어나지 않습니다. 이는 컴파일 에러가 아니라 논리 에러로 이어집니다."
+    }
+  ],
+  "concepts": [
+    {
+      "id": "u02_c1",
+      "label": "Debug.Log와 콘솔 출력",
+      "summary": "Unity 콘솔 출력 API와 문자열 결합 기본형",
+      "badge": "Debug.Log",
+      "aliases": [
+        "Debug.Log",
+        "Console"
+      ]
+    },
+    {
+      "id": "u02_c2",
+      "label": "기본 연산자 구분",
+      "summary": "=, ==, !=, ++, +의 역할 구분",
+      "badge": "Operators",
+      "aliases": [
+        "=",
+        "==",
+        "!=",
+        "++",
+        "+"
+      ]
+    },
+    {
+      "id": "u02_c3",
+      "label": "OR 조건식과 나머지 연산",
+      "summary": "||, %, ==, !=를 이용한 조건식과 짝수/홀수 판별",
+      "badge": "Conditions",
+      "aliases": [
+        "||",
+        "%",
+        "짝수",
+        "홀수"
+      ]
+    },
+    {
+      "id": "u02_c4",
+      "label": "Unity/C# 명명 규칙",
+      "summary": "MonoBehaviour, OnTriggerEnter, CompareTag, enabled, public의 대소문자 규칙",
+      "badge": "Naming",
+      "aliases": [
+        "MonoBehaviour",
+        "OnTriggerEnter",
+        "CompareTag",
+        "enabled",
+        "public"
+      ]
+    }
+  ]
 }

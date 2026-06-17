@@ -13,11 +13,12 @@
 - 출처: 원문 38번
 - 유형: 단답
 - 문제:
-  - 플레이어가 키보드의 왼쪽 화살표 키(`KeyCode.LeftArrow`)를 조작할 때, 유니티 엔진의 `Input` 클래스에서 다음과 같은 특정 타이밍 조건을 만족할 때만 `true`를 반환해 주는 정확한 메서드 3가지를 각각 쓰세요.
-  - 조건 1: 키보드를 꾹 **누르고 있는 동안** 매 프레임 계속 연속해서 `true`를 반환
-  - 조건 2: 키보드를 최초로 **딱 한 번 꾹 누른 그 순간의 프레임**에만 `true`를 반환
-  - 조건 3: 키보드를 누르고 있다가 **손을 뗀 순간의 프레임**에만 단발성으로 `true`를 반환
-  - 답안 형식 예: `조건 1: Input.GetKey(...), 조건 2: Input.GetKeyDown(...), 조건 3: Input.GetKeyUp(...)`
+  - 플레이어가 키보드의 왼쪽 화살표 키(`KeyCode.LeftArrow`)를 조작할 때, 유니티 엔진의 `Input` 클래스에서 제공하는 키보드 입력 메서드 3가지를 상황에 맞게 매칭하세요.
+  - 매칭 대상:
+    - (1) 키 누름 유지: 키를 누르는 동안 매 프레임 계속해서 `true`를 반환한다.
+    - (2) 최초 눌림 발생: 키를 처음 누른 첫 번째 프레임에만 딱 한 번 `true`를 반환한다.
+    - (3) 키 해제(뗌): 누르고 있던 키를 손가락에서 떼는 순간의 프레임에 딱 한 번 `true`를 반환한다.
+  - 답안 형식 예: `(1) 키 누름 유지: Input.GetKey(KeyCode.LeftArrow), (2) 최초 눌림 발생: Input.GetKeyDown(KeyCode.LeftArrow), (3) 키 해제(뗌): Input.GetKeyUp(KeyCode.LeftArrow)`
 
 ### [P02] 이동 메서드 선택
 - 출처: 원문 22번
@@ -33,13 +34,33 @@
   - D. `TransformDirection`
 
 ## 확장 문항 (변형/함정/응용)
-### [X01] 변형 - 축(Axis) 입력 기반 연속 이동 코드 작성
+### [X01] 변형 - 축(Axis) 입력 기반 연속 이동 코드 선택
 - 출처 개념: U06 Input
-- 유형: 코드
+- 유형: 객관식
 - 문제:
-  - 유니티의 구형 Input Manager에서 화살표 키나 WASD 키를 누르면 반환하는 가상의 `Horizontal`과 `Vertical` 축(Axis) 실수형 값을 활용하여 3D 환경에서의 이동 벡터를 만들고, 기기의 초당 프레임 수 변화에 영향받지 않도록 `Time.deltaTime`과 `speed`를 곱해 실제 오브젝트를 위치 이동시키는 전체 프레임 흐름 제어 로직을 작성하세요.
-  - 작성 조건: `Update()` 함수 내부에서 축 입력(`Input.GetAxis`)을 받아 `move`라는 `Vector3` 변수에 할당하는 줄과, 만들어진 방향 벡터를 `transform.Translate(...)`를 사용해 이동에 적용하는 핵심 로직 2줄을 정확히 작성하세요. (Y축 이동은 0으로 고정)
-- 의도: 축(Axis) 입력 읽기, 프레임 독립적인 deltaTime 보정, 그리고 위치 갱신(Translate) 적용이라는 유니티 이동의 표준 루틴을 직접 통합 구성하도록 훈련합니다.
+  - 유니티의 Input Manager에서 화살표 키나 WASD 키를 누르면 반환하는 가상의 `Horizontal`과 `Vertical` 축(Axis) 실수형 값을 활용하여 3D 평면(XZ축) 상에서의 이동 벡터를 만들고, 프레임 독립적인 보정(`Time.deltaTime`)과 이동 속도(`speed`)를 적용해 실제 오브젝트를 위치 이동시키고자 합니다. 다음 중 `Update()` 함수 내부에 작성할 핵심 2줄의 코드로 가장 적절한 것을 고르세요.
+- 보기:
+  - A.
+    ```csharp
+    Vector3 move = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
+    transform.Translate(move * speed);
+    ```
+  - B.
+    ```csharp
+    Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+    transform.Translate(move * Time.deltaTime * speed);
+    ```
+  - C.
+    ```csharp
+    Vector3 move = new Vector3(0f, Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+    transform.Translate(move * Time.deltaTime);
+    ```
+  - D.
+    ```csharp
+    Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+    transform.position = move * speed;
+    ```
+- 의도: 축(Axis) 입력 읽기, 프레임 독립적인 deltaTime 보정, 그리고 위치 갱신(Translate) 적용이라는 유니티 이동의 표준 루틴을 구별할 수 있도록 훈련합니다.
 
 ### [X02] 함정 - GetKey 계열 오개념 판별
 - 출처 개념: U06 Input

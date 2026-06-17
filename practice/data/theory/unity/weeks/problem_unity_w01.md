@@ -19,8 +19,9 @@
   - 다음은 유니티 에디터의 Inspector(검사기) 창 및 주요 속성에 대한 설명입니다.
   - 각 문장의 참/거짓을 판별하세요. (문장별 부분 점수 가능)
   - (1) 오브젝트의 Static 체크박스는 라이트맵 베이킹, 네비게이션 메시 등 화면과 물리 환경의 정적 최적화 워크플로에 활용되는 설정이다.
-  - (2) 오브젝트의 Tag(태그) 정보는 C# 스크립트에서 같은 분류의 오브젝트 그룹을 손쉽게 찾거나 충돌 시 대상을 식별하는 데 사용할 수 있다.
+  - (2) 오브젝트의 Tag(태그) 정보는 C# 스크립트에서 같은 분류 of 오브젝트 그룹을 손쉽게 찾거나 충돌 시 대상을 식별하는 데 사용할 수 있다.
   - (3) Prefab(프리팹)으로 만들어진 인스턴스를 하이어라키 창에 배치한 이후에는 인스펙터(Inspector) 창에서 개별 프로퍼티를 수정하거나 오버라이드(Override)할 수 없다.
+  - **답안 작성 주의**: 아래의 형식 예와 띄어쓰기, 괄호, 쉼표를 정확히 일치시켜 입력하세요.
   - 답안 형식 예: `(1) 참, (2) 참, (3) 거짓`
 
 ### [P02] Unity 창 역할 매칭
@@ -38,10 +39,14 @@
 
 ### [P03] IDE 설정 위치
 - 출처: 원문 18번
-- 유형: 단답
+- 유형: 객관식
 - 문제:
-  - Unity 상단 메뉴의 Edit > Preferences 장에서, Visual Studio나 VS Code 같은 C# 스크립트 편집기(IDE) 프로그램을 연결하기 위해 지정하는 드롭다운 옵션의 정확한 이름을 쓰세요.
-  - 단, 영문 옵션명 3단어로 정확히 작성하세요. (힌트: External Tools 탭에 위치합니다)
+  - Unity 상단 메뉴의 Edit > Preferences 창에서, Visual Studio나 VS Code 같은 C# 스크립트 편집기(IDE) 프로그램을 연결하기 위해 지정하는 드롭다운 옵션의 정확한 이름을 고르세요. (힌트: External Tools 탭에 위치합니다)
+- 보기:
+  - A. `External Tool Editor`
+  - B. `External Script Editor`
+  - C. `External IDE Connector`
+  - D. `Script Editor Tool`
 
 ### [P04] Scene 배치 설명 참/거짓
 - 출처: 원문 29번
@@ -52,25 +57,34 @@
   - (2) 툴바 상단의 Transform(또는 Universal) 도구를 선택하면, 이동(Move), 회전(Rotate), 스케일(Scale) 조작 기즈모가 한데 결합되어 표시된다.
   - (3) Vertex Snapping(꼭지점 스냅)은 선택한 모델 메시의 꼭지점을 반드시 장면의 그리드에만 맞추는 용도로만 허용된다.
   - (4) 게임 오브젝트의 이동 좌표, 회전 각도, 스케일 크기 수치는 3D Scene View 화면에서 마우스로 드래그해야만 조정할 수 있다.
+  - **답안 작성 주의**: 아래의 형식 예와 띄어쓰기, 괄호, 쉼표를 정확히 일치시켜 입력하세요.
   - 답안 형식 예: `(1) 참, (2) 참, (3) 거짓, (4) 거짓`
 
 ### [P05] Inspector 변수 노출
 - 출처: 원문 13번
-- 유형: 코드
+- 유형: 단답
 - 문제:
-  - 스크립트에 선언된 변수는 `public`으로 작성될 때만 Inspector 창에 기본 표시되며, 기본 상태에서 `private` 필드는 Inspector 창에 표시되지 않습니다.
-  - 외부 클래스에서의 무분별한 접근을 막는 캡슐화(`private`)를 유지하면서도, 유니티 에디터의 Inspector 창에서는 값을 GUI로 편하게 설정하도록 아래의 멤버 변수 선언 코드를 한 줄로 올바르게 수정하세요.
+  - 외부 클래스에서의 무분별한 접근을 막는 캡슐화(`private`)를 유지하면서도, 유니티 에디터의 Inspector 창에서는 값을 GUI로 설정할 수 있게 하려고 합니다.
+  - 아래 코드의 ①번 빈칸에 들어갈 유니티 C# 특성(Attribute)의 이름을 쓰세요.
   ```csharp
+  [①]
   private int speed;
   ```
+  - **답안 작성 주의**: 대괄호 `[` 와 `]` 를 제외하고 영문 특성 이름만 대소문자를 정확히 구별하여 한 단어로 작성하세요. (예: `SerializeField`)
 
 ## 확장 문항 (변형/함정/응용)
 ### [X01] 변형 - Tag 검색 API 작성
 - 출처 개념: U01 / Inspector 기본 + Tag
-- 유형: 코드
+- 유형: 객관식
+- ...
 - 문제:
-  - 유니티 C# 스크립트 내에서 `Enemy` 태그를 가지고 있는 모든 게임 오브젝트를 찾아내어, `GameObject[]` 타입의 배열 변수 `enemies`를 선언함과 동시에 할당(초기화)하는 코드를 단 한 줄로 작성하세요.
-- 의도: Tag 기반 대량 검색 패턴을 코드로 전이하여 C# API 활용도 검증
+  - 유니티 C# 스크립트 내에서 `Enemy` 태그를 가지고 있는 모든 게임 오브젝트를 찾아내어, `GameObject[]` 타입의 배열 변수 `enemies`를 선언함과 동시에 할당(초기화)하는 가장 올바른 코드를 고르세요.
+- 보기:
+  - A. `GameObject enemy = GameObject.FindWithTag("Enemy");`
+  - B. `GameObject[] enemies = GameObject.FindWithTag("Enemy");`
+  - C. `GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");`
+  - D. `GameObject[] enemies = FindGameObjectsWithTag("Enemy");`
+- 의도: Tag 기반 대량 검색 패턴 및 배열 타입과 복수형 API 매칭 능력을 검증
 
 ### [X02] 함정 - 필드 노출 가능 여부 판단
 - 출처 개념: U01 / Inspector 필드 직렬화

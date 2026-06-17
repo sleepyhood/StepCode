@@ -7,26 +7,26 @@
 ## 정답표
 | 문항 ID | 정답 | 한 줄 근거 |
 |---|---|---|
-| P01 | 코드1 거짓, 코드2 거짓, 코드3 참 | 코드1: ECS 네임스페이스 자체 없음, 코드2: using 선언만 있고 MonoBehaviour 상속+본문에 ECS 타입 없음, 코드3: `ComponentSystem` 상속 + `Entities.ForEach` 실사용 |
-| P02 | 코드1 거짓, 코드2 거짓, 코드3 거짓 | 3개 모두 MonoBehaviour 상속이며 ECS 전용 타입(IComponentData, SystemBase 등)의 실제 코드 레벨 사용이 전혀 없음 |
-| X01 | 예: `using Unity.Entities; public partial class EnemyMoveSystem : SystemBase { }` | ECS 전용 타입(`SystemBase`)을 실제로 상속한 클래스 선언이 있으므로 실사용 판정 충족 |
-| X02 | C | `using` 선언은 접근 가능성만 열어줄 뿐이며, ECS 전용 타입의 실제 코드 사용이 있어야 실사용 판정 |
+| P01 | 거짓, 거짓, 참 | `using` 네임스페이스 선언만으로는 ECS 실사용으로 보지 않으며, 전용 타입 상속이나 API 호출이 실제 존재해야 함 |
+| P02 | 거짓, 거짓, 거짓 | 문제에 명시된 코드 1, 2, 3 모두 전통적인 `MonoBehaviour` 및 `GameObject` 기반의 OOP 코드들임 |
+| X01 | B | 최신 유니티 ECS 시스템 선언 시, 소스 생성기 동작을 위한 partial 키워드 및 SystemBase 상속을 충족하는 코드 선택 |
+| X02 | C | `using` 구문은 컴파일러에 네임스페이스 검색 범위만 제공할 뿐, 실제 동작 코드가 작성되어야 ECS 활용이 인정됨 |
 
 ## 해설
 ### P01
-- 개념 정의: ECS(Entity Component System) "실사용" 판정의 핵심은 `using Unity.Entities;` 네임스페이스 선언 유무가 **아니라**, 코드 본문에서 ECS 전용 타입(`ComponentSystem`, `SystemBase`, `IComponentData`, `EntityManager` 등)을 **직접 상속하거나 인스턴스화하여 호출**하고 있는지입니다.
-- 오답 포인트: **코드 2**처럼 `using Unity.Entities;`가 상단에 적혀 있으면 "ECS 관련 라이브러리를 불러왔으니 사용한 것"이라고 속단하기 쉽습니다. 하지만 이 코드의 클래스는 `MonoBehaviour`를 상속하고, 본문에는 `Debug.Log`만 있을 뿐 ECS 타입이 전혀 등장하지 않습니다.
-- 판별 기준: **코드 3**만이 `ComponentSystem`을 상속하고 `Entities.ForEach`를 호출하여 ECS 파이프라인을 실제 활용하므로 유일하게 "참"입니다.
+- 개념 정의: `using Unity.Entities;`를 상단에 선언한 것만으로는 ECS 실사용으로 보지 않으며, 반드시 `ComponentSystem`, `SystemBase` 등의 클래스를 상속하거나 `Entities` 등의 전용 API를 사용해야 참으로 판정됩니다.
+- 오답 포인트: `using` 구문의 선언 유무만 확인하고 섣부르게 ECS 실사용이라 오인하는 실수를 제거해야 합니다.
+- 판별 기준: `using` 선언과 별개로 본문 코드 내에 실제 ECS 전용 타입의 구체적 실사용이 존재하여 "거짓, 거짓, 참"이 맞는지 확인합니다.
 
 ### P02
-- 개념 정의: `MonoBehaviour` 기반의 전통적 OOP 스크립트는, 설령 `using Unity.Entities;`를 아무리 많이 선언해도 본문에서 ECS 고유 요소를 사용하지 않는 한 기본적으로 ECS 코드가 **아닙니다**.
-- 오답 포인트: **코드 1**과 **코드 3**에 `using Unity.Entities;`가 있어서 하나라도 "참"으로 선택하려 하지만, 두 코드 모두 클래스 본문은 완전히 `MonoBehaviour` 패턴(UI 활성화, 점수 누적)이며 ECS 핵심 요소가 부재합니다.
-- 판별 기준: 세 코드를 하나씩 살펴 `IComponentData`, `SystemBase`, `EntityManager`, `Entities.ForEach` 등 ECS 전용 키워드가 **코드 본문에 단 한 줄이라도** 등장하는지 검사합니다. 세 코드 모두 해당 없으므로 전부 "거짓"입니다.
+- 개념 정의: `MonoBehaviour` 상속, `gameObject.SetActive` 등의 동작은 유니티의 클래식한 객체 지향 방식(OOP)으로, 단지 Entities 네임스페이스를 `using` 선언해 두었다고 해서 ECS 기반이 되지 않습니다.
+- 오답 포인트: OOP 스타일 코드임에도 `using` 구문이 들어있다고 해서 ECS 코드로 무작정 판별하는 함정을 피해가야 합니다.
+- 판별 기준: 세 가지 보기 모두 전통적인 OOP 방식이므로 "거짓, 거짓, 거짓"으로 정상 판별했는지 확인합니다.
 
 ### X01
-- 개념 정의: "ECS를 실제로 사용했다"는 판정의 **최소 충족 조건**은, `using` 선언 외에 ECS 전용 타입을 상속(`SystemBase`, `ISystem`)하거나 구현(`IComponentData`)하는 클래스 선언이 코드에 최소 1개 존재하는 것입니다.
-- 오답 포인트: `using Unity.Entities;` 한 줄만 쓰고 클래스 본문은 기존 `MonoBehaviour` 패턴 그대로 두는 경우, 겉보기에는 ECS를 "사용"한 것 같지만 실제로는 선언만 한 것이므로 판정 기준을 충족하지 못합니다.
-- 판별 기준: 제출된 코드에 `SystemBase`, `ISystem`, `IComponentData`, `ComponentSystem` 중 하나라도 상속/구현 형태로 실제 등장하면 정답 처리합니다. 클래스 내부 본문이 비어 있어도 타입 사용 자체가 곧 실사용 증거입니다.
+- 개념 정의: 유니티 ECS 환경에서 동작하는 '시스템(System)'을 구현하려면 기본적으로 `SystemBase`를 상속하는 클래스를 선언해야 하며, 유니티 ECS 패키지의 소스 생성기가 컴파일 타임에 추가 코드를 빌드할 수 있도록 반드시 `partial` 키워드를 포함해야 합니다.
+- 오답 포인트: `partial` 키워드를 누락하거나(A), 전통적인 `MonoBehaviour`를 상속해 ECS로 오작동을 주거나(C), 상속 대상에 시스템이 아닌 데이터 구조체인 `IComponentData`를 지정하는(D) 등의 오개념 오류가 있습니다.
+- 판별 기준: 소스 생성기가 컴파일 타임에 추가 코드를 빌드할 수 있도록 반드시 `partial` 키워드를 포함하고 `SystemBase`를 상속받은 B를 선택합니다.
 
 ### X02
 - 개념 정의: C#의 `using` 지시문은 해당 네임스페이스에 정의된 타입들에 **접근할 수 있는 경로를 열어주는 편의 기능**일 뿐이며, 이것만으로 해당 라이브러리의 기능이 프로젝트에 "활성화"되거나 코드에 "적용"되는 것은 아닙니다.

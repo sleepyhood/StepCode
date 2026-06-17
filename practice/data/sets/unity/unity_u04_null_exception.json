@@ -1,94 +1,149 @@
 {
-    "id": "unity_u04_null_exception",
-    "title": "Unity U04 Null/예외 기초",
-    "categoryId": "unity_u04_null_exception",
-    "availableLanguages": [
-        "csharp"
-    ],
-    "problems": [
-        {
-            "id": "p01",
-            "type": "mcq",
-            "level": "basic",
-            "title": "NullReferenceException 원인",
-            "description": "다음 코드 실행 중 `NullReferenceException`이 발생했습니다. 예외를 일으킨 가장 직접적인 원인이 되는 객체를 고르세요.\n\n```csharp\nBook book = new Book();\nint authorAge = book.Author.Age; \n```",
-            "options": [
-                "`book`이 null이다.",
-                "`Age`가 null이다.",
-                "`publisher`가 null이라서 예외가 난다.",
-                "`Author`가 null이다."
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 3,
-            "teacherExplainMd": "### P01 해설\n- **원인 분석**: `book`은 `new Book()`으로 생성되었으므로 실체가 있습니다. 하지만 클래스 내부의 참조 타입 멤버인 `Author`는 별도로 인스턴스를 만들어주지 않으면 기본값인 `null` 상태입니다. 따라서 `book.Author`까지는 접근이 가능해도, 그 `null`인 상태에서 다시 `.Age` 속성을 읽으려 할 때 에러가 발생합니다."
-        },
-        {
-            "id": "p02",
-            "type": "mcq",
-            "level": "basic",
-            "title": "null 비교 가능한 선언/조건식 선택",
-            "description": "유니티 C#에서 변수의 타입 선언(①)과 그 변수를 null과 비교하는 조건식(②)이 문법적으로 모두 올바른 조합을 고르세요.",
-            "options": [
-                "① `public bool hasTurned;` + ② `if (hasTurned == null)`",
-                "① `public int score;` + ② `if (score == null)`",
-                "① `public GameObject projectile;` + ② `if (projectile == null)`",
-                "① `public bool hasTurned;` + ② `if (projectile == null)`"
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 2,
-            "teacherExplainMd": "### P02 해설\n- **참조 타입 vs 값 타입**: `int`, `bool`, `float` 등은 '값 타입'으로 항상 어떤 값을 가지고 있어야 하며 `null`이 될 수 없습니다. 반면 `GameObject`, `Transform`, 사용자 정의 클래스 등은 '참조 타입'으로 메모리 주소를 담기 때문에 비어있음(`null`)을 체크할 수 있습니다."
-        },
-        {
-            "id": "p03",
-            "type": "mcq",
-            "level": "basic",
-            "title": "컴파일 불가능한 비교식 찾기",
-            "description": "아래 코드의 변수 선언을 바탕으로, `if`문 괄호 안에 넣었을 때 **컴파일 오류**를 일으키는(비교 자체가 불가능한) 식 3가지 조합을 고르세요.\n\n```csharp\nDictionary<string, GameObject> dictionary;\nint myInt;\nstring myString;\nList<GameObject> list;\nfloat myFloat;\n```\n\n**비교식 후보:**\n1. `dictionary == myInt`\n2. `myFloat > myInt`\n3. `myString == list` \n4. `dictionary == list`\n5. `myFloat <= 100` ",
-            "options": [
-                "2, 4, 5",
-                "1, 2, 3",
-                "1, 3, 4",
-                "3, 4, 5"
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 2,
-            "teacherExplainMd": "### P03 해설\n- **정답**: 1(Dict vs Int), 3(String vs List), 4(Dict vs List)\n- **설명**: C#에서는 서로 형태가 완전히 다른 타입끼리는 `==` 비교를 허용하지 않습니다. 반면, `float`와 `int`는 모두 '숫자'라는 공통점이 있어 캐스팅을 통해 크기 비교가 가능합니다."
-        },
-        {
-            "id": "p04",
-            "type": "code",
-            "level": "challenge",
-            "title": "Dictionary 초기화 및 할당",
-            "description": "리스트 `gameObjects`의 모든 요소를 순회하여, 딕셔너리 `dictionary`에 추가하는 코드를 작성하세요. 딕셔너리의 Key는 객체의 이름(`name`), Value는 객체 자신으로 지정하고, 사용 전 반드시 메모리 할당(`new`)을 먼저 수행하세요.",
-            "code": "// 생성 및 추가 코드를 작성하세요\n",
-            "expectedCode": "dictionary = new Dictionary<string, GameObject>();\nforeach (var go in gameObjects)\n{\n    dictionary.Add(go.name, go);\n}",
-            "teacherExplainMd": "### P04 해설\n- **순서의 중요성**: 딕셔너리는 참조 타입이므로 `new`로 실체를 먼저 만들어야 합니다. 그 후 `foreach`를 이용해 리스트의 요소를 하나씩 꺼내 `Add(key, value)` 메서드로 등록합니다."
-        },
-        {
-            "id": "x01",
-            "type": "code",
-            "level": "challenge",
-            "title": "변형 - 삼항 연산자를 이용한 null 체크",
-            "description": "`projectile` 변수가 `null`이면 `0f`를, 아니면 `projectile.transform.position.x` 값을 변수 `xPos`에 담는 코드를 삼항 연산자를 사용하여 한 줄로 작성하세요.",
-            "code": "float xPos = ",
-            "expectedCode": "float xPos = projectile == null ? 0f : projectile.transform.position.x;",
-            "teacherExplainMd": "### X01 해설\n- **삼항 연산자 구조**: `조건 ? 참일때 : 거짓일때` \n- **설명**: 런타임 에러를 방지하기 위해 실체가 있는지 먼저 확인한 후 안전하게 속성에 접근하는 전형적인 패턴입니다."
-        },
-        {
-            "id": "x02",
-            "type": "mcq",
-            "level": "challenge",
-            "title": "함정 - 원시 타입 비교 가능성",
-            "description": "C#에서 타입 불일치 에러 없이 데이터의 크기나 값을 비교할 수 있는 식을 고르세요.",
-            "options": [
-                "`dictionary == myInt`",
-                "`myString == list`",
-                "`dictionary == list`",
-                "`myFloat > myInt`"
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 3,
-            "teacherExplainMd": "### X02 해설\n- **정답**: D\n- **설명**: 서로 다른 객체 타입(Dict, List, String)은 직접 비교가 불가능하지만, 숫자형 데이터 타입인 `float`와 `int`는 엔진 내부에서 호환되어 크기 비교가 가능합니다."
-        }
-    ]
+  "id": "unity_u04_null_exception",
+  "title": "Unity U04 Null/예외 기초",
+  "categoryId": "unity_u04_null_exception",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "p01",
+      "type": "mcq",
+      "level": "basic",
+      "title": "NullReferenceException 원인",
+      "description": "다음은 중첩된 객체 구조를 가진 C# 스크립트 예제입니다. 이 스크립트를 컴파일하고 `Start()` 함수가 호출되어 실행될 때 런타임에서 `NullReferenceException` 오류가 발생하며 게임이 멈춥니다.\n해당 예외(Exception)가 발생하는 가장 직접적인 메모리 참조 원인을 하나 고르세요.\n\n```csharp\npublic class Person { public int Age { get; set; } }\npublic class Book { public Person Author { get; set; } }\n\npublic class PublishBook\n{\n    private string publisher;\n    private Genre genre;\n\n    public void Start()\n    {\n        Book book = new Book();\n        int authorAge = book.Author.Age; // ❌ 예외 발생 지점\n        Debug.Log(publisher);\n        Debug.Log(genre);\n    }\n}\n```",
+      "options": [
+        "book이 null이다.",
+        "Age가 null이다.",
+        "publisher가 null이라서 예외가 난다.",
+        "Author가 null이다."
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 3,
+      "teacherExplainMd": "### P01 해설\n- **원인 분석**: `book`은 `new Book()`으로 생성되었으므로 실체가 있습니다. 하지만 클래스 내부의 참조 타입 멤버인 `Author`는 별도로 인스턴스를 만들어주지 않으면 기본값인 `null` 상태입니다. 따라서 `book.Author`까지는 접근이 가능해도, 그 `null`인 상태에서 다시 `.Age` 속성을 읽으려 할 때 에러가 발생합니다."
+    },
+    {
+      "id": "p02",
+      "type": "mcq",
+      "level": "basic",
+      "title": "null 비교 가능한 선언/조건식 선택",
+      "description": "유니티 C#에서 변수의 타입 선언(①)과 그 변수를 null과 비교하는 조건식(②)이 문법적으로 모두 올바른 조합을 고르세요.",
+      "options": [
+        "① public bool hasTurned; / ② (hasTurned == null)",
+        "① public int score; / ② (score == null)",
+        "① public GameObject projectile; / ② (projectile == null)",
+        "① public bool hasTurned; / ② (projectile == null)"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 2,
+      "teacherExplainMd": "### P02 해설\n- **참조 타입 vs 값 타입**: `int`, `bool`, `float` 등은 '값 타입'으로 항상 어떤 값을 가지고 있어야 하며 `null`이 될 수 없습니다. 반면 `GameObject`, `Transform`, 사용자 정의 클래스 등은 '참조 타입'으로 메모리 주소를 담기 때문에 비어있음(`null`)을 체크할 수 있습니다."
+    },
+    {
+      "id": "p03",
+      "type": "mcq",
+      "level": "basic",
+      "title": "컴파일 불가능한 비교식 찾기",
+      "description": "아래 코드의 변수 선언을 바탕으로, `if`문 괄호 안에 넣었을 때 **컴파일 오류**를 일으키는(비교 자체가 불가능한) 식 3가지 조합을 고르세요.\n\n```csharp\nDictionary<string, GameObject> dictionary;\nint myInt;\nstring myString;\nList<GameObject> list;\nfloat myFloat;\n```\n\n**비교식 후보:**\n1. `dictionary == myInt`\n2. `myFloat > myInt`\n3. `myString == list` \n4. `dictionary == list`\n5. `myFloat <= 100` ",
+      "options": [
+        "2, 4, 5",
+        "1, 2, 3",
+        "1, 3, 4",
+        "3, 4, 5"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 2,
+      "teacherExplainMd": "### P03 해설\n- **정답**: 1(Dict vs Int), 3(String vs List), 4(Dict vs List)\n- **설명**: C#에서는 서로 형태가 완전히 다른 타입끼리는 `==` 비교를 허용하지 않습니다. 반면, `float`와 `int`는 모두 '숫자'라는 공통점이 있어 크기 비교가 가능합니다."
+    },
+    {
+      "id": "p04",
+      "type": "mcq",
+      "level": "basic",
+      "title": "Dictionary 초기화 순서",
+      "description": "다음 Unity 스크립트는 인스펙터에 할당된 게임 오브젝트 목록(`gameObjects`)을 활용하여, 오브젝트의 이름을 키(Key)로, 오브젝트 자체를 값(Value)으로 가지는 새로운 `Dictionary`를 생성하고 안의 요소를 채우는 과정을 보여줍니다.\n\n에러나 `NullReferenceException`이 발생하지 않도록, 아래 `Start()` 내부의 `// your code will go here.` 위치에 들어갈 C# 코드 조각 4개를 보기에서 골라 올바른 순서대로 조합한 것을 고르세요.\n\n**코드 조각 후보:**\n**A**: `foreach (var gameObject in dictionary) {`\n**B**: `gameObjects.Add(gameObject);`\n**C**: `dictionary.Add(gameObject.name, gameObject);`\n**D**: `dictionary = new Dictionary<string, GameObject>();`\n**E**: `foreach (var gameObject in gameObjects) {`\n**F**: `}`",
+      "options": [
+        "E ➔ C ➔ D ➔ F",
+        "D ➔ E ➔ C ➔ F",
+        "D ➔ E ➔ B ➔ F",
+        "D ➔ A ➔ C ➔ F"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### P04 해설\n- **순서의 중요성**: 딕셔너리는 참조 타입이므로 `new`로 실체를 먼저 만들어야 합니다. 그 후 `foreach`를 이용해 리스트의 요소를 하나씩 꺼내 `Add(key, value)` 메서드로 등록합니다. 따라서 `D ➔ E ➔ C ➔ F` (B)가 정답입니다."
+    },
+    {
+      "id": "x01",
+      "type": "mcq",
+      "level": "challenge",
+      "title": "변형 - 삼항 연산자를 이용한 null 체크",
+      "description": "`projectile` 변수가 `null`이면 `0f`를, 아니면 `projectile.transform.position.x` 값을 변수 `xPos`에 담는 코드를 삼항 연산자를 사용하여 한 줄로 작성하려고 합니다. 가장 올바른 C# 코드를 고르세요.",
+      "options": [
+        "float xPos = projectile != null ? 0f : projectile.transform.position.x;",
+        "float xPos = projectile == null ? 0f : projectile.transform.position.x;",
+        "float xPos = projectile == null ? projectile.transform.position.x : 0f;",
+        "float xPos = projectile.transform.position.x == null ? 0f : projectile.transform.position.x;"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### X01 해설\n- **삼항 연산자 구조**: `조건 ? 참일때 : 거짓일때` \n- **설명**: 런타임 에러를 방지하기 위해 실체가 있는지 먼저 확인한 후 안전하게 속성에 접근하는 전형적인 패턴입니다. 따라서 `projectile == null` 조건일 때 `0f`를 주고 반대일 때 값을 할당하는 B가 정답입니다."
+    },
+    {
+      "id": "x02",
+      "type": "mcq",
+      "level": "challenge",
+      "title": "함정 - 원시 타입 비교 가능성",
+      "description": "C#에서 타입 불일치 에러 없이 데이터의 크기나 값을 비교할 수 있는 식을 고르세요.",
+      "options": [
+        "dictionary == myInt",
+        "myString == list",
+        "dictionary == list",
+        "myFloat > myInt"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 3,
+      "teacherExplainMd": "### X02 해설\n- **정답**: D\n- **설명**: 서로 다른 객체 타입(Dict, List, String)은 직접 비교가 불가능하지만, 숫자형 데이터 타입인 `float`와 `int`는 엔진 내부에서 호환되어 크기 비교가 가능합니다."
+    }
+  ],
+  "concepts": [
+    {
+      "id": "u04_c1",
+      "label": "NullReferenceException 추적",
+      "summary": "null 참조 원인과 접근 순서 추적",
+      "badge": "Null",
+      "aliases": [
+        "NullReferenceException",
+        "null"
+      ]
+    },
+    {
+      "id": "u04_c2",
+      "label": "값 타입과 참조 타입",
+      "summary": "null 비교 가능 여부와 타입 차이",
+      "badge": "Type",
+      "aliases": [
+        "Value Type",
+        "Reference Type"
+      ]
+    },
+    {
+      "id": "u04_c3",
+      "label": "컬렉션 초기화와 순회",
+      "summary": "Dictionary 초기화, foreach, Add 순서",
+      "badge": "Collection",
+      "aliases": [
+        "Dictionary",
+        "foreach",
+        "Add"
+      ]
+    },
+    {
+      "id": "u04_c4",
+      "label": "삼항 연산자와 var",
+      "summary": "조건식과 타입 추론 기본 흐름",
+      "badge": "Syntax",
+      "aliases": [
+        "Ternary Operator",
+        "var"
+      ]
+    }
+  ]
 }

@@ -8,7 +8,7 @@
 ## 원문 대응 매핑
 | 문제지 ID | 원문 번호 | 원문 제목 | 연결 이론 섹션 |
 |---|---:|---|---|
-| P01 | 36 | 발사체 생성 + 전방 속도 부여 주석 선택 | Core Pattern(예정), Common Mistakes(예정) |
+| P01 | 36 | 발사체 생성 + 전방 속도 부여 주석 선택 (객관식) | Core Pattern(예정), Common Mistakes(예정) |
 | P02 | 11 | rb 변수 타입 선택 | Core Pattern(예정), Common Mistakes(예정) |
 | P03 | 24 | AddForce 방향/힘 크기 빈칸 | Core Pattern(예정), Common Mistakes(예정) |
 | P04 | 23 | 풀링 초기화 + Trigger 이벤트 선택 | Scope(예정), Core Pattern(예정) |
@@ -16,7 +16,7 @@
 ## 확장 문항 매핑
 | 문제지 ID | 유형 | 기반 개념 | 원문 참조 번호 | 확장 의도 |
 |---|---|---|---:|---|
-| X01 | 변형 | 입력-생성-속도 부여 루틴 | 36, 24 | 조건 입력 판별(GetButtonDown)부터 프리팹 인스턴스화(Instantiate), 물리 속성 동기화(velocity)까지의 3단계 무기 발사 루틴을 독립 코딩으로 전이 |
+| X01 | 객관식 | 입력-생성-속도 부여 루틴 | 36, 24 | 조건 입력 판별(GetButtonDown)부터 프리팹 인스턴스화(Instantiate), 물리 속성 동기화(velocity)까지의 3단계 무기 발사 루틴을 객관식으로 평가 훈련 |
 | X02 | 함정 | Trigger/Collision 이벤트 구분 | 23 | IsTrigger 체크 여부에 따라 엔진이 분배하는 이벤트 함수가 완전히 달라지는 원리를 파악하고, 파라미터 타입(`Collider` vs `Collision`) 혼동 함정까지 사전 제거 |
 
 ## 커버리지 점검

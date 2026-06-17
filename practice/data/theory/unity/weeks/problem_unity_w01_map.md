@@ -17,8 +17,8 @@
 ## 확장 문항 매핑
 | 문제지 ID | 유형 | 기반 개념 | 대표 conceptRef | 보조 conceptRefs | 원문 참조 번호 | 확장 의도 |
 |---|---|---|---|---|---:|---|
-| X01 | 변형 | Tag 검색 API (`FindGameObjectsWithTag`) | `u01_c6` | `u01_c6`, `u01_c1` | 2 | Tag 기반 대량 검색 패턴을 코드로 전이하여 C# API 활용도 검증 |
-| X02 | 함정 | 필드 노출 조건(public/private/SerializeField) | `u01_c5` | `u01_c5` | 13 | public / private / SerializeField의 직렬화 노출 속성 규칙의 명확한 구분 확인 |
+| X01 | 객관식 | Tag 검색 API (`FindGameObjectsWithTag`) | `u01_c6` | `u01_c6`, `u01_c1` | 2 | Tag 기반 대량 검색 패턴을 코드로 전이하여 C# API 활용도 검증 |
+| X02 | 객관식 | 필드 노출 조건(public/private/SerializeField) | `u01_c5` | `u01_c5` | 13 | public / private / SerializeField의 직렬화 노출 속성 규칙의 명확한 구분 확인 |
 
 ## 개념 레지스트리 연결
 | conceptId | label | 근거 섹션 |

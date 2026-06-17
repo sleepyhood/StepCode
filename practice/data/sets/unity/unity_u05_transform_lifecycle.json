@@ -1,77 +1,122 @@
 {
-    "id": "unity_u05_transform_lifecycle",
-    "title": "Unity U05 Transform and Lifecycle",
-    "categoryId": "unity_u05_transform_lifecycle",
-    "availableLanguages": [
-        "csharp"
-    ],
-    "problems": [
-        {
-            "id": "p01",
-            "type": "mcq",
-            "level": "basic",
-            "title": "중첩 클래스 배열 선언 타입",
-            "description": "다음 코드에서 `tMounts[0].turretMount`와 같은 방식으로 접근하기 위해 선언부 빈칸 [①], [②]에 들어갈 가장 적절한 타입을 고르세요.\n\n```csharp\n[System.Serializable]\npublic class Mount {\n    public Transform turretMount;\n    public string mountName;\n}\n\npublic class WeaponControl : MonoBehaviour {\n    public [①][] tMounts = new [②][2];\n}\n```",
-            "options": [
-                "① `Transform`, ② `Transform`",
-                "① `Mount`, ② `Mount`",
-                "① `GameObject`, ② `GameObject`",
-                "① `WeaponControl`, ② `WeaponControl`"
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 1,
-            "teacherExplainMd": "### P01 해설\n- **정답**: B. `Mount` \n- **설명**: `tMounts[0]` 요소가 `.turretMount`라는 속성을 가지려면 해당 요소의 타입 자체가 `Mount` 클래스여야 합니다. 배열 내부에 `Transform`이 들어있는 것이 아니라, `Mount`라는 껍데기가 들어있고 그 안에 `Transform`이 멤버로 존재하는 구조임을 이해해야 합니다."
-        },
-        {
-            "id": "p02",
-            "type": "mcq",
-            "level": "basic",
-            "title": "자식 Transform 배열 반환 타입",
-            "description": "다음 메서드가 컴파일 오류 없이 `result`를 외부로 내보낼 수 있도록 ( ① ) 자리에 들어갈 알맞은 반환 자료형을 고르세요.\n\n```csharp\npublic ( ① ) GetChildren(Transform root) {\n    Transform[] result = new Transform[root.childCount];\n    // ... 자식들을 채우는 로직 ...\n    return result;\n}\n```",
-            "options": [
-                "`Transform`",
-                "`List<Transform>`",
-                "`Transform[]`",
-                "`void`"
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 2,
-            "teacherExplainMd": "### P02 해설\n- **정답**: `Transform[]` \n- **설명**: 메서드 본문에서 `result`가 `Transform[]`(배열) 타입으로 생성되어 반환되고 있습니다. 따라서 메서드의 시그니처 형상도 반드시 `Transform[]`으로 일치해야 합니다."
-        },
-        {
-            "id": "p03",
-            "type": "short",
-            "level": "basic",
-            "title": "Awake/OnEnable 블록 순서 조립",
-            "description": "유니티 생명주기(Lifecycle) 순서와 목적에 맞게 아래 코드 블록 4개를 올바르게 배치한 순서를 알파벳으로 나열하세요. (예: A B C D)\n\n**블록 후보:**\n- **A**: `private void OnEnable() {` \n- **B**: `public class Prop : MonoBehaviour {` (여기에 `Awake` 시작 포함)\n- **C**: `propSpecs = GetComponent<Specs>();` (여기에 `Awake` 종료 포함)\n- **D**: `parent = root;` (여기에 `OnEnable` 종료 및 클래스 닫기 포함)",
-            "expectedAnyOf": ["B C A D", "B, C, A, D", "BCAD"],
-            "teacherExplainMd": "### P03 해설\n- **올바른 순서**: B -> C -> A -> D\n- **설명**: 클래스가 선언된 후, 생성 시점인 `Awake`(B, C)가 먼저 실행되어 필요한 데이터를 준비(캐싱)해야 합니다. 그 후 객체가 활성화될 때마다 매번 실행되는 `OnEnable`(A, D)이 뒤따라오는 것이 유니티 라이프사이클의 정석입니다."
-        },
-        {
-            "id": "x01",
-            "type": "code",
-            "level": "challenge",
-            "title": "변형 - 자식 Transform 배열 추출 로직",
-            "description": "`root`라는 Transform 부모를 받아 그 직계 자식(Child)들을 모두 찾아 `Transform` 배열에 담아 반환하는 일련의 코드를 완성하세요.",
-            "code": "Transform[] result = // 1. 배열 크기 먼저 정의\nfor (int i = 0; i < root.childCount; i++) {\n    // 2. 각 인덱스의 자식을 배열에 할당\n}\nreturn result;",
-            "expectedCode": "Transform[] result = new Transform[root.childCount];\nfor (int i = 0; i < root.childCount; i++) {\n    result[i] = root.GetChild(i);\n}\nreturn result;",
-            "teacherExplainMd": "### X01 해설\n- **핵심 API**: `childCount`로 자식의 전체 개수를 확인하고, `GetChild(index)`로 특정 번째의 자식 Transform을 가져옵니다.\n- **주의**: 배열은 생성 시 크기를 미리 정해야 하므로 `new Transform[root.childCount]` 과정을 빼먹지 않아야 합니다."
-        },
-        {
-            "id": "x02",
-            "type": "mcq",
-            "level": "challenge",
-            "title": "함정 - 라이프사이클 배치 전략",
-            "description": "다음 중 시스템 부하를 최소화하면서도 객체가 재활성화될 때마다 도구가 정상적으로 부착되도록 설계한 가장 적절한 배치를 고르세요.",
-            "options": [
-                "`OnEnable`에서 `GetComponent`를 매번 수행하여 장착한다.",
-                "`Awake`에서 `GetComponent` 결과를 캐싱하고, `OnEnable`에서 장착 명령만 수행한다.",
-                "모든 로직을 `Update`에 넣어 매 프레임 확인한다.",
-                "`Start`에서 장착 로직을 단 한 번만 수행한다."
-            ],
-            "optionLabels": ["A", "B", "C", "D"],
-            "correctIndex": 1,
-            "teacherExplainMd": "### X02 해설\n- **정답**: B\n- **설명**: `GetComponent`는 성능 비용이 있는 작업이므로 시작 시 `Awake`에서 한 번만 찾아 변수에 저장(캐싱)하는 것이 베스트입니다. 반면 장착(이동/부착) 행위는 객체가 껐다 켜질 때마다 다시 수행되어야 하므로 `OnEnable`이 적합합니다."
-        }
-    ]
+  "id": "unity_u05_transform_lifecycle",
+  "title": "Unity U05 Transform and Lifecycle",
+  "categoryId": "unity_u05_transform_lifecycle",
+  "availableLanguages": [
+    "csharp"
+  ],
+  "problems": [
+    {
+      "id": "p01",
+      "type": "mcq",
+      "level": "basic",
+      "title": "중첩 클래스 배열 선언 타입",
+      "description": "다음 코드에서 `tMounts[0].turretMount`와 같은 방식으로 접근하기 위해 선언부 빈칸 [①], [②]에 들어갈 가장 적절한 타입을 고르세요.\n\n```csharp\n[System.Serializable]\npublic class Mount {\n    public Transform turretMount;\n    public string mountName;\n}\n\npublic class WeaponControl : MonoBehaviour {\n    public [①][] tMounts = new [②][2];\n}\n```",
+      "options": [
+        "① Transform, ② Transform",
+        "① Mount, ② Mount",
+        "① GameObject, ② GameObject",
+        "① WeaponControl, ② WeaponControl"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### P01 해설\n- **정답**: B. `Mount` \n- **설명**: `tMounts[0]` 요소가 `.turretMount`라는 속성을 가지려면 해당 요소의 타입 자체가 `Mount` 클래스여야 합니다. 배열 내부에 `Transform`이 들어있는 것이 아니라, `Mount`라는 껍데기가 들어있고 그 안에 `Transform`이 멤버로 존재하는 구조임을 이해해야 합니다."
+    },
+    {
+      "id": "p02",
+      "type": "mcq",
+      "level": "basic",
+      "title": "자식 Transform 배열 반환 타입",
+      "description": "다음 메서드가 컴파일 오류 없이 `result`를 외부로 내보낼 수 있도록 ( ① ) 자리에 들어갈 알맞은 반환 자료형을 고르세요.\n\n```csharp\npublic ( ① ) GetChildren(Transform root) {\n    Transform[] result = new Transform[root.childCount];\n    // ... 자식들을 채우는 로직 ...\n    return result;\n}\n```",
+      "options": [
+        "Transform",
+        "List<Transform>",
+        "Transform[]",
+        "void"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 2,
+      "teacherExplainMd": "### P02 해설\n- **정답**: `Transform[]` \n- **설명**: 메서드 본문에서 `result`가 `Transform[]`(배열) 타입으로 생성되어 반환되고 있습니다. 따라서 메서드의 시그니처 형상도 반드시 `Transform[]`으로 일치해야 합니다."
+    },
+    {
+      "id": "p03",
+      "type": "mcq",
+      "level": "basic",
+      "title": "Awake/OnEnable 블록 순서 조립",
+      "description": "유니티 생명주기(Lifecycle) 순서와 목적에 맞게 아래 코드 블록 4개를 올바르게 배치하여 실행 흐름(클래스 선언 ➔ 초기 준비 ➔ 활성화 장착) 순서대로 정렬한 조합을 고르세요.\n\n**코드 블록 후보:**\n**A**:\n```csharp\nprivate void OnEnable() {\n```\n**B**:\n```csharp\npublic class AttachProp : MonoBehaviour {\n    public Transform prop;\n    private PropSpecs propSpecs;\n    private float damage;\n    private float durability;\n    private void Awake () {\n```\n**C**:\n```csharp\n        propSpecs = prop.GetComponent<PropSpecs>();\n        this.damage = propSpecs.damage;\n        this.durability = propSpecs.durability;\n    }\n```\n**D**:\n```csharp\n        prop.parent = transform;\n        prop.position = transform.localPosition;\n        prop.rotation = transform.localRotation;\n    }\n}\n```",
+      "options": [
+        "A ➔ C ➔ B ➔ D",
+        "B ➔ C ➔ A ➔ D",
+        "B ➔ D ➔ A ➔ C",
+        "C ➔ B ➔ A ➔ D"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### P03 해설\n- **올바른 순서**: B -> C -> A -> D\n- **설명**: 클래스가 선언된 후, 생성 시점인 `Awake`(B, C)가 먼저 실행되어 필요한 데이터를 준비(캐싱)해야 합니다. 그 후 객체가 활성화될 때마다 매번 실행되는 `OnEnable`(A, D)이 뒤따라오는 것이 유니티 라이프사이클의 정석입니다."
+    },
+    {
+      "id": "x01",
+      "type": "mcq",
+      "level": "challenge",
+      "title": "변형 - 자식 Transform 배열 추출 로직",
+      "description": "유니티 씬의 특정 `Transform root` 객체를 파라미터로 넘겨받으면, 그 객체가 감싸고 있는 1차 직계 자식들을 모조리 수집하여 `Transform[]` 배열 변수명 `result`에 담아 되돌려주는 완전한 메서드 기능의 핵심 C# 코드로 가장 올바른 조합을 고르세요.",
+      "options": [
+        "Transform[] result = new Transform[root.childCount];\nfor (int i = 0; i < root.childCount; i++) {\n    result[i] = root.GetChild(i);\n}\nreturn result;",
+        "Transform[] result = new Transform[root.childCount];\nfor (int i = 0; i < root.childCount; i++) {\n    result[i] = root.GetChild;\n}\nreturn result;",
+        "Transform[] result = new Transform[root.childCount];\nfor (int i = 0; i < root.childCount; i++) {\n    result[i] = root.childCount;\n}\nreturn result;",
+        "Transform result = new Transform[root.childCount];\nfor (int i = 0; i < root.childCount; i++) {\n    result = root.GetChild(i);\n}\nreturn result;"
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 0,
+      "teacherExplainMd": "### X01 해설\n- **핵심 API**: `childCount`로 자식의 전체 개수를 확인하고, `GetChild(index)`로 특정 번째의 자식 Transform을 가져옵니다.\n- **주의**: 배열은 생성 시 크기를 미리 정해야 하므로 `new Transform[root.childCount]` 과정을 빼먹지 않고, `GetChild(i)` API에 정확한 인자 인덱스를 넘겨준 A가 정답입니다."
+    },
+    {
+      "id": "x02",
+      "type": "mcq",
+      "level": "challenge",
+      "title": "함정 - 라이프사이클 배치 전략",
+      "description": "다음 중 시스템 부하를 최소화하면서도 객체가 재활성화될 때마다 도구가 정상적으로 부착되도록 설계한 가장 적절한 배치를 고르세요.",
+      "options": [
+        "OnEnable에서 GetComponent를 매번 수행하여 장착한다.",
+        "Awake에서 GetComponent 결과를 캐싱하고, OnEnable에서 장착 명령만 수행한다.",
+        "모든 로직을 Update에 넣어 매 프레임 확인한다.",
+        "Start에서 장착 로직을 단 한 번만 수행한다."
+      ],
+      "optionLabels": ["A", "B", "C", "D"],
+      "correctIndex": 1,
+      "teacherExplainMd": "### X02 해설\n- **정답**: B\n- **설명**: `GetComponent`는 성능 비용이 있는 작업이므로 시작 시 `Awake`에서 한 번만 찾아 변수에 저장(캐싱)하는 것이 베스트입니다. 반면 장착(이동/부착) 행위는 객체가 껐다 켜질 때마다 다시 수행되어야 하므로 `OnEnable`이 적합합니다."
+    }
+  ],
+  "concepts": [
+    {
+      "id": "u05_c1",
+      "label": "배열과 반환형",
+      "summary": "중첩 클래스 배열과 배열 반환형",
+      "badge": "Array",
+      "aliases": [
+        "Array"
+      ]
+    },
+    {
+      "id": "u05_c2",
+      "label": "Transform 자식 순회",
+      "summary": "childCount, GetChild, for 루프 패턴",
+      "badge": "Transform",
+      "aliases": [
+        "childCount",
+        "GetChild"
+      ]
+    },
+    {
+      "id": "u05_c3",
+      "label": "Awake OnEnable Start 역할 구분",
+      "summary": "초기화 책임과 호출 시점 분리",
+      "badge": "Lifecycle",
+      "aliases": [
+        "Awake",
+        "OnEnable",
+        "Start"
+      ]
+    }
+  ]
 }

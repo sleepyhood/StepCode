@@ -11,7 +11,7 @@
             "type": "short",
             "level": "basic",
             "title": "Input 시스템 타이밍 구분",
-            "description": "왼쪽 화살표 키(`KeyCode.LeftArrow`)를 기준으로, 유니티의 `Input` 클래스에서 제공하는 키보드 입력 메서드 3가지를 상황에 맞게 매칭하세요.\n\n(1) 키를 누르는 동안 매 프레임 계속해서 true를 반환한다.\n(2) 키를 처음 누른 첫 번째 프레임에만 딱 한 번 true를 반환한다.\n(3) 누르고 있던 키를 손가락에서 떼는 순간의 프레임에 딱 한 번 true를 반환한다.",
+            "description": "왼쪽 화살표 키(`KeyCode.LeftArrow`)를 기준으로, 유니티의 `Input` 클래스에서 제공하는 키보드 입력 메서드 3가지를 상황에 맞게 매칭하세요.\n\n매칭 대상:\n- (1) 키 누름 유지: 키를 누르는 동안 매 프레임 계속해서 `true`를 반환한다.\n- (2) 최초 눌림 발생: 키를 처음 누른 첫 번째 프레임에만 딱 한 번 `true`를 반환한다.\n- (3) 키 해제(뗌): 누르고 있던 키를 손가락에서 떼는 순간의 프레임에 딱 한 번 `true`를 반환한다.",
             "answerUi": {
                 "kind": "grid",
                 "rows": ["(1) 키 누름 유지", "(2) 최초 눌림 발생", "(3) 키 해제(뗌)"],
@@ -34,10 +34,10 @@
             "title": "이동 메서드 선택",
             "description": "다음 코드에서 이동 벡터(`move`)에 프레임 보정 수치 등을 곱하여 대상 오브젝트의 좌표를 실제로 누적 이동시켜주는 최적의 메서드를 고르세요.\n\n`transform.[ 드롭다운 ](move * Time.deltaTime * speed);`",
             "options": [
-                "`TransformVector`",
-                "`SetPositionAndRotation`",
-                "`Translate`",
-                "`TransformDirection`"
+                "TransformVector",
+                "SetPositionAndRotation",
+                "Translate",
+                "TransformDirection"
             ],
             "optionLabels": ["A", "B", "C", "D"],
             "correctIndex": 2,
@@ -45,12 +45,18 @@
         },
         {
             "id": "x01",
-            "type": "code",
+            "type": "mcq",
             "level": "challenge",
             "title": "변형 - 축 입력 기반 이동 로직 완성",
-            "description": "표준 Input 축(`Horizontal`, `Vertical`)을 읽어 캐릭터를 XZ 평면(바닥)에서 이동시키기 위한 핵심 2줄의 코드를 완성하세요. 프레임 보정(`Time.deltaTime`)과 이동 속도(`speed`) 변수도 공식에 포함되어야 합니다.",
-            "code": "// 1. 입력 축을 읽어 move 벡터 생성(Y축은 0f)\nVector3 move = \n// 2. Translate를 이용해 실제 이동 적용\ntransform.Translate(",
-            "expectedCode": "Vector3 move = new Vector3(Input.GetAxis(\"Horizontal\"), 0f, Input.GetAxis(\"Vertical\"));\ntransform.Translate(move * Time.deltaTime * speed);",
+            "description": "유니티의 Input Manager에서 화살표 키나 WASD 키를 누르면 반환하는 가상의 `Horizontal`과 `Vertical` 축(Axis) 실수형 값을 활용하여 3D 평면(XZ축) 상에서의 이동 벡터를 만들고, 프레임 독립적인 보정(`Time.deltaTime`)과 이동 속도(`speed`)를 적용해 실제 오브젝트를 위치 이동시키고자 합니다. 다음 중 `Update()` 함수 내부에 작성할 핵심 2줄의 코드로 가장 적절한 것을 고르세요.",
+            "options": [
+                "Vector3 move = new Vector3(Input.GetAxis(\"Horizontal\"), Input.GetAxis(\"Vertical\"), 0f);\ntransform.Translate(move * speed);",
+                "Vector3 move = new Vector3(Input.GetAxis(\"Horizontal\"), 0f, Input.GetAxis(\"Vertical\"));\ntransform.Translate(move * Time.deltaTime * speed);",
+                "Vector3 move = new Vector3(0f, Input.GetAxis(\"Horizontal\"), Input.GetAxis(\"Vertical\"));\ntransform.Translate(move * Time.deltaTime);",
+                "Vector3 move = new Vector3(Input.GetAxis(\"Horizontal\"), 0f, Input.GetAxis(\"Vertical\"));\ntransform.position = move * speed;"
+            ],
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 1,
             "teacherExplainMd": "### X01 해설\n- **축 입력**: `Input.GetAxis`를 통해 조이스틱이나 WASD 가중치를 받아옵니다.\n- **프레임 보정**: `Time.deltaTime`을 곱해주지 않으면 컴퓨터 사양에 따라 이동 속도가 제각각이 되므로, 실시간 게임 개발에서는 필수적인 요소입니다."
         },
         {
@@ -60,10 +66,10 @@
             "title": "함정 - Input API 오개념 판별",
             "description": "유니티 `Input` 클래스의 메서드 작동 방식 중 **잘못 설명하고 있는 것**을 고르세요.",
             "options": [
-                "`GetKey`는 키보드 하드웨어를 누르고 있는 모든 순간 참이다.",
-                "`GetKeyDown`은 버튼이 끝까지 들어간 최초 1프레임에만 동작한다.",
-                "`GetKeyUp`은 키를 계속 누르고 있는 동안에도 매 프레임 참을 반환한다.",
-                "`Translate` 메서드에 0을 넘겨주면 오브젝트는 이동하지 않는다."
+                "Input.GetKey는 사용자가 대상 키를 누르고 있는 1초 동안 60프레임이 지나갔다면, 60번 내내 true를 반환한다.",
+                "Input.GetKeyDown은 사용자가 대상 키를 처음 누른 그 순간의 단 1프레임 동안에만 true를 반환한다.",
+                "Input.GetKeyUp은 사용자가 대상 키를 깊이 꾹 누르고 있는 연속적인 그 유지 상황 전체 동안 계속해서 true를 반환하도록 설계되었다.",
+                "Input.GetKeyUp은 키보드에서 손가락을 완전히 떼어 올린 순간의 해제 프레임 딱 한 번만 단발성으로 잡아서 true를 알려준다."
             ],
             "optionLabels": ["A", "B", "C", "D"],
             "correctIndex": 2,

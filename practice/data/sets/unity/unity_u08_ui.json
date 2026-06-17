@@ -32,8 +32,8 @@
             "type": "short",
             "level": "basic",
             "title": "메시지 표시 메서드 선언 완성",
-            "description": "다음 외부 호출부와 본문을 참고하여 메서드 선언부의 빈칸 ①, ②, ③을 채우세요.\n\n호출부: `SetMessageToDisplay(\"게임 시작!\");` \n본문: `textUI.text = stringToDisplay;` \n\n```csharp\n( ① ) ( ② ) ( ③ ) \n{\n    textUI.text = stringToDisplay;\n}\n```",
-            "expectedAnyOf": ["void SetMessageToDisplay(string stringToDisplay)", "① void ② SetMessageToDisplay ③ (string stringToDisplay)"],
+            "description": "다음 외부 호출부와 본문을 참고하여 메서드 선언부의 빈칸 ①, ②, ③에 들어갈 요소를 순서대로 쉼표로 구분하여 작성하세요. (예: `①, ②, ③`)\n\n호출부: `SetMessageToDisplay(\"게임 시작!\");` \n본문: `textToDisplay.text = stringToDisplay;` \n\n```csharp\n( ① ) ( ② ) ( ③ ) \n{\n    textToDisplay.text = stringToDisplay;\n}\n```",
+            "expectedAnyOf": ["void, SetMessageToDisplay, string stringToDisplay"],
             "teacherExplainMd": "### P02 해설\n- **① void**: 텍스트를 바꿀 뿐 돌려주는 값이 없으므로 반환형은 `void`입니다.\n- **② 이름**: 호출 코드에서 사용한 이름과 대소문자까지 정확히 일치해야 합니다.\n- **③ 매개변수**: 문자열인 \"게임 시작!\"을 받으므로 `string` 타입이며, 본문에서 사용하는 `stringToDisplay`와 이름이 같아야 합니다."
         },
         {
@@ -41,28 +41,34 @@
             "type": "short",
             "level": "basic",
             "title": "OnMouseUp 함수 선언 완성",
-            "description": "마우스 버튼을 눌렀다가 **떼는 순간** 유니티 엔진이 자동으로 호출해주는 이벤트 메서드를 작성하세요.\n\n```csharp\n( ① ) ( ② ) ( ③ )() \n{\n    Debug.Log(\"마우스 버튼 뗌!\");\n}\n```",
-            "expectedAnyOf": ["private void OnMouseUp", "① private ② void ③ OnMouseUp"],
-            "teacherExplainMd": "### P03 해설\n- **정답**: `private void OnMouseUp()`\n- **설명**: 유니티의 콜백 메서드는 엔진이 직접 부르기 때문에 `private`으로 두는 것이 관례입니다. `OnMouseUp`은 마우스 버튼 해제 시점을 정확히 감지하는 약속된 이름입니다."
+            "description": "오브젝트 위에 마우스 버튼을 눌렀다가 **떼는 순간** 유니티 엔진이 자동으로 호출해주는 이벤트 메서드를 완성하려고 합니다. 접근 제한을 최소화하는 한정자를 포함하여 빈칸 ①, ②, ③에 들어갈 요소를 순서대로 쉼표로 구분하여 작성하세요. (예: `①, ②, ③`)\n\n```csharp\n( ① ) ( ② ) ( ③ )() \n{\n    Debug.Log(\"마우스 버튼 뗌!\");\n}\n```",
+            "expectedAnyOf": ["private, void, OnMouseUp"],
+            "teacherExplainMd": "### P03 해설\n- **정답**: `private void OnMouseUp()`\n- **설명**: 유니티의 콜백 메시지 메서드는 엔진 내부에서 직접 호출하므로 `private`으로 감추는 것이 정석입니다. `OnMouseUp`은 마우스 해제 감지에 매핑된 이름입니다."
         },
         {
             "id": "p04",
             "type": "short",
             "level": "challenge",
             "title": "버튼 이벤트 등록 위치 T/F",
-            "description": "버튼의 `AddListener`를 통한 이벤트 등록 방식에 대한 설명의 참/거짓을 순서대로 쓰세요.\n\n1. `Start()` 메서드 안에서 등록하면 게임 시작 시 한 번만 등록되어 정상 작동한다.\n2. `OnTriggerEnter2D()` 안에서 등록하면 버튼을 클릭할 때마다 충돌 이벤트가 발생한다.\n3. `Update()` 메서드 안에서 등록하면 동작은 하지만 매 프레임 리스너가 누적 등록되어 성능 문제가 생긴다.",
-            "expectedAnyOf": ["참, 거짓, 참", "참 거짓 참", "1 참 2 거짓 3 참"],
+            "description": "버튼의 `AddListener`를 통한 이벤트 등록 방식에 대한 설명의 참/거짓을 순서대로 쉼표로 구분하여 쓰세요. (예: `참, 거짓, 참`)\n\n1. `Start()` 메서드 안에서 등록하면 게임 시작 시 한 번만 등록되어 정상 작동한다.\n2. `OnTriggerEnter2D()` 안에서 등록하면 버튼을 클릭할 때마다 충돌 이벤트가 발생한다.\n3. `Update()` 메서드 안에서 등록하면 동작은 하지만 매 프레임 리스너가 누적 등록되어 성능 문제가 생긴다.",
+            "expectedAnyOf": ["참, 거짓, 참"],
             "teacherExplainMd": "### P04 해설\n- **1 참**: 초기화 시점에 1회 등록하는 정석적인 방법입니다.\n- **2 거짓**: `OnTriggerEnter2D`는 UI 버튼 클릭과는 전혀 무관한 물리 충돌 이벤트입니다.\n- **3 참**: `Update`는 매 프레임 돌기 때문에 초당 수십 개씩 중복된 리스너가 붙어, 나중에 한 번 클릭 시 수백 번의 기능이 연쇄 호출되는 버그를 일으킵니다."
         },
         {
             "id": "x01",
-            "type": "code",
+            "type": "mcq",
             "level": "challenge",
-            "title": "변형 - UI 버튼 리스너 등록 코드",
-            "description": "`button2` 클릭 시 `LightBulbOn` 메서드가 실행되도록 하는 안전한 등록 코드를 작성하세요.",
-            "code": "void Start() {\n    // 여기에 한 줄 작성\n}",
-            "expectedCode": "button2.onClick.AddListener(LightBulbOn);",
-            "teacherExplainMd": "### X01 해설\n- **핵심 포인트**: `onClick` 프로퍼티의 `AddListener` 메서드를 사용합니다. 이때 등록할 메서드 이름 뒤에 괄호 `()`를 붙이지 않고 이름만 전달하는 것에 유의하세요."
+            "title": "변형 - UI 버튼 리스너 등록 코드 선택",
+            "description": "씬 시작 시 단 1회만 안전하게 버튼 리스너를 등록하여 중복 실행 버그를 방지하려고 합니다. 변수 `Button button2` 클릭 시 `LightBulbOn` 메서드가 실행되도록 `Start()` 내부에 작성할 알맞은 한 줄 코드를 고르세요.",
+            "options": [
+                "button2.onClick(LightBulbOn);",
+                "button2.onClick.AddListener(LightBulbOn);",
+                "button2.onClick.AddListener(LightBulbOn());",
+                "button2.AddListener(LightBulbOn);"
+            ],
+            "optionLabels": ["A", "B", "C", "D"],
+            "correctIndex": 1,
+            "teacherExplainMd": "### X01 해설\n- **정답**: B\n- **설명**: `button2.onClick.AddListener` 형태로 등록을 해야 합니다. 이때 호출이 목적이 아니라 메서드 자체(대리자)를 등록하는 것이므로 끝에 괄호 `()`를 붙이지 않는 B가 올바릅니다."
         },
         {
             "id": "x02",
@@ -71,10 +77,10 @@
             "title": "함정 - AddListener 최적 등록 위치",
             "description": "버튼 리스너(`AddListener`)를 단 한 번만 안전하게 등록하기 위해 가장 적절한 장소를 고르세요.",
             "options": [
-                "`Update()`",
-                "`Start()`",
-                "`OnTriggerEnter2D()`",
-                "`LateUpdate()`"
+                "Update()",
+                "Start()",
+                "OnTriggerEnter2D()",
+                "LateUpdate()"
             ],
             "optionLabels": ["A", "B", "C", "D"],
             "correctIndex": 1,

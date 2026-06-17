@@ -9,11 +9,11 @@
 |---|---|---|
 | P01 | (1) 참, (2) 참, (3) 거짓 | Static/Tag는 활용 가능, Prefab 편집은 가능 |
 | P02 | Hierarchy-A, Scene-B, Project-C, Inspector-D | 각 창의 기본 역할 매칭 |
-| P03 | External Script Editor | IDE 선택 옵션의 정확한 명칭 |
+| P03 | B | IDE 선택 옵션의 명칭인 External Script Editor 매칭 |
 | P04 | (1) 참, (2) 참, (3) 거짓, (4) 거짓 | 툴 핸들의 좌표계 전환, Universal 도구 등 조작 방식 이해 |
-| P05 | `[SerializeField] private int speed;` | 캡슐화 유지(`private`) + Inspector 직렬화 노출 속성 결합 |
-| X01 | `GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");` <br> (또는 `var enemies = ...`) | Tag 기반 다중 검색 API(`FindGameObjectsWithTag`) |
-| X02 | C | 아무 특성 지정 없는 `private`만 쓰면 에디터에 비노출됨 |
+| P05 | SerializeField | 캡슐화 유지(private) + Inspector 직렬화 노출 속성 결합 |
+| X01 | C | Tag 기반 다중 검색 API(FindGameObjectsWithTag)와 배열 선언 매칭 |
+| X02 | C | 아무 특성 지정 없는 private만 쓰면 에디터에 비노출됨 |
 
 ## 해설
 ### P01
@@ -28,8 +28,8 @@
 
 ### P03
 - 개념 정의: 외부 에디터 선택은 Preferences(External Tools) 아래에서 설정합니다.
-- 오답 포인트: 메뉴 경로는 기억하지만 옵션 이름을 틀리는 경우가 있습니다.
-- 판별 기준: 옵션 이름 `External Script Editor`를 영문 그대로 정확 표기합니다.
+- 오답 포인트: 유사한 옵션 이름과 헷갈리기 쉽습니다.
+- 판별 기준: 옵션 이름 `External Script Editor`를 고르는 객관식 문항입니다.
 
 ### P04
 - 개념 정의: Scene 배치 조작은 좌표계(Local/Global), Universal Tool, 스냅 규칙, Inspector 수치 입력을 함께 이해해야 합니다.
@@ -43,12 +43,12 @@
 ### P05
 - 개념 정의: Unity는 직렬화 가능한 필드를 Inspector에 표시합니다.
 - 오답 포인트: Inspector에 보이기 위해서는 무조건 `public`으로만 선언해야 한다고 오해하기 쉽습니다.
-- 판별 기준: 캡슐화(정보 은닉)를 유지하려면 멤버 접근 제한자를 `private`으로 남겨두고 코드 윗줄이나 옆에 `[SerializeField]` 특성(Attribute)을 명시적으로 붙여 주어야 합니다.
+- 판별 기준: 캡슐화(정보 은닉)를 유지하려면 멤버 접근 제한자를 `private`으로 남겨두고 코드 윗줄에 `[SerializeField]` 특성(Attribute)을 명시적으로 붙여 주어야 합니다. 여기서는 해당 특성의 이름인 `SerializeField`를 작성합니다.
 
 ### X01
 - 개념 정의: 같은 태그를 가진 여러 오브젝트 집합을 한 번에 배열 형태로 찾아올 때 `GameObject.FindGameObjectsWithTag` 배열 반환 API를 사용합니다.
 - 오답 포인트: 단일 객체만 찾아오는 `GameObject.FindWithTag`와 혼동하거나, 접근 클래스인 `GameObject` 명칭 자체를 누락하는 경우가 있습니다.
-- 판별 기준: 결과 변수의 타입이 `GameObject[]` (배열) 인지, 그리고 호출하는 함수명에 `s`(`Objects`)가 정확히 포함되었는지 점검합니다. (`var` 키워드 추론도 정답 인정 가능)
+- 판별 기준: 결과 변수의 타입이 `GameObject[]` (배열)이므로, 호출하는 함수명에 `s`가 붙고 `GameObject` 클래스를 통해 정적 메서드로 호출하는 C를 골라야 합니다.
 
 ### X02
 - 개념 정의: 스크립트 클래스의 변수가 Inspector 창에 기본 표시되려면 `public` 이어야 하며, `private`이나 `protected` 필드는 앞에 `[SerializeField]` 특성을 선언해주어야 합니다.
