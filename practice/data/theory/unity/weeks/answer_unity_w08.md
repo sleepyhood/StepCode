@@ -7,10 +7,10 @@
 ## 정답표
 | 문항 ID | 정답 | 한 줄 근거 |
 |---|---|---|
-| P01 | ① `using UnityEngine.UI;` ② `public Text myText;` ③ `myText.text = ("Score: " + score.ToString());` | UI 사용 네임스페이스 가져오기 -> 인스펙터 노출용 Text 변수 선언 -> String 변환 대입문 갱신 |
-| P02 | ① `void` ② `SetMessageToDisplay` ③ `(string stringToDisplay)` | 외부 호출 인자와 컴파일 성공 요건을 매칭한 시그니처 3대 요소 |
+| P01 | ① `UnityEngine.UI` ② `public Text myText` ③ `myText.text = "Score: " + score.ToString()` | UI 사용 네임스페이스 가져오기 -> 인스펙터 노출용 Text 변수 선언 -> String 변환 대입문 갱신 |
+| P02 | ① `void` ② `SetMessageToDisplay` ③ `string stringToDisplay` | 외부 호출 인자와 컴파일 성공 요건을 매칭한 시그니처 3대 요소 |
 | P03 | ① `private` ② `void` ③ `OnMouseUp` | 접근 제한을 최소화(private)하고 해제 타이밍(OnMouseUp)에 반응하는 콜백 선언 |
-| P04 | 1 참, 2 거짓, 3 참 | 각 생명주기 위치에 리스너를 넣었을 때의 고유 동작 결과 판별 |
+| P04 | 참, 거짓, 참 | 각 생명주기 위치에 리스너를 넣었을 때의 고유 동작 결과 판별 |
 | X01 | B | 중복 누적 등록 사고가 절대로 나지 않도록 하는 초기화 1회 호출 시점(Start)의 등록 코드 선택 |
 | X02 | B | `Start()`는 씬이 적재되어 시작될 때 단 한 번만 실행되는 안전지대이므로, 여기에 등록해야 중복 호출 사고가 없음 |
 

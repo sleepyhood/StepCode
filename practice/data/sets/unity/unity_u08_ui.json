@@ -11,7 +11,7 @@
             "type": "short",
             "level": "basic",
             "title": "점수 UI 표시 코드 3요소",
-            "description": "유니티 UI의 `Text` 컴포넌트를 사용하여 점수(`score`)를 화면에 갱신하려고 합니다. 다음 코드를 완성하기 위한 3가지 요소를 순서대로 쓰세요.\n\n```csharp\n// ① 필요한 네임스페이스 가져오기\nusing (  ①  );\n\npublic class ScoreBoard : MonoBehaviour {\n    // ② 인스펙터에 노출할 텍스트 컴포넌트 변수 선언\n    (  ②  );\n    \n    public void UpdateScore(int score) {\n        // ③ 텍스트 UI의 내용을 \"Score: 점수\" 형태로 갱신\n        (  ③  );\n    }\n}\n```",
+            "description": "유니티 UI의 `Text` 컴포넌트를 사용하여 점수(`score`)를 화면에 갱신하려고 합니다. 다음 코드를 완성하기 위한 3가지 요소를 순서대로 쓰세요.\n\n```csharp\n// ① 필요한 네임스페이스 가져오기\nusing (  ①  );\n\npublic class ScoreBoard : MonoBehaviour {\n    // ② 인스펙터에 노출할 텍스트 컴포넌트 변수 선언 (변수명: myText)\n    (  ②  );\n    \n    public void UpdateScore(int score) {\n        // ③ 텍스트 UI의 내용을 \"Score: 점수\" 형태로 갱신 (ToString() 명시 호출)\n        (  ③  );\n    }\n}\n```",
             "answerUi": {
                 "kind": "grid",
                 "rows": ["① 네임스페이스", "② 변수 선언", "③ 갱신 코드"],
@@ -33,7 +33,7 @@
             "level": "basic",
             "title": "메시지 표시 메서드 선언 완성",
             "description": "다음 외부 호출부와 본문을 참고하여 메서드 선언부의 빈칸 ①, ②, ③에 들어갈 요소를 순서대로 쉼표로 구분하여 작성하세요. (예: `①, ②, ③`)\n\n호출부: `SetMessageToDisplay(\"게임 시작!\");` \n본문: `textToDisplay.text = stringToDisplay;` \n\n```csharp\n( ① ) ( ② ) ( ③ ) \n{\n    textToDisplay.text = stringToDisplay;\n}\n```",
-            "expectedAnyOf": ["void, SetMessageToDisplay, string stringToDisplay"],
+            "expectedAnyOf": ["void, SetMessageToDisplay, string stringToDisplay", "void, SetMessageToDisplay, (string stringToDisplay)"],
             "teacherExplainMd": "### P02 해설\n- **① void**: 텍스트를 바꿀 뿐 돌려주는 값이 없으므로 반환형은 `void`입니다.\n- **② 이름**: 호출 코드에서 사용한 이름과 대소문자까지 정확히 일치해야 합니다.\n- **③ 매개변수**: 문자열인 \"게임 시작!\"을 받으므로 `string` 타입이며, 본문에서 사용하는 `stringToDisplay`와 이름이 같아야 합니다."
         },
         {

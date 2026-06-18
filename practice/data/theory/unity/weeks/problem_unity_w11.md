@@ -50,7 +50,7 @@
   }
   ```
 
-  - 답안 형식 예: `코드1 거짓, 코드2 거짓, 코드3 참`
+  - 답안 형식 예: `거짓, 거짓, 참`
 
 ### [P02] 코드 조각 3개의 ECS 사용 여부 추가 판별
 - 출처: 원문 34번
@@ -93,19 +93,20 @@
   }
   ```
 
-  - 답안 형식 예: `코드1 거짓, 코드2 거짓, 코드3 거짓`
+  - 답안 형식 예: `거짓, 거짓, 거짓`
 
 ## 확장 문항 (변형/함정/응용)
-### [X01] 변형 - ECS 실사용으로 판정되는 최소 코드 작성
+### [X01] 변형 - ECS 시스템 선언문 선택
 - 출처 개념: U11 ECS
-- 유형: 코드
+- 유형: 객관식
 - 문제:
-  - P01과 P02에서 학습한 판별 기준을 적용하여, **"이 코드는 ECS 라이브러리를 실제로 사용한다"**고 판정받을 수 있는 가장 간결한 최소 C# 코드를 작성하세요.
-  - 작성 조건:
-    - `using Unity.Entities;` 네임스페이스 선언은 당연히 포함해야 합니다.
-    - 단, 그것만으로는 부족하므로, **ECS 전용 타입(`SystemBase`, `ISystem`, `IComponentData`, `ComponentSystem` 등) 중 하나를 실제로 상속하거나 구현하는 클래스 선언부**가 최소 1줄 이상 포함되어야 합니다.
-  - (클래스 내부 본문은 비어 있어도 무방합니다.)
-- 의도: "ECS를 사용했다"라는 판정의 최소 충족 조건이 무엇인지를 직접 코드로 증명하게 하여, 선언과 실사용의 경계를 체화시킵니다.
+  - C# 스크립트에서 최신 유니티 ECS(Entity Component System)를 실제로 사용하여 로직을 처리하는 '시스템' 클래스를 선언하고자 합니다. 다음 중 성능 최적화를 위한 소스 생성기 활용 규칙을 준수하며 `SystemBase`를 상속받는 가장 올바른 선언부 한 줄을 고르세요.
+- 보기:
+  - A. `public class EnemyMoveSystem : SystemBase`
+  - B. `public partial class EnemyMoveSystem : SystemBase`
+  - C. `public class EnemyMoveSystem : MonoBehaviour`
+  - D. `public partial class EnemyMoveSystem : IComponentData`
+- 의도: ECS에서 로직을 처리하는 System 구현 시 최신 표준에 적합한 `partial` 키워드와 `SystemBase` 상속 형식을 올바르게 구분할 수 있는지 검증합니다.
 
 ### [X02] 함정 - `using Unity.Entities;`만 선언했을 때의 판정
 - 출처 개념: U11 ECS

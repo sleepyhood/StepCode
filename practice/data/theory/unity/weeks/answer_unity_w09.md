@@ -8,10 +8,10 @@
 | 문항 ID | 정답 | 한 줄 근거 |
 |---|---|---|
 | P01 | Z1 `JumpApex`, Z2 `SlowFall`, Z3 `FastFall`, Z4 `FastLand` | 점프 궤적의 물리적 단계(정점→느린 낙하→빠른 낙하→착지)에 각각 대응하는 클립명 |
-| P02 | 1 참, 2 거짓, 3 참, 4 거짓 | Entry 전환은 가능(참), 기본 상태 제외 불가(거짓), Sub-State Machine은 독립 동작(참), 상태→머신 전환 가능(거짓) |
-| P03 | ① `SetInteger` ② `SetFloat` ③ `SetBool` ④ `SetTrigger` | 인수의 리터럴 타입(정수/실수/불리언/값 없음)에 정확히 대응하는 전용 Set 함수 |
-| P04 | ① `animator` ② `("Attacking", false)` | 타입명이 아닌 인스턴스 변수명으로 호출하고, 문자열 파라미터명과 bool 값을 정확한 시그니처로 전달 |
-| P05 | ① `Search` ② `Friendly` | reset 전환을 위해 Trigger는 `Search`를 발동, Bool은 `Friendly`를 false로 설정 |
+| P02 | 참, 거짓, 참, 거짓 | Entry 전환은 가능(참), 기본 상태 제외 불가(거짓), Sub-State Machine은 독립 동작(참), 상태→머신 전환 가능(거짓) |
+| P03 | SetInteger, SetFloat, SetBool, SetTrigger | 인수의 리터럴 타입(정수/실수/불리언/값 없음)에 정확히 대응하는 전용 Set 함수 |
+| P04 | ① `animator` ② `"Attacking", false` | 타입명이 아닌 인스턴스 변수명으로 호출하고, 문자열 파라미터명과 bool 값을 정확한 시그니처로 전달 |
+| P05 | Search, Friendly | reset 전환을 위해 Trigger는 `Search`를 발동, Bool은 `Friendly`를 false로 설정 |
 | X01 | `animator.SetFloat("Speed", playerSpeed);` | Float 타입 파라미터는 반드시 `SetFloat` API로 실수형 값을 전달 |
 | X02 | B | Trigger는 값을 저장하지 않는 1회성 신호이므로 `SetTrigger("Search")`만이 유일한 올바른 호출 |
 
