@@ -159,7 +159,7 @@
       "type": "short",
       "level": "challenge",
       "title": "Inspector 변수 노출",
-      "description": "외부 클래스에서의 무분별한 접근을 막는 캡슐화(`private`)를 유지하면서도, 유니티 에디터의 Inspector 창에서는 값을 GUI로 설정할 수 있게 하려고 합니다.\n아래 코드의 ①번 빈칸에 들어갈 유니티 C# 특성(Attribute)의 이름을 쓰세요.\n\n```csharp\n[①]\nprivate int speed;\n```\n\n**답안 작성 주의**: 대괄호 `[` 와 `]` 를 제외하고 영문 특성 이름만 대소문자를 정확히 구별하여 한 단어로 작성하세요. (예: `SerializeField`)",
+      "description": "외부 클래스에서의 무분별한 접근을 막는 캡슐화(`private`)를 유지하면서도, 유니티 에디터의 Inspector 창에서는 값을 GUI로 설정할 수 있게 하려고 합니다.\n아래 코드의 ①번 빈칸에 들어갈 유니티 C# 특성(Attribute)의 이름을 쓰세요.\n\n```csharp\n[①]\nprivate int speed;\n```\n\n**답안 작성 주의**: 대괄호 `[` 와 `]` 를 제외하고 영문 특성 이름만 대소문자를 정확히 구별하여 한 단어로 작성하세요.",
       "expectedAnyOf": [
         "SerializeField"
       ],

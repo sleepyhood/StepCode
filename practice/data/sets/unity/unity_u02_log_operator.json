@@ -151,7 +151,7 @@
       "type": "mcq",
       "level": "challenge",
       "title": "변형 - 로그 + 판별 결과 출력",
-      "description": "임의의 정수 변수 `n`이 홀수인지 판별한 결과를 bool 변수 `isOdd`에 저장한 뒤, 콘솔 창에 `\"isOdd=\"` 문자열과 그 결과를 결합하여 출력하는 C# 코드로 가장 올바른 것을 고르세요.",
+      "description": "임의의 정수 변수 `n`이 홀수인지 판별한 결과를 bool 변수 `isOdd`에 저장한 뒤, 콘솔 창에 `\"isOdd=\"` 문자열과 그 결과를 결합하여 출력하는 유니티(Unity) 엔진 C# 코드로 가장 올바른 것을 고르세요.",
       "options": [
         "`bool isOdd = n % 2 == 0; Debug.Log(\"isOdd=\" + isOdd);`",
         "`bool isOdd = n % 2 != 0; Debug.Log(\"isOdd=\" + isOdd);`",

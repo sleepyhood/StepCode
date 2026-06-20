@@ -59,7 +59,7 @@
       "type": "mcq",
       "level": "basic",
       "title": "Dictionary 초기화 순서",
-      "description": "다음 Unity 스크립트는 인스펙터에 할당된 게임 오브젝트 목록(`gameObjects`)을 활용하여, 오브젝트의 이름을 키(Key)로, 오브젝트 자체를 값(Value)으로 가지는 새로운 `Dictionary`를 생성하고 안의 요소를 채우는 과정을 보여줍니다.\n\n에러나 `NullReferenceException`이 발생하지 않도록, 아래 `Start()` 내부의 `// your code will go here.` 위치에 들어갈 C# 코드 조각 4개를 보기에서 골라 올바른 순서대로 조합한 것을 고르세요.\n\n**코드 조각 후보:**\n**A**: `foreach (var gameObject in dictionary) {`\n**B**: `gameObjects.Add(gameObject);`\n**C**: `dictionary.Add(gameObject.name, gameObject);`\n**D**: `dictionary = new Dictionary<string, GameObject>();`\n**E**: `foreach (var gameObject in gameObjects) {`\n**F**: `}`",
+      "description": "다음 Unity 스크립트는 인스펙터에 할당된 게임 오브젝트 목록(`gameObjects`)을 활용하여, 오브젝트의 이름을 키(Key)로, 오브젝트 자체를 값(Value)으로 가지는 새로운 `Dictionary`를 생성하고 안의 요소를 채우는 과정을 보여줍니다.\n에러나 `NullReferenceException`이 발생하지 않도록, 아래 `Start()` 내부의 `// your code will go here.` 위치에 들어갈 **C# 코드 조각 4개를 보기에서 골라 올바른 순서대로 조합한 것을 고르세요.**\n\n```csharp\nusing System.Collections.Generic;\nusing UnityEngine;\n\npublic class MyClass : MonoBehaviour\n{\n    [SerializeField]\n    List<GameObject> gameObjects;\n\n    private Dictionary<string, GameObject> dictionary;\n\n    private void Start()\n    {\n        // your code will go here.\n    }\n}\n```\n\n**코드 조각 후보:**\n**A**: `foreach (var gameObject in dictionary) {`\n**B**: `gameObjects.Add(gameObject);`\n**C**: `dictionary.Add(gameObject.name, gameObject);`\n**D**: `dictionary = new Dictionary<string, GameObject>();`\n**E**: `foreach (var gameObject in gameObjects) {`\n**F**: `}`",
       "options": [
         "E ➔ C ➔ D ➔ F",
         "D ➔ E ➔ C ➔ F",
