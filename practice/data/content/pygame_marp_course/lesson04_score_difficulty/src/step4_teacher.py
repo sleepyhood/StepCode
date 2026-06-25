@@ -32,9 +32,13 @@ def update_meteors():
     # [4차시 수정] 기존 속도(7)에 난이도(difficulty) 값을 더해줍니다!
     meteor_speed = 7 + difficulty
     
-    for meteor in meteors:
+    # 안전한 삭제를 위해 복사본[:]을 순회합니다.
+    for meteor in meteors[:]:
         meteor.y += meteor_speed
-    meteors = [m for m in meteors if m.top < 600]
+        
+        # 화면 밖(600 초과)으로 나간 운석들 지우기
+        if meteor.top > 600:
+            meteors.remove(meteor)
 
 # --- 3차시: 충돌 검사와 재시작 (+ 4차시 점수 초기화 반영) ---
 def check_collision():

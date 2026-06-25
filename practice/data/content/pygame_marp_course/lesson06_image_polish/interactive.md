@@ -66,6 +66,19 @@ def main():
 
 사각형은 컴퓨터가 직접 그리지만, 이미지는 외부 파일(`.png`)을 불러와 메모리에 올려야 합니다. 이때 실행 위치에 상관없이 파일을 찾으려면 **절대 경로**를 사용하는 것이 안전합니다.
 
+### 📥 실습 준비물 다운로드
+실습을 시작하기 전에 아래의 이미지 링크를 클릭하여 다운로드한 뒤, 반드시 **`src/assets/`** 폴더 안에 저장해 주세요.
+
+*   [🚀 우주선 이미지 (ship.png) 다운로드](data/content/pygame_marp_course/lesson06_image_polish/src/assets/ship.png)
+*   [☄️ 운석 이미지 (meteor.png) 다운로드](data/content/pygame_marp_course/lesson06_image_polish/src/assets/meteor.png)
+*   [🌌 우주 배경 이미지 (background.png) 다운로드](data/content/pygame_marp_course/lesson06_image_polish/src/assets/background.png)
+
+> [!IMPORTANT]
+> **저장 경로를 꼭 확인해 주세요!**
+> 다운로드한 세 이미지 파일은 `step6_student.py` 파일이 위치한 `src` 폴더 안의 **`assets`** 폴더 내부에 있어야 정상 작동합니다. (폴더명이나 파일명에 오타가 없는지 꼭 확인하세요.)
+
+---
+
 ### 이미지 로딩과 크기 최적화
 
 - `os.path.join(assets_path, "파일명")`: 폴더와 이름을 안전하게 합칩니다.
@@ -100,7 +113,10 @@ def load_assets():
 
 # 6.2. 화면에 이미지 그리기 (Blit)
 
-Pygame에서 이미지를 화면에 그릴 때는 `blit(이미지, 좌표)` 함수를 사용합니다. 여기서 좌표 대신 우리가 사용해온 `Rect` 변수를 넣으면 이미지가 사각형을 따라다닙니다.
+Pygame에서 이미지를 화면에 그릴 때는 `blit(이미지, 좌표)` 함수를 사용합니다.
+*   **`blit`의 의미:** "Block Transfer(블록 전송)"의 약자로, 이미지 픽셀 덩어리를 화면(Surface)의 특정 위치에 복사해 그리는 역할을 합니다.
+*   **`Rect` 연동:** 좌표 매개변수 자리에 우리가 사용해온 `Rect` 객체(예: `ship_rect`)를 직접 대입하면, 이미지가 사각형 객체의 좌표(`x`, `y`)에 맞춰 자동으로 이동하며 화면에 그려집니다.
+*   **실시간 크기 조절:** 운석처럼 크기가 랜덤인 객체는 그리기 직전에 `pygame.transform.scale(img_meteor, (m.width, m.height))`를 통해 `Rect` 객체의 가로(`width`), 세로(`height`) 속성과 일치하게 이미지를 실시간으로 조절한 뒤 그려줍니다.
 
 ---
 
@@ -154,7 +170,13 @@ def draw_background(surface):
 
 # 6.4. [버그 수정] 전역 변수와 UI
 
-파이썬 함수 안에서 바깥에 있는 변수(game_over 등)에 값을 대입하려면 반드시 `global` 선언이 필요합니다. 또한, 게임 오버 시 문구가 다시 나타나도록 코드를 보완해야 합니다.
+   파이썬 함수 안에서 바깥에 있는 변수(game_over 등)에 값을 대입(재할당)하려면 반드시 `global` 선언이 필요합니다.
+
+> [!NOTE]
+> **`UnboundLocalError` 발생 원인**
+> 파이썬에서는 함수 내부에서 변수에 새로운 값을 대입할 때 기본적으로 이를 **지역 변수(Local Variable)**로 새로 생성합니다. 
+> 만약 함수 밖에 이미 존재하는 동일한 이름의 전역 변수를 수정하려고 하면, 파이썬은 이 변수를 지역 변수로 오해하고 값을 넣기도 전에 읽으려고 하거나 충돌을 일으켜 `UnboundLocalError`가 발생합니다.
+> 이를 방지하기 위해 함수 최상단에 `global 변수명`을 선언하여 "이 변수는 바깥의 전역 변수를 직접 변경하겠다"고 파이썬에게 정확히 알려주어야 합니다.
 
 ---
 

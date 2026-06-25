@@ -66,9 +66,11 @@ def update_meteors():
     # [4차시] 기존 속도(7)에 난이도(difficulty) 값을 더해줍니다!
     meteor_speed = 7 + difficulty
     
-    for meteor in meteors:
+    # 안전한 삭제를 위해 복사본[:]을 순회합니다.
+    for meteor in meteors[:]:
         meteor.y += meteor_speed
-    meteors = [m for m in meteors if m.top < 600]
+        if meteor.top > 600:
+            meteors.remove(meteor)
 
 # --- 3차시: 충돌 검사와 재시작 (+ 4차시 점수 초기화 반영) ---
 def check_collision():
@@ -178,6 +180,10 @@ if __name__ == "__main__":
 
 파이썬의 `+=` 기호를 사용하면 기존 점수에 새로운 점수를 계속해서 더할 수 있습니다. 한 번 함수가 실행될 때마다 1점씩 쌓이게 됩니다.
 
+> [!NOTE]
+> **전역 변수 수정과 `global` 키워드**
+> `update_score()` 함수 내에서 외부에 있는 `score`와 `difficulty` 변수의 값을 직접 누적하거나 변경해야 하므로, 함수 맨 위에 `global score, difficulty`를 반드시 적어주어야 전역 변수로 값을 수정할 수 있습니다.
+
 ---
 
 ### 📝 Checkpoint 1: 연산자 선택
@@ -226,6 +232,12 @@ def update_score():
 
 몫을 구하는 연산자 `//`를 사용하면 일정 점수 구간마다 레벨을 1씩 올릴 수 있습니다. 예를 들어 450점일 때는 `450 // 300`의 결과인 1레벨이 됩니다.
 
+> [!TIP]
+> **몫 연산자 `//` vs 나누기 연산자 `/`**
+> *   `/` (나누기): 소수점 이하 자리까지 정확한 실수형(float) 나누기 결과를 반환합니다. (예: `450 / 300 = 1.5`)
+> *   `//` (몫): 나눗셈 결과에서 소수점 부분을 완전히 버리고 **정수 부분의 몫**만 반환합니다. (예: `450 // 300 = 1`)
+> Level이나 난이도는 소수가 아닌 1, 2, 3 정수로 올라가야 하므로 몫 연산자(`//`)가 아주 유용합니다.
+
 ![난이도 상승 곡선 도식](./assets/difficulty_logic.svg)
 
 ---
@@ -264,6 +276,36 @@ def update_score():
     
     # [B] 점수를 300으로 나눈 '몫'을 difficulty(난이도)에 대입합니다.
     difficulty = score // 300
+```
+
+</div>
+
+---
+
+### 💻 실습 미션 3: 점수 업데이트 함수 호출하기
+
+우리가 완성한 `update_score()` 함수가 매 프레임마다 정상적으로 작동하여 점수를 누적하도록, **메인 루프(Main Loop)** 내부의 올바른 위치에서 호출해 주세요.
+
+1. **점수 업데이트 (`update_score`):** 게임 진행 중(`if not game_over:`)일 때, 매 프레임마다 우주선과 운석 정보가 업데이트되는 논리 구역에서 함수를 호출합니다.
+
+<div class="code-window">
+
+```python
+# [Main Loop] 메인 게임 루프 예시
+running = True
+while running:
+    # (이벤트 처리 구역 생략...)
+    
+    keys = pygame.key.get_pressed()
+    
+    # --- 논리 업데이트 구역 ---
+    if not game_over:
+        move_ship(keys)
+        update_meteors()
+        check_collision()
+        update_score()      # <--- [호출] 매 프레임마다 점수/난이도 갱신!
+    else:
+        check_restart(keys)
 ```
 
 </div>

@@ -36,9 +36,14 @@ def spawn_meteor():
 def update_meteors():
     global meteors
     meteor_speed = 7 + difficulty
-    for meteor in meteors:
+    
+    # 안전한 삭제를 위해 복사본[:]을 순회합니다.
+    for meteor in meteors[:]:
         meteor.y += meteor_speed
-    meteors = [m for m in meteors if m.top < 600]
+        
+        # 화면 밖(600 초과)으로 나간 운석들 지우기
+        if meteor.top > 600:
+            meteors.remove(meteor)
 
 # --- 3차시 & [확장 2] 목숨(Lives) 시스템 ---
 def check_collision():

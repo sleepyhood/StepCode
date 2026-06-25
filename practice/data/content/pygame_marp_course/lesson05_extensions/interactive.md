@@ -66,6 +66,16 @@ def spawn_meteor():
     
     # meteors.append(new_meteor) # 리스트 추가
 
+def update_meteors():
+    global meteors
+    meteor_speed = 7 + difficulty
+    
+    # 안전한 삭제를 위해 복사본[:]을 순회합니다.
+    for meteor in meteors[:]:
+        meteor.y += meteor_speed
+        if meteor.top > 600:
+            meteors.remove(meteor)
+
 # --- 3차시 & [확장 2] 목숨(Lives) 시스템 ---
 def check_collision():
     global game_over, lives
@@ -192,6 +202,12 @@ def spawn_meteor():
 ### 생명력 감소와 안전 처리
 
 부딪혔을 때 바로 게임 오버를 시키는 대신, 목숨을 1 깎고 주변의 위험 요소(운석)를 잠시 제거해 줍니다. 그래야 겹쳐있는 운석에 연속으로 맞는 억울한 상황을 방지할 수 있습니다.
+
+> [!NOTE]
+> **5차시의 전역 변수 변경과 `global` 선언 총정리**
+> *   `spawn_meteor()`: `meteors` 리스트를 수정하기 위해 `global meteors` 선언이 쓰입니다. (리스트 내부 요소 추가)
+> *   `check_collision()`: `lives` 목숨을 줄이고, 리스트를 비우며(`meteors.clear()`), 상황에 따라 `game_over = True`로 바꾸므로 `global game_over, lives` 선언이 반드시 들어갑니다.
+> *   `check_restart()`: 재시작 시 게임 상태, 운석 리스트, 우주선 사각형 좌표, 점수, 난이도, 목숨까지 한꺼번에 초기화하므로 모든 전역 변수를 선언(`global game_over, meteors, ship_rect, score, difficulty, lives`)해야 정상 작동합니다.
 
 ![alt text](image.png)
 

@@ -64,9 +64,11 @@ def spawn_meteor():
 def update_meteors():
     global meteors
     meteor_speed = 7
-    for meteor in meteors:
+    # 안전한 삭제를 위해 복사본[:]을 순회합니다.
+    for meteor in meteors[:]:
         meteor.y += meteor_speed
-    meteors = [m for m in meteors if m.top < 600]
+        if meteor.top > 600:
+            meteors.remove(meteor)
 
 # --- 3차시 작업 목표: 충돌 검사와 재시작 ---
 def check_collision():
@@ -193,6 +195,11 @@ if __name__ == "__main__":
 ### 사각형끼리 부딪혔을까?
 
 Pygame의 사각형(`Rect`)은 서로 겹쳤는지 확인하는 `colliderect()` 기능을 가지고 있습니다.
+*   `A.colliderect(B)`: 사각형 A와 B가 서로 조금이라도 **겹쳐있다면 `True`**, **그렇지 않다면 `False`**를 돌려줍니다.
+
+> [!NOTE]
+> **왜 `check_collision()` 내부에 `global game_over`가 필요할까요?**
+> 함수 내부에서 외부 전역 변수 `game_over`의 상태(값)를 `True`로 직접 **변경(재할당)**해야 하므로 `global game_over` 선언이 필요합니다. 단순히 읽기만 할 때는 없어도 되지만, 값을 수정할 때는 꼭 명시해 주어야 합니다.
 
 ![충돌 원리](image.png)
 
@@ -251,6 +258,13 @@ def check_collision():
 *   **True:** 모든 움직임 정지, "GAME OVER" 표시.
 *   **False:** 우주선 이동, 운석 낙하 중.
 
+> [!NOTE]
+> **재시작 초기화 좌표 `375`는 어디서 나왔을까요?**
+> 화면 가로 크기(800)의 정중앙은 `400`입니다. 우주선의 가로 크기가 `50`이므로, 우주선 사각형의 왼쪽 좌표(`ship_rect.x`)가 `400 - 25 = 375`가 되어야 우주선이 화면 정중앙에 완벽하게 정렬됩니다.
+>
+> **왜 여러 개의 `global` 변수가 필요한가요?**
+> `check_restart()` 함수 내부에서 `game_over` 상태를 정상(`False`)으로 변경하고, `meteors` 리스트를 비우며, `ship_rect` 좌표를 초기화하는 등 전역 상태 변수들을 직접 수정해야 하므로 `global game_over, meteors, ship_rect` 선언이 필요합니다.
+
 ![alt text](image-1.png)
 
 ---
@@ -291,6 +305,36 @@ def check_restart(keys):
         game_over = False
         meteors.clear()
         ship_rect.x = 375  # 화면 중앙 근처로 복구
+```
+
+</div>
+
+---
+
+### 💻 실습 미션 3: 충돌 및 재시작 함수 호출하기
+
+우리가 만든 `check_collision()`과 `check_restart()` 함수가 게임에 연동되도록 **메인 루프(Main Loop)**의 논리 업데이트 구역에 직접 호출해 주어야 합니다.
+
+1. **충돌 검사 호출:** 게임 진행 중(`if not game_over:`)일 때 매 프레임마다 `check_collision()`을 호출합니다.
+2. **재시작 검사 호출:** 게임 오버 상태(`else:`)일 때 매 프레임마다 키 입력을 감시하도록 `check_restart(keys)`를 호출합니다.
+
+<div class="code-window">
+
+```python
+# [Main Loop] 논리 업데이트 구역 예시
+running = True
+while running:
+    # (이벤트 처리 구역 생략...)
+    
+    keys = pygame.key.get_pressed()
+    
+    # --- 논리 업데이트 구역 ---
+    if not game_over:
+        move_ship(keys)
+        update_meteors()
+        check_collision()   # <--- [호출] 매 프레임마다 충돌 검사 실행!
+    else:
+        check_restart(keys) # <--- [호출] 게임 오버일 때만 재시작 검사 실행!
 ```
 
 </div>

@@ -44,13 +44,13 @@ def update_meteors():
     global meteors
     meteor_speed = 7
     
-    # 리스트에 있는 모든 운석에 대해 반복
-    for meteor in meteors:
+    # 안전한 삭제를 위해 복사본[:]을 순회합니다.
+    for meteor in meteors[:]:
         meteor.y += meteor_speed # 아래로 이동
         
-    # 화면 밖(600 초과)으로 나간 운석들 지우기
-    # (파이썬 리스트 내포 문법이나, 복사를 이용해 안전하게 삭제)
-    meteors = [m for m in meteors if m.top < 600]
+        # 화면 밖(600 초과)으로 나간 운석들 지우기
+        if meteor.top > 600:
+            meteors.remove(meteor)
 
 
 # =========================================================

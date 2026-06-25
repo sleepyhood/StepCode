@@ -57,7 +57,7 @@ def move_ship(keys):
 # --- 2차시 작업 목표 ---
 def spawn_meteor():
     """
-    화면 맨 위(y=0)의 임의의 위치(x)에 운석을 새롭게 생성합니다.
+    화면 맨 위(y=-meteor_size)의 임의의 위치(x)에 운석을 새롭게 생성합니다.
     """
     global meteors
     meteor_size = 40
@@ -78,10 +78,10 @@ def update_meteors():
     global meteors
     meteor_speed = 7
     
-    # TODO: [4] 모든 운석을 아래로 이동시키세요. (for문 활용)
+    # TODO: [4] 모든 운석을 아래로 이동시키세요. (안전한 삭제를 위해 복사본[:] 순회 활용)
     pass
         
-    # TODO: [5] 화면 밖(y > 600) 운석은 삭제하여 메모리를 절약하세요.
+    # TODO: [5] 화면 밖(top > 600) 운석은 삭제하여 메모리를 절약하세요.
     pass
 
 
@@ -117,6 +117,10 @@ def main():
 - **무작위 위치:** `random.randint`를 사용하여 매번 다른 X 좌표를 고릅니다.
 - **사각형 제작:** `pygame.Rect`를 사용하여 운석의 크기와 위치를 정의합니다.
 - **창고 보관:** 생성한 운석을 `meteors` 리스트에 보관합니다.
+
+> [!NOTE]
+> **왜 함수 안에 `global meteors`를 쓰나요?**
+> 파이썬에서는 함수 내부에서 외부(전역)에 선언된 변수나 리스트를 수정하거나 재할당하려면 해당 변수 앞에 `global` 키워드를 명시해야 합니다. `meteors` 리스트를 관리하기 위해 꼭 필요합니다.
 
 ![운석 생성 원리](assets/meteor_spawn_logic.drawio.svg)
 
@@ -157,10 +161,10 @@ def spawn_meteor():
     random_x = random.randint(0, 800 - meteor_size)
 
     # [B] 운석 사각형 생성 (y 좌표는 화면 위쪽인 -meteor_size)
-    new_m = pygame.Rect(random_x, -meteor_size, meteor_size, meteor_size)
+    new_meteor = pygame.Rect(random_x, -meteor_size, meteor_size, meteor_size)
 
     # [C] 리스트에 추가
-    meteors.append(new_m)
+    meteors.append(new_meteor)
 ```
 
 </div>
@@ -172,6 +176,10 @@ def spawn_meteor():
 - **Update:** 모든 운석의 Y 좌표를 증가시켜 낙하시킵니다.
 - **Check:** 화면 끝(600)을 넘었는지 확인합니다.
 - **Remove:** 넘었다면 목록에서 지워 메모리를 절약합니다.
+
+> [!NOTE]
+> **왜 `y > 600`이 아니라 `top > 600`을 쓸까요?**
+> 운석 사각형 `Rect`에서 `y`나 `top`은 사각형의 **가장 윗부분** y좌표입니다. `meteor.top > 600`으로 검사해야 운석의 가장 윗부분(즉, 전체 크기)이 화면 아래 경계(600)를 완전히 넘어갔을 때 삭제되어 화면에서 자연스럽게 사라집니다.
 
 ![리스트 업데이트](assets/list_update_process.drawio.svg)
 
@@ -209,33 +217,62 @@ def update_meteors():
     meteor_speed = 7
     
     # [A] 안전한 삭제를 위해 복사본[:]을 순회합니다.
-    for m in meteors[:]:
+    for meteor in meteors[:]:
         # [B] 아래 방향으로 이동
-        m.y += meteor_speed
+        meteor.y += meteor_speed
 
         # [C] 바닥(600)을 넘어가면 목록에서 제거
-        if m.top > 600:
-            meteors.remove(m)
+        if meteor.top > 600:
+            meteors.remove(meteor)
 ```
 
 </div>
 
 ---
 
-# 2.3. 엔진의 심장: 타이머 (Engine)
+# 2.3. 엔진의 심장: 타이머와 함수 호출 (Engine)
 
 - 매 프레임(1/60초)마다 운석을 만들면 화면이 순식간에 운석으로 가득 찹니다.
 - **타이머 이벤트:** 우리가 정한 시간 간격(0.6초)으로만 생성 신호를 보냅니다.
 
+---
+
+### 💻 실습 미션 3: 운석 함수 호출하기
+
+우리가 완성한 `spawn_meteor()`와 `update_meteors()` 함수가 게임 속에서 실제로 실행될 수 있도록, **메인 루프(Main Loop)** 내부의 올바른 위치에서 호출해 주세요.
+
+1. **운석 생성 (`spawn_meteor`):** 이벤트 처리 구역에서 0.6초마다 타이머 이벤트(`SPAWN_METEOR_EVENT`)가 발생할 때 호출합니다.
+2. **운석 업데이트 (`update_meteors`):** 키 입력 및 상태 업데이트 구역에서 매 프레임(반복문이 돌 때마다) 호출하여 운석을 떨어뜨립니다.
+
 <div class="code-window">
 
 ```python
-# [엔진 구역] 600ms(0.6초)마다 이벤트 신호 발생 설정
-pygame.time.set_timer(SPAWN_METEOR_EVENT, 600)
+# [Main Loop] 메인 게임 루프
+running = True
+while running:
+    # --- [1] 이벤트 처리 구역 ---
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            
+        # ⏰ 0.6초마다 신호가 오면 운석 생성 함수 호출
+        if event.type == SPAWN_METEOR_EVENT:
+            spawn_meteor()  # <--- [호출] 운석 생성!
 
-# [Main Loop] 신호가 포착되면 운석 생성 함수 실행
-if event.type == SPAWN_METEOR_EVENT:
-    spawn_meteor()
+    # --- [2] 키 입력 및 게임 상태 업데이트 구역 ---
+    keys = pygame.key.get_pressed()
+    move_ship(keys)      # 1차시 우주선 이동 함수
+    
+    # ☄️ 매 프레임마다 운석 위치 업데이트 및 화면 밖 제거 함수 호출
+    update_meteors()     # <--- [호출] 운석 이동 및 삭제!
+
+    # --- [3] 화면 그리기 구역 ---
+    screen.fill((30, 30, 50))
+    draw_ship(screen)
+    draw_meteors(screen) # 운석 그리기 함수 (엔진 내부)
+    
+    pygame.display.flip()
+    clock.tick(60)
 ```
 
 </div>
