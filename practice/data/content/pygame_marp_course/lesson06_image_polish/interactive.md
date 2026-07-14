@@ -89,12 +89,22 @@ def main():
 ### 💻 실습 미션 1: 안전하게 이미지 불러오기
 
 `load_assets()` 함수 내부에 우주선, 운석, 배경 이미지를 불러오고 크기를 조절하는 코드를 작성하세요.
+함수 바깥 전역 공간에 이미지 전역 변수를 선언하고, 이미지 로딩 함수 내부에서는 실행 파일 기준 절대 경로를 사용해 안전하게 불러와야 합니다.
+
+또한, `pygame.init()` 바로 뒷부분에서 `load_assets()`를 호출하여 실행 시점에 이미지가 불러와지도록 하세요.
 
 <div class="code-window">
 
 ```python
+# [1] 전역 공간(함수 바깥)에 이미지 변수 선언
+img_ship, img_meteor, img_bg = None, None, None
+
 def load_assets():
     global img_ship, img_meteor, img_bg
+    
+    # 실행 위치와 관계없이 절대 경로를 가져옵니다.
+    current_path = os.path.dirname(__file__)
+    assets_path = os.path.join(current_path, "assets")
     
     # [A] 이미지 파일 로드 (convert_alpha는 투명도 처리를 도와줍니다)
     img_ship = pygame.image.load(os.path.join(assets_path, "ship.png")).convert_alpha()
@@ -105,6 +115,9 @@ def load_assets():
     img_ship = pygame.transform.scale(img_ship, (50, 50))
     img_meteor = pygame.transform.scale(img_meteor, (40, 40))
     img_bg = pygame.transform.scale(img_bg, (800, 600))
+
+# [2] 초기화 구역에서 함수 호출 (main 함수 실행 전이나 pygame.init() 이후)
+# load_assets()
 ```
 
 </div>
@@ -148,10 +161,14 @@ def draw_meteors(surface):
 # 6.3. [심화] 무한 스크롤 배경 (Scrolling)
 
 배경을 아래로 계속 흐르게 만들어 우주선이 전진하는 느낌을 줍니다. 배경 이미지를 위아래로 두 장 이어 붙여서 그리는 것이 핵심입니다.
+이 함수에서 사용할 `bg_y` 변수를 함수 바깥 전역 공간에 미리 선언하고 초기화해두어야 에러가 나지 않습니다.
 
 <div class="code-window">
 
 ```python
+# [1] 전역 공간에 배경 Y 좌표 변수 추가
+bg_y = 0
+
 def draw_background(surface):
     global bg_y
     if img_bg:
@@ -182,7 +199,8 @@ def draw_background(surface):
 
 ### 💻 실습 미션 3: 메인 루프 보완
 
-`main()` 함수와 그리기 구역을 수정하여 에러를 막고 UI를 복구하세요.
+`main()` 함수와 그리기 구역을 수정하여 에러를 막고 배경 및 UI를 화면에 올바르게 배치하세요. 
+배경 이미지를 그리기 위해 기존의 `screen.fill((30, 30, 50))` 대신 `draw_background(screen)`을 호출해야 합니다.
 
 <div class="code-window">
 
@@ -193,8 +211,15 @@ def main():
     
     # ... (게임 루프 생략) ...
     
-    # [B] 그리기 구역 하단에 게임 오버 UI 추가
+    # [B] 그리기 구역 수정 및 배경 그리기
+    # screen.fill((30, 30, 50)) -> 기존 검은 화면 채우기 대신 배경 스크롤 함수 호출!
+    draw_background(screen)
+    
+    # 다른 요소 그리기
+    draw_meteors(screen)
+    draw_ship(screen)
     draw_hud(screen)
+    
     if game_over:
         draw_game_over(screen) # 누락된 게임 오버 문구 호출!
 ```
