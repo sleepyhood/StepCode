@@ -100,14 +100,23 @@ graph TD
 
 **Step 4 (1차)**: 크롤링된 기존 문제들의 파일명과 front-matter를 새 ID 체계로 교체합니다.
 
-- 파일명 형식: `ALLv{단원번호}{순번}_{db_id}.md` (예: `ALLv05001_519.md`)
+- **파일명/ID 접두사 규칙 (이원화)**:
+  - **기초문법 코스**: 수업용 `P{코스ID}v{단원}{순번}_{db_id}.md` / 숙제용 `SP{코스ID}v{단원}{순번}_{db_id}.md` (예: `P102v1801_1559.md`, `SP102v1801_LOCAL.md`)
+  - **알고리즘 코스**: 수업용 `ALLv{세트}{순번}_{db_id}.md` / 숙제용 `SALLv{세트}{순번}_{db_id}.md` (예: `ALLv05001_519.md`, `SALLv05003_LOCAL.md`)
+  - *(※ 코스ID 예시: C/C++ 기초 `102`, Java 기초 `201`, Python 기초 `101`)*
+- **제목 작성 컨벤션 (YAML `title` 및 본문 H1 `# `)**:
+  - `{순번}. [{단원명}] {문제제목}` (예: `01. [문자열2(함수)] 비밀번호 변환 시뮬레이터`)
+  - 수업/숙제 구분 없이 대괄호(`[...]`) 내부에는 항상 **단원명**만 명시합니다. (`[숙제]` 표기 금지)
+- **YAML Front-matter `tags` 명명 규칙**:
+  - 수업 문제: `tags: ["Lv{단원번호} {단원명}"]` (예: `["Lv18 문자열2(함수)"]`)
+  - 숙제 문제: `tags: ["SLv{단원번호} {단원명}"]` (예: `["SLv18 문자열2(함수)"]` — `Lv` 앞에 `S` 접두사 부착)
 - YAML front-matter의 `id`, `db_id`, `legacy_id`를 테이블과 100% 일치시킵니다.
 - **YAML 따옴표 규칙**: string 값(`id`, `title`, `platform`, `level`, `time_limit`, `memory_limit`, `has_hint`, `archived_at` 등)은 반드시 큰따옴표(`"..."`)로 감쌉니다. 숫자형인 `db_id`와 `accepted_user_count`는 따옴표 없이 기입합니다.
 - **자동화 도구**: `scripts/rename_local_suffix.py` (링크 업데이트도 포함)
 
 **Step 5 (2차)**: `README.md`에 계획된 신규 문제들을 배치합니다.
 
-- 파일명 형식: `ALLv{단원번호}{순번}_LOCAL.md` (예: `ALLv05015_LOCAL.md`)
+- 파일명 형식: 신규 문제인 경우 `db_id` 위치에 `LOCAL`을 기입합니다. (예: `SP102v1801_LOCAL.md`, `ALLv05015_LOCAL.md`)
 - front-matter의 `db_id`는 `LOCAL`로, `legacy_id`는 `null`로 설정합니다.
 - 이 문제들은 강사가 직접 문제 설명과 입출력 예시를 작성합니다.
 
@@ -271,6 +280,9 @@ with zipfile.ZipFile("04_testcases/ALLv05015_LOCAL.zip") as zf:
 
 | 항목 | 규칙 |
 |---|---|
+| **접두사 이원화** | 기초문법(`P`/`SP{코스ID}`), 알고리즘(`ALL`/`SALL`)으로 코스 성격에 맞게 분리 사용. |
+| **제목 컨벤션** | `{순번}. [{단원명}] {문제제목}` 고정. 대괄호 내에 `[숙제]` 사용 금지. |
+| **숙제 태그 규칙** | 수업 문제(`Lv{단원}`), 숙제 문제(`SLv{단원}`) 태그 접두사 부여. |
 | **파일/폴더명** | 영문 소문자 snake_case만 허용. 공백·한글 금지. |
 | **LOCAL 접미사** | 웹 DB 미등록 신규 문제에만 사용. `db_id: LOCAL`. |
 | **코드 입출력** | stdin/stdout 기반. 파일 I/O 사용 금지. |
