@@ -83,6 +83,14 @@ class UploaderGUI:
         tk.Entry(md_sub, textvariable=self.md_path_var, state="readonly", width=55).pack(side="left", padx=5)
         tk.Button(md_sub, text="찾기", command=self._select_md).pack(side="left")
         
+        # 신규: 문제 ID 표시 및 복사 영역
+        id_sub = tk.Frame(file_frame)
+        id_sub.pack(fill="x", pady=2)
+        tk.Label(id_sub, text="문제 ID:", width=10).pack(side="left")
+        self.problem_id_var = tk.StringVar(value="-")
+        tk.Entry(id_sub, textvariable=self.problem_id_var, state="readonly", width=35, font=("Consolas", 10, "bold"), fg="#1E88E5").pack(side="left", padx=5)
+        tk.Button(id_sub, text="📋 ID 복사", command=self._copy_problem_id).pack(side="left")
+
         zip_sub = tk.Frame(file_frame)
         zip_sub.pack(fill="x", pady=2)
         tk.Label(zip_sub, text="ZIP 파일:", width=10).pack(side="left")
@@ -141,17 +149,56 @@ class UploaderGUI:
         except Exception:
             pass # 상태바 업데이트 실패가 전체 프로세스를 망치지 않도록 무시
 
+    def _infer_zip_path(self, md_path):
+        """MD 파일 경로를 기반으로 매칭되는 ZIP 파일 경로를 추론합니다."""
+        if not md_path:
+            return ""
+
+        dir_name, file_name = os.path.split(md_path)
+        base_name = os.path.splitext(file_name)[0]
+        zip_file_name = f"{base_name}.zip"
+
+        candidates = []
+
+        # 1. 02_workspace -> 04_testcases 치환 경로 (02_workspace_vXX -> 04_testcases_vXX 포함)
+        if "02_workspace" in md_path:
+            candidates.append(md_path.replace("02_workspace", "04_testcases").replace(".md", ".zip"))
+
+        # 2. MD와 같은 디렉토리 하위의 04_testcases 디렉토리 (예: {단원}/04_testcases/{id}.zip)
+        candidates.append(os.path.join(dir_name, "04_testcases", zip_file_name))
+
+        # 3. MD와 동일 디렉토리 내 (예: {단원}/{id}.zip)
+        candidates.append(os.path.join(dir_name, zip_file_name))
+
+        # 실존하는 파일 경로를 우선 반환
+        for cand in candidates:
+            if os.path.exists(cand):
+                return cand
+
+        # 파일이 존재하지 않을 경우 첫 번째 후보 반환
+        return candidates[0]
+
     def _select_md(self):
         path = filedialog.askopenfilename(filetypes=[("Markdown", "*.md")])
         if path:
             self.md_path_var.set(path)
             
+            # YAML Frontmatter ID 파싱
+            try:
+                data = parse_markdown(path)
+                problem_id = data.get('id', '-')
+                self.problem_id_var.set(problem_id if problem_id else "-")
+                if problem_id:
+                    self._log(f" > 📌 감지된 문제 ID: {problem_id}")
+            except Exception as e:
+                self.problem_id_var.set("-")
+                self._log(f" > ⚠️ MD 파일 프론트매터 파싱 중 오류: {e}")
+
             # ==========================================
-            # 개선: 수정/생성 모드와 상관없이 매칭되는 ZIP 자동 찾기
+            # 개선: 스마트 ZIP 경로 추론 (04_testcases 하위 탐색 지원)
             # ==========================================
             try:
-                # 02_workspace 경로를 04_testcases 경로로 치환하여 자동 ZIP 경로 추론
-                inferred_zip = path.replace("02_workspace", "04_testcases").replace(".md", ".zip")
+                inferred_zip = self._infer_zip_path(path)
                 if os.path.exists(inferred_zip):
                     self.zip_path_var.set(inferred_zip)
                     self._log(f" > 🎯 매칭되는 ZIP 파일을 자동으로 감지하여 연결했습니다: {os.path.basename(inferred_zip)}")
@@ -160,6 +207,17 @@ class UploaderGUI:
                     self._log(f" > ⚠️ 매칭되는 ZIP 파일({os.path.basename(inferred_zip)})을 찾지 못해 경로를 비웠습니다.")
             except Exception as e:
                 self._log(f" > MD 파일 분석 중 오류: {e}")
+
+    def _copy_problem_id(self):
+        problem_id = self.problem_id_var.get().strip()
+        if problem_id and problem_id != "-":
+            self.root.clipboard_clear()
+            self.root.clipboard_append(problem_id)
+            self.root.update()
+            self._log(f" > 📋 문제 ID가 클립보드에 복사되었습니다: {problem_id}")
+            messagebox.showinfo("복사 완료", f"문제 ID '{problem_id}'가 클립보드에 복사되었습니다.")
+        else:
+            messagebox.showwarning("경고", "복사할 문제 ID가 없습니다. MD 파일을 선택해주세요.")
             
     def _select_zip(self):
         path = filedialog.askopenfilename(filetypes=[("ZIP Archive", "*.zip")])
@@ -169,8 +227,7 @@ class UploaderGUI:
     def _auto_infer_zip(self):
         md = self.md_path_var.get()
         if not md: return
-        # 02_workspace를 04_testcases로 바꾸고 .md를 .zip으로
-        inferred = md.replace("02_workspace", "04_testcases").replace(".md", ".zip")
+        inferred = self._infer_zip_path(md)
         self.zip_path_var.set(inferred)
         self._log(f"ZIP 경로 자동 추론 완료: {inferred}")
 
