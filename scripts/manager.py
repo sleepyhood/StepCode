@@ -98,9 +98,12 @@ def main():
     compiler = find_compiler()
     print(f"[*] Compiling solution using: {compiler}")
     
-    # 컴파일 명령 수행
-    compile_cmd = [compiler, "-O2", "-std=c++17", str(cpp_path), "-o", str(exe_path)]
-    result = subprocess.run(compile_cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    # 컴파일 명령 수행 (-static 플래그 추가하여 libstdc++ / libgcc 런타임 DLL 의존성 제거)
+    compile_cmd = [compiler, "-O2", "-std=c++17", "-static", str(cpp_path), "-o", str(exe_path)]
+    env = os.environ.copy()
+    compiler_bin = str(Path(compiler).parent)
+    env["PATH"] = compiler_bin + os.pathsep + env.get("PATH", "")
+    result = subprocess.run(compile_cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", env=env)
     
     if result.returncode != 0:
         print("Error: Compilation failed!")
@@ -137,6 +140,7 @@ def main():
                 text=True,
                 encoding="utf-8",
                 errors="replace",
+                env=env,
                 timeout=5.0  # 무한루프 방지 5초 제한
             )
         except subprocess.TimeoutExpired:
