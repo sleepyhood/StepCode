@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 340" width="100%" height="100%">
+  <defs>
+    <!-- 그림자 필터 -->
+    <filter id="card-shadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+    </filter>
+
+    <!-- 실체화(Realization / Implements) 빈 삼각 화살표 -->
+    <marker id="realize-arrow" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" orient="auto">
+      <polygon points="0 1, 12 6, 0 11" fill="#ffffff" stroke="#475569" stroke-width="1.5" stroke-linejoin="round" />
+    </marker>
+
+    <!-- 폰트 스타일 -->
+    <style>
+      .cls-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; font-weight: 700; }
+      .cls-stereo { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-style: italic; }
+      .cls-method { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 12px; fill: #334155; }
+      .rel-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-style: italic; fill: #64748b; }
+      .rel-line { stroke: #475569; stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+    </style>
+  </defs>
+
+  <!-- ================= 관계선 (Implements) ================= -->
+  <!-- Penguin -> Swimmable -->
+  <path d="M 120 230 V 110" class="rel-line" marker-end="url(#realize-arrow)" />
+  <text x="128" y="175" class="rel-label">implements</text>
+
+  <!-- Duck -> Swimmable -->
+  <path d="M 300 230 V 160 H 235 V 110" class="rel-line" marker-end="url(#realize-arrow)" />
+  <text x="267" y="152" text-anchor="middle" class="rel-label">implements</text>
+
+  <!-- Duck -> Flyable -->
+  <path d="M 380 230 V 160 H 445 V 110" class="rel-line" marker-end="url(#realize-arrow)" />
+  <text x="413" y="152" text-anchor="middle" class="rel-label">implements</text>
+
+  <!-- Sparrow -> Flyable -->
+  <path d="M 560 230 V 110" class="rel-line" marker-end="url(#realize-arrow)" />
+  <text x="568" y="175" class="rel-label">implements</text>
+
+  <!-- ================= 인터페이스: Swimmable ================= -->
+  <g id="class-Swimmable" transform="translate(75, 25)" filter="url(#card-shadow)">
+    <rect width="210" height="85" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 204 A 6 6 0 0 1 210 6 V 50 H 0 Z" fill="#eef2ff" />
+    <line x1="0" y1="50" x2="210" y2="50" stroke="#6366f1" stroke-width="1" />
+    
+    <text x="105" y="22" text-anchor="middle" class="cls-stereo" fill="#4f46e5">&lt;&lt;interface&gt;&gt;</text>
+    <text x="105" y="40" text-anchor="middle" class="cls-title" fill="#1e1b4b">Swimmable</text>
+    <text x="16" y="72" class="cls-method">+ swim(int meter) void</text>
+  </g>
+
+  <!-- ================= 인터페이스: Flyable ================= -->
+  <g id="class-Flyable" transform="translate(395, 25)" filter="url(#card-shadow)">
+    <rect width="210" height="85" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 204 A 6 6 0 0 1 210 6 V 50 H 0 Z" fill="#eef2ff" />
+    <line x1="0" y1="50" x2="210" y2="50" stroke="#6366f1" stroke-width="1" />
+    
+    <text x="105" y="22" text-anchor="middle" class="cls-stereo" fill="#4f46e5">&lt;&lt;interface&gt;&gt;</text>
+    <text x="105" y="40" text-anchor="middle" class="cls-title" fill="#1e1b4b">Flyable</text>
+    <text x="16" y="72" class="cls-method">+ fly(int meter) void</text>
+  </g>
+
+  <!-- ================= 클래스: Penguin ================= -->
+  <g id="class-Penguin" transform="translate(25, 230)" filter="url(#card-shadow)">
+    <rect width="190" height="70" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 184 A 6 6 0 0 1 190 6 V 34 H 0 Z" fill="#f8fafc" />
+    <line x1="0" y1="34" x2="190" y2="34" stroke="#cbd5e1" stroke-width="1" />
+    
+    <text x="95" y="23" text-anchor="middle" class="cls-title" fill="#0f172a">Penguin</text>
+    <text x="14" y="57" class="cls-method">+ swim(int meter) void</text>
+  </g>
+
+  <!-- ================= 클래스: Duck ================= -->
+  <g id="class-Duck" transform="translate(245, 230)" filter="url(#card-shadow)">
+    <rect width="190" height="85" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 184 A 6 6 0 0 1 190 6 V 34 H 0 Z" fill="#f8fafc" />
+    <line x1="0" y1="34" x2="190" y2="34" stroke="#cbd5e1" stroke-width="1" />
+    
+    <text x="95" y="23" text-anchor="middle" class="cls-title" fill="#0f172a">Duck</text>
+    <text x="14" y="55" class="cls-method">+ swim(int meter) void</text>
+    <text x="14" y="72" class="cls-method">+ fly(int meter) void</text>
+  </g>
+
+  <!-- ================= 클래스: Sparrow ================= -->
+  <g id="class-Sparrow" transform="translate(465, 230)" filter="url(#card-shadow)">
+    <rect width="190" height="70" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 184 A 6 6 0 0 1 190 6 V 34 H 0 Z" fill="#f8fafc" />
+    <line x1="0" y1="34" x2="190" y2="34" stroke="#cbd5e1" stroke-width="1" />
+    
+    <text x="95" y="23" text-anchor="middle" class="cls-title" fill="#0f172a">Sparrow</text>
+    <text x="14" y="57" class="cls-method">+ fly(int meter) void</text>
+  </g>
+</svg>

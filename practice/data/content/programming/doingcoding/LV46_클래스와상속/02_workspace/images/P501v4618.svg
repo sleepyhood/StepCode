@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" width="100%" height="100%">
+  <defs>
+    <!-- 그림자 필터 -->
+    <filter id="card-shadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.08" />
+    </filter>
+
+    <!-- 실체화(Realization / Implements) 빈 삼각 화살표 -->
+    <marker id="realize-arrow" viewBox="0 0 12 12" refX="12" refY="6" markerWidth="12" markerHeight="12" orient="auto">
+      <polygon points="0 1, 12 6, 0 11" fill="#ffffff" stroke="#475569" stroke-width="1.5" stroke-linejoin="round" />
+    </marker>
+
+    <!-- 폰트 스타일 -->
+    <style>
+      .cls-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; font-weight: 700; }
+      .cls-stereo { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-style: italic; }
+      .cls-field { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 12px; fill: #334155; }
+      .cls-method { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-size: 12px; fill: #334155; }
+      .rel-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-style: italic; fill: #64748b; }
+      .rel-line { stroke: #475569; stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+      .assoc-line { stroke: #475569; stroke-width: 1.5; fill: none; }
+    </style>
+  </defs>
+
+  <!-- ================= 집약 관계 (OrderProcessor o- - DiscountPolicy : relies on) ================= -->
+  <!-- 빈 마름모(Aggregation Diamond) -->
+  <polygon points="480 155, 486 163, 480 171, 474 163" fill="#ffffff" stroke="#475569" stroke-width="1.5" stroke-linejoin="round" />
+  <!-- 연결 실선 -->
+  <line x1="480" y1="171" x2="480" y2="220" class="assoc-line" />
+  <text x="492" y="195" class="rel-label">relies on</text>
+
+  <!-- ================= 실체화 관계 (Implements) ================= -->
+  <!-- FixedDiscountPolicy -> DiscountPolicy -->
+  <path d="M 170 375 V 345 H 430 V 310" class="rel-line" marker-end="url(#realize-arrow)" />
+  <text x="300" y="337" text-anchor="middle" class="rel-label">implements</text>
+
+  <!-- RateDiscountPolicy -> DiscountPolicy -->
+  <path d="M 480 375 V 310" class="rel-line" marker-end="url(#realize-arrow)" />
+  <text x="488" y="348" class="rel-label">implements</text>
+
+  <!-- NoDiscountPolicy -> DiscountPolicy -->
+  <path d="M 790 375 V 345 H 530 V 310" class="rel-line" marker-end="url(#realize-arrow)" />
+  <text x="660" y="337" text-anchor="middle" class="rel-label">implements</text>
+
+  <!-- ================= 클래스: OrderProcessor ================= -->
+  <g id="class-OrderProcessor" transform="translate(310, 25)" filter="url(#card-shadow)">
+    <rect width="340" height="130" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 334 A 6 6 0 0 1 340 6 V 34 H 0 Z" fill="#f8fafc" />
+    <line x1="0" y1="34" x2="340" y2="34" stroke="#cbd5e1" stroke-width="1" />
+    
+    <text x="170" y="23" text-anchor="middle" class="cls-title" fill="#0f172a">OrderProcessor</text>
+    <text x="16" y="52" class="cls-field">- policy DiscountPolicy</text>
+    <line x1="0" y1="60" x2="340" y2="60" stroke="#e2e8f0" stroke-width="1" />
+    <text x="16" y="78" class="cls-method">+ setPolicy(DiscountPolicy policy) void</text>
+    <text x="16" y="96" class="cls-method">+ getDiscount(int price) int</text>
+    <text x="16" y="114" class="cls-method">+ getFinalPrice(int price) int</text>
+  </g>
+
+  <!-- ================= 인터페이스: DiscountPolicy ================= -->
+  <g id="class-DiscountPolicy" transform="translate(340, 220)" filter="url(#card-shadow)">
+    <rect width="280" height="90" rx="6" fill="#ffffff" stroke="#6366f1" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 274 A 6 6 0 0 1 280 6 V 50 H 0 Z" fill="#eef2ff" />
+    <line x1="0" y1="50" x2="280" y2="50" stroke="#6366f1" stroke-width="1" />
+    
+    <text x="140" y="22" text-anchor="middle" class="cls-stereo" fill="#4f46e5">&lt;&lt;interface&gt;&gt;</text>
+    <text x="140" y="40" text-anchor="middle" class="cls-title" fill="#1e1b4b">DiscountPolicy</text>
+    <text x="16" y="74" class="cls-method">+ calculateDiscount(int price) int</text>
+  </g>
+
+  <!-- ================= 클래스: FixedDiscountPolicy ================= -->
+  <g id="class-FixedDiscountPolicy" transform="translate(30, 375)" filter="url(#card-shadow)">
+    <rect width="280" height="96" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 274 A 6 6 0 0 1 280 6 V 34 H 0 Z" fill="#f8fafc" />
+    <line x1="0" y1="34" x2="280" y2="34" stroke="#cbd5e1" stroke-width="1" />
+    
+    <text x="140" y="23" text-anchor="middle" class="cls-title" fill="#0f172a">FixedDiscountPolicy</text>
+    <text x="16" y="52" class="cls-field">- discountAmount int</text>
+    <line x1="0" y1="60" x2="280" y2="60" stroke="#e2e8f0" stroke-width="1" />
+    <text x="16" y="79" class="cls-method">+ calculateDiscount(int price) int</text>
+  </g>
+
+  <!-- ================= 클래스: RateDiscountPolicy ================= -->
+  <g id="class-RateDiscountPolicy" transform="translate(340, 375)" filter="url(#card-shadow)">
+    <rect width="280" height="96" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 274 A 6 6 0 0 1 280 6 V 34 H 0 Z" fill="#f8fafc" />
+    <line x1="0" y1="34" x2="280" y2="34" stroke="#cbd5e1" stroke-width="1" />
+    
+    <text x="140" y="23" text-anchor="middle" class="cls-title" fill="#0f172a">RateDiscountPolicy</text>
+    <text x="16" y="52" class="cls-field">- discountRate int</text>
+    <line x1="0" y1="60" x2="280" y2="60" stroke="#e2e8f0" stroke-width="1" />
+    <text x="16" y="79" class="cls-method">+ calculateDiscount(int price) int</text>
+  </g>
+
+  <!-- ================= 클래스: NoDiscountPolicy ================= -->
+  <g id="class-NoDiscountPolicy" transform="translate(650, 375)" filter="url(#card-shadow)">
+    <rect width="280" height="75" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <path d="M 0 6 A 6 6 0 0 1 6 0 H 274 A 6 6 0 0 1 280 6 V 34 H 0 Z" fill="#f8fafc" />
+    <line x1="0" y1="34" x2="280" y2="34" stroke="#cbd5e1" stroke-width="1" />
+    
+    <text x="140" y="23" text-anchor="middle" class="cls-title" fill="#0f172a">NoDiscountPolicy</text>
+    <text x="16" y="58" class="cls-method">+ calculateDiscount(int price) int</text>
+  </g>
+</svg>
